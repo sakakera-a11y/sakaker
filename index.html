@@ -340,8 +340,8 @@ function closeVideoModal() {
 <style>
   #siteIcon {
     position: fixed;
-    top: 60px; /* يمكنك تغيير المكان */
-    right: 150px;
+    top: 120px; /* يمكنك تغيير المكان */
+    right: 250px;
     padding: 10px 15px;
     border-radius: 12px;
     background: rgba(0,0,0,0.6);
@@ -1194,7 +1194,7 @@ function setLanguage(lang) {
   <div id="homeContent" 
        style="
         position:absolute;
-        top:80px;
+        top:10px;
         left:50%;
         transform:translateX(-50%);
         width:85%;
@@ -1546,6 +1546,259 @@ jokeIcon.addEventListener('click', () => {
         const iframe = jokeContainer.querySelector('iframe');
         iframe.src = iframe.src;
     }
+});
+</script>
+<!-- 🌟 أيقونة فليشر القنوات المباشرة -->
+<div id="liveFlasher" onclick="toggleLivePopup()">
+  <span>قنوات مباشرة<br>Live Channels</span>
+</div>
+
+<!-- 🎬 النافذة المنبثقة للفيديوهات -->
+<div id="livePopup">
+  <button id="closePopup" onclick="toggleLivePopup()">❌</button>
+  <div id="liveVideosContainer">
+
+    <!-- القنوات الأصلية -->
+    <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/LuKwFajn37U')">
+      <iframe src="https://www.youtube.com/embed/LuKwFajn37U?mute=1" allowfullscreen></iframe>
+    </div>
+
+    <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/zi9knajcejY')">
+      <iframe src="https://www.youtube.com/embed/zi9knajcejY?mute=1" allowfullscreen></iframe>
+    </div>
+
+    <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/daqB3i9WYIY')">
+      <iframe src="https://www.youtube.com/embed/daqB3i9WYIY?mute=1" allowfullscreen></iframe>
+    </div>
+
+    <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/FFkOEautPBs')">
+      <iframe src="https://www.youtube.com/embed/FFkOEautPBs?mute=1" allowfullscreen></iframe>
+    </div>
+
+    <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/n7eQejkXbnM')">
+      <iframe src="https://www.youtube.com/embed/n7eQejkXbnM?mute=1" allowfullscreen></iframe>
+    </div>
+
+    <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/BEgQdyuWhDQ')">
+      <iframe src="https://www.youtube.com/embed/BEgQdyuWhDQ?mute=1" allowfullscreen></iframe>
+    </div>
+
+  </div>
+</div>
+
+<!-- 🎥 الإطار المنبثق الكبير للفيديو -->
+<div id="videoOverlay">
+  <div id="videoBox">
+    <button id="closeVideo" onclick="closeVideo()">❌</button>
+    <iframe id="mainVideo" src="" allowfullscreen></iframe>
+  </div>
+</div>
+
+<style>
+/* ⚪ أيقونة فليشر */
+#liveFlasher {
+  position: fixed;
+  top: 30%;
+  right: 30px;
+  transform: translateY(-50%);
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 40px rgba(255,255,255,0.9), 0 0 80px rgba(255,255,255,0.7);
+  cursor: pointer;
+  z-index: 10000;
+  transition: transform 0.3s ease;
+  font-family: "Cairo", sans-serif;
+  animation: flashGlow 2s infinite ease-in-out;
+  border: 2px solid white;
+  backdrop-filter: blur(4px);
+}
+
+@keyframes flashGlow {
+  0%, 100% { box-shadow: 0 0 30px rgba(255,255,255,0.7), 0 0 80px rgba(255,255,255,0.5); }
+  50% { box-shadow: 0 0 70px rgba(255,255,255,1), 0 0 120px rgba(255,255,255,0.9); }
+}
+
+#liveFlasher:hover {
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* 🎬 نافذة الفيديوهات */
+#livePopup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -30%);
+  width: 80vw;
+  max-width: 420px;
+  background: rgba(0,0,0,0.6);
+  border-radius: 30px;
+  box-shadow: 0 0 40px rgba(255,255,255,0.9);
+  padding: 15px 10px 25px;
+  z-index: 10001;
+  text-align: center;
+  animation: fadeIn 0.4s ease;
+  backdrop-filter: blur(10px);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -40%); }
+  to { opacity: 1; transform: translate(-50%, -30%); }
+}
+
+/* زر الإغلاق */
+#closePopup {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: crimson;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s;
+}
+#closePopup:hover { background: #ff5555; }
+
+/* الفيديوهات المصغّرة */
+#liveVideosContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 35px;
+}
+
+.live-video {
+  width: 130px;
+  height: 80px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255,255,255,0.6);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+.live-video:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255,255,255,0.9);
+}
+.live-video iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  pointer-events: none;
+}
+
+/* 🎥 الإطار الكبير */
+#videoOverlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(4px);
+  z-index: 10002;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 60px;
+}
+#videoBox {
+  position: relative;
+  width: 80%;
+  max-width: 600px;
+  aspect-ratio: 16/9;
+  background: #000;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(255,255,255,0.8);
+}
+#closeVideo {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: crimson;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-size: 16px;
+}
+#closeVideo:hover { background: #ff5555; }
+
+#videoBox iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* 📱 للجوال */
+@media (max-width: 768px) {
+  #liveFlasher {
+    width: 110px;
+    height: 110px;
+    right: 15px;
+    font-size: 13px;
+  }
+  #livePopup {
+    width: 90vw;
+    max-width: 340px;
+    top: 25%;
+    transform: translate(-50%, -25%);
+  }
+  .live-video {
+    width: 110px;
+    height: 65px;
+  }
+}
+</style>
+
+<script>
+// 🔘 فتح/إغلاق نافذة القنوات
+function toggleLivePopup() {
+  const popup = document.getElementById("livePopup");
+  popup.style.display = (popup.style.display === "block") ? "none" : "block";
+}
+
+// ▶️ فتح الفيديو الكبير
+function openVideo(url) {
+  document.getElementById("mainVideo").src = url + "?autoplay=1";
+  document.getElementById("videoOverlay").style.display = "flex";
+}
+
+// ❌ إغلاق الفيديو
+function closeVideo() {
+  document.getElementById("mainVideo").src = "";
+  document.getElementById("videoOverlay").style.display = "none";
+}
+
+// إغلاق النافذة عند الضغط خارجها
+document.addEventListener("click", function (event) {
+  const popup = document.getElementById("livePopup");
+  const flasher = document.getElementById("liveFlasher");
+
+  if (
+    popup.style.display === "block" &&
+    !popup.contains(event.target) &&
+    !flasher.contains(event.target)
+  ) {
+    popup.style.display = "none";
+  }
 });
 </script>
 
@@ -2177,12 +2430,13 @@ document.addEventListener("DOMContentLoaded", () => {
   <button class="back3" onclick="goPage('page2')">⬅️ رجوع</button>
 
   <h1>
+      
 <!-- 🔹 زر فتح اللعبة مع ألوان متغيرة -->
 <button id="pongGame-btn" style="
   z-index: 9999;
   position: fixed;
   bottom:298px;
-  right: 30px;
+  right: 230px;
   padding: 2px 2px;
   border: none;
   border-radius: 14px;
@@ -2358,248 +2612,6 @@ pongBtn.addEventListener('mouseleave', () => {
 
 </body>
 </html>
-</h1>
-
-  <!-- 
-<!-- 🌟 أيقونة فليشر القنوات المباشرة -->
-<div id="liveFlasher" onclick="toggleLivePopup()">
-  <span>قنوات مباشرة<br>Live Channels</span>
-</div>
-
-<!-- 🎬 النافذة المنبثقة للفيديوهات -->
-<div id="livePopup">
-  <button id="closePopup" onclick="toggleLivePopup()">❌</button>
-  <div id="liveVideosContainer">
-
-    <!-- القنوات الأصلية -->
-    <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/LuKwFajn37U')">
-      <iframe src="https://www.youtube.com/embed/LuKwFajn37U?mute=1" allowfullscreen></iframe>
-    </div>
-    <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/zi9knajcejY')">
-      <iframe src="https://www.youtube.com/embed/zi9knajcejY?mute=1" allowfullscreen></iframe>
-    </div>
-    <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/daqB3i9WYIY')">
-      <iframe src="https://www.youtube.com/embed/daqB3i9WYIY?mute=1" allowfullscreen></iframe>
-    </div>
-    <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/FFkOEautPBs')">
-      <iframe src="https://www.youtube.com/embed/FFkOEautPBs?mute=1" allowfullscreen></iframe>
-    </div>
-    <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/n7eQejkXbnM')">
-      <iframe src="https://www.youtube.com/embed/n7eQejkXbnM?mute=1" allowfullscreen></iframe>
-    </div>
-
-    <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/BEgQdyuWhDQ')">
-      <iframe src="https://www.youtube.com/embed/BEgQdyuWhDQ?mute=1" allowfullscreen></iframe>
-    </div>
-
-  </div>
-</div>
-
-<!-- 🎥 الإطار المنبثق الكبير للفيديو -->
-<div id="videoOverlay">
-  <div id="videoBox">
-    <button id="closeVideo" onclick="closeVideo()">❌</button>
-    <iframe id="mainVideo" src="" allowfullscreen></iframe>
-  </div>
-</div>
-
-<style>
-/* ⚪ أيقونة فليشر */
-#liveFlasher {
-  position: fixed;
-  top: 30%;
-  right: 30px;
-  transform: translateY(-50%);
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background:
-  color: #000;
-  font-weight: bold;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 0 40px rgba(255,255,255,0.9), 0 0 80px rgba(255,255,255,0.7);
-  cursor: pointer;
-  z-index: 10000;
-  transition: transform 0.3s ease;
-  font-family: "Cairo", sans-serif;
-  animation: flashGlow 2s infinite ease-in-out;
-}
-
-@keyframes flashGlow {
-  0%, 100% { box-shadow: 0 0 30px rgba(255,255,255,0.7), 0 0 80px rgba(255,255,255,0.5); }
-  50% { box-shadow: 0 0 70px rgba(255,255,255,1), 0 0 120px rgba(255,255,255,0.9); }
-}
-
-#liveFlasher:hover {
-  transform: translateY(-50%) scale(1.1);
-}
-
-/* 🎬 نافذة الفيديوهات */
-#livePopup {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -30%);
-  width: 80vw;
-  max-width: 420px;
-  background: 
-  border-radius: 30px;
-  box-shadow: 0 0 40px rgba(255,255,255,0.9);
-  padding: 15px 10px 25px;
-  z-index: 10001;
-  text-align: center;
-  animation: fadeIn 0.4s ease;
-  backdrop-filter: blur(10px);
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translate(-50%, -40%); }
-  to { opacity: 1; transform: translate(-50%, -30%); }
-}
-
-/* زر الإغلاق */
-#closePopup {
-  position: absolute;
-  top: 8px;
-  right: 10px;
-  background: crimson;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 28px;
-  height: 28px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: 0.3s;
-}
-#closePopup:hover {
-  background: #ff5555;
-}
-
-/* الفيديوهات المصغّرة */
-#liveVideosContainer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  margin-top: 35px;
-}
-
-.live-video {
-  width: 130px;
-  height: 80px;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 0 10px rgba(255,255,255,0.6);
-  transition: transform 0.3s, box-shadow 0.3s;
-  cursor: pointer;
-}
-.live-video:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(255,255,255,0.9);
-}
-.live-video iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-  pointer-events: none;
-}
-
-/* 🎥 الإطار المنبثق الكبير */
-#videoOverlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.75);
-  backdrop-filter: blur(4px);
-  z-index: 10002;
-  justify-content: center;
-  align-items: flex-start;
-  padding-top: 60px;
-}
-#videoBox {
-  position: relative;
-  width: 80%;
-  max-width: 600px;
-  aspect-ratio: 16/9;
-  background: #000;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 0 30px rgba(255,255,255,0.8);
-}
-#videoBox iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-#closeVideo {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background: crimson;
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 28px;
-  height: 28px;
-  font-size: 16px;
-  cursor: pointer;
-}
-#closeVideo:hover {
-  background: #ff5555;
-}
-
-/* 📱 للجوال */
-@media (max-width: 768px) {
-  #liveFlasher {
-    width: 110px;
-    height: 110px;
-    right: 15px;
-    font-size: 13px;
-  }
-  #livePopup {
-    width: 90vw;
-    max-width: 340px;
-    top: 25%;
-    transform: translate(-50%, -25%);
-  }
-  .live-video {
-    width: 110px;
-    height: 65px;
-  }
-}
-</style>
-
-<script>
-function toggleLivePopup() {
-  const popup = document.getElementById("livePopup");
-  popup.style.display = (popup.style.display === "flex" || popup.style.display === "block") ? "none" : "block";
-}
-
-// فتح الفيديو في الإطار المنبثق الكبير
-function openVideo(url) {
-  const overlay = document.getElementById("videoOverlay");
-  const iframe = document.getElementById("mainVideo");
-  iframe.src = url + "?autoplay=1";
-  overlay.style.display = "flex";
-}
-
-// إغلاق الفيديو المنبثق
-function closeVideo() {
-  const overlay = document.getElementById("videoOverlay");
-  const iframe = document.getElementById("mainVideo");
-  iframe.src = "";
-  overlay.style.display = "none";
-}
-</script>
 
 <script>
 const beethovenIcon = document.getElementById('beethovenIcon');
@@ -2894,6 +2906,210 @@ window.onload = () => {
   sections.forEach(id => document.getElementById(id).style.display = 'none');
 };
 </script>
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ألعاب أبو القمر زمرد 🎮</title>
+<style>
+   {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #000; /* خلفية ثابتة بدون فيديو */
+    font-family: sans-serif;
+    overflow: hidden;
+  }
+
+  /* 🎮 أيقونات الألعاب */
+  .gameIcon {
+    position: fixed;
+    top: 130px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+    box-shadow: 0 0 25px 10px rgba(255,255,255,0.8);
+    animation: glow 2s infinite alternate;
+    z-index: 5000;
+  }
+
+  /* 🎱 بلياردو */
+  #billiardsIcon {
+    left: 160px;
+    background: radial-gradient(circle, #ff0000, #ff9900, #00ff00, #0000ff, #ff00ff);
+  }
+
+  /* ♟️ شطرنج */
+  #chessIcon {
+    left: 260px;
+    background: radial-gradient(circle, #00ffff, #0000ff, #ff00ff, #ffff00, #00ff00);
+  }
+
+  @keyframes glow {
+    from { box-shadow: 0 0 10px 5px #fff; }
+    to   { box-shadow: 0 0 25px 15px #00ffff; }
+  }
+
+  /* 🧩 الإطارات المنبثقة (مشتركة) */
+  .gameContainer {
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70%;
+    height: 65%;
+    background: rgba(0,0,0,0.95);
+    border: 3px solid #0ff;
+    border-radius: 20px;
+    display: none;
+    z-index: 9999;
+    box-shadow: 0 0 30px rgba(0,255,255,0.8);
+    cursor: move;
+  }
+
+  #billiardsContainer {
+    top: 58%;
+  }
+
+  #chessContainer {
+    top: calc(50% + 70px) !important;
+  }
+
+  .gameContainer iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 15px;
+  }
+
+  /* زر الإغلاق */
+  .closeBtn {
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    background: red;
+    color: white;
+    border: none;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 10000;
+    padding: 3px 8px;
+  }
+
+  /* للجوال */
+  @media (max-width: 800px) {
+    .gameContainer { width: 90%; height: 60%; }
+    .gameIcon { width: 60px; height: 60px; font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 🎱 أيقونة بلياردو -->
+<div id="billiardsIcon" class="gameIcon" title="بلياردو">🎱</div>
+
+<!-- ♟️ أيقونة الشطرنج -->
+<div id="chessIcon" class="gameIcon" title="شطرنج">♟️</div>
+
+<!-- 🎱 نافذة بلياردو -->
+<div id="billiardsContainer" class="gameContainer" aria-hidden="true">
+  <button class="closeBtn" id="closeBilliards">X</button>
+  <iframe src="https://www.crazygames.com/embed/8-ball-billiards-classic" title="لعبة بلياردو"></iframe>
+</div>
+
+<!-- ♟️ نافذة الشطرنج -->
+<div id="chessContainer" class="gameContainer" aria-hidden="true">
+  <button class="closeBtn" id="closeChess">X</button>
+  <iframe src="https://www.crazygames.com/embed/master-chess" title="لعبة شطرنج"></iframe>
+</div>
+
+<script>
+/* العناصر */
+const billiardsIcon = document.getElementById('billiardsIcon');
+const chessIcon = document.getElementById('chessIcon');
+const billiardsContainer = document.getElementById('billiardsContainer');
+const chessContainer = document.getElementById('chessContainer');
+const closeBilliards = document.getElementById('closeBilliards');
+const closeChess = document.getElementById('closeChess');
+
+/* فتح وإغلاق */
+billiardsIcon.addEventListener('click', () => {
+  billiardsContainer.style.display = 'block';
+  chessContainer.style.display = 'none';
+});
+
+chessIcon.addEventListener('click', () => {
+  chessContainer.style.display = 'block';
+  billiardsContainer.style.display = 'none';
+});
+
+closeBilliards.addEventListener('click', () => {
+  billiardsContainer.style.display = 'none';
+});
+closeChess.addEventListener('click', () => {
+  chessContainer.style.display = 'none';
+});
+
+/* ======= draggable ======= */
+function makeDraggable(el) {
+  let dragging = false;
+  let offsetX = 0;
+  let offsetY = 0;
+
+  el.addEventListener('mousedown', (e) => {
+    if (e.target.tagName === 'IFRAME' || e.target.classList.contains('closeBtn')) return;
+    dragging = true;
+    const rect = el.getBoundingClientRect();
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+    el.style.transform = 'none';
+    document.body.style.userSelect = 'none';
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!dragging) return;
+    el.style.left = `${e.clientX - offsetX}px`;
+    el.style.top = `${e.clientY - offsetY}px`;
+  });
+
+  document.addEventListener('mouseup', () => {
+    dragging = false;
+    document.body.style.userSelect = '';
+  });
+
+  el.addEventListener('touchstart', (e) => {
+    if (e.target.tagName === 'IFRAME' || e.target.classList.contains('closeBtn')) return;
+    dragging = true;
+    const touch = e.touches[0];
+    const rect = el.getBoundingClientRect();
+    offsetX = touch.clientX - rect.left;
+    offsetY = touch.clientY - rect.top;
+  }, {passive: true});
+
+  document.addEventListener('touchmove', (e) => {
+    if (!dragging) return;
+    const touch = e.touches[0];
+    el.style.left = `${touch.clientX - offsetX}px`;
+    el.style.top = `${touch.clientY - offsetY}px`;
+  }, {passive: true});
+
+  document.addEventListener('touchend', () => { dragging = false; });
+}
+
+makeDraggable(billiardsContainer);
+makeDraggable(chessContainer);
+</script>
+
+</body>
+</html>
 
 <style>
 .emeraldVideoCircle {
