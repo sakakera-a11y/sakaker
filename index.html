@@ -893,6 +893,7 @@ closeBtn.addEventListener('click', () => {
 
 </body>
 </html>
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -1547,6 +1548,315 @@ jokeIcon.addEventListener('click', () => {
     }
 });
 </script>
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الأقسامsakaker wep</title>
+<style> {
+  font-family:'Tajawal', sans-serif;
+  margin:0;
+  padding:0;
+  background:transparent;
+  color: silver;
+  text-align:center;
+}
+
+/* ===== أيقونة التشغيل ===== */
+#scrollbox-icon {
+  position: fixed;
+  bottom: 190px;
+  left: 20%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid #00ffaa;
+  color: #00ffaa;
+  background: rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(0,255,170,0.4);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(6px);
+  z-index: 99999;
+}
+#scrollbox-icon:hover {
+  transform: translateX(-50%) scale(1.1);
+  box-shadow: 0 0 30px #00f2fe;
+}
+
+/* ===== الخلفية ===== */
+#scrollbox-overlay {
+  display:none;
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(4px);
+  z-index:99998;
+  opacity:0;
+  transition:opacity 0.3s ease;
+}
+#scrollbox-overlay.active {
+  display:block;
+  opacity:1;
+}
+
+/* ===== النافذة ===== */
+#scrollbox-popup {
+  display:none;
+  position:fixed;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%) scale(0.9);
+  width:90%;
+  max-width:900px;
+  height:85%;
+  background:rgba(255,255,255,0.97);
+  color:#111;
+  border-radius:14px;
+  box-shadow:0 0 25px rgba(255,255,255,0.2);
+  z-index:100000;
+  opacity:0;
+  transition:all 0.3s ease;
+  overflow:hidden;
+  text-align:right;
+}
+#scrollbox-popup.active {
+  display:block;
+  opacity:1;
+  transform:translate(-50%,-50%) scale(1);
+}
+
+/* ===== التبويبات ===== */
+.scrollbox-tabs {
+  display:flex;
+  justify-content:space-around;
+  background:rgba(0,0,0,0.05);
+  border-bottom:1px solid rgba(0,0,0,0.1);
+}
+.scrollbox-tab {
+  flex:1;
+  text-align:center;
+  padding:10px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:background 0.3s;
+}
+.scrollbox-tab:hover { background:rgba(0,0,0,0.1); }
+.scrollbox-tab.active { background:rgba(0,0,0,0.2); }
+
+/* ===== المحتوى ===== */
+.scrollbox-content {
+  display:none;
+  height:calc(100% - 60px);
+  padding:20px;
+  overflow:hidden;
+  position:relative;
+}
+.scrollbox-content.active { display:block; }
+
+/* ===== النص المتحرك ===== */
+.scrollbox-text {
+  position:absolute;
+  bottom:-100%;
+  width:100%;
+  animation:scrollbox-up 220s linear infinite; /* سرعة بطيئة جدًا */
+  line-height:1.9;
+}
+@keyframes scrollbox-up {
+  from { bottom:-100%; }
+  to { bottom:100%; }
+}
+.scrollbox-text:hover {
+  animation-play-state: paused;
+}
+
+/* زر الإغلاق */
+#scrollbox-close {
+  position:absolute;
+  top:10px;left:10px;
+  background:rgba(0,0,0,0.1);
+  border:none;
+  color:#333;
+  padding:5px 10px;
+  border-radius:8px;
+  cursor:pointer;
+}
+#scrollbox-close:hover { background:rgba(0,0,0,0.2); }
+</style>
+</head>
+<body>
+
+<!-- أيقونة التشغيل -->
+<div id="scrollbox-icon">📜</div>
+
+<!-- الخلفية -->
+<div id="scrollbox-overlay"></div>
+
+<!-- النافذة -->
+<div id="scrollbox-popup">
+  <button id="scrollbox-close">❌</button>
+
+  <div class="scrollbox-tabs">
+    <div class="scrollbox-tab active" data-target="scrollbox-culture">🌍 ثقافة</div>
+    <div class="scrollbox-tab" data-target="scrollbox-islamic">🕌 إسلامي</div>
+    <div class="scrollbox-tab" data-target="scrollbox-thoughts">💭 خواطر</div>
+  </div>
+
+  <!-- ===== القسم الأول: ثقافة عامة ===== -->
+ <div id="scrollbox-culture" class="scrollbox-content active">
+  <div class="scrollbox-text">
+    <h2>🌍 ثقافة عامة</h2>
+
+    <p>الثقافة العامة هي المرآة التي تعكس وعي الإنسان ونظرته للحياة،  
+    وهي الجسر الذي يصل بين الفكر والعلم والإبداع.  
+    من خلالها يستطيع الإنسان أن يفهم ذاته، ويتواصل مع مجتمعه،  
+    ويستوعب الحضارات من حوله دون أن يفقد هويته.</p>
+
+    <p>الثقافة ليست مجرد كمٍّ من المعلومات، بل هي طريقة تفكير،  
+    وسلوك حضاري ينبع من الإدراك العميق لقيمة العلم والإنسان.  
+    فالمثقف لا يكرر ما يسمع، بل يُعيد بناءه على أسس المنطق والمعرفة.</p>
+
+    <p>من أبرز ما قدّمته الحضارات للثقافة الإنسانية:  
+    <ul>
+      <li><strong>الحضارة الإسلامية:</strong> التي أبدعت في الطب والفلك والرياضيات والفلسفة، وقدّمت للعالم أسماء خالدة كابن سينا والرازي والخوارزمي.</li>
+      <li><strong>الحضارة المصرية القديمة:</strong> التي أنارت العالم بعلوم التحنيط والهندسة والعمارة، وشهدت ولادة الكتابة والطب المبكر.</li>
+      <li><strong>الحضارة اليونانية:</strong> التي أرست قواعد الفلسفة والمنطق، وقدّمت للعالم سقراط وأفلاطون وأرسطو.</li>
+      <li><strong>الحضارة الصينية:</strong> التي برعت في الورق والحرير والبارود، وأسست مفاهيم الانسجام بين الإنسان والطبيعة.</li>
+    </ul>
+    </p>
+
+    <p>الثقافة الحقيقية تنبع من التوازن بين الأصالة والمعاصرة،  
+    أي أن نحافظ على جذورنا وهويتنا، وفي الوقت نفسه ننفتح على كل جديد مفيد.  
+    فالمجتمع الذي لا يقرأ يتوقف، والذي يقرأ بلا وعي يتشتت،  
+    أما الذي يقرأ بعقل ناقد ويُبدع فهو الذي يصنع التاريخ.</p>
+
+    <p>الثقافة أيضًا هي أخلاق، لأنها تصنع فينا حسّ المسؤولية،  
+    وتمنحنا القدرة على فهم الآخر واحترام اختلافه،  
+    وتزرع فينا قيم التسامح والمحبة والفضيلة.</p>
+
+    <p><em>اقرأ، تفكر، ناقش، واكتب... فالثقافة ليست نهاية طريق، بل بداية حياة.</em></p>
+  </div>
+</div>
+
+
+  <!-- ===== القسم الثاني: التاريخ الإسلامي ===== -->
+  <div id="scrollbox-islamic" class="scrollbox-content">
+    <div class="scrollbox-text">
+      <h2>🕌 التاريخ الإسلامي</h2>
+      <h3>📜 النبي محمد ﷺ</h3>
+      <p>محمد بن عبد الله، خاتم الأنبياء والمرسلين، ولد في مكة عام 571م في عام الفيل.  
+      نزل عليه الوحي في سن الأربعين، فدعا إلى عبادة الله وحده ونبذ الشرك.  
+      استمرت دعوته 23 عامًا، عانى فيها وأصحابه من الاضطهاد حتى هاجر إلى المدينة المنورة، حيث أسس أول دولة إسلامية.  
+      توفي ﷺ سنة 632م، تاركًا أمة موحدة وكتاب الله بين أيدي المسلمين.</p>
+      <hr>
+      <h3>🕌 الخلفاء الراشدون</h3>
+      <p><strong>أبو بكر الصديق</strong> (632–634م): أول الخلفاء، وأقرب الصحابة إلى النبي ﷺ. ثبت المسلمين بعد وفاته ﷺ، وجمع القرآن الكريم في مصحف واحد.</p>
+      <p><strong>عمر بن الخطاب</strong> (634–644م): ثاني الخلفاء، اشتهر بالعدل والحزم، ووسع الدولة الإسلامية لتشمل بلاد فارس والشام ومصر.</p>
+      <p><strong>عثمان بن عفان</strong> (644–656م): ثالث الخلفاء، جمع الناس على مصحف واحد بلغة قريش، وفتح أرمينية وخراسان.</p>
+      <p><strong>علي بن أبي طالب</strong> (656–661م): رابع الخلفاء، وابن عم النبي ﷺ، عُرف بالشجاعة والعلم، وواجه الفتن الكبرى في الأمة.</p>
+      <hr>
+      <h3>⚔️ معاوية بن أبي سفيان</h3>
+      <p>معاوية بن أبي سفيان، صحابي وكاتب وحي للنبي ﷺ، ووالي الشام في عهد عمر وعثمان.  
+      أسس الدولة الأموية سنة 661م بعد تنازل الحسن بن علي له، وجعل دمشق عاصمة للدولة، واشتهر بالحكمة والسياسة والقدرة على إدارة الدولة.</p>
+      <hr>
+      <h3>⚖️ عمر بن عبدالعزيز</h3>
+      <p>عمر بن عبدالعزيز بن مروان، الخليفة الأموي الثامن، يُلقب بخامس الخلفاء الراشدين لزهده وعدله.  
+      وُلد سنة 682م وتولى الخلافة سنة 717م، فعمل على نشر العدل والمساواة، ورد المظالم، وإلغاء كثير من الضرائب الظالمة.  
+      توفي سنة 720م تاركًا سيرةً ناصعة في الحكم الصالح.</p>
+    </div>
+  </div>
+
+  <!-- ===== القسم الثالث: خواطر ===== -->
+  <div id="scrollbox-thoughts" class="scrollbox-content">
+    <div class="scrollbox-text">
+      <h2>💭 خواطر</h2>
+      <h3>قصتي مع التيتنك</h3>
+      <p>في صباح هادئ، شددت أشرعتي متجهًا نحو المجهول، عازمًا على استكشاف أسرار البحار التي لا يعرفها أحد.  
+      كانت الأمواج تعانق قاربي، والريح تدفعني نحو مغامرة لا تُنسى.</p>
+      <p>قادتني التيارات إلى مشهد أسطوري… هناك، في عمقٍ سحيق، ظهرت أمامي سفينة التايتنك، شامخة رغم جراح الزمن، صامتة وكأنها تحكي قصتها الحزينة.  
+      اقتربت منها، ولم أقاوم رغبتي في ترك أثر، فكتبت اسمي على إحدى بقاياها المعدنية المكسوة بالصدأ والمرجان.</p>
+      <p>وبينما أستكشف المكان، لمح بصري ظلاً ضخماً… كان حوتًا عظيمًا غارقًا في سبات عميق بجوار السفينة، وكأنهما رفيقا عزلة.  
+      فاتخذت الحوت فندقًا عائمًا لمدة يومين؛ أستريح فوق ظهره، أراقب النجوم ليلًا، وأتجول بين بقايا السفينة نهارًا.</p>
+
+      <hr>
+      <h3>قصة التنين الفضي</h3>
+      <p>بينما كان أبو القمر زمرد يجلس على صخرة تطل على البحر في ليلة هادئة، لاحظ ضوءًا غريبًا يلمع وسط الضباب.  
+      اقترب أكثر، فإذا به يكتشف كائنًا أسطوريًا ذو حراشف لامعة كالفضة، إنه التنين الفضي.</p>
+      <p>اقترب التنين ببطء وصوته العميق يروي حكايات عن الجبال البعيدة والبحار المجهولة.  
+      دعاه لرحلة بين الغيوم، حيث حلقا فوق الغابات والأنهار، وشاهدا معًا روائع لم ترها عين بشر من قبل.</p>
+      <p>عاد أبو القمر زمرد من تلك المغامرة وهو يدرك أن المغامرة الحقيقية ليست فقط في استكشاف الأماكن، بل في الجرأة على خوض المجهول بقلب مفتوح.</p>
+
+      <hr>
+      <h3>القمر والزمرد 🌙💎</h3>
+      <p>قصَّ أبو القمر حكاية يوم استطاع أن يمزج أنوار القمر بأحجار الزمرد الكريمة التي حصل عليها من شعب المرجان.  
+      كان ينظر إلى بريق الزمرد في أعماق البحر، حتى سطع نور القمر وانعكس على تلك الأحجار الساحرة.</p>
+      <p>ومنذ ذلك الحين، صار هذا الطريق بوابة لتحقيق الأحلام وتحويلها إلى حقيقة بإذن الله.</p>
+
+      <hr>
+      <h3>أبو القمر زمرد حارس الأندلس القديم</h3>
+      <p>في زمن بعيد، حين كانت الأندلس جنة على الأرض، عاش رجل يُدعى أبو القمر زمرد، حارس أسوار قرطبة وراعي مفاتيح بواباتها.  
+      كان معروفًا بشجاعته وذكائه، حتى أن الملوك كانوا يستشيرونه في أمور الحرب والسلم.</p>
+      <p>وفي إحدى الليالي، رأى نورًا غريبًا يلمع فوق قصر الحمراء، فاتجه نحوه بسرعة، وهناك وجد مخطوطة قديمة تحمل أسرار الدفاع عن الأندلس.  
+      أدرك أن مهمته الحقيقية ليست فقط حماية الأسوار، بل حماية سرّ الأندلس من أن يضيع إلى الأبد.</p>
+
+      <hr>
+      <h3>رحلة أبو القمر إلى ما وراء المجرات</h3>
+      <p>بعد أن أنهى أبو القمر تصميم موقعه على الويب وتفعيله، شعر بإرهاق شديد، وقرر أن يأخذ إجازة لمدة شهر بعيدًا عن التفكير والروتين.  
+      وفي ليلة هادئة، نظر إلى القمر، فرأى انعكاسًا براقًا للزمرد يلمع في ضوئه، فركب شعاع الضوء وانطلق بسرعة تفوق الضوء،  
+      حتى وصل إلى مجرة بعيدة مغطاة بحدائق من ثمار لا تُحصى وكائنات ودودة.</p>
+      <p>تزوج هناك ورُزق بأبناء، لكن الحنين إلى الأرض أشعل قلبه فعاد عبر بوابة ضوء نادرة،  
+      إلا أن المسار انحرف ليصل إلى مدينة الكريستال الأزرق، حيث بدأت مغامرة جديدة غيّرت مصيره إلى الأبد.</p>
+
+      <hr>
+      <h3>العودة بعد الانبطاح</h3>
+      <p>وبعد طول انتظار في مدينة النوم والانبطاح، نهض البطل ببطء،  
+      وكأن الأرض التي احتضنته طوال تلك الفترة لم ترغب في إفلاته.  
+      تنفّس عميقًا ومسح عن كتفيه غبار الاستسلام، ثم خطا أولى خطوات العودة؛  
+      فهو يعلم أن الانبطاح أحيانًا هدنة، ولكن العودة هي المعركة الحقيقية.  
+      <strong>إلى الأرض... إلى الحياة... إلى النور.</strong></p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const icon = document.getElementById('scrollbox-icon');
+  const popup = document.getElementById('scrollbox-popup');
+  const overlay = document.getElementById('scrollbox-overlay');
+  const close = document.getElementById('scrollbox-close');
+  const tabs = document.querySelectorAll('.scrollbox-tab');
+  const sections = document.querySelectorAll('.scrollbox-content');
+
+  icon.addEventListener('click', ()=>{
+    popup.classList.add('active');
+    overlay.classList.add('active');
+  });
+  close.addEventListener('click', closeAll);
+  overlay.addEventListener('click', closeAll);
+
+  function closeAll(){
+    popup.classList.remove('active');
+    overlay.classList.remove('active');
+  }
+
+  tabs.forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      tabs.forEach(t=>t.classList.remove('active'));
+      sections.forEach(s=>s.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.getAttribute('data-target')).classList.add('active');
+    });
+  });
+})();
+</script>
+
   </div>
 
 <!-- ============= أيقونة صفحة الأعمال ============= -->
@@ -1716,10 +2026,154 @@ function closePopup(){
 <!-- ====================== الصفحة الثالثة ======================= -->
 <div id="page3" class="page">
 
-  <iframe id="ytplayer"
-    src="https://www.youtube.com/embed/tFZnpj1JPbc?autoplay=1&mute=1&controls=0&loop=1&playlist=tFZnpj1JPbc&enablejsapi=1&playsinline=1">
-  </iframe>
+<!-- ✅ كود خلفيات فيديو مستقلة -->
+<div id="backgroundVideoIndependent">
+  <iframe id="bgVid0" src="https://www.youtube.com/embed/3E20r534TjU?autoplay=1&mute=1&controls=0&loop=1&playlist=3E20r534TjU&modestbranding=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  <iframe id="bgVid1" src="https://www.youtube.com/embed/843Rpqza_6o?autoplay=1&mute=1&controls=0&loop=1&playlist=843Rpqza_6o&modestbranding=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  <iframe id="bgVid2" src="https://www.youtube.com/embed/yLuEx-XH3Uc?autoplay=1&mute=1&controls=0&loop=1&playlist=yLuEx-XH3Uc&modestbranding=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  <iframe id="bgVid3" src="https://www.youtube.com/embed/r6wtfX5vk6A?autoplay=1&mute=1&controls=0&loop=1&playlist=r6wtfX5vk6A&modestbranding=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  <iframe id="bgVid4" src="https://www.youtube.com/embed/WPX2SniBqDU?autoplay=1&mute=1&controls=0&loop=1&playlist=WPX2SniBqDU&modestbranding=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
 
+<div id="backgroundControlsIndependent">
+  <button id="bgChangeBtn">🎬 تغيير الخلفية</button>
+  <button id="bgSoundBtn">🔊 تشغيل الصوت</button>
+</div>
+
+<style>
+  /* 🌌 تنسيق الخلفيات */
+  #backgroundVideoIndependent {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -9999; /* خلف كل العناصر */
+    pointer-events: none;
+  }
+
+  #backgroundVideoIndependent iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120%;
+    height: 120%;
+    transform: translate(-50%, -50%);
+    border: none;
+    display: none;
+  }
+
+  /* 🎛️ أزرار التحكم */
+  #backgroundControlsIndependent {
+    position: fixed;
+    bottom: 580px;
+    left: 120px;
+    display: flex;
+    gap: 10px;
+    z-index: 99999; /* فوق كل شيء */
+  }
+
+  #backgroundControlsIndependent button {
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.85);
+    transition: 0.3s;
+  }
+
+  #backgroundControlsIndependent button:hover {
+    background: rgba(0, 255, 255, 0.8);
+  }
+</style>
+
+<script>
+(function(){
+  // 🎥 جمع الفيديوهات
+  const vids = [
+    document.getElementById('bgVid0'),
+    document.getElementById('bgVid1'),
+    document.getElementById('bgVid2'),
+    document.getElementById('bgVid3'),
+    document.getElementById('bgVid4')
+  ];
+  let current = 0;
+  let muted = true;
+
+  // عرض أول فيديو
+  vids[current].style.display = 'block';
+
+  // 🎬 زر تغيير الخلفية
+  document.getElementById('bgChangeBtn').addEventListener('click', () => {
+    vids[current].style.display = 'none';
+    current = (current + 1) % vids.length;
+    vids[current].style.display = 'block';
+    vids[current].src = vids[current].src.replace(/mute=\d/, 'mute=' + (muted ? '1' : '0'));
+  });
+
+  // 🔊 زر الصوت
+  document.getElementById('bgSoundBtn').addEventListener('click', () => {
+    muted = !muted;
+    document.getElementById('bgSoundBtn').textContent = muted ? "🔊 تشغيل الصوت" : "🔈 إيقاف الصوت";
+    vids[current].src = vids[current].src.replace(/mute=\d/, 'mute=' + (muted ? '1' : '0'));
+  });
+})();
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  try {
+    // أيقونات مهمة تبقى فوق الخلفية
+    const importantSelectors = [
+      '#mainGamesIcon',
+      '#emeraldIcon',
+      '#hideBtn',
+      '.floatingIcon',
+      '#customVideoIcon',     // 🎥 أيقونة الفيديو
+      '#hideIconBtn',         // ❌ زر الإخفاء
+      '#showIconBtn',         // 🔄 زر الإظهار
+      '#customVideoPopup',    // 📺 الإطار المنبثق
+      '#customCloseBtn'       // زر الإغلاق داخل الإطار
+    ];
+
+    importantSelectors.forEach(sel => {
+      document.querySelectorAll(sel).forEach(el => {
+        el.style.position = 'fixed';
+        el.style.zIndex = '2500';  // فوق الخلفية وأي عناصر أخرى
+        el.style.pointerEvents = 'auto';
+        el.style.opacity = '1';
+        el.style.visibility = 'visible';
+      });
+    });
+
+    // تصحيح طبقة الخلفية
+    const bg = document.querySelector('#backgroundVideoIndependent, #backgroundLayer');
+    if (bg) {
+      bg.style.zIndex = '-1';
+      bg.style.pointerEvents = 'none';
+    }
+
+    console.log("🎬 تم تصحيح ظهور أيقونة الفيديو والنافذة المنبثقة بنجاح");
+  } catch (err) {
+    console.warn("⚠️ لم يتم تنفيذ كود تصحيح الفيديو:", err);
+  }
+});
+</script>
+<script>
+  // مثلاً: ضع العرض الذي تريده هنا (px) — غيّر 1200 إلى مقاسك المطلوب
+  const forcedWidth = 1200;
+
+  // نحاول العثور على وسم meta الموجود وتعديله أو إنشاؤه إن لم يكن
+  let mv = document.querySelector('meta[name="viewport"]');
+  if (!mv) {
+    mv = document.createElement('meta');
+    mv.name = 'viewport';
+    document.head.appendChild(mv);
+  }
+  mv.content = `width=${forcedWidth}, initial-scale=1`;
+</script>
   <button class="back3" onclick="goPage('page2')">⬅️ رجوع</button>
 
   <h1>
