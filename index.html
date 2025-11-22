@@ -6,7 +6,7 @@
 <title>موقع أبوالقمر زمرد</title>
 
 <style>
-html,body{
+{
   margin:0; padding:0;
   height:100%;
   font-family:"Tajawal",sans-serif;
@@ -625,6 +625,7 @@ function closeVideoModal() {
     });
   });
 </script>
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -1006,6 +1007,169 @@ closeBtn.addEventListener('click', () => {
 
 </body>
 </html>
+<!-- ================= أيقونة القصة + النافذة المعدلة ================= -->
+<style>
+/* أيقونة القصة */
+#shipIcon_new {
+  position: fixed;
+  bottom: 270px;
+  right: 230px;
+  width: 110px;
+  height: 110px;
+  background: url('https://i.top4top.io/p_3602p1v3s1.png') center/cover no-repeat;
+  cursor: pointer;
+  border-radius: 50%;
+  z-index: 99999999;
+  box-shadow: 0 0 25px #8a2be2, 0 0 55px rgba(138, 43, 226, 0.35);
+  transition: 0.35s ease;
+}
+#shipIcon_new:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 35px #8a2be2, 0 0 80px rgba(138, 43, 226, 0.6);
+}
+
+/* النافذة */
+#shipPopup_new {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 92%;
+  max-width: 430px;
+  background: rgba(15, 15, 25, 0.95);
+  border: 2px solid #8a2be2;
+  border-radius: 25px;
+  padding: 28px;
+  text-align: center;
+  box-shadow: 0 0 40px #8a2be2;
+  color: #fff;
+  z-index: 99999998;
+  animation: popFade_new 0.5s ease;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+@keyframes popFade_new {
+  from { opacity:0; transform:translate(-50%, -45%); }
+  to   { opacity:1; transform:translate(-50%, -50%); }
+}
+
+/* زر الإغلاق */
+#closeShip_new {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: #ff0066;
+  color: #fff;
+  border: none;
+  width: 36px;
+  height: 36px;
+  font-size: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.3s;
+}
+#closeShip_new:hover {
+  transform: scale(1.15);
+  background: #ff2b80;
+}
+
+#shipPopup_new h2 {
+  color: #c084fc;
+  text-shadow: 0 0 12px #c084fc;
+  margin-bottom: 15px;
+  font-size: 22px;
+}
+
+#shipPopup_new p, #shipPopup_new ul {
+  text-align: right;
+  line-height: 1.8;
+  color: #ddd;
+  font-size: 17px;
+}
+</style>
+
+<!-- الأيقونة -->
+<div id="shipIcon_new"></div>
+
+<!-- النافذة -->
+<div id="shipPopup_new">
+  <button id="closeShip_new">✖</button>
+  <h2>⚓ مغامرة أبو القمر زمرد مع الصقنقور الرملي ⚓</h2>
+  <p id="storyText_new"></p>
+</div>
+
+<script>
+const snqStory_new = `
+في ليلةٍ هادئة كان القمر فيها مكتملًا، خرج أبو القمر زمرد كعادته يتأمل ضوء السماء ويبحث عن أسرار جديدة يخفيها الكون. وبينما كان يسير فوق الرمال الفضية التي تعكس ضوء القمر، لاحظ شيئًا صغيرًا يتحرك بخفةٍ قرب كثيب رملي طويل.<br><br>
+
+اقترب بهدوء، فإذا به <strong>صقنقور رملي</strong> بلونٍ يميل إلى الذهب، سريع الحركة، يترك خلفه خطًا دقيقًا كأنه يرسم علامة على الرمال.<br><br>
+
+رفع الصقنقور رأسه وكأنه يعرف أبو القمر، ثم قال بصوت خفيف يشبه همس الريح:<br>
+<em>"أبحث منذ زمن عن من يستطيع قراءة طريق القمر بين الرمال… أنت وحدك من يستطيع السير معي."</em><br><br>
+
+ابتسم أبو القمر زمرد، ووضع كفه بلطف على ظهر الصقنقور، فانطلقت منه هالة زمردية خضراء، امتزجت بلون الرمال الذهبية فكوّنت طريقًا يمتد نحو عمق الصحراء.<br><br>
+
+سار الاثنان معًا عبر هذا الطريق المتلألئ، وكل خطوة كان الصقنقور يرسم بها رمزًا جديدًا على الأرض. اكتشف أبو القمر أنّ هذه الرموز ليست عشوائية… بل هي <strong>خريطة قديمة</strong> تمزج بين <em>طاقة الأرض</em> و<em>نور القمر</em>، لا يستطيع فكها إلا من جمع بين الهدوء الداخلي وصفاء القلب.<br><br>
+
+وقادتهم الخريطة إلى <strong>كهف من الكريستال الرملي</strong>, جدرانه تلمع مثل الزجاج وعليه نقوش لأسلاف الصقنقور. هناك وجد أبو القمر <strong>حجرًا رمليًا زمرديًا</strong> نادرًا، يقال إن من يحمله يستطيع رؤية الطرق المخفية التي لا تراها العيون.<br><br>
+
+أخذ أبو القمر الحجر، ووضعه في قلادته، فقال الصقنقور:<br>
+<em>"منذ اليوم، طريق القمر لم يعد فوق السماء فقط… بل تحت قدميك أيضًا."</em><br><br>
+
+ثم اختفى الصقنقور داخل الرمال، تاركًا خلفه خطًا طويلًا كُتب عليه:<br>
+<em>"الصداقة الحقيقية لا تحتاج صوتًا… يكفي أن تترك أثرًا."</em><br><br>
+
+ومن تلك الليلة أصبح لأبو القمر زمرد طريق جديد، طريق من نور القمر… ومغامرات لا تنتهي في الصحراء… وبرفقة الصقنقور الرملي مهما غاب أو اختفى.<hr>
+
+<h2>🐉 أبو القمر زمرد يخاطب التنين الفضي بقصيدة "غدر الزمان"</h2>
+
+<p>قررت الرحيل من أمد... فخانني الزمان وأوفى به القدر</p>
+<p>فلا بصيره من لا يرى بأعينه.... ولو طال له الطريق والسفر</p>
+<p>وكلام لا ينجي صاحبه... تزدريه الحضوض ومقله البشر</p>
+<p>تعجبت من زمان أدور به.... وكيف تغيرت المخاطر إلى خطر</p>
+<p>كطفل ينمو في مراحله... وبأن فيه الشيب والقصر</p>
+<p>فهذا حال الزمان لمن جال به.... يغدو لعلمه يبوح به أو يسر</p>
+<p>كمثل الكلب حين في طبعه.... وحين يتشبه بالأسماك والنسر</p>
+<p>فوجهي هذا من الماضي صورته... طلت علي من الجوال بفجر</p>
+<p>فذكرتني بعهد لم أكن انساه... ولكن لا تجود الأرواح إلا بصبر</p>
+<p>فلكل أمر له شقوته.... ولا بعد العسر إلا يسر</p>
+<p>ولا أشره علا السارق بسطوته... فهاذي تجارب النفس والبصر</p>
+
+<hr>
+<h3>💡 الفكرة العامة</h3>
+<p>القصيدة تتناول رحلة الشاعر مع الزمن، وتستعرض تجاربه مع الخذلان والخيانة والتحولات في الحياة. تتخللها تأملات في البشر والطبيعة الإنسانية، إضافة إلى الصبر والحكمة التي تأتي بعد التجارب.</p>
+
+<hr>
+<h3>📜 تحليل الأبيات</h3>
+<ul>
+  <li><em>"قررت الرحيل من أمد... فخانني الزمان وأوفى به القدر"</em>: بداية قوية تعكس قرار الشاعر بالمضي في الحياة أو الرحيل عن الماضي، مع إدراك أن الزمن قد يخوننا، لكن القدر يظل في حكمه.</li>
+  <li><em>"فلا بصيره من لا يرى بأعينه.... ولو طال له الطريق والسفر"</em>: يشير إلى أن الرؤية الحقيقية والفهم لا تتحقق إلا بالوعي الداخلي، وأن طول التجربة وحده لا يكفي.</li>
+  <li><em>"وكلام لا ينجي صاحبه... تزدريه الحضوض ومقله البشر"</em>: يصف حالة الضعف أمام أحكام الناس، وأن الكلمات وحدها قد لا تنقذ الشخص من سوء الحظ أو انتقاد الآخرين.</li>
+  <li><em>"تعجبت من زمان أدور به.... وكيف تغيرت المخاطر إلى خطر"</em>: استغراب من تغير الحياة، وأن ما كان تحديًا قد أصبح تهديدًا حقيقيًا مع مرور الزمن.</li>
+  <li><em>"كطفل ينمو في مراحله... وبأن فيه الشيب والقصر"</em>: استعارة جميلة تشير إلى دورة الحياة، من البراءة والطفولة إلى النضج والشيب.</li>
+  <li><em>"فهذا حال الزمان لمن جال به.... يغدو لعلمه يبوح به أو يسر"</em>: تأمل في أن تجربة الإنسان مع الزمن تمنحه الحكمة، وقد يشاركها أو يحتفظ بها لنفسه.</li>
+  <li><em>"كمثل الكلب حين في طبعه.... وحين يتشبه بالأسماك والنسر"</em>: تشبيه للطبيعة البشرية، وكيف يمكن للمرء أن يتصرف بما لا يتفق مع طبعه تحت تأثير الظروف.</li>
+  <li><em>"فوجهي هذا من الماضي صورته... طلت علي من الجوال بفجر"</em>: لمسة شخصية تعكس الحنين والذكريات، وكيف يمكن للأشياء البسيطة أن تثير الماضي.</li>
+  <li><em>"فذكرتني بعهد لم أكن انساه... ولكن لا تجود الأرواح إلا بصبر"</em>: دعوة للصبر على تجارب الحياة، فالروح تحتاج الصبر لتستعيد قوتها.</li>
+  <li><em>"فلكل أمر له شقوته.... ولا بعد العسر إلا يسر"</em>: حكمة خالدة: بعد كل صعوبة يأتي الفرج، وكل تجربة تحمل درسًا.</li>
+  <li><em>"ولا أشره علا السارق بسطوته... فهاذي تجارب النفس والبصر"</em>: خلاصة القول: التجارب تصقل النفس وتعلم الإنسان الرؤية والفهم.</li>
+</ul>
+`;
+
+document.getElementById("storyText_new").innerHTML = snqStory_new;
+
+// فتح النافذة
+document.getElementById("shipIcon_new").onclick = () => {
+  document.getElementById("shipPopup_new").style.display = "block";
+};
+
+// إغلاق النافذة
+document.getElementById("closeShip_new").onclick = () => {
+  document.getElementById("shipPopup_new").style.display = "none";
+};
+</script>
+<!-- ================= نهاية الكود المنعزل ================= -->
 
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
@@ -1206,124 +1370,6 @@ function setLanguage(lang) {
   <button class="page-btn" onclick="goPage('home')">⬅️ الصفحة الرئيسية</button>
 
   <div style="text-align:center;margin-top:120px;font-size:26px;text-shadow:0 0 12px #00ffff;">
- <!-- ================= أيقونة القصة – كود منعزل بالكامل ================= -->
-<style>
-#shipIcon_new {
-  position: fixed;
-  bottom: 70px;
-  right: 30px;
-  width: 110px;
-  height: 110px;
-  background: url('https://i.top4top.io/p_3602p1v3s1.png') center/cover no-repeat;
-  cursor: pointer;
-  border-radius: 50%;
-  z-index: 99999999;
-  box-shadow: 0 0 25px #8a2be2, 0 0 55px rgba(138, 43, 226, 0.35);
-  transition: 0.35s ease;
-}
-#shipIcon_new:hover {
-  transform: scale(1.08);
-  box-shadow: 0 0 35px #8a2be2, 0 0 80px rgba(138, 43, 226, 0.6);
-}
-
-/* النافذة */
-#shipPopup_new {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 92%;
-  max-width: 430px;
-  background: rgba(15, 15, 25, 0.95);
-  border: 2px solid #8a2be2;
-  border-radius: 25px;
-  padding: 28px;
-  text-align: center;
-  box-shadow: 0 0 40px #8a2be2;
-  color: #fff;
-  z-index: 99999998;
-  animation: popFade_new 0.5s ease;
-  max-height: 90vh;
-  overflow-y: auto;
-}
-@keyframes popFade_new {
-  from { opacity:0; transform:translate(-50%, -45%); }
-  to   { opacity:1; transform:translate(-50%, -50%); }
-}
-
-/* زر الإغلاق */
-#closeShip_new {
-  position: absolute;
-  top: 12px;
-  right: 14px;
-  background: #ff0066;
-  color: #fff;
-  border: none;
-  width: 36px;
-  height: 36px;
-  font-size: 20px;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: 0.3s;
-}
-#closeShip_new:hover {
-  transform: scale(1.15);
-  background: #ff2b80;
-}
-
-#shipPopup_new h2 {
-  color: #c084fc;
-  text-shadow: 0 0 12px #c084fc;
-  margin-bottom: 15px;
-  font-size: 22px;
-}
-
-#shipPopup_new p {
-  text-align: right;
-  line-height: 1.8;
-  color: #ddd;
-  font-size: 17px;
-}
-</style>
-
-<!-- الأيقونة -->
-<div id="shipIcon_new"></div>
-
-<!-- النافذة -->
-<div id="shipPopup_new">
-  <button id="closeShip_new">✖</button>
-  <h2>⚓ قصة الصقنقور الرملي ⚓</h2>
-  <p id="storyText_new"></p>
-</div>
-
-<script>
-const snqStory_new = `
-الصقنقور الرملي مخلوق صحراوي سريع ومراوغ،
-يمتلك قدرة على دفن نفسه داخل الرمال خلال ثوانٍ،
-فيختفي تمامًا عن الأنظار وكأنه جزء من الصحراء.
-<br><br>
-تساعده حراشفه الذهبية على الانزلاق فوق الرمال بسهولة،
-ويتمتع بحاسة قوية لاكتشاف الاهتزازات من مسافات بعيدة.
-<br><br>
-يخرج صباحًا ويختفي ظهرًا،
-ويبقى واحدًا من أذكى وأسرع كائنات الصحراء العربية.
-`;
-
-document.getElementById("storyText_new").innerHTML = snqStory_new;
-
-// فتح النافذة
-document.getElementById("shipIcon_new").onclick = () => {
-  document.getElementById("shipPopup_new").style.display = "block";
-};
-
-// إغلاق النافذة
-document.getElementById("closeShip_new").onclick = () => {
-  document.getElementById("shipPopup_new").style.display = "none";
-};
-</script>
-<!-- ================= نهاية الكود المنعزل ================= -->
-
 <!-- 🎂 كيك متوهج بألوان متغيرة -->
 <div id="cakeWrapper">
   <div id="cakeButton" onclick="window.open('https://paypal.me/abwalqmrzmrd/1', '_blank')">
@@ -2067,6 +2113,7 @@ document.addEventListener("click", function (event) {
 </div>
 
 <script>
+    
 (function(){
   const icon = document.getElementById('scrollbox-icon');
   const popup = document.getElementById('scrollbox-popup');
@@ -2867,6 +2914,146 @@ window.onload = () => {
   sections.forEach(id => document.getElementById(id).style.display = 'none');
 };
 </script>
+  
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎬 فيديو + 🗺️ خريطة</title>
+<style>
+/* 🔹 أيقونة النجمة */
+.launcher {
+  position: fixed;
+  bottom: 125px;
+  right: 225px;
+  width: 90px;
+  height: 90px;
+  background: conic-gradient(red, orange, yellow, green, blue, indigo, violet, red);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 
+                     79% 91%, 50% 70%, 21% 91%, 32% 57%, 
+                     2% 35%, 39% 35%);
+  border-radius: 50%;
+  box-shadow: 0 0 25px #fff, 0 0 50px #0ff;
+  animation: rotateColors 3s linear infinite, pulse 2s ease-in-out infinite;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.launcher span {
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 0 0 8px black;
+  font-size: 14px;
+}
+
+@keyframes rotateColors {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+@keyframes pulse {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+/* 🔹 الإطار المنبثق */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9998;
+}
+
+.box {
+  background: #000;
+  border-radius: 16px;
+  box-shadow: 0 0 25px #0ff;
+  padding: 12px;
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
+  position: relative;
+}
+
+iframe {
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  margin-top: 8px;
+}
+
+iframe.video { height: 200px; }
+iframe.map { height: 200px; }
+
+.close {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: red;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 0 10px white;
+}
+</style>
+</head>
+<body>
+
+<div class="launcher" title="عرض الفيديو والخريطة">
+  <span>خرائط<br>Map</span>
+</div>
+
+<div class="overlay">
+  <div class="box">
+    <button class="close">×</button>
+    <iframe class="video"
+      src="https://www.youtube.com/embed/SKIhQsszmP8?autoplay=1&mute=1"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+    <iframe class="map" id="mapFrame" loading="lazy"></iframe>
+  </div>
+</div>
+
+<script>
+const launcher = document.querySelector('.launcher');
+const overlay = document.querySelector('.overlay');
+const closeBtn = document.querySelector('.close');
+const mapFrame = document.getElementById('mapFrame');
+
+launcher.addEventListener('click', () => {
+  overlay.style.display = 'flex';
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(pos => {
+      const lat = pos.coords.latitude;
+      const lon = pos.coords.longitude;
+      mapFrame.src = `https://www.google.com/maps?q=${lat},${lon}&z=15&output=embed`;
+    }, () => {
+      mapFrame.src = "https://www.google.com/maps";
+    });
+  } else {
+    mapFrame.src = "https://www.google.com/maps";
+  }
+});
+
+closeBtn.addEventListener('click', () => {
+  overlay.style.display = 'none';
+});
+</script>
+
+</body>
+</html>
 
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
