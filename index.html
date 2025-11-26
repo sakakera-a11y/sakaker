@@ -488,11 +488,17 @@ document.getElementById('radioIcon').onclick=()=>{const box=document.getElementB
 <!-- ====== الدوائر ====== -->
 <div class="video-top-container-fixed">
   <div class="video-circle" data-video="n7eQejkXbnM">
-    <iframe class="miniVideo" src="https://www.youtube.com/embed/n7eQejkXbnM?mute=1" allowfullscreen></iframe>
+    <iframe class="miniVideo"
+      src="https://www.youtube.com/embed/n7eQejkXbnM?autoplay=1&mute=1&playsinline=1&controls=0&loop=1&playlist=n7eQejkXbnM"
+      allow="autoplay; encrypted-media"
+      frameborder="0"></iframe>
   </div>
 
   <div class="video-circle" data-video="zi9knajcejY">
-    <iframe class="miniVideo" src="https://www.youtube.com/embed/zi9knajcejY?mute=1" allowfullscreen></iframe>
+    <iframe class="miniVideo"
+      src="https://www.youtube.com/embed/zi9knajcejY?autoplay=1&mute=1&playsinline=1&controls=0&loop=1&playlist=zi9knajcejY"
+      allow="autoplay; encrypted-media"
+      frameborder="0"></iframe>
   </div>
 </div>
 
@@ -536,16 +542,16 @@ document.getElementById('radioIcon').onclick=()=>{const box=document.getElementB
   background: rgba(255,255,255,0.2);
 }
 
-/* ====== الفيديو المصغر داخل الدائرة ====== */
+/* ====== الفيديو المصغّر داخل الدائرة ====== */
 .miniVideo {
   position: absolute;
-  width: 140%;
-  height: 140%;
-  top: -20%;
-  left: -20%;
+  width: 160%;
+  height: 160%;
+  top: -30%;
+  left: -30%;
   border: none;
-  pointer-events: none;
-  opacity: 0.7; /* يظهر بوضوح لكن بدون إزعاج */
+  pointer-events: none; /* يمنع مشاكل الضغط */
+  opacity: 0.85;
 }
 
 /* ====== مربع الفيديو ====== */
@@ -564,7 +570,6 @@ document.getElementById('radioIcon').onclick=()=>{const box=document.getElementB
   overflow: hidden;
 }
 
-/* iframe داخل المربع */
 #videoBoxFixed iframe {
   width: 100%;
   height: 100%;
@@ -587,8 +592,8 @@ document.querySelectorAll(".video-circle").forEach(circle => {
       return;
     }
 
-    // تشغيل الفيديو داخل المربع الكبير
-    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1`;
+    // فتح المربع
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1&playsinline=1`;
     box.style.display = "block";
   });
 });
