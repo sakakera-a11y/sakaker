@@ -7,6 +7,237 @@
   overflow:hidden;
   display:block;
 ">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abwalqmrzmrd Official – الصفحة الرابعة</title>
+
+<script src="https://apis.google.com/js/platform.js"></script>
+
+<style>
+body {
+    margin: 0;
+    background: #000;
+    color: #fff;
+    font-family: "Tajawal", sans-serif;
+}
+
+/* زر الصفحة الرابعة */
+.page4-btn {
+    background: linear-gradient(45deg, #d4af37, #ffffff, #d4af37);
+    color: #000;
+    padding: 14px 30px;
+    font-size: 22px;
+    border-radius: 40px;
+    border: 2px solid #d4af37;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 0 15px #ffd700aa;
+    margin: 50px auto;
+    display: block;
+    transition: 0.3s;
+}
+.page4-btn:hover {
+    transform: scale(1.08);
+}
+
+/* الصفحة الرابعة */
+.page4-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: #000;
+    z-index: 9999999;
+    overflow-y: auto;
+}
+
+/* صندوق المحتوى */
+.page4-box {
+    padding: 20px;
+}
+
+/* زر الإغلاق */
+.close-btn {
+    background: red;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    font-size: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+.close-btn:hover {
+    background: darkred;
+}
+
+/* زر الاشتراك */
+.subscribe-btn {
+    display: inline-block;
+    padding: 12px 32px;
+    background: linear-gradient(45deg, #d4af37, #ffffff, #d4af37);
+    color: #000;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 0 18px rgba(255,215,0,0.6);
+    border: 2px solid #d4af37;
+    margin: 10px auto 20px auto;
+    display: block;
+}
+
+/* التبويبات */
+.tabs {
+    display: flex;
+    gap: 20px;
+    padding: 12px 20px;
+    border-bottom: 1px solid #333;
+    background: #050505;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.tab {
+    cursor: pointer;
+    font-size: 18px;
+    padding-bottom: 6px;
+}
+.tab.active {
+    color: #00ffea;
+    border-bottom: 2px solid #00ffea;
+}
+
+/* الصفحات */
+.section {
+    display: none;
+    padding: 20px;
+}
+.section.active {
+    display: block;
+}
+
+/* كروت الفيديو */
+.video-card {
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    padding: 10px;
+    box-shadow: 0 0 10px #00ffee44;
+}
+.video-card iframe {
+    width: 100%;
+    height: 210px;
+    border-radius: 12px;
+}
+.video-title {
+    margin-top: 10px;
+    font-size: 18px;
+}
+</style>
+</head>
+<body>
+
+<!-- 🔘 زر فتح الصفحة الرابعة -->
+<button id="openPage4" class="page4-btn">youtube abwalqmrzmrd </button>
+
+<!-- 🟦 الصفحة الرابعة (تحتوي على كل الموقع) -->
+<div id="page4" class="page4-overlay">
+    <div class="page4-box">
+
+        <button id="closePage4" class="close-btn">✖ إغلاق</button>
+
+        <!-- 🎯 زر الاشتراك -->
+        <a href="https://www.youtube.com/@sakakera?sub_confirmation=1" class="subscribe-btn">
+            اشترك الآن – Subscribe Now
+        </a>
+
+        <!-- ===== معلومات القناة ===== -->
+        <div class="channel-info" style="text-align:center;">
+            <h1>Abwalqmrzmrd Official</h1>
+            <p>محتوى حصري – بث مباشر – أعمال – مقاطع فيديو</p>
+            <div style="color:#00ff88; font-size:14px;">تم تحديث صفحة القناة ✅</div>
+        </div>
+
+        <!-- ===== التبويبات ===== -->
+        <div class="tabs">
+            <div class="tab active" data-page="videos">📺 الفيديوهات</div>
+            <div class="tab" data-page="live">🔴 البث المباشر</div>
+            <div class="tab" data-page="shorts">🎬 الشورتس</div>
+            <div class="tab" data-page="about">ℹ️ حول القناة</div>
+        </div>
+
+        <!-- ===== الفيديوهات ===== -->
+        <div id="videos" class="section active">
+
+            <div class="video-card">
+                <iframe src="https://www.youtube.com/embed/kPTspab3Z8o" allowfullscreen></iframe>
+                <div class="video-title">🎬 Short Video</div>
+            </div>
+
+            <div class="video-card">
+                <iframe src="https://www.youtube.com/embed/FzfIvHt4AaU?si=COsGgwgmcYXhz7Jr" allowfullscreen></iframe>
+                <div class="video-title">🎬 فيديو جديد</div>
+            </div>
+
+        </div>
+
+        <!-- ===== بث مباشر ===== -->
+        <div id="live" class="section">
+            <div class="video-card">
+                <iframe src="https://www.youtube.com/embed/live_stream?channel=UClcEEDbyCx0721sG9_sN9RQ" allowfullscreen></iframe>
+                <div class="video-title">🔴 البث المباشر – قناة Abwalqmrzmrd</div>
+            </div>
+        </div>
+
+        <!-- ===== الشورتس ===== -->
+        <div id="shorts" class="section">
+            <p>🎬 سيتم إضافة محتوى الشورتس قريبًا...</p>
+        </div>
+
+        <!-- ===== حول القناة ===== -->
+        <div id="about" class="section">
+            <h2>ℹ️ حول القناة</h2>
+            <p>
+                قناة <strong>Abwalqmrzmrd Official</strong> تقدم محتوى حصريًا من إنتاج أبوالقمر زمرد.
+            </p>
+        </div>
+
+    </div>
+</div>
+
+<script>
+/* فتح الصفحة الرابعة */
+document.getElementById("openPage4").onclick = function () {
+    document.getElementById("page4").style.display = "block";
+};
+
+/* إغلاق الصفحة */
+document.getElementById("closePage4").onclick = function () {
+    document.getElementById("page4").style.display = "none";
+};
+
+/* التبويبات */
+const tabs = document.querySelectorAll('.tab');
+const sections = document.querySelectorAll('.section');
+
+tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        sections.forEach(s => s.classList.remove('active'));
+
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.page).classList.add('active');
+    });
+});
+</script>
+
+</body>
+</html>
 
   <!-- الخلفية 1 -->
   <div id="bg1" style="
@@ -316,7 +547,7 @@ h1{
 #radioIcon{
   position:fixed;
   bottom:10px;
-  right:30px;
+  right:130px; 
   width:70px;
   height:70px;
   background:#0ff;
@@ -511,7 +742,7 @@ document.getElementById('radioIcon').onclick=()=>{const box=document.getElementB
 /* ====== الدوائر ====== */
 .video-top-container-fixed {
   position: fixed;
-  top: 180px;
+  top: 220px;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -1270,7 +1501,7 @@ pongBtn.addEventListener('mouseleave', () => {
  { font-family: Tahoma, sans-serif; margin:0; padding:0; background:#121212; color:#fff; }
 #prophetsBtn {
     position: fixed;
-    top: 15%;
+    top: 80%;
     left: 20px;
     transform: translateY(-50%);
     z-index: 9999;
