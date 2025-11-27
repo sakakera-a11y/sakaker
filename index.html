@@ -7,233 +7,243 @@
   overflow:hidden;
   display:block;
 ">
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Abwalqmrzmrd Official – الصفحة الرابعة</title>
-
-<script src="https://apis.google.com/js/platform.js"></script>
+<title>أبوالقمر زمرد – يوتيوب</title>
 
 <style>
-body {
-    margin: 0;
-    background: #000;
-    color: #fff;
-    font-family: "Tajawal", sans-serif;
+body{
+  margin:0;background:#000;color:#fff;font-family:"Tajawal",sans-serif;
+}
+
+/* زر اللغة */
+#langBtn{
+  position:fixed;top:10px;left:10px;background:#00eaff;
+  padding:7px 15px;border-radius:6px;cursor:pointer;color:#000;
+  z-index:999999;font-weight:bold;
 }
 
 /* زر الصفحة الرابعة */
-.page4-btn {
-    background: linear-gradient(45deg, #d4af37, #ffffff, #d4af37);
-    color: #000;
-    padding: 14px 30px;
-    font-size: 22px;
-    border-radius: 40px;
-    border: 2px solid #d4af37;
-    cursor: pointer;
-    font-weight: bold;
-    box-shadow: 0 0 15px #ffd700aa;
-    margin: 50px auto;
-    display: block;
-    transition: 0.3s;
+.page4-btn{
+  background:linear-gradient(45deg,#d4af37,#ffffff,#d4af37);
+  color:#000;padding:14px 30px;font-size:22px;border-radius:40px;
+  border:2px solid #d4af37;cursor:pointer;font-weight:bold;
+  box-shadow:0 0 15px #ffd700aa;margin:50px auto;display:block;
 }
-.page4-btn:hover {
-    transform: scale(1.08);
-}
+.page4-btn:hover{transform:scale(1.08);}
 
 /* الصفحة الرابعة */
-.page4-overlay {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: #000;
-    z-index: 9999999;
-    overflow-y: auto;
+.page4-overlay{
+  display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+  background:#000;z-index:9999999;overflow-y:auto;
 }
-
-/* صندوق المحتوى */
-.page4-box {
-    padding: 20px;
-}
+.page4-box{padding:20px;}
 
 /* زر الإغلاق */
-.close-btn {
-    background: red;
-    color: white;
-    border: none;
-    padding: 10px 22px;
-    font-size: 20px;
-    border-radius: 10px;
-    cursor: pointer;
-    margin-bottom: 20px;
+.close-btn{
+  background:red;color:white;border:none;padding:10px 22px;
+  font-size:20px;border-radius:10px;cursor:pointer;margin-bottom:20px;
 }
-.close-btn:hover {
-    background: darkred;
-}
+.close-btn:hover{background:darkred;}
 
 /* زر الاشتراك */
-.subscribe-btn {
-    display: inline-block;
-    padding: 12px 32px;
-    background: linear-gradient(45deg, #d4af37, #ffffff, #d4af37);
-    color: #000;
-    font-size: 20px;
-    font-weight: bold;
-    border-radius: 50px;
-    text-decoration: none;
-    box-shadow: 0 0 18px rgba(255,215,0,0.6);
-    border: 2px solid #d4af37;
-    margin: 10px auto 20px auto;
-    display: block;
+.sub-box{
+  display:block;margin:15px auto;
+  background:#fff;color:#000;font-weight:bold;
+  padding:10px 22px;border-radius:30px;
+  width:fit-content;cursor:pointer;border:3px solid gold;
+  text-decoration:none;
 }
 
 /* التبويبات */
-.tabs {
-    display: flex;
-    gap: 20px;
-    padding: 12px 20px;
-    border-bottom: 1px solid #333;
-    background: #050505;
-    justify-content: center;
-    margin-top: 10px;
+.tabs{
+  display:flex;gap:20px;padding:12px;border-bottom:1px solid #333;
+  background:#050505;justify-content:center;
 }
-
-.tab {
-    cursor: pointer;
-    font-size: 18px;
-    padding-bottom: 6px;
-}
-.tab.active {
-    color: #00ffea;
-    border-bottom: 2px solid #00ffea;
-}
+.tab{cursor:pointer;font-size:18px;padding-bottom:6px;}
+.tab.active{color:#00ffea;border-bottom:2px solid #00ffea;}
 
 /* الصفحات */
-.section {
-    display: none;
-    padding: 20px;
+.section{display:none;padding:20px;}
+.section.active{display:block;}
+
+/* بطاقات الفيديو */
+.video-card{
+  background:#111;border:1px solid #333;border-radius:12px;
+  margin-bottom:20px;padding:10px;box-shadow:0 0 10px #00ffee44;
 }
-.section.active {
-    display: block;
+.video-card iframe{
+  width:100%;height:210px;border-radius:12px;
 }
 
-/* كروت الفيديو */
-.video-card {
-    background: #111;
-    border: 1px solid #333;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    padding: 10px;
-    box-shadow: 0 0 10px #00ffee44;
-}
-.video-card iframe {
-    width: 100%;
-    height: 210px;
-    border-radius: 12px;
-}
-.video-title {
-    margin-top: 10px;
-    font-size: 18px;
-}
+.video-title{margin-top:10px;font-size:18px;}
 </style>
 </head>
 <body>
 
-<!-- 🔘 زر فتح الصفحة الرابعة -->
-<button id="openPage4" class="page4-btn">youtube abwalqmrzmrd </button>
+<!-- زر تبديل اللغة -->
+<div id="langBtn">EN</div>
 
-<!-- 🟦 الصفحة الرابعة (تحتوي على كل الموقع) -->
+<!-- زر الصفحة الرابعة -->
+<button id="openPage4" class="page4-btn">
+  <span class="ar">أبوالقمر زمرد – يوتيوب</span>
+  <span class="en" style="display:none;">Abwalqmrzmrd – YouTube</span>
+</button>
+
+<!-- الصفحة الرابعة -->
 <div id="page4" class="page4-overlay">
-    <div class="page4-box">
+  <div class="page4-box">
 
-        <button id="closePage4" class="close-btn">✖ إغلاق</button>
+    <button id="closePage4" class="close-btn">✖</button>
 
-        <!-- 🎯 زر الاشتراك -->
-        <a href="https://www.youtube.com/@sakakera?sub_confirmation=1" class="subscribe-btn">
-            اشترك الآن – Subscribe Now
-        </a>
+    <!-- العنوان -->
+    <h1 class="ar" style="text-align:center;">أبوالقمر زمرد – يوتيوب</h1>
+    <h1 class="en" style="display:none;text-align:center;">Abwalqmrzmrd – YouTube</h1>
 
-        <!-- ===== معلومات القناة ===== -->
-        <div class="channel-info" style="text-align:center;">
-            <h1>Abwalqmrzmrd Official</h1>
-            <p>محتوى حصري – بث مباشر – أعمال – مقاطع فيديو</p>
-            <div style="color:#00ff88; font-size:14px;">تم تحديث صفحة القناة ✅</div>
-        </div>
+    <!-- زر الاشتراك -->
+    <a class="sub-box" href="https://www.youtube.com/@sakakera?sub_confirmation=1">
+      <span class="ar">اشترك الآن</span>
+      <span class="en" style="display:none;">Subscribe Now</span>
+    </a>
 
-        <!-- ===== التبويبات ===== -->
-        <div class="tabs">
-            <div class="tab active" data-page="videos">📺 الفيديوهات</div>
-            <div class="tab" data-page="live">🔴 البث المباشر</div>
-            <div class="tab" data-page="shorts">🎬 الشورتس</div>
-            <div class="tab" data-page="about">ℹ️ حول القناة</div>
-        </div>
+    <!-- التبويبات -->
+    <div class="tabs">
+      <div class="tab active" data-page="videos">
+        📺 <span class="ar">الفيديوهات</span><span class="en" style="display:none;">Videos</span>
+      </div>
+      <div class="tab" data-page="liked">
+        ⭐ <span class="ar">مقاطع أعجبتني</span><span class="en" style="display:none;">Liked Videos</span>
+      </div>
+      <div class="tab" data-page="live">
+        🔴 <span class="ar">البث المباشر</span><span class="en" style="display:none;">Live Stream</span>
+      </div>
+      <div class="tab" data-page="about">
+        ℹ️ <span class="ar">حول القناة</span><span class="en" style="display:none;">About</span>
+      </div>
+    </div>
 
-        <!-- ===== الفيديوهات ===== -->
-        <div id="videos" class="section active">
+    <!-- 📺 الفيديوهات الأساسية -->
+    <div id="videos" class="section active">
 
-            <div class="video-card">
-                <iframe src="https://www.youtube.com/embed/kPTspab3Z8o" allowfullscreen></iframe>
-                <div class="video-title">🎬 Short Video</div>
-            </div>
+      <!-- الفيديو 1 -->
+      <div class="video-card">
+        <iframe src="https://www.youtube.com/embed/kPTspab3Z8o" allowfullscreen></iframe>
+        <div class="video-title ar">🎬 الفيديو الأول</div>
+        <div class="video-title en" style="display:none;">🎬 First Video</div>
+      </div>
 
-            <div class="video-card">
-                <iframe src="https://www.youtube.com/embed/FzfIvHt4AaU?si=COsGgwgmcYXhz7Jr" allowfullscreen></iframe>
-                <div class="video-title">🎬 فيديو جديد</div>
-            </div>
-
-        </div>
-
-        <!-- ===== بث مباشر ===== -->
-        <div id="live" class="section">
-            <div class="video-card">
-                <iframe src="https://www.youtube.com/embed/live_stream?channel=UClcEEDbyCx0721sG9_sN9RQ" allowfullscreen></iframe>
-                <div class="video-title">🔴 البث المباشر – قناة Abwalqmrzmrd</div>
-            </div>
-        </div>
-
-        <!-- ===== الشورتس ===== -->
-        <div id="shorts" class="section">
-            <p>🎬 سيتم إضافة محتوى الشورتس قريبًا...</p>
-        </div>
-
-        <!-- ===== حول القناة ===== -->
-        <div id="about" class="section">
-            <h2>ℹ️ حول القناة</h2>
-            <p>
-                قناة <strong>Abwalqmrzmrd Official</strong> تقدم محتوى حصريًا من إنتاج أبوالقمر زمرد.
-            </p>
-        </div>
+      <!-- الفيديو 2 -->
+      <div class="video-card">
+        <iframe src="https://www.youtube.com/embed/FzfIvHt4AaU" allowfullscreen></iframe>
+        <div class="video-title ar">🎬 الفيديو الثاني</div>
+        <div class="video-title en" style="display:none;">🎬 Second Video</div>
+      </div>
 
     </div>
+
+    <!-- ⭐ مقاطع أعجبتني (الأربع روابط الجديدة) -->
+    <div id="liked" class="section">
+
+      <div class="video-card">
+        <iframe src="https://www.youtube.com/embed/kPTspab3Z8o" allowfullscreen></iframe>
+        <div class="video-title ar">⭐ أعجبني 1</div>
+        <div class="video-title en" style="display:none;">⭐ Liked 1</div>
+      </div>
+
+      <div class="video-card">
+        <iframe src="https://www.youtube.com/embed/FzfIvHt4AaU" allowfullscreen></iframe>
+        <div class="video-title ar">⭐ أعجبني 2</div>
+        <div class="video-title en" style="display:none;">⭐ Liked 2</div>
+      </div>
+
+      <div class="video-card">
+        <iframe src="https://www.youtube.com/embed/2vjPBrBU-TM" allowfullscreen></iframe>
+        <div class="video-title ar">⭐ أعجبني 3</div>
+        <div class="video-title en" style="display:none;">⭐ Liked 3</div>
+      </div>
+
+      <div class="video-card">
+        <iframe src="https://www.youtube.com/embed/e-ORhEE9VVg" allowfullscreen></iframe>
+        <div class="video-title ar">⭐ أعجبني 4</div>
+        <div class="video-title en" style="display:none;">⭐ Liked 4</div>
+      </div>
+
+    </div>
+
+    <!-- 🔴 البث المباشر -->
+    <div id="live" class="section">
+      <div id="live-video"></div>
+    </div>
+
+    <!-- ℹ️ حول -->
+    <div id="about" class="section">
+      <p class="ar">هذه الصفحة تعرض محتوى أبوالقمر زمرد في يوتيوب.</p>
+      <p class="en" style="display:none;">This page displays Abwalqmrzmrd YouTube content.</p>
+    </div>
+
+  </div>
 </div>
 
 <script>
-/* فتح الصفحة الرابعة */
-document.getElementById("openPage4").onclick = function () {
-    document.getElementById("page4").style.display = "block";
-};
+// المتغيرات
+const langBtn   = document.getElementById('langBtn');
+const openPage4 = document.getElementById('openPage4');
+const closePage4= document.getElementById('closePage4');
+const page4     = document.getElementById('page4');
+const liveVideo = document.getElementById('live-video');
+
+/* فتح الصفحة */
+openPage4.onclick = ()=> page4.style.display="block";
 
 /* إغلاق الصفحة */
-document.getElementById("closePage4").onclick = function () {
-    document.getElementById("page4").style.display = "none";
-};
+closePage4.onclick = ()=> page4.style.display="none";
 
 /* التبويبات */
-const tabs = document.querySelectorAll('.tab');
-const sections = document.querySelectorAll('.section');
-
-tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('active'));
-        sections.forEach(s => s.classList.remove('active'));
-
-        tab.classList.add('active');
-        document.getElementById(tab.dataset.page).classList.add('active');
-    });
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.onclick = ()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.page).classList.add('active');
+  };
 });
+
+/* البث المباشر */
+async function checkLive(){
+  try{
+    const r=await fetch("https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UClcEEDbyCx0721sG9_sN9RQ&eventType=live&type=video&key=AIzaSyDPPcEIVAn-xv6dKcPrTzDeOIxSA8M58v8");
+    const d=await r.json();
+    if(d.items?.length){
+      liveVideo.innerHTML=`<iframe src="https://www.youtube.com/embed/${d.items[0].id.videoId}" allowfullscreen></iframe>`;
+    }else{
+      liveVideo.innerHTML=`<div style="padding:25px;text-align:center;border:1px solid #444;border-radius:10px;">
+        <h2 class="ar">🔴 لا يوجد بث مباشر الآن</h2>
+        <h2 class="en" style="display:none;">🔴 No Live Stream Right Now</h2>
+      </div>`;
+    }
+  }catch(e){}
+}
+checkLive();
+
+/* تغيير اللغة */
+langBtn.onclick=()=>{
+  const ar=document.querySelectorAll(".ar");
+  const en=document.querySelectorAll(".en");
+  if(langBtn.innerText==="EN"){
+    langBtn.innerText="AR";
+    ar.forEach(e=>e.style.display="none");
+    en.forEach(e=>e.style.display="inline");
+    document.documentElement.dir="ltr";
+  }else{
+    langBtn.innerText="EN";
+    ar.forEach(e=>e.style.display="inline");
+    en.forEach(e=>e.style.display="none");
+    document.documentElement.dir="rtl";
+  }
+};
 </script>
 
 </body>
