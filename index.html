@@ -7,7 +7,7 @@
   overflow:hidden;
   display:block;
 ">
-    <!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -15,8 +15,11 @@
 <title>أبوالقمر زمرد – يوتيوب</title>
 
 <style>
-body{
-  margin:0;background:#000;color:#fff;font-family:"Tajawal",sans-serif;
+{
+  margin:0;
+  background: radial-gradient(circle at 10% 0%, #00ffd5 0%, #004736 40%, #000000 100%);
+  color:#fff;
+  font-family:"Tajawal",sans-serif;
 }
 
 /* زر اللغة */
@@ -35,10 +38,10 @@ body{
 }
 .page4-btn:hover{transform:scale(1.08);}
 
-/*  الرابعة */
+/* نافذة الصفحة الرابعة */
 .page4-overlay{
   display:none;position:fixed;top:0;left:0;width:100%;height:100%;
-  background:#000;z-index:9999999;overflow-y:auto;
+  background:rgba(0,0,0,0.85);z-index:9999999;overflow-y:auto;
 }
 .page4-box{padding:20px;}
 
@@ -114,12 +117,19 @@ body{
       <div class="tab active" data-page="videos">
         📺 <span class="ar">الفيديوهات</span><span class="en" style="display:none;">Videos</span>
       </div>
+
       <div class="tab" data-page="liked">
         ⭐ <span class="ar">مقاطع أعجبتني</span><span class="en" style="display:none;">Liked Videos</span>
       </div>
+
+      <div class="tab" data-page="science">
+        📘 <span class="ar">دروس علمية</span><span class="en" style="display:none;">Science</span>
+      </div>
+
       <div class="tab" data-page="live">
         🔴 <span class="ar">البث المباشر</span><span class="en" style="display:none;">Live Stream</span>
       </div>
+
       <div class="tab" data-page="about">
         ℹ️ <span class="ar">حول القناة</span><span class="en" style="display:none;">About</span>
       </div>
@@ -128,14 +138,12 @@ body{
     <!-- 📺 الفيديوهات الأساسية -->
     <div id="videos" class="section active">
 
-      <!-- الفيديو 1 -->
       <div class="video-card">
         <iframe src="https://www.youtube.com/embed/kPTspab3Z8o" allowfullscreen></iframe>
         <div class="video-title ar">🎬 الفيديو الأول</div>
         <div class="video-title en" style="display:none;">🎬 First Video</div>
       </div>
 
-      <!-- الفيديو 2 -->
       <div class="video-card">
         <iframe src="https://www.youtube.com/embed/FzfIvHt4AaU" allowfullscreen></iframe>
         <div class="video-title ar">🎬 الفيديو الثاني</div>
@@ -143,85 +151,124 @@ body{
       </div>
 
     </div>
-<!-- ⭐ مقاطع أعجبتني -->
-<div id="liked" class="section">
 
-  <div class="video-card">
-    <iframe src="https://www.youtube.com/embed/vp2o0tLW-t4" allowfullscreen></iframe>
-    <div class="video-title ar">⭐ مقطع أعجبني 1</div>
-    <div class="video-title en" style="display:none;">⭐ Liked Video 1</div>
-  </div>
+    <!-- ⭐ مقاطع أعجبتني -->
+    <div id="liked" class="section">
 
-  <div class="video-card">
-    <iframe src="https://www.youtube.com/embed/fO9e9jnhYK8" allowfullscreen></iframe>
-    <div class="video-title ar">⭐ مقطع أعجبني 2</div>
-    <div class="video-title en" style="display:none;">⭐ Liked Video 2</div>
-  </div>
+      <div class="video-card"><iframe src="https://www.youtube.com/embed/vp2o0tLW-t4"></iframe>
+        <div class="video-title ar">⭐ مقطع أعجبني 1</div>
+        <div class="video-title en" style="display:none;">⭐ Liked Video 1</div>
+      </div>
 
-  <div class="video-card">
-    <iframe src="https://www.youtube.com/embed/n_M-0Ac9_t4" allowfullscreen></iframe>
-    <div class="video-title ar">⭐ مقطع أعجبني 3</div>
-    <div class="video-title en" style="display:none;">⭐ Liked Video 3</div>
-  </div>
+      <div class="video-card"><iframe src="https://www.youtube.com/embed/fO9e9jnhYK8"></iframe>
+        <div class="video-title ar">⭐ مقطع أعجبني 2</div>
+        <div class="video-title en" style="display:none;">⭐ Liked Video 2</div>
+      </div>
 
-  <div class="video-card">
-    <iframe src="https://www.youtube.com/embed/o1JWRGmWr4w" allowfullscreen></iframe>
-    <div class="video-title ar">⭐ مقطع أعجبني 4</div>
-    <div class="video-title en" style="display:none;">⭐ Liked Video 4</div>
-  </div>
+      <div class="video-card"><iframe src="https://www.youtube.com/embed/n_M-0Ac9_t4"></iframe>
+        <div class="video-title ar">⭐ مقطع أعجبني 3</div>
+        <div class="video-title en" style="display:none;">⭐ Liked Video 3</div>
+      </div>
 
-  <div class="video-card">
-    <iframe src="https://www.youtube.com/embed/qMT5FZEiCCU" allowfullscreen></iframe>
-    <div class="video-title ar">⭐ مقطع أعجبني 5</div>
-    <div class="video-title en" style="display:none;">⭐ Liked Video 5</div>
-  </div>
+      <div class="video-card"><iframe src="https://www.youtube.com/embed/o1JWRGmWr4w"></iframe>
+        <div class="video-title ar">⭐ مقطع أعجبني 4</div>
+        <div class="video-title en" style="display:none;">⭐ Liked Video 4</div>
+      </div>
 
-  <div class="video-card">
-    <iframe src="https://www.youtube.com/embed/8F8SpXR9pqA" allowfullscreen></iframe>
-    <div class="video-title ar">⭐ مقطع أعجبني 6</div>
-    <div class="video-title en" style="display:none;">⭐ Liked Video 6</div>
-  </div>
+      <div class="video-card"><iframe src="https://www.youtube.com/embed/qMT5FZEiCCU"></iframe>
+        <div class="video-title ar">⭐ مقطع أعجبني 5</div>
+        <div class="video-title en" style="display:none;">⭐ Liked Video 5</div>
+      </div>
 
-  <div class="video-card">
-    <iframe src="https://www.youtube.com/embed/M4QdwpIlyxs" allowfullscreen></iframe>
-    <div class="video-title ar">⭐ مقطع أعجبني 7</div>
-    <div class="video-title en" style="display:none;">⭐ Liked Video 7</div>
-  </div>
+      <div class="video-card"><iframe src="https://www.youtube.com/embed/8F8SpXR9pqA"></iframe>
+        <div class="video-title ar">⭐ مقطع أعجبني 6</div>
+        <div class="video-title en" style="display:none;">⭐ Liked Video 6</div>
+      </div>
 
-</div>
+      <div class="video-card"><iframe src="https://www.youtube.com/embed/M4QdwpIlyxs"></iframe>
+        <div class="video-title ar">⭐ مقطع أعجبني 7</div>
+        <div class="video-title en" style="display:none;">⭐ Liked Video 7</div>
+      </div>
 
+      <div class="video-card"><iframe src="https://www.youtube.com/embed/B1Xnu3r-UGw"></iframe>
+        <div class="video-title ar">⭐ مقطع إضافي 8</div>
+        <div class="video-title en" style="display:none;">⭐ Liked Video 8</div>
+      </div>
 
-    <!-- 🔴 البث المباشر -->
-    <div id="live" class="section">
-      <div id="live-video"></div>
+      <div class="video-card"><iframe src="https://www.youtube.com/embed/_oQ0mESSu9g"></iframe>
+        <div class="video-title ar">⭐ مقطع إضافي 9</div>
+        <div class="video-title en" style="display:none;">⭐ Liked Video 9</div>
+      </div>
+
+      <div class="video-card"><iframe src="https://www.youtube.com/embed/AJuT6qnO1pI"></iframe>
+        <div class="video-title ar">⭐ مقطع إضافي 10</div>
+        <div class="video-title en" style="display:none;">⭐ Liked Video 10</div>
+      </div>
+
     </div>
 
-    <!-- ℹ️ حول -->
+    <!-- 📘 دروس علمية -->
+    <div id="science" class="section">
+
+      <h2 class="ar" style="text-align:center;margin-bottom:20px;">📘 دروس علمية</h2>
+      <h2 class="en" style="display:none;text-align:center;margin-bottom:20px;">📘 Science Lessons</h2>
+
+      <div class="video-card">
+        <iframe src="https://www.youtube.com/embed/OdzuClwyjfo"></iframe>
+        <div class="video-title ar">📘 درس علمي 1</div>
+        <div class="video-title en" style="display:none;">📘 Science Lesson 1</div>
+      </div>
+
+      <div class="video-card">
+        <iframe src="https://www.youtube.com/embed/9Az3O2EUtPg"></iframe>
+        <div class="video-title ar">📘 درس علمي 2</div>
+        <div class="video-title en" style="display:none;">📘 Science Lesson 2</div>
+      </div>
+
+      <div class="video-card">
+        <iframe src="https://www.youtube.com/embed/N1U0liCMqfc"></iframe>
+        <div class="video-title ar">📘 درس علمي 3</div>
+        <div class="video-title en" style="display:none;">📘 Science Lesson 3</div>
+      </div>
+
+      <div class="video-card">
+        <iframe src="https://www.youtube.com/embed/QmjwqwQn958"></iframe>
+        <div class="video-title ar">📘 درس علمي 4</div>
+        <div class="video-title en" style="display:none;">📘 Science Lesson 4</div>
+      </div>
+
+      <div class="video-card">
+        <iframe src="https://www.youtube.com/embed/1-McO6eak14"></iframe>
+        <div class="video-title ar">📘 درس علمي 5</div>
+        <div class="video-title en" style="display:none;">📘 Science Lesson 5</div>
+      </div>
+
+    </div>
+
+    <!-- البث المباشر -->
+    <div id="live" class="section">
+      <p class="ar">سيتم إضافة البث لاحقًا.</p>
+      <p class="en" style="display:none;">Live stream will be added soon.</p>
+    </div>
+
+    <!-- حول -->
     <div id="about" class="section">
-      <p class="ar">هذه الصفحة تعرض محتوى أبوالقمر زمرد في يوتيوب.</p>
-      <p class="en" style="display:none;">This page displays Abwalqmrzmrd YouTube content.</p>
+      <p class="ar">هذه الصفحة مخصصة لمحتوى أبوالقمر زمرد على يوتيوب.</p>
+      <p class="en" style="display:none;">This page is dedicated to Abwalqmrzmrd’s YouTube content.</p>
     </div>
 
   </div>
 </div>
 
 <script>
-// المتغيرات
 const langBtn   = document.getElementById('langBtn');
 const openPage4 = document.getElementById('openPage4');
 const closePage4= document.getElementById('closePage4');
 const page4     = document.getElementById('page4');
-const liveVideo = document.getElementById('live-video');
-
-/* فتح الصفحة */
-openPage4.onclick = ()=> page4.style.display="block";
-
-/* إغلاق الصفحة */
-closePage4.onclick = ()=> page4.style.display="none";
 
 /* التبويبات */
 document.querySelectorAll('.tab').forEach(tab=>{
-  tab.onclick = ()=>{
+  tab.onclick=()=>{
     document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
     document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
     tab.classList.add('active');
@@ -229,24 +276,13 @@ document.querySelectorAll('.tab').forEach(tab=>{
   };
 });
 
-/* البث المباشر */
-async function checkLive(){
-  try{
-    const r=await fetch("https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=UClcEEDbyCx0721sG9_sN9RQ&eventType=live&type=video&key=AIzaSyDPPcEIVAn-xv6dKcPrTzDeOIxSA8M58v8");
-    const d=await r.json();
-    if(d.items?.length){
-      liveVideo.innerHTML=`<iframe src="https://www.youtube.com/embed/${d.items[0].id.videoId}" allowfullscreen></iframe>`;
-    }else{
-      liveVideo.innerHTML=`<div style="padding:25px;text-align:center;border:1px solid #444;border-radius:10px;">
-        <h2 class="ar">🔴 لا يوجد بث مباشر الآن</h2>
-        <h2 class="en" style="display:none;">🔴 No Live Stream Right Now</h2>
-      </div>`;
-    }
-  }catch(e){}
-}
-checkLive();
+/* زر فتح */
+openPage4.onclick = ()=> page4.style.display="block";
 
-/* تغيير اللغة */
+/* زر إغلاق */
+closePage4.onclick = ()=> page4.style.display="none";
+
+/* اللغة */
 langBtn.onclick=()=>{
   const ar=document.querySelectorAll(".ar");
   const en=document.querySelectorAll(".en");
@@ -1907,6 +1943,102 @@ items.forEach(item => {
 <!-- النافذة -->
 <div id="shipPopup_new">
   <button id="closeShip_new">✖</button>
+  <div style="margin:20px; padding:15px; background:rgba(0,0,0,0.55); border:1px solid #00ffd5; border-radius:12px; font-family:'Tajawal',sans-serif; color:white; line-height:1.9;">
+
+<h2 style="text-align:center; color:#9ff;">🌙 أبو القمر زمرد… حين رفض الاستسلام</h2>
+
+<p>
+لم يكن أبو القمر زمرد يومًا من الذين يرفعون راية الاستسلام،  
+ولا من الذين يتركون الريح تدفعهم حيث تشاء.  
+كان يرى الحياة بخطوطها الحادة وظلالها الثقيلة،  
+ويعرف أن كل ضربةٍ هي درس،  
+وكل سقوطٍ هو بداية صعود جديد.
+</p>
+
+<p>
+وحين حاولت الدنيا أن تكسِر صلابته،  
+وقف مبتسمًا، وقال لنفسه قبل الناس:  
+<strong>"أنا لم أُخلق لأُهزم، بل لأتعلّم وأبقى."</strong>
+</p>
+
+<p>
+كان يؤمن أن العمر ليس رقمًا يُقصِر الطريق،  
+ولا جدارًا يمنع الحلم…  
+بل هو تجربةٌ تجعل القلب أنقى والعقل أعمق.  
+ولذلك قالها بثبات لا يشبه أحدًا:
+</p>
+
+<p style="text-align:center; font-size:20px; color:#00ffd0;">
+<strong>"حتى بعد الثمانين… سأمشي، سأحلم، وسأبقى."</strong>
+</p>
+
+<p>
+كان يعلم أن هناك <strong>حياة أبدية</strong>،  
+عالمًا آخر ينتظر كل روحٍ صادقة،  
+لكنّه أيضًا كان يعرف أن الله وضعه في الدنيا  
+ليؤدي دوره، ويترك أثرًا لا ينطفئ.  
+فلذلك كان يعيشها كأنها هدية،  
+ويحمي قلبه كأنه كنز،  
+ويمضي فيها بثبات القمر وسط السماء.
+</p>
+
+<p>
+أبو القمر زمرد، الرجل الذي لم يَغلبه الزمن،  
+ولم تُنهِ عزيمته الأيام…  
+بل كلما تقدم عمره،  
+ازدادت روحه قوة،  
+وكأنه خُلق ليبقى طويلًا…  
+ويعلّم الآخرين كيف يكون البقاء شرفًا.
+</p>
+
+</div>
+
+  <!-- ========= قصة أبو القمر زمرد مع المجتمع ========= -->
+<div style="margin:20px; padding:15px; background:rgba(0,0,0,0.65); border:1px solid #00ffd5; border-radius:12px; font-family:'Tajawal',sans-serif; color:white; line-height:1.8;">
+
+<h2 style="text-align:center;">🌙 أبو القمر زمرد… بين وجوه المجتمع</h2>
+
+<p>
+في زمنٍ تتصارع فيه المواقف قبل الأشخاص،  
+وتختلط فيه الأقنعة بالوجوه،  
+وجد أبو القمر زمرد نفسه يسير وسط مجتمعٍ متناقض؛  
+مجتمع يجمع المتضادّات كما تجمع الصحراء بين  
+سكون الليل وحرارة الظهيرة.
+</p>
+
+<p>
+رأى بعينيه <strong>الخير والشر</strong> يمشيان جنبًا إلى جنب؛  
+رجل يعطي بلا حساب، وآخر يمنع حتى كلمة طيبة.  
+ورأى <strong>الكرم والبخل</strong> في وجوه لا يفرّق بينها إلا موقف واحد  
+يظهر أصل صاحبها.
+</p>
+
+<p>
+وفي الطرقات لمح <strong>الذكاء والغباء</strong>:  
+ذكاءٌ يرفع صاحبه ولو كان ضعيفًا،  
+وغباءٌ يُسقط من ظن نفسه فوق الجميع.  
+ورأى أيضًا <strong>القوة والضعف</strong>،  
+لكنّه أدرك أن أقواهم هو من يحفظ قلبه نقيًا رغم كل شيء.
+</p>
+
+<p>
+أما <strong>أبو القمر زمرد</strong>، فقد ظلّ يمشي بينهم  
+لا يتغيّر مهما تغيّروا،  
+يعطي من قلبه، ويحفظ سرّه،  
+ويعرف أن البشر مثل الرمال…  
+منها ما يدفنك، ومنها ما يبني طريقك.
+</p>
+
+<p>
+وتحت كل هذا الضجيج، بقي ثابتًا على قيمه،  
+يبحث عن معنى، عن صديق حقيقي،  
+وعن لحظة صادقة تلامس مثل نور القمر  
+حجرًا من زمرد… فيضيئه.
+</p>
+
+<hr style="border-color:#00ffd5;">
+</div>
+
 
 <h2>🦎 ضبّ الصحراء… ودمعة أبو القمر زمرد</h2>
 
@@ -1933,8 +2065,6 @@ items.forEach(item => {
 <hr>
 ..
 <hr>
-
---- ثم تكمل هنا قصة الصقنقور الرملي ---
 
   <h2>⚓ مغامرة أبو القمر زمرد مع الصقنقور الرملي ⚓</h2>
   <p id="storyText_new"></p>
