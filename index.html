@@ -1,12 +1,264 @@
 <!-- =============== شاشة الدخول ================= -->
 <div id="entryScreen" style="
   position:fixed;
-  top:0; left:0;
+  top: 9px; left: 9px;
   width:100%; height:100%;
   z-index:999999999;
   overflow:hidden;
   display:block;
 ">
+    <style>
+#radioIcon{
+  position:fixed;
+  bottom:10px;
+  right:30px; 
+  width:70px;
+  height:70px;
+  background:#0ff;
+  border-radius:15px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  font-size:38px;
+  z-index:99999;
+}
+
+#radioPopup{
+  position:fixed;
+  top:20px;
+  left:40%;
+  transform:translateX(-50%);
+  width:360px;
+  height:480px;
+  background:rgba(0,0,0,0.88);
+  border:2px solid #0ff;
+  border-radius:14px;
+  padding:12px;
+  overflow:auto;
+  z-index:999999;
+  display:none;
+  color:#fff;
+}
+
+.radioItem{
+  background:#111;
+  border:1px solid #0ff;
+  margin:10px 0;
+  padding:10px;
+  border-radius:10px;
+}
+.radioItem h3{
+  margin:0 0 8px;
+  color:#0ff;
+  font-size:15px;
+}
+
+#statusMsg{
+  font-size:13px;
+  color:#e6fff8;
+  background:rgba(255,255,255,0.06);
+  padding:8px;
+  border-radius:8px;
+  margin-bottom:8px;
+}
+</style>
+
+<div id="radioIcon">📻</div>
+
+<div id="radioPopup" aria-hidden="true">
+  <div id="statusMsg">جاهز — اختر محطة للتشغيل</div>
+
+  <!-- عبدالباسط -->
+  <div class="radioItem">
+    <h3>🎧 عبدالباسط عبدالصمد</h3>
+    <button onclick="startStation('abdulbasit')">تشغيل</button>
+  </div>
+
+  <!-- مصر -->
+  <div class="radioItem">
+    <h3>📿 إذاعة القرآن الكريم — مصر</h3>
+    <button onclick="startStation('egypt_quran')">تشغيل</button>
+  </div>
+
+  <!-- الكويت -->
+  <div class="radioItem">
+    <h3>📿 إذاعة القرآن الكريم — الكويت</h3>
+    <button onclick="startStation('kuwait_quran')">تشغيل</button>
+  </div>
+
+  <!-- البحرين -->
+  <div class="radioItem">
+    <h3>📿 إذاعة القرآن الكريم — البحرين</h3>
+    <button onclick="startStation('bahrain_quran')">تشغيل</button>
+  </div>
+
+  <!-- مشاري العفاسي -->
+  <div class="radioItem">
+    <h3>🎧 مشاري العفاسي</h3>
+    <button onclick="startStation('afasy')">تشغيل</button>
+  </div>
+
+  <!-- ماهر المعيقلي -->
+  <div class="radioItem">
+    <h3>🎧 ماهر المعيقلي</h3>
+    <button onclick="startStation('maher')">تشغيل</button>
+  </div>
+
+  <!-- سعد الغامدي -->
+  <div class="radioItem">
+    <h3>🎧 سعد الغامدي</h3>
+    <button onclick="startStation('ghamdi')">تشغيل</button>
+  </div>
+
+  <!-- BBC Arabic -->
+  <div class="radioItem">
+    <h3>🌍 BBC Arabic</h3>
+    <button onclick="startStation('bbc_ar')">تشغيل</button>
+  </div>
+
+  <!-- VOA -->
+  <div class="radioItem">
+    <h3>🌍 Voice of America – VOA</h3>
+    <button onclick="startStation('voa')">تشغيل</button>
+  </div>
+
+  <!-- France 24 -->
+  <div class="radioItem">
+    <h3>🌍 France 24 Radio</h3>
+    <button onclick="startStation('france24')">تشغيل</button>
+  </div>
+
+  <!-- DW -->
+  <div class="radioItem">
+    <h3>🌍 Deutsche Welle – DW</h3>
+    <button onclick="startStation('dw')">تشغيل</button>
+  </div>
+
+  <audio id="radioPlayer" controls style="width:100%;margin-top:12px"></audio>
+
+  <div style="display:flex;gap:8px;margin-top:8px">
+    <button onclick="stopRadio()" style="flex:1;padding:8px;border-radius:8px;background:#ff4d4d;border:none;color:#fff;cursor:pointer">إيقاف</button>
+    <button onclick="pauseRadio()" style="flex:1;padding:8px;border-radius:8px;background:#444;border:none;color:#fff;cursor:pointer">إيقاف مؤقت</button>
+  </div>
+</div>
+
+<script>
+const stations = {
+  'abdulbasit': { name:'عبدالباسط عبدالصمد', sources:['https://server8.mp3quran.net/basit_abdulbasit/001.mp3','https://Qurango.net/radio/abdulbasit_mjwd','https://live.mp3quran.net/abdulbasit'] },
+  'egypt_quran': { name:'إذاعة القرآن الكريم - مصر', sources:['https://qurango.net/radio/mix','https://stream.radiojar.com/8s5u5tpdtwzuv'] },
+  'kuwait_quran': { name:'إذاعة القرآن - الكويت', sources:['http://edge.mixlr.com/channel/oyxyz'] },
+  'bahrain_quran': { name:'إذاعة القرآن - البحرين', sources:['http://streaming.radio.co/s98f65e5a3/listen'] },
+  'afasy': { name:'مشاري العفاسي', sources:['https://qurango.net/radio/afasy'] },
+  'maher': { name:'ماهر المعيقلي', sources:['https://qurango.net/radio/maher'] },
+  'ghamdi': { name:'سعد الغامدي', sources:['https://qurango.net/radio/ghamdi'] },
+  'bbc_ar': { name:'BBC Arabic', sources:['https://stream.live.vc.bbcmedia.co.uk/bbc_arabic_radio','http://bbcwssc.ic.llnwd.net/stream/bbcwssc_mp1_ws-eieuk'] },
+  'voa': { name:'Voice of America – VOA', sources:['https://voa-11.akacast.akamaistream.net/7/724/322032/v1/ibb.akacast.akamaistream.net/voa-11'] },
+  'france24': { name:'France 24 Radio', sources:['https://radiofrance24-lh.akamaihd.net/i/F24_AR/'] },
+  'dw': { name:'Deutsche Welle – DW', sources:['https://dwstream3-lh.akamaihd.net/i/dwelle_ar@124108/master.m3u8'] }
+};
+
+let currentStationId=null,currentSrcIndex=0,hlsInstance=null;
+const player=document.getElementById('radioPlayer');
+const statusMsg=document.getElementById('statusMsg');
+
+function startStation(id){currentStationId=id;currentSrcIndex=0;tryPlayCurrentSource();}
+function tryPlayCurrentSource(){
+  const s=stations[currentStationId];const url=s.sources[currentSrcIndex];
+  if(!url){setStatus(`فشل تشغيل ${s.name} — انتهت الروابط`,true);return;}
+  setStatus(`جاري التشغيل: ${s.name} — محاولة ${currentSrcIndex+1}`);
+  if(hlsInstance){try{hlsInstance.destroy();}catch(e){}}
+  if(url.endsWith('.m3u8')){
+    if(Hls.isSupported()){hlsInstance=new Hls();hlsInstance.loadSource(url);hlsInstance.attachMedia(player);
+      hlsInstance.on(Hls.Events.ERROR,()=>{currentSrcIndex++;tryPlayCurrentSource();});
+      player.play().catch(()=>{});}
+    else{player.src=url;player.play().catch(()=>{currentSrcIndex++;tryPlayCurrentSource();});}return;}
+  player.src=url;player.play().then(()=>{setStatus(`قيد التشغيل: ${s.name}`);}).catch(()=>{currentSrcIndex++;tryPlayCurrentSource();});
+}
+function stopRadio(){if(hlsInstance){try{hlsInstance.destroy();}catch(e){}}player.pause();player.src='';setStatus('تم الإيقاف');}
+function pauseRadio(){player.pause();setStatus('إيقاف مؤقت');}
+function setStatus(msg,warn=false){statusMsg.textContent=msg;statusMsg.style.color=warn?'#ffb3b3':'#e6fff8';}
+document.getElementById('radioIcon').onclick=()=>{const box=document.getElementById('radioPopup');box.style.display=box.style.display==='block'?'none':'block';};
+</script>
+<!-- 🎂 كيك متوهج بألوان متغيرة -->
+<div id="cakeWrapper">
+  <div id="cakeButton" onclick="window.open('https://paypal.me/abwalqmrzmrd/1', '_blank')">
+    <div class="cakeContent">
+      🎂<br>
+      <span class="label">يسعدني إعجابك 💖</span>
+      <span class="en">It makes me happy you liked it 💖</span>
+      <span class="usd">(coffee 1$)</span>
+    </div>
+  </div>
+</div>
+
+<style>
+/* 📦 الغلاف العام */
+#cakeWrapper {
+  position: fixed;
+  bottom: 89px;
+  left:70%;
+  transform: translateX(50%);
+  z-index: 1000;
+}
+
+/* 🎂 الكيكة */
+#cakeButton {
+  position: relative;
+  width: 120px;
+  height: 70px;
+  background: radial-gradient(circle at 30% 30%, #ff0, #00f, #f00, #0f0);
+  border-radius: 50% 50% 10% 10%;
+  border: 2px solid #fff;
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.6),
+              0 0 30px 10px rgba(255, 255, 0, 0.3);
+  transition: all 0.2s ease;
+  animation: glowShift 0.8s infinite linear;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 🎉 محتوى الكيكة مرفوع قليلًا */
+.cakeContent {
+  margin-top: -6px; /* 🔼 رفع المحتوى */
+}
+
+/* ✨ وميض متغيّر للألوان */
+@keyframes glowShift {
+  0%   { background: radial-gradient(circle at 20% 20%, #ff0, #00f, #f00, #0f0); box-shadow: 0 0 15px 3px #ff0; }
+  25%  { background: radial-gradient(circle at 70% 20%, #0f0, #f00, #00f, #ff0); box-shadow: 0 0 20px 5px #0f0; }
+  50%  { background: radial-gradient(circle at 30% 70%, #00f, #ff0, #0f0, #f00); box-shadow: 0 0 25px 7px #00f; }
+  75%  { background: radial-gradient(circle at 70% 70%, #f00, #0f0, #ff0, #00f); box-shadow: 0 0 25px 7px #f00; }
+  100% { background: radial-gradient(circle at 50% 50%, #ff0, #00f, #f00, #0f0); box-shadow: 0 0 20px 5px #ff0; }
+}
+
+/* 💛 النصوص */
+#cakeButton .label {
+  display: block;
+  font-size: 11px;
+}
+
+#cakeButton .en {
+  display: block;
+  color: #ffff99;
+  font-size: 9px;
+  margin-top: 3px;
+}
+
+#cakeButton .usd {
+  display: block;
+  color: #fff;
+  font-size: 10px;
+  margin-top: 3px;
+  text-shadow: 0 0 10px #ffff00, 0 0 20px #ff0000;
+}
+</style>
    <!-- 🔹 زر الموقع التجاري لأبوالقمر زمرد (عربي + إنجليزي) -->
 <button class="sakaker-commercial-btn" onclick="window.open('https://www.sakaker.co/','_blank')">
   <div class="ar">الموقع التجاري لأبوالقمر زمرد</div>
@@ -1139,179 +1391,7 @@ h1{
     <source src="https://assets.mixkit.co/videos/51445/51445-720.mp4" type="video/mp4">
   </video>
 
-<style>
-#radioIcon{
-  position:fixed;
-  bottom:10px;
-  right:130px; 
-  width:70px;
-  height:70px;
-  background:#0ff;
-  border-radius:15px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  font-size:38px;
-  z-index:99999;
-}
 
-#radioPopup{
-  position:fixed;
-  top:20px;
-  left:40%;
-  transform:translateX(-50%);
-  width:360px;
-  height:480px;
-  background:rgba(0,0,0,0.88);
-  border:2px solid #0ff;
-  border-radius:14px;
-  padding:12px;
-  overflow:auto;
-  z-index:999999;
-  display:none;
-  color:#fff;
-}
-
-.radioItem{
-  background:#111;
-  border:1px solid #0ff;
-  margin:10px 0;
-  padding:10px;
-  border-radius:10px;
-}
-.radioItem h3{
-  margin:0 0 8px;
-  color:#0ff;
-  font-size:15px;
-}
-
-#statusMsg{
-  font-size:13px;
-  color:#e6fff8;
-  background:rgba(255,255,255,0.06);
-  padding:8px;
-  border-radius:8px;
-  margin-bottom:8px;
-}
-</style>
-
-<div id="radioIcon">📻</div>
-
-<div id="radioPopup" aria-hidden="true">
-  <div id="statusMsg">جاهز — اختر محطة للتشغيل</div>
-
-  <!-- عبدالباسط -->
-  <div class="radioItem">
-    <h3>🎧 عبدالباسط عبدالصمد</h3>
-    <button onclick="startStation('abdulbasit')">تشغيل</button>
-  </div>
-
-  <!-- مصر -->
-  <div class="radioItem">
-    <h3>📿 إذاعة القرآن الكريم — مصر</h3>
-    <button onclick="startStation('egypt_quran')">تشغيل</button>
-  </div>
-
-  <!-- الكويت -->
-  <div class="radioItem">
-    <h3>📿 إذاعة القرآن الكريم — الكويت</h3>
-    <button onclick="startStation('kuwait_quran')">تشغيل</button>
-  </div>
-
-  <!-- البحرين -->
-  <div class="radioItem">
-    <h3>📿 إذاعة القرآن الكريم — البحرين</h3>
-    <button onclick="startStation('bahrain_quran')">تشغيل</button>
-  </div>
-
-  <!-- مشاري العفاسي -->
-  <div class="radioItem">
-    <h3>🎧 مشاري العفاسي</h3>
-    <button onclick="startStation('afasy')">تشغيل</button>
-  </div>
-
-  <!-- ماهر المعيقلي -->
-  <div class="radioItem">
-    <h3>🎧 ماهر المعيقلي</h3>
-    <button onclick="startStation('maher')">تشغيل</button>
-  </div>
-
-  <!-- سعد الغامدي -->
-  <div class="radioItem">
-    <h3>🎧 سعد الغامدي</h3>
-    <button onclick="startStation('ghamdi')">تشغيل</button>
-  </div>
-
-  <!-- BBC Arabic -->
-  <div class="radioItem">
-    <h3>🌍 BBC Arabic</h3>
-    <button onclick="startStation('bbc_ar')">تشغيل</button>
-  </div>
-
-  <!-- VOA -->
-  <div class="radioItem">
-    <h3>🌍 Voice of America – VOA</h3>
-    <button onclick="startStation('voa')">تشغيل</button>
-  </div>
-
-  <!-- France 24 -->
-  <div class="radioItem">
-    <h3>🌍 France 24 Radio</h3>
-    <button onclick="startStation('france24')">تشغيل</button>
-  </div>
-
-  <!-- DW -->
-  <div class="radioItem">
-    <h3>🌍 Deutsche Welle – DW</h3>
-    <button onclick="startStation('dw')">تشغيل</button>
-  </div>
-
-  <audio id="radioPlayer" controls style="width:100%;margin-top:12px"></audio>
-
-  <div style="display:flex;gap:8px;margin-top:8px">
-    <button onclick="stopRadio()" style="flex:1;padding:8px;border-radius:8px;background:#ff4d4d;border:none;color:#fff;cursor:pointer">إيقاف</button>
-    <button onclick="pauseRadio()" style="flex:1;padding:8px;border-radius:8px;background:#444;border:none;color:#fff;cursor:pointer">إيقاف مؤقت</button>
-  </div>
-</div>
-
-<script>
-const stations = {
-  'abdulbasit': { name:'عبدالباسط عبدالصمد', sources:['https://server8.mp3quran.net/basit_abdulbasit/001.mp3','https://Qurango.net/radio/abdulbasit_mjwd','https://live.mp3quran.net/abdulbasit'] },
-  'egypt_quran': { name:'إذاعة القرآن الكريم - مصر', sources:['https://qurango.net/radio/mix','https://stream.radiojar.com/8s5u5tpdtwzuv'] },
-  'kuwait_quran': { name:'إذاعة القرآن - الكويت', sources:['http://edge.mixlr.com/channel/oyxyz'] },
-  'bahrain_quran': { name:'إذاعة القرآن - البحرين', sources:['http://streaming.radio.co/s98f65e5a3/listen'] },
-  'afasy': { name:'مشاري العفاسي', sources:['https://qurango.net/radio/afasy'] },
-  'maher': { name:'ماهر المعيقلي', sources:['https://qurango.net/radio/maher'] },
-  'ghamdi': { name:'سعد الغامدي', sources:['https://qurango.net/radio/ghamdi'] },
-  'bbc_ar': { name:'BBC Arabic', sources:['https://stream.live.vc.bbcmedia.co.uk/bbc_arabic_radio','http://bbcwssc.ic.llnwd.net/stream/bbcwssc_mp1_ws-eieuk'] },
-  'voa': { name:'Voice of America – VOA', sources:['https://voa-11.akacast.akamaistream.net/7/724/322032/v1/ibb.akacast.akamaistream.net/voa-11'] },
-  'france24': { name:'France 24 Radio', sources:['https://radiofrance24-lh.akamaihd.net/i/F24_AR/'] },
-  'dw': { name:'Deutsche Welle – DW', sources:['https://dwstream3-lh.akamaihd.net/i/dwelle_ar@124108/master.m3u8'] }
-};
-
-let currentStationId=null,currentSrcIndex=0,hlsInstance=null;
-const player=document.getElementById('radioPlayer');
-const statusMsg=document.getElementById('statusMsg');
-
-function startStation(id){currentStationId=id;currentSrcIndex=0;tryPlayCurrentSource();}
-function tryPlayCurrentSource(){
-  const s=stations[currentStationId];const url=s.sources[currentSrcIndex];
-  if(!url){setStatus(`فشل تشغيل ${s.name} — انتهت الروابط`,true);return;}
-  setStatus(`جاري التشغيل: ${s.name} — محاولة ${currentSrcIndex+1}`);
-  if(hlsInstance){try{hlsInstance.destroy();}catch(e){}}
-  if(url.endsWith('.m3u8')){
-    if(Hls.isSupported()){hlsInstance=new Hls();hlsInstance.loadSource(url);hlsInstance.attachMedia(player);
-      hlsInstance.on(Hls.Events.ERROR,()=>{currentSrcIndex++;tryPlayCurrentSource();});
-      player.play().catch(()=>{});}
-    else{player.src=url;player.play().catch(()=>{currentSrcIndex++;tryPlayCurrentSource();});}return;}
-  player.src=url;player.play().then(()=>{setStatus(`قيد التشغيل: ${s.name}`);}).catch(()=>{currentSrcIndex++;tryPlayCurrentSource();});
-}
-function stopRadio(){if(hlsInstance){try{hlsInstance.destroy();}catch(e){}}player.pause();player.src='';setStatus('تم الإيقاف');}
-function pauseRadio(){player.pause();setStatus('إيقاف مؤقت');}
-function setStatus(msg,warn=false){statusMsg.textContent=msg;statusMsg.style.color=warn?'#ffb3b3':'#e6fff8';}
-document.getElementById('radioIcon').onclick=()=>{const box=document.getElementById('radioPopup');box.style.display=box.style.display==='block'?'none':'block';};
-</script>
 <!-- ====== الدوائر ====== -->
 <div class="video-top-container-fixed">
   <div class="video-circle" data-video="n7eQejkXbnM">
@@ -1790,313 +1870,13 @@ pongBtn.addEventListener('mouseleave', () => {
 })();
 </script>
 
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الديانات السماوية - موسوعة الأنبياء والرسل</title>
-<style>
- { font-family: Tahoma, sans-serif; margin:0; padding:0; background:#121212; color:#fff; }
-#prophetsBtn {
-    position: fixed;
-    top: 80%;
-    left: 10px;
-    transform: translateY(-50%);
-    z-index: 9999;
-    background: rgba(255,165,0,0.2);
-    color: #fff;
-    padding: 4px 12px;
-    border: 2px solid orange;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 16px;
-    text-align:center;
-    transition: transform 0.3s, background 0.3s;
-}
-#prophetsBtn:hover { background: rgba(255,165,0,0.4); transform: scale(1.05); }
-
-#prophetsBox {
-    display:none;
-    position: fixed;
-    top:50%;
-    left:50%;
-    transform: translate(-50%,-50%);
-    background: rgba(255,255,255,0.95);
-    color:#000;
-    width:90%;
-    max-width:1000px;
-    border-radius:15px;
-    box-shadow:0 0 25px rgba(0,0,0,0.7);
-    padding:20px;
-    text-align:right;
-    z-index:9999;
-    max-height:85vh;
-    overflow-y:auto;
-}
-#prophetsBox h2 { color:#8B0000; text-align:center; margin-bottom:15px; }
-
-#prophetsBox ul { list-style:none; padding:0; margin:0 0 15px 0; display:flex; flex-wrap:wrap; }
-#prophetsBox ul li { background:#000; color:#fff; margin:4px; padding:6px 12px; border-radius:8px; cursor:pointer; transition:0.3s; flex:1; text-align:center; min-width:100px; font-size:14px; }
-#prophetsBox ul li:hover { background:#8B0000; }
-
-.prophet-detail { display:none; margin-bottom:12px; padding:8px; border-bottom:1px solid rgba(0,0,0,0.3); font-size:14px; line-height:1.5; }
-.prophet-detail.active { display:block; }
-.prophet-detail i { color:#555; font-size:13px; display:block; margin-top:6px; }
-
-#prophetsBox button.closeBtn { background:#8B0000; color:#fff; border:none; border-radius:10px; padding:6px 12px; margin-top:12px; cursor:pointer; font-weight:bold; }
-
-@media(max-width:500px){ #prophetsBtn { padding:10px 14px; font-size:14px; } #prophetsBox { padding:15px; } }
-</style>
-</head>
-<body>
-
-<button id="prophetsBtn">📜 الديانات السماوية<br><span style="font-size:13px;">Heavenly Religions</span></button>
-
-<div id="prophetsBox">
-<h2>📜 موسوعة الأنبياء والرسل — Prophets Encyclopedia</h2>
-
-<ul>
-<li data-id="prophet1">آدم<br><small>Adam</small></li>
-<li data-id="prophet2">شيث<br><small>Seth</small></li>
-<li data-id="prophet3">إدريس<br><small>Enoch</small></li>
-<li data-id="prophet4">نوح<br><small>Noah</small></li>
-<li data-id="prophet5">هود<br><small>Hud</small></li>
-<li data-id="prophet6">صالح<br><small>Salih</small></li>
-<li data-id="prophet7">لوط<br><small>Lot</small></li>
-<li data-id="prophet8">إبراهيم<br><small>Abraham</small></li>
-<li data-id="prophet9">إسماعيل<br><small>Ishmael</small></li>
-<li data-id="prophet10">إسحاق<br><small>Isaac</small></li>
-<li data-id="prophet11">يعقوب<br><small>Jacob</small></li>
-<li data-id="prophet12">يوسف<br><small>Joseph</small></li>
-<li data-id="prophet13">أيوب<br><small>Job</small></li>
-<li data-id="prophet14">ذو الكفل<br><small>Dhul-Kifl</small></li>
-<li data-id="prophet15">يونس<br><small>Jonah</small></li>
-<li data-id="prophet16">موسى<br><small>Moses</small></li>
-<li data-id="prophet17">هارون<br><small>Aaron</small></li>
-<li data-id="prophet18">داوود<br><small>David</small></li>
-<li data-id="prophet19">سليمان<br><small>Solomon</small></li>
-<li data-id="prophet20">زكريا<br><small>Zechariah</small></li>
-<li data-id="prophet21">يحيى<br><small>John</small></li>
-<li data-id="prophet22">عيسى<br><small>Jesus</small></li>
-<li data-id="prophet23">محمد ﷺ<br><small>Muhammad</small></li>
-</ul>
-
-<!-- تفاصيل جميع الأنبياء -->
-<div class="prophet-detail" id="prophet1">
-<h3>آدم (Adam)</h3>
-<p>💡 <b>القصة:</b> أول البشر، خُلق من تراب وعلَّم أسماء كل شيء. عاش في الجنة ثم نزل إلى الأرض بعد المعصية. علم البشر أساسيات الحياة وطرق العبادة.<br>
-<b>التشريع:</b> العبادة والطاعة لله، تعليم أولاده التوحيد، تأسيس الأسرة الأولى.<br>
-<b>القوم:</b> أول البشر.<br>
-<i>First human and Prophet, created from clay, taught the names of all things. Lived in Paradise then descended to Earth. Commanded to worship Allah alone, taught family and social guidance.</i></p>
-</div>
-
-<div class="prophet-detail" id="prophet2">
-<h3>شيث (Seth)</h3>
-<p>💡 <b>القصة:</b> ابن آدم، واصل الهداية بعد وفاة والده، دعا الناس لعبادة الله وتجنب الشرك، أسس أجيالًا صالحة.<br>
-<b>التشريع:</b> الدعوة للتوحيد، تعليم الأجيال.<br>
-<b>القوم:</b> نسل آدم.<br>
-<i>Son of Adam, Prophet after his father, continued guidance, called people to worship Allah and avoid polytheism, guided righteous generations.</i></p>
-</div>
-
-<div class="prophet-detail" id="prophet3">
-<h3>إدريس (Enoch)</h3>
-<p>💡 <b>القصة:</b> نبي علم الناس الكتابة، الحساب، العلوم، وكان مثالاً للعبادة والتقوى.<br>
-<b>التشريع:</b> التقوى وطلب العلم، نشر المعرفة.<br>
-<b>القوم:</b> البشر الأوائل.<br>
-<i>Prophet who taught writing, mathematics, sciences, an example of righteousness. Commanded seeking knowledge and piety. People: early humans.</i></p>
-</div>
-
-<div class="prophet-detail" id="prophet4">
-<h3>نوح (Noah)</h3>
-<p>💡 <b>القصة:</b> أرسل لقوم عبدوا الأصنام، دعاهم للتوحيد، بنى السفينة وأنقذ المؤمنين من الطوفان.<br>
-<b>التشريع:</b> التوحيد وترك الشرك، الصبر على الكفر.<br>
-<b>القوم:</b> قوم نوح.<br>
-<i>Sent to the idol-worshipping people, called to monotheism, built the Ark, saved believers. Commanded patience and monotheism. People: Noah's people.</i></p>
-</div>
-
-<div class="prophet-detail" id="prophet5">
-<h3>هود (Hud)</h3>
-<p>💡 <b>القصة:</b> أرسل إلى قوم عاد، دعاهم للتوحيد والصبر على البلاء.<br>
-<b>التشريع:</b> عبادة الله وحده، الصبر والعدل.<br>
-<b>القوم:</b> قوم عاد.<br>
-<i>Sent to the people of 'Ad, called to worship Allah alone, known for patience and justice. People: 'Ad.</i></p>
-</div>
-
-<div class="prophet-detail" id="prophet6">
-<h3>صالح (Salih)</h3>
-<p>💡 <b>القصة:</b> أرسل إلى قوم ثمود، جاء بمعجزة الناقة، دعوته للتوحيد والعدل.<br>
-<b>التشريع:</b> عبادة الله وحده، اتباع المعجزات والحق.<br>
-<b>القوم:</b> قوم ثمود.<br>
-<i>Sent to Thamud, brought the miracle of the she-camel, called to worship Allah alone and follow truth. People: Thamud.</i></p>
-</div>
-
-<div class="prophet-detail" id="prophet7">
-<h3>لوط (Lot)</h3>
-<p>💡 <b>القصة:</b> أرسل لقوم سدوم، دعاهم للتوحيد والأخلاق، نجى هو وأهله.<br>
-<b>التشريع:</b> التوحيد والأخلاق، رفض الفساد.<br>
-<b>القوم:</b> قوم سدوم.<br>
-<i>Sent to Sodom, called to monotheism and moral conduct, condemned corruption. People: Sodom.</i></p>
-</div>
-
-<div class="prophet-detail" id="prophet8">
-<h3>إبراهيم (Abraham)</h3>
-<p>💡 <b>القصة:</b> خليل الله، دعا للتوحيد، بنى الكعبة، ابتُلي بالكثير ليكون قدوة.<br>
-<b>التشريع:</b> الحج، التوحيد، الدعوة للأمم.<br>
-<b>القوم:</b> العرب وبني إسرائيل.<br>
-<i>Friend of Allah, called to monotheism, built the Kaaba, faced trials to serve as a model. Commanded Hajj, monotheism, guidance to nations. People: Arabs and Israelites.</i></p>
-</div>
-
-<div class="prophet-detail" id="prophet9">
-<h3>إسماعيل (Ishmael)</h3>
-<p>💡 <b>القصة:</b> ابن إبراهيم، ساعده في بناء الكعبة، دعا للعبادة والتوحيد.<br>
-<b>التشريع:</b> الصلاة والزكاة، التوحيد.<br>
-<b>القوم:</b> العرب.<br>
-<i>Son of Abraham, helped build the Kaaba, called to worship Allah. Commanded prayer, almsgiving. People: Arabs.</i></p>
-</div>
-
-<div class="prophet-detail" id="prophet10">
-<h3>إسحاق (Isaac)</h3>
-<p>💡 <b>القصة:</b> ابن إبراهيم، أب يعقوب، دعا للتوحيد، واصل رسالة أبيه.<br>
-<b>التشريع:</b> التوحيد، التربية الصالحة.<br>
-<b>القوم:</b> بني إسرائيل.<br>
-<i>Son of Abraham, father of Jacob, continued his father's message, called to worship Allah alone. People: Israelites.</i></p>
-</div>
-
-<div class="prophet-detail" id="prophet11">
-<h3>يعقوب (Jacob)</h3>
-<p>💡 <b>القصة:</b> ابن إسحاق، أب بني إسرائيل، دعاهم لعبادة الله.<br>
-<b>التشريع:</b> التوحيد، تعليم الأبناء.<br>
-<b>القوم:</b> بني إسرائيل.<br>
-<i>Son of Isaac, father of the Children of Israel, called them to worship Allah alone. People: Israelites.</i></p>
-</div>
-
-<div class="prophet-detail" id="prophet12">
-<h3>يوسف (Joseph)</h3>
-<p>💡 <b>القصة:</b> ابن يعقوب، بيع كعبد وأصبح وزيرًا في مصر، صبر على المحن.<br>
-<b>التشريع:</b> التوحيد والإحسان، الصبر على البلاء.<br>
-<b>القوم:</b> بني إسرائيل.<br>
-<i>Son of Jacob, sold as a slave then became minister in Egypt, exemplified patience. Commanded worship and righteousness. People: Israelites.</i></p>
-</div>
-
-<div class="prophet-detail" id="prophet13">
-<h3>أيوب (Job)</h3>
-<p>💡 <b>القصة:</b> صبر على الابتلاءات العظيمة وفقد ماله وعائلته وصحته، وعوضه الله.<br>
-<b>التشريع:</b> الصبر والشكر، الثقة بالله.<br>
-<b>القوم:</b> قومه.<br>
-<i>Endured great trials, lost wealth, family, and health, and was rewarded. Commanded patience and gratitude. People: his people.</i></p>
-</div>
-
-<div class="prophet-detail" id="prophet14">
-<h3>ذو الكفل (Dhul-Kifl)</h3>
-<p>💡 <b>القصة:</b> نبي معروف بالعدل والصبر، دعا قومه لعبادة الله، كان مثالاً للإخلاص والتحمل.<br>
-<b>التشريع:</b> التوحيد، العدل، الصبر.<br>
-<b>القوم:</b> قومه.<br>
-<i>Prophet known for justice and patience, called his people to worship Allah, exemplified devotion and endurance. Commanded monotheism, justice, and patience. People: his people.</i></p>
-</div>
-
-<div class="prophet-detail" id="prophet15">
-<h3>يونس (Jonah)</h3>
-<p>💡 <b>القصة:</b> أرسل إلى قوم نينوى، ابتلعه الحوت بعد هجرانه لقومه ثم تاب ونجا، عاد لدعوته وصبر على الصعاب.<br>
-<b>التشريع:</b> التوبة، الصبر، الرجوع إلى الله.<br>
-<b>القوم:</b> قوم نينوى.<br>
-<i>Sent to the people of Nineveh, swallowed by a whale after leaving his people, repented and survived, returned to his mission. Commanded repentance, patience, and returning to Allah. People: Nineveh.</i></p>
-</div>
-
-<div class="prophet-detail" id="prophet16">
-<h3>موسى (Moses)</h3>
-<p>💡 <b>القصة:</b> أرسل لبني إسرائيل، كلم الله على الطور، أنزل التوراة، أخرج بني إسرائيل من مصر، واجه فرعون وجنوده.<br>
-<b>التشريع:</b> التوراة، الصلاة، الصوم، القوانين، العدالة.<br>
-<b>القوم:</b> بني إسرائيل.<br>
-<i>Sent to the Children of Israel, spoke to Allah on Mount Sinai, given the Torah, led Israelites out of Egypt, confronted Pharaoh. Commanded Torah, worship, fasting, laws, and justice. People: Israelites.</i></p>
-</div>
-
-<div class="prophet-detail" id="prophet17">
-<h3>هارون (Aaron)</h3>
-<p>💡 <b>القصة:</b> أخو موسى، ناصر رسالته، ساعده في الدعوة وتثبيت قلوب الناس.<br>
-<b>التشريع:</b> دعم الدعوة، التعليم، العدالة.<br>
-<b>القوم:</b> بني إسرائيل.<br>
-<i>Brother of Moses, supported his message, helped in calling people to Allah and stabilizing hearts. Commanded support for guidance, teaching, and justice. People: Israelites.</i></p>
-</div>
-
-<div class="prophet-detail" id="prophet18">
-<h3>داوود (David)</h3>
-<p>💡 <b>القصة:</b> ملك ونبي، أنزل الله عليه الزبور، عرف بالحكمة والشجاعة، حكم بالعدل.<br>
-<b>التشريع:</b> الزبور، الصلاة، الصدق، العدل.<br>
-<b>القوم:</b> بني إسرائيل.<br>
-<i>King and Prophet, given the Psalms, known for wisdom and courage, ruled with justice. Commanded Psalms, prayer, truthfulness, and justice. People: Israelites.</i></p>
-</div>
-
-<div class="prophet-detail" id="prophet19">
-<h3>سليمان (Solomon)</h3>
-<p>💡 <b>القصة:</b> ابن داوود، نبي وملك، آتاه الله حكمة عظيمة وسلطان على الجن والطير.<br>
-<b>التشريع:</b> الحكمة، العدالة، الحكم بالمعرفة.<br>
-<b>القوم:</b> بني إسرائيل.<br>
-<i>Son of David, Prophet and King, granted great wisdom and control over jinn and birds. Commanded wisdom, justice, and governance by knowledge. People: Israelites.</i></p>
-</div>
-
-<div class="prophet-detail" id="prophet20">
-<h3>زكريا (Zechariah)</h3>
-<p>💡 <b>القصة:</b> دعا قومه لعبادة الله، والد يحيى، معروف بالصبر والدعاء.<br>
-<b>التشريع:</b> التوحيد، الصبر، الدعاء.<br>
-<b>القوم:</b> بني إسرائيل.<br>
-<i>Prophet who called his people to worship Allah, father of John, known for patience and prayer. Commanded monotheism, patience, and supplication. People: Israelites.</i></p>
-</div>
-
-<div class="prophet-detail" id="prophet21">
-<h3>يحيى (John)</h3>
-<p>💡 <b>القصة:</b> أيد بالروح القدس، دعا للبر والتقوى، معروف بالزهد والتقوى.<br>
-<b>التشريع:</b> التوحيد، الأخلاق، التقوى.<br>
-<b>القوم:</b> بني إسرائيل.<br>
-<i>Supported by the Holy Spirit, called for righteousness and piety, known for asceticism and devotion. Commanded monotheism, ethics, and piety. People: Israelites.</i></p>
-</div>
-
-<div class="prophet-detail" id="prophet22">
-<h3>عيسى (Jesus)</h3>
-<p>💡 <b>القصة:</b> ابن مريم، أيد بالروح القدس، جاء بالإنجيل، أجرى المعجزات، دعا للتوحيد والأخلاق.<br>
-<b>التشريع:</b> الإنجيل، الصلاة، الصيام، الأخلاق، الرحمة.<br>
-<b>القوم:</b> بني إسرائيل.<br>
-<i>Son of Mary, supported by the Holy Spirit, brought the Gospel, performed miracles, called to monotheism and ethics. Commanded Gospel, prayer, fasting, morality, and compassion. People: Israelites.</i></p>
-</div>
-
-<div class="prophet-detail" id="prophet23">
-<h3>محمد ﷺ (Muhammad)</h3>
-<p>💡 <b>القصة:</b> خاتم الأنبياء، أرسل لجميع البشر، أنزل الله عليه القرآن، أسس مجتمعاً عادلًا، جاهد لنشر الحق.<br>
-<b>التشريع:</b> القرآن، الصلاة، الزكاة، الصيام، الحج، الأخلاق، العدل، الدعوة لجميع البشر.<br>
-<b>القوم:</b> جميع البشر.<br>
-<i>Seal of the Prophets, sent to all humanity, Quran revealed to him, established a just society, strove to spread the truth. Commanded Quran, prayer, almsgiving, fasting, Hajj, ethics, justice, and universal guidance. People: all humans.</i></p>
-</div>
-
-<button class="closeBtn" onclick="closeProphets()">إغلاق ✖</button>
-</div>
-
-<script> 
-const btn = document.getElementById('prophetsBtn');
-const box = document.getElementById('prophetsBox');
-btn.addEventListener('click', ()=>{ box.style.display = (box.style.display==='block')?'none':'block'; });
-function closeProphets(){ box.style.display='none'; }
-
-const items = document.querySelectorAll('#prophetsBox ul li');
-const details = document.querySelectorAll('.prophet-detail');
-items.forEach(item => {
-    item.addEventListener('click', ()=>{
-        details.forEach(d=>d.classList.remove('active'));
-        const id = item.getAttribute('data-id');
-        document.getElementById(id).classList.add('active');
-    });
-});
-</script>
-
-</body>
-</html>
-
 <!-- ================= أيقونة القصة + النافذة المعدلة ================= -->
 <style>
 /* أيقونة القصة */
 #shipIcon_new {
   position: fixed;
-  bottom: 130px;
-  right: 110px;
+  bottom: 30px;
+  right: 410px;
   width: 110px;
   height: 110px;
   background: url('https://i.top4top.io/p_3602p1v3s1.png') center/cover no-repeat;
@@ -2526,85 +2306,6 @@ closeBtn.addEventListener('click', () => {
   <button class="page-btn" onclick="goPage('home')">⬅️ الصفحة الرئيسية</button>
 
   <div style="text-align:center;margin-top:120px;font-size:26px;text-shadow:0 0 12px #00ffff;">
-<!-- 🎂 كيك متوهج بألوان متغيرة -->
-<div id="cakeWrapper">
-  <div id="cakeButton" onclick="window.open('https://paypal.me/abwalqmrzmrd/1', '_blank')">
-    <div class="cakeContent">
-      🎂<br>
-      <span class="label">يسعدني إعجابك 💖</span>
-      <span class="en">It makes me happy you liked it 💖</span>
-      <span class="usd">(coffee 1$)</span>
-    </div>
-  </div>
-</div>
-
-<style>
-/* 📦 الغلاف العام */
-#cakeWrapper {
-  position: fixed;
-  bottom: 149px;
-  left:10%;
-  transform: translateX(50%);
-  z-index: 1000;
-}
-
-/* 🎂 الكيكة */
-#cakeButton {
-  position: relative;
-  width: 120px;
-  height: 70px;
-  background: radial-gradient(circle at 30% 30%, #ff0, #00f, #f00, #0f0);
-  border-radius: 50% 50% 10% 10%;
-  border: 2px solid #fff;
-  color: #fff;
-  text-align: center;
-  font-weight: bold;
-  font-size: 13px;
-  cursor: pointer;
-  box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.6),
-              0 0 30px 10px rgba(255, 255, 0, 0.3);
-  transition: all 0.2s ease;
-  animation: glowShift 0.8s infinite linear;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* 🎉 محتوى الكيكة مرفوع قليلًا */
-.cakeContent {
-  margin-top: -6px; /* 🔼 رفع المحتوى */
-}
-
-/* ✨ وميض متغيّر للألوان */
-@keyframes glowShift {
-  0%   { background: radial-gradient(circle at 20% 20%, #ff0, #00f, #f00, #0f0); box-shadow: 0 0 15px 3px #ff0; }
-  25%  { background: radial-gradient(circle at 70% 20%, #0f0, #f00, #00f, #ff0); box-shadow: 0 0 20px 5px #0f0; }
-  50%  { background: radial-gradient(circle at 30% 70%, #00f, #ff0, #0f0, #f00); box-shadow: 0 0 25px 7px #00f; }
-  75%  { background: radial-gradient(circle at 70% 70%, #f00, #0f0, #ff0, #00f); box-shadow: 0 0 25px 7px #f00; }
-  100% { background: radial-gradient(circle at 50% 50%, #ff0, #00f, #f00, #0f0); box-shadow: 0 0 20px 5px #ff0; }
-}
-
-/* 💛 النصوص */
-#cakeButton .label {
-  display: block;
-  font-size: 11px;
-}
-
-#cakeButton .en {
-  display: block;
-  color: #ffff99;
-  font-size: 9px;
-  margin-top: 3px;
-}
-
-#cakeButton .usd {
-  display: block;
-  color: #fff;
-  font-size: 10px;
-  margin-top: 3px;
-  text-shadow: 0 0 10px #ffff00, 0 0 20px #ff0000;
-}
-</style>
 <!-- 🌈 أيقونة فتح/إغلاق قائمة الاتصال -->
 <div id="support-toggle-btn" style="
   position: fixed;
@@ -3907,6 +3608,307 @@ jokeIcon.addEventListener('click', () => {
 </html>
 
   </div>
+  
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الديانات السماوية - موسوعة الأنبياء والرسل</title>
+<style>
+ { font-family: Tahoma, sans-serif; margin:0; padding:0; background:#121212; color:#fff; }
+#prophetsBtn {
+    position: fixed;
+    top: 80%;
+    left: 10px;
+    transform: translateY(-50%);
+    z-index: 9999;
+    background: rgba(255,165,0,0.2);
+    color: #fff;
+    padding: 4px 12px;
+    border: 2px solid orange;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align:center;
+    transition: transform 0.3s, background 0.3s;
+}
+#prophetsBtn:hover { background: rgba(255,165,0,0.4); transform: scale(1.05); }
+
+#prophetsBox {
+    display:none;
+    position: fixed;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    background: rgba(255,255,255,0.95);
+    color:#000;
+    width:90%;
+    max-width:1000px;
+    border-radius:15px;
+    box-shadow:0 0 25px rgba(0,0,0,0.7);
+    padding:20px;
+    text-align:right;
+    z-index:9999;
+    max-height:85vh;
+    overflow-y:auto;
+}
+#prophetsBox h2 { color:#8B0000; text-align:center; margin-bottom:15px; }
+
+#prophetsBox ul { list-style:none; padding:0; margin:0 0 15px 0; display:flex; flex-wrap:wrap; }
+#prophetsBox ul li { background:#000; color:#fff; margin:4px; padding:6px 12px; border-radius:8px; cursor:pointer; transition:0.3s; flex:1; text-align:center; min-width:100px; font-size:14px; }
+#prophetsBox ul li:hover { background:#8B0000; }
+
+.prophet-detail { display:none; margin-bottom:12px; padding:8px; border-bottom:1px solid rgba(0,0,0,0.3); font-size:14px; line-height:1.5; }
+.prophet-detail.active { display:block; }
+.prophet-detail i { color:#555; font-size:13px; display:block; margin-top:6px; }
+
+#prophetsBox button.closeBtn { background:#8B0000; color:#fff; border:none; border-radius:10px; padding:6px 12px; margin-top:12px; cursor:pointer; font-weight:bold; }
+
+@media(max-width:500px){ #prophetsBtn { padding:10px 14px; font-size:14px; } #prophetsBox { padding:15px; } }
+</style>
+</head>
+<body>
+
+<button id="prophetsBtn">📜 الديانات السماوية<br><span style="font-size:13px;">Heavenly Religions</span></button>
+
+<div id="prophetsBox">
+<h2>📜 موسوعة الأنبياء والرسل — Prophets Encyclopedia</h2>
+
+<ul>
+<li data-id="prophet1">آدم<br><small>Adam</small></li>
+<li data-id="prophet2">شيث<br><small>Seth</small></li>
+<li data-id="prophet3">إدريس<br><small>Enoch</small></li>
+<li data-id="prophet4">نوح<br><small>Noah</small></li>
+<li data-id="prophet5">هود<br><small>Hud</small></li>
+<li data-id="prophet6">صالح<br><small>Salih</small></li>
+<li data-id="prophet7">لوط<br><small>Lot</small></li>
+<li data-id="prophet8">إبراهيم<br><small>Abraham</small></li>
+<li data-id="prophet9">إسماعيل<br><small>Ishmael</small></li>
+<li data-id="prophet10">إسحاق<br><small>Isaac</small></li>
+<li data-id="prophet11">يعقوب<br><small>Jacob</small></li>
+<li data-id="prophet12">يوسف<br><small>Joseph</small></li>
+<li data-id="prophet13">أيوب<br><small>Job</small></li>
+<li data-id="prophet14">ذو الكفل<br><small>Dhul-Kifl</small></li>
+<li data-id="prophet15">يونس<br><small>Jonah</small></li>
+<li data-id="prophet16">موسى<br><small>Moses</small></li>
+<li data-id="prophet17">هارون<br><small>Aaron</small></li>
+<li data-id="prophet18">داوود<br><small>David</small></li>
+<li data-id="prophet19">سليمان<br><small>Solomon</small></li>
+<li data-id="prophet20">زكريا<br><small>Zechariah</small></li>
+<li data-id="prophet21">يحيى<br><small>John</small></li>
+<li data-id="prophet22">عيسى<br><small>Jesus</small></li>
+<li data-id="prophet23">محمد ﷺ<br><small>Muhammad</small></li>
+</ul>
+
+<!-- تفاصيل جميع الأنبياء -->
+<div class="prophet-detail" id="prophet1">
+<h3>آدم (Adam)</h3>
+<p>💡 <b>القصة:</b> أول البشر، خُلق من تراب وعلَّم أسماء كل شيء. عاش في الجنة ثم نزل إلى الأرض بعد المعصية. علم البشر أساسيات الحياة وطرق العبادة.<br>
+<b>التشريع:</b> العبادة والطاعة لله، تعليم أولاده التوحيد، تأسيس الأسرة الأولى.<br>
+<b>القوم:</b> أول البشر.<br>
+<i>First human and Prophet, created from clay, taught the names of all things. Lived in Paradise then descended to Earth. Commanded to worship Allah alone, taught family and social guidance.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet2">
+<h3>شيث (Seth)</h3>
+<p>💡 <b>القصة:</b> ابن آدم، واصل الهداية بعد وفاة والده، دعا الناس لعبادة الله وتجنب الشرك، أسس أجيالًا صالحة.<br>
+<b>التشريع:</b> الدعوة للتوحيد، تعليم الأجيال.<br>
+<b>القوم:</b> نسل آدم.<br>
+<i>Son of Adam, Prophet after his father, continued guidance, called people to worship Allah and avoid polytheism, guided righteous generations.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet3">
+<h3>إدريس (Enoch)</h3>
+<p>💡 <b>القصة:</b> نبي علم الناس الكتابة، الحساب، العلوم، وكان مثالاً للعبادة والتقوى.<br>
+<b>التشريع:</b> التقوى وطلب العلم، نشر المعرفة.<br>
+<b>القوم:</b> البشر الأوائل.<br>
+<i>Prophet who taught writing, mathematics, sciences, an example of righteousness. Commanded seeking knowledge and piety. People: early humans.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet4">
+<h3>نوح (Noah)</h3>
+<p>💡 <b>القصة:</b> أرسل لقوم عبدوا الأصنام، دعاهم للتوحيد، بنى السفينة وأنقذ المؤمنين من الطوفان.<br>
+<b>التشريع:</b> التوحيد وترك الشرك، الصبر على الكفر.<br>
+<b>القوم:</b> قوم نوح.<br>
+<i>Sent to the idol-worshipping people, called to monotheism, built the Ark, saved believers. Commanded patience and monotheism. People: Noah's people.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet5">
+<h3>هود (Hud)</h3>
+<p>💡 <b>القصة:</b> أرسل إلى قوم عاد، دعاهم للتوحيد والصبر على البلاء.<br>
+<b>التشريع:</b> عبادة الله وحده، الصبر والعدل.<br>
+<b>القوم:</b> قوم عاد.<br>
+<i>Sent to the people of 'Ad, called to worship Allah alone, known for patience and justice. People: 'Ad.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet6">
+<h3>صالح (Salih)</h3>
+<p>💡 <b>القصة:</b> أرسل إلى قوم ثمود، جاء بمعجزة الناقة، دعوته للتوحيد والعدل.<br>
+<b>التشريع:</b> عبادة الله وحده، اتباع المعجزات والحق.<br>
+<b>القوم:</b> قوم ثمود.<br>
+<i>Sent to Thamud, brought the miracle of the she-camel, called to worship Allah alone and follow truth. People: Thamud.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet7">
+<h3>لوط (Lot)</h3>
+<p>💡 <b>القصة:</b> أرسل لقوم سدوم، دعاهم للتوحيد والأخلاق، نجى هو وأهله.<br>
+<b>التشريع:</b> التوحيد والأخلاق، رفض الفساد.<br>
+<b>القوم:</b> قوم سدوم.<br>
+<i>Sent to Sodom, called to monotheism and moral conduct, condemned corruption. People: Sodom.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet8">
+<h3>إبراهيم (Abraham)</h3>
+<p>💡 <b>القصة:</b> خليل الله، دعا للتوحيد، بنى الكعبة، ابتُلي بالكثير ليكون قدوة.<br>
+<b>التشريع:</b> الحج، التوحيد، الدعوة للأمم.<br>
+<b>القوم:</b> العرب وبني إسرائيل.<br>
+<i>Friend of Allah, called to monotheism, built the Kaaba, faced trials to serve as a model. Commanded Hajj, monotheism, guidance to nations. People: Arabs and Israelites.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet9">
+<h3>إسماعيل (Ishmael)</h3>
+<p>💡 <b>القصة:</b> ابن إبراهيم، ساعده في بناء الكعبة، دعا للعبادة والتوحيد.<br>
+<b>التشريع:</b> الصلاة والزكاة، التوحيد.<br>
+<b>القوم:</b> العرب.<br>
+<i>Son of Abraham, helped build the Kaaba, called to worship Allah. Commanded prayer, almsgiving. People: Arabs.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet10">
+<h3>إسحاق (Isaac)</h3>
+<p>💡 <b>القصة:</b> ابن إبراهيم، أب يعقوب، دعا للتوحيد، واصل رسالة أبيه.<br>
+<b>التشريع:</b> التوحيد، التربية الصالحة.<br>
+<b>القوم:</b> بني إسرائيل.<br>
+<i>Son of Abraham, father of Jacob, continued his father's message, called to worship Allah alone. People: Israelites.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet11">
+<h3>يعقوب (Jacob)</h3>
+<p>💡 <b>القصة:</b> ابن إسحاق، أب بني إسرائيل، دعاهم لعبادة الله.<br>
+<b>التشريع:</b> التوحيد، تعليم الأبناء.<br>
+<b>القوم:</b> بني إسرائيل.<br>
+<i>Son of Isaac, father of the Children of Israel, called them to worship Allah alone. People: Israelites.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet12">
+<h3>يوسف (Joseph)</h3>
+<p>💡 <b>القصة:</b> ابن يعقوب، بيع كعبد وأصبح وزيرًا في مصر، صبر على المحن.<br>
+<b>التشريع:</b> التوحيد والإحسان، الصبر على البلاء.<br>
+<b>القوم:</b> بني إسرائيل.<br>
+<i>Son of Jacob, sold as a slave then became minister in Egypt, exemplified patience. Commanded worship and righteousness. People: Israelites.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet13">
+<h3>أيوب (Job)</h3>
+<p>💡 <b>القصة:</b> صبر على الابتلاءات العظيمة وفقد ماله وعائلته وصحته، وعوضه الله.<br>
+<b>التشريع:</b> الصبر والشكر، الثقة بالله.<br>
+<b>القوم:</b> قومه.<br>
+<i>Endured great trials, lost wealth, family, and health, and was rewarded. Commanded patience and gratitude. People: his people.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet14">
+<h3>ذو الكفل (Dhul-Kifl)</h3>
+<p>💡 <b>القصة:</b> نبي معروف بالعدل والصبر، دعا قومه لعبادة الله، كان مثالاً للإخلاص والتحمل.<br>
+<b>التشريع:</b> التوحيد، العدل، الصبر.<br>
+<b>القوم:</b> قومه.<br>
+<i>Prophet known for justice and patience, called his people to worship Allah, exemplified devotion and endurance. Commanded monotheism, justice, and patience. People: his people.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet15">
+<h3>يونس (Jonah)</h3>
+<p>💡 <b>القصة:</b> أرسل إلى قوم نينوى، ابتلعه الحوت بعد هجرانه لقومه ثم تاب ونجا، عاد لدعوته وصبر على الصعاب.<br>
+<b>التشريع:</b> التوبة، الصبر، الرجوع إلى الله.<br>
+<b>القوم:</b> قوم نينوى.<br>
+<i>Sent to the people of Nineveh, swallowed by a whale after leaving his people, repented and survived, returned to his mission. Commanded repentance, patience, and returning to Allah. People: Nineveh.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet16">
+<h3>موسى (Moses)</h3>
+<p>💡 <b>القصة:</b> أرسل لبني إسرائيل، كلم الله على الطور، أنزل التوراة، أخرج بني إسرائيل من مصر، واجه فرعون وجنوده.<br>
+<b>التشريع:</b> التوراة، الصلاة، الصوم، القوانين، العدالة.<br>
+<b>القوم:</b> بني إسرائيل.<br>
+<i>Sent to the Children of Israel, spoke to Allah on Mount Sinai, given the Torah, led Israelites out of Egypt, confronted Pharaoh. Commanded Torah, worship, fasting, laws, and justice. People: Israelites.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet17">
+<h3>هارون (Aaron)</h3>
+<p>💡 <b>القصة:</b> أخو موسى، ناصر رسالته، ساعده في الدعوة وتثبيت قلوب الناس.<br>
+<b>التشريع:</b> دعم الدعوة، التعليم، العدالة.<br>
+<b>القوم:</b> بني إسرائيل.<br>
+<i>Brother of Moses, supported his message, helped in calling people to Allah and stabilizing hearts. Commanded support for guidance, teaching, and justice. People: Israelites.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet18">
+<h3>داوود (David)</h3>
+<p>💡 <b>القصة:</b> ملك ونبي، أنزل الله عليه الزبور، عرف بالحكمة والشجاعة، حكم بالعدل.<br>
+<b>التشريع:</b> الزبور، الصلاة، الصدق، العدل.<br>
+<b>القوم:</b> بني إسرائيل.<br>
+<i>King and Prophet, given the Psalms, known for wisdom and courage, ruled with justice. Commanded Psalms, prayer, truthfulness, and justice. People: Israelites.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet19">
+<h3>سليمان (Solomon)</h3>
+<p>💡 <b>القصة:</b> ابن داوود، نبي وملك، آتاه الله حكمة عظيمة وسلطان على الجن والطير.<br>
+<b>التشريع:</b> الحكمة، العدالة، الحكم بالمعرفة.<br>
+<b>القوم:</b> بني إسرائيل.<br>
+<i>Son of David, Prophet and King, granted great wisdom and control over jinn and birds. Commanded wisdom, justice, and governance by knowledge. People: Israelites.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet20">
+<h3>زكريا (Zechariah)</h3>
+<p>💡 <b>القصة:</b> دعا قومه لعبادة الله، والد يحيى، معروف بالصبر والدعاء.<br>
+<b>التشريع:</b> التوحيد، الصبر، الدعاء.<br>
+<b>القوم:</b> بني إسرائيل.<br>
+<i>Prophet who called his people to worship Allah, father of John, known for patience and prayer. Commanded monotheism, patience, and supplication. People: Israelites.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet21">
+<h3>يحيى (John)</h3>
+<p>💡 <b>القصة:</b> أيد بالروح القدس، دعا للبر والتقوى، معروف بالزهد والتقوى.<br>
+<b>التشريع:</b> التوحيد، الأخلاق، التقوى.<br>
+<b>القوم:</b> بني إسرائيل.<br>
+<i>Supported by the Holy Spirit, called for righteousness and piety, known for asceticism and devotion. Commanded monotheism, ethics, and piety. People: Israelites.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet22">
+<h3>عيسى (Jesus)</h3>
+<p>💡 <b>القصة:</b> ابن مريم، أيد بالروح القدس، جاء بالإنجيل، أجرى المعجزات، دعا للتوحيد والأخلاق.<br>
+<b>التشريع:</b> الإنجيل، الصلاة، الصيام، الأخلاق، الرحمة.<br>
+<b>القوم:</b> بني إسرائيل.<br>
+<i>Son of Mary, supported by the Holy Spirit, brought the Gospel, performed miracles, called to monotheism and ethics. Commanded Gospel, prayer, fasting, morality, and compassion. People: Israelites.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet23">
+<h3>محمد ﷺ (Muhammad)</h3>
+<p>💡 <b>القصة:</b> خاتم الأنبياء، أرسل لجميع البشر، أنزل الله عليه القرآن، أسس مجتمعاً عادلًا، جاهد لنشر الحق.<br>
+<b>التشريع:</b> القرآن، الصلاة، الزكاة، الصيام، الحج، الأخلاق، العدل، الدعوة لجميع البشر.<br>
+<b>القوم:</b> جميع البشر.<br>
+<i>Seal of the Prophets, sent to all humanity, Quran revealed to him, established a just society, strove to spread the truth. Commanded Quran, prayer, almsgiving, fasting, Hajj, ethics, justice, and universal guidance. People: all humans.</i></p>
+</div>
+
+<button class="closeBtn" onclick="closeProphets()">إغلاق ✖</button>
+</div>
+
+<script> 
+const btn = document.getElementById('prophetsBtn');
+const box = document.getElementById('prophetsBox');
+btn.addEventListener('click', ()=>{ box.style.display = (box.style.display==='block')?'none':'block'; });
+function closeProphets(){ box.style.display='none'; }
+
+const items = document.querySelectorAll('#prophetsBox ul li');
+const details = document.querySelectorAll('.prophet-detail');
+items.forEach(item => {
+    item.addEventListener('click', ()=>{
+        details.forEach(d=>d.classList.remove('active'));
+        const id = item.getAttribute('data-id');
+        document.getElementById(id).classList.add('active');
+    });
+});
+</script>
+
+</body>
+</html>
+
   <button class="next-btn" onclick="goPage('page3')">📚 الانتقال لصفحة الثالثة</button>
 </div>
 
@@ -4064,10 +4066,126 @@ document.addEventListener("DOMContentLoaded", () => {
   <button class="back3" onclick="goPage('page2')">⬅️ رجوع</button>
 
   <h1>
+      <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tiger Icon Popup – abwalqmrzmrd</title>
+
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  font-family: "Tajawal", sans-serif;
+}
+
+/* ===== أيقونة النمر المشعة ===== */
+#tigerIcon {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #ffb200;
+  box-shadow: 0 0 25px #ffb200, 0 0 55px #ff8800, 0 0 85px #ff5500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  text-align: center;
+  font-size: 60px;
+  animation: pulse 1.6s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 20px #ff9900, 0 0 40px #ff5500; }
+  50% { box-shadow: 0 0 50px #ffcc00, 0 0 90px #ff7700; }
+  100% { box-shadow: 0 0 20px #ff9900, 0 0 40px #ff5500; }
+}
+
+/* ===== نافذة الصورة ===== */
+#popup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(4px);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* محتوى النافذة */
+#popupContent {
+  position: relative;
+  text-align: center;
+}
+
+#popup img {
+  width: 90%;
+  max-width: 650px;
+  border-radius: 20px;
+  box-shadow: 0 0 40px #ffb200, 0 0 80px #ff7700;
+}
+
+/* زر الإغلاق */
+#closeBtn {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  background: #ffb200;
+  color: #000;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 0 20px #ff8800;
+}
+</style>
+</head>
+<body>
+
+<!-- 🐅 أيقونة النمر المشعة -->
+<div id="tigerIcon">🐅</div>
+
+<!-- نافذة الصورة -->
+<div id="popup">
+  <div id="popupContent">
+    <div id="closeBtn">×</div>
+
+    <!-- الصورة الأخيرة -->
+    <img src="https://c.top4top.io/p_3623vvtpu1.png" alt="Zodiac Image">
+  </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById("tigerIcon").onclick = () => {
+  document.getElementById("popup").style.display = "flex";
+};
+
+document.getElementById("closeBtn").onclick = () => {
+  document.getElementById("popup").style.display = "none";
+};
+</script>
+
+</body>
+</html>
+
 <!-- ========== أيقونة الأعمال ========== -->
 <div id="worksIconContainer" style="
   bottom: 5px;
-  right: 205px;
+  right: 25px;
   text-align:center;
   margin:30px 0;
   z-index:9999;
