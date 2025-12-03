@@ -62,6 +62,7 @@
   border-radius:8px;
   margin-bottom:8px;
 }
+
 </style>
 
 <div id="radioIcon">📻</div>
@@ -1427,8 +1428,8 @@ h1{
 }
 
 .video-circle {
-  width: 85px;
-  height: 85px;
+  width:145px;
+  height: 145px;
   border-radius: 50%;
   background: rgba(255,255,255,0.08);
   color: #fff;
@@ -2293,6 +2294,112 @@ closeBtn.addEventListener('click', () => {
   overlay.style.display = 'none';
 });
 </script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zodiac Circle – abwalqmrzmrd</title>
+
+<style>
+
+/* حاوية منع التعارض */
+#zodiac-container {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 999999 !important; /* فوق كل الأيقونات */
+  pointer-events: none; /* يمنع التداخل مع الأيقونات الأخرى */
+}
+
+/* الدائرة ثابتة الحجم */
+#zodiac-circle {
+  width: 185px !important;
+  height: 215px !important;
+  border-radius: 50% !important;
+  border: 3px solid #ffb200 !important;
+  background: #000 !important;
+  box-shadow: 0 0 18px #ffb200, 0 0 40px #ff7700 !important;
+  color: #ffdd99 !important;
+  text-align: center !important;
+  padding: 12px 8px !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  pointer-events: auto; /* الدائرة يمكن الضغط عليها */
+  position: relative !important;
+}
+
+#zodiac-circle h1 {
+  font-size: 12px !important;
+  margin: 0 !important;
+  text-shadow: 0 0 6px #ffb200 !important;
+}
+
+#zodiac-circle .name-en {
+  font-size: 10px !important;
+  margin: 4px 0 !important;
+  text-shadow: 0 0 6px #ffb200 !important;
+}
+
+#zodiac-circle .emoji {
+  font-size: 18px !important;
+  margin-top: 2px !important;
+}
+
+#zodiac-circle .section-title {
+  font-size: 10px !important;
+  margin-top: 4px !important;
+}
+
+#zodiac-circle .big {
+  font-size: 12px !important;
+}
+
+#zodiac-circle .traits {
+  font-size: 8px !important;
+}
+
+#zodiac-circle .dates {
+  font-size: 10px !important;
+  margin-top: 4px !important;
+}
+</style>
+
+</head>
+<body>
+
+<!-- العنصر المعزول لمنع أي تعارض -->
+<div id="zodiac-container">
+  <div id="zodiac-circle">
+
+    <h1>mr: sakaker s-h</h1>
+    <div class="name-en">abwalqmrzmrd</div>
+
+    <div class="emoji">♋</div>
+    <div class="section-title">WESTERN ZODIAC</div>
+    <div class="big">CANCER</div>
+    <div class="traits">Emotional · Bold · Sensitive</div>
+
+    <div class="section-title">LEO · TIGER</div>
+    <div class="traits">Courageous · Dynamic</div>
+
+    <div class="section-title">GEMINI – Vedic</div>
+
+    <div class="section-title">AQUARIUS / PISCES</div>
+
+    <div class="traits">السرطان · الأسد · النمر · الجوزاء · الدلو أو الحوت</div>
+
+    <div class="dates">
+      ١ رجب ١٣٩٤<br>
+      20 July 1974
+    </div>
+
+  </div>
+</div>
 
 </body>
 </html>
