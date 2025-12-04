@@ -4292,141 +4292,360 @@ document.getElementById("closeBtn").onclick = () => {
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>Piano 20 Keys – Numbers + Letters</title>
+<title>Emerald Pro Piano – Abwalqmrzmrd</title>
 
 <style>
-   {
-    margin: 0;
-    background: #000;
-    font-family: "Tajawal", sans-serif;
+  :root {
+    --emerald: #00ffd5;
+    --emerald-soft: #00c8a0;
+    --bg-dark: #05060a;
   }
 
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(circle at 10% 0%, #18243a 0, #05060a 40%, #000 100%);
+    font-family: "Tajawal", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    overflow: hidden;
+  }
+
+  /* أيقونة فتح البيانو */
   #pianoIcon {
     position: fixed;
-    bottom: 30px;
-    right: 230px;
+    bottom: 25px;
+    right: 225px;
     width: 90px;
     height: 90px;
-    background: #00ffd5;
+    background: var(--emerald);
     border-radius: 50%;
-    box-shadow: 0 0 25px #00ffd5;
+    box-shadow: 0 0 18px var(--emerald), 0 0 40px rgba(0,255,213,0.5);
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     text-align: center;
     font-weight: bold;
+    color: #000;
     z-index: 9999;
+    border: 2px solid #000;
   }
 
+  #pianoIcon span {
+    font-size: 22px;
+    display: block;
+  }
+
+  /* حاوية البيانو الرئيسية */
   #pianoContainer {
-    position: fixed;
-    bottom: 140px;
-    right: 20px;
-    width: 900px;
-    padding: 20px;
-    display: none;
-    background: rgba(0,0,0,0.9);
+    position: relative;
+    width: min(1000px, 96vw);
+    padding: 18px 20px 26px;
     border-radius: 20px;
-    box-shadow: 0 0 30px #00ffd5;
-    z-index: 9998;
+    background: radial-gradient(circle at 0% 0%, #1a2a3f 0, #05060a 40%, #000 100%);
+    box-shadow:
+      0 0 30px rgba(0,0,0,0.9),
+      0 0 35px rgba(0,255,213,0.4);
+    border: 1px solid rgba(0,255,213,0.25);
+    display: none;
+    z-index: 10;
   }
 
+  .piano-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    gap: 10px;
+  }
+
+  .piano-title {
+    font-size: 18px;
+    font-weight: bold;
+    background: linear-gradient(45deg, #fff, var(--emerald), #7ffff2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 12px rgba(0,255,213,0.7);
+  }
+
+  .piano-sub {
+    font-size: 12px;
+    opacity: 0.8;
+  }
+
+  /* شريط صغير للمعلومات */
+  .piano-info {
+    font-size: 11px;
+    opacity: 0.8;
+    margin-bottom: 10px;
+  }
+
+  /* منطقة المفاتيح */
+  .keyboard-wrapper {
+    position: relative;
+    background: linear-gradient(to bottom, #222 0%, #050505 40%, #000 100%);
+    border-radius: 14px;
+    padding: 18px 14px 14px;
+    box-shadow:
+      inset 0 0 25px rgba(0,0,0,0.9),
+      0 0 18px rgba(0,0,0,0.8);
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .keys-row {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  /* مفاتيح البيانو (أسلوب GarageBand) */
   .white-key {
-    width: 45px;
-    height: 170px;
-    background: #fff;
-    border-radius: 6px;
-    margin: 4px;
-    display: inline-flex;
+    position: relative;
+    width: calc((100% - 4px * 19) / 20);
+    max-width: 50px;
+    height: 180px;
+    background: linear-gradient(to bottom, #fdfdfd 0%, #e5e5e5 40%, #cfcfcf 100%);
+    border-radius: 0 0 10px 10px;
+    box-shadow:
+      0 4px 0 #999,
+      0 6px 10px rgba(0,0,0,0.9);
+    display: flex;
     justify-content: center;
     align-items: flex-end;
-    padding-bottom: 6px;
-    cursor: pointer;
-    font-size: 16px;
+    padding-bottom: 8px;
+    font-size: 14px;
     color: #333;
-    transition: 0.1s;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.07s, box-shadow 0.07s, background 0.07s;
+  }
+
+  .white-key-label {
+    font-weight: bold;
+    text-shadow: 0 0 4px rgba(0,0,0,0.3);
+  }
+
+  .white-key::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 6px;
+    right: 6px;
+    height: 22px;
+    border-radius: 0 0 10px 10px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.35), transparent);
+    opacity: 0.4;
+    pointer-events: none;
   }
 
   .white-key.active {
-    background: #d0ffff;
-    transform: translateY(3px);
-    box-shadow: 0 0 15px #00ffd5;
+    transform: translateY(4px);
+    box-shadow:
+      0 1px 0 #666,
+      0 3px 8px rgba(0,0,0,0.9),
+      0 0 18px rgba(0,255,213,0.7);
+    background: linear-gradient(to bottom, #f7ffff 0%, #dffefd 40%, #c7f7f4 100%);
+  }
+
+  .white-key.active .white-key-label {
+    color: #00463f;
+  }
+
+  /* شريط تحت يوضح الاختصارات */
+  .legend-row {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 11px;
+    opacity: 0.75;
+  }
+
+  /* 🔊 شريط التحكم البسيط (الصوت، نوع العزف لاحقاً لو حبيت نطوره) */
+  .control-bar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 11px;
+  }
+
+  .control-label {
+    opacity: 0.8;
+  }
+
+  .control-select {
+    background: #0a1118;
+    color: #fff;
+    border-radius: 999px;
+    border: 1px solid rgba(0,255,213,0.3);
+    padding: 4px 10px;
+    font-size: 11px;
+    cursor: pointer;
+  }
+
+  @media (max-width: 720px) {
+    #pianoContainer {
+      bottom: 10px;
+      right: 2%;
+      left: 2%;
+      width: auto;
+      padding: 14px 10px 18px;
+    }
+    .white-key {
+      height: 140px;
+      font-size: 11px;
+      padding-bottom: 5px;
+    }
+    .piano-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
   }
 </style>
 </head>
 
 <body>
 
-<div id="pianoIcon">🎹</div>
+<!-- أيقونة فتح البيانو -->
+<div id="pianoIcon">
+  <span>🎹</span>
+</div>
 
+<!-- حاوية البيانو -->
 <div id="pianoContainer">
-  <h2 style="color:#00ffd5; text-align:center;">🎶 Piano – 20 Keys (Numbers + Letters)</h2>
-  <div id="keys"></div>
+  <div class="piano-header">
+    <div>
+      <div class="piano-title">Emerald Pro Piano – أبوالقمر زمرد</div>
+      <div class="piano-sub">استخدم الأرقام 1–0 والحروف A S D F G H J K L Z أو بالماوس</div>
+    </div>
+    <div class="control-bar">
+      <span class="control-label">نمط العزف (شكلي فقط):</span>
+      <select class="control-select" id="voiceSelect">
+        <option value="grand">Grand Piano</option>
+        <option value="soft">Soft Touch</option>
+        <option value="bright">Bright</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="piano-info">
+    ✅ يعمل حتى لو لوحة المفاتيح بالعربي (باستخدام <code>event.code</code>) – الصوت حقيقي لعينة بيانو، والإضاءة زمردية عند الضغط.
+  </div>
+
+  <div class="keyboard-wrapper">
+    <div class="keys-row" id="keys"></div>
+  </div>
+
+    <div class="legend-row">
+      الصف الأول: 1 2 3 4 5 6 7 8 9 0 &nbsp; | &nbsp; الصف الثاني: A S D F G H J K L Z
+    </div>
 </div>
 
 <script>
-/* توزيع الأزرار: أرقام ثم أحرف */
-const KEY_MAP = {
-  "1":"C4","2":"D4","3":"E4","4":"F4","5":"G4",
-  "6":"A4","7":"B4","8":"C5","9":"D5","0":"E5",
+/* 🎵 تعريف المفاتيح: الملصق + كود الكيبورد + النغمة */
+const KEYS = [
+  { label: "1", code: "Digit1", note: "C4" },
+  { label: "2", code: "Digit2", note: "D4" },
+  { label: "3", code: "Digit3", note: "E4" },
+  { label: "4", code: "Digit4", note: "F4" },
+  { label: "5", code: "Digit5", note: "G4" },
+  { label: "6", code: "Digit6", note: "A4" },
+  { label: "7", code: "Digit7", note: "B4" },
+  { label: "8", code: "Digit8", note: "C5" },
+  { label: "9", code: "Digit9", note: "D5" },
+  { label: "0", code: "Digit0", note: "E5" },
 
-  "a":"F5","s":"G5","d":"A5","f":"B5","g":"C6",
-  "h":"D6","j":"E6","k":"F6","l":"G6","z":"A6"
-};
+  { label: "A", code: "KeyA", note: "F5" },
+  { label: "S", code: "KeyS", note: "G5" },
+  { label: "D", code: "KeyD", note: "A5" },
+  { label: "F", code: "KeyF", note: "B5" },
+  { label: "G", code: "KeyG", note: "C6" },
+  { label: "H", code: "KeyH", note: "D6" },
+  { label: "J", code: "KeyJ", note: "E6" },
+  { label: "K", code: "KeyK", note: "F6" },
+  { label: "L", code: "KeyL", note: "G6" },
+  { label: "Z", code: "KeyZ", note: "A6" }
+];
 
-/* مكتبة الصوت */
+/* مكتبة الصوت – بيانو حقيقي */
 const SOUND_URL =
-"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_grand_piano-mp3/";
+  "https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_grand_piano-mp3/";
 
-/* تشغيل الصوت */
-function play(note){
-  const audio=new Audio(`${SOUND_URL}${note}.mp3`);
-  audio.currentTime=0;
+/* نمط الصوت (مجرد تغييرات بسيطة على مستوى الصوت والسرعة) */
+let currentVoice = "grand";
+const voiceSelect = document.getElementById("voiceSelect");
+voiceSelect.addEventListener("change", () => {
+  currentVoice = voiceSelect.value;
+});
+
+/* تشغيل الصوت مع بعض الاختلافات البسيطة بين الأنماط */
+function play(note) {
+  const audio = new Audio(`${SOUND_URL}${note}.mp3`);
+  audio.currentTime = 0;
+
+  if (currentVoice === "soft") {
+    audio.volume = 0.5;
+  } else if (currentVoice === "bright") {
+    audio.playbackRate = 1.05;
+    audio.volume = 1.0;
+  } else {
+    audio.volume = 0.9;
+  }
+
   audio.play();
 }
 
-/* إنشاء المفاتيح */
-const keysDiv=document.getElementById("keys");
+/* إنشاء المفاتيح في الـ DOM */
+const keysContainer = document.getElementById("keys");
 
-for(let key in KEY_MAP){
-  const note=KEY_MAP[key];
+KEYS.forEach(kInfo => {
+  const keyDiv = document.createElement("div");
+  keyDiv.className = "white-key";
+  keyDiv.dataset.code = kInfo.code;
+  keyDiv.dataset.note = kInfo.note;
 
-  const k=document.createElement("div");
-  k.className="white-key";
-  k.dataset.key=key;
-  k.dataset.note=note;
-  k.textContent=key;
+  const labelSpan = document.createElement("div");
+  labelSpan.className = "white-key-label";
+  labelSpan.textContent = kInfo.label;
+  keyDiv.appendChild(labelSpan);
 
-  k.onclick=()=>{
-    k.classList.add("active");
-    setTimeout(()=>k.classList.remove("active"),120);
-    play(note);
-  };
+  keyDiv.addEventListener("click", () => {
+    keyDiv.classList.add("active");
+    setTimeout(() => keyDiv.classList.remove("active"), 120);
+    play(kInfo.note);
+  });
 
-  keysDiv.appendChild(k);
-}
-
-/* تشغيل لوحة المفاتيح */
-window.addEventListener("keydown",(e)=>{
-  const key=e.key.toLowerCase();
-  const note=KEY_MAP[key];
-  if(!note) return;
-
-  const elem=document.querySelector(`.white-key[data-key="${key}"]`);
-  if(elem){
-    elem.classList.add("active");
-    setTimeout(()=>elem.classList.remove("active"),150);
-  }
-
-  play(note);
+  keysContainer.appendChild(keyDiv);
 });
 
-/* فتح وإغلاق الأيقونة */
-document.getElementById("pianoIcon").onclick=()=>{
-  let box=document.getElementById("pianoContainer");
-  box.style.display=box.style.display==="block"?"none":"block";
-};
+/* كيبورد – يستخدم event.code حتى لو الكيبورد عربي */
+window.addEventListener("keydown", (e) => {
+  const code = e.code;
+  const keyObj = KEYS.find(k => k.code === code);
+  if (!keyObj) return;
+
+  const elem = document.querySelector(`.white-key[data-code="${code}"]`);
+  if (elem) {
+    elem.classList.add("active");
+    setTimeout(() => elem.classList.remove("active"), 120);
+  }
+  play(keyObj.note);
+});
+
+/* فتح/إغلاق البيانو من الأيقونة */
+const pianoIcon = document.getElementById("pianoIcon");
+const pianoContainer = document.getElementById("pianoContainer");
+
+pianoIcon.addEventListener("click", () => {
+  const visible = pianoContainer.style.display === "block";
+  pianoContainer.style.display = visible ? "none" : "block";
+});
 </script>
 
 </body>
