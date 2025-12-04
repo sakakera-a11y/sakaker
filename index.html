@@ -2690,6 +2690,33 @@ jokeIcon.addEventListener('click', () => {
 </style>
 </head>
 <body>
+    
+<!-- 🐅 أيقونة النمر المشعة -->
+<div id="tigerIcon">🐅</div>
+
+<!-- نافذة الصورة -->
+<div id="popup">
+  <div id="popupContent">
+    <div id="closeBtn">×</div>
+
+    <!-- الصورة الأخيرة -->
+    <img src="https://c.top4top.io/p_3623vvtpu1.png" alt="Zodiac Image">
+  </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById("tigerIcon").onclick = () => {
+  document.getElementById("popup").style.display = "flex";
+};
+
+document.getElementById("closeBtn").onclick = () => {
+  document.getElementById("popup").style.display = "none";
+};
+</script>
+
+</body>
+</html>
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -4173,6 +4200,500 @@ document.addEventListener("DOMContentLoaded", () => {
   <button class="back3" onclick="goPage('page2')">⬅️ رجوع</button>
 
   <h1>
+      <!-- 🌙 أيقونة Emerald Music – معزولة بالكامل -->
+<div id="emz-open-btn"></div>
+
+<script>
+/* ==================== إعداد أيقونة الفتح (بدون تعارض) ==================== */
+const emzIcon = document.getElementById("emz-open-btn");
+emzIcon.style.position = "fixed";
+emzIcon.style.bottom = "140px";
+emzIcon.style.right = "25px";
+emzIcon.style.width = "70px";
+emzIcon.style.height = "70px";
+emzIcon.style.borderRadius = "50%";
+emzIcon.style.background = "rgba(255,255,255,0.08)";
+emzIcon.style.border = "2px solid rgba(255,255,255,0.25)";
+emzIcon.style.backdropFilter = "blur(6px)";
+emzIcon.style.backgroundImage =
+  "url('https://cdn-icons-png.flaticon.com/512/727/727245.png')";
+emzIcon.style.backgroundSize = "55%";
+emzIcon.style.backgroundPosition = "center";
+emzIcon.style.backgroundRepeat = "no-repeat";
+emzIcon.style.transition = "0.25s";
+emzIcon.style.cursor = "pointer";
+emzIcon.style.zIndex = "99999999999";
+
+emzIcon.onmouseover = () => {
+  emzIcon.style.backgroundColor = "rgba(0,255,213,0.12)";
+  emzIcon.style.borderColor = "#00ffd5";
+  emzIcon.style.boxShadow = "0 0 12px #00ffd5";
+  emzIcon.style.transform = "scale(1.08)";
+};
+
+emzIcon.onmouseout = () => {
+  emzIcon.style.backgroundColor = "rgba(255,255,255,0.08)";
+  emzIcon.style.borderColor = "rgba(255,255,255,0.25)";
+  emzIcon.style.boxShadow = "none";
+  emzIcon.style.transform = "scale(1)";
+};
+
+/* ==================== عند الضغط: إنشاء نافذة معزولة داخل Shadow DOM ==================== */
+emzIcon.onclick = () => {
+  // لو مفتوح من قبل لا نكرر
+  if (document.getElementById("emz-shadow-host")) return;
+
+  const host = document.createElement("div");
+  host.id = "emz-shadow-host";
+  host.style.position = "fixed";
+  host.style.inset = "0";
+  host.style.zIndex = "999999999999999";
+  document.body.appendChild(host);
+
+  const root = host.attachShadow({ mode: "closed" });
+
+  // HTML + CSS داخل الـ Shadow
+  root.innerHTML = `
+<style>
+.emz-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.78);
+  backdrop-filter: blur(7px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Tajawal", Arial, sans-serif;
+}
+
+.emz-box {
+  width: min(1000px, 96vw);
+  background: #050a10;
+  border-radius: 18px;
+  padding: 20px 22px 24px;
+  border: 1px solid #00ffd54b;
+  box-shadow: 0 0 30px #00ffd570;
+  color: #fff;
+  position: relative;
+}
+
+.emz-close {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  font-size: 26px;
+  cursor: pointer;
+  color: #00ffd5;
+  text-shadow: 0 0 10px #00ffd5;
+}
+
+.emz-title {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 6px;
+  color: #00ffd5;
+}
+
+.emz-sub {
+  text-align: center;
+  font-size: 12px;
+  opacity: 0.8;
+  margin-bottom: 12px;
+}
+
+.emz-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.emz-btn {
+  border-radius: 999px;
+  border: 1px solid rgba(0,255,213,0.4);
+  background: #0b141c;
+  color: #e0ffff;
+  padding: 4px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: 0.2s;
+}
+
+.emz-btn:hover {
+  background: #152536;
+}
+
+.emz-btn.active {
+  background: #00ffd5;
+  color: #001515;
+  box-shadow: 0 0 12px rgba(0,255,213,0.8);
+}
+
+.emz-rec-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid red;
+  background: #000;
+  box-shadow: 0 0 0 transparent;
+  transition: 0.2s;
+}
+
+.emz-rec-dot.recording {
+  background: red;
+  box-shadow: 0 0 12px red;
+}
+
+/* لوحة المفاتيح */
+.emz-keyboard-wrapper {
+  position: relative;
+  background: radial-gradient(circle at 0% 0%, #1a2635 0, #02060a 40%, #000 100%);
+  border-radius: 14px;
+  padding: 20px 10px 16px;
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
+  border: 1px solid rgba(255,255,255,0.08);
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.emz-white-row {
+  position: relative;
+  white-space: nowrap;
+}
+
+/* مفاتيح بيضاء */
+.emz-white {
+  display: inline-flex;
+  position: relative;
+  width: 46px;
+  height: 180px;
+  margin: 1px;
+  background: linear-gradient(to bottom,#fbfbfb 0%,#e6e6e6 40%,#cccccc 100%);
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 4px 0 #999, 0 6px 12px rgba(0,0,0,0.9);
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 6px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  transition: 0.07s;
+}
+
+.emz-white.active {
+  background: linear-gradient(to bottom,#f4ffff 0%,#d8fffb 40%,#c0f8f3 100%);
+  box-shadow: 0 1px 0 #666,0 3px 10px rgba(0,0,0,0.9),0 0 16px #00ffd5;
+  transform: translateY(3px);
+  color: #003b34;
+}
+
+/* مفاتيح سوداء */
+.emz-black {
+  position: absolute;
+  width: 30px;
+  height: 100px;
+  background: radial-gradient(circle at 20% 0%,#555 0,#060606 50%,#000 100%);
+  border-radius: 0 0 8px 8px;
+  color: #bffef7;
+  box-shadow: 0 4px 0 #000,0 6px 10px rgba(0,0,0,0.9);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 3px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: 0.07s;
+  z-index: 3;
+}
+
+.emz-black.active {
+  background: radial-gradient(circle at 20% 0%,#00ffd5 0,#011714 60%,#000 100%);
+  color: #00110e;
+  box-shadow: 0 2px 0 #000,0 3px 8px rgba(0,0,0,0.9),0 0 18px #00ffd5;
+  transform: translateY(3px);
+}
+
+/* تلميح */
+.emz-hint {
+  margin-top: 8px;
+  text-align: center;
+  font-size: 11px;
+  opacity: 0.8;
+  line-height: 1.5;
+}
+
+/* موبايل */
+@media (max-width: 720px) {
+  .emz-white { height: 140px; }
+  .emz-black { height: 80px; }
+}
+</style>
+
+<div class="emz-modal">
+  <div class="emz-box">
+    <div class="emz-close">✖</div>
+    <div class="emz-title">🎼 Emerald Music – بيانو & كمان – أبوالقمر زمرد</div>
+    <div class="emz-sub">
+      الأزرار البيضاء: 1–0 + A S D F G H J K L Z<br>
+      الأزرار السوداء: Q W E R T Y U I O P – نفس المفاتيح للبيانو والكمان.
+    </div>
+
+    <div class="emz-row">
+      <button class="emz-btn emz-mode-btn emz-active" data-mode="piano" id="emz-mode-piano">🎹 وضع البيانو</button>
+      <button class="emz-btn emz-mode-btn" data-mode="violin" id="emz-mode-violin">🎻 وضع الكمان (على الدو)</button>
+
+      <button class="emz-btn" id="emz-rec-btn">
+        ⏺ تسجيل
+        <span class="emz-rec-dot" id="emz-rec-dot"></span>
+      </button>
+
+      <button class="emz-btn" id="emz-playback-btn">▶ استماع للتسجيل</button>
+    </div>
+
+    <div class="emz-keyboard-wrapper">
+      <div class="emz-white-row" id="emz-white-keys"></div>
+    </div>
+
+    <div class="emz-hint">
+      يمكنك العزف بالماوس أو لوحة المفاتيح حتى لو لوحة المفاتيح بالعربي، لأن النظام يعتمد على <code>event.code</code>.
+    </div>
+  </div>
+</div>
+`;
+
+  /* ==================== سلوك داخلي (JS) ==================== */
+
+  // عناصر رئيسية من داخل الـ Shadow
+  const modal = root.querySelector(".emz-modal");
+  const box = root.querySelector(".emz-box");
+  const closeBtn = root.querySelector(".emz-close");
+  const whiteRow = root.getElementById("emz-white-keys");
+  const modePianoBtn = root.getElementById("emz-mode-piano");
+  const modeViolinBtn = root.getElementById("emz-mode-violin");
+  const recBtn = root.getElementById("emz-rec-btn");
+  const recDot = root.getElementById("emz-rec-dot");
+  const playbackBtn = root.getElementById("emz-playback-btn");
+
+  closeBtn.onclick = () => {
+    host.remove();
+  };
+
+  // تعريف المفاتيح البيضاء + السوداء (30 مفتاح = 20 أبيض + 10 أسود)
+  const WHITE_KEYS = [
+    { label: "1", code: "Digit1", note: "C4" },
+    { label: "2", code: "Digit2", note: "D4" },
+    { label: "3", code: "Digit3", note: "E4" },
+    { label: "4", code: "Digit4", note: "F4" },
+    { label: "5", code: "Digit5", note: "G4" },
+    { label: "6", code: "Digit6", note: "A4" },
+    { label: "7", code: "Digit7", note: "B4" },
+    { label: "8", code: "Digit8", note: "C5" },
+    { label: "9", code: "Digit9", note: "D5" },
+    { label: "0", code: "Digit0", note: "E5" },
+
+    { label: "A", code: "KeyA", note: "F5" },
+    { label: "S", code: "KeyS", note: "G5" },
+    { label: "D", code: "KeyD", note: "A5" },
+    { label: "F", code: "KeyF", note: "B5" },
+    { label: "G", code: "KeyG", note: "C6" },
+    { label: "H", code: "KeyH", note: "D6" },
+    { label: "J", code: "KeyJ", note: "E6" },
+    { label: "K", code: "KeyK", note: "F6" },
+    { label: "L", code: "KeyL", note: "G6" },
+    { label: "Z", code: "KeyZ", note: "A6" }
+  ];
+
+  const BLACK_KEYS = [
+    { label: "Q", code: "KeyQ", note: "C#4", pos: 0.7 },
+    { label: "W", code: "KeyW", note: "D#4", pos: 1.7 },
+
+    { label: "E", code: "KeyE", note: "F#4", pos: 3.7 },
+    { label: "R", code: "KeyR", note: "G#4", pos: 4.7 },
+    { label: "T", code: "KeyT", note: "A#4", pos: 5.7 },
+
+    { label: "Y", code: "KeyY", note: "C#5", pos: 7.7 },
+    { label: "U", code: "KeyU", note: "D#5", pos: 8.7 },
+
+    { label: "I", code: "KeyI", note: "F#5", pos: 10.7 },
+    { label: "O", code: "KeyO", note: "G#5", pos: 11.7 },
+    { label: "P", code: "KeyP", note: "A#5", pos: 12.7 }
+  ];
+
+  // رسم المفاتيح البيضاء
+  WHITE_KEYS.forEach((w) => {
+    const d = document.createElement("div");
+    d.className = "emz-white";
+    d.textContent = w.label;
+    d.dataset.note = w.note;
+    d.dataset.code = w.code;
+    whiteRow.appendChild(d);
+  });
+
+  // رسم المفاتيح السوداء
+  BLACK_KEYS.forEach((b) => {
+    const d = document.createElement("div");
+    d.className = "emz-black";
+    d.textContent = b.label;
+    d.dataset.note = b.note;
+    d.dataset.code = b.code;
+    d.style.left = `calc(${b.pos} * 46px)`;
+    whiteRow.appendChild(d);
+  });
+
+  /* ==================== إعداد الصوت (بيانو + كمان) ==================== */
+  const PIANO_BASE =
+    "https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_grand_piano-mp3/";
+  const VIOLIN_BASE =
+    "https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/violin-mp3/";
+
+  const SHARP_BASE = {
+    "C#4": "C4",
+    "D#4": "D4",
+    "F#4": "F4",
+    "G#4": "G4",
+    "A#4": "A4",
+    "C#5": "C5",
+    "D#5": "D5",
+    "F#5": "F5",
+    "G#5": "G5",
+    "A#5": "A5"
+  };
+
+  let currentInstrument = "piano"; // piano | violin
+
+  function setInstrument(mode) {
+    currentInstrument = mode;
+    if (mode === "piano") {
+      modePianoBtn.classList.add("active");
+      modeViolinBtn.classList.remove("active");
+    } else {
+      modeViolinBtn.classList.add("active");
+      modePianoBtn.classList.remove("active");
+    }
+  }
+
+  modePianoBtn.onclick = () => setInstrument("piano");
+  modeViolinBtn.onclick = () => setInstrument("violin");
+
+  function playSample(note, volume = 1.0, instrument = null) {
+    let urlNote = note;
+    let rate = 1.0;
+
+    if (note.includes("#") && SHARP_BASE[note]) {
+      urlNote = SHARP_BASE[note];
+      rate = Math.pow(2, 1 / 12); // نصف درجة
+    }
+
+    const inst = instrument || currentInstrument;
+    const baseUrl = inst === "violin" ? VIOLIN_BASE : PIANO_BASE;
+
+    const audio = new Audio(baseUrl + urlNote + ".mp3");
+    audio.playbackRate = rate;
+    audio.volume = volume;
+    audio.currentTime = 0;
+
+    audio.onerror = () => {
+      // لو ملف الكمان غير موجود نرجع للبيانو
+      if (baseUrl !== PIANO_BASE) {
+        const fallback = new Audio(PIANO_BASE + urlNote + ".mp3");
+        fallback.playbackRate = rate;
+        fallback.volume = volume;
+        fallback.play();
+      }
+    };
+
+    audio.play();
+  }
+
+  /* ==================== تسجيل العزف ==================== */
+  let isRecording = false;
+  let recordStart = 0;
+  let recordedEvents = [];
+
+  recBtn.onclick = () => {
+    if (!isRecording) {
+      recordedEvents = [];
+      recordStart = performance.now();
+      isRecording = true;
+      recDot.classList.add("recording");
+    } else {
+      isRecording = false;
+      recDot.classList.remove("recording");
+    }
+  };
+
+  playbackBtn.onclick = () => {
+    if (!recordedEvents.length) return;
+    recordedEvents.forEach((ev) => {
+      setTimeout(() => {
+        const elem = root.querySelector(
+          '.emz-white[data-code="' + ev.code + '"], .emz-black[data-code="' + ev.code + '"]'
+        );
+        if (elem) {
+          elem.classList.add("active");
+          playSample(ev.note, 0.95, ev.instrument);
+          setTimeout(() => elem.classList.remove("active"), 130);
+        } else {
+          playSample(ev.note, 0.95, ev.instrument);
+        }
+      }, ev.time);
+    });
+  };
+
+  function playNote(note, elem, codeForRecord) {
+    if (!note) return;
+
+    if (elem) {
+      elem.classList.add("active");
+      setTimeout(() => elem.classList.remove("active"), 130);
+    }
+
+    playSample(note, 0.95);
+
+    if (isRecording) {
+      const now = performance.now();
+      const t = now - recordStart;
+      recordedEvents.push({
+        time: t,
+        note,
+        code: codeForRecord,
+        instrument: currentInstrument
+      });
+    }
+  }
+
+  /* ==================== تفاعل الماوس مع المفاتيح ==================== */
+  root.querySelectorAll(".emz-white, .emz-black").forEach((key) => {
+    key.addEventListener("click", () => {
+      playNote(key.dataset.note, key, key.dataset.code);
+    });
+  });
+
+  /* ==================== تفاعل لوحة المفاتيح (حتى لو الكيبورد عربي) ==================== */
+  function handleKeyDown(e) {
+    // نتاكد أن النافذة مازالت موجودة
+    if (!document.body.contains(host)) {
+      window.removeEventListener("keydown", handleKeyDown);
+      return;
+    }
+
+    const code = e.code;
+    const elem = root.querySelector(
+      '.emz-white[data-code="' + code + '"], .emz-black[data-code="' + code + '"]'
+    );
+    if (!elem) return;
+    playNote(elem.dataset.note, elem, code);
+  }
+
+  window.addEventListener("keydown", handleKeyDown);
+};
+</script>
+
       <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -4180,8 +4701,7 @@ document.addEventListener("DOMContentLoaded", () => {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tiger Icon Popup – abwalqmrzmrd</title>
 
-<style>
-body {
+<style> {
   margin: 0;
   padding: 0;
   background: #000;
@@ -4262,661 +4782,6 @@ body {
 </head>
 <body>
 
-<!-- 🐅 أيقونة النمر المشعة -->
-<div id="tigerIcon">🐅</div>
-
-<!-- نافذة الصورة -->
-<div id="popup">
-  <div id="popupContent">
-    <div id="closeBtn">×</div>
-
-    <!-- الصورة الأخيرة -->
-    <img src="https://c.top4top.io/p_3623vvtpu1.png" alt="Zodiac Image">
-  </div>
-</div>
-
-<!-- JavaScript -->
-<script>
-document.getElementById("tigerIcon").onclick = () => {
-  document.getElementById("popup").style.display = "flex";
-};
-
-document.getElementById("closeBtn").onclick = () => {
-  document.getElementById("popup").style.display = "none";
-};
-</script>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<title>Emerald Pro Piano – Abwalqmrzmrd</title>
-
-<style>
-  :root {
-    --emerald: #00ffd5;
-    --emerald-soft: #00c8a0;
-    --bg-dark: #05060a;
-  }
-
-  * {
-    box-sizing: border-box;
-  }
-
-  {
-    margin: 0;
-    height: 100vh;
-    background: radial-gradient(circle at 10% 0%, #18243a 0, #05060a 40%, #000 100%);
-    font-family: "Tajawal", sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-    overflow: hidden;
-  }
-
-  /* أيقونة فتح البيانو */
-  #pianoIcon {
-    position: fixed;
-    bottom: 25px;
-    right: 325px;
-    width: 90px;
-    height: 90px;
-    background: var(--emerald);
-    border-radius: 50%;
-    box-shadow: 0 0 18px var(--emerald), 0 0 40px rgba(0,255,213,0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    text-align: center;
-    font-weight: bold;
-    color: #000;
-    z-index: 9999;
-    border: 2px solid #000;
-  }
-
-  #pianoIcon span {
-    font-size: 22px;
-    display: block;
-  }
-
-  /* حاوية البيانو الرئيسية */
-  #pianoContainer {
-    position: relative;
-    width: min(1000px, 96vw);
-    padding: 18px 20px 26px;
-    border-radius: 20px;
-    background: radial-gradient(circle at 0% 0%, #1a2a3f 0, #05060a 40%, #000 100%);
-    box-shadow:
-      0 0 30px rgba(0,0,0,0.9),
-      0 0 35px rgba(0,255,213,0.4);
-    border: 1px solid rgba(0,255,213,0.25);
-    display: none;
-    z-index: 10;
-  }
-
-  .piano-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-    gap: 10px;
-  }
-
-  .piano-title {
-    font-size: 18px;
-    font-weight: bold;
-    background: linear-gradient(45deg, #fff, var(--emerald), #7ffff2);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 12px rgba(0,255,213,0.7);
-  }
-
-  .piano-sub {
-    font-size: 12px;
-    opacity: 0.8;
-  }
-
-  .piano-info {
-    font-size: 11px;
-    opacity: 0.85;
-    margin-bottom: 10px;
-  }
-
-  /* شريط تحكم */
-  .control-bar {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    font-size: 11px;
-  }
-
-  .control-label {
-    opacity: 0.8;
-    white-space: nowrap;
-  }
-
-  .control-select {
-    background: #0a1118;
-    color: #fff;
-    border-radius: 999px;
-    border: 1px solid rgba(0,255,213,0.3);
-    padding: 3px 10px;
-    font-size: 11px;
-    cursor: pointer;
-  }
-
-  .control-btn {
-    background: #0a1118;
-    border-radius: 999px;
-    border: 1px solid rgba(0,255,213,0.3);
-    padding: 3px 8px;
-    font-size: 11px;
-    cursor: pointer;
-    color: #fff;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .control-btn span {
-    font-size: 11px;
-  }
-
-  .control-btn:hover {
-    background: #12202d;
-  }
-
-  /* زر FX */
-  #fxToggle.active {
-    border-color: var(--emerald);
-    box-shadow: 0 0 8px rgba(0,255,213,0.6);
-  }
-
-  /* نقطة تسجيل صغيرة */
-  #recDot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    border: 1px solid #ff4b4b;
-    background: transparent;
-    margin-left: 4px;
-    box-shadow: 0 0 0 transparent;
-    transition: 0.15s;
-  }
-
-  #recDot.recording {
-    background: #ff2a2a;
-    box-shadow: 0 0 10px rgba(255,0,0,0.8);
-  }
-
-  /* منطقة المفاتيح */
-  .keyboard-wrapper {
-    position: relative;
-    background: linear-gradient(to bottom, #222 0%, #050505 40%, #000 100%);
-    border-radius: 14px;
-    padding: 24px 14px 18px;
-    box-shadow:
-      inset 0 0 25px rgba(0,0,0,0.9),
-      0 0 18px rgba(0,0,0,0.8);
-    border: 1px solid rgba(255,255,255,0.05);
-    overflow: hidden;
-  }
-
-  .keys-row-whites {
-    display: flex;
-    justify-content: center;
-    gap: 4px;
-    position: relative;
-    z-index: 1;
-  }
-
-  /* مفاتيح بيضاء */
-  .white-key {
-    position: relative;
-    width: calc((100% - 4px * 19) / 20);
-    max-width: 50px;
-    height: 180px;
-    background: linear-gradient(to bottom, #fdfdfd 0%, #e5e5e5 40%, #cfcfcf 100%);
-    border-radius: 0 0 10px 10px;
-    box-shadow:
-      0 4px 0 #999,
-      0 6px 10px rgba(0,0,0,0.9);
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    padding-bottom: 8px;
-    font-size: 14px;
-    color: #333;
-    cursor: pointer;
-    user-select: none;
-    transition: transform 0.07s, box-shadow 0.07s, background 0.07s;
-  }
-
-  .white-key-label {
-    font-weight: bold;
-    text-shadow: 0 0 4px rgba(0,0,0,0.3);
-  }
-
-  .white-key::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 6px;
-    right: 6px;
-    height: 22px;
-    border-radius: 0 0 10px 10px;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.35), transparent);
-    opacity: 0.4;
-    pointer-events: none;
-  }
-
-  .white-key.active {
-    transform: translateY(4px);
-    box-shadow:
-      0 1px 0 #666,
-      0 3px 8px rgba(0,0,0,0.9),
-      0 0 18px rgba(0,255,213,0.7);
-    background: linear-gradient(to bottom, #f7ffff 0%, #dffefd 40%, #c7f7f4 100%);
-  }
-
-  .white-key.active .white-key-label {
-    color: #00463f;
-  }
-
-  /* مفاتيح سوداء زمردية */
-  .black-key {
-    position: absolute;
-    width: 60%;
-    max-width: 34px;
-    height: 60%;
-    background: radial-gradient(circle at 20% 0%, #444 0, #050505 50%, #000 100%);
-    border-radius: 0 0 9px 9px;
-    box-shadow:
-      0 4px 0 #000,
-      0 6px 10px rgba(0,0,0,0.9);
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    padding-bottom: 4px;
-    font-size: 11px;
-    color: #e0ffff;
-    cursor: pointer;
-    user-select: none;
-    transition: transform 0.07s, box-shadow 0.07s, background 0.07s;
-    z-index: 3;
-  }
-
-  .black-key-label {
-    font-weight: bold;
-    text-shadow: 0 0 4px rgba(0,255,213,0.6);
-  }
-
-  .black-key.active {
-    transform: translateY(3px);
-    box-shadow:
-      0 2px 0 #000,
-      0 3px 8px rgba(0,0,0,0.9),
-      0 0 18px rgba(0,255,213,0.9);
-    background: radial-gradient(circle at 20% 0%, #00ffd5 0, #021515 60%, #000 100%);
-  }
-
-  .legend-row {
-    margin-top: 10px;
-    text-align: center;
-    font-size: 11px;
-    opacity: 0.8;
-    line-height: 1.6;
-  }
-
-  .legend-row code {
-    font-family: "Consolas", "Courier New", monospace;
-  }
-
-  @media (max-width: 720px) {
-    #pianoContainer {
-      bottom: 10px;
-      right: 2%;
-      left: 2%;
-      width: auto;
-      padding: 14px 10px 18px;
-    }
-    .white-key {
-      height: 140px;
-      font-size: 11px;
-      padding-bottom: 5px;
-    }
-    .black-key {
-      height: 58%;
-      font-size: 9px;
-    }
-    .piano-header {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  }
-</style>
-</head>
-
-<body>
-
-<!-- أيقونة فتح البيانو -->
-<div id="pianoIcon">
-  <span>🎹</span>
-</div>
-
-<!-- حاوية البيانو -->
-<div id="pianoContainer">
-  <div class="piano-header">
-    <div>
-      <div class="piano-title">Emerald Pro Piano – أبوالقمر زمرد</div>
-      <div class="piano-sub">
-      
-      </div>
-    </div>
-    <div class="control-bar">
-      <span class="control-label">نمط الصوت:</span>
-      <select class="control-select" id="voiceSelect">
-        <option value="grand">Grand Piano</option>
-        <option value="soft">Soft Touch</option>
-        <option value="bright">Bright</option>
-      </select>
-
-      <button class="control-btn" id="fxToggle" title="تفعيل/إلغاء الصدى">
-        <span>FX</span>ئ
-      </button>
-
-      <button class="control-btn" id="recButton" title="تسجيل العزف / إيقاف تسجيل">
-        <span>تسجيل</span>
-        <div id="recDot"></div>
-      </button>
-
-      <button class="control-btn" id="playRecordBtn" title="تشغيل آخر تسجيل">
-        ▶
-      </button>
-    </div>
-  </div>
-
-  <div class="piano-info">
- 
-  </div>
-
-  <div class="keyboard-wrapper" id="keyboardWrapper">
-    <div class="keys-row-whites" id="keysWhites"></div>
-  </div>
-
-  <div class="legend-row">
-   
-    
-
-    </div>
-    <div style="margin-top:4px;">
-     
-    </div>
-  </div>
-</div>
-
-<script>
-/* 🎵 المفاتيح البيضاء: 20 مفتاح (أرقام + حروف) */
-const WHITE_KEYS = [
-  { label: "1", code: "Digit1", note: "C4" },
-  { label: "2", code: "Digit2", note: "D4" },
-  { label: "3", code: "Digit3", note: "E4" },
-  { label: "4", code: "Digit4", note: "F4" },
-  { label: "5", code: "Digit5", note: "G4" },
-  { label: "6", code: "Digit6", note: "A4" },
-  { label: "7", code: "Digit7", note: "B4" },
-  { label: "8", code: "Digit8", note: "C5" },
-  { label: "9", code: "Digit9", note: "D5" },
-  { label: "0", code: "Digit0", note: "E5" },
-
-  { label: "A", code: "KeyA", note: "F5" },
-  { label: "S", code: "KeyS", note: "G5" },
-  { label: "D", code: "KeyD", note: "A5" },
-  { label: "F", code: "KeyF", note: "B5" },
-  { label: "G", code: "KeyG", note: "C6" },
-  { label: "H", code: "KeyH", note: "D6" },
-  { label: "J", code: "KeyJ", note: "E6" },
-  { label: "K", code: "KeyK", note: "F6" },
-  { label: "L", code: "KeyL", note: "G6" },
-  { label: "Z", code: "KeyZ", note: "A6" }
-];
-
-/* 🎵 المفاتيح السوداء: زمردية */
-const BLACK_KEYS = [
-  // بين 1 و 2 (C#4)
-  { label: "Q", code: "KeyQ", note: "C#4", leftIndex: 0, rightIndex: 1 },
-  // بين 2 و 3 (D#4)
-  { label: "W", code: "KeyW", note: "D#4", leftIndex: 1, rightIndex: 2 },
-
-  // بين 4 و 5 (F#4)
-  { label: "E", code: "KeyE", note: "F#4", leftIndex: 3, rightIndex: 4 },
-  // بين 5 و 6 (G#4)
-  { label: "R", code: "KeyR", note: "G#4", leftIndex: 4, rightIndex: 5 },
-  // بين 6 و 7 (A#4)
-  { label: "T", code: "KeyT", note: "A#4", leftIndex: 5, rightIndex: 6 },
-
-  // بين 8 و 9 (C#5)
-  { label: "Y", code: "KeyY", note: "C#5", leftIndex: 7, rightIndex: 8 },
-  // بين 9 و 0 (D#5)
-  { label: "U", code: "KeyU", note: "D#5", leftIndex: 8, rightIndex: 9 },
-
-  // بين A و S (F#5)
-  { label: "I", code: "KeyI", note: "F#5", leftIndex: 10, rightIndex: 11 },
-  // بين S و D (G#5)
-  { label: "O", code: "KeyO", note: "G#5", leftIndex: 11, rightIndex: 12 },
-  // بين D و F (A#5)
-  { label: "P", code: "KeyP", note: "A#5", leftIndex: 12, rightIndex: 13 }
-];
-
-/* مكتبة الصوت – بيانو حقيقي */
-const SOUND_URL =
-  "https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_grand_piano-mp3/";
-
-/* ماب لربط النغمات السوداء بملفات النغمات البيضاء مع تغيير طبقة الصوت */
-const SHARP_BASE = {
-  "C#4": "C4",
-  "D#4": "D4",
-  "F#4": "F4",
-  "G#4": "G4",
-  "A#4": "A4",
-  "C#5": "C5",
-  "D#5": "D5",
-  "F#5": "F5",
-  "G#5": "G5",
-  "A#5": "A5"
-};
-
-/* نمط الصوت: Grand / Soft / Bright */
-let currentVoice = "grand";
-const voiceSelect = document.getElementById("voiceSelect");
-voiceSelect.addEventListener("change", () => {
-  currentVoice = voiceSelect.value;
-});
-
-/* FX (صدى بسيط) */
-let fxEnabled = false;
-const fxToggle = document.getElementById("fxToggle");
-fxToggle.addEventListener("click", () => {
-  fxEnabled = !fxEnabled;
-  fxToggle.classList.toggle("active", fxEnabled);
-});
-
-/* تسجيل العزف */
-let isRecording = false;
-let recordStartTime = 0;
-let recordedEvents = [];
-const recButton = document.getElementById("recButton");
-const recDot = document.getElementById("recDot");
-const playRecordBtn = document.getElementById("playRecordBtn");
-
-recButton.addEventListener("click", () => {
-  if (!isRecording) {
-    recordedEvents = [];
-    recordStartTime = performance.now();
-    isRecording = true;
-    recDot.classList.add("recording");
-    recButton.title = "إيقاف التسجيل";
-  } else {
-    isRecording = false;
-    recDot.classList.remove("recording");
-    recButton.title = "تسجيل العزف / إيقاف تسجيل";
-  }
-});
-
-playRecordBtn.addEventListener("click", () => {
-  if (!recordedEvents.length) return;
-  recordedEvents.forEach(ev => {
-    setTimeout(() => {
-      const elem = document.querySelector(
-        `.white-key[data-code="${ev.code}"], .black-key[data-code="${ev.code}"]`
-      );
-      playNote(ev.note, elem, false);
-    }, ev.time);
-  });
-});
-
-/* تشغيل عينة صوت واحدة */
-function playSample(note, volume = 1.0) {
-  let urlNote = note;
-  let rate = 1.0;
-
-  // إذا النغمة فيها # (مفتاح أسود) نستخدم النغمة الأساسية ونرفع طبقة الصوت
-  if (note.includes("#") && SHARP_BASE[note]) {
-    urlNote = SHARP_BASE[note];
-    rate = Math.pow(2, 1 / 12); // نصف درجة موسيقية لأعلى
-  }
-
-  const audio = new Audio(`${SOUND_URL}${urlNote}.mp3`);
-
-  // نمط الصوت
-  if (currentVoice === "soft") {
-    audio.volume = volume * 0.5;
-  } else if (currentVoice === "bright") {
-    audio.volume = volume;
-    rate *= 1.05;
-  } else {
-    audio.volume = volume * 0.9;
-  }
-
-  audio.playbackRate = rate;
-  audio.currentTime = 0;
-  audio.play();
-}
-
-/* تشغيل نغمة مع التأثيرات والتسجيل */
-function playNote(note, keyElem, shouldRecord = true, codeForRecord = null) {
-  if (!note) return;
-
-  if (keyElem) {
-    keyElem.classList.add("active");
-    setTimeout(() => keyElem.classList.remove("active"), 130);
-  }
-
-  playSample(note, 1.0);
-
-  if (fxEnabled) {
-    setTimeout(() => playSample(note, 0.45), 120);
-    setTimeout(() => playSample(note, 0.28), 260);
-  }
-
-  if (isRecording && shouldRecord) {
-    const now = performance.now();
-    const t = now - recordStartTime;
-    recordedEvents.push({
-      time: t,
-      note,
-      code: codeForRecord || (keyElem ? keyElem.dataset.code : "")
-    });
-  }
-}
-
-/* إنشاء المفاتيح البيضاء */
-const keysWhitesContainer = document.getElementById("keysWhites");
-WHITE_KEYS.forEach(info => {
-  const keyDiv = document.createElement("div");
-  keyDiv.className = "white-key";
-  keyDiv.dataset.code = info.code;
-  keyDiv.dataset.note = info.note;
-
-  const labelSpan = document.createElement("div");
-  labelSpan.className = "white-key-label";
-  labelSpan.textContent = info.label;
-  keyDiv.appendChild(labelSpan);
-
-  keyDiv.addEventListener("click", () => {
-    playNote(info.note, keyDiv, true, info.code);
-  });
-
-  keysWhitesContainer.appendChild(keyDiv);
-});
-
-/* إنشاء المفاتيح السوداء فوق البيضاء */
-function createBlackKeys() {
-  const wrapper = document.getElementById("keyboardWrapper");
-  const whiteElems = wrapper.querySelectorAll(".white-key");
-  const wrapperRect = wrapper.getBoundingClientRect();
-
-  BLACK_KEYS.forEach(info => {
-    const leftWhite = whiteElems[info.leftIndex];
-    const rightWhite = whiteElems[info.rightIndex];
-    if (!leftWhite || !rightWhite) return;
-
-    const leftRect = leftWhite.getBoundingClientRect();
-    const rightRect = rightWhite.getBoundingClientRect();
-    const centerX = (leftRect.right + rightRect.left) / 2;
-    const wrapperLeft = wrapperRect.left;
-
-    const blackDiv = document.createElement("div");
-    blackDiv.className = "black-key";
-    blackDiv.dataset.code = info.code;
-    blackDiv.dataset.note = info.note;
-
-    const labelSpan = document.createElement("div");
-    labelSpan.className = "black-key-label";
-    labelSpan.textContent = info.label;
-    blackDiv.appendChild(labelSpan);
-
-    blackDiv.style.top = "8px";
-    blackDiv.style.left = (centerX - wrapperLeft) + "px";
-    blackDiv.style.transform = "translateX(-50%)";
-
-    blackDiv.addEventListener("click", () => {
-      playNote(info.note, blackDiv, true, info.code);
-    });
-
-    wrapper.appendChild(blackDiv);
-  });
-}
-
-window.addEventListener("load", createBlackKeys);
-
-/* كيبورد – باستخدام event.code */
-window.addEventListener("keydown", (e) => {
-  const code = e.code;
-  const elem = document.querySelector(
-    `.white-key[data-code="${code}"], .black-key[data-code="${code}"]`
-  );
-  if (!elem) return;
-  const note = elem.dataset.note;
-  playNote(note, elem, true, code);
-});
-
-/* فتح/إغلاق البيانو */
-const pianoIcon = document.getElementById("pianoIcon");
-const pianoContainer = document.getElementById("pianoContainer");
-
-pianoIcon.addEventListener("click", () => {
-  const visible = pianoContainer.style.display === "block";
-  pianoContainer.style.display = visible ? "none" : "block";
-});
-</script>
-
-</body>
-</html>
 
 <!-- ========== أيقونة الأعمال ========== -->
 <div id="worksIconContainer" style="
