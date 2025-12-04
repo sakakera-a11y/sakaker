@@ -4305,7 +4305,7 @@ document.getElementById("closeBtn").onclick = () => {
     box-sizing: border-box;
   }
 
-  body {
+  {
     margin: 0;
     height: 100vh;
     background: radial-gradient(circle at 10% 0%, #18243a 0, #05060a 40%, #000 100%);
@@ -4321,7 +4321,7 @@ document.getElementById("closeBtn").onclick = () => {
   #pianoIcon {
     position: fixed;
     bottom: 25px;
-    right: 225px;
+    right: 325px;
     width: 90px;
     height: 90px;
     background: var(--emerald);
@@ -4380,11 +4380,77 @@ document.getElementById("closeBtn").onclick = () => {
     opacity: 0.8;
   }
 
-  /* شريط صغير للمعلومات */
   .piano-info {
     font-size: 11px;
-    opacity: 0.8;
+    opacity: 0.85;
     margin-bottom: 10px;
+  }
+
+  /* شريط تحكم */
+  .control-bar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-size: 11px;
+  }
+
+  .control-label {
+    opacity: 0.8;
+    white-space: nowrap;
+  }
+
+  .control-select {
+    background: #0a1118;
+    color: #fff;
+    border-radius: 999px;
+    border: 1px solid rgba(0,255,213,0.3);
+    padding: 3px 10px;
+    font-size: 11px;
+    cursor: pointer;
+  }
+
+  .control-btn {
+    background: #0a1118;
+    border-radius: 999px;
+    border: 1px solid rgba(0,255,213,0.3);
+    padding: 3px 8px;
+    font-size: 11px;
+    cursor: pointer;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .control-btn span {
+    font-size: 11px;
+  }
+
+  .control-btn:hover {
+    background: #12202d;
+  }
+
+  /* زر FX */
+  #fxToggle.active {
+    border-color: var(--emerald);
+    box-shadow: 0 0 8px rgba(0,255,213,0.6);
+  }
+
+  /* نقطة تسجيل صغيرة */
+  #recDot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid #ff4b4b;
+    background: transparent;
+    margin-left: 4px;
+    box-shadow: 0 0 0 transparent;
+    transition: 0.15s;
+  }
+
+  #recDot.recording {
+    background: #ff2a2a;
+    box-shadow: 0 0 10px rgba(255,0,0,0.8);
   }
 
   /* منطقة المفاتيح */
@@ -4392,20 +4458,23 @@ document.getElementById("closeBtn").onclick = () => {
     position: relative;
     background: linear-gradient(to bottom, #222 0%, #050505 40%, #000 100%);
     border-radius: 14px;
-    padding: 18px 14px 14px;
+    padding: 24px 14px 18px;
     box-shadow:
       inset 0 0 25px rgba(0,0,0,0.9),
       0 0 18px rgba(0,0,0,0.8);
     border: 1px solid rgba(255,255,255,0.05);
+    overflow: hidden;
   }
 
-  .keys-row {
+  .keys-row-whites {
     display: flex;
     justify-content: center;
     gap: 4px;
+    position: relative;
+    z-index: 1;
   }
 
-  /* مفاتيح البيانو (أسلوب GarageBand) */
+  /* مفاتيح بيضاء */
   .white-key {
     position: relative;
     width: calc((100% - 4px * 19) / 20);
@@ -4458,35 +4527,53 @@ document.getElementById("closeBtn").onclick = () => {
     color: #00463f;
   }
 
-  /* شريط تحت يوضح الاختصارات */
+  /* مفاتيح سوداء زمردية */
+  .black-key {
+    position: absolute;
+    width: 60%;
+    max-width: 34px;
+    height: 60%;
+    background: radial-gradient(circle at 20% 0%, #444 0, #050505 50%, #000 100%);
+    border-radius: 0 0 9px 9px;
+    box-shadow:
+      0 4px 0 #000,
+      0 6px 10px rgba(0,0,0,0.9);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding-bottom: 4px;
+    font-size: 11px;
+    color: #e0ffff;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.07s, box-shadow 0.07s, background 0.07s;
+    z-index: 3;
+  }
+
+  .black-key-label {
+    font-weight: bold;
+    text-shadow: 0 0 4px rgba(0,255,213,0.6);
+  }
+
+  .black-key.active {
+    transform: translateY(3px);
+    box-shadow:
+      0 2px 0 #000,
+      0 3px 8px rgba(0,0,0,0.9),
+      0 0 18px rgba(0,255,213,0.9);
+    background: radial-gradient(circle at 20% 0%, #00ffd5 0, #021515 60%, #000 100%);
+  }
+
   .legend-row {
     margin-top: 10px;
     text-align: center;
     font-size: 11px;
-    opacity: 0.75;
-  }
-
-  /* 🔊 شريط التحكم البسيط (الصوت، نوع العزف لاحقاً لو حبيت نطوره) */
-  .control-bar {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    justify-content: flex-end;
-    font-size: 11px;
-  }
-
-  .control-label {
     opacity: 0.8;
+    line-height: 1.6;
   }
 
-  .control-select {
-    background: #0a1118;
-    color: #fff;
-    border-radius: 999px;
-    border: 1px solid rgba(0,255,213,0.3);
-    padding: 4px 10px;
-    font-size: 11px;
-    cursor: pointer;
+  .legend-row code {
+    font-family: "Consolas", "Courier New", monospace;
   }
 
   @media (max-width: 720px) {
@@ -4501,6 +4588,10 @@ document.getElementById("closeBtn").onclick = () => {
       height: 140px;
       font-size: 11px;
       padding-bottom: 5px;
+    }
+    .black-key {
+      height: 58%;
+      font-size: 9px;
     }
     .piano-header {
       flex-direction: column;
@@ -4522,34 +4613,55 @@ document.getElementById("closeBtn").onclick = () => {
   <div class="piano-header">
     <div>
       <div class="piano-title">Emerald Pro Piano – أبوالقمر زمرد</div>
-      <div class="piano-sub">استخدم الأرقام 1–0 والحروف A S D F G H J K L Z أو بالماوس</div>
+      <div class="piano-sub">
+      
+      </div>
     </div>
     <div class="control-bar">
-      <span class="control-label">نمط العزف (شكلي فقط):</span>
+      <span class="control-label">نمط الصوت:</span>
       <select class="control-select" id="voiceSelect">
         <option value="grand">Grand Piano</option>
         <option value="soft">Soft Touch</option>
         <option value="bright">Bright</option>
       </select>
+
+      <button class="control-btn" id="fxToggle" title="تفعيل/إلغاء الصدى">
+        <span>FX</span>ئ
+      </button>
+
+      <button class="control-btn" id="recButton" title="تسجيل العزف / إيقاف تسجيل">
+        <span>تسجيل</span>
+        <div id="recDot"></div>
+      </button>
+
+      <button class="control-btn" id="playRecordBtn" title="تشغيل آخر تسجيل">
+        ▶
+      </button>
     </div>
   </div>
 
   <div class="piano-info">
-    ✅ يعمل حتى لو لوحة المفاتيح بالعربي (باستخدام <code>event.code</code>) – الصوت حقيقي لعينة بيانو، والإضاءة زمردية عند الضغط.
+ 
   </div>
 
-  <div class="keyboard-wrapper">
-    <div class="keys-row" id="keys"></div>
+  <div class="keyboard-wrapper" id="keyboardWrapper">
+    <div class="keys-row-whites" id="keysWhites"></div>
   </div>
 
-    <div class="legend-row">
-      الصف الأول: 1 2 3 4 5 6 7 8 9 0 &nbsp; | &nbsp; الصف الثاني: A S D F G H J K L Z
+  <div class="legend-row">
+   
+    
+
     </div>
+    <div style="margin-top:4px;">
+     
+    </div>
+  </div>
 </div>
 
 <script>
-/* 🎵 تعريف المفاتيح: الملصق + كود الكيبورد + النغمة */
-const KEYS = [
+/* 🎵 المفاتيح البيضاء: 20 مفتاح (أرقام + حروف) */
+const WHITE_KEYS = [
   { label: "1", code: "Digit1", note: "C4" },
   { label: "2", code: "Digit2", note: "D4" },
   { label: "3", code: "Digit3", note: "E4" },
@@ -4573,72 +4685,227 @@ const KEYS = [
   { label: "Z", code: "KeyZ", note: "A6" }
 ];
 
+/* 🎵 المفاتيح السوداء: زمردية */
+const BLACK_KEYS = [
+  // بين 1 و 2 (C#4)
+  { label: "Q", code: "KeyQ", note: "C#4", leftIndex: 0, rightIndex: 1 },
+  // بين 2 و 3 (D#4)
+  { label: "W", code: "KeyW", note: "D#4", leftIndex: 1, rightIndex: 2 },
+
+  // بين 4 و 5 (F#4)
+  { label: "E", code: "KeyE", note: "F#4", leftIndex: 3, rightIndex: 4 },
+  // بين 5 و 6 (G#4)
+  { label: "R", code: "KeyR", note: "G#4", leftIndex: 4, rightIndex: 5 },
+  // بين 6 و 7 (A#4)
+  { label: "T", code: "KeyT", note: "A#4", leftIndex: 5, rightIndex: 6 },
+
+  // بين 8 و 9 (C#5)
+  { label: "Y", code: "KeyY", note: "C#5", leftIndex: 7, rightIndex: 8 },
+  // بين 9 و 0 (D#5)
+  { label: "U", code: "KeyU", note: "D#5", leftIndex: 8, rightIndex: 9 },
+
+  // بين A و S (F#5)
+  { label: "I", code: "KeyI", note: "F#5", leftIndex: 10, rightIndex: 11 },
+  // بين S و D (G#5)
+  { label: "O", code: "KeyO", note: "G#5", leftIndex: 11, rightIndex: 12 },
+  // بين D و F (A#5)
+  { label: "P", code: "KeyP", note: "A#5", leftIndex: 12, rightIndex: 13 }
+];
+
 /* مكتبة الصوت – بيانو حقيقي */
 const SOUND_URL =
   "https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_grand_piano-mp3/";
 
-/* نمط الصوت (مجرد تغييرات بسيطة على مستوى الصوت والسرعة) */
+/* ماب لربط النغمات السوداء بملفات النغمات البيضاء مع تغيير طبقة الصوت */
+const SHARP_BASE = {
+  "C#4": "C4",
+  "D#4": "D4",
+  "F#4": "F4",
+  "G#4": "G4",
+  "A#4": "A4",
+  "C#5": "C5",
+  "D#5": "D5",
+  "F#5": "F5",
+  "G#5": "G5",
+  "A#5": "A5"
+};
+
+/* نمط الصوت: Grand / Soft / Bright */
 let currentVoice = "grand";
 const voiceSelect = document.getElementById("voiceSelect");
 voiceSelect.addEventListener("change", () => {
   currentVoice = voiceSelect.value;
 });
 
-/* تشغيل الصوت مع بعض الاختلافات البسيطة بين الأنماط */
-function play(note) {
-  const audio = new Audio(`${SOUND_URL}${note}.mp3`);
-  audio.currentTime = 0;
+/* FX (صدى بسيط) */
+let fxEnabled = false;
+const fxToggle = document.getElementById("fxToggle");
+fxToggle.addEventListener("click", () => {
+  fxEnabled = !fxEnabled;
+  fxToggle.classList.toggle("active", fxEnabled);
+});
 
-  if (currentVoice === "soft") {
-    audio.volume = 0.5;
-  } else if (currentVoice === "bright") {
-    audio.playbackRate = 1.05;
-    audio.volume = 1.0;
+/* تسجيل العزف */
+let isRecording = false;
+let recordStartTime = 0;
+let recordedEvents = [];
+const recButton = document.getElementById("recButton");
+const recDot = document.getElementById("recDot");
+const playRecordBtn = document.getElementById("playRecordBtn");
+
+recButton.addEventListener("click", () => {
+  if (!isRecording) {
+    recordedEvents = [];
+    recordStartTime = performance.now();
+    isRecording = true;
+    recDot.classList.add("recording");
+    recButton.title = "إيقاف التسجيل";
   } else {
-    audio.volume = 0.9;
+    isRecording = false;
+    recDot.classList.remove("recording");
+    recButton.title = "تسجيل العزف / إيقاف تسجيل";
+  }
+});
+
+playRecordBtn.addEventListener("click", () => {
+  if (!recordedEvents.length) return;
+  recordedEvents.forEach(ev => {
+    setTimeout(() => {
+      const elem = document.querySelector(
+        `.white-key[data-code="${ev.code}"], .black-key[data-code="${ev.code}"]`
+      );
+      playNote(ev.note, elem, false);
+    }, ev.time);
+  });
+});
+
+/* تشغيل عينة صوت واحدة */
+function playSample(note, volume = 1.0) {
+  let urlNote = note;
+  let rate = 1.0;
+
+  // إذا النغمة فيها # (مفتاح أسود) نستخدم النغمة الأساسية ونرفع طبقة الصوت
+  if (note.includes("#") && SHARP_BASE[note]) {
+    urlNote = SHARP_BASE[note];
+    rate = Math.pow(2, 1 / 12); // نصف درجة موسيقية لأعلى
   }
 
+  const audio = new Audio(`${SOUND_URL}${urlNote}.mp3`);
+
+  // نمط الصوت
+  if (currentVoice === "soft") {
+    audio.volume = volume * 0.5;
+  } else if (currentVoice === "bright") {
+    audio.volume = volume;
+    rate *= 1.05;
+  } else {
+    audio.volume = volume * 0.9;
+  }
+
+  audio.playbackRate = rate;
+  audio.currentTime = 0;
   audio.play();
 }
 
-/* إنشاء المفاتيح في الـ DOM */
-const keysContainer = document.getElementById("keys");
+/* تشغيل نغمة مع التأثيرات والتسجيل */
+function playNote(note, keyElem, shouldRecord = true, codeForRecord = null) {
+  if (!note) return;
 
-KEYS.forEach(kInfo => {
+  if (keyElem) {
+    keyElem.classList.add("active");
+    setTimeout(() => keyElem.classList.remove("active"), 130);
+  }
+
+  playSample(note, 1.0);
+
+  if (fxEnabled) {
+    setTimeout(() => playSample(note, 0.45), 120);
+    setTimeout(() => playSample(note, 0.28), 260);
+  }
+
+  if (isRecording && shouldRecord) {
+    const now = performance.now();
+    const t = now - recordStartTime;
+    recordedEvents.push({
+      time: t,
+      note,
+      code: codeForRecord || (keyElem ? keyElem.dataset.code : "")
+    });
+  }
+}
+
+/* إنشاء المفاتيح البيضاء */
+const keysWhitesContainer = document.getElementById("keysWhites");
+WHITE_KEYS.forEach(info => {
   const keyDiv = document.createElement("div");
   keyDiv.className = "white-key";
-  keyDiv.dataset.code = kInfo.code;
-  keyDiv.dataset.note = kInfo.note;
+  keyDiv.dataset.code = info.code;
+  keyDiv.dataset.note = info.note;
 
   const labelSpan = document.createElement("div");
   labelSpan.className = "white-key-label";
-  labelSpan.textContent = kInfo.label;
+  labelSpan.textContent = info.label;
   keyDiv.appendChild(labelSpan);
 
   keyDiv.addEventListener("click", () => {
-    keyDiv.classList.add("active");
-    setTimeout(() => keyDiv.classList.remove("active"), 120);
-    play(kInfo.note);
+    playNote(info.note, keyDiv, true, info.code);
   });
 
-  keysContainer.appendChild(keyDiv);
+  keysWhitesContainer.appendChild(keyDiv);
 });
 
-/* كيبورد – يستخدم event.code حتى لو الكيبورد عربي */
+/* إنشاء المفاتيح السوداء فوق البيضاء */
+function createBlackKeys() {
+  const wrapper = document.getElementById("keyboardWrapper");
+  const whiteElems = wrapper.querySelectorAll(".white-key");
+  const wrapperRect = wrapper.getBoundingClientRect();
+
+  BLACK_KEYS.forEach(info => {
+    const leftWhite = whiteElems[info.leftIndex];
+    const rightWhite = whiteElems[info.rightIndex];
+    if (!leftWhite || !rightWhite) return;
+
+    const leftRect = leftWhite.getBoundingClientRect();
+    const rightRect = rightWhite.getBoundingClientRect();
+    const centerX = (leftRect.right + rightRect.left) / 2;
+    const wrapperLeft = wrapperRect.left;
+
+    const blackDiv = document.createElement("div");
+    blackDiv.className = "black-key";
+    blackDiv.dataset.code = info.code;
+    blackDiv.dataset.note = info.note;
+
+    const labelSpan = document.createElement("div");
+    labelSpan.className = "black-key-label";
+    labelSpan.textContent = info.label;
+    blackDiv.appendChild(labelSpan);
+
+    blackDiv.style.top = "8px";
+    blackDiv.style.left = (centerX - wrapperLeft) + "px";
+    blackDiv.style.transform = "translateX(-50%)";
+
+    blackDiv.addEventListener("click", () => {
+      playNote(info.note, blackDiv, true, info.code);
+    });
+
+    wrapper.appendChild(blackDiv);
+  });
+}
+
+window.addEventListener("load", createBlackKeys);
+
+/* كيبورد – باستخدام event.code */
 window.addEventListener("keydown", (e) => {
   const code = e.code;
-  const keyObj = KEYS.find(k => k.code === code);
-  if (!keyObj) return;
-
-  const elem = document.querySelector(`.white-key[data-code="${code}"]`);
-  if (elem) {
-    elem.classList.add("active");
-    setTimeout(() => elem.classList.remove("active"), 120);
-  }
-  play(keyObj.note);
+  const elem = document.querySelector(
+    `.white-key[data-code="${code}"], .black-key[data-code="${code}"]`
+  );
+  if (!elem) return;
+  const note = elem.dataset.note;
+  playNote(note, elem, true, code);
 });
 
-/* فتح/إغلاق البيانو من الأيقونة */
+/* فتح/إغلاق البيانو */
 const pianoIcon = document.getElementById("pianoIcon");
 const pianoContainer = document.getElementById("pianoContainer");
 
