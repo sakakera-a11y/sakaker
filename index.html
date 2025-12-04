@@ -1705,160 +1705,6 @@ pongBtn.addEventListener('mouseleave', () => {
 
 </body>
 </html>
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<title>Piano 20 Keys – Real Sound Working</title>
-
-<style>
-  body {
-    margin: 0;
-    background: #000;
-    font-family: "Tajawal", sans-serif;
-  }
-
-  #pianoIcon {
-    position: fixed;
-    bottom: 130px;
-    right: 130px;
-    width: 90px;
-    height: 90px;
-    background: #00ffd5;
-    border-radius: 50%;
-    box-shadow: 0 0 25px #00ffd5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    cursor: pointer;
-    z-index: 9999;
-  }
-
-  #pianoContainer {
-    position: fixed;
-    bottom: 140px;
-    right: 20px;
-    width: 900px;
-    padding: 20px;
-    display: none;
-    background: rgba(0,0,0,0.9);
-    border-radius: 20px;
-    box-shadow: 0 0 30px #00ffd5;
-    z-index: 9998;
-  }
-
-  .white-key {
-    width: 45px;
-    height: 160px;
-    background: #fff;
-    border-radius: 6px;
-    margin: 2px;
-    display: inline-flex;
-    justify-content: center;
-    align-items: flex-end;
-    padding-bottom: 5px;
-    font-size: 14px;
-    color: #333;
-    cursor: pointer;
-    transition: 0.1s;
-  }
-
-  .white-key.active {
-    background: #c8ffff;
-    transform: translateY(3px);
-  }
-
-  .note-btn {
-    background: #00ffd5;
-    margin: 3px;
-    padding: 7px 12px;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-</style>
-</head>
-
-<body>
-
-<div id="pianoIcon">🎹</div>
-
-<div id="pianoContainer">
-  <h2 style="color:#00ffd5; text-align:center;">🎶 بيانو صوت حقيقي – أبوالقمر زمرد 🎶</h2>
-
-  <div id="keys"></div>
-  <div id="buttons" style="margin-top:10px;"></div>
-</div>
-
-<script>
-/* 🔥 توزيع الحروف على 20 مفتاح */
-const KEY_MAP = {
-  "a":"C4","s":"D4","d":"E4","f":"F4","g":"G4",
-  "h":"A4","j":"B4","k":"C5","l":"D5","z":"E5",
-  "q":"F5","w":"G5","e":"A5","r":"B5","t":"C6",
-  "y":"D6","u":"E6","i":"F6","o":"G6","p":"A6"
-};
-
-/* 🔥 مكتبة صوت بيانو حقيقي */
-const SOUND_URL = "https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_grand_piano-mp3/";
-
-/* 🔥 تشغيل الصوت */
-function play(note) {
-  const audio = new Audio(`${SOUND_URL}${note}.mp3`);
-  audio.volume = 1.0;
-  audio.play();
-}
-
-/* 🔥 إنشاء المفاتيح */
-const keysDiv = document.getElementById("keys");
-const btnsDiv = document.getElementById("buttons");
-
-for (let key in KEY_MAP) {
-  let note = KEY_MAP[key];
-
-  let k = document.createElement("div");
-  k.className = "white-key";
-  k.dataset.key = key;
-  k.dataset.note = note;
-  k.innerHTML = key;
-  k.onclick = () => {
-    k.classList.add("active");
-    setTimeout(()=>k.classList.remove("active"),150);
-    play(note);
-  };
-  keysDiv.appendChild(k);
-
-  let b = document.createElement("button");
-  b.className = "note-btn";
-  b.innerHTML = key;
-  b.onclick = () => play(note);
-  btnsDiv.appendChild(b);
-}
-
-/* 🔥 تشغيل من الكيبورد */
-document.addEventListener("keydown", e => {
-  let key = e.key.toLowerCase();
-  let note = KEY_MAP[key];
-  if (!note) return;
-
-  let elem = document.querySelector(`.white-key[data-key="${key}"]`);
-  if (elem) {
-    elem.classList.add("active");
-    setTimeout(()=>elem.classList.remove("active"),150);
-  }
-  play(note);
-});
-
-/* 🔥 فتح/إغلاق الأيقونة */
-document.getElementById("pianoIcon").onclick = () => {
-  let box = document.getElementById("pianoContainer");
-  box.style.display = box.style.display === "block" ? "none" : "block";
-};
-</script>
-
-</body>
-</html>
 
 <!-- أيقونة التشغيل -->
 <div id="scrollbox-icon">📜</div>
@@ -4437,6 +4283,149 @@ document.getElementById("tigerIcon").onclick = () => {
 
 document.getElementById("closeBtn").onclick = () => {
   document.getElementById("popup").style.display = "none";
+};
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>Piano 20 Keys – Numbers + Letters</title>
+
+<style>
+   {
+    margin: 0;
+    background: #000;
+    font-family: "Tajawal", sans-serif;
+  }
+
+  #pianoIcon {
+    position: fixed;
+    bottom: 30px;
+    right: 230px;
+    width: 90px;
+    height: 90px;
+    background: #00ffd5;
+    border-radius: 50%;
+    box-shadow: 0 0 25px #00ffd5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+    z-index: 9999;
+  }
+
+  #pianoContainer {
+    position: fixed;
+    bottom: 140px;
+    right: 20px;
+    width: 900px;
+    padding: 20px;
+    display: none;
+    background: rgba(0,0,0,0.9);
+    border-radius: 20px;
+    box-shadow: 0 0 30px #00ffd5;
+    z-index: 9998;
+  }
+
+  .white-key {
+    width: 45px;
+    height: 170px;
+    background: #fff;
+    border-radius: 6px;
+    margin: 4px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding-bottom: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    transition: 0.1s;
+  }
+
+  .white-key.active {
+    background: #d0ffff;
+    transform: translateY(3px);
+    box-shadow: 0 0 15px #00ffd5;
+  }
+</style>
+</head>
+
+<body>
+
+<div id="pianoIcon">🎹</div>
+
+<div id="pianoContainer">
+  <h2 style="color:#00ffd5; text-align:center;">🎶 Piano – 20 Keys (Numbers + Letters)</h2>
+  <div id="keys"></div>
+</div>
+
+<script>
+/* توزيع الأزرار: أرقام ثم أحرف */
+const KEY_MAP = {
+  "1":"C4","2":"D4","3":"E4","4":"F4","5":"G4",
+  "6":"A4","7":"B4","8":"C5","9":"D5","0":"E5",
+
+  "a":"F5","s":"G5","d":"A5","f":"B5","g":"C6",
+  "h":"D6","j":"E6","k":"F6","l":"G6","z":"A6"
+};
+
+/* مكتبة الصوت */
+const SOUND_URL =
+"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_grand_piano-mp3/";
+
+/* تشغيل الصوت */
+function play(note){
+  const audio=new Audio(`${SOUND_URL}${note}.mp3`);
+  audio.currentTime=0;
+  audio.play();
+}
+
+/* إنشاء المفاتيح */
+const keysDiv=document.getElementById("keys");
+
+for(let key in KEY_MAP){
+  const note=KEY_MAP[key];
+
+  const k=document.createElement("div");
+  k.className="white-key";
+  k.dataset.key=key;
+  k.dataset.note=note;
+  k.textContent=key;
+
+  k.onclick=()=>{
+    k.classList.add("active");
+    setTimeout(()=>k.classList.remove("active"),120);
+    play(note);
+  };
+
+  keysDiv.appendChild(k);
+}
+
+/* تشغيل لوحة المفاتيح */
+window.addEventListener("keydown",(e)=>{
+  const key=e.key.toLowerCase();
+  const note=KEY_MAP[key];
+  if(!note) return;
+
+  const elem=document.querySelector(`.white-key[data-key="${key}"]`);
+  if(elem){
+    elem.classList.add("active");
+    setTimeout(()=>elem.classList.remove("active"),150);
+  }
+
+  play(note);
+});
+
+/* فتح وإغلاق الأيقونة */
+document.getElementById("pianoIcon").onclick=()=>{
+  let box=document.getElementById("pianoContainer");
+  box.style.display=box.style.display==="block"?"none":"block";
 };
 </script>
 
