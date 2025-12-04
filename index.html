@@ -4410,17 +4410,17 @@ emzIcon.onclick = () => {
 <div class="emz-modal">
   <div class="emz-box">
     <div class="emz-close">✖</div>
-    <div class="emz-title">🎼 Emerald Music – بيانو، كمان، قانون، ناي – أبوالقمر زمرد</div>
+    <div class="emz-title">🎼 Emerald Music – بيانو، كمان، قانون، ساكسفون – أبوالقمر زمرد</div>
     <div class="emz-sub">
-      مفاتيح من <b>1</b> حتى <b>M</b> بدون نغمات #، على سُلّم دو كبير C Major.<br>
-      الأزرار: 1 2 3 4 5 6 7 8 9 0 A S D F G H J K L Z X C V B N M
+      مفاتيح من <b>1</b> حتى <b>M</b> بدون نغمات #، على سُلّم دو كبير C Major من المنتصف (C3 حتى C8).<br>
+      الأزرار: 1 2 3 4 5 6 7 8 9 0 Q W E R T Y U I O P A S D F G H J K L Z X C V B N M
     </div>
 
     <div class="emz-row">
       <button class="emz-btn emz-mode-btn active" data-mode="piano"  id="emz-mode-piano">🎹 بيانو</button>
       <button class="emz-btn emz-mode-btn"        data-mode="violin" id="emz-mode-violin">🎻 كمان</button>
       <button class="emz-btn emz-mode-btn"        data-mode="qanun"  id="emz-mode-qanun">🎼 قانون</button>
-      <button class="emz-btn emz-mode-btn"        data-mode="nay"    id="emz-mode-nay">🎵 ناي</button>
+      <button class="emz-btn emz-mode-btn"        data-mode="sax"    id="emz-mode-sax">🎷 ساكسفون</button>
 
       <button class="emz-btn" id="emz-rec-btn">
         ⏺ تسجيل
@@ -4435,6 +4435,8 @@ emzIcon.onclick = () => {
     </div>
 
     <div class="emz-hint">
+      الكمان والساكسفون: ضغطه خفيفة = نغمة قصيرة، ضغط مطوّل = نغمة مستمرة.<br>
+      البيانو والقانون: ضغطة واحدة فقط مع صدى خفيف.
     </div>
   </div>
 </div>
@@ -4442,21 +4444,21 @@ emzIcon.onclick = () => {
 
   /* ==================== سلوك داخلي (JS داخل الـ Shadow) ==================== */
 
-  const closeBtn = root.querySelector(".emz-close");
-  const whiteRow = root.getElementById("emz-white-keys");
-  const modePianoBtn = root.getElementById("emz-mode-piano");
+  const closeBtn      = root.querySelector(".emz-close");
+  const whiteRow      = root.getElementById("emz-white-keys");
+  const modePianoBtn  = root.getElementById("emz-mode-piano");
   const modeViolinBtn = root.getElementById("emz-mode-violin");
-  const modeQanunBtn = root.getElementById("emz-mode-qanun");
-  const modeNayBtn   = root.getElementById("emz-mode-nay");
-  const recBtn = root.getElementById("emz-rec-btn");
-  const recDot = root.getElementById("emz-rec-dot");
-  const playbackBtn = root.getElementById("emz-playback-btn");
+  const modeQanunBtn  = root.getElementById("emz-mode-qanun");
+  const modeSaxBtn    = root.getElementById("emz-mode-sax");
+  const recBtn        = root.getElementById("emz-rec-btn");
+  const recDot        = root.getElementById("emz-rec-dot");
+  const playbackBtn   = root.getElementById("emz-playback-btn");
 
   closeBtn.onclick = () => {
     host.remove();
   };
 
-  // ترتيب الأزرار على الكيبورد
+  // ترتيب الأزرار على الكيبورد: أرقام + صف QWERTY + صف ASDF + صف ZXCV
   const KEY_BINDINGS = [
     { label: "1", code: "Digit1" },
     { label: "2", code: "Digit2" },
@@ -4468,6 +4470,17 @@ emzIcon.onclick = () => {
     { label: "8", code: "Digit8" },
     { label: "9", code: "Digit9" },
     { label: "0", code: "Digit0" },
+
+    { label: "Q", code: "KeyQ" },
+    { label: "W", code: "KeyW" },
+    { label: "E", code: "KeyE" },
+    { label: "R", code: "KeyR" },
+    { label: "T", code: "KeyT" },
+    { label: "Y", code: "KeyY" },
+    { label: "U", code: "KeyU" },
+    { label: "I", code: "KeyI" },
+    { label: "O", code: "KeyO" },
+    { label: "P", code: "KeyP" },
 
     { label: "A", code: "KeyA" },
     { label: "S", code: "KeyS" },
@@ -4488,20 +4501,30 @@ emzIcon.onclick = () => {
     { label: "M", code: "KeyM" }
   ];
 
-  // سلم C Major متسلسل لـ 26 نغمة من C4 فما فوق
+  // 36 نغمة من C3 حتى C8 (منتصف السلم)
   const NOTES = [
+    "C3","D3","E3","F3","G3","A3","B3",
     "C4","D4","E4","F4","G4","A4","B4",
     "C5","D5","E5","F5","G5","A5","B5",
     "C6","D6","E6","F6","G6","A6","B6",
-    "C7","D7","E7","F7","G7"
+    "C7","D7","E7","F7","G7","A7","B7",
+    "C8"
   ];
-  const ACTIVE_NOTES = NOTES.slice(0, 26);
+  const ACTIVE_NOTES = NOTES; // 36 نغمة
 
-  // رسم المفاتيح البيضاء
+  // رسم المفاتيح البيضاء + جعل M بنفس نغمة H
   const whiteKeys = [];
+  const hIndex = KEY_BINDINGS.findIndex(k => k.code === "KeyH"); // موقع H
+
   KEY_BINDINGS.forEach((kb, index) => {
     if (index >= ACTIVE_NOTES.length) return;
-    const note = ACTIVE_NOTES[index];
+    let note = ACTIVE_NOTES[index];
+
+    // حرف M يأخذ نفس نغمة H
+    if (kb.code === "KeyM" && hIndex >= 0) {
+      note = ACTIVE_NOTES[hIndex];
+    }
+
     const d = document.createElement("div");
     d.className = "emz-white";
     d.textContent = kb.label;
@@ -4511,7 +4534,7 @@ emzIcon.onclick = () => {
     whiteKeys.push(d);
   });
 
-  /* ==================== إعداد الصوت (بيانو + كمان + قانون + ناي) ==================== */
+  /* ==================== إعداد الصوت (بيانو + كمان + قانون + ساكسفون) ==================== */
 
   const PIANO_BASE =
     "https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_grand_piano-mp3/";
@@ -4519,30 +4542,30 @@ emzIcon.onclick = () => {
     "https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/violin-mp3/";
   const QANUN_BASE =
     "https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/dulcimer-mp3/";
-  const NAY_BASE =
-    "https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/flute-mp3/";
+  const SAX_BASE =
+    "https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/alto_sax-mp3/";
 
   const audioCache = {
     piano: {},
     violin: {},
     qanun: {},
-    nay: {}
+    sax: {}
   };
 
-  let currentInstrument = "piano"; // piano | violin | qanun | nay
+  let currentInstrument = "piano"; // piano | violin | qanun | sax
 
   function updateModeButtons() {
     const all = [
       modePianoBtn,
       modeViolinBtn,
       modeQanunBtn,
-      modeNayBtn
+      modeSaxBtn
     ];
     all.forEach(btn => btn.classList.remove("active"));
-    if (currentInstrument === "piano") modePianoBtn.classList.add("active");
+    if (currentInstrument === "piano")      modePianoBtn.classList.add("active");
     else if (currentInstrument === "violin") modeViolinBtn.classList.add("active");
-    else if (currentInstrument === "qanun") modeQanunBtn.classList.add("active");
-    else if (currentInstrument === "nay") modeNayBtn.classList.add("active");
+    else if (currentInstrument === "qanun")  modeQanunBtn.classList.add("active");
+    else if (currentInstrument === "sax")    modeSaxBtn.classList.add("active");
   }
 
   function setInstrument(mode) {
@@ -4553,7 +4576,7 @@ emzIcon.onclick = () => {
   modePianoBtn.onclick  = () => setInstrument("piano");
   modeViolinBtn.onclick = () => setInstrument("violin");
   modeQanunBtn.onclick  = () => setInstrument("qanun");
-  modeNayBtn.onclick    = () => setInstrument("nay");
+  modeSaxBtn.onclick    = () => setInstrument("sax");
 
   // تحميل مسبق لجميع النغمات لكل الآلات
   function preloadAllSamples() {
@@ -4570,34 +4593,45 @@ emzIcon.onclick = () => {
       aq.load();
       audioCache.qanun[note] = aq;
 
-      const an = new Audio(NAY_BASE + note + ".mp3");
-      an.load();
-      audioCache.nay[note] = an;
+      const ax = new Audio(SAX_BASE + note + ".mp3");
+      ax.load();
+      audioCache.sax[note] = ax;
     });
   }
 
   preloadAllSamples(); // تحميل تلقائي عند فتح النافذة
 
+  // تشغيل نغمة مع صدى (Echo) على النغمات القصيرة فقط
   function playSample(note, volume = 1.0, instrumentOverride = null, loop = false) {
     const inst = instrumentOverride || currentInstrument;
     const cache = audioCache[inst] || {};
-    let base = cache[note];
-    let a;
 
-    if (base) {
-      a = base.cloneNode();
-    } else {
-      let baseUrl = PIANO_BASE;
-      if (inst === "violin") baseUrl = VIOLIN_BASE;
-      else if (inst === "qanun") baseUrl = QANUN_BASE;
-      else if (inst === "nay") baseUrl = NAY_BASE;
-      a = new Audio(baseUrl + note + ".mp3");
+    let baseUrl = PIANO_BASE;
+    if      (inst === "violin") baseUrl = VIOLIN_BASE;
+    else if (inst === "qanun")  baseUrl = QANUN_BASE;
+    else if (inst === "sax")    baseUrl = SAX_BASE;
+
+    let base = cache[note];
+    if (!base) {
+      base = new Audio(baseUrl + note + ".mp3");
     }
 
+    const a = base.cloneNode();
     a.volume = volume;
     a.loop = loop;
     a.currentTime = 0;
     a.play().catch(() => {});
+
+    // صدى خفيف – فقط إن لم يكن loop (بدون Sustain)
+    if (!loop) {
+      setTimeout(() => {
+        const echo = base.cloneNode();
+        echo.volume = volume * 0.45;
+        echo.currentTime = 0;
+        echo.play().catch(() => {});
+      }, 140);
+    }
+
     return a;
   }
 
@@ -4634,21 +4668,20 @@ emzIcon.onclick = () => {
     });
   };
 
-  /* ==================== نظام الضغط المطوّل للكمان ==================== */
+  /* ==================== نظام الضغط المطوّل للكمان + الساكسفون ==================== */
 
-  // نخزن الأصوات المستمرة (للكمان فقط)
   const activeSustains = {}; // { code: { audio, elem } }
 
   function startSustain(note, elem, code) {
-    if (currentInstrument !== "violin") {
-      // باقي الآلات: نغمة قصيرة فقط
+    // الكمان والساكسفون فقط لديهم ضغط مطوّل
+    if (currentInstrument !== "violin" && currentInstrument !== "sax") {
       triggerOneShot(note, elem, code);
       return;
     }
     if (activeSustains[code]) return; // لو شغالة بالفعل
 
     if (elem) elem.classList.add("active");
-    const a = playSample(note, 0.95, "violin", true); // loop=true
+    const a = playSample(note, 0.95, currentInstrument, true); // loop=true
     activeSustains[code] = { audio: a, elem };
 
     if (isRecording) {
@@ -4658,7 +4691,7 @@ emzIcon.onclick = () => {
         time: t,
         note,
         code,
-        instrument: "violin"
+        instrument: currentInstrument
       });
     }
   }
@@ -4698,7 +4731,6 @@ emzIcon.onclick = () => {
     const note = key.dataset.note;
     const code = key.dataset.code;
 
-    // ضغط مطوّل (نستخدمه للكمان – أو كضغطة عادية لباقي الآلات)
     const start = (e) => {
       e.preventDefault();
       startSustain(note, key, code);
@@ -4714,10 +4746,8 @@ emzIcon.onclick = () => {
     key.addEventListener("touchstart", start, { passive: false });
     key.addEventListener("touchend", end, { passive: false });
 
-    // ضغطة خفيفة (Click) = نغمة قصيرة للكمان أو غيره
     key.addEventListener("click", (e) => {
       e.preventDefault();
-      // هنا نعتبرها "نغمة قصيرة"
       triggerOneShot(note, key, code);
     });
   });
@@ -4730,7 +4760,7 @@ emzIcon.onclick = () => {
       window.removeEventListener("keyup", handleKeyUp);
       return;
     }
-    if (e.repeat) return; // لا نكرّر في الضغط المستمر
+    if (e.repeat) return;
     const code = e.code;
     const elem = root.querySelector('.emz-white[data-code="' + code + '"]');
     if (!elem) return;
