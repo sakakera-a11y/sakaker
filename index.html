@@ -64,441 +64,6 @@
 }
 
 </style>
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<title>Emerald Music – Abwalqmrzmrd</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-   {
-    margin:0;
-    padding:0;
-    background:#000;
-    font-family:"Tajawal",sans-serif;
-    color:#fff;
-    overflow:hidden;
-  }
-</style>
-</head>
-<body>
-
-<!-- 🎹 أيقونة البيانو الجديدة -->
-<div id="emz-open-btn"></div>
-
-<script>
-/* ==================== أيقونة البيانو ==================== */
-const emzIcon = document.getElementById("emz-open-btn");
-Object.assign(emzIcon.style, {
-  position:"fixed",
-  bottom:"370px",
-  right:"175px",
-  width:"75px",
-  height:"75px",
-  borderRadius:"50%",
-  background:"rgba(255,255,255,0.08)",
-  border:"2px solid rgba(255,255,255,0.25)",
-  backdropFilter:"blur(6px)",
-  /* أيقونة بيانو */
-  backgroundImage:"url('https://i.imgur.com/4uM2sQ8.png')",
-  backgroundSize:"65%",
-  backgroundPosition:"center",
-  backgroundRepeat:"no-repeat",
-  transition:"0.25s",
-  cursor:"pointer",
-  zIndex:"999999999"
-});
-
-emzIcon.onmouseover = () => {
-  emzIcon.style.backgroundColor="rgba(0,255,213,0.15)";
-  emzIcon.style.borderColor="#00ffd5";
-  emzIcon.style.boxShadow="0 0 12px #00ffd5";
-  emzIcon.style.transform="scale(1.08)";
-};
-emzIcon.onmouseout = () => {
-  emzIcon.style.backgroundColor="rgba(255,255,255,0.08)";
-  emzIcon.style.borderColor="rgba(255,255,255,0.25)";
-  emzIcon.style.boxShadow="none";
-  emzIcon.style.transform="scale(1)";
-};
-
-/* ==================== الاشتراك + المعاينة ==================== */
-const ONE_MONTH   = 2592000000;           // 30 يوم
-const TRIAL_MS    = 7 * 60 * 60 * 1000;   // 7 ساعات
-
-function getCookieInt(name){
-  const m = document.cookie.match(new RegExp(name + "=(\\d+)"));
-  return m ? parseInt(m[1]) : 0;
-}
-
-function getPaidUntil(){  return getCookieInt("paid_until");  }
-function getTrialUntil(){ return getCookieInt("trial_until"); }
-
-function isPaid(){
-  return Date.now() < getPaidUntil();
-}
-function hasTrial(){
-  return Date.now() < getTrialUntil();
-}
-
-function activate(){
-  const exp = Date.now() + ONE_MONTH;
-  document.cookie = "paid_until="+exp+"; path=/; max-age=31536000";
-}
-
-function startTrial(){
-  const exp = Date.now() + TRIAL_MS;
-  // صلاحية الكوكي أسبوع واحد على الأكثر
-  document.cookie = "trial_until="+exp+"; path=/; max-age=604800";
-}
-
-/* ==================== فتح النافذة ==================== */
-emzIcon.onclick = () => {
-  if(document.getElementById("emz-shadow-host")) return;
-
-  const host = document.createElement("div");
-  host.id="emz-shadow-host";
-  host.style.position="fixed";
-  host.style.inset="0";
-  host.style.zIndex="999999999999";
-  document.body.appendChild(host);
-
-  const root = host.attachShadow({mode:"closed"});
-
-  root.innerHTML = `
-<style>
-.emz-modal{
-  position:fixed; inset:0;
-  background:rgba(0,0,0,0.75);
-  backdrop-filter:blur(6px);
-  display:flex; justify-content:center; align-items:center;
-}
-
-.emz-box{
-  width:min(1000px,96vw);
-  background:#050a10;
-  border-radius:16px;
-  padding:20px;
-  border:1px solid #00ffd5;
-  box-shadow:0 0 22px #00ffd580;
-  position:relative;
-  color:#fff;
-  font-family:"Tajawal",sans-serif;
-}
-
-.emz-close{
-  position:absolute; top:10px; right:10px;
-  font-size:28px; cursor:pointer;
-  color:#00ffd5;
-}
-
-.emz-row{
-  display:flex; flex-wrap:wrap; gap:8px;
-  justify-content:center; margin-bottom:10px;
-}
-
-.emz-btn{
-  padding:6px 12px;
-  border-radius:999px;
-  background:#0b141c;
-  border:1px solid #00ffd540;
-  font-size:12px;
-  color:#ddffff;
-  cursor:pointer;
-  transition:0.2s;
-}
-.emz-btn.active{
-  background:#00ffd5;
-  color:#000;
-  box-shadow:0 0 10px #00ffd5;
-}
-
-.emz-sub-box{
-  padding:16px;
-  background:#00151a;
-  border:1px solid #00ffd5;
-  border-radius:12px;
-  text-align:center;
-}
-.emz-pay{
-  margin-top:10px;
-  background:#ffc439;
-  color:#000;
-  border:none;
-  border-radius:999px;
-  padding:8px 14px;
-  cursor:pointer;
-  font-size:13px;
-}
-.emz-activate{
-  margin-top:10px;
-  background:#00ffd5;
-  color:#000;
-  border:none;
-  border-radius:999px;
-  padding:8px 14px;
-  cursor:pointer;
-  font-size:13px;
-}
-.emz-preview{
-  margin-top:10px;
-  background:#444;
-  color:#fff;
-  border:none;
-  border-radius:999px;
-  padding:8px 14px;
-  cursor:pointer;
-  font-size:13px;
-  margin-right:6px;
-}
-
-/* ملاحظة الاشتراك */
-.emz-note{
-  margin-top:10px;
-  font-size:11px;
-  opacity:0.75;
-}
-
-/* لوحة المفاتيح */
-.emz-keyboard{
-  margin-top:18px;
-  padding:14px;
-  background:#000;
-  border-radius:14px;
-  overflow-x:auto;
-}
-.emz-white{
-  display:inline-flex;
-  width:48px;
-  height:170px;
-  background:linear-gradient(#fafafa,#dcdcdc);
-  margin:1px;
-  justify-content:center;
-  align-items:flex-end;
-  padding-bottom:6px;
-  border-radius:0 0 10px 10px;
-  color:#000;
-  font-weight:bold;
-  cursor:pointer;
-  transition:.1s;
-}
-.emz-white.active{
-  background:linear-gradient(#e1ffff,#b6f6f0);
-  box-shadow:0 0 12px #00ffd5;
-  transform:translateY(3px);
-}
-
-.emz-signature{
-  text-align:center;
-  margin-top:10px;
-  opacity:0.85;
-  font-size:13px;
-}
-</style>
-
-<div class="emz-modal">
-<div class="emz-box">
-
-<div class="emz-close">✖</div>
-
-<!-- منطقة الاشتراك -->
-<div id="sub-area">
-  <div class="emz-sub-box">
-    <div style="font-size:16px; margin-bottom:6px;">
-      اشتراك شهري لفتح العزف – Monthly subscription to unlock playing
-    </div>
-    <div style="font-size:13px; opacity:.85;">
-      ادفع 1 دولار وتمتع بالعزف الكامل على جميع الآلات.<br>
-      Pay 1 USD and enjoy full access to all instruments.
-    </div>
-
-    <!-- أزرار المعاينة والدفع -->
-    <div style="margin-top:8px;">
-      <button class="emz-preview" id="preview-btn">
-        معاينة مجانية 7 ساعات – 7h Free Preview
-      </button>
-
-      <button class="emz-pay" id="pay-btn">
-        الدفع عبر PayPal – Pay with PayPal
-      </button>
-
-      <!-- زر التفعيل مخفي في البداية ويظهر بعد الضغط على الدفع -->
-      <button class="emz-activate" id="activate-btn" style="display:none;">
-        تم الدفع – تفعيل الاشتراك<br>I have paid – Activate subscription
-      </button>
-    </div>
-
-    <div class="emz-note">
-      (الاشتراك لا يعمل إلا على نفس الجهاز والمتصفح، وعند تغييره يُلغى الاشتراك.)<br>
-      (Subscription only works on the same device & browser. Changing them cancels the subscription.)
-    </div>
-  </div>
-</div>
-
-<!-- منطقة العزف -->
-<div id="play-area" style="display:none;">
-  <div class="emz-row">
-    <button class="emz-btn active" data-mode="piano">🎹 بيانو / Piano</button>
-    <button class="emz-btn" data-mode="oud">🪕 عود / Oud</button>
-    <button class="emz-btn" data-mode="qanun">🎼 قانون / Qanun</button>
-    <button class="emz-btn" data-mode="violin">🎻 كمان / Violin</button>
-    <button class="emz-btn" data-mode="sax">🎷 ساكسفون / Sax</button>
-    <button class="emz-btn" data-mode="nay">🎵 ناي / Nay</button>
-  </div>
-
-  <div class="emz-keyboard" id="keys"></div>
-
-  <div class="emz-signature">
-    من إنتاج أبوالقمر زمرد – مارس هواية العزف على الآلات الموسيقية<br>
-    Produced by Abwalqmrzmrd – Enjoy playing musical instruments as a hobby
-  </div>
-</div>
-
-</div>
-</div>
-`;
-
-  /* ==================== JS الداخلي ==================== */
-  const closeBtn = root.querySelector(".emz-close");
-  const subArea  = root.querySelector("#sub-area");
-  const playArea = root.querySelector("#play-area");
-  const payBtn   = root.querySelector("#pay-btn");
-  const actBtn   = root.querySelector("#activate-btn");
-  const previewBtn = root.querySelector("#preview-btn");
-
-  closeBtn.onclick = () => host.remove();
-
-  // حالة العرض: اشتراك أو معاينة → العزف، غير ذلك → شاشة الاشتراك
-  function refresh(){
-    if(isPaid() || hasTrial()){
-      subArea.style.display="none";
-      playArea.style.display="block";
-    } else {
-      subArea.style.display="block";
-      playArea.style.display="none";
-    }
-  }
-  refresh();
-
-  // زر المعاينة 7 ساعات
-  previewBtn.onclick = ()=>{
-    startTrial();
-    refresh();
-    alert("تم تفعيل المعاينة المجانية لمدة 7 ساعات على هذا المتصفح والجهاز.");
-  };
-
-  // زر الدفع
-  payBtn.onclick = ()=>{
-    window.open("https://www.paypal.com/paypalme/abwalqmrzmrd/1","_blank");
-    // إظهار زر التفعيل فقط بعد الضغط على الدفع
-    actBtn.style.display = "inline-block";
-  };
-
-  // زر "تم الدفع – تفعيل الاشتراك"
-  actBtn.onclick = ()=>{
-    activate();
-    refresh();
-    alert("تم تفعيل الاشتراك لمدة 30 يوم على هذا المتصفح والجهاز.");
-  };
-
-  /* ===== إعداد لوحة العزف ===== */
-  const keyRow = root.querySelector("#keys");
-  const modeBtns = root.querySelectorAll(".emz-btn");
-
-  let currentInstrument = "piano";
-  const sustainInst = ["violin","sax","nay"];
-
-  const KEY_BINDINGS = [
-    "Digit1","Digit2","Digit3","Digit4","Digit5","Digit6",
-    "Digit7","Digit8","Digit9","Digit0",
-    "KeyQ","KeyW","KeyE","KeyR","KeyT","KeyY","KeyU","KeyI","KeyO","KeyP",
-    "KeyA","KeyS","KeyD","KeyF","KeyG","KeyH","KeyJ","KeyK","KeyL",
-    "KeyZ","KeyX","KeyC","KeyV","KeyB","KeyN"
-  ];
-
-  const NOTES = [
-    "C3","D3","E3","F3","G3","A3","B3",
-    "C4","D4","E4","F4","G4","A4","B4",
-    "C5","D5","E5","F5","G5","A5","B5",
-    "C6","D6","E6","F6","G6","A6","B6"
-  ];
-
-  const baseUrl = {
-    piano:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_grand_piano-mp3/",
-    qanun:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/dulcimer-mp3/",
-    oud:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_guitar_nylon-mp3/",
-    violin:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/violin-mp3/",
-    sax:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/alto_sax-mp3/",
-    nay:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/flute-mp3/"
-  };
-
-  function play(note, inst, loop=false){
-    const a = new Audio(baseUrl[inst]+note+".mp3");
-    a.loop=loop;
-    a.volume=1;
-    a.play().catch(()=>{});
-    return a;
-  }
-
-  const active = {};
-
-  function short(elem, note){
-    elem.classList.add("active");
-    setTimeout(()=>elem.classList.remove("active"),120);
-    play(note,currentInstrument,false);
-  }
-
-  function start(elem, code){
-    const note = elem.dataset.note;
-    if(!sustainInst.includes(currentInstrument)){
-      short(elem,note);
-      return;
-    }
-    if(active[code]) return;
-    elem.classList.add("active");
-    active[code]={elem, audio:play(note,currentInstrument,true)};
-  }
-
-  function end(code){
-    if(!active[code]) return;
-    active[code].audio.pause();
-    active[code].elem.classList.remove("active");
-    delete active[code];
-  }
-
-  NOTES.forEach((note,i)=>{
-    const k = document.createElement("div");
-    k.className="emz-white";
-    k.dataset.note=note;
-    k.dataset.code=KEY_BINDINGS[i];
-    k.textContent = KEY_BINDINGS[i].replace("Digit","").replace("Key","");
-    keyRow.appendChild(k);
-
-    k.onmousedown = ()=>start(k,k.dataset.code);
-    k.onmouseup   = ()=>end(k.dataset.code);
-    k.onmouseleave= ()=>end(k.dataset.code);
-    k.onclick     = ()=>short(k,note);
-  });
-
-  modeBtns.forEach(b=>{
-    b.onclick = ()=>{
-      modeBtns.forEach(x=>x.classList.remove("active"));
-      b.classList.add("active");
-      currentInstrument = b.dataset.mode;
-      Object.keys(active).forEach(k=>end(k));
-    };
-  });
-
-  window.addEventListener("keydown",e=>{
-    const elem = root.querySelector('[data-code="'+e.code+'"]');
-    if(elem) start(elem,e.code);
-  });
-  window.addEventListener("keyup",e=> end(e.code));
-};
-</script>
-
-</body>
-</html>
 <!-- ===================== أيقونة الراديو الجديدة ===================== -->
 <style>
 #radioIcon {
@@ -4832,6 +4397,441 @@ document.addEventListener("DOMContentLoaded", () => {
 <body>
 
 
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>Emerald Music – Abwalqmrzmrd</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+   {
+    margin:0;
+    padding:0;
+    background:#000;
+    font-family:"Tajawal",sans-serif;
+    color:#fff;
+    overflow:hidden;
+  }
+</style>
+</head>
+<body>
+
+<!-- 🎹 أيقونة البيانو الجديدة -->
+<div id="emz-open-btn"></div>
+
+<script>
+/* ==================== أيقونة البيانو ==================== */
+const emzIcon = document.getElementById("emz-open-btn");
+Object.assign(emzIcon.style, {
+  position:"fixed",
+  bottom:"370px",
+  right:"175px",
+  width:"75px",
+  height:"75px",
+  borderRadius:"50%",
+  background:"rgba(255,255,255,0.08)",
+  border:"2px solid rgba(255,255,255,0.25)",
+  backdropFilter:"blur(6px)",
+  /* أيقونة بيانو */
+  backgroundImage:"url('https://i.imgur.com/4uM2sQ8.png')",
+  backgroundSize:"65%",
+  backgroundPosition:"center",
+  backgroundRepeat:"no-repeat",
+  transition:"0.25s",
+  cursor:"pointer",
+  zIndex:"999999999"
+});
+
+emzIcon.onmouseover = () => {
+  emzIcon.style.backgroundColor="rgba(0,255,213,0.15)";
+  emzIcon.style.borderColor="#00ffd5";
+  emzIcon.style.boxShadow="0 0 12px #00ffd5";
+  emzIcon.style.transform="scale(1.08)";
+};
+emzIcon.onmouseout = () => {
+  emzIcon.style.backgroundColor="rgba(255,255,255,0.08)";
+  emzIcon.style.borderColor="rgba(255,255,255,0.25)";
+  emzIcon.style.boxShadow="none";
+  emzIcon.style.transform="scale(1)";
+};
+
+/* ==================== الاشتراك + المعاينة ==================== */
+const ONE_MONTH   = 2592000000;           // 30 يوم
+const TRIAL_MS    = 7 * 60 * 60 * 1000;   // 7 ساعات
+
+function getCookieInt(name){
+  const m = document.cookie.match(new RegExp(name + "=(\\d+)"));
+  return m ? parseInt(m[1]) : 0;
+}
+
+function getPaidUntil(){  return getCookieInt("paid_until");  }
+function getTrialUntil(){ return getCookieInt("trial_until"); }
+
+function isPaid(){
+  return Date.now() < getPaidUntil();
+}
+function hasTrial(){
+  return Date.now() < getTrialUntil();
+}
+
+function activate(){
+  const exp = Date.now() + ONE_MONTH;
+  document.cookie = "paid_until="+exp+"; path=/; max-age=31536000";
+}
+
+function startTrial(){
+  const exp = Date.now() + TRIAL_MS;
+  // صلاحية الكوكي أسبوع واحد على الأكثر
+  document.cookie = "trial_until="+exp+"; path=/; max-age=604800";
+}
+
+/* ==================== فتح النافذة ==================== */
+emzIcon.onclick = () => {
+  if(document.getElementById("emz-shadow-host")) return;
+
+  const host = document.createElement("div");
+  host.id="emz-shadow-host";
+  host.style.position="fixed";
+  host.style.inset="0";
+  host.style.zIndex="999999999999";
+  document.body.appendChild(host);
+
+  const root = host.attachShadow({mode:"closed"});
+
+  root.innerHTML = `
+<style>
+.emz-modal{
+  position:fixed; inset:0;
+  background:rgba(0,0,0,0.75);
+  backdrop-filter:blur(6px);
+  display:flex; justify-content:center; align-items:center;
+}
+
+.emz-box{
+  width:min(1000px,96vw);
+  background:#050a10;
+  border-radius:16px;
+  padding:20px;
+  border:1px solid #00ffd5;
+  box-shadow:0 0 22px #00ffd580;
+  position:relative;
+  color:#fff;
+  font-family:"Tajawal",sans-serif;
+}
+
+.emz-close{
+  position:absolute; top:10px; right:10px;
+  font-size:28px; cursor:pointer;
+  color:#00ffd5;
+}
+
+.emz-row{
+  display:flex; flex-wrap:wrap; gap:8px;
+  justify-content:center; margin-bottom:10px;
+}
+
+.emz-btn{
+  padding:6px 12px;
+  border-radius:999px;
+  background:#0b141c;
+  border:1px solid #00ffd540;
+  font-size:12px;
+  color:#ddffff;
+  cursor:pointer;
+  transition:0.2s;
+}
+.emz-btn.active{
+  background:#00ffd5;
+  color:#000;
+  box-shadow:0 0 10px #00ffd5;
+}
+
+.emz-sub-box{
+  padding:16px;
+  background:#00151a;
+  border:1px solid #00ffd5;
+  border-radius:12px;
+  text-align:center;
+}
+.emz-pay{
+  margin-top:10px;
+  background:#ffc439;
+  color:#000;
+  border:none;
+  border-radius:999px;
+  padding:8px 14px;
+  cursor:pointer;
+  font-size:13px;
+}
+.emz-activate{
+  margin-top:10px;
+  background:#00ffd5;
+  color:#000;
+  border:none;
+  border-radius:999px;
+  padding:8px 14px;
+  cursor:pointer;
+  font-size:13px;
+}
+.emz-preview{
+  margin-top:10px;
+  background:#444;
+  color:#fff;
+  border:none;
+  border-radius:999px;
+  padding:8px 14px;
+  cursor:pointer;
+  font-size:13px;
+  margin-right:6px;
+}
+
+/* ملاحظة الاشتراك */
+.emz-note{
+  margin-top:10px;
+  font-size:11px;
+  opacity:0.75;
+}
+
+/* لوحة المفاتيح */
+.emz-keyboard{
+  margin-top:18px;
+  padding:14px;
+  background:#000;
+  border-radius:14px;
+  overflow-x:auto;
+}
+.emz-white{
+  display:inline-flex;
+  width:48px;
+  height:170px;
+  background:linear-gradient(#fafafa,#dcdcdc);
+  margin:1px;
+  justify-content:center;
+  align-items:flex-end;
+  padding-bottom:6px;
+  border-radius:0 0 10px 10px;
+  color:#000;
+  font-weight:bold;
+  cursor:pointer;
+  transition:.1s;
+}
+.emz-white.active{
+  background:linear-gradient(#e1ffff,#b6f6f0);
+  box-shadow:0 0 12px #00ffd5;
+  transform:translateY(3px);
+}
+
+.emz-signature{
+  text-align:center;
+  margin-top:10px;
+  opacity:0.85;
+  font-size:13px;
+}
+</style>
+
+<div class="emz-modal">
+<div class="emz-box">
+
+<div class="emz-close">✖</div>
+
+<!-- منطقة الاشتراك -->
+<div id="sub-area">
+  <div class="emz-sub-box">
+    <div style="font-size:16px; margin-bottom:6px;">
+      اشتراك شهري لفتح العزف – Monthly subscription to unlock playing
+    </div>
+    <div style="font-size:13px; opacity:.85;">
+      ادفع 1 دولار وتمتع بالعزف الكامل على جميع الآلات.<br>
+      Pay 1 USD and enjoy full access to all instruments.
+    </div>
+
+    <!-- أزرار المعاينة والدفع -->
+    <div style="margin-top:8px;">
+      <button class="emz-preview" id="preview-btn">
+        معاينة مجانية 7 ساعات – 7h Free Preview
+      </button>
+
+      <button class="emz-pay" id="pay-btn">
+        الدفع عبر PayPal – Pay with PayPal
+      </button>
+
+      <!-- زر التفعيل مخفي في البداية ويظهر بعد الضغط على الدفع -->
+      <button class="emz-activate" id="activate-btn" style="display:none;">
+        تم الدفع – تفعيل الاشتراك<br>I have paid – Activate subscription
+      </button>
+    </div>
+
+    <div class="emz-note">
+      (الاشتراك لا يعمل إلا على نفس الجهاز والمتصفح، وعند تغييره يُلغى الاشتراك.)<br>
+      (Subscription only works on the same device & browser. Changing them cancels the subscription.)
+    </div>
+  </div>
+</div>
+
+<!-- منطقة العزف -->
+<div id="play-area" style="display:none;">
+  <div class="emz-row">
+    <button class="emz-btn active" data-mode="piano">🎹 بيانو / Piano</button>
+    <button class="emz-btn" data-mode="oud">🪕 عود / Oud</button>
+    <button class="emz-btn" data-mode="qanun">🎼 قانون / Qanun</button>
+    <button class="emz-btn" data-mode="violin">🎻 كمان / Violin</button>
+    <button class="emz-btn" data-mode="sax">🎷 ساكسفون / Sax</button>
+    <button class="emz-btn" data-mode="nay">🎵 ناي / Nay</button>
+  </div>
+
+  <div class="emz-keyboard" id="keys"></div>
+
+  <div class="emz-signature">
+    من إنتاج أبوالقمر زمرد – مارس هواية العزف على الآلات الموسيقية<br>
+    Produced by Abwalqmrzmrd – Enjoy playing musical instruments as a hobby
+  </div>
+</div>
+
+</div>
+</div>
+`;
+
+  /* ==================== JS الداخلي ==================== */
+  const closeBtn = root.querySelector(".emz-close");
+  const subArea  = root.querySelector("#sub-area");
+  const playArea = root.querySelector("#play-area");
+  const payBtn   = root.querySelector("#pay-btn");
+  const actBtn   = root.querySelector("#activate-btn");
+  const previewBtn = root.querySelector("#preview-btn");
+
+  closeBtn.onclick = () => host.remove();
+
+  // حالة العرض: اشتراك أو معاينة → العزف، غير ذلك → شاشة الاشتراك
+  function refresh(){
+    if(isPaid() || hasTrial()){
+      subArea.style.display="none";
+      playArea.style.display="block";
+    } else {
+      subArea.style.display="block";
+      playArea.style.display="none";
+    }
+  }
+  refresh();
+
+  // زر المعاينة 7 ساعات
+  previewBtn.onclick = ()=>{
+    startTrial();
+    refresh();
+    alert("تم تفعيل المعاينة المجانية لمدة 7 ساعات على هذا المتصفح والجهاز.");
+  };
+
+  // زر الدفع
+  payBtn.onclick = ()=>{
+    window.open("https://www.paypal.com/paypalme/abwalqmrzmrd/1","_blank");
+    // إظهار زر التفعيل فقط بعد الضغط على الدفع
+    actBtn.style.display = "inline-block";
+  };
+
+  // زر "تم الدفع – تفعيل الاشتراك"
+  actBtn.onclick = ()=>{
+    activate();
+    refresh();
+    alert("تم تفعيل الاشتراك لمدة 30 يوم على هذا المتصفح والجهاز.");
+  };
+
+  /* ===== إعداد لوحة العزف ===== */
+  const keyRow = root.querySelector("#keys");
+  const modeBtns = root.querySelectorAll(".emz-btn");
+
+  let currentInstrument = "piano";
+  const sustainInst = ["violin","sax","nay"];
+
+  const KEY_BINDINGS = [
+    "Digit1","Digit2","Digit3","Digit4","Digit5","Digit6",
+    "Digit7","Digit8","Digit9","Digit0",
+    "KeyQ","KeyW","KeyE","KeyR","KeyT","KeyY","KeyU","KeyI","KeyO","KeyP",
+    "KeyA","KeyS","KeyD","KeyF","KeyG","KeyH","KeyJ","KeyK","KeyL",
+    "KeyZ","KeyX","KeyC","KeyV","KeyB","KeyN"
+  ];
+
+  const NOTES = [
+    "C3","D3","E3","F3","G3","A3","B3",
+    "C4","D4","E4","F4","G4","A4","B4",
+    "C5","D5","E5","F5","G5","A5","B5",
+    "C6","D6","E6","F6","G6","A6","B6"
+  ];
+
+  const baseUrl = {
+    piano:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_grand_piano-mp3/",
+    qanun:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/dulcimer-mp3/",
+    oud:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_guitar_nylon-mp3/",
+    violin:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/violin-mp3/",
+    sax:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/alto_sax-mp3/",
+    nay:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/flute-mp3/"
+  };
+
+  function play(note, inst, loop=false){
+    const a = new Audio(baseUrl[inst]+note+".mp3");
+    a.loop=loop;
+    a.volume=1;
+    a.play().catch(()=>{});
+    return a;
+  }
+
+  const active = {};
+
+  function short(elem, note){
+    elem.classList.add("active");
+    setTimeout(()=>elem.classList.remove("active"),120);
+    play(note,currentInstrument,false);
+  }
+
+  function start(elem, code){
+    const note = elem.dataset.note;
+    if(!sustainInst.includes(currentInstrument)){
+      short(elem,note);
+      return;
+    }
+    if(active[code]) return;
+    elem.classList.add("active");
+    active[code]={elem, audio:play(note,currentInstrument,true)};
+  }
+
+  function end(code){
+    if(!active[code]) return;
+    active[code].audio.pause();
+    active[code].elem.classList.remove("active");
+    delete active[code];
+  }
+
+  NOTES.forEach((note,i)=>{
+    const k = document.createElement("div");
+    k.className="emz-white";
+    k.dataset.note=note;
+    k.dataset.code=KEY_BINDINGS[i];
+    k.textContent = KEY_BINDINGS[i].replace("Digit","").replace("Key","");
+    keyRow.appendChild(k);
+
+    k.onmousedown = ()=>start(k,k.dataset.code);
+    k.onmouseup   = ()=>end(k.dataset.code);
+    k.onmouseleave= ()=>end(k.dataset.code);
+    k.onclick     = ()=>short(k,note);
+  });
+
+  modeBtns.forEach(b=>{
+    b.onclick = ()=>{
+      modeBtns.forEach(x=>x.classList.remove("active"));
+      b.classList.add("active");
+      currentInstrument = b.dataset.mode;
+      Object.keys(active).forEach(k=>end(k));
+    };
+  });
+
+  window.addEventListener("keydown",e=>{
+    const elem = root.querySelector('[data-code="'+e.code+'"]');
+    if(elem) start(elem,e.code);
+  });
+  window.addEventListener("keyup",e=> end(e.code));
+};
+</script>
+
+</body>
+</html>
 <!-- ========== أيقونة الأعمال ========== -->
 <div id="worksIconContainer" style="
   bottom: 5px;
