@@ -499,9 +499,80 @@ emzIcon.onclick = () => {
 
 </body>
 </html>
+<!-- ===================== أيقونة الراديو الجديدة ===================== -->
+<style>
+#radioIcon {
+    position: fixed;
+    bottom: 40px;
+    right: 350px;
+    width: 110px;
+    height: 110px;
+    background: radial-gradient(circle, #fff8d2, #e6c200, #b79500);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 38px;
+    cursor: pointer;
+    color: #000;
+    box-shadow: 
+      0 0 25px #ffd700,
+      0 0 55px #ffea8a,
+      inset 0 0 20px #fff6c2;
+    animation: glowPulse 1.6s infinite alternate ease-in-out;
+    z-index: 999999999;
+}
+
+@keyframes glowPulse {
+    0% { box-shadow: 0 0 25px #ffd700, 0 0 55px #ffea8a; transform: scale(1); }
+    100% { box-shadow: 0 0 40px #ffe45c, 0 0 90px #ffea8a; transform: scale(1.08); }
+}
+
+#radioPopup {
+    position: fixed;
+    bottom: 160px;
+    right: 40px;
+    width: 320px;
+    max-height: 450px;
+    overflow-y: auto;
+    background: rgba(0,0,0,0.88);
+    padding: 15px;
+    border-radius: 12px;
+    border: 2px solid #ffd700;
+    color: #fff;
+    display: none;
+    z-index: 999999999;
+    box-shadow: 0 0 25px #ffd700;
+}
+
+.radioItem {
+    background: rgba(255,255,255,0.07);
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    border: 1px solid #ffd70055;
+}
+.radioItem h3 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    color: #ffeaa7;
+}
+
+.radioItem button {
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    background: linear-gradient(45deg, #ffd700, #ffef9c);
+    color: #000;
+    cursor: pointer;
+    font-weight: bold;
+}
+</style>
 
 <div id="radioIcon">📻</div>
 
+<!-- ===================== نافذة المحطات ===================== -->
 <div id="radioPopup" aria-hidden="true">
   <div id="statusMsg">جاهز — اختر محطة للتشغيل</div>
 
@@ -511,40 +582,58 @@ emzIcon.onclick = () => {
     <button onclick="startStation('abdulbasit')">تشغيل</button>
   </div>
 
+  <!-- مكة -->
+  <div class="radioItem">
+    <h3>📿 إذاعة الحرم المكي</h3>
+    <button onclick="startStation('mecca')">تشغيل</button>
+  </div>
+
+  <!-- المدينة -->
+  <div class="radioItem">
+    <h3>📿 إذاعة الحرم المدني</h3>
+    <button onclick="startStation('madina')">تشغيل</button>
+  </div>
+
+  <!-- إدريس أبكر -->
+  <div class="radioItem">
+    <h3>🎧 إدريس أبكر</h3>
+    <button onclick="startStation('idris')">تشغيل</button>
+  </div>
+
+  <!-- ياسر الدوسري -->
+  <div class="radioItem">
+    <h3>🎧 ياسر الدوسري</h3>
+    <button onclick="startStation('dossary')">تشغيل</button>
+  </div>
+
+  <!-- فارس عباد -->
+  <div class="radioItem">
+    <h3>🎧 فارس عباد</h3>
+    <button onclick="startStation('faris')">تشغيل</button>
+  </div>
+
   <!-- مصر -->
   <div class="radioItem">
-    <h3>📿 إذاعة القرآن الكريم — مصر</h3>
+    <h3>📿 إذاعة القرآن — مصر</h3>
     <button onclick="startStation('egypt_quran')">تشغيل</button>
   </div>
 
   <!-- الكويت -->
   <div class="radioItem">
-    <h3>📿 إذاعة القرآن الكريم — الكويت</h3>
+    <h3>📿 إذاعة القرآن — الكويت</h3>
     <button onclick="startStation('kuwait_quran')">تشغيل</button>
   </div>
 
   <!-- البحرين -->
   <div class="radioItem">
-    <h3>📿 إذاعة القرآن الكريم — البحرين</h3>
+    <h3>📿 إذاعة القرآن — البحرين</h3>
     <button onclick="startStation('bahrain_quran')">تشغيل</button>
   </div>
 
-  <!-- مشاري العفاسي -->
+  <!-- العفاسي -->
   <div class="radioItem">
     <h3>🎧 مشاري العفاسي</h3>
     <button onclick="startStation('afasy')">تشغيل</button>
-  </div>
-
-  <!-- ماهر المعيقلي -->
-  <div class="radioItem">
-    <h3>🎧 ماهر المعيقلي</h3>
-    <button onclick="startStation('maher')">تشغيل</button>
-  </div>
-
-  <!-- سعد الغامدي -->
-  <div class="radioItem">
-    <h3>🎧 سعد الغامدي</h3>
-    <button onclick="startStation('ghamdi')">تشغيل</button>
   </div>
 
   <!-- BBC Arabic -->
@@ -553,10 +642,16 @@ emzIcon.onclick = () => {
     <button onclick="startStation('bbc_ar')">تشغيل</button>
   </div>
 
-  <!-- VOA -->
+  <!-- Sky News -->
   <div class="radioItem">
-    <h3>🌍 Voice of America – VOA</h3>
-    <button onclick="startStation('voa')">تشغيل</button>
+    <h3>🌍 Sky News Arabia Radio</h3>
+    <button onclick="startStation('sky')">تشغيل</button>
+  </div>
+
+  <!-- Al Jazeera -->
+  <div class="radioItem">
+    <h3>🌍 Al Jazeera Audio</h3>
+    <button onclick="startStation('jazera')">تشغيل</button>
   </div>
 
   <!-- France 24 -->
@@ -574,48 +669,173 @@ emzIcon.onclick = () => {
   <audio id="radioPlayer" controls style="width:100%;margin-top:12px"></audio>
 
   <div style="display:flex;gap:8px;margin-top:8px">
-    <button onclick="stopRadio()" style="flex:1;padding:8px;border-radius:8px;background:#ff4d4d;border:none;color:#fff;cursor:pointer">إيقاف</button>
-    <button onclick="pauseRadio()" style="flex:1;padding:8px;border-radius:8px;background:#444;border:none;color:#fff;cursor:pointer">إيقاف مؤقت</button>
+    <button onclick="stopRadio()" style="flex:1;padding:8px;border-radius:8px;background:#ff4d4d;border:none;color:#fff">إيقاف</button>
+    <button onclick="pauseRadio()" style="flex:1;padding:8px;border-radius:8px;background:#444;border:none;color:#fff">إيقاف مؤقت</button>
   </div>
 </div>
 
+<!-- ===================== سكربت الراديو ===================== -->
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.2/dist/hls.min.js"></script>
+
 <script>
 const stations = {
-  'abdulbasit': { name:'عبدالباسط عبدالصمد', sources:['https://server8.mp3quran.net/basit_abdulbasit/001.mp3','https://Qurango.net/radio/abdulbasit_mjwd','https://live.mp3quran.net/abdulbasit'] },
-  'egypt_quran': { name:'إذاعة القرآن الكريم - مصر', sources:['https://qurango.net/radio/mix','https://stream.radiojar.com/8s5u5tpdtwzuv'] },
-  'kuwait_quran': { name:'إذاعة القرآن - الكويت', sources:['http://edge.mixlr.com/channel/oyxyz'] },
-  'bahrain_quran': { name:'إذاعة القرآن - البحرين', sources:['http://streaming.radio.co/s98f65e5a3/listen'] },
-  'afasy': { name:'مشاري العفاسي', sources:['https://qurango.net/radio/afasy'] },
-  'maher': { name:'ماهر المعيقلي', sources:['https://qurango.net/radio/maher'] },
-  'ghamdi': { name:'سعد الغامدي', sources:['https://qurango.net/radio/ghamdi'] },
-  'bbc_ar': { name:'BBC Arabic', sources:['https://stream.live.vc.bbcmedia.co.uk/bbc_arabic_radio','http://bbcwssc.ic.llnwd.net/stream/bbcwssc_mp1_ws-eieuk'] },
-  'voa': { name:'Voice of America – VOA', sources:['https://voa-11.akacast.akamaistream.net/7/724/322032/v1/ibb.akacast.akamaistream.net/voa-11'] },
-  'france24': { name:'France 24 Radio', sources:['https://radiofrance24-lh.akamaihd.net/i/F24_AR/'] },
-  'dw': { name:'Deutsche Welle – DW', sources:['https://dwstream3-lh.akamaihd.net/i/dwelle_ar@124108/master.m3u8'] }
+  'abdulbasit': { 
+    name:'عبدالباسط عبدالصمد', 
+    sources:[
+      'https://stream.radiojar.com/9q3v9m4sq0hvv',
+      'https://stream.radiojar.com/ssw0dpn2h0hvv'
+    ] 
+  },
+
+  'mecca': { 
+    name:'إذاعة الحرم المكي',
+    sources:['https://livequran.ae/hls/mecca.m3u8']
+  },
+
+  'madina': { 
+    name:'إذاعة الحرم المدني',
+    sources:['https://livequran.ae/hls/madina.m3u8']
+  },
+
+  'idris': { 
+    name:'إدريس أبكر',
+    sources:['https://qurango.net/radio/abkar']
+  },
+
+  'dossary': { 
+    name:'ياسر الدوسري',
+    sources:['https://qurango.net/radio/dossary']
+  },
+
+  'faris': { 
+    name:'فارس عباد',
+    sources:['https://qurango.net/radio/fares']
+  },
+
+  'egypt_quran': { 
+    name:'إذاعة القرآن الكريم - مصر',
+    sources:[
+      'https://stream.radiojar.com/8s5u5tpdtwzuv'
+    ]
+  },
+
+  'kuwait_quran': { 
+    name:'إذاعة القرآن - الكويت',
+    sources:['http://edge.mixlr.com/channel/oyxyz']
+  },
+
+  'bahrain_quran': { 
+    name:'إذاعة القرآن - البحرين',
+    sources:['http://streaming.radio.co/s98f65e5a3/listen']
+  },
+
+  'afasy': { 
+    name:'مشاري العفاسي',
+    sources:['https://qurango.net/radio/afasy']
+  },
+
+  'bbc_ar': { 
+    name:'BBC Arabic',
+    sources:['https://stream.live.vc.bbcmedia.co.uk/bbc_arabic_radio']
+  },
+
+  'sky': {
+    name:'Sky News Arabia',
+    sources:['https://radio.skynewsarabia.com/stream']
+  },
+
+  'jazera': {
+    name:'Al Jazeera Audio',
+    sources:['https://live-hls-web-aje.getaj.net/AJE/index.m3u8']
+  },
+
+  'france24': { 
+    name:'France 24 Radio',
+    sources:['https://radiofrance24-lh.akamaihd.net/i/F24_AR/']
+  },
+
+  'dw': { 
+    name:'Deutsche Welle – DW',
+    sources:['https://dwstream3-lh.akamaihd.net/i/dwelle_ar@124108/master.m3u8']
+  }
 };
 
 let currentStationId=null,currentSrcIndex=0,hlsInstance=null;
 const player=document.getElementById('radioPlayer');
 const statusMsg=document.getElementById('statusMsg');
 
-function startStation(id){currentStationId=id;currentSrcIndex=0;tryPlayCurrentSource();}
-function tryPlayCurrentSource(){
-  const s=stations[currentStationId];const url=s.sources[currentSrcIndex];
-  if(!url){setStatus(`فشل تشغيل ${s.name} — انتهت الروابط`,true);return;}
-  setStatus(`جاري التشغيل: ${s.name} — محاولة ${currentSrcIndex+1}`);
-  if(hlsInstance){try{hlsInstance.destroy();}catch(e){}}
-  if(url.endsWith('.m3u8')){
-    if(Hls.isSupported()){hlsInstance=new Hls();hlsInstance.loadSource(url);hlsInstance.attachMedia(player);
-      hlsInstance.on(Hls.Events.ERROR,()=>{currentSrcIndex++;tryPlayCurrentSource();});
-      player.play().catch(()=>{});}
-    else{player.src=url;player.play().catch(()=>{currentSrcIndex++;tryPlayCurrentSource();});}return;}
-  player.src=url;player.play().then(()=>{setStatus(`قيد التشغيل: ${s.name}`);}).catch(()=>{currentSrcIndex++;tryPlayCurrentSource();});
+function startStation(id){
+  currentStationId=id;
+  currentSrcIndex=0;
+  tryPlayCurrentSource();
 }
-function stopRadio(){if(hlsInstance){try{hlsInstance.destroy();}catch(e){}}player.pause();player.src='';setStatus('تم الإيقاف');}
-function pauseRadio(){player.pause();setStatus('إيقاف مؤقت');}
-function setStatus(msg,warn=false){statusMsg.textContent=msg;statusMsg.style.color=warn?'#ffb3b3':'#e6fff8';}
-document.getElementById('radioIcon').onclick=()=>{const box=document.getElementById('radioPopup');box.style.display=box.style.display==='block'?'none':'block';};
+
+function tryPlayCurrentSource(){
+  const s=stations[currentStationId];
+  const url=s.sources[currentSrcIndex];
+
+  if(!url){ setStatus(`فشل تشغيل ${s.name} — انتهت الروابط`,true); return; }
+
+  setStatus(`جاري التشغيل: ${s.name} — محاولة ${currentSrcIndex+1}`);
+
+  if(hlsInstance){
+    try{ hlsInstance.destroy(); }catch(e){}
+  }
+
+  if(url.endsWith('.m3u8')){
+    if(Hls.isSupported()){
+      hlsInstance=new Hls();
+      hlsInstance.loadSource(url);
+      hlsInstance.attachMedia(player);
+      hlsInstance.on(Hls.Events.ERROR,()=>{
+        currentSrcIndex++;
+        tryPlayCurrentSource();
+      });
+      player.play().catch(()=>{});
+    } else {
+      player.src=url;
+      player.play().catch(()=>{
+        currentSrcIndex++;
+        tryPlayCurrentSource();
+      });
+    }
+    return;
+  }
+
+  player.src=url;
+  player.play()
+  .then(()=>{ setStatus(`قيد التشغيل: ${s.name}`); })
+  .catch(()=>{
+    currentSrcIndex++;
+    tryPlayCurrentSource();
+  });
+}
+
+function stopRadio(){
+  if(hlsInstance){
+    try{ hlsInstance.destroy(); }catch(e){}
+  }
+  player.pause();
+  player.src='';
+  setStatus('تم الإيقاف');
+}
+
+function pauseRadio(){
+  player.pause();
+  setStatus('إيقاف مؤقت');
+}
+
+function setStatus(msg,warn=false){
+  statusMsg.textContent=msg;
+  statusMsg.style.color=warn?'#ffb3b3':'#fff7c2';
+}
+
+document.getElementById('radioIcon').onclick=()=>{
+  const box=document.getElementById('radioPopup');
+  box.style.display = box.style.display==='block' ? 'none' : 'block';
+};
 </script>
+
 <!-- 🎂 كيك متوهج بألوان متغيرة -->
 <div id="cakeWrapper">
   <div id="cakeButton" onclick="window.open('https://paypal.me/abwalqmrzmrd/1', '_blank')">
