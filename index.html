@@ -68,7 +68,7 @@
 <style>
 #radioIcon {
     position: fixed;
-    bottom: 390px;
+    bottom: 340px;
     right: 20px;
     width: 110px;
     height: 110px;
@@ -289,6 +289,233 @@ document.getElementById('radioIcon').onclick=()=>{
 };
 </script>
 
+<!-- ====================== شريط الأخبار + الوقت + التاريخ + الطقس ====================== -->
+<div class="news-ticker">
+  
+  <!-- صندوق الوقت والتاريخ والطقس -->
+  <div class="clock-box">
+    <span id="clock"></span>
+    <span id="date"></span>
+    <span id="weather"></span>
+    <span id="locationName" style="color:#0ff; font-size:14px; margin-top:4px;"></span>
+  </div>
+
+  <!-- نص الأخبار المُكرر لحركة سلسة -->
+  <div class="ticker-wrapper">
+    <span id="newsContent"></span>
+    <span id="newsContentClone"></span>
+  </div>
+
+</div>
+
+<style>
+/* =================== شريط الأخبار =================== */
+.news-ticker {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.15) !important;
+  color: #fff;
+  padding: 5px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  position: fixed;
+  top: 120px;
+  right: 0;
+  font-size: 26px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+
+  /* ✨✨ التوهج الذهبي ✨✨ */
+  box-shadow: 
+      0 0 12px rgba(255, 215, 0, 0.75),
+      0 0 25px rgba(255, 215, 0, 0.55),
+      inset 0 -2px 3px rgba(255, 215, 0, 0.9);
+  border-bottom: 1px solid rgba(255, 215, 0, 0.75);
+
+  animation: goldGlow 2.2s infinite ease-in-out;
+}
+
+/* ✨ نبض اللمعان الذهبي ✨ */
+@keyframes goldGlow {
+  0%   { box-shadow: 0 0 10px rgba(255,215,0,0.6), 0 0 25px rgba(255,215,0,0.35); }
+  50%  { box-shadow: 0 0 25px rgba(255,215,0,0.9), 0 0 45px rgba(255,215,0,0.6); }
+  100% { box-shadow: 0 0 10px rgba(255,215,0,0.6), 0 0 25px rgba(255,215,0,0.35); }
+}
+
+/* =================== محتوى الأخبار =================== */
+.ticker-wrapper {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 80%;
+}
+
+#newsContent,
+#newsContentClone {
+  display: inline-block;
+  padding-right: 50px;
+  animation: tickerMove 300s linear infinite;
+}
+
+/* حركة من اليسار → اليمين */
+@keyframes tickerMove {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* =================== صندوق الوقت + التاريخ + الطقس =================== */
+.clock-box {
+  margin-right: 15px;
+  padding: 0;
+  background: transparent !important;
+  border: none !important;
+  font-size: 40px;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+#clock { color: #0f0; font-weight: bold; }
+#date  { color: #ccc; font-size: 15px; }
+#weather { color: #7cf; font-size: 18px; font-weight: bold; }
+</style>
+
+<script>
+/* =================== روابط مصادر الأخبار =================== */
+const feeds = [
+  ["الجزيرة", "https://www.aljazeera.net/aljazeerarss/arabe.xml"],
+  ["العربية", "https://www.alarabiya.net/.mrss/ar.xml"],
+  ["BBC عربي", "https://www.bbc.com/arabic/index.xml"],
+  ["CNN عربي", "https://arabic.cnn.com/rss.xml"],
+  ["الشرق الأوسط", "https://aawsat.com/rss.xml"],
+  ["سكاي نيوز", "https://www.skynewsarabia.com/web/rss"],
+  ["فرانس 24", "https://www.france24.com/ar/rss"],
+  ["روسيا اليوم", "https://arabic.rt.com/rss/"],
+  ["TRT عربي", "https://www.trtarabi.com/rss"]
+];
+
+/* =================== جلب الأخبار =================== */
+async function loadNews() {
+  let allNews = [];
+
+  for (const [name, url] of feeds) {
+    try {
+      const response = await fetch("https://api.allorigins.win/get?url=" + encodeURIComponent(url));
+      const data = await response.json();
+      const xml = new DOMParser().parseFromString(data.contents, "text/xml");
+      const items = xml.querySelectorAll("item");
+
+      items.forEach((item, i) => {
+        if (i < 3) {
+          const title = item.querySelector("title").textContent.trim();
+          allNews.push(`🔸 (${name}) ${title}`);
+        }
+      });
+
+    } catch (e) {
+      console.log("خطأ في جلب الأخبار من:", name);
+    }
+  }
+
+  const finalText = allNews.length > 0 ? allNews.join(" | ") : "تعذّر تحميل الأخبار حالياً.";
+
+  document.getElementById("newsContent").textContent = finalText;
+  document.getElementById("newsContentClone").textContent = finalText;
+}
+
+/* =================== الساعة والتاريخ =================== */
+function updateClock() {
+  const now = new Date();
+
+  let h = String(now.getHours()).padStart(2, '0');
+  let m = String(now.getMinutes()).padStart(2, '0');
+  let s = String(now.getSeconds()).padStart(2, '0');
+
+  document.getElementById("clock").textContent = `${h}:${m}:${s}`;
+
+  const days = ["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
+  const dayName = days[now.getDay()];
+  const d = now.getDate();
+  const mon = now.getMonth() + 1;
+  const y = now.getFullYear();
+
+  document.getElementById("date").textContent = `${dayName} - ${y}/${mon}/${d}`;
+}
+
+/* =================== الطقس + تحديد المدينة =================== */
+function loadWeather() {
+  if (!navigator.geolocation) {
+    document.getElementById("weather").textContent = "تعذّر تحديد الموقع";
+    document.getElementById("locationName").textContent = "📍 غير معروف";
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(async (pos) => {
+
+    const lat = pos.coords.latitude;
+    const lon = pos.coords.longitude;
+
+    /* === استخراج اسم المدينة === */
+    try {
+      const locRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+      const locData = await locRes.json();
+
+      const city = locData.address.city || locData.address.town || locData.address.village || "مدينة غير معروفة";
+      const country = locData.address.country || "";
+
+      document.getElementById("locationName").textContent = `📍 ${city} - ${country}`;
+
+    } catch {
+      document.getElementById("locationName").textContent = "📍 الموقع غير متوفر";
+    }
+
+    /* === بيانات الطقس === */
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code`;
+
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      const temp = data.current.temperature_2m;
+      const code = data.current.weather_code;
+
+      const conditions = {
+        0: "☀️ صافٍ",
+        1: "🌤 غالبًا صافٍ",
+        2: "⛅ غائم جزئيًا",
+        3: "☁️ غائم",
+        45: "🌫 ضباب",
+        48: "🌫 ضباب متجمد",
+        51: "🌦 رشاش خفيف",
+        61: "🌧 مطر",
+        71: "❄️ ثلوج",
+        95: "🌩 عواصف رعدية"
+      };
+
+      const condText = conditions[code] || "🌡 غير معروف";
+
+      document.getElementById("weather").textContent =
+        `${temp}°C - ${condText}`;
+
+    } catch {
+      document.getElementById("weather").textContent = "خطأ بالطقس";
+    }
+
+  }, () => {
+    document.getElementById("weather").textContent = "لم يتم السماح بالموقع";
+    document.getElementById("locationName").textContent = "📍 غير معروف";
+  });
+}
+
+/* =================== تشغيل =================== */
+loadNews();
+loadWeather();
+setInterval(updateClock, 1000);
+updateClock();
+
+/* تحديث الطقس كل 30 دقيقة */
+setInterval(loadWeather, 1800000);
+</script>
 <!-- 🎂 كيك متوهج بألوان متغيرة -->
 <div id="cakeWrapper">
   <div id="cakeButton" onclick="window.open('https://paypal.me/abwalqmrzmrd/1', '_blank')">
@@ -2548,6 +2775,180 @@ jokeIcon.addEventListener('click', () => {
 });
 </script>
 
+<!-- ========== أيقونة الأعمال ========== -->
+<div id="worksIconContainer" style="
+  bottom: 5px;
+  right: 125px;
+  text-align:center;
+  margin:30px 0;
+  z-index:9999;
+  position:relative;
+">
+  
+  <div onclick="toggleWorksCard()" style="
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    border:3px solid #00ffff;
+    box-shadow:0 0 20px #00ffff;
+    background:#000;
+    overflow:hidden;
+    cursor:pointer;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin:auto;
+  ">
+    <img src="https://a.top4top.io/p_3607x4is91.jpg"
+         style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+  </div>
+
+</div>
+
+
+<!-- ========== الكرت (صورة يسار — فيديو يمين) ========== -->
+<div id="worksSmallCard" style="
+  display:none;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:#001515;
+  border-radius:15px;
+  padding:15px;
+  box-shadow:0 0 25px #00ffff;
+  z-index:100000;
+  width:90%;
+  max-width:470px;
+">
+
+  <!-- زر الإغلاق -->
+  <button onclick="toggleWorksCard()" style="
+    background:red;
+    color:#fff;
+    border:none;
+    padding:6px 12px;
+    border-radius:6px;
+    cursor:pointer;
+    margin-bottom:10px;
+    float:left;
+  ">✖</button>
+
+  <!-- ⭐ المحتوى -->
+  <div style="
+      display:flex;
+      gap:10px;
+      margin-top:40px;
+      flex-direction:row;
+      direction:ltr;
+      width:100%;
+  ">
+
+    <!-- ✔ الصورة يسار -->
+    <img src="https://a.top4top.io/p_3607x4is91.jpg"
+         style="
+           width:48%;
+           height:380px;
+           object-fit:cover;
+           border-radius:12px;
+           box-shadow:0 0 12px #00ffff;
+           z-index:2;
+         ">
+
+    <!-- ✔ الفيديو يمين + زر الصوت + شريط الصوت -->
+    <div style="width:48%; height:380px; position:relative;">
+
+      <!-- الفيديو -->
+      <iframe id="workVideo"
+        src="https://www.youtube.com/embed/FzfIvHt4AaU?autoplay=1&mute=1&enablejsapi=1"
+        style="
+          width:100%;
+          height:100%;
+          border:none;
+          border-radius:12px;
+          box-shadow:0 0 12px #00ffff;
+          position:relative;
+          z-index:2;
+        "
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+
+      <!-- زر الصوت -->
+      <button id="soundBtn" onclick="toggleWorkSound()" style="
+        position:absolute;
+        bottom:10px;
+        left:10px;
+        background:rgba(0,255,255,0.7);
+        border:none;
+        padding:6px 10px;
+        border-radius:8px;
+        cursor:pointer;
+        font-weight:bold;
+        color:#000;
+        z-index:5;
+        box-shadow:0 0 10px #00ffff;
+        font-size:12px;
+      ">
+        🔊 تشغيل الصوت
+      </button>
+
+      <!-- شريط الصوت -->
+      <input type="range" id="volumeSlider" min="0" max="100" value="100" 
+        oninput="setWorkVolume(this.value)"
+        style="
+          position:absolute;
+          bottom:10px;
+          right:10px;
+          width:65px;
+          z-index:5;
+          cursor:pointer;
+        ">
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+function toggleWorksCard(){
+  let card = document.getElementById("worksSmallCard");
+  card.style.display = (card.style.display === "block") ? "none" : "block";
+}
+
+// ========================== التحكم بالصوت ==========================
+
+let soundOn = false;
+
+// زر تشغيل / إيقاف الصوت
+function toggleWorkSound(){
+  const iframe = document.getElementById("workVideo");
+  const btn = document.getElementById("soundBtn");
+
+  soundOn = !soundOn;
+
+  iframe.contentWindow.postMessage(JSON.stringify({
+    event: "command",
+    func: soundOn ? "unMute" : "mute",
+    args: []
+  }), "*");
+
+  btn.textContent = soundOn ? "🔈 إيقاف الصوت" : "🔊 تشغيل الصوت";
+}
+
+
+// تغيير مستوى الصوت من السلايدر
+function setWorkVolume(vol){
+  const iframe = document.getElementById("workVideo");
+
+  iframe.contentWindow.postMessage(JSON.stringify({
+    event: "command",
+    func: "setVolume",
+    args: [vol]
+  }), "*");
+}
+</script>
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -3915,902 +4316,576 @@ document.addEventListener("DOMContentLoaded", () => {
 </style>
 </head>
 <body>
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <title>Emerald Music – Abwalqmrzmrd</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
-  body{
-    margin:0;
-    padding:0;
-    background:#000;
-    font-family:"Tajawal",sans-serif;
-    color:#fff;
-    overflow:hidden;
-  }
-</style>
-</head>
-<body>
-
-<!-- 🎹 أيقونة البيانو الجديدة (داخلها 🎹🎻) -->
-<div id="emz-open-btn">🎹🎻</div>
-
-<script>
-/* ==================== أيقونة البيانو ==================== */
-const emzIcon = document.getElementById("emz-open-btn");
-Object.assign(emzIcon.style, {
-  position:"fixed",
-  bottom:"370px",
-  right:"175px",
-  width:"75px",
-  height:"75px",
-  borderRadius:"50%",
-  background:"rgba(255,255,255,0.08)",
-  border:"2px solid rgba(255,255,255,0.25)",
-  backdropFilter:"blur(6px)",
-  display:"flex",
-  alignItems:"center",
-  justifyContent:"center",
-  fontSize:"26px",
-  transition:"0.25s",
-  cursor:"pointer",
-  zIndex:"999999999"
-});
-emzIcon.onmouseover = () => {
-  emzIcon.style.backgroundColor="rgba(0,255,213,0.15)";
-  emzIcon.style.borderColor="#00ffd5";
-  emzIcon.style.boxShadow="0 0 12px #00ffd5";
-  emzIcon.style.transform="scale(1.08)";
-};
-emzIcon.onmouseout = () => {
-  emzIcon.style.backgroundColor="rgba(255,255,255,0.08)";
-  emzIcon.style.borderColor="rgba(255,255,255,0.25)";
-  emzIcon.style.boxShadow="none";
-  emzIcon.style.transform="scale(1)";
-};
-
-/* ==================== الاشتراك + المعاينة ==================== */
-const ONE_MONTH   = 2592000000;           // 30 يوم
-const TRIAL_MS    = 7 * 60 * 60 * 1000;   // 7 ساعات
-
-function getCookieInt(name){
-  const m = document.cookie.match(new RegExp(name + "=(\\d+)"));
-  return m ? parseInt(m[1]) : 0;
-}
-function getPaidUntil(){  return getCookieInt("paid_until");  }
-function getTrialUntil(){ return getCookieInt("trial_until"); }
-
-function isPaid(){   return Date.now() < getPaidUntil(); }
-function hasTrial(){ return Date.now() < getTrialUntil(); }
-
-function activate(){
-  const exp = Date.now() + ONE_MONTH;
-  document.cookie = "paid_until="+exp+"; path=/; max-age=31536000";
-}
-function startTrial(){
-  const exp = Date.now() + TRIAL_MS;
-  document.cookie = "trial_until="+exp+"; path=/; max-age=604800";
+{
+  margin:0;
+  background:#000;
+  font-family:"Tajawal",sans-serif;
+  color:#fff;
+  overflow:hidden;
 }
 
-/* ==================== فتح النافذة ==================== */
-emzIcon.onclick = () => {
-  if(document.getElementById("emz-shadow-host")) return;
+/* زر فتح */
+#emz-open-btn{
+  position:fixed;
+  bottom:370px;
+  right:175px;
+  width:75px;height:75px;
+  border-radius:50%;
+  background:rgba(255,255,255,.08);
+  border:2px solid rgba(255,255,255,.25);
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;
+  cursor:pointer;
+  backdrop-filter:blur(6px);
+  transition:.25s;
+  z-index:999999;
+}
+#emz-open-btn:hover{
+  background:rgba(0,255,213,.15);
+  border-color:#00ffd5;
+  box-shadow:0 0 12px #00ffd5;
+  transform:scale(1.08);
+}
 
-  const host = document.createElement("div");
-  host.id="emz-shadow-host";
-  host.style.position="fixed";
-  host.style.inset="0";
-  host.style.zIndex="999999999999";
-  document.body.appendChild(host);
-
-  const root = host.attachShadow({mode:"closed"});
-
-  root.innerHTML = `
-<style>
+/* نافذة */
 .emz-modal{
   position:fixed; inset:0;
-  background:rgba(0,0,0,0.75);
-  backdrop-filter:blur(6px);
+  background:rgba(0,0,0,.75);
   display:flex; justify-content:center; align-items:center;
+  backdrop-filter:blur(6px);
 }
 .emz-box{
-  width:min(1000px,96vw);
+  width:min(900px,95vw);
+  max-height:95vh;
+  overflow:auto;
   background:#050a10;
-  border-radius:16px;
-  padding:20px;
   border:1px solid #00ffd5;
+  border-radius:16px;
+  padding:18px;
   box-shadow:0 0 22px #00ffd580;
   position:relative;
-  color:#fff;
-  font-family:"Tajawal",sans-serif;
 }
 .emz-close{
-  position:absolute; top:10px; right:10px;
-  font-size:28px; cursor:pointer;
+  position:absolute;
+  top:10px; right:15px;
+  font-size:26px;
+  cursor:pointer;
   color:#00ffd5;
 }
+
+/* أزرار */
 .emz-row{
-  display:flex; flex-wrap:wrap; gap:8px;
-  justify-content:center; margin-bottom:10px;
+  display:flex; flex-wrap:wrap;
+  gap:8px; justify-content:center;
+  margin:12px 0;
 }
 .emz-btn{
   padding:6px 12px;
   border-radius:999px;
   background:#0b141c;
   border:1px solid #00ffd540;
-  font-size:12px;
   color:#ddffff;
   cursor:pointer;
-  transition:0.2s;
+  transition:.2s;
+  font-size:12px;
 }
 .emz-btn.active{
-  background:#00ffd5;
-  color:#000;
+  background:#00ffd5;color:#000;
   box-shadow:0 0 10px #00ffd5;
 }
+
+/* اشتراك */
 .emz-sub-box{
-  padding:16px;
   background:#00151a;
   border:1px solid #00ffd5;
   border-radius:12px;
+  padding:14px;
   text-align:center;
-}
-.emz-pay{
-  margin-top:10px;
-  background:#ffc439;
-  color:#000;
-  border:none;
-  border-radius:999px;
-  padding:8px 14px;
-  cursor:pointer;
-  font-size:13px;
-}
-.emz-activate{
-  margin-top:10px;
-  background:#00ffd5;
-  color:#000;
-  border:none;
-  border-radius:999px;
-  padding:8px 14px;
-  cursor:pointer;
-  font-size:13px;
-}
-.emz-preview{
-  margin-top:10px;
-  background:#444;
-  color:#fff;
-  border:none;
-  border-radius:999px;
-  padding:8px 14px;
-  cursor:pointer;
-  font-size:13px;
-  margin-right:6px;
-}
-/* ملاحظة الاشتراك */
-.emz-note{
-  margin-top:10px;
-  font-size:11px;
-  opacity:0.75;
 }
 
 /* لوحة المفاتيح */
 .emz-keyboard{
-  margin-top:18px;
-  padding:14px;
+  margin-top:12px;
   background:#000;
   border-radius:14px;
+  padding:10px;
   overflow-x:auto;
+  white-space:nowrap;
 }
 .emz-white{
+  width:48px;height:170px;
   display:inline-flex;
-  width:48px;
-  height:170px;
-  background:linear-gradient(#fafafa,#dcdcdc);
+  flex-direction:column;
+  justify-content:flex-end;
+  align-items:center;
   margin:1px;
-  justify-content:center;
-  align-items:flex-end;
-  padding-bottom:6px;
-  border-radius:0 0 10px 10px;
-  color:#000;
-  font-weight:bold;
+  background:linear-gradient(#fff,#ccc);
   cursor:pointer;
-  transition:.1s;
+  border-radius:0 0 10px 10px;
+  padding-bottom:6px;
 }
 .emz-white.active{
-  background:linear-gradient(#e1ffff,#b6f6f0);
-  box-shadow:0 0 12px #00ffd5;
+  background:#bfffff;
   transform:translateY(3px);
+  box-shadow:0 0 12px #00ffd5;
 }
-.emz-signature{
-  text-align:center;
-  margin-top:10px;
-  opacity:0.85;
-  font-size:13px;
+.note-label{font-size:10px;color:#000;margin-bottom:3px}
+
+/* النوتات */
+.notes-modal{
+  display:none;
+  position:fixed; inset:0;
+  background:rgba(0,0,0,.65);
+  justify-content:center; align-items:center;
+}
+.notes-box{
+  width:350px;
+  max-height:80vh;
+  background:#021218;
+  border:1px solid #00ffd5;
+  border-radius:12px;
+  padding:14px;
+  box-shadow:0 0 22px #00ffd5;
+  overflow:auto;
+  position:relative;
+}
+.notes-close{
+  position:absolute; top:6px; right:8px;
+  cursor:pointer; font-size:18px; color:#00ffd5;
 }
 
-/* سطر دمج الآلات */
-.emz-mix-label{
+.emz-credit{
   text-align:center;
-  font-size:12px;
-  opacity:.85;
-  margin-top:6px;
-  margin-bottom:2px;
+  margin-top:15px;
+  font-size:14px;
+  color:#00ffd5;
+  text-shadow:0 0 12px #00ffd5;
+}
+.emz-rec-note{
+  text-align:center;
+  font-size:11px;
+  opacity:.75;
+  margin-top:-4px;
 }
 </style>
+</head>
+<body>
 
-<div class="emz-modal">
-<div class="emz-box">
+<!-- زر فتح -->
+<div id="emz-open-btn">🎹🎻</div>
 
-<div class="emz-close">✖</div>
+<script>
+/* ========== نظام الاشتراك بالكوكيز ========== */
+const ONE_MONTH = 2592000000;
+const TRIAL_MS  = 7*60*60*1000;
 
-<!-- منطقة الاشتراك -->
-<div id="sub-area">
-  <div class="emz-sub-box">
-    <div style="font-size:16px; margin-bottom:6px;">
-      اشتراك شهري لفتح العزف – Monthly subscription to unlock playing
+function getCookieInt(n){
+  const m=document.cookie.match(new RegExp(n+"=(\\d+)"));
+  return m?parseInt(m[1]):0;
+}
+function isPaid(){return Date.now()<getCookieInt("paid_until");}
+function hasTrial(){return Date.now()<getCookieInt("trial_until");}
+
+function activate(){document.cookie="paid_until="+(Date.now()+ONE_MONTH)+"; path=/; max-age=31536000";}
+function startTrial(){document.cookie="trial_until="+(Date.now()+TRIAL_MS)+"; path=/; max-age=604800";}
+
+/* ================= صوت النغمات (نفس الأسلوب القديم + صدى 20%) ================= */
+const baseUrl={
+  piano:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_grand_piano-mp3/",
+  qanun:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/dulcimer-mp3/",
+  oud:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_guitar_nylon-mp3/",
+  violin:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/violin-mp3/",
+  sax:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/alto_sax-mp3/",
+  nay:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/flute-mp3/",
+  drums:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/standard_kit-mp3/",
+  choir:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/choir_aahs-mp3/"
+};
+
+let globalVolume = 1.0;
+
+function playRaw(note,inst,loop=false,vol=1){
+  const a=new Audio(baseUrl[inst]+note+".mp3");
+  a.loop=loop;
+  a.volume=vol * globalVolume;
+  a.play().catch(()=>{});
+  return a;
+}
+
+/* الآلات */
+let currentInstrument="piano";
+let mixInstrument="none";
+
+/* الآلات التي تستجيب للضغط الطويل */
+const sustainInst=["violin","sax","nay","choir"];
+
+/* ========== فتح نافذة العزف ========== */
+document.getElementById("emz-open-btn").onclick = ()=>{
+
+if(document.getElementById("emz-panel")) return;
+
+const host=document.createElement("div");
+host.id="emz-panel";
+host.innerHTML=`
+<div class='emz-modal'>
+  <div class='emz-box'>
+    <div class='emz-close'>✖</div>
+
+    <!-- الاشتراك -->
+    <div id='sub-area' class='emz-sub-box'>
+      <h3>Playing subscription – اشتراك العزف 1 دولار</h3>
+      <button class='emz-btn' id='preview-btn'>معاينة مجانية 7 ساعات</button>
+      <button class='emz-btn' id='pay-btn' style='background:#ffc439;color:#000;'>الدفع عبر PayPal</button>
+      <div style='margin-top:10px;opacity:.8;font-size:12px;'>
+        يمكنك تفعيل الاشتراك مباشرة عند الضغط على الدفع، ويمكنك الدفع الآن أو لاحقًا حسب الإمكانية.<br>
+        If you cannot pay now, you may try again whenever possible.
+      </div>
     </div>
-    <div style="font-size:13px; opacity:.85;">
-      ادفع 1 دولار وتمتع بالعزف الكامل على جميع الآلات.<br>
-      Pay 1 USD and enjoy full access to all instruments.
+
+    <!-- منطقة العزف -->
+    <div id='play-area' style='display:none;'>
+
+      <!-- الآلات الرئيسية -->
+      <div class='emz-row'>
+        <button class='emz-btn emz-main' data-mode='piano'>🎹 Piano</button>
+        <button class='emz-btn emz-main' data-mode='oud'>🪕 Oud</button>
+        <button class='emz-btn emz-main' data-mode='qanun'>🎼 Qanun</button>
+        <button class='emz-btn emz-main' data-mode='violin'>🎻 Violin</button>
+        <button class='emz-btn emz-main' data-mode='sax'>🎷 Sax</button>
+        <button class='emz-btn emz-main' data-mode='nay'>🎵 Nay</button>
+        <button class='emz-btn emz-main' data-mode='drums'>🥁 Drums</button>
+        <button class='emz-btn emz-main' data-mode='choir'>🎤 Choir</button>
+        <button class='emz-btn' id='notes-btn'>🎼 النوتات</button>
+      </div>
+
+      <!-- الدمج -->
+      <div class='emz-row'>
+        <button class='emz-btn emz-mix active' data-mix='none'>❌ No Mix</button>
+        <button class='emz-btn emz-mix' data-mix='piano'>🎹 Piano</button>
+        <button class='emz-btn emz-mix' data-mix='oud'>🪕 Oud</button>
+        <button class='emz-btn emz-mix' data-mix='qanun'>🎼 Qanun</button>
+        <button class='emz-btn emz-mix' data-mix='violin'>🎻 Violin</button>
+        <button class='emz-btn emz-mix' data-mix='sax'>🎷 Sax</button>
+        <button class='emz-btn emz-mix' data-mix='nay'>🎵 Nay</button>
+        <button class='emz-btn emz-mix' data-mix='drums'>🥁 Drums</button>
+        <button class='emz-btn emz-mix' data-mix='choir'>🎤 Choir</button>
+      </div>
+
+      <!-- التسجيل -->
+      <div class='emz-row'>
+        <button class='emz-btn' id='rec-start'>⏺ تسجيل</button>
+        <button class='emz-btn' id='rec-stop' disabled>⏹ إيقاف وحفظ</button>
+      </div>
+      <div class='emz-rec-note'>
+        التسجيل من الميكروفون (صوتك + صوت العزف من السماعات) في ملف واحد.
+      </div>
+
+      <!-- مستوى الصوت -->
+      <div class='emz-row'>
+        <span style="font-size:12px;opacity:.85;">🔊 مستوى الصوت:</span>
+        <input id="vol-slider" type="range" min="0" max="100" value="100" style="width:160px;">
+      </div>
+
+      <!-- عزف تلقائي -->
+      <div class='emz-row'>
+        <button class='emz-btn' id='demo-hbd'>▶️ عزف تلقائي: عيد ميلاد</button>
+        <button class='emz-btn' id='demo-ode'>▶️ عزف تلقائي: Ode to Joy</button>
+        <button class='emz-btn' id='demo-stop'>⏹ إيقاف العزف التلقائي</button>
+      </div>
+
+      <div class='emz-keyboard' id='keys'></div>
+
+      <div class='emz-credit'>
+        ✨ إعداد وتصميم وإنتاج أبوالقمر زمرد × ChatGPT ✨
+      </div>
+
+      <!-- النوتات -->
+      <div id="notes-modal" class="notes-modal">
+        <div class="notes-box">
+          <div class="notes-close">✖</div>
+          <h3>🎼 قسم النوتات الموسيقية</h3>
+
+          <h4>🎂 عيد ميلاد سعيد – Happy Birthday</h4>
+          دو دو ري دو فا مي<br>
+          دو دو ري دو صول فا<br>
+          دو دو دو لا فا مي ري<br>
+          سي♭ سي♭ لا فا صول فا<br><br>
+
+          <h4>🎵 Beethoven – Ode to Joy</h4>
+          مي مي فا صول صول فا مي ري<br>
+          دو دو ري مي مي ري ري<br>
+        </div>
+      </div>
+
     </div>
-
-    <!-- أزرار المعاينة والدفع -->
-    <div style="margin-top:8px;">
-      <button class="emz-preview" id="preview-btn">
-        معاينة مجانية 7 ساعات – 7h Free Preview
-      </button>
-
-      <button class="emz-pay" id="pay-btn">
-        الدفع عبر PayPal – Pay with PayPal
-      </button>
-
-      <!-- زر التفعيل مخفي في البداية ويظهر بعد الضغط على الدفع -->
-      <button class="emz-activate" id="activate-btn" style="display:none;">
-        تم الدفع – تفعيل الاشتراك<br>I have paid – Activate subscription
-      </button>
-    </div>
-
-    <div class="emz-note">
-      (الاشتراك لا يعمل إلا على نفس الجهاز والمتصفح، وعند تغييره يُلغى الاشتراك.)<br>
-      (Subscription only works on the same device & browser. Changing them cancels the subscription.)
-    </div>
   </div>
-</div>
-
-<!-- منطقة العزف -->
-<div id="play-area" style="display:none;">
-  <!-- اختيار الآلة الرئيسية -->
-  <div class="emz-row">
-    <button class="emz-btn emz-main-btn active" data-mode="piano">🎹 بيانو / Piano</button>
-    <button class="emz-btn emz-main-btn" data-mode="oud">🪕 عود / Oud</button>
-    <button class="emz-btn emz-main-btn" data-mode="qanun">🎼 قانون / Qanun</button>
-    <button class="emz-btn emz-main-btn" data-mode="violin">🎻 كمان / Violin</button>
-    <button class="emz-btn emz-main-btn" data-mode="sax">🎷 ساكسفون / Sax</button>
-    <button class="emz-btn emz-main-btn" data-mode="nay">🎵 ناي / Nay</button>
-  </div>
-
-  <!-- اختيار آلة للدمج -->
-  <div class="emz-mix-label">
-    دمج مع / Mix with (اختياري):
-  </div>
-  <div class="emz-row">
-    <button class="emz-btn emz-mix-btn active" data-mix="none">❌ بدون دمج / No Mix</button>
-    <button class="emz-btn emz-mix-btn" data-mix="piano">🎹 Piano</button>
-    <button class="emz-btn emz-mix-btn" data-mix="oud">🪕 Oud</button>
-    <button class="emz-btn emz-mix-btn" data-mix="qanun">🎼 Qanun</button>
-    <button class="emz-btn emz-mix-btn" data-mix="violin">🎻 Violin</button>
-    <button class="emz-btn emz-mix-btn" data-mix="sax">🎷 Sax</button>
-    <button class="emz-btn emz-mix-btn" data-mix="nay">🎵 Nay</button>
-  </div>
-
-  <div class="emz-keyboard" id="keys"></div>
-
-  <div class="emz-signature">
-    من إنتاج أبوالقمر زمرد – مارس هواية العزف على الآلات الموسيقية<br>
-    Produced by Abwalqmrzmrd – Enjoy playing musical instruments as a hobby
-  </div>
-</div>
-
-</div>
 </div>
 `;
+document.body.appendChild(host);
 
-  /* ==================== JS الداخلي ==================== */
-  const closeBtn   = root.querySelector(".emz-close");
-  const subArea    = root.querySelector("#sub-area");
-  const playArea   = root.querySelector("#play-area");
-  const payBtn     = root.querySelector("#pay-btn");
-  const actBtn     = root.querySelector("#activate-btn");
-  const previewBtn = root.querySelector("#preview-btn");
+/* عناصر واجهة */
+const closeBtn = host.querySelector(".emz-close");
+const subArea  = host.querySelector("#sub-area");
+const playArea = host.querySelector("#play-area");
+const previewBtn = host.querySelector("#preview-btn");
+const payBtn = host.querySelector("#pay-btn");
+const notesBtn   = host.querySelector("#notes-btn");
+const notesModal = host.querySelector("#notes-modal");
+const notesClose = host.querySelector(".notes-close");
+const recStart   = host.querySelector("#rec-start");
+const recStop    = host.querySelector("#rec-stop");
+const volSlider  = host.querySelector("#vol-slider");
+const demoHbd    = host.querySelector("#demo-hbd");
+const demoOde    = host.querySelector("#demo-ode");
+const demoStop   = host.querySelector("#demo-stop");
 
-  closeBtn.onclick = () => host.remove();
+closeBtn.onclick = ()=>{ stopMelody(); host.remove(); };
 
-  function refresh(){
-    if(isPaid() || hasTrial()){
-      subArea.style.display="none";
-      playArea.style.display="block";
-    } else {
-      subArea.style.display="block";
-      playArea.style.display="none";
-    }
+/* تفعيل الدخول */
+function refresh(){
+  if(isPaid()||hasTrial()){
+    subArea.style.display="none";
+    playArea.style.display="block";
+  }else{
+    subArea.style.display="block";
+    playArea.style.display="none";
   }
+}
+refresh();
+
+previewBtn.onclick=()=>{
+  startTrial();
   refresh();
+  alert("تم تفعيل المعاينة المجانية لمدة 7 ساعات ✔");
+};
+payBtn.onclick=()=>{
+  window.open("https://www.paypal.com/paypalme/abwalqmrzmrd/1","_blank");
+  activate();
+  refresh();
+  alert("تم تفعيل الاشتراك لمدة 30 يوم ✔");
+};
 
-  previewBtn.onclick = ()=>{
-    startTrial();
-    refresh();
-    alert("تم تفعيل المعاينة المجانية لمدة 7 ساعات على هذا المتصفح والجهاز.");
+/* النوتات */
+notesBtn.onclick = ()=>notesModal.style.display="flex";
+notesClose.onclick = ()=>notesModal.style.display="none";
+
+/* مستوى الصوت */
+volSlider.oninput = ()=>{
+  globalVolume = volSlider.value / 100;
+};
+
+/* اختيار آلة رئيسية */
+host.querySelectorAll(".emz-main").forEach(b=>{
+  b.onclick=()=>{
+    host.querySelectorAll(".emz-main").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    currentInstrument=b.dataset.mode;
   };
+});
 
-  payBtn.onclick = ()=>{
-    window.open("https://www.paypal.com/paypalme/abwalqmrzmrd/1","_blank");
-    actBtn.style.display = "inline-block";
+/* اختيار آلة الدمج */
+host.querySelectorAll(".emz-mix").forEach(b=>{
+  b.onclick=()=>{
+    host.querySelectorAll(".emz-mix").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    mixInstrument=b.dataset.mix;
   };
+});
 
-  actBtn.onclick = ()=>{
-    activate();
-    refresh();
-    alert("تم تفعيل الاشتراك لمدة 30 يوم على هذا المتصفح والجهاز.");
-  };
+/* ===== التسجيل من الميكروفون ===== */
+let mediaRecorder=null;
+let recChunks=[];
 
-  /* ===== إعداد لوحة العزف ===== */
-  const keyRow    = root.querySelector("#keys");
-  const mainBtns  = root.querySelectorAll(".emz-main-btn");
-  const mixBtns   = root.querySelectorAll(".emz-mix-btn");
+async function startRecording(){
+  try{
+    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    mediaRecorder = new MediaRecorder(stream);
+    recChunks = [];
+    mediaRecorder.ondataavailable = e=>{
+      if(e.data.size>0) recChunks.push(e.data);
+    };
+    mediaRecorder.onstop = ()=>{
+      const blob = new Blob(recChunks,{type:"audio/webm"});
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement("a");
+      a.href=url;
+      a.download="emerald-music-recording.webm";
+      a.click();
+    };
+    mediaRecorder.start();
+  }catch(err){
+    alert("تعذر الوصول إلى الميكروفون. الرجاء السماح للصوت من المتصفح.");
+  }
+}
+function stopRecording(){
+  if(mediaRecorder && mediaRecorder.state!=="inactive"){
+    mediaRecorder.stop();
+  }
+}
 
-  let currentInstrument = "piano";
-  let mixInstrument     = "none";
-  const sustainInst     = ["violin","sax","nay"];
+recStart.onclick = async ()=>{
+  recStart.disabled=true;
+  recStop.disabled=false;
+  await startRecording();
+};
+recStop.onclick = ()=>{
+  recStop.disabled=true;
+  recStart.disabled=false;
+  stopRecording();
+};
 
-  // المفاتيح من 1 إلى 0 ثم Q..P ثم A..L ثم Z..M
-  const KEY_BINDINGS = [
-    "Digit1","Digit2","Digit3","Digit4","Digit5","Digit6",
-    "Digit7","Digit8","Digit9","Digit0",
-    "KeyQ","KeyW","KeyE","KeyR","KeyT","KeyY","KeyU","KeyI","KeyO","KeyP",
-    "KeyA","KeyS","KeyD","KeyF","KeyG","KeyH","KeyJ","KeyK","KeyL",
-    "KeyZ","KeyX","KeyC","KeyV","KeyB","KeyN","KeyM"
-  ];
+/* ===== لوحة المفاتيح ===== */
+const NOTES=[
+"C3","D3","E3","F3","G3","A3","B3",
+"C4","D4","E4","F4","G4","A4","B4",
+"C5","D5","E5","F5","G5","A5","B5",
+"C6","D6","E6","F6","G6","A6","B6"
+];
+const KEYS=[
+"Digit1","Digit2","Digit3","Digit4","Digit5","Digit6",
+"Digit7","Digit8","Digit9","Digit0",
+"KeyQ","KeyW","KeyE","KeyR","KeyT","KeyY","KeyU","KeyI","KeyO","KeyP",
+"KeyA","KeyS","KeyD","KeyF","KeyG","KeyH","KeyJ","KeyK","KeyL",
+"KeyZ","KeyX","KeyC","KeyV","KeyB","KeyN"
+];
 
-  // السلم من C3 (رقم 1) حتى C8
-  const NOTES = [
-    "C3","D3","E3","F3","G3","A3","B3",
-    "C4","D4","E4","F4","G4","A4","B4",
-    "C5","D5","E5","F5","G5","A5","B5",
-    "C6","D6","E6","F6","G6","A6","B6",
-    "C7","D7","E7","F7","G7","A7","B7","C8"
-  ];
+const keyRow=host.querySelector("#keys");
+const active={};
+const keyByCode={};
+const noteMap={};
 
-  const baseUrl = {
-    piano :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_grand_piano-mp3/",
-    qanun :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/dulcimer-mp3/",
-    oud   :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_guitar_nylon-mp3/",
-    violin:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/violin-mp3/",
-    sax   :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/alto_sax-mp3/",
-    nay   :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/flute-mp3/"
-  };
+/* ضغط قصير مع صدى 20% */
+function shortPress(elem,note){
+  elem.classList.add("active");
+  setTimeout(()=>elem.classList.remove("active"),120);
 
-  function play(note, inst, loop=false){
-    const a = new Audio(baseUrl[inst]+note+".mp3");
-    a.loop = loop;
-    a.volume = 1;
-    a.play().catch(()=>{});
-    return a;
+  playRaw(note,currentInstrument,false,1);
+  if(mixInstrument!=="none"){
+    playRaw(note,mixInstrument,false,1);
   }
 
-  // active[code] = { elem, audios: {inst:audio,...} }
-  const active = {};
-
-  function shortPlay(elem, note){
-    if(!note) return;
-    elem.classList.add("active");
-    setTimeout(()=>elem.classList.remove("active"),120);
-    // آلة رئيسية
-    play(note,currentInstrument,false);
-    // آلة دمج إن وجدت
-    if(mixInstrument !== "none" && mixInstrument){
-      play(note,mixInstrument,false);
+  // صدى خفيف بعد 220ms بنسبة 20%
+  setTimeout(()=>{
+    playRaw(note,currentInstrument,false,0.2);
+    if(mixInstrument!=="none"){
+      playRaw(note,mixInstrument,false,0.2);
     }
+  },220);
+}
+
+/* ضغط طويل للآلات المستمرة */
+function startLong(elem,code){
+  const note=elem.dataset.note;
+
+  // إن لم تكن آلة سستين → فقط ضغط قصير
+  if(!sustainInst.includes(currentInstrument)){
+    shortPress(elem,note);
+    return;
   }
 
-  function startSustain(elem, code){
-    const note = elem.dataset.note;
-    const instList = [];
+  if(active[code]) return;
 
-    // الآلة الرئيسية
-    instList.push(currentInstrument);
-    // آلة الدمج
-    if(mixInstrument !== "none" && mixInstrument && mixInstrument !== currentInstrument){
-      instList.push(mixInstrument);
-    }
+  elem.classList.add("active");
+  const audios=[];
+  audios.push(playRaw(note,currentInstrument,true,1));
 
-    // إن لم يكن من آلات السستين → تشغيل قصير فقط
-    const anySustain = instList.some(i => sustainInst.includes(i));
-    if(!anySustain){
-      shortPlay(elem,note);
-      return;
-    }
+  if(mixInstrument!=="none" && mixInstrument!==currentInstrument){
+    audios.push(playRaw(note,mixInstrument,true,1));
+  }
 
-    if(active[code]) return;
+  active[code]={elem,audios};
+}
 
-    elem.classList.add("active");
-    const audios = {};
-    instList.forEach(inst=>{
-      if(sustainInst.includes(inst)){
-        audios[inst] = play(note,inst,true);
-      }else{
-        // الآلات غير المستمرة: نعزف ضغطة قصيرة
-        play(note,inst,false);
+function endLong(code){
+  if(!active[code]) return;
+  active[code].audios.forEach(a=>a.pause());
+  active[code].elem.classList.remove("active");
+  delete active[code];
+}
+
+/* إنشاء المفاتيح */
+NOTES.forEach((note,i)=>{
+  const code=KEYS[i];
+  const k=document.createElement("div");
+  k.className="emz-white";
+  k.dataset.note=note;
+  k.dataset.code=code;
+  k.innerHTML=`<div class="note-label">${note}</div>${code.replace("Digit","").replace("Key","")}`;
+  keyRow.appendChild(k);
+  keyByCode[code]=k;
+  noteMap[note]=k;
+
+  k.onmousedown = ()=>startLong(k,code);
+  k.onmouseup   = ()=>endLong(code);
+  k.onmouseleave= ()=>endLong(code);
+  k.onclick     = ()=>shortPress(k,note);
+});
+
+/* لوحة المفاتيح الحقيقية */
+window.addEventListener("keydown",e=>{
+  if(e.repeat) return;
+  const k=keyByCode[e.code];
+  if(k) startLong(k,e.code);
+});
+window.addEventListener("keyup",e=> endLong(e.code));
+
+/* ===== العزف التلقائي ===== */
+let demoTimer=null;
+
+function stopMelody(){
+  if(demoTimer){
+    clearTimeout(demoTimer);
+    demoTimer=null;
+  }
+}
+
+function playMelody(seq,tempo){
+  stopMelody();
+  let i=0;
+  function step(){
+    if(i>=seq.length){ demoTimer=null; return; }
+    const n=seq[i++];
+    if(n!=="REST"){
+      const elem = noteMap[n];
+      if(elem) shortPress(elem,n);
+      else{
+        playRaw(n,currentInstrument,false,1);
+        setTimeout(()=>playRaw(n,currentInstrument,false,0.2),220);
       }
-    });
-    active[code] = {elem, audios};
+    }
+    demoTimer = setTimeout(step,tempo);
   }
+  step();
+}
 
-  function endSustain(code){
-    if(!active[code]) return;
-    const obj = active[code];
-    Object.values(obj.audios).forEach(a=>{
-      a.pause();
-    });
-    obj.elem.classList.remove("active");
-    delete active[code];
-  }
+const MELODY_HBD=[
+  "C4","C4","D4","C4","F4","E4",
+  "C4","C4","D4","C4","G4","F4",
+  "C4","C4","C5","A4","F4","E4","D4",
+  "B4","B4","A4","F4","G4","F4"
+];
 
-  // إنشاء المفاتيح
-  NOTES.forEach((note,i)=>{
-    const code = KEY_BINDINGS[i];
-    if(!code) return;
-    const k = document.createElement("div");
-    k.className="emz-white";
-    k.dataset.note=note;
-    k.dataset.code=code;
-    k.textContent = code.startsWith("Digit") ? code.replace("Digit","") : code.replace("Key","");
-    keyRow.appendChild(k);
+const MELODY_ODE=[
+  "E4","E4","F4","G4","G4","F4","E4","D4",
+  "C4","C4","D4","E4","E4","D4","D4"
+];
 
-    k.onmousedown = ()=>startSustain(k,k.dataset.code);
-    k.onmouseup   = ()=>endSustain(k.dataset.code);
-    k.onmouseleave= ()=>endSustain(k.dataset.code);
-    k.onclick     = ()=>shortPlay(k,note);
-  });
+demoHbd.onclick = ()=>playMelody(MELODY_HBD,350);
+demoOde.onclick = ()=>playMelody(MELODY_ODE,350);
+demoStop.onclick = ()=>stopMelody();
 
-  // اختيار الآلة الرئيسية
-  mainBtns.forEach(b=>{
-    b.onclick = ()=>{
-      mainBtns.forEach(x=>x.classList.remove("active"));
-      b.classList.add("active");
-      currentInstrument = b.dataset.mode;
-      // إيقاف أي سستين
-      Object.keys(active).forEach(c=>endSustain(c));
-    };
-  });
-
-  // اختيار آلة الدمج
-  mixBtns.forEach(b=>{
-    b.onclick = ()=>{
-      mixBtns.forEach(x=>x.classList.remove("active"));
-      b.classList.add("active");
-      mixInstrument = b.dataset.mix;
-      Object.keys(active).forEach(c=>endSustain(c));
-    };
-  });
-
-  // لوحة المفاتيح
-  window.addEventListener("keydown",e=>{
-    if(!document.body.contains(host)) return;
-    const elem = root.querySelector('[data-code="'+e.code+'"]');
-    if(elem) startSustain(elem,e.code);
-  });
-  window.addEventListener("keyup",e=>{
-    if(!document.body.contains(host)) return;
-    endSustain(e.code);
-  });
 };
 </script>
 
 </body>
 </html>
-
-<!-- ========== أيقونة الأعمال ========== -->
-<div id="worksIconContainer" style="
-  bottom: 5px;
-  right: 25px;
-  text-align:center;
-  margin:30px 0;
-  z-index:9999;
-  position:relative;
-">
-  
-  <div onclick="toggleWorksCard()" style="
-    width:50px;
-    height:50px;
-    border-radius:50%;
-    border:3px solid #00ffff;
-    box-shadow:0 0 20px #00ffff;
-    background:#000;
-    overflow:hidden;
-    cursor:pointer;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    margin:auto;
-  ">
-    <img src="https://a.top4top.io/p_3607x4is91.jpg"
-         style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
-  </div>
-
-</div>
-
-
-<!-- ========== الكرت (صورة يسار — فيديو يمين) ========== -->
-<div id="worksSmallCard" style="
-  display:none;
-  position:fixed;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  background:#001515;
-  border-radius:15px;
-  padding:15px;
-  box-shadow:0 0 25px #00ffff;
-  z-index:100000;
-  width:90%;
-  max-width:470px;
-">
-
-  <!-- زر الإغلاق -->
-  <button onclick="toggleWorksCard()" style="
-    background:red;
-    color:#fff;
-    border:none;
-    padding:6px 12px;
-    border-radius:6px;
-    cursor:pointer;
-    margin-bottom:10px;
-    float:left;
-  ">✖</button>
-
-  <!-- ⭐ المحتوى -->
-  <div style="
-      display:flex;
-      gap:10px;
-      margin-top:40px;
-      flex-direction:row;
-      direction:ltr;
-      width:100%;
-  ">
-
-    <!-- ✔ الصورة يسار -->
-    <img src="https://a.top4top.io/p_3607x4is91.jpg"
-         style="
-           width:48%;
-           height:380px;
-           object-fit:cover;
-           border-radius:12px;
-           box-shadow:0 0 12px #00ffff;
-           z-index:2;
-         ">
-
-    <!-- ✔ الفيديو يمين + زر الصوت + شريط الصوت -->
-    <div style="width:48%; height:380px; position:relative;">
-
-      <!-- الفيديو -->
-      <iframe id="workVideo"
-        src="https://www.youtube.com/embed/FzfIvHt4AaU?autoplay=1&mute=1&enablejsapi=1"
-        style="
-          width:100%;
-          height:100%;
-          border:none;
-          border-radius:12px;
-          box-shadow:0 0 12px #00ffff;
-          position:relative;
-          z-index:2;
-        "
-        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen>
-      </iframe>
-
-      <!-- زر الصوت -->
-      <button id="soundBtn" onclick="toggleWorkSound()" style="
-        position:absolute;
-        bottom:10px;
-        left:10px;
-        background:rgba(0,255,255,0.7);
-        border:none;
-        padding:6px 10px;
-        border-radius:8px;
-        cursor:pointer;
-        font-weight:bold;
-        color:#000;
-        z-index:5;
-        box-shadow:0 0 10px #00ffff;
-        font-size:12px;
-      ">
-        🔊 تشغيل الصوت
-      </button>
-
-      <!-- شريط الصوت -->
-      <input type="range" id="volumeSlider" min="0" max="100" value="100" 
-        oninput="setWorkVolume(this.value)"
-        style="
-          position:absolute;
-          bottom:10px;
-          right:10px;
-          width:65px;
-          z-index:5;
-          cursor:pointer;
-        ">
-    </div>
-
-  </div>
-
-</div>
-
-<script>
-function toggleWorksCard(){
-  let card = document.getElementById("worksSmallCard");
-  card.style.display = (card.style.display === "block") ? "none" : "block";
-}
-
-// ========================== التحكم بالصوت ==========================
-
-let soundOn = false;
-
-// زر تشغيل / إيقاف الصوت
-function toggleWorkSound(){
-  const iframe = document.getElementById("workVideo");
-  const btn = document.getElementById("soundBtn");
-
-  soundOn = !soundOn;
-
-  iframe.contentWindow.postMessage(JSON.stringify({
-    event: "command",
-    func: soundOn ? "unMute" : "mute",
-    args: []
-  }), "*");
-
-  btn.textContent = soundOn ? "🔈 إيقاف الصوت" : "🔊 تشغيل الصوت";
-}
-
-
-// تغيير مستوى الصوت من السلايدر
-function setWorkVolume(vol){
-  const iframe = document.getElementById("workVideo");
-
-  iframe.contentWindow.postMessage(JSON.stringify({
-    event: "command",
-    func: "setVolume",
-    args: [vol]
-  }), "*");
-}
-</script>
-<!-- ====================== شريط الأخبار + الوقت + التاريخ + الطقس ====================== -->
-<div class="news-ticker">
-  
-  <!-- صندوق الوقت والتاريخ والطقس -->
-  <div class="clock-box">
-    <span id="clock"></span>
-    <span id="date"></span>
-    <span id="weather"></span>
-    <span id="locationName" style="color:#0ff; font-size:14px; margin-top:4px;"></span>
-  </div>
-
-  <!-- نص الأخبار المُكرر لحركة سلسة -->
-  <div class="ticker-wrapper">
-    <span id="newsContent"></span>
-    <span id="newsContentClone"></span>
-  </div>
-
-</div>
-
-<style>
-/* =================== شريط الأخبار =================== */
-.news-ticker {
-  width: 100%;
-  background: rgba(0, 0, 0, 0.15) !important;
-  color: #fff;
-  padding: 5px 0;
-  overflow: hidden;
-  white-space: nowrap;
-  position: fixed;
-  top: 120px;
-  right: 0;
-  font-size: 26px;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-
-  /* ✨✨ التوهج الذهبي ✨✨ */
-  box-shadow: 
-      0 0 12px rgba(255, 215, 0, 0.75),
-      0 0 25px rgba(255, 215, 0, 0.55),
-      inset 0 -2px 3px rgba(255, 215, 0, 0.9);
-  border-bottom: 1px solid rgba(255, 215, 0, 0.75);
-
-  animation: goldGlow 2.2s infinite ease-in-out;
-}
-
-/* ✨ نبض اللمعان الذهبي ✨ */
-@keyframes goldGlow {
-  0%   { box-shadow: 0 0 10px rgba(255,215,0,0.6), 0 0 25px rgba(255,215,0,0.35); }
-  50%  { box-shadow: 0 0 25px rgba(255,215,0,0.9), 0 0 45px rgba(255,215,0,0.6); }
-  100% { box-shadow: 0 0 10px rgba(255,215,0,0.6), 0 0 25px rgba(255,215,0,0.35); }
-}
-
-/* =================== محتوى الأخبار =================== */
-.ticker-wrapper {
-  position: relative;
-  display: inline-block;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 80%;
-}
-
-#newsContent,
-#newsContentClone {
-  display: inline-block;
-  padding-right: 50px;
-  animation: tickerMove 300s linear infinite;
-}
-
-/* حركة من اليسار → اليمين */
-@keyframes tickerMove {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
-
-/* =================== صندوق الوقت + التاريخ + الطقس =================== */
-.clock-box {
-  margin-right: 15px;
-  padding: 0;
-  background: transparent !important;
-  border: none !important;
-  font-size: 40px;
-  display: flex;
-  flex-direction: column;
-  line-height: 1.1;
-}
-
-#clock { color: #0f0; font-weight: bold; }
-#date  { color: #ccc; font-size: 15px; }
-#weather { color: #7cf; font-size: 18px; font-weight: bold; }
-</style>
-
-<script>
-/* =================== روابط مصادر الأخبار =================== */
-const feeds = [
-  ["الجزيرة", "https://www.aljazeera.net/aljazeerarss/arabe.xml"],
-  ["العربية", "https://www.alarabiya.net/.mrss/ar.xml"],
-  ["BBC عربي", "https://www.bbc.com/arabic/index.xml"],
-  ["CNN عربي", "https://arabic.cnn.com/rss.xml"],
-  ["الشرق الأوسط", "https://aawsat.com/rss.xml"],
-  ["سكاي نيوز", "https://www.skynewsarabia.com/web/rss"],
-  ["فرانس 24", "https://www.france24.com/ar/rss"],
-  ["روسيا اليوم", "https://arabic.rt.com/rss/"],
-  ["TRT عربي", "https://www.trtarabi.com/rss"]
-];
-
-/* =================== جلب الأخبار =================== */
-async function loadNews() {
-  let allNews = [];
-
-  for (const [name, url] of feeds) {
-    try {
-      const response = await fetch("https://api.allorigins.win/get?url=" + encodeURIComponent(url));
-      const data = await response.json();
-      const xml = new DOMParser().parseFromString(data.contents, "text/xml");
-      const items = xml.querySelectorAll("item");
-
-      items.forEach((item, i) => {
-        if (i < 3) {
-          const title = item.querySelector("title").textContent.trim();
-          allNews.push(`🔸 (${name}) ${title}`);
-        }
-      });
-
-    } catch (e) {
-      console.log("خطأ في جلب الأخبار من:", name);
-    }
-  }
-
-  const finalText = allNews.length > 0 ? allNews.join(" | ") : "تعذّر تحميل الأخبار حالياً.";
-
-  document.getElementById("newsContent").textContent = finalText;
-  document.getElementById("newsContentClone").textContent = finalText;
-}
-
-/* =================== الساعة والتاريخ =================== */
-function updateClock() {
-  const now = new Date();
-
-  let h = String(now.getHours()).padStart(2, '0');
-  let m = String(now.getMinutes()).padStart(2, '0');
-  let s = String(now.getSeconds()).padStart(2, '0');
-
-  document.getElementById("clock").textContent = `${h}:${m}:${s}`;
-
-  const days = ["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
-  const dayName = days[now.getDay()];
-  const d = now.getDate();
-  const mon = now.getMonth() + 1;
-  const y = now.getFullYear();
-
-  document.getElementById("date").textContent = `${dayName} - ${y}/${mon}/${d}`;
-}
-
-/* =================== الطقس + تحديد المدينة =================== */
-function loadWeather() {
-  if (!navigator.geolocation) {
-    document.getElementById("weather").textContent = "تعذّر تحديد الموقع";
-    document.getElementById("locationName").textContent = "📍 غير معروف";
-    return;
-  }
-
-  navigator.geolocation.getCurrentPosition(async (pos) => {
-
-    const lat = pos.coords.latitude;
-    const lon = pos.coords.longitude;
-
-    /* === استخراج اسم المدينة === */
-    try {
-      const locRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
-      const locData = await locRes.json();
-
-      const city = locData.address.city || locData.address.town || locData.address.village || "مدينة غير معروفة";
-      const country = locData.address.country || "";
-
-      document.getElementById("locationName").textContent = `📍 ${city} - ${country}`;
-
-    } catch {
-      document.getElementById("locationName").textContent = "📍 الموقع غير متوفر";
-    }
-
-    /* === بيانات الطقس === */
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code`;
-
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
-      const temp = data.current.temperature_2m;
-      const code = data.current.weather_code;
-
-      const conditions = {
-        0: "☀️ صافٍ",
-        1: "🌤 غالبًا صافٍ",
-        2: "⛅ غائم جزئيًا",
-        3: "☁️ غائم",
-        45: "🌫 ضباب",
-        48: "🌫 ضباب متجمد",
-        51: "🌦 رشاش خفيف",
-        61: "🌧 مطر",
-        71: "❄️ ثلوج",
-        95: "🌩 عواصف رعدية"
-      };
-
-      const condText = conditions[code] || "🌡 غير معروف";
-
-      document.getElementById("weather").textContent =
-        `${temp}°C - ${condText}`;
-
-    } catch {
-      document.getElementById("weather").textContent = "خطأ بالطقس";
-    }
-
-  }, () => {
-    document.getElementById("weather").textContent = "لم يتم السماح بالموقع";
-    document.getElementById("locationName").textContent = "📍 غير معروف";
-  });
-}
-
-/* =================== تشغيل =================== */
-loadNews();
-loadWeather();
-setInterval(updateClock, 1000);
-updateClock();
-
-/* تحديث الطقس كل 30 دقيقة */
-setInterval(loadWeather, 1800000);
-</script>
 
 <script>
 class JokeBar extends HTMLElement {
