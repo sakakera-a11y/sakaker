@@ -1,0 +1,5223 @@
+<!-- =============== شاشة الدخول ================= -->
+<div id="entryScreen" style="
+  position:fixed;
+  top: 9px; left: 9px;
+  width:100%; height:100%;
+  z-index:999999999;
+  overflow:hidden;
+  display:block;
+">
+    <style>
+#radioIcon{
+  position:fixed;
+  bottom:10px;
+  right:30px; 
+  width:70px; 
+  height:70px;
+  background:#0ff;
+  border-radius:15px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  font-size:38px;
+  z-index:99999;
+}
+
+#radioPopup{
+  position:fixed;
+  top:20px;
+  left:40%;
+  transform:translateX(-50%);
+  width:360px;
+  height:480px;
+  background:rgba(0,0,0,0.88);
+  border:2px solid #0ff;
+  border-radius:14px;
+  padding:12px;
+  overflow:auto;
+  z-index:999999;
+  display:none;
+  color:#fff;
+}
+
+.radioItem{
+  background:#111;
+  border:1px solid #0ff;
+  margin:10px 0;
+  padding:10px;
+  border-radius:10px;
+}
+.radioItem h3{
+  margin:0 0 8px;
+  color:#0ff;
+  font-size:15px;
+}
+
+#statusMsg{
+  font-size:13px; 
+  color:#e6fff8;
+  background:rgba(255,255,255,0.06);
+  padding:8px;
+  border-radius:8px;
+  margin-bottom:8px;
+}
+
+</style>
+<!-- ===================== أيقونة الراديو الجديدة ===================== -->
+<style>
+#radioIcon {
+    position: fixed;
+    bottom: 340px;
+    right: 20px;
+    width: 110px;
+    height: 110px;
+    background: radial-gradient(circle, #fff8d2, #e6c200, #b79500);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 38px;
+    cursor: pointer;
+    color: #000;
+    box-shadow: 
+      0 0 25px #ffd700,
+      0 0 55px #ffea8a,
+      inset 0 0 20px #fff6c2;
+    animation: glowPulse 1.6s infinite alternate ease-in-out;
+    z-index: 999999999;
+}
+
+@keyframes glowPulse {
+    0% { box-shadow: 0 0 25px #ffd700, 0 0 55px #ffea8a; transform: scale(1); }
+    100% { box-shadow: 0 0 40px #ffe45c, 0 0 90px #ffea8a; transform: scale(1.08); }
+}
+
+#radioPopup {
+    position: fixed;
+    bottom: 160px;
+    right: 40px;
+    width: 320px;
+    max-height: 450px;
+    overflow-y: auto;
+    background: rgba(0,0,0,0.88);
+    padding: 15px;
+    border-radius: 12px;
+    border: 2px solid #ffd700;
+    color: #fff;
+    display: none;
+    z-index: 999999999;
+    box-shadow: 0 0 25px #ffd700;
+}
+
+.radioItem {
+    background: rgba(255,255,255,0.07);
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    border: 1px solid #ffd70055;
+}
+.radioItem h3 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    color: #ffeaa7;
+}
+
+.radioItem button {
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    background: linear-gradient(45deg, #ffd700, #ffef9c);
+    color: #000;
+    cursor: pointer;
+    font-weight: bold;
+}
+</style>
+
+<div id="radioIcon">📻</div>
+
+<!-- ===================== نافذة المحطات ===================== -->
+<div id="radioPopup" aria-hidden="true">
+  <div id="statusMsg">جاهز — اختر محطة للتشغيل</div>
+
+
+  <!-- مصر -->
+  <div class="radioItem">
+    <h3>📿 إذاعة القرآن — مصر</h3>
+    <button onclick="startStation('egypt_quran')">تشغيل</button>
+  </div>
+
+  <!-- BBC Arabic -->
+  <div class="radioItem">
+    <h3>🌍 BBC Arabic</h3>
+    <button onclick="startStation('bbc_ar')">تشغيل</button>
+  </div>
+
+  <!-- Sky News -->
+  <div class="radioItem">
+    <h3>🌍 Sky News Arabia Radio</h3>
+    <button onclick="startStation('sky')">تشغيل</button>
+  </div>
+
+  <!-- France 24 -->
+  <div class="radioItem">
+    <h3>🌍 France 24 Radio</h3>
+    <button onclick="startStation('france24')">تشغيل</button>
+  </div>
+
+  <!-- DW -->
+  <div class="radioItem">
+    <h3>🌍 Deutsche Welle – DW</h3>
+    <button onclick="startStation('dw')">تشغيل</button>
+  </div>
+
+  <audio id="radioPlayer" controls style="width:100%;margin-top:12px"></audio>
+
+  <div style="display:flex;gap:8px;margin-top:8px">
+    <button onclick="stopRadio()" style="flex:1;padding:8px;border-radius:8px;background:#ff4d4d;border:none;color:#fff">إيقاف</button>
+    <button onclick="pauseRadio()" style="flex:1;padding:8px;border-radius:8px;background:#444;border:none;color:#fff">إيقاف مؤقت</button>
+  </div>
+</div>
+
+<!-- ===================== سكربت الراديو ===================== -->
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.2/dist/hls.min.js"></script>
+
+<script>
+const stations = {
+
+
+  'egypt_quran': { 
+    name:'إذاعة القرآن الكريم - مصر',
+    sources:[
+      'https://stream.radiojar.com/8s5u5tpdtwzuv'
+    ]
+  },
+
+ 
+
+  'bbc_ar': { 
+    name:'BBC Arabic',
+    sources:['https://stream.live.vc.bbcmedia.co.uk/bbc_arabic_radio']
+  },
+
+  'sky': {
+    name:'Sky News Arabia',
+    sources:['https://radio.skynewsarabia.com/stream']
+  },
+
+
+  'dw': { 
+    name:'Deutsche Welle – DW',
+    sources:['https://dwstream3-lh.akamaihd.net/i/dwelle_ar@124108/master.m3u8']
+  }
+};
+
+let currentStationId=null,currentSrcIndex=0,hlsInstance=null;
+const player=document.getElementById('radioPlayer');
+const statusMsg=document.getElementById('statusMsg');
+
+function startStation(id){
+  currentStationId=id;
+  currentSrcIndex=0;
+  tryPlayCurrentSource();
+}
+
+function tryPlayCurrentSource(){
+  const s=stations[currentStationId];
+  const url=s.sources[currentSrcIndex];
+
+  if(!url){ setStatus(`فشل تشغيل ${s.name} — انتهت الروابط`,true); return; }
+
+  setStatus(`جاري التشغيل: ${s.name} — محاولة ${currentSrcIndex+1}`);
+
+  if(hlsInstance){
+    try{ hlsInstance.destroy(); }catch(e){}
+  }
+
+  if(url.endsWith('.m3u8')){
+    if(Hls.isSupported()){
+      hlsInstance=new Hls();
+      hlsInstance.loadSource(url);
+      hlsInstance.attachMedia(player);
+      hlsInstance.on(Hls.Events.ERROR,()=>{
+        currentSrcIndex++;
+        tryPlayCurrentSource();
+      });
+      player.play().catch(()=>{});
+    } else {
+      player.src=url;
+      player.play().catch(()=>{
+        currentSrcIndex++;
+        tryPlayCurrentSource();
+      });
+    }
+    return;
+  }
+
+  player.src=url;
+  player.play()
+  .then(()=>{ setStatus(`قيد التشغيل: ${s.name}`); })
+  .catch(()=>{
+    currentSrcIndex++;
+    tryPlayCurrentSource();
+  });
+}
+
+function stopRadio(){
+  if(hlsInstance){
+    try{ hlsInstance.destroy(); }catch(e){}
+  }
+  player.pause();
+  player.src='';
+  setStatus('تم الإيقاف');
+}
+
+function pauseRadio(){
+  player.pause();
+  setStatus('إيقاف مؤقت');
+}
+
+function setStatus(msg,warn=false){
+  statusMsg.textContent=msg;
+  statusMsg.style.color=warn?'#ffb3b3':'#fff7c2';
+}
+
+document.getElementById('radioIcon').onclick=()=>{
+  const box=document.getElementById('radioPopup');
+  box.style.display = box.style.display==='block' ? 'none' : 'block';
+};
+</script>
+
+<!-- ====================== شريط الأخبار + الوقت + التاريخ + الطقس ====================== -->
+<div class="news-ticker">
+  
+  <!-- صندوق الوقت والتاريخ والطقس -->
+  <div class="clock-box">
+    <span id="clock"></span>
+    <span id="date"></span>
+    <span id="weather"></span>
+    <span id="locationName" style="color:#0ff; font-size:14px; margin-top:4px;"></span>
+  </div>
+
+  <!-- نص الأخبار المُكرر لحركة سلسة -->
+  <div class="ticker-wrapper">
+    <span id="newsContent"></span>
+    <span id="newsContentClone"></span>
+  </div>
+
+</div>
+
+<style>
+/* =================== شريط الأخبار =================== */
+.news-ticker {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.15) !important;
+  color: #fff;
+  padding: 5px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  position: fixed;
+  top: 120px;
+  right: 0;
+  font-size: 26px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+
+  /* ✨✨ التوهج الذهبي ✨✨ */
+  box-shadow: 
+      0 0 12px rgba(255, 215, 0, 0.75),
+      0 0 25px rgba(255, 215, 0, 0.55),
+      inset 0 -2px 3px rgba(255, 215, 0, 0.9);
+  border-bottom: 1px solid rgba(255, 215, 0, 0.75);
+
+  animation: goldGlow 2.2s infinite ease-in-out;
+}
+
+/* ✨ نبض اللمعان الذهبي ✨ */
+@keyframes goldGlow {
+  0%   { box-shadow: 0 0 10px rgba(255,215,0,0.6), 0 0 25px rgba(255,215,0,0.35); }
+  50%  { box-shadow: 0 0 25px rgba(255,215,0,0.9), 0 0 45px rgba(255,215,0,0.6); }
+  100% { box-shadow: 0 0 10px rgba(255,215,0,0.6), 0 0 25px rgba(255,215,0,0.35); }
+}
+
+/* =================== محتوى الأخبار =================== */
+.ticker-wrapper {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 80%;
+}
+
+#newsContent,
+#newsContentClone {
+  display: inline-block;
+  padding-right: 50px;
+  animation: tickerMove 300s linear infinite;
+}
+
+/* حركة من اليسار → اليمين */
+@keyframes tickerMove {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* =================== صندوق الوقت + التاريخ + الطقس =================== */
+.clock-box {
+  margin-right: 15px;
+  padding: 0;
+  background: transparent !important;
+  border: none !important;
+  font-size: 40px;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+#clock { color: #0f0; font-weight: bold; }
+#date  { color: #ccc; font-size: 15px; }
+#weather { color: #7cf; font-size: 18px; font-weight: bold; }
+</style>
+
+<script>
+/* =================== روابط مصادر الأخبار =================== */
+const feeds = [
+  ["الجزيرة", "https://www.aljazeera.net/aljazeerarss/arabe.xml"],
+  ["العربية", "https://www.alarabiya.net/.mrss/ar.xml"],
+  ["BBC عربي", "https://www.bbc.com/arabic/index.xml"],
+  ["CNN عربي", "https://arabic.cnn.com/rss.xml"],
+  ["الشرق الأوسط", "https://aawsat.com/rss.xml"],
+  ["سكاي نيوز", "https://www.skynewsarabia.com/web/rss"],
+  ["فرانس 24", "https://www.france24.com/ar/rss"],
+  ["روسيا اليوم", "https://arabic.rt.com/rss/"],
+  ["TRT عربي", "https://www.trtarabi.com/rss"]
+];
+
+/* =================== جلب الأخبار =================== */
+async function loadNews() {
+  let allNews = [];
+
+  for (const [name, url] of feeds) {
+    try {
+      const response = await fetch("https://api.allorigins.win/get?url=" + encodeURIComponent(url));
+      const data = await response.json();
+      const xml = new DOMParser().parseFromString(data.contents, "text/xml");
+      const items = xml.querySelectorAll("item");
+
+      items.forEach((item, i) => {
+        if (i < 3) {
+          const title = item.querySelector("title").textContent.trim();
+          allNews.push(`🔸 (${name}) ${title}`);
+        }
+      });
+
+    } catch (e) {
+      console.log("خطأ في جلب الأخبار من:", name);
+    }
+  }
+
+  const finalText = allNews.length > 0 ? allNews.join(" | ") : "تعذّر تحميل الأخبار حالياً.";
+
+  document.getElementById("newsContent").textContent = finalText;
+  document.getElementById("newsContentClone").textContent = finalText;
+}
+
+/* =================== الساعة والتاريخ =================== */
+function updateClock() {
+  const now = new Date();
+
+  let h = String(now.getHours()).padStart(2, '0');
+  let m = String(now.getMinutes()).padStart(2, '0');
+  let s = String(now.getSeconds()).padStart(2, '0');
+
+  document.getElementById("clock").textContent = `${h}:${m}:${s}`;
+
+  const days = ["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
+  const dayName = days[now.getDay()];
+  const d = now.getDate();
+  const mon = now.getMonth() + 1;
+  const y = now.getFullYear();
+
+  document.getElementById("date").textContent = `${dayName} - ${y}/${mon}/${d}`;
+}
+
+/* =================== الطقس + تحديد المدينة =================== */
+function loadWeather() {
+  if (!navigator.geolocation) {
+    document.getElementById("weather").textContent = "تعذّر تحديد الموقع";
+    document.getElementById("locationName").textContent = "📍 غير معروف";
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(async (pos) => {
+
+    const lat = pos.coords.latitude;
+    const lon = pos.coords.longitude;
+
+    /* === استخراج اسم المدينة === */
+    try {
+      const locRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+      const locData = await locRes.json();
+
+      const city = locData.address.city || locData.address.town || locData.address.village || "مدينة غير معروفة";
+      const country = locData.address.country || "";
+
+      document.getElementById("locationName").textContent = `📍 ${city} - ${country}`;
+
+    } catch {
+      document.getElementById("locationName").textContent = "📍 الموقع غير متوفر";
+    }
+
+    /* === بيانات الطقس === */
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code`;
+
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      const temp = data.current.temperature_2m;
+      const code = data.current.weather_code;
+
+      const conditions = {
+        0: "☀️ صافٍ",
+        1: "🌤 غالبًا صافٍ",
+        2: "⛅ غائم جزئيًا",
+        3: "☁️ غائم",
+        45: "🌫 ضباب",
+        48: "🌫 ضباب متجمد",
+        51: "🌦 رشاش خفيف",
+        61: "🌧 مطر",
+        71: "❄️ ثلوج",
+        95: "🌩 عواصف رعدية"
+      };
+
+      const condText = conditions[code] || "🌡 غير معروف";
+
+      document.getElementById("weather").textContent =
+        `${temp}°C - ${condText}`;
+
+    } catch {
+      document.getElementById("weather").textContent = "خطأ بالطقس";
+    }
+
+  }, () => {
+    document.getElementById("weather").textContent = "لم يتم السماح بالموقع";
+    document.getElementById("locationName").textContent = "📍 غير معروف";
+  });
+}
+
+/* =================== تشغيل =================== */
+loadNews();
+loadWeather();
+setInterval(updateClock, 1000);
+updateClock();
+
+/* تحديث الطقس كل 30 دقيقة */
+setInterval(loadWeather, 1800000);
+</script>
+<!-- 🎂 كيك متوهج بألوان متغيرة -->
+<div id="cakeWrapper">
+  <div id="cakeButton" onclick="window.open('https://paypal.me/abwalqmrzmrd/1', '_blank')">
+    <div class="cakeContent">
+      🎂<br>
+      <span class="label">يسعدني إعجابك 💖</span>
+      <span class="en">It makes me happy you liked it 💖</span>
+      <span class="usd">(coffee 1$)</span>
+    </div>
+  </div>
+</div>
+
+<style>
+/* 📦 الغلاف العام */
+#cakeWrapper {
+  position: fixed;
+  bottom: 89px;
+  left:70%;
+  transform: translateX(50%);
+  z-index: 1000;
+}
+
+/* 🎂 الكيكة */
+#cakeButton {
+  position: relative;
+  width: 120px;
+  height: 70px;
+  background: radial-gradient(circle at 30% 30%, #ff0, #00f, #f00, #0f0);
+  border-radius: 50% 50% 10% 10%;
+  border: 2px solid #fff;
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.6),
+              0 0 30px 10px rgba(255, 255, 0, 0.3);
+  transition: all 0.2s ease;
+  animation: glowShift 0.8s infinite linear;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 🎉 محتوى الكيكة مرفوع قليلًا */
+.cakeContent {
+  margin-top: -6px; /* 🔼 رفع المحتوى */
+}
+
+/* ✨ وميض متغيّر للألوان */
+@keyframes glowShift {
+  0%   { background: radial-gradient(circle at 20% 20%, #ff0, #00f, #f00, #0f0); box-shadow: 0 0 15px 3px #ff0; }
+  25%  { background: radial-gradient(circle at 70% 20%, #0f0, #f00, #00f, #ff0); box-shadow: 0 0 20px 5px #0f0; }
+  50%  { background: radial-gradient(circle at 30% 70%, #00f, #ff0, #0f0, #f00); box-shadow: 0 0 25px 7px #00f; }
+  75%  { background: radial-gradient(circle at 70% 70%, #f00, #0f0, #ff0, #00f); box-shadow: 0 0 25px 7px #f00; }
+  100% { background: radial-gradient(circle at 50% 50%, #ff0, #00f, #f00, #0f0); box-shadow: 0 0 20px 5px #ff0; }
+}
+
+/* 💛 النصوص */
+#cakeButton .label {
+  display: block;
+  font-size: 11px;
+}
+
+#cakeButton .en {
+  display: block;
+  color: #ffff99;
+  font-size: 9px;
+  margin-top: 3px;
+}
+
+#cakeButton .usd {
+  display: block;
+  color: #fff;
+  font-size: 10px;
+  margin-top: 3px;
+  text-shadow: 0 0 10px #ffff00, 0 0 20px #ff0000;
+}
+</style>
+   <!-- 🔹 زر الموقع التجاري لأبوالقمر زمرد (عربي + إنجليزي) -->
+<button class="sakaker-commercial-btn" onclick="window.open('https://www.sakaker.co/','_blank')">
+  <div class="ar">الموقع التجاري لأبوالقمر زمرد</div>
+  <div class="en">Abwalqmr Zmrd Commercial Website</div>
+</button>
+
+<style>
+.sakaker-commercial-btn {
+  position: fixed; /* غيّرها إلى relative لو لا تريده ثابت */
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 30px;
+  border-radius: 999px;
+  border: 1px solid #00ffe0;
+  background: radial-gradient(circle at 20% 20%, #00ffe0, #006b5f 60%, #001f1c);
+  color: #fff;
+  cursor: pointer;
+  font-family: "Tajawal", sans-serif;
+  text-align: center;
+  box-shadow:
+    0 0 10px #00ffe0,
+    0 0 25px rgba(0, 255, 224, 0.7),
+    0 0 45px rgba(0, 255, 224, 0.4);
+  animation: sakakerGlow 2.4s ease-in-out infinite;
+  font-weight: bold;
+  z-index: 999999;
+}
+
+.sakaker-commercial-btn .ar {
+  font-size: 16px;
+  margin-bottom: 3px;
+}
+
+.sakaker-commercial-btn .en {
+  font-size: 11px;
+  opacity: 0.9;
+}
+
+.sakaker-commercial-btn:hover {
+  transform: translateX(-50%) scale(1.06);
+  box-shadow:
+    0 0 14px #00ffe0,
+    0 0 34px rgba(0, 255, 224, 0.9),
+    0 0 60px rgba(0, 255, 224, 0.6);
+}
+
+@keyframes sakakerGlow {
+  0% {
+    box-shadow:
+      0 0 10px #00ffe0,
+      0 0 20px rgba(0, 255, 224, 0.5),
+      0 0 30px rgba(0, 255, 224, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 18px #00ffe0,
+      0 0 40px rgba(0, 255, 224, 0.9),
+      0 0 70px rgba(0, 255, 224, 0.6);
+  }
+  100% {
+    box-shadow:
+      0 0 10px #00ffe0,
+      0 0 20px rgba(0, 255, 224, 0.5),
+      0 0 30px rgba(0, 255, 224, 0.3);
+  }
+}
+</style>
+ 
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>أبوالقمر زمرد – يوتيوب</title>
+
+<style>
+{
+  margin:0;
+  background: radial-gradient(circle at 10% 0%, #00ffd5 0%, #004736 40%, #000000 100%);
+  color:#fff;
+  font-family:"Tajawal",sans-serif;
+}
+
+/* زر اللغة */
+#langBtn{
+  position:fixed;top:10px;left:10px;background:#00eaff;
+  padding:7px 15px;border-radius:6px;cursor:pointer;color:#000;
+  z-index:999999;font-weight:bold;
+}
+
+/* زر الصفحة الرابعة */
+.page4-btn{
+  background:linear-gradient(45deg,#d4af37,#ffffff,#d4af37);
+  color:#000;padding:14px 30px;font-size:22px;border-radius:40px;
+  border:2px solid #d4af37;cursor:pointer;font-weight:bold;
+  box-shadow:0 0 15px #ffd700aa;margin:50px auto;display:block;
+}
+.page4-btn:hover{transform:scale(1.08);}
+
+/* نافذة الصفحة الرابعة */
+.page4-overlay{
+  display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.85);z-index:9999999;overflow-y:auto;
+}
+.page4-box{padding:20px;}
+
+/* زر الإغلاق */
+.close-btn{
+  background:red;color:white;border:none;padding:10px 22px;
+  font-size:20px;border-radius:10px;cursor:pointer;margin-bottom:20px;
+}
+.close-btn:hover{background:darkred;}
+
+/* زر الاشتراك */
+.sub-box{
+  display:block;margin:15px auto;
+  background:#fff;color:#000;font-weight:bold;
+  padding:10px 22px;border-radius:30px;
+  width:fit-content;cursor:pointer;border:3px solid gold;
+  text-decoration:none;
+}
+
+/* التبويبات */
+.tabs{
+  display:flex;gap:20px;padding:12px;border-bottom:1px solid #333;
+  background:#050505;justify-content:center;
+}
+.tab{cursor:pointer;font-size:18px;padding-bottom:6px;}
+.tab.active{color:#00ffea;border-bottom:2px solid #00ffea;}
+
+/* الصفحات */
+.section{display:none;padding:20px;}
+.section.active{display:block;}
+
+/* بطاقات الفيديو */
+.video-card{
+  background:#111;border:1px solid #333;border-radius:12px;
+  margin-bottom:20px;padding:10px;box-shadow:0 0 10px #00ffee44;
+}
+.video-card iframe{
+  width:100%;height:210px;border-radius:12px;
+}
+
+.video-title{margin-top:10px;font-size:18px;}
+</style>
+</head>
+<body>
+
+<!-- زر تبديل اللغة -->
+<div id="langBtn">EN</div>
+
+<!-- زر الصفحة الرابعة -->
+<button id="openPage4" class="page4-btn">
+  <span class="ar">أبوالقمر زمرد – يوتيوب</span>
+  <span class="en" style="display:none;">Abwalqmrzmrd – YouTube</span>
+</button>
+
+<!-- الصفحة الرابعة -->
+<div id="page4" class="page4-overlay">
+  <div class="page4-box">
+
+    <button id="closePage4" class="close-btn">✖</button>
+
+    <!-- العنوان -->
+    <h1 class="ar" style="text-align:center;">أبوالقمر زمرد – يوتيوب</h1>
+    <h1 class="en" style="display:none;text-align:center;">Abwalqmrzmrd – YouTube</h1>
+
+    <!-- زر الاشتراك -->
+    <a class="sub-box" href="https://www.youtube.com/@sakakera?sub_confirmation=1">
+      <span class="ar">اشترك الآن</span>
+      <span class="en" style="display:none;">Subscribe Now</span>
+    </a>
+
+    <!-- التبويبات -->
+    <div class="tabs">
+      <div class="tab active" data-page="videos">
+        📺 <span class="ar">الفيديوهات</span><span class="en" style="display:none;">Videos</span>
+      </div>
+
+      <div class="tab" data-page="liked">
+        ⭐ <span class="ar">مقاطع أعجبتني</span><span class="en" style="display:none;">Liked Videos</span>
+      </div>
+
+      <div class="tab" data-page="science">
+        📘 <span class="ar">دروس علمية</span><span class="en" style="display:none;">Science</span>
+      </div>
+
+      <div class="tab" data-page="tips">
+        💡 <span class="ar">نصائح مهمّة</span><span class="en" style="display:none;">Important Tips</span>
+      </div>
+
+      <!-- زر كرتون الجديد هنا -->
+      <div class="tab" data-page="cartoon">
+        🎬 <span class="ar">كرتون</span>
+            <span class="en" style="display:none;">Cartoon</span>
+      </div>
+      
+      <div class="tab" data-page="live">
+        🔴 <span class="ar" style="color:#c0c0c0;">البث المباشر</span>
+            <span class="en" style="display:none;color:#c0c0c0;">Live Stream</span>
+            
+      </div>
+<div class="tab" data-page="mrsakaker">
+  🌙 <span class="ar">mr:sakaker – معنى الحياة</span>
+      <span class="en" style="display:none;">mr:sakaker – Meaning of Life</span>
+</div>
+
+      <div class="tab" data-page="about">
+        ℹ️ <span class="ar" style="color:#c0c0c0;">حول القناة</span>
+            <span class="en" style="display:none;color:#c0c0c0;">About</span>
+      </div>
+    </div>
+
+    <!-- 📺 الفيديوهات الأساسية -->
+    <div id="videos" class="section active">
+
+      <div class="video-card">
+        <iframe src="https://www.youtube.com/embed/kPTspab3Z8o" allowfullscreen></iframe>
+        <div class="video-title ar">🎬 الفيديو الأول</div>
+        <div class="video-title en" style="display:none;">🎬 First Video</div>
+      </div>
+
+      <div class="video-card">
+        <iframe src="https://www.youtube.com/embed/FzfIvHt4AaU" allowfullscreen></iframe>
+        <div class="video-title ar">🎬 الفيديو الثاني</div>
+        <div class="video-title en" style="display:none;">🎬 Second Video</div>
+      </div>
+
+    </div>
+
+    <!-- ⭐ مقاطع أعجبتني -->
+    <div id="liked" class="section">
+
+      <div class="video-card"><iframe src="https://www.youtube.com/embed/vp2o0tLW-t4"></iframe>
+        <div class="video-title ar">⭐ مقطع أعجبني 1</div>
+        <div class="video-title en" style="display:none;">⭐ Liked Video 1</div>
+      </div>
+
+      <div class="video-card"><iframe src="https://www.youtube.com/embed/fO9e9jnhYK8"></iframe>
+        <div class="video-title ar">⭐ مقطع أعجبني 2</div>
+        <div class="video-title en" style="display:none;">⭐ Liked Video 2</div>
+      </div>
+
+      <div class="video-card"><iframe src="https://www.youtube.com/embed/n_M-0Ac9_t4"></iframe>
+        <div class="video-title ar">⭐ مقطع أعجبني 3</div>
+        <div class="video-title en" style="display:none;">⭐ Liked Video 3</div>
+      </div>
+
+      <div class="video-card"><iframe src="https://www.youtube.com/embed/o1JWRGmWr4w"></iframe>
+        <div class="video-title ar">⭐ مقطع أعجبني 4</div>
+        <div class="video-title en" style="display:none;">⭐ Liked Video 4</div>
+      </div>
+
+      <div class="video-card"><iframe src="https://www.youtube.com/embed/qMT5FZEiCCU"></iframe>
+        <div class="video-title ar">⭐ مقطع أعجبني 5</div>
+        <div class="video-title en" style="display:none;">⭐ Liked Video 5</div>
+      </div>
+
+      <div class="video-card"><iframe src="https://www.youtube.com/embed/8F8SpXR9pqA"></iframe>
+        <div class="video-title ar">⭐ مقطع أعجبني 6</div>
+        <div class="video-title en" style="display:none;">⭐ Liked Video 6</div>
+      </div>
+
+      <div class="video-card"><iframe src="https://www.youtube.com/embed/M4QdwpIlyxs"></iframe>
+        <div class="video-title ar">⭐ مقطع أعجبني 7</div>
+        <div class="video-title en" style="display:none;">⭐ Liked Video 7</div>
+      </div>
+
+      <div class="video-card"><iframe src="https://www.youtube.com/embed/B1Xnu3r-UGw"></iframe>
+        <div class="video-title ar">⭐ مقطع إضافي 8</div>
+        <div class="video-title en" style="display:none;">⭐ Liked Video 8</div>
+      </div>
+
+      <div class="video-card"><iframe src="https://www.youtube.com/embed/_oQ0mESSu9g"></iframe>
+        <div class="video-title ar">⭐ مقطع إضافي 9</div>
+        <div class="video-title en" style="display:none;">⭐ Liked Video 9</div>
+      </div>
+
+      <div class="video-card"><iframe src="https://www.youtube.com/embed/AJuT6qnO1pI"></iframe>
+        <div class="video-title ar">⭐ مقطع إضافي 10</div>
+        <div class="video-title en" style="display:none;">⭐ Liked Video 10</div>
+        <!-- ================= مقاطع أعجبتني (12–16) ================= -->
+
+<div class="video-card">
+  <iframe src="https://www.youtube.com/embed/7fWZdVQvEew?si=XJCeuBA7kKSZ9eEg"></iframe>
+  <div class="video-title ar">⭐ مقطع أعجبني 12</div>
+  <div class="video-title en" style="display:none;">⭐ Liked Video 12</div>
+</div>
+
+<div class="video-card">
+  <iframe src="https://www.youtube.com/embed/gegz0tJk8Tk?si=ZME5n9tq0vDfUqOc"></iframe>
+  <div class="video-title ar">⭐ مقطع أعجبني 13</div>
+  <div class="video-title en" style="display:none;">⭐ Liked Video 13</div>
+</div>
+
+<div class="video-card">
+  <iframe src="https://www.youtube.com/embed/dC3EsUKalEI?si=nA5As3VDhVd-aZy2"></iframe>
+  <div class="video-title ar">⭐ مقطع أعجبني 14</div>
+  <div class="video-title en" style="display:none;">⭐ Liked Video 14</div>
+</div>
+
+<div class="video-card">
+  <iframe src="https://www.youtube.com/embed/oknJ1wdigJw?si=p05AEKeGIETCoEgI"></iframe>
+  <div class="video-title ar">⭐ مقطع أعجبني 15</div>
+  <div class="video-title en" style="display:none;">⭐ Liked Video 15</div>
+</div>
+
+<div class="video-card">
+  <iframe src="https://www.youtube.com/embed/TrfE-N93pE4?si=qxTd5wAXXUEFBNPp"></iframe>
+  <div class="video-title ar">⭐ مقطع أعجبني 16</div>
+  <div class="video-title en" style="display:none;">⭐ Liked Video 16</div>
+</div>
+
+<!-- ========================================================= -->
+
+      </div>
+<div class="video-card">
+  <iframe 
+    width="560" 
+    height="315" 
+    src="https://www.youtube.com/embed/SDBD_LjrQEM?si=-6Jz8ca_wtyNi8yv" 
+    title="YouTube video player" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+    referrerpolicy="strict-origin-when-cross-origin" 
+    allowfullscreen>
+  </iframe>
+
+  <div class="video-title ar">⭐ مقطع أعجبني 11</div>
+  <div class="video-title en" style="display:none;">⭐ Liked Video 11</div>
+</div>
+
+    </div>
+<!-- 🎬 قسم الكرتون -->
+<div id="cartoon" class="section">
+
+  <h2 class="ar" style="
+    text-align:center;
+    background: linear-gradient(45deg,#ffd700,#ffffff,#d4af37);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 12px #ffd700;
+    margin-bottom:20px;
+  ">🎬 كرتون</h2>
+
+  <h2 class="en" style="
+    display:none;
+    text-align:center;
+    background: linear-gradient(45deg,#ffd700,#ffffff,#d4af37);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 12px #ffd700;
+    margin-bottom:20px;
+  ">🎬 Cartoon</h2>
+
+  <!-- ⭐⭐ كرتون — مقطع أعجبني 17 ⭐⭐ -->
+  <div class="video-card">
+    <iframe 
+      width="560" height="315"
+      src="https://www.youtube.com/embed/dl17e4CmfHs?si=wsziDJElHXehtCLm"
+      allowfullscreen></iframe>
+
+    <div class="video-title ar">⭐ مقطع أعجبني 17 – كرتون</div>
+    <div class="video-title en" style="display:none;">⭐ Liked Video 17 – Cartoon</div>
+  </div>
+
+</div>
+
+    <!-- 📘 دروس علمية -->
+    <div id="science" class="section">
+
+      <h2 class="ar" style="text-align:center;margin-bottom:20px;">📘 دروس علمية</h2>
+      <h2 class="en" style="display:none;text-align:center;margin-bottom:20px;">📘 Science Lessons</h2>
+
+      <div class="video-card">
+        <iframe src="https://www.youtube.com/embed/OdzuClwyjfo"></iframe>
+        <div class="video-title ar">📘 درس علمي 1</div>
+        <div class="video-title en" style="display:none;">📘 Science Lesson 1</div>
+      </div>
+
+      <div class="video-card">
+        <iframe src="https://www.youtube.com/embed/9Az3O2EUtPg"></iframe>
+        <div class="video-title ar">📘 درس علمي 2</div>
+        <div class="video-title en" style="display:none;">📘 Science Lesson 2</div>
+      </div>
+
+      <div class="video-card">
+        <iframe src="https://www.youtube.com/embed/N1U0liCMqfc"></iframe>
+        <div class="video-title ar">📘 درس علمي 3</div>
+        <div class="video-title en" style="display:none;">📘 Science Lesson 3</div>
+      </div>
+
+      <div class="video-card">
+        <iframe src="https://www.youtube.com/embed/QmjwqwQn958"></iframe>
+        <div class="video-title ar">📘 درس علمي 4</div>
+        <div class="video-title en" style="display:none;">📘 Science Lesson 4</div>
+      </div>
+
+      <div class="video-card">
+        <iframe src="https://www.youtube.com/embed/1-McO6eak14"></iframe>
+        <div class="video-title ar">📘 درس علمي 5</div>
+        <div class="video-title en" style="display:none;">📘 Science Lesson 5</div>
+      </div>
+<!-- ⭐ درس علمي (إضافة جديدة) -->
+<div class="video-card">
+  <iframe 
+    width="560" 
+    height="315"
+    src="https://www.youtube.com/embed/-GiTF1Nv_6o?si=QuQNy6oJmfI_Sd5_"
+    allowfullscreen></iframe>
+
+  <div class="video-title ar">📘 درس علمي إضافي</div>
+  <div class="video-title en" style="display:none;">📘 Extra Science Lesson</div>
+</div>
+
+    </div>
+<!-- 💡 نصائح مهمّة -->
+<div id="tips" class="section">
+
+  <!-- العنوان الرئيسي -->
+  <h2 class="ar" style="
+    text-align:center;
+    background: linear-gradient(45deg,#d4af37,#ffffff,#d4af37);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 12px #ffd700;
+    margin-bottom:20px;
+  ">⭐ نصائح مهمّة</h2>
+
+  <h2 class="en" style="
+    display:none;
+    text-align:center;
+    background: linear-gradient(45deg,#d4af37,#ffffff,#d4af37);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 12px #ffd700;
+    margin-bottom:20px;
+  ">⭐ Important Tips</h2>
+
+
+  <!-- عنوان فرعي -->
+  <h3 class="ar" style="
+    background: linear-gradient(45deg,#c0c0c0,#ffd700,#ffffff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 10px #ffd700aa;
+  ">🌟 نصائح عامة</h3>
+
+  <h3 class="en" style="
+    display:none;
+    background: linear-gradient(45deg,#c0c0c0,#ffd700,#ffffff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 10px #ffd700aa;
+  ">🌟 General Advice</h3>
+
+
+  <!-- النصوص -->
+  <p class="ar" style="color:#e9e7dc;text-shadow:0 0 6px #ffd700;">✔ عامل الناس بما يُظهرونه لك… لا بما تتمنى.</p>
+  <p class="en" style="display:none;color:#e9e7dc;text-shadow:0 0 6px #ffd700;">✔ Treat people by what they show you, not by what you wish for.</p>
+
+  <p class="ar" style="color:#e9e7dc;text-shadow:0 0 6px #ffd700;">✔ انتبه لكلماتك… فالجرح بالكلمة أعمق من السكين.</p>
+  <p class="en" style="display:none;color:#e9e7dc;text-shadow:0 0 6px #ffd700;">✔ Watch your words… verbal wounds can be deeper than knives.</p>
+
+  <p class="ar" style="color:#e9e7dc;text-shadow:0 0 6px #ffd700;">✔ لا تعاتب كثيرًا… فالأرواح تتعب قبل الآذان.</p>
+  <p class="en" style="display:none;color:#e9e7dc;text-shadow:0 0 6px #ffd700;">✔ Don’t blame too much… souls tire before ears.</p>
+
+  <p class="ar" style="color:#e9e7dc;text-shadow:0 0 6px #ffd700;">✔ راحة بالك أهم من إرضاء الآخرين.</p>
+  <p class="en" style="display:none;color:#e9e7dc;text-shadow:0 0 6px #ffd700;">✔ Your peace is more important than pleasing others.</p>
+
+  <hr style="border-color:#555;">
+
+
+  <!-- نصائح إضافية -->
+  <h3 class="ar" style="
+    background: linear-gradient(45deg,#ffffff,#ffd700,#c0c0c0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 10px #ffd700aa;
+  ">🌟 نصائح إضافية</h3>
+
+  <h3 class="en" style="
+    display:none;
+    background: linear-gradient(45deg,#ffffff,#ffd700,#c0c0c0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 10px #ffd700aa;
+  ">🌟 Extra Tips</h3>
+
+
+  <p class="ar" style="color:#fff3d1;text-shadow:0 0 6px #ffd700;">✔ كل تأخير فيه خير… حتى لو لم تفهم الآن.</p>
+  <p class="en" style="display:none;color:#fff3d1;text-shadow:0 0 6px #ffd700;">✔ Every delay has goodness… even if you don’t understand it now.</p>
+
+  <p class="ar" style="color:#fff3d1;text-shadow:0 0 6px #ffd700;">✔ صمتك أحيانًا احترام لنفسك.</p>
+  <p class="en" style="display:none;color:#fff3d1;text-shadow:0 0 6px #ffd700;">✔ Silence is sometimes self-respect.</p>
+
+  <hr style="border-color:#555;">
+
+
+  <!-- نصائح الذكاء -->
+  <h3 class="ar" style="
+    background: linear-gradient(45deg,#d4af37,#ffffff,#ffd700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 10px #ffd700aa;
+  ">🧠 نصائح للذكاء والتفكير</h3>
+
+  <h3 class="en" style="
+    display:none;
+    background: linear-gradient(45deg,#d4af37,#ffffff,#ffd700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 10px #ffd700aa;
+  ">🧠 Intelligence Tips</h3>
+
+
+  <p class="ar" style="color:#f8f6e7;text-shadow:0 0 6px #ffd700;">✔ اقرأ حتى لو لم تفهم… عقلك يخزن.</p>
+  <p class="en" style="display:none;color:#f8f6e7;text-shadow:0 0 6px #ffd700;">✔ Read even if you don’t understand… your brain stores more than you think.</p>
+
+  <hr style="border-color:#555;">
+
+
+  <!-- العلاقات -->
+  <h3 class="ar" style="
+    background: linear-gradient(45deg,#fff,#d4af37,#ffd700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 10px #ffd700aa;
+  ">🤝 العلاقات</h3>
+
+  <h3 class="en" style="
+    display:none;
+    background: linear-gradient(45deg,#fff,#d4af37,#ffd700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 10px #ffd700aa;
+  ">🤝 Relationships</h3>
+
+
+  <p class="ar" style="color:#f3eede;text-shadow:0 0 6px #ffd700;">✔ اختر القلوب التي تشبه قلبك.</p>
+  <p class="en" style="display:none;color:#f3eede;text-shadow:0 0 6px #ffd700;">✔ Choose hearts that match yours.</p>
+
+  <hr style="border-color:#555;">
+
+
+  <!-- الإنسانية -->
+  <h3 class="ar" style="
+    background: linear-gradient(45deg,#ffd700,#ffffff,#c0c0c0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 10px #ffd700aa;
+  ">🌍 الإنسانية</h3>
+
+  <h3 class="en" style="
+    display:none;
+    background: linear-gradient(45deg,#ffd700,#ffffff,#c0c0c0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 10px #ffd700aa;
+  ">🌍 Humanity</h3>
+
+
+  <p class="ar" style="color:#f4eede;text-shadow:0 0 6px #ffd700;">✔ كن إنسانًا قبل أن تكون قويًا.</p>
+  <p class="en" style="display:none;color:#f4eede;text-shadow:0 0 6px #ffd700;">✔ Be human before being strong.</p>
+
+  <hr style="border-color:#555;">
+
+
+  <!-- الطعام -->
+  <h3 class="ar" style="
+    background: linear-gradient(45deg,#ffffff,#ffd700,#d4af37);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 10px #ffd700aa;
+  ">🍽️ الطعام والشرب</h3>
+
+  <h3 class="en" style="
+    display:none;
+    background: linear-gradient(45deg,#ffffff,#ffd700,#d4af37);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 10px #ffd700aa;
+  ">🍽️ Food & Drinks</h3>
+
+
+  <p class="ar" style="color:#f9f5e7;text-shadow:0 0 6px #ffd700;">✔ اشرب ماء بكثرة.</p>
+  <p class="en" style="display:none;color:#f9f5e7;text-shadow:0 0 6px #ffd700;">✔ Drink plenty of water.</p>
+
+  <hr style="border-color:#555;">
+
+
+  <!-- السفر -->
+  <h3 class="ar" style="
+    background: linear-gradient(45deg,#ffd700,#ffffff,#d4af37);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 10px #ffd700aa;
+  ">✈️ السفر</h3>
+
+  <h3 class="en" style="
+    display:none;
+    background: linear-gradient(45deg,#ffd700,#ffffff,#d4af37);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 10px #ffd700aa;
+  ">✈️ Travel</h3>
+
+
+  <p class="ar" style="color:#f5f2e7;text-shadow:0 0 6px #ffd700;">✔ لا تسافر مع من لا يشبهك.</p>
+  <p class="en" style="display:none;color:#f5f2e7;text-shadow:0 0 6px #ffd700;">✔ Don’t travel with people who don’t resemble you.</p>
+
+  <hr style="border-color:#555;">
+
+
+  <!-- الصحة النفسية -->
+  <h3 class="ar" style="
+    background: linear-gradient(45deg,#ffffff,#ffd700,#c0c0c0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 10px #ffd700aa;
+  ">❤️ الصحة النفسية</h3>
+
+  <h3 class="en" style="
+    display:none;
+    background: linear-gradient(45deg,#ffffff,#ffd700,#c0c0c0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 10px #ffd700aa;
+  ">❤️ Mental Health</h3>
+
+
+  <p class="ar" style="color:#fbf7ea;text-shadow:0 0 6px #ffd700;">✔ خصص وقتًا لنفسك.</p>
+  <p class="en" style="display:none;color:#fbf7ea;text-shadow:0 0 6px #ffd700;">✔ Give yourself time daily.</p>
+
+</div>
+
+    <!-- البث المباشر -->
+    <div id="live" class="section">
+      <p class="ar" style="color:#c0c0c0;">سيتم إضافة البث لاحقًا.</p>
+      <p class="en" style="display:none;color:#c0c0c0;">Live stream will be added soon.</p>
+    </div>
+
+    <!-- حول -->
+    <div id="about" class="section">
+      <p class="ar" style="color:#c0c0c0;">هذه الصفحة مخصصة لمحتوى أبوالقمر زمرد على يوتيوب.</p>
+      <p class="en" style="display:none;color:#c0c0c0;">This page is dedicated to Abwalqmrzmrd’s YouTube content.</p>
+    </div>
+<!-- 🌙 mr:sakaker – Section Ready -->
+<div id="mrsakaker" class="section">
+
+  <!-- العنوان الرئيسي عربي -->
+  <h2 class="ar" style="
+    text-align:center;
+    background: linear-gradient(45deg,#d4af37,#ffffff,#d4af37);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 12px #ffd700;
+    margin-bottom:20px;
+  ">🌙 mr:sakaker – منظور جديد</h2>
+
+  <!-- العنوان الرئيسي إنجليزي -->
+  <h2 class="en" style="
+    display:none;
+    text-align:center;
+    background: linear-gradient(45deg,#d4af37,#ffffff,#d4af37);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 12px #ffd700;
+    margin-bottom:20px;
+  ">🌙 mr:sakaker – Refined Perspective</h2>
+
+
+  <!-- النص العربي الأول (بعد الاستبدال) -->
+  <p class="ar" style="
+    line-height:2; font-size:18px;
+    direction:rtl; text-align:left;
+    color:#f2f2f2; text-shadow:0 0 6px #ffd700aa;
+  ">
+mr:sakaker هذا هو الاسم الذي أحببته لأن والدي هو من أطلقه علي،  
+أما في الحياة العامة فهو لا يعدو كونه اسمًا مثل بقية أسماء المجتمع المتعارف عليها.  
+وفي عام 2001 تقريبًا، وكان عمري حوالي 25 سنة، اكتشفت أن لدي بعض الهوايات،  
+وخاصة الفنية منها مثل الشعر، فأطلقت اسم "أبوالقمر زمرد" ليكون الاسم الأساسي  
+لكل أشعاري العربية، ثم أصبح شبه عام لكتاباتي ولظهوري في مواقع التواصل.
+  </p>
+
+  <hr style="border-color:#444;margin:20px 0;">
+
+  <!-- عنوان عربي فرعي -->
+  <h3 class="ar" style="
+    background: linear-gradient(45deg,#ffffff,#ffd700,#d4af37);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 10px #ffd700;
+  ">🔶 معنى الحياة بمنظور أبوالقمر زمرد – النسخة المُنقّحة</h3>
+
+  <!-- النص العربي الرئيسي -->
+  <p class="ar" style="
+    line-height:2; font-size:18px;
+    direction:rtl; text-align:left;
+    color:#f2f2f2; text-shadow:0 0 6px #ffd700aa;
+  ">
+الحياة عند أبوالقمر زمرد ليست سباقًا للحاق بأحد،  
+ولا محاولة للفت الأنظار،  
+بل هي رحلة هادئة يخوضها الإنسان مع نفسه كل يوم؛  
+يراجع خطواته، يحاول فهم ذاته، ويتعلّم مما يمرّ به.
+
+ومع ذلك… لا ينفصل الإنسان عن رعاية الله،  
+ولا عن المجتمع الذي شارك في بناء حضارات عبر الزمن وما يزال يبني.  
+فالإنسان جزء من نَسَقٍ أكبر،  
+لكن طريقه الخاص هو ما يمنحه بصمته ومساره.
+
+يرى أبوالقمر أن قيمة الإنسان يصنعها هو بجهده وصدق نيّته،  
+وأن التوفيق بيد الله،  
+وأن كل إنسان ميسّر لما خُلق له،  
+يمضي بخطوات قد تبدو بسيطة… لكنها تحمل معاني كبيرة.
+
+الحياة لديه ليست نجاحًا فقط،  
+بل توازن بين العقل والقلب، بين الخير والشر،  
+وبين ما نرغبه نحن… وما تختاره لنا حكمة الأيام.
+  </p>
+
+  <!-- ========================= -->
+  <!-- ====== النسخة الإنجليزية ====== -->
+  <!-- ========================= -->
+
+  <!-- النص الإنجليزي الأول بعد التعديل -->
+  <p class="en" style="
+    display:none;
+    line-height:2; font-size:18px;
+    direction:ltr; text-align:right;
+    color:#f2f2f2; text-shadow:0 0 6px #ffd700aa;
+  ">
+mr:sakaker is a name I loved because it was given to me by my father.  
+In everyday life, it is simply a name like any other in society.  
+Around 2001, when I was about 25 years old, I discovered that I had  
+creative talents — especially poetry — so I adopted “Abwalqmr Zmrd”  
+as the main signature for all my Arabic writings,  
+and it later became a general identity for my work  
+and presence on social platforms.
+  </p>
+
+  <hr style="border-color:#444;margin:20px 0;">
+
+  <h3 class="en" style="
+    display:none;
+    background: linear-gradient(45deg,#ffffff,#ffd700,#d4af37);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:0 0 10px #ffd700;
+  ">🔶 The Meaning of Life – Refined Version</h3>
+
+  <!-- النص الإنجليزي الرئيسي -->
+  <p class="en" style="
+    display:none;
+    line-height:2; font-size:18px;
+    direction:ltr; text-align:right;
+    color:#f2f2f2; text-shadow:0 0 6px #ffd700aa;
+  ">
+For Abwalqmr Zmrd, life is neither a race nor a pursuit of attention.  
+It is a quiet journey a person makes with himself each day —  
+reflecting, understanding, and learning from what he experiences.
+
+Yet he believes that no one walks alone;  
+God’s care surrounds every step,  
+and society — with all its history and shared effort —  
+continues to shape the world we live in.
+
+He sees that a person’s true value is built through sincerity and effort,  
+while guidance and success remain in God’s hands.  
+Every human is guided toward what he was created for,  
+moving through life with steps that may appear small,  
+but carry deep meaning.
+
+To him, life is not defined by success alone,  
+but by a balance between mind and heart,  
+between good and wrong,  
+and between what we desire… and what time wisely chooses for us.
+  </p>
+
+</div>
+
+  </div>
+</div>
+
+<script>
+const langBtn   = document.getElementById('langBtn');
+const openPage4 = document.getElementById('openPage4');
+const closePage4= document.getElementById('closePage4');
+const page4     = document.getElementById('page4');
+
+/* التبويبات */
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.page).classList.add('active');
+  };
+});
+
+/* زر فتح */
+openPage4.onclick = ()=> page4.style.display="block";
+
+/* زر إغلاق */
+closePage4.onclick = ()=> page4.style.display="none";
+
+/* اللغة */
+langBtn.onclick=()=>{
+  const ar=document.querySelectorAll(".ar");
+  const en=document.querySelectorAll(".en");
+  if(langBtn.innerText==="EN"){
+    langBtn.innerText="AR";
+    ar.forEach(e=>e.style.display="none");
+    en.forEach(e=>e.style.display="inline");
+    document.documentElement.dir="ltr";
+  }else{
+    langBtn.innerText="EN";
+    ar.forEach(e=>e.style.display="inline");
+    en.forEach(e=>e.style.display="none");
+    document.documentElement.dir="rtl";
+  }
+};
+</script>
+
+</body>
+</html>
+
+  <!-- الخلفية 1 -->
+  <div id="bg1" style="
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background-size:cover;
+    background-position:center;
+    transition:opacity 1.2s ease-in-out;
+    opacity:1;
+    z-index:-1;
+  "></div>
+
+<!-- 🐦 أيقونة صوت الطيور بتوهج زمردي -->
+<div id="bird-sound-btn" title="تشغيل/إيقاف صوت الطيور" style="
+  position: fixed;
+  top: 30px; /* مرفوعة حوالي خمس أسطر */
+  right: 12px;
+  width: 75px;
+  height: 75px;
+  background:
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 34px;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 0 25px rgba(0,255,200,0.9), 0 0 50px rgba(0,255,200,0.4);
+  z-index: 1001;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+">
+  🐦
+</div>
+
+<!-- 🎵 صوت تغريد الطيور وخرير الماء -->
+<audio id="bird-sound" loop playsinline>
+  <source src="https://www.orangefreesounds.com/wp-content/uploads/2016/04/Birds-chirping-and-water-flowing.mp3" type="audio/mp3">
+  متصفحك لا يدعم تشغيل الصوت.
+</audio>
+
+<script>
+const birdBtn = document.getElementById('bird-sound-btn');
+const birdAudio = document.getElementById('bird-sound');
+
+// حالة أولية
+birdBtn.textContent = "🐦";
+
+// عند النقر على الأيقونة
+birdBtn.addEventListener('click', async () => {
+  try {
+    if (birdAudio.paused) {
+      await birdAudio.play();
+      birdBtn.textContent = "🔊";
+      birdBtn.style.boxShadow = "0 0 35px rgba(0,255,200,1), 0 0 70px rgba(0,255,200,0.6)";
+      birdBtn.style.transform = "scale(1.1)";
+    } else {
+      birdAudio.pause();
+      birdBtn.textContent = "🐦";
+      birdBtn.style.boxShadow = "0 0 25px rgba(0,255,200,0.9), 0 0 50px rgba(0,255,200,0.4)";
+      birdBtn.style.transform = "scale(1)";
+    }
+  } catch (err) {
+    console.error("حدث خطأ أثناء تشغيل الصوت:", err);
+    alert("قد يمنع المتصفح التشغيل التلقائي. حاول النقر مرة أخرى.");
+  }
+});
+</script>
+  <!-- الخلفية 2 -->
+  <div id="bg2" style="
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background-size:cover;
+    background-position:center;
+    transition:opacity 1.2s ease-in-out;
+    opacity:0;
+    z-index:-1;
+  "></div>
+
+  <!-- محتوى الدخول -->
+  <div style="
+    position:absolute;
+    top:50%; left:50%;
+    transform:translate(-50%, -50%);
+    text-align:center;
+    color:white;
+    font-family:Tajawal;
+  ">
+    <h1 style="font-size:38px; text-shadow:0 0 15px #00ffff;">
+    
+    </h1>
+
+    <button onclick="enterSite()" style="
+      margin-top:40px;
+      padding:12px 28px;
+      font-size:22px;
+      border:none;
+      border-radius:12px;
+      background:
+      color:#000;
+      font-weight:bold;
+      cursor:pointer;
+      box-shadow:0 0 20px #00ffff;
+    ">
+      دخول الموقع entrance
+    </button>
+  </div>
+</div>
+
+<script>
+/* =============== الخلفيات المتغيرة =============== */
+const backgrounds = [
+  "https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072823_1280.jpg",
+  
+];
+
+let index = 0; 
+let front = true;
+
+/* أول خلفية */
+bg1.style.backgroundImage = `url('${backgrounds[0]}')`;
+index = 1;
+
+/* إخفاء شاشة الدخول */
+function enterSite() {
+  document.getElementById("entryScreen").style.display = "none";
+}
+</script>
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title> good time   </title>
+
+<style>
+{
+  margin:0; padding:0;
+  height:100%;
+  font-family:"Tajawal",sans-serif;
+  color:#fff;
+  overflow:hidden;
+}
+
+/* إخفاء الصفحات */
+.page{
+  display:none;
+  width:100%;
+  height:100%;
+  position:absolute;
+  top:0; left:0;
+}
+
+/* --- الصفحة الرئيسية --- */
+#home video{
+  width:100%; height:100%;
+  object-fit:cover;
+}
+.btn{
+  position:absolute;
+  bottom:40px;
+  left:50%;
+  transform:translateX(-50%);
+  background:linear-gradient(45deg,#00ffcc,#0066ff);
+  border:none;
+  padding:15px 30px;
+  border-radius:15px;
+  font-size:20px;
+  cursor:pointer;
+  box-shadow:0 0 20px #00ffff55;
+}
+
+/* --- الصفحة الثانية --- */
+#page2{
+  background:url('https://cdn.pixabay.com/photo/2017/02/01/22/02/mountains-2031539_1280.jpg') center/cover;
+}
+.page-btn{
+  position:absolute;
+  top:20px;
+  left:20px;
+  padding:10px 20px;
+  border-radius:12px;
+  background:linear-gradient(45deg,#00ffcc,#0066ff);
+  border:none;
+  color:#fff;
+  cursor:pointer;
+}
+.next-btn{
+  position:absolute;
+  bottom:40px;
+  left:50%;
+  transform:translateX(-50%);
+  padding:15px 25px;
+  font-size:20px;
+  background:rgba(0,0,0,0.6);
+  border:1px solid #00ffff77;
+  color:#00ffff;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+/* --- الصفحة الثالثة --- */
+#page3 iframe{
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  position:absolute;
+  z-index:-1;
+}
+h1{
+  text-align:center;
+  margin-top:70px;
+  font-size:30px;
+  text-shadow:0 0 12px #00ffff;
+}
+
+.info-box{
+  margin:20px auto;
+  width:85%;
+  padding:15px 20px;
+  background:rgba(0,0,0,0.5);
+  border:1px solid #00ffff55;
+  border-radius:12px;
+  text-align:center;
+  box-shadow:0 0 15px #00ffff55;
+  font-size:18px;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:20px;
+  padding:20px;
+}
+.card{
+  background:rgba(0,0,0,0.55);
+  border:1px solid #00ffff77;
+  padding:20px;
+  border-radius:12px;
+  text-align:center;
+  font-size:22px;
+  cursor:pointer;
+  transition:0.3s;
+}
+.card:hover{
+  background:rgba(0,0,0,0.75);
+  transform:scale(1.07);
+}
+
+/* زر الرجوع من الصفحة الثالثة */
+.back3{
+  position:absolute;
+  top:20px;
+  left:20px;
+  padding:10px 20px;
+  background:linear-gradient(45deg,#00ffcc,#0066ff);
+  border:none;
+  border-radius:12px;
+  color:#fff;
+  cursor:pointer;
+  z-index:9999;
+}
+
+/* popup */
+#popup{
+  display:none;
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.75);
+  backdrop-filter:blur(5px);
+  z-index:999999;
+}
+#popupBox{
+  background:rgba(0,0,0,0.6);
+  border:1px solid #00ffffaa;
+  width:80%; max-width:600px;
+  margin:90px auto;
+  padding:25px;
+  border-radius:12px;
+  position:relative;
+  box-shadow:0 0 20px #00ffff88;
+}
+#closeBtn{
+  position:absolute;
+  top:10px;
+  left:10px;
+  background:#ff4444;
+  padding:5px 12px;
+  border:none;
+  color:#fff;
+  border-radius:8px;
+  cursor:pointer;
+}
+</style>
+</head>
+<body>
+    
+<!-- ====================== الصفحة الرئيسية ======================= -->
+<div id="home" class="page" style="display:block;">
+  <video autoplay muted loop playsinline>
+    <source src="https://assets.mixkit.co/videos/51445/51445-720.mp4" type="video/mp4">
+  </video>
+
+
+<!-- ====== الدوائر ====== -->
+<div class="video-top-container-fixed">
+  <div class="video-circle" data-video="n7eQejkXbnM">
+    <iframe class="miniVideo"
+      src="https://www.youtube.com/embed/n7eQejkXbnM?autoplay=1&mute=1&playsinline=1&controls=0&loop=1&playlist=n7eQejkXbnM"
+      allow="autoplay; encrypted-media"
+      frameborder="0"></iframe>
+  </div>
+
+  <div class="video-circle" data-video="zi9knajcejY">
+    <iframe class="miniVideo"
+      src="https://www.youtube.com/embed/zi9knajcejY?autoplay=1&mute=1&playsinline=1&controls=0&loop=1&playlist=zi9knajcejY"
+      allow="autoplay; encrypted-media"
+      frameborder="0"></iframe>
+  </div>
+</div>
+
+<!-- ====== مربع الفيديو ====== -->
+<div id="videoBoxFixed">
+  <iframe id="fixedVideo" src="" allowfullscreen></iframe>
+</div>
+
+<style>
+/* ====== الدوائر ====== */
+.video-top-container-fixed {
+  position: fixed;
+  top: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 25px;
+  z-index: 50000;
+}
+
+.video-circle {
+  width:125px;
+  height: 105px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  transition: 0.3s ease;
+  overflow: hidden;
+  font-size: 12px;
+  border: 1px solid rgba(255,255,255,0.4);
+  position: relative;
+}
+
+.video-circle:hover {
+  transform: scale(1.1);
+  background: rgba(255,255,255,0.2);
+}
+
+/* ====== الفيديو المصغّر داخل الدائرة ====== */
+.miniVideo {
+  position: absolute;
+  width: 160%;
+  height: 160%;
+  top: -30%;
+  left: -30%;
+  border: none;
+  pointer-events: none; /* يمنع مشاكل الضغط */
+  opacity: 0.85;
+}
+
+/* ====== مربع الفيديو ====== */
+#videoBoxFixed {
+  position: fixed;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 330px;
+  height: 200px;
+  background: #000;
+  border-radius: 14px;
+  box-shadow: 0 0 20px rgba(0,255,255,0.5);
+  display: none;
+  z-index: 49999;
+  overflow: hidden;
+}
+
+#videoBoxFixed iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+</style>
+
+<!-- ====== سكربت الفتح والإغلاق ====== -->
+<script>
+document.querySelectorAll(".video-circle").forEach(circle => {
+  circle.addEventListener("click", () => {
+    const box = document.getElementById("videoBoxFixed");
+    const iframe = document.getElementById("fixedVideo");
+    const videoId = circle.getAttribute("data-video");
+
+    // إغلاق إذا كان مفتوح
+    if (box.style.display === "block") {
+      iframe.src = "";
+      box.style.display = "none";
+      return;
+    }
+
+    // فتح المربع
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1&playsinline=1`;
+    box.style.display = "block";
+  });
+});
+</script>
+
+<!-- ====== JavaScript ====== -->
+<script>
+function openVideoModal(videoId) {
+  const modal = document.getElementById('videoModal');
+  const modalVideo = document.getElementById('modalVideo');
+  modalVideo.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0`;
+  modal.style.display = 'flex';
+}
+
+function closeVideoModal() {
+  const modal = document.getElementById('videoModal');
+  const modalVideo = document.getElementById('modalVideo');
+  modalVideo.src = ''; // إيقاف الفيديو عند الإغلاق
+  modal.style.display = 'none';
+}
+</script>
+    
+<!-- 🔹 زر فتح اللعبة مع ألوان متغيرة -->
+<button id="pongGame-btn" style="
+  z-index: 9999;
+  position: fixed;
+  bottom : 20px;
+  right: 30px;
+  padding: 2px 2px;
+  border: none;
+  border-radius: 24px;
+  background: linear-gradient(45deg, #007bff, #00ffff);
+  color: #fff;
+  font-size: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(0,255,255,0.8);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+">
+  🏓 pongponG بونج بونج
+</button>
+
+<script>
+// 🎨 تغيير ألوان الخلفية كل ثانية
+const pongBtn = document.getElementById('pongGame-btn');
+setInterval(() => {
+  const colors = [
+    'linear-gradient(45deg, #ff1493, #ff69b4)',
+    'linear-gradient(45deg, #007bff, #00ffff)',
+    'linear-gradient(45deg, #00ffcc, #0066ff)',
+    'linear-gradient(45deg, #ff9900, #ff6600)',
+    'linear-gradient(45deg, #00ff00, #009933)',
+  ];
+  const color = colors[Math.floor(Math.random() * colors.length)];
+  pongBtn.style.background = color;
+  pongBtn.style.boxShadow = `0 0 25px ${color.split(',')[1] || '#fff'}`;
+}, 1000);
+
+// ✨ تأثير عند المرور بالماوس
+pongBtn.addEventListener('mouseenter', () => {
+  pongBtn.style.transform = 'scale(1.1)';
+});
+pongBtn.addEventListener('mouseleave', () => {
+  pongBtn.style.transform = 'scale(1)';
+});
+</script>
+
+<html lang="ar" dir="rtl">
+<head>
+<!-- 🔹 حاوية اللعبة -->
+<div id="pongGame-container" style="display:none;position:fixed;top:0;left:0;width:100vw;height:90vh;background:black;z-index:10000;overflow:hidden;">
+
+  <!-- ✅ فيديو الخلفية لا يلتقط النقرات -->
+  <iframe id="pongGame-video"
+    src="https://www.youtube.com/embed/bG4NtWR2e88?autoplay=1&mute=1&loop=1&playlist=bG4NtWR2e88&enablejsapi=1"
+    frameborder="0" allow="autoplay;encrypted-media" allowfullscreen
+    style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;"></iframe>
+
+  <!-- قائمة الخيارات -->
+  <div id="pongGame-menu" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:8px;background:rgba(0,0,0,0.6);padding:15px 25px;border-radius:12px;color:#fff;font-family:'Tajawal',sans-serif;z-index:3;">
+    <label>🎨 المضرب 1: <input id="pongGame-p1Color" type="color" value="#FFD700"/></label>
+    <label>🎨 المضرب 2: <input id="pongGame-p2Color" type="color" value="#00BFFF"/></label>
+    <label>⚪ الكرة: <input id="pongGame-ballColor" type="color" value="#FFFFFF"/></label>
+    <label>🎯 المستوى:
+      <select id="pongGame-level">
+        <option value="easy">سهل</option>
+        <option value="hard">صعب</option>
+        <option value="harder">أصعب</option>
+        <option value="impossible">مستحيل</option>
+      </select>
+    </label>
+    <div style="margin-top:6px;">
+      <button onclick="pongGame.start('player')" style="padding:6px 14px;border:none;border-radius:6px;background:#FFD700;cursor:pointer;">🎮 لاعب</button>
+      <button onclick="pongGame.start('computer')" style="padding:6px 14px;border:none;border-radius:6px;background:#00BFFF;cursor:pointer;">🤖 كمبيوتر</button>
+    </div>
+    <button id="pongGame-back" style="margin-top:6px;padding:6px 14px;border:none;border-radius:6px;background:#555;color:#fff;cursor:pointer;">🔙 رجوع</button>
+  </div>
+
+  <!-- لوحة اللعب -->
+  <canvas id="pongGame-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;cursor:none;"></canvas>
+
+  <!-- أزرار التحكم -->
+  <button id="pongGame-close" style="position:absolute;top:10px;right:15px;font-size:24px;background:rgba(0,0,0,0.4);border:none;border-radius:50%;width:40px;height:40px;color:#fff;cursor:pointer;z-index:3;">✖</button>
+
+  <div style="position:absolute;bottom:10px;right:10px;display:flex;gap:8px;z-index:3;">
+    <button id="pongGame-play" style="padding:6px 10px;border:none;border-radius:6px;background:#333;color:#fff;cursor:pointer;">⏸</button>
+    <button id="pongGame-mute" style="padding:6px 10px;border:none;border-radius:6px;background:#333;color:#fff;cursor:pointer;">🔇</button>
+  </div>
+</div>
+
+<script>
+(() => {
+  const btn=document.getElementById('pongGame-btn'),
+        cont=document.getElementById('pongGame-container'),
+        cvs=document.getElementById('pongGame-canvas'),
+        ctx=cvs.getContext('2d'),
+        menu=document.getElementById('pongGame-menu'),
+        close=document.getElementById('pongGame-close'),
+        back=document.getElementById('pongGame-back'),
+        vid=document.getElementById('pongGame-video'),
+        play=document.getElementById('pongGame-play'),
+        mute=document.getElementById('pongGame-mute');
+
+  let anim, p1, p2, b, w=false,s=false,up=false,down=false;
+  let mode='player', playing=true, muted=true;
+
+  function resize(){ cvs.width=innerWidth; cvs.height=innerHeight; }
+  addEventListener('resize',resize);
+
+  const pongGame={
+    init(){
+      resize();
+      p1={x:20,y:cvs.height/2-50,w:15,h:100,color:document.getElementById('pongGame-p1Color').value,score:0};
+      p2={x:cvs.width-35,y:cvs.height/2-50,w:15,h:100,color:document.getElementById('pongGame-p2Color').value,score:0};
+      b={x:cvs.width/2,y:cvs.height/2,r:10,speed:6,dx:6,dy:6,color:document.getElementById('pongGame-ballColor').value};
+    },
+    start(m){mode=m;menu.style.display='none';this.init();this.loop();},
+    loop(){this.move();this.draw();anim=requestAnimationFrame(()=>this.loop());},
+    move(){
+      if(w)p1.y=Math.max(0,p1.y-7);
+      if(s)p1.y=Math.min(cvs.height-p1.h,p1.y+7);
+      if(mode==='player'){
+        if(up)p2.y=Math.max(0,p2.y-7);
+        if(down)p2.y=Math.min(cvs.height-p2.h,p2.y+7);
+      }else{
+        const lvl=document.getElementById('pongGame-level').value;
+        const sp=lvl==='easy'?3:lvl==='hard'?6:lvl==='harder'?10:15;
+        if(b.y>p2.y+p2.h/2)p2.y+=sp;else p2.y-=sp;
+        p2.y=Math.max(0,Math.min(cvs.height-p2.h,p2.y));
+      }
+      b.x+=b.dx;b.y+=b.dy;
+      if(b.y-b.r<0||b.y+b.r>cvs.height)b.dy*=-1;
+      if(hit(b,p1)){b.dx=Math.abs(b.dx);b.dy=(b.y-(p1.y+p1.h/2))/2;}
+      if(hit(b,p2)){b.dx=-Math.abs(b.dx);b.dy=(b.y-(p2.y+p2.h/2))/2;}
+      if(b.x-b.r<0){p2.score++;reset();}
+      if(b.x+b.r>cvs.width){p1.score++;reset();}
+    },
+    draw(){
+      ctx.clearRect(0,0,cvs.width,cvs.height);
+      ctx.fillStyle='rgba(0,0,0,0.3)';ctx.fillRect(0,0,cvs.width,cvs.height);
+      ctx.fillStyle=p1.color;ctx.fillRect(p1.x,p1.y,p1.w,p1.h);
+      ctx.fillStyle=p2.color;ctx.fillRect(p2.x,p2.y,p2.w,p2.h);
+      ctx.fillStyle=b.color;ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='#fff';ctx.font='24px Tajawal';
+      ctx.fillText(p1.score,cvs.width/4,40);
+      ctx.fillText(p2.score,3*cvs.width/4,40);
+    }
+  };
+
+  function hit(b,p){return b.x-b.r<p.x+p.w&&b.x+b.r>p.x&&b.y+b.r>p.y&&b.y-b.r<p.y+p.h;}
+  function reset(){b.x=cvs.width/2;b.y=cvs.height/2;b.dx=(Math.random()<.5?-1:1)*b.speed;b.dy=(Math.random()<.5?-1:1)*b.speed;}
+
+  onkeydown=e=>{if(e.key==='w')w=true;if(e.key==='s')s=true;if(e.key==='ArrowUp')up=true;if(e.key==='ArrowDown')down=true;}
+  onkeyup=e=>{if(e.key==='w')w=false;if(e.key==='s')s=false;if(e.key==='ArrowUp')up=false;if(e.key==='ArrowDown')down=false;}
+
+  /* 🖱️ تحريك المضرب بالفأرة */
+  cvs.addEventListener('mousemove', e => {
+    const rect = cvs.getBoundingClientRect();
+    p1.y = e.clientY - rect.top - p1.h/2;
+    p1.y = Math.max(0, Math.min(cvs.height - p1.h, p1.y));
+  });
+
+  /* 📱 دعم اللمس للجوال */
+  cvs.addEventListener('touchmove', e => {
+    e.preventDefault();
+    const rect = cvs.getBoundingClientRect();
+    const touchY = e.touches[0].clientY - rect.top;
+    p1.y = touchY - p1.h/2;
+    p1.y = Math.max(0, Math.min(cvs.height - p1.h, p1.y));
+  }, { passive: false });
+
+  btn.onclick=()=>{cont.style.display='block';document.body.style.overflow='hidden';};
+  close.onclick=back.onclick=()=>{cont.style.display='none';document.body.style.overflow='auto';cancelAnimationFrame(anim);menu.style.display='flex';};
+
+  play.onclick=()=>{playing=!playing;play.textContent=playing?'⏸':'▶️';vid.contentWindow.postMessage(`{"event":"command","func":"${playing?'playVideo':'pauseVideo'}","args":""}`,'*');};
+  mute.onclick=()=>{muted=!muted;mute.textContent=muted?'🔇':'🔊';vid.contentWindow.postMessage(`{"event":"command","func":"${muted?'mute':'unMute'}","args":""}`,'*');};
+
+  window.pongGame=pongGame;
+})();
+</script>
+
+</body>
+</html>
+
+<!-- أيقونة التشغيل -->
+<div id="scrollbox-icon">📜</div>
+
+<!-- الخلفية -->
+<div id="scrollbox-overlay"></div>
+
+<!-- النافذة -->
+<div id="scrollbox-popup">
+  <button id="scrollbox-close">❌</button>
+
+  <div class="scrollbox-tabs">
+    <div class="scrollbox-tab active" data-target="scrollbox-culture">🌍 ثقافة</div>
+    <div class="scrollbox-tab" data-target="scrollbox-islamic">🕌 إسلامي</div>
+    <div class="scrollbox-tab" data-target="scrollbox-thoughts">💭 خواطر</div>
+  </div>
+
+  <!-- ===== القسم الأول: ثقافة عامة ===== -->
+ <div id="scrollbox-culture" class="scrollbox-content active">
+  <div class="scrollbox-text">
+    <h2>🌍 ثقافة عامة</h2>
+
+    <p>الثقافة العامة هي المرآة التي تعكس وعي الإنسان ونظرته للحياة،  
+    وهي الجسر الذي يصل بين الفكر والعلم والإبداع.  
+    من خلالها يستطيع الإنسان أن يفهم ذاته، ويتواصل مع مجتمعه،  
+    ويستوعب الحضارات من حوله دون أن يفقد هويته.</p>
+
+    <p>الثقافة ليست مجرد كمٍّ من المعلومات، بل هي طريقة تفكير،  
+    وسلوك حضاري ينبع من الإدراك العميق لقيمة العلم والإنسان.  
+    فالمثقف لا يكرر ما يسمع، بل يُعيد بناءه على أسس المنطق والمعرفة.</p>
+
+    <p>من أبرز ما قدّمته الحضارات للثقافة الإنسانية:  
+    <ul>
+      <li><strong>الحضارة الإسلامية:</strong> التي أبدعت في الطب والفلك والرياضيات والفلسفة، وقدّمت للعالم أسماء خالدة كابن سينا والرازي والخوارزمي.</li>
+      <li><strong>الحضارة المصرية القديمة:</strong> التي أنارت العالم بعلوم التحنيط والهندسة والعمارة، وشهدت ولادة الكتابة والطب المبكر.</li>
+      <li><strong>الحضارة اليونانية:</strong> التي أرست قواعد الفلسفة والمنطق، وقدّمت للعالم سقراط وأفلاطون وأرسطو.</li>
+      <li><strong>الحضارة الصينية:</strong> التي برعت في الورق والحرير والبارود، وأسست مفاهيم الانسجام بين الإنسان والطبيعة.</li>
+    </ul>
+    </p>
+
+    <p>الثقافة الحقيقية تنبع من التوازن بين الأصالة والمعاصرة،  
+    أي أن نحافظ على جذورنا وهويتنا، وفي الوقت نفسه ننفتح على كل جديد مفيد.  
+    فالمجتمع الذي لا يقرأ يتوقف، والذي يقرأ بلا وعي يتشتت،  
+    أما الذي يقرأ بعقل ناقد ويُبدع فهو الذي يصنع التاريخ.</p>
+
+    <p>الثقافة أيضًا هي أخلاق، لأنها تصنع فينا حسّ المسؤولية،  
+    وتمنحنا القدرة على فهم الآخر واحترام اختلافه،  
+    وتزرع فينا قيم التسامح والمحبة والفضيلة.</p>
+
+    <p><em>اقرأ، تفكر، ناقش، واكتب... فالثقافة ليست نهاية طريق، بل بداية حياة.</em></p>
+  </div>
+</div>
+
+
+  <!-- ===== القسم الثاني: التاريخ الإسلامي ===== -->
+  <div id="scrollbox-islamic" class="scrollbox-content">
+    <div class="scrollbox-text">
+      <h2>🕌 التاريخ الإسلامي</h2>
+      <h3>📜 النبي محمد ﷺ</h3>
+      <p>محمد بن عبد الله، خاتم الأنبياء والمرسلين، ولد في مكة عام 571م في عام الفيل.  
+      نزل عليه الوحي في سن الأربعين، فدعا إلى عبادة الله وحده ونبذ الشرك.  
+      استمرت دعوته 23 عامًا، عانى فيها وأصحابه من الاضطهاد حتى هاجر إلى المدينة المنورة، حيث أسس أول دولة إسلامية.  
+      توفي ﷺ سنة 632م، تاركًا أمة موحدة وكتاب الله بين أيدي المسلمين.</p>
+      <hr>
+      <h3>🕌 الخلفاء الراشدون</h3>
+      <p><strong>أبو بكر الصديق</strong> (632–634م): أول الخلفاء، وأقرب الصحابة إلى النبي ﷺ. ثبت المسلمين بعد وفاته ﷺ، وجمع القرآن الكريم في مصحف واحد.</p>
+      <p><strong>عمر بن الخطاب</strong> (634–644م): ثاني الخلفاء، اشتهر بالعدل والحزم، ووسع الدولة الإسلامية لتشمل بلاد فارس والشام ومصر.</p>
+      <p><strong>عثمان بن عفان</strong> (644–656م): ثالث الخلفاء، جمع الناس على مصحف واحد بلغة قريش، وفتح أرمينية وخراسان.</p>
+      <p><strong>علي بن أبي طالب</strong> (656–661م): رابع الخلفاء، وابن عم النبي ﷺ، عُرف بالشجاعة والعلم، وواجه الفتن الكبرى في الأمة.</p>
+      <hr>
+      <h3>⚔️ معاوية بن أبي سفيان</h3>
+      <p>معاوية بن أبي سفيان، صحابي وكاتب وحي للنبي ﷺ، ووالي الشام في عهد عمر وعثمان.  
+      أسس الدولة الأموية سنة 661م بعد تنازل الحسن بن علي له، وجعل دمشق عاصمة للدولة، واشتهر بالحكمة والسياسة والقدرة على إدارة الدولة.</p>
+      <hr>
+      <h3>⚖️ عمر بن عبدالعزيز</h3>
+      <p>عمر بن عبدالعزيز بن مروان، الخليفة الأموي الثامن، يُلقب بخامس الخلفاء الراشدين لزهده وعدله.  
+      وُلد سنة 682م وتولى الخلافة سنة 717م، فعمل على نشر العدل والمساواة، ورد المظالم، وإلغاء كثير من الضرائب الظالمة.  
+      توفي سنة 720م تاركًا سيرةً ناصعة في الحكم الصالح.</p>
+    </div>
+  </div>
+
+  <!-- ===== القسم الثالث: خواطر ===== -->
+  <div id="scrollbox-thoughts" class="scrollbox-content">
+    <div class="scrollbox-text">
+      <h2>💭 خواطر</h2>
+      <h3>قصتي مع التيتنك</h3>
+      <p>في صباح هادئ، شددت أشرعتي متجهًا نحو المجهول، عازمًا على استكشاف أسرار البحار التي لا يعرفها أحد.  
+      كانت الأمواج تعانق قاربي، والريح تدفعني نحو مغامرة لا تُنسى.</p>
+      <p>قادتني التيارات إلى مشهد أسطوري… هناك، في عمقٍ سحيق، ظهرت أمامي سفينة التايتنك، شامخة رغم جراح الزمن، صامتة وكأنها تحكي قصتها الحزينة.  
+      اقتربت منها، ولم أقاوم رغبتي في ترك أثر، فكتبت اسمي على إحدى بقاياها المعدنية المكسوة بالصدأ والمرجان.</p>
+      <p>وبينما أستكشف المكان، لمح بصري ظلاً ضخماً… كان حوتًا عظيمًا غارقًا في سبات عميق بجوار السفينة، وكأنهما رفيقا عزلة.  
+      فاتخذت الحوت فندقًا عائمًا لمدة يومين؛ أستريح فوق ظهره، أراقب النجوم ليلًا، وأتجول بين بقايا السفينة نهارًا.</p>
+
+      <hr>
+      <h3>قصة التنين الفضي</h3>
+      <p>بينما كان أبو القمر زمرد يجلس على صخرة تطل على البحر في ليلة هادئة، لاحظ ضوءًا غريبًا يلمع وسط الضباب.  
+      اقترب أكثر، فإذا به يكتشف كائنًا أسطوريًا ذو حراشف لامعة كالفضة، إنه التنين الفضي.</p>
+      <p>اقترب التنين ببطء وصوته العميق يروي حكايات عن الجبال البعيدة والبحار المجهولة.  
+      دعاه لرحلة بين الغيوم، حيث حلقا فوق الغابات والأنهار، وشاهدا معًا روائع لم ترها عين بشر من قبل.</p>
+      <p>عاد أبو القمر زمرد من تلك المغامرة وهو يدرك أن المغامرة الحقيقية ليست فقط في استكشاف الأماكن، بل في الجرأة على خوض المجهول بقلب مفتوح.</p>
+
+      <hr>
+      <h3>القمر والزمرد 🌙💎</h3>
+      <p>قصَّ أبو القمر حكاية يوم استطاع أن يمزج أنوار القمر بأحجار الزمرد الكريمة التي حصل عليها من شعب المرجان.  
+      كان ينظر إلى بريق الزمرد في أعماق البحر، حتى سطع نور القمر وانعكس على تلك الأحجار الساحرة.</p>
+      <p>ومنذ ذلك الحين، صار هذا الطريق بوابة لتحقيق الأحلام وتحويلها إلى حقيقة بإذن الله.</p>
+
+      <hr>
+      <h3>أبو القمر زمرد حارس الأندلس القديم</h3>
+      <p>في زمن بعيد، حين كانت الأندلس جنة على الأرض، عاش رجل يُدعى أبو القمر زمرد، حارس أسوار قرطبة وراعي مفاتيح بواباتها.  
+      كان معروفًا بشجاعته وذكائه، حتى أن الملوك كانوا يستشيرونه في أمور الحرب والسلم.</p>
+      <p>وفي إحدى الليالي، رأى نورًا غريبًا يلمع فوق قصر الحمراء، فاتجه نحوه بسرعة، وهناك وجد مخطوطة قديمة تحمل أسرار الدفاع عن الأندلس.  
+      أدرك أن مهمته الحقيقية ليست فقط حماية الأسوار، بل حماية سرّ الأندلس من أن يضيع إلى الأبد.</p>
+
+      <hr>
+      <h3>رحلة أبو القمر إلى ما وراء المجرات</h3>
+      <p>بعد أن أنهى أبو القمر تصميم موقعه على الويب وتفعيله، شعر بإرهاق شديد، وقرر أن يأخذ إجازة لمدة شهر بعيدًا عن التفكير والروتين.  
+      وفي ليلة هادئة، نظر إلى القمر، فرأى انعكاسًا براقًا للزمرد يلمع في ضوئه، فركب شعاع الضوء وانطلق بسرعة تفوق الضوء،  
+      حتى وصل إلى مجرة بعيدة مغطاة بحدائق من ثمار لا تُحصى وكائنات ودودة.</p>
+      <p>تزوج هناك ورُزق بأبناء، لكن الحنين إلى الأرض أشعل قلبه فعاد عبر بوابة ضوء نادرة،  
+      إلا أن المسار انحرف ليصل إلى مدينة الكريستال الأزرق، حيث بدأت مغامرة جديدة غيّرت مصيره إلى الأبد.</p>
+
+      <hr>
+      <h3>العودة بعد الانبطاح</h3>
+      <p>وبعد طول انتظار في مدينة النوم والانبطاح، نهض البطل ببطء،  
+      وكأن الأرض التي احتضنته طوال تلك الفترة لم ترغب في إفلاته.  
+      تنفّس عميقًا ومسح عن كتفيه غبار الاستسلام، ثم خطا أولى خطوات العودة؛  
+      فهو يعلم أن الانبطاح أحيانًا هدنة، ولكن العودة هي المعركة الحقيقية.  
+      <strong>إلى الأرض... إلى الحياة... إلى النور.</strong></p>
+    </div>
+  </div>
+</div>
+
+<script>
+    
+(function(){
+  const icon = document.getElementById('scrollbox-icon');
+  const popup = document.getElementById('scrollbox-popup');
+  const overlay = document.getElementById('scrollbox-overlay');
+  const close = document.getElementById('scrollbox-close');
+  const tabs = document.querySelectorAll('.scrollbox-tab');
+  const sections = document.querySelectorAll('.scrollbox-content');
+
+  icon.addEventListener('click', ()=>{
+    popup.classList.add('active');
+    overlay.classList.add('active');
+  });
+  close.addEventListener('click', closeAll);
+  overlay.addEventListener('click', closeAll);
+
+  function closeAll(){
+    popup.classList.remove('active');
+    overlay.classList.remove('active');
+  }
+
+  tabs.forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      tabs.forEach(t=>t.classList.remove('active'));
+      sections.forEach(s=>s.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.getAttribute('data-target')).classList.add('active');
+    });
+  });
+})();
+</script>
+
+<!-- ================= أيقونة القصة + النافذة المعدلة ================= -->
+<style>
+/* أيقونة القصة */
+#shipIcon_new {
+  position: fixed;
+  bottom: 130px;
+  right: 210px;
+  width: 110px;
+  height: 110px;
+  background: url('https://i.top4top.io/p_3602p1v3s1.png') center/cover no-repeat;
+  cursor: pointer;
+  border-radius: 50%;
+  z-index: 99999999;
+  box-shadow: 0 0 25px #8a2be2, 0 0 55px rgba(138, 43, 226, 0.35);
+  transition: 0.35s ease;
+}
+#shipIcon_new:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 35px #8a2be2, 0 0 80px rgba(138, 43, 226, 0.6);
+}
+
+/* النافذة */
+#shipPopup_new {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 92%;
+  max-width: 430px;
+  background: rgba(15, 15, 25, 0.95);
+  border: 2px solid #8a2be2;
+  border-radius: 25px;
+  padding: 28px;
+  text-align: center;
+  box-shadow: 0 0 40px #8a2be2;
+  color: #fff;
+  z-index: 99999998;
+  animation: popFade_new 0.5s ease;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+@keyframes popFade_new {
+  from { opacity:0; transform:translate(-50%, -45%); }
+  to   { opacity:1; transform:translate(-50%, -50%); }
+}
+
+/* زر الإغلاق */
+#closeShip_new {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: #ff0066;
+  color: #fff;
+  border: none;
+  width: 36px;
+  height: 36px;
+  font-size: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.3s;
+}
+#closeShip_new:hover {
+  transform: scale(1.15);
+  background: #ff2b80;
+}
+
+#shipPopup_new h2 {
+  color: #c084fc;
+  text-shadow: 0 0 12px #c084fc;
+  margin-bottom: 15px;
+  font-size: 22px;
+}
+
+#shipPopup_new p, #shipPopup_new ul {
+  text-align: right;
+  line-height: 1.8;
+  color: #ddd;
+  font-size: 17px;
+}
+</style>
+
+<!-- الأيقونة -->
+<div id="shipIcon_new"></div>
+
+<!-- النافذة -->
+<div id="shipPopup_new">
+  <button id="closeShip_new">✖</button>
+  <div style="margin:20px; padding:15px; background:rgba(0,0,0,0.55); border:1px solid #00ffd5; border-radius:12px; font-family:'Tajawal',sans-serif; color:white; line-height:1.9;">
+
+<h2 style="text-align:center; color:#9ff;">🌙 أبو القمر زمرد… حين رفض الاستسلام</h2>
+
+<p>
+لم يكن أبو القمر زمرد يومًا من الذين يرفعون راية الاستسلام،  
+ولا من الذين يتركون الريح تدفعهم حيث تشاء.  
+كان يرى الحياة بخطوطها الحادة وظلالها الثقيلة،  
+ويعرف أن كل ضربةٍ هي درس،  
+وكل سقوطٍ هو بداية صعود جديد.
+</p>
+
+<p>
+وحين حاولت الدنيا أن تكسِر صلابته،  
+وقف مبتسمًا، وقال لنفسه قبل الناس:  
+<strong>"أنا لم أُخلق لأُهزم، بل لأتعلّم وأبقى."</strong>
+</p>
+
+<p>
+كان يؤمن أن العمر ليس رقمًا يُقصِر الطريق،  
+ولا جدارًا يمنع الحلم…  
+بل هو تجربةٌ تجعل القلب أنقى والعقل أعمق.  
+ولذلك قالها بثبات لا يشبه أحدًا:
+</p>
+
+<p style="text-align:center; font-size:20px; color:#00ffd0;">
+<strong>"حتى بعد الثمانين… سأمشي، سأحلم، وسأبقى."</strong>
+</p>
+
+<p>
+كان يعلم أن هناك <strong>حياة أبدية</strong>،  
+عالمًا آخر ينتظر كل روحٍ صادقة،  
+لكنّه أيضًا كان يعرف أن الله وضعه في الدنيا  
+ليؤدي دوره، ويترك أثرًا لا ينطفئ.  
+فلذلك كان يعيشها كأنها هدية،  
+ويحمي قلبه كأنه كنز،  
+ويمضي فيها بثبات القمر وسط السماء.
+</p>
+
+<p>
+أبو القمر زمرد، الرجل الذي لم يَغلبه الزمن،  
+ولم تُنهِ عزيمته الأيام…  
+بل كلما تقدم عمره،  
+ازدادت روحه قوة،  
+وكأنه خُلق ليبقى طويلًا…  
+ويعلّم الآخرين كيف يكون البقاء شرفًا.
+</p>
+
+</div>
+
+  <!-- ========= قصة أبو القمر زمرد مع المجتمع ========= -->
+<div style="margin:20px; padding:15px; background:rgba(0,0,0,0.65); border:1px solid #00ffd5; border-radius:12px; font-family:'Tajawal',sans-serif; color:white; line-height:1.8;">
+
+<h2 style="text-align:center;">🌙 أبو القمر زمرد… بين وجوه المجتمع</h2>
+
+<p>
+في زمنٍ تتصارع فيه المواقف قبل الأشخاص،  
+وتختلط فيه الأقنعة بالوجوه،  
+وجد أبو القمر زمرد نفسه يسير وسط مجتمعٍ متناقض؛  
+مجتمع يجمع المتضادّات كما تجمع الصحراء بين  
+سكون الليل وحرارة الظهيرة.
+</p>
+
+<p>
+رأى بعينيه <strong>الخير والشر</strong> يمشيان جنبًا إلى جنب؛  
+رجل يعطي بلا حساب، وآخر يمنع حتى كلمة طيبة.  
+ورأى <strong>الكرم والبخل</strong> في وجوه لا يفرّق بينها إلا موقف واحد  
+يظهر أصل صاحبها.
+</p>
+
+<p>
+وفي الطرقات لمح <strong>الذكاء والغباء</strong>:  
+ذكاءٌ يرفع صاحبه ولو كان ضعيفًا،  
+وغباءٌ يُسقط من ظن نفسه فوق الجميع.  
+ورأى أيضًا <strong>القوة والضعف</strong>،  
+لكنّه أدرك أن أقواهم هو من يحفظ قلبه نقيًا رغم كل شيء.
+</p>
+
+<p>
+أما <strong>أبو القمر زمرد</strong>، فقد ظلّ يمشي بينهم  
+لا يتغيّر مهما تغيّروا،  
+يعطي من قلبه، ويحفظ سرّه،  
+ويعرف أن البشر مثل الرمال…  
+منها ما يدفنك، ومنها ما يبني طريقك.
+</p>
+
+<p>
+وتحت كل هذا الضجيج، بقي ثابتًا على قيمه،  
+يبحث عن معنى، عن صديق حقيقي،  
+وعن لحظة صادقة تلامس مثل نور القمر  
+حجرًا من زمرد… فيضيئه.
+</p>
+
+<hr style="border-color:#00ffd5;">
+</div>
+
+
+<h2>🦎 ضبّ الصحراء… ودمعة أبو القمر زمرد</h2>
+
+في ظهيرةٍ قاسية، كانت الرمال تحترق تحت وهج الشمس، سار أبو القمر زمرد منهكًا بين كثبانٍ بلا ظل ولا أنيس.  
+وفجأة سمع نفَسًا متقطعًا خلف صخرةٍ منخفضة. اقترب ببطء… فإذا به <strong>ضبّ صحراوي</strong> جاف الجسد، لكنه ثابت النظرة،  
+عيناه تحكيان قصة طويلة من الصبر والوجع.<br><br>
+
+رفع الضب رأسه، وكأنه يعرفه من قبل، وقال بصوتٍ متعب:<br>
+<em>"يا أبو القمر… ليس كل من يعيش في الصحراء قويًا، ولكن كل من يبقى… تعلم معنى الصبر الحقيقي."</em><br><br>
+
+جلس أبو القمر بجانبه، فاقترب الضب أكثر حتى لامس يده، فشعر أبو القمر بحرارةٍ تشبه ألم قلبٍ صامت.  
+قال الضب وهو يحدّق في الأفق:<br>
+<em>"تعلمت أن الضربة التي لا تكسر ظهري… تزيدني رسوخًا تحت الرمال."</em><br><br>
+
+ثم أغمض الضب عينيه ببطء، وتلاشت أنفاسه الأخيرة مع نسمة ريح حارة  
+كأن الصحراء نفسها أخذت روحه إلى عمقها.<br><br>
+
+ساد صمت طويل… ثم نزلت دمعة واحدة من عين أبو القمر زمرد،  
+دمعة لم يُرِد أن يراها أحد، لكنه قال وهو ينظر للسماء:<br>
+<em>"أيها الضبّ الصبور… علّمتني أن القوة ليست في الحركة… بل في البقاء."</em><br><br>
+
+ومنذ ذلك اليوم عاد أبو القمر يسير في الصحراء،  
+ولكن بروحٍ أثقل… وبقلبٍ يعرف معنى القوة التي لا يراها أحد.
+<hr>
+..
+<hr>
+
+  <h2>⚓ مغامرة أبو القمر زمرد مع الصقنقور الرملي ⚓</h2>
+  <p id="storyText_new"></p>
+</div>
+
+<script>
+const snqStory_new = `
+في ليلةٍ هادئة كان القمر فيها مكتملًا، خرج أبو القمر زمرد كعادته يتأمل ضوء السماء ويبحث عن أسرار جديدة يخفيها الكون. وبينما كان يسير فوق الرمال الفضية التي تعكس ضوء القمر، لاحظ شيئًا صغيرًا يتحرك بخفةٍ قرب كثيب رملي طويل.<br><br>
+
+اقترب بهدوء، فإذا به <strong>صقنقور رملي</strong> بلونٍ يميل إلى الذهب، سريع الحركة، يترك خلفه خطًا دقيقًا كأنه يرسم علامة على الرمال.<br><br>
+
+رفع الصقنقور رأسه وكأنه يعرف أبو القمر، ثم قال بصوت خفيف يشبه همس الريح:<br>
+<em>"أبحث منذ زمن عن من يستطيع قراءة طريق القمر بين الرمال… أنت وحدك من يستطيع السير معي."</em><br><br>
+
+ابتسم أبو القمر زمرد، ووضع كفه بلطف على ظهر الصقنقور، فانطلقت منه هالة زمردية خضراء، امتزجت بلون الرمال الذهبية فكوّنت طريقًا يمتد نحو عمق الصحراء.<br><br>
+
+سار الاثنان معًا عبر هذا الطريق المتلألئ، وكل خطوة كان الصقنقور يرسم بها رمزًا جديدًا على الأرض. اكتشف أبو القمر أنّ هذه الرموز ليست عشوائية… بل هي <strong>خريطة قديمة</strong> تمزج بين <em>طاقة الأرض</em> و<em>نور القمر</em>، لا يستطيع فكها إلا من جمع بين الهدوء الداخلي وصفاء القلب.<br><br>
+
+وقادتهم الخريطة إلى <strong>كهف من الكريستال الرملي</strong>, جدرانه تلمع مثل الزجاج وعليه نقوش لأسلاف الصقنقور. هناك وجد أبو القمر <strong>حجرًا رمليًا زمرديًا</strong> نادرًا، يقال إن من يحمله يستطيع رؤية الطرق المخفية التي لا تراها العيون.<br><br>
+
+أخذ أبو القمر الحجر، ووضعه في قلادته، فقال الصقنقور:<br>
+<em>"منذ اليوم، طريق القمر لم يعد فوق السماء فقط… بل تحت قدميك أيضًا."</em><br><br>
+
+ثم اختفى الصقنقور داخل الرمال، تاركًا خلفه خطًا طويلًا كُتب عليه:<br>
+<em>"الصداقة الحقيقية لا تحتاج صوتًا… يكفي أن تترك أثرًا."</em><br><br>
+
+ومن تلك الليلة أصبح لأبو القمر زمرد طريق جديد، طريق من نور القمر… ومغامرات لا تنتهي في الصحراء… وبرفقة الصقنقور الرملي مهما غاب أو اختفى.<hr>
+
+<h2>🐉 أبو القمر زمرد يخاطب التنين الفضي بقصيدة "غدر الزمان"</h2>
+
+<p>قررت الرحيل من أمد... فخانني الزمان وأوفى به القدر</p>
+<p>فلا بصيره من لا يرى بأعينه.... ولو طال له الطريق والسفر</p>
+<p>وكلام لا ينجي صاحبه... تزدريه الحضوض ومقله البشر</p>
+<p>تعجبت من زمان أدور به.... وكيف تغيرت المخاطر إلى خطر</p>
+<p>كطفل ينمو في مراحله... وبأن فيه الشيب والقصر</p>
+<p>فهذا حال الزمان لمن جال به.... يغدو لعلمه يبوح به أو يسر</p>
+<p>كمثل الكلب حين في طبعه.... وحين يتشبه بالأسماك والنسر</p>
+<p>فوجهي هذا من الماضي صورته... طلت علي من الجوال بفجر</p>
+<p>فذكرتني بعهد لم أكن انساه... ولكن لا تجود الأرواح إلا بصبر</p>
+<p>فلكل أمر له شقوته.... ولا بعد العسر إلا يسر</p>
+<p>ولا أشره علا السارق بسطوته... فهاذي تجارب النفس والبصر</p>
+
+<hr>
+<h3>💡 الفكرة العامة</h3>
+<p>القصيدة تتناول رحلة الشاعر مع الزمن، وتستعرض تجاربه مع الخذلان والخيانة والتحولات في الحياة. تتخللها تأملات في البشر والطبيعة الإنسانية، إضافة إلى الصبر والحكمة التي تأتي بعد التجارب.</p>
+
+<hr>
+<h3>📜 تحليل الأبيات</h3>
+<ul>
+  <li><em>"قررت الرحيل من أمد... فخانني الزمان وأوفى به القدر"</em>: بداية قوية تعكس قرار الشاعر بالمضي في الحياة أو الرحيل عن الماضي، مع إدراك أن الزمن قد يخوننا، لكن القدر يظل في حكمه.</li>
+  <li><em>"فلا بصيره من لا يرى بأعينه.... ولو طال له الطريق والسفر"</em>: يشير إلى أن الرؤية الحقيقية والفهم لا تتحقق إلا بالوعي الداخلي، وأن طول التجربة وحده لا يكفي.</li>
+  <li><em>"وكلام لا ينجي صاحبه... تزدريه الحضوض ومقله البشر"</em>: يصف حالة الضعف أمام أحكام الناس، وأن الكلمات وحدها قد لا تنقذ الشخص من سوء الحظ أو انتقاد الآخرين.</li>
+  <li><em>"تعجبت من زمان أدور به.... وكيف تغيرت المخاطر إلى خطر"</em>: استغراب من تغير الحياة، وأن ما كان تحديًا قد أصبح تهديدًا حقيقيًا مع مرور الزمن.</li>
+  <li><em>"كطفل ينمو في مراحله... وبأن فيه الشيب والقصر"</em>: استعارة جميلة تشير إلى دورة الحياة، من البراءة والطفولة إلى النضج والشيب.</li>
+  <li><em>"فهذا حال الزمان لمن جال به.... يغدو لعلمه يبوح به أو يسر"</em>: تأمل في أن تجربة الإنسان مع الزمن تمنحه الحكمة، وقد يشاركها أو يحتفظ بها لنفسه.</li>
+  <li><em>"كمثل الكلب حين في طبعه.... وحين يتشبه بالأسماك والنسر"</em>: تشبيه للطبيعة البشرية، وكيف يمكن للمرء أن يتصرف بما لا يتفق مع طبعه تحت تأثير الظروف.</li>
+  <li><em>"فوجهي هذا من الماضي صورته... طلت علي من الجوال بفجر"</em>: لمسة شخصية تعكس الحنين والذكريات، وكيف يمكن للأشياء البسيطة أن تثير الماضي.</li>
+  <li><em>"فذكرتني بعهد لم أكن انساه... ولكن لا تجود الأرواح إلا بصبر"</em>: دعوة للصبر على تجارب الحياة، فالروح تحتاج الصبر لتستعيد قوتها.</li>
+  <li><em>"فلكل أمر له شقوته.... ولا بعد العسر إلا يسر"</em>: حكمة خالدة: بعد كل صعوبة يأتي الفرج، وكل تجربة تحمل درسًا.</li>
+  <li><em>"ولا أشره علا السارق بسطوته... فهاذي تجارب النفس والبصر"</em>: خلاصة القول: التجارب تصقل النفس وتعلم الإنسان الرؤية والفهم.</li>
+</ul>
+`;
+
+document.getElementById("storyText_new").innerHTML = snqStory_new;
+
+// فتح النافذة
+document.getElementById("shipIcon_new").onclick = () => {
+  document.getElementById("shipPopup_new").style.display = "block";
+};
+
+// إغلاق النافذة
+document.getElementById("closeShip_new").onclick = () => {
+  document.getElementById("shipPopup_new").style.display = "none";
+};
+</script>
+<!-- ================= نهاية الكود المنعزل ================= -->
+  
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎬 فيديو + 🗺️ خريطة</title>
+<style>
+/* 🔹 أيقونة النجمة */
+.launcher {
+  position: fixed;
+  bottom: 225px;
+  right: 25px;
+  width: 50px;
+  height: 50px;
+  background: conic-gradient(red, orange, yellow, green, blue, indigo, violet, red);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 
+                     79% 91%, 50% 70%, 21% 91%, 32% 57%, 
+                     2% 35%, 39% 35%);
+  border-radius: 50%;
+  box-shadow: 0 0 25px #fff, 0 0 50px #0ff;
+  animation: rotateColors 3s linear infinite, pulse 2s ease-in-out infinite;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.launcher span {
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 0 0 8px black;
+  font-size: 14px;
+}
+
+@keyframes rotateColors {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+@keyframes pulse {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+/* 🔹 الإطار المنبثق */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9998;
+}
+
+.box {
+  background: #000;
+  border-radius: 16px;
+  box-shadow: 0 0 25px #0ff;
+  padding: 12px;
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
+  position: relative;
+}
+
+iframe {
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  margin-top: 8px;
+}
+
+iframe.video { height: 200px; }
+iframe.map { height: 200px; }
+
+.close {
+  position: absolute;
+  top: 309px;
+  right: -12px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: red;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 0 10px white;
+}
+</style>
+</head>
+<body>
+
+<div class="launcher" title="عرض الفيديو والخريطة">
+  <span>خرائط<br>Map</span>
+</div>
+
+<div class="overlay">
+  <div class="box">
+    <button class="close">×</button>
+    <iframe class="video"
+      src="https://www.youtube.com/embed/SKIhQsszmP8?autoplay=1&mute=1"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+    <iframe class="map" id="mapFrame" loading="lazy"></iframe>
+  </div>
+</div>
+
+<script>
+const launcher = document.querySelector('.launcher');
+const overlay = document.querySelector('.overlay');
+const closeBtn = document.querySelector('.close');
+const mapFrame = document.getElementById('mapFrame');
+
+launcher.addEventListener('click', () => {
+  overlay.style.display = 'flex';
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(pos => {
+      const lat = pos.coords.latitude;
+      const lon = pos.coords.longitude;
+      mapFrame.src = `https://www.google.com/maps?q=${lat},${lon}&z=15&output=embed`;
+    }, () => {
+      mapFrame.src = "https://www.google.com/maps";
+    });
+  } else {
+    mapFrame.src = "https://www.google.com/maps";
+  }
+});
+
+closeBtn.addEventListener('click', () => {
+  overlay.style.display = 'none';
+});
+</script>
+
+</body>
+</html>
+
+  <button class="btn" onclick="goPage('page2')">➡️ الانتقال للصفحة الثانية</button>
+</div>
+
+<!-- ====================== الصفحة الثانية ======================= -->
+<div id="page2" class="page">
+  <button class="page-btn" onclick="goPage('home')">⬅️ الصفحة الرئيسية</button>
+
+  <div style="text-align:center;margin-top:120px;font-size:26px;text-shadow:0 0 12px #00ffff;">
+<!-- 🌈 أيقونة فتح/إغلاق قائمة الاتصال -->
+<div id="support-toggle-btn" style="
+  position: fixed;
+  top: 55%;
+  right:300px;
+  width: 65px;
+  height: 65px;
+  background: linear-gradient(45deg, #007bff, #ff69b4);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(0,0,255,0.8);
+  z-index: 1001;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+">
+📞
+</div>
+
+<!-- 🌟 قسم قائمة التواصل -->
+<div id="support-section" style="
+  position: fixed;
+  top: 43%;
+  right: 170px;
+  background: rgba(0, 0, 30, 0.85);
+  padding: 18px;
+  border-radius: 14px;
+  color: #fff;
+  font-family: 'Tajawal', sans-serif;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  transform: translateX(20px);
+  z-index: 1000;
+  max-width: 270px;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+">
+
+  <h3 style="margin:0; text-align:center; color:#00ffff;">💖 قائمة التواصل</h3>
+  <hr style="border: 1px solid #00ffff; margin:8px 0 10px 0;">
+
+  <!-- 💰 PayPal -->
+  <p style="margin:5px 0; color:#FFD700;">💰 
+    <a href="https://paypal.me/abwalqmrzmrd" target="_blank" style="color:#FFD700; text-decoration:none;">
+      ادعمنا عبر PayPal
+    </a>
+  </p>
+
+  <!-- 📧 البريد -->
+  <p style="margin:5px 0;">📧 
+    <a href="mailto:sakakera@gmail.com" style="color:#00ffcc; text-decoration:none;">
+      sakakera@gmail.com
+    </a>
+  </p>
+
+  <!-- 🌐 فيسبوك -->
+  <p style="margin:5px 0;">⭐ 
+    <a href="https://www.facebook.com/AbwAlqmrZmrd" target="_blank" style="color:#FFD700; text-decoration:none; font-weight:bold;">
+      أبوالقمر زمرد
+    </a>
+  </p>
+
+  <!-- 🟩 واتساب -->
+  <p style="margin:5px 0;">🟩 
+    <a href="https://wa.me/message/BJUPAGNVGZ2KI1" target="_blank" style="color:#00ff99; text-decoration:none;">
+      واتساب مباشر
+    </a>
+  </p>
+
+  <!-- 🐦 تويتر -->
+  <p style="margin:5px 0;">🐦 
+    <a href="https://twitter.com/intent/tweet?text=🌙%20زر%20موقع%20أبوالقمر%20زمرد%20https://sakakera-a11y.github.io/sakaker/" target="_blank" style="color:#1DA1F2; text-decoration:none;">
+      شارك عبر تويتر
+    </a>
+  </p>
+</div>
+
+<script>
+// 🔹 حركة الألوان المتغيرة للأيقونة
+setInterval(() => {
+  const btn = document.getElementById('support-toggle-btn');
+  const colors = [
+    'linear-gradient(45deg, #007bff, #00ffff)',
+    'linear-gradient(45deg, #ff1493, #ff69b4)',
+    'linear-gradient(45deg, #00ffcc, #0066ff)',
+    'linear-gradient(45deg, #ff9900, #ff66cc)',
+  ];
+  btn.style.background = colors[Math.floor(Math.random() * colors.length)];
+  btn.style.boxShadow = `0 0 20px ${btn.style.background.split(',')[1] || 'rgba(255,255,255,0.6)'}`;
+}, 1000);
+
+// 🔹 فتح/إغلاق القائمة مع تأثير لطيف
+const supportBtn = document.getElementById('support-toggle-btn');
+const supportSection = document.getElementById('support-section');
+
+supportBtn.addEventListener('click', () => {
+  if (supportSection.style.display === 'none' || supportSection.style.display === '') {
+    supportSection.style.display = 'block';
+    setTimeout(() => {
+      supportSection.style.opacity = 1;
+      supportSection.style.transform = 'translateX(0)';
+    }, 10);
+  } else {
+    supportSection.style.opacity = 0;
+    supportSection.style.transform = 'translateX(20px)';
+    setTimeout(() => { supportSection.style.display = 'none'; }, 400);
+  }
+});
+</script>
+
+<!-- 🌙 حاوية الفيديو المخفية -->
+<div id="jokeVideoContainer" style="display:none; position:fixed; top:60px; left:50%; transform:translateX(-50%); z-index:10000;">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/EXAMPLE_VIDEO?autoplay=1" frameborder="0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
+</div>
+
+<script>
+const jokeIcon = document.getElementById('jokeVideoIcon');
+const jokeContainer = document.getElementById('jokeVideoContainer');
+
+jokeIcon.addEventListener('click', () => {
+    if(jokeContainer.style.display === 'none') {
+        jokeContainer.style.display = 'block';
+    } else {
+        jokeContainer.style.display = 'none';
+        // لإيقاف الفيديو عند الإغلاق، نعيد src لإعادة التحميل
+        const iframe = jokeContainer.querySelector('iframe');
+        iframe.src = iframe.src;
+    }
+});
+</script>
+
+<!-- ========== أيقونة الأعمال ========== -->
+<div id="worksIconContainer" style="
+  bottom: 5px;
+  right: 125px;
+  text-align:center;
+  margin:30px 0;
+  z-index:9999;
+  position:relative;
+">
+  
+  <div onclick="toggleWorksCard()" style="
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    border:3px solid #00ffff;
+    box-shadow:0 0 20px #00ffff;
+    background:#000;
+    overflow:hidden;
+    cursor:pointer;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin:auto;
+  ">
+    <img src="https://a.top4top.io/p_3607x4is91.jpg"
+         style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+  </div>
+
+</div>
+
+
+<!-- ========== الكرت (صورة يسار — فيديو يمين) ========== -->
+<div id="worksSmallCard" style="
+  display:none;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:#001515;
+  border-radius:15px;
+  padding:15px;
+  box-shadow:0 0 25px #00ffff;
+  z-index:100000;
+  width:90%;
+  max-width:470px;
+">
+
+  <!-- زر الإغلاق -->
+  <button onclick="toggleWorksCard()" style="
+    background:red;
+    color:#fff;
+    border:none;
+    padding:6px 12px;
+    border-radius:6px;
+    cursor:pointer;
+    margin-bottom:10px;
+    float:left;
+  ">✖</button>
+
+  <!-- ⭐ المحتوى -->
+  <div style="
+      display:flex;
+      gap:10px;
+      margin-top:40px;
+      flex-direction:row;
+      direction:ltr;
+      width:100%;
+  ">
+
+    <!-- ✔ الصورة يسار -->
+    <img src="https://a.top4top.io/p_3607x4is91.jpg"
+         style="
+           width:48%;
+           height:380px;
+           object-fit:cover;
+           border-radius:12px;
+           box-shadow:0 0 12px #00ffff;
+           z-index:2;
+         ">
+
+    <!-- ✔ الفيديو يمين + زر الصوت + شريط الصوت -->
+    <div style="width:48%; height:380px; position:relative;">
+
+      <!-- الفيديو -->
+      <iframe id="workVideo"
+        src="https://www.youtube.com/embed/FzfIvHt4AaU?autoplay=1&mute=1&enablejsapi=1"
+        style="
+          width:100%;
+          height:100%;
+          border:none;
+          border-radius:12px;
+          box-shadow:0 0 12px #00ffff;
+          position:relative;
+          z-index:2;
+        "
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+
+      <!-- زر الصوت -->
+      <button id="soundBtn" onclick="toggleWorkSound()" style="
+        position:absolute;
+        bottom:10px;
+        left:10px;
+        background:rgba(0,255,255,0.7);
+        border:none;
+        padding:6px 10px;
+        border-radius:8px;
+        cursor:pointer;
+        font-weight:bold;
+        color:#000;
+        z-index:5;
+        box-shadow:0 0 10px #00ffff;
+        font-size:12px;
+      ">
+        🔊 تشغيل الصوت
+      </button>
+
+      <!-- شريط الصوت -->
+      <input type="range" id="volumeSlider" min="0" max="100" value="100" 
+        oninput="setWorkVolume(this.value)"
+        style="
+          position:absolute;
+          bottom:10px;
+          right:10px;
+          width:65px;
+          z-index:5;
+          cursor:pointer;
+        ">
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+function toggleWorksCard(){
+  let card = document.getElementById("worksSmallCard");
+  card.style.display = (card.style.display === "block") ? "none" : "block";
+}
+
+// ========================== التحكم بالصوت ==========================
+
+let soundOn = false;
+
+// زر تشغيل / إيقاف الصوت
+function toggleWorkSound(){
+  const iframe = document.getElementById("workVideo");
+  const btn = document.getElementById("soundBtn");
+
+  soundOn = !soundOn;
+
+  iframe.contentWindow.postMessage(JSON.stringify({
+    event: "command",
+    func: soundOn ? "unMute" : "mute",
+    args: []
+  }), "*");
+
+  btn.textContent = soundOn ? "🔈 إيقاف الصوت" : "🔊 تشغيل الصوت";
+}
+
+
+// تغيير مستوى الصوت من السلايدر
+function setWorkVolume(vol){
+  const iframe = document.getElementById("workVideo");
+
+  iframe.contentWindow.postMessage(JSON.stringify({
+    event: "command",
+    func: "setVolume",
+    args: [vol]
+  }), "*");
+}
+</script>
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الأقسامsakaker wep</title>
+<style> {
+  font-family:'Tajawal', sans-serif;
+  margin:0;
+  padding:0;
+  background:transparent;
+  color: silver;
+  text-align:center;
+}
+
+/* ===== أيقونة التشغيل ===== */ 
+#scrollbox-icon {
+  position: fixed;
+  bottom: 230px;
+  left: 20%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid #00ffaa;
+  color: #00ffaa;
+  background: rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(0,255,170,0.4);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(6px);
+  z-index: 99999;
+}
+#scrollbox-icon:hover {
+  transform: translateX(-50%) scale(1.1);
+  box-shadow: 0 0 30px #00f2fe;
+}
+
+/* ===== الخلفية ===== */
+#scrollbox-overlay {
+  display:none;
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(4px);
+  z-index:99998;
+  opacity:0;
+  transition:opacity 0.3s ease;
+}
+#scrollbox-overlay.active {
+  display:block;
+  opacity:1;
+}
+
+/* ===== النافذة ===== */
+#scrollbox-popup {
+  display:none;
+  position:fixed;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%) scale(0.9);
+  width:90%;
+  max-width:900px;
+  height:85%;
+  background:rgba(255,255,255,0.97);
+  color:#111;
+  border-radius:14px;
+  box-shadow:0 0 25px rgba(255,255,255,0.2);
+  z-index:100000;
+  opacity:0;
+  transition:all 0.3s ease;
+  overflow:hidden;
+  text-align:right;
+}
+#scrollbox-popup.active {
+  display:block;
+  opacity:1;
+  transform:translate(-50%,-50%) scale(1);
+}
+
+/* ===== التبويبات ===== */
+.scrollbox-tabs {
+  display:flex;
+  justify-content:space-around;
+  background:rgba(0,0,0,0.05);
+  border-bottom:1px solid rgba(0,0,0,0.1);
+}
+.scrollbox-tab {
+  flex:1;
+  text-align:center;
+  padding:10px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:background 0.3s;
+}
+.scrollbox-tab:hover { background:rgba(0,0,0,0.1); }
+.scrollbox-tab.active { background:rgba(0,0,0,0.2); }
+
+/* ===== المحتوى ===== */
+.scrollbox-content {
+  display:none;
+  height:calc(100% - 60px);
+  padding:20px;
+  overflow:hidden;
+  position:relative;
+}
+.scrollbox-content.active { display:block; }
+
+/* ===== النص المتحرك ===== */
+.scrollbox-text {
+  position:absolute;
+  bottom:-100%;
+  width:100%;
+  animation:scrollbox-up 220s linear infinite; /* سرعة بطيئة جدًا */
+  line-height:1.9;
+}
+@keyframes scrollbox-up {
+  from { bottom:-100%; }
+  to { bottom:100%; }
+}
+.scrollbox-text:hover {
+  animation-play-state: paused;
+}
+
+/* زر الإغلاق */
+#scrollbox-close {
+  position:absolute;
+  top:10px;left:10px;
+  background:rgba(0,0,0,0.1);
+  border:none;
+  color:#333;
+  padding:5px 10px;
+  border-radius:8px;
+  cursor:pointer;
+}
+#scrollbox-close:hover { background:rgba(0,0,0,0.2); }
+</style>
+</head>
+<body>
+    
+<!-- 🐅 أيقونة النمر المشعة -->
+<div id="tigerIcon">🐅</div>
+
+<!-- نافذة الصورة -->
+<div id="popup">
+  <div id="popupContent">
+    <div id="closeBtn">×</div>
+
+    <!-- الصورة الأخيرة -->
+    <img src="https://c.top4top.io/p_3623vvtpu1.png" alt="Zodiac Image">
+  </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.getElementById("tigerIcon").onclick = () => {
+  document.getElementById("popup").style.display = "flex";
+};
+
+document.getElementById("closeBtn").onclick = () => {
+  document.getElementById("popup").style.display = "none";
+};
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>موقع أبوالقمر زمرد - القنوات المباشرة والمكتبة واللعبة</title>
+
+<style>
+ {
+    margin: 0;
+    padding: 0;
+    font-family: "Tajawal","Cairo",system-ui,sans-serif;
+    background: #000;
+    color: #fff;
+    overflow: hidden;
+}
+
+/* خلفية الفيديو */
+#video-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -10;
+}
+#video-background iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120%;
+  height: 120%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  border: none;
+}
+
+/* توهج زمردي على الحواف */
+.emerald-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: radial-gradient(circle at center,
+    rgba(80, 200, 120, 0.15) 0%,
+    rgba(0, 0, 0, 0.85) 90%);
+  box-shadow: inset 0 0 100px 40px rgba(80, 200, 120, 0.2);
+  z-index: -9;
+  animation: glowPulse 5s ease-in-out infinite;
+}
+@keyframes glowPulse {
+  0% { box-shadow: inset 0 0 80px 30px rgba(80, 200, 120, 0.25); }
+  50% { box-shadow: inset 0 0 120px 50px rgba(80, 200, 120, 0.35); }
+  100% { box-shadow: inset 0 0 80px 30px rgba(80, 200, 120, 0.25); }
+}
+
+/* شريط حالة الاتصال وعدد اللاعبين */
+#statusBar {
+  position: fixed;
+  top: 5px;
+  left: 10px;
+  z-index: 9000;
+  background: rgba(0,0,0,0.6);
+  border-radius: 10px;
+  padding: 4px 8px;
+  font-size: 12px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  border: 1px solid rgba(0,255,255,0.4);
+}
+#connectionStatus { font-weight: bold; }
+#playerCount { font-weight: bold; }
+
+/* 🌟 أيقونة فليشر القنوات المباشرة */
+#liveFlasher {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  transform: translateY(-50%);
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, #ffffff 70%, #f5f5f5 100%);
+  color: #000;
+  font-weight: bold;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 40px rgba(255,255,255,0.9), 0 0 80px rgba(255,255,255,0.7);
+  cursor: pointer;
+  z-index: 10000;
+  transition: transform 0.3s ease;
+  font-family: "Cairo", sans-serif;
+  animation: flashGlow 2s infinite ease-in-out;
+}
+@keyframes flashGlow {
+  0%, 100% { box-shadow: 0 0 30px rgba(255,255,255,0.7), 0 0 80px rgba(255,255,255,0.5); }
+  50% { box-shadow: 0 0 70px rgba(255,255,255,1), 0 0 120px rgba(255,255,255,0.9); }
+}
+#liveFlasher:hover {
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* نافذة القنوات المباشرة */
+#livePopup {
+  display: none;
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -30%);
+  width: 80vw;
+  max-width: 420px;
+  background: rgba(255,255,255,0.97);
+  border-radius: 30px;
+  box-shadow: 0 0 40px rgba(255,255,255,0.9);
+  padding: 15px 10px 25px;
+  z-index: 10001;
+  text-align: center;
+  animation: fadeIn 0.4s ease;
+  backdrop-filter: blur(10px);
+  color: #000;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -40%); }
+  to { opacity: 1; transform: translate(-50%, -30%); }
+}
+#closePopup {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: crimson;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s;
+}
+#closePopup:hover {
+  background: #ff5555;
+}
+#liveVideosContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 35px;
+}
+.live-video {
+  width: 130px;
+  height: 80px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+.live-video:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0,0,0,0.7);
+}
+.live-video iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  pointer-events: none;
+}
+
+/* الإطار المنبثق الكبير للفيديو */
+#videoOverlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(4px);
+  z-index: 10002;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 60px;
+}
+#videoBox {
+  position: relative;
+  width: 80%;
+  max-width: 600px;
+  aspect-ratio: 16/9;
+  background: #000;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(255,255,255,0.8);
+}
+#videoBox iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+#closeVideo {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: crimson;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 16px;
+  cursor: pointer;
+}
+#closeVideo:hover {
+  background: #ff5555;
+}
+
+/* زر مكتبة الفيديو الزمردية */
+#emeraldLibraryButton {
+  position: fixed;
+  right: 20px;
+  top: 400px;
+  z-index: 9500;
+  cursor: pointer;
+  padding: 10px 15px;
+  background: rgba(0,0,128,0.3);
+  color: #00ffff;
+  font-weight: bold;
+  border-radius: 12px;
+  text-align: center;
+  border: 1px solid rgba(0,255,255,0.4);
+}
+
+#emeraldLibraryContent {
+  display: none;
+  position: fixed;
+  right: 40px;
+  top:10px;
+  max-height: 70%;
+  overflow-y: auto;
+  background: rgba(0,0,0,0.85);
+  padding: 10px;
+  border-radius: 12px;
+  z-index: 9500;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid rgba(0,255,255,0.4);
+}
+
+.emeraldSectionHeader {
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.emeraldVideoCircle {
+  display: inline-block;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #00ffff;
+  box-shadow: 0 0 50px #00ffff;
+  margin: 5px;
+  cursor: pointer;
+  text-align: center;
+  line-height: 120px;
+  font-weight: bold;
+  color: #fff;
+  background: #000;
+  transition: 0.3s;
+  font-size: 13px;
+}
+.emeraldVideoCircle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 70px #00ffff;
+}
+
+/* مودال خاص بمكتبة الفيديو الزمردية */
+#emeraldModal {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.9);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+#emeraldModal iframe {
+  width:70%;
+  height:70%;
+  border-radius:12px;
+  box-shadow:0 0 70px #00ffff;
+  border:none;
+}
+#emeraldModalClose {
+  position:fixed;
+  top:10px;
+  right:10px;
+  padding:8px 12px;
+  background:rgba(0,255,255,0.3);
+  border:1px solid #00ffff;
+  color:#fff;
+  cursor:pointer;
+  z-index:10000;
+  border-radius:8px;
+}
+
+/* للجوال */
+@media (max-width: 768px) {
+  #liveFlasher {
+    width: 110px;
+    height: 110px;
+    right: 15px;
+    font-size: 13px;
+  }
+  #livePopup {
+    width: 90vw;
+    max-width: 340px;
+    top: 25%;
+    transform: translate(-50%, -25%);
+  }
+  .live-video {
+    width: 110px;
+    height: 65px;
+  }
+  #emeraldLibraryButton {
+    right: 10px;
+    top: 18%;
+  }
+  #pongButton {
+    right: 10px;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- خلفية فيديو جديدة -->
+<div id="video-background">
+  <iframe
+    src="https://www.youtube.com/embed/79fzeNUqQbQ?autoplay=1&mute=1&loop=1&playlist=79fzeNUqQbQ&controls=0&modestbranding=1&playsinline=1"
+    title="خلفية فيديو"
+    allow="autoplay; encrypted-media; picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>
+
+<div class="emerald-glow"></div>
+
+<!-- 🌟 أيقونة فليشر القنوات المباشرة -->
+<div id="liveFlasher" onclick="toggleLivePopup()">
+  <span>قنوات مباشرة<br>Live Channels</span>
+</div>
+
+<!-- نافذة القنوات المباشرة -->
+<div id="livePopup">
+  <button id="closePopup" onclick="toggleLivePopup()">❌</button>
+  <div id="liveVideosContainer">
+    <!-- القنوات الأصلية -->
+    <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/LuKwFajn37U')">
+      <iframe src="https://www.youtube.com/embed/LuKwFajn37U?mute=1" allowfullscreen></iframe>
+    </div>
+    <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/zi9knajcejY')">
+      <iframe src="https://www.youtube.com/embed/zi9knajcejY?mute=1" allowfullscreen></iframe>
+    </div>
+    <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/daqB3i9WYIY')">
+      <iframe src="https://www.youtube.com/embed/daqB3i9WYIY?mute=1" allowfullscreen></iframe>
+    </div>
+    <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/FFkOEautPBs')">
+      <iframe src="https://www.youtube.com/embed/FFkOEautPBs?mute=1" allowfullscreen></iframe>
+    </div>
+    <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/n7eQejkXbnM')">
+      <iframe src="https://www.youtube.com/embed/n7eQejkXbnM?mute=1" allowfullscreen></iframe>
+    </div>
+    <!-- القنوات الجديدة -->
+    <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/iTtkHlvMRzw')">
+      <iframe src="https://www.youtube.com/embed/iTtkHlvMRzw?mute=1" allowfullscreen></iframe>
+    </div>
+    <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/BEgQdyuWhDQ')">
+      <iframe src="https://www.youtube.com/embed/BEgQdyuWhDQ?mute=1" allowfullscreen></iframe>
+    </div>
+    <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/77mDQNA84uI')">
+      <iframe src="https://www.youtube.com/embed/77mDQNA84uI?mute=1" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- الإطار المنبثق للفيديو الكبير -->
+<div id="videoOverlay">
+  <div id="videoBox">
+    <button id="closeVideo" onclick="closeVideo()">❌</button>
+    <iframe id="mainVideo" src="" allowfullscreen></iframe>
+  </div>
+</div>
+
+<!-- زر مكتبة الفيديو الزمردية -->
+<div id="emeraldLibraryButton">
+  🎥 مكتبة الفيديو الزمردية<br>Emerald Video Library
+</div>
+
+<!-- محتوى مكتبة الفيديو الزمردية -->
+<div id="emeraldLibraryContent">
+  <!-- موسيقى -->
+  <div>
+    <div class="emeraldSectionHeader"
+         style="background:rgba(255,105,180,0.85);color:#000;"
+         onclick="toggleEmeraldSection('musicSection')">
+      🎵 music موسيقى
+    </div>
+    <div id="musicSection" style="display:none;flex-wrap:wrap;">
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/KKGQrOL6e7Y')">عربي</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/vPg67r76hAA')">أجنبي</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/o3PqK4ANeLU')">شرقية</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/Rp1gppNGmRo')">غربية</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/2U0RjjiBorY')">فهد السعيد</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/FDyB8dcSptk')">عيسى الأحسائي</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/l8CGuJzyiR8')">بشير</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/r-m2wwJy2cQ')">طلال</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/kEIWBDqovoI')">محمد عبده</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/kLXlntMZ-lc?si=qscrkusqTPWkdnVc')">حجاب</div>
+    </div>
+  </div>
+
+  <!-- وثائقية -->
+  <div>
+    <div class="emeraldSectionHeader"
+         style="background:#FFD700;color:#000;"
+         onclick="toggleEmeraldSection('docSection')">
+      📼 documentary وثائقية
+    </div>
+    <div id="docSection" style="display:none;flex-wrap:wrap;">
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/R62QVvz1Aso')">نيرون صبيا</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/23jGQdwSRJs')">الحرب العالمية الثانية</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/DNE6YbGO6-M')">زواج كاترين دي</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/zh2HwG8fYFo')">الحضارات الإنسانية</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/hvJSvGslOl8')">صدام حسين</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/RO0xx5oeTA8')">كوريا الشمالية</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/4F-47lqOHDU')">جريمة في المنازل</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/EB6-ZDBF0hM')">سرقة القرن</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/uvjMiLxNLnk')">تاريخ اليهود</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/3HmOr-as-TA')">منغوليا</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/7nCjajfhY5o?si=jnu6LwdhTVUPhY5I')">فيلم 1</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/LDi6-iC1j8A?si=ZdyC0y5eG_Nl7brf')">فيلم 2</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/7lo81AX8siE?si=lqWG8WfGe4HRKJwZ')">فيلم 3</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/fjed1u7A9wM?si=3OPczpybVbdBQWFW')">فيلم 4</div>
+    </div>
+  </div>
+
+  <!-- كرتون -->
+  <div>
+    <div class="emeraldSectionHeader"
+         style="background:#000;color:#fff;"
+         onclick="toggleEmeraldSection('cartoonSection')">
+      cartoon 🎨 كرتون
+    </div>
+    <div id="cartoonSection" style="display:none;flex-wrap:wrap;">
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/U5sBC9Fr0fA')">كرتون</div>
+    </div>
+  </div>
+
+  <!-- أفلام -->
+  <div>
+    <div class="emeraldSectionHeader"
+         style="background:#333;color:#fff;"
+         onclick="toggleEmeraldSection('moviesSection')">
+      films 🎬 أفلام
+    </div>
+    <div id="moviesSection" style="display:none;flex-wrap:wrap;">
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/R4TZ6r_af8A')">أجنبي</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/qxAXFYcbOpU')">عربي</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/LqHLkqqIukQ')">شاهد ما شفش حاجة</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/2p55ymDVH5Y')">فلم الحدود</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/anMBqlPFCwU')">الرجل السكير</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/aznfIFN7cyo')">كينج فو</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/fqOALQ3pehE')">Sisters with Secrets</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/kJqW_xsMuh8')">جاكي شان</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/0go3k0frmjc')">فلم هندي</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/D3oO_9S6TVM')">Faster</div>
+      <div class="emeraldVideoCircle"onclick="openEmeraldVideo('https://www.youtube.com/embed/Hf0-8kV-6E4')">Comedy 1</div>
+      <div class="emeraldVideoCircle"onclick="openEmeraldVideo('https://www.youtube.com/embed/rnJ6k-hjsqM?si=KXJu7um4Ru3Kq7p2')">فيلم 1</div>
+      <div class="emeraldVideoCircle"onclick="openEmeraldVideo('https://www.youtube.com/embed/r0qVH647sI4?si=hg7u6f3H-pqMxwvw')">فيلم 2</div>
+      <div class="emeraldVideoCircle"onclick="openEmeraldVideo('https://www.youtube.com/embed/cwSoWCJGe9Y?si=06FFz92rA8AtLk2E')">فيلم 3</div>
+      <div class="emeraldVideoCircle"onclick="openEmeraldVideo('https://www.youtube.com/embed/VmUE1nSUwcU?si=FmkLKUWELKlCJ5eQ')">فيلم 4</div>
+      <div class="emeraldVideoCircle"onclick="openEmeraldVideo('https://www.youtube.com/embed/TXimDjSatvk?si=HPcV4Di6svQ0YmYv')">فيلم 5</div>
+      <div class="emeraldVideoCircle"onclick="openEmeraldVideo('https://www.youtube.com/embed/pFLinegONA4?si=jWVb_7MeXUeOhKNz')">فيلم 6</div>
+      <div class="emeraldVideoCircle"onclick="openEmeraldVideo('https://www.youtube.com/embed/ThFxdmLCh6A?si=2K3mEf0KxV-shOuf')">فيلم 7</div>
+    </div>
+  </div>
+
+  <!-- رياضة -->
+  <div>
+    <div class="emeraldSectionHeader"
+         style="background:rgba(165,42,42,0.85);color:#fff;"
+         onclick="toggleEmeraldSection('sportsSection')">
+      sports ⚽ رياضة
+    </div>
+    <div id="sportsSection" style="display:none;flex-wrap:wrap;">
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/X7ByhZIGEjI')">رياضة</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/NYTo6KB7IqQ')">كرة القدم نساء</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/yMb_7VEhyNQ')">كرة قدم رجال</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/s3qWsdWfK24')">تشلسي</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/6J4JEFwm63o')">التعاون 5 الرائد 1</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/bbmoXwaSpGY?si=-02ni4PZ9DpKFzUF')">طائرة نسائية</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/WYtC7nuChPA?si=Jw4hFD5kWubGKJm3')">تشلسي أخرى</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/x8xdEOnv0Dk?si=yzn4J5NkCCtqc1q9')">تشلسي رجال</div>
+    </div>
+  </div>
+
+  <!-- تعليمية -->
+  <div>
+    <div class="emeraldSectionHeader"
+         style="background:rgba(0,0,255,0.25);color:#fff;"
+         onclick="toggleEmeraldSection('educationSection')">
+      Educational 📘 تعليمية
+    </div>
+    <div id="educationSection" style="display:none;flex-wrap:wrap;">
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/hOH7ZLE-ZN8')">إبراهيم الفقي</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/sJ5ib2Gbfy8')">مصطفى محمود</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/fMlF99erfHw')">سقراط</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/_KXmZKW_cag?si=YAmKW4EOx-IREgGP&mute=1')">تعلم الإنجليزية</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/v5zol69e02o?si=SE4tX2T8BL38trob&mute=1')">تعلم العود</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/uEWJkk6X8fg?si=PW2Dh_O9fE9bzCxF&mute=1')">SATC</div>
+    </div>
+  </div>
+
+  <!-- دينية -->
+  <div>
+    <div class="emeraldSectionHeader"
+         style="background:rgba(0,128,0,0.85);color:#fff;"
+         onclick="toggleEmeraldSection('religiousSection')">
+      Islamic religion 📿 دينية
+    </div>
+    <div id="religiousSection" style="display:none;flex-wrap:wrap;">
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/myYiNE3HpKc')">قصص الأنبياء</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/kIj0E3Pl1kY')">تفسير القرآن</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/UR6vcevAi5o')">قرآن</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/s-KsCr4VjMo')">تلبيس إبليس</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/q_V_Xbq4S64?si=ZueNfoqOkNrSxrRm')">الشيخ كشك</div>
+    </div>
+  </div>
+
+  <!-- ألعاب -->
+  <div>
+    <div class="emeraldSectionHeader"
+         style="background:rgba(255,165,0,0.85);color:#000;"
+         onclick="toggleEmeraldSection('gamesSection')">
+      My game 🎮 ألعاب
+    </div>
+    <div id="gamesSection" style="display:none;flex-wrap:wrap;">
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/XhjICiHQD_g')">أنا</div>
+      <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/ZITpohaq6Ak')">أنا 2</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- سكربت القنوات المباشرة -->
+<script>
+  function toggleLivePopup() {
+    const popup = document.getElementById("livePopup");
+    if (!popup) return;
+    popup.style.display = (popup.style.display === "block") ? "none" : "block";
+  }
+
+  function openVideo(url) {
+    const overlay = document.getElementById("videoOverlay");
+    const iframe = document.getElementById("mainVideo");
+    if (!overlay || !iframe) return;
+    iframe.src = url + (url.includes("?") ? "&" : "?") + "autoplay=1";
+    overlay.style.display = "flex";
+  }
+
+  function closeVideo() {
+    const overlay = document.getElementById("videoOverlay");
+    const iframe = document.getElementById("mainVideo");
+    if (!overlay || !iframe) return;
+    iframe.src = "";
+    overlay.style.display = "none";
+  }
+</script>
+
+<!-- سكربت مكتبة الفيديو الزمردية -->
+<script>
+  // فتح / إغلاق المكتبة
+  document.getElementById('emeraldLibraryButton').addEventListener('click', function() {
+    const content = document.getElementById('emeraldLibraryContent');
+    if (!content) return;
+    content.style.display = (content.style.display === 'block') ? 'none' : 'block';
+
+    if (content.style.display === 'block') {
+      const sections = ['musicSection','docSection','cartoonSection','moviesSection',
+                        'sportsSection','educationSection','religiousSection','gamesSection'];
+      sections.forEach(id => {
+        const sec = document.getElementById(id);
+        if (sec) sec.style.display = 'none';
+      });
+    }
+  });
+
+  function toggleEmeraldSection(id) {
+    const section = document.getElementById(id);
+    if (!section) return;
+    section.style.display = (section.style.display === 'flex' || section.style.display === 'block')
+      ? 'none'
+      : 'flex';
+  }
+
+  function openEmeraldVideo(url) {
+    // إزالة مودال قديم
+    const old = document.getElementById('emeraldModal');
+    if (old) old.remove();
+
+    const modal = document.createElement('div');
+    modal.id = 'emeraldModal';
+
+    const iframe = document.createElement('iframe');
+    iframe.src = url + (url.includes("?") ? "&" : "?") + "autoplay=1";
+    iframe.allow = "autoplay; encrypted-media; picture-in-picture";
+    iframe.allowFullscreen = true;
+
+    const closeBtn = document.createElement('button');
+    closeBtn.id = 'emeraldModalClose';
+    closeBtn.textContent = 'إغلاق ✖';
+    closeBtn.onclick = () => modal.remove();
+
+    modal.appendChild(iframe);
+    modal.appendChild(closeBtn);
+    document.body.appendChild(modal);
+  }
+</script>
+
+
+
+</script>
+
+</body>
+</html>
+
+  </div>
+  
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الديانات السماوية - موسوعة الأنبياء والرسل</title>
+<style>
+ { font-family: Tahoma, sans-serif; margin:0; padding:0; background:#121212; color:#fff; }
+#prophetsBtn {
+    position: fixed;
+    top: 80%;
+    left: 10px;
+    transform: translateY(-50%);
+    z-index: 9999;
+    background: rgba(255,165,0,0.2);
+    color: #fff;
+    padding: 4px 12px;
+    border: 2px solid orange;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align:center;
+    transition: transform 0.3s, background 0.3s;
+}
+#prophetsBtn:hover { background: rgba(255,165,0,0.4); transform: scale(1.05); }
+
+#prophetsBox {
+    display:none;
+    position: fixed;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    background: rgba(255,255,255,0.95);
+    color:#000;
+    width:90%;
+    max-width:1000px;
+    border-radius:15px;
+    box-shadow:0 0 25px rgba(0,0,0,0.7);
+    padding:20px;
+    text-align:right;
+    z-index:9999;
+    max-height:85vh;
+    overflow-y:auto;
+}
+#prophetsBox h2 { color:#8B0000; text-align:center; margin-bottom:15px; }
+
+#prophetsBox ul { list-style:none; padding:0; margin:0 0 15px 0; display:flex; flex-wrap:wrap; }
+#prophetsBox ul li { background:#000; color:#fff; margin:4px; padding:6px 12px; border-radius:8px; cursor:pointer; transition:0.3s; flex:1; text-align:center; min-width:100px; font-size:14px; }
+#prophetsBox ul li:hover { background:#8B0000; }
+
+.prophet-detail { display:none; margin-bottom:12px; padding:8px; border-bottom:1px solid rgba(0,0,0,0.3); font-size:14px; line-height:1.5; }
+.prophet-detail.active { display:block; }
+.prophet-detail i { color:#555; font-size:13px; display:block; margin-top:6px; }
+
+#prophetsBox button.closeBtn { background:#8B0000; color:#fff; border:none; border-radius:10px; padding:6px 12px; margin-top:12px; cursor:pointer; font-weight:bold; }
+
+@media(max-width:500px){ #prophetsBtn { padding:10px 14px; font-size:14px; } #prophetsBox { padding:15px; } }
+</style>
+</head>
+<body>
+
+<button id="prophetsBtn">📜 الديانات السماوية<br><span style="font-size:13px;">Heavenly Religions</span></button>
+
+<div id="prophetsBox">
+<h2>📜 موسوعة الأنبياء والرسل — Prophets Encyclopedia</h2>
+
+<ul>
+<li data-id="prophet1">آدم<br><small>Adam</small></li>
+<li data-id="prophet2">شيث<br><small>Seth</small></li>
+<li data-id="prophet3">إدريس<br><small>Enoch</small></li>
+<li data-id="prophet4">نوح<br><small>Noah</small></li>
+<li data-id="prophet5">هود<br><small>Hud</small></li>
+<li data-id="prophet6">صالح<br><small>Salih</small></li>
+<li data-id="prophet7">لوط<br><small>Lot</small></li>
+<li data-id="prophet8">إبراهيم<br><small>Abraham</small></li>
+<li data-id="prophet9">إسماعيل<br><small>Ishmael</small></li>
+<li data-id="prophet10">إسحاق<br><small>Isaac</small></li>
+<li data-id="prophet11">يعقوب<br><small>Jacob</small></li>
+<li data-id="prophet12">يوسف<br><small>Joseph</small></li>
+<li data-id="prophet13">أيوب<br><small>Job</small></li>
+<li data-id="prophet14">ذو الكفل<br><small>Dhul-Kifl</small></li>
+<li data-id="prophet15">يونس<br><small>Jonah</small></li>
+<li data-id="prophet16">موسى<br><small>Moses</small></li>
+<li data-id="prophet17">هارون<br><small>Aaron</small></li>
+<li data-id="prophet18">داوود<br><small>David</small></li>
+<li data-id="prophet19">سليمان<br><small>Solomon</small></li>
+<li data-id="prophet20">زكريا<br><small>Zechariah</small></li>
+<li data-id="prophet21">يحيى<br><small>John</small></li>
+<li data-id="prophet22">عيسى<br><small>Jesus</small></li>
+<li data-id="prophet23">محمد ﷺ<br><small>Muhammad</small></li>
+</ul>
+
+<!-- تفاصيل جميع الأنبياء -->
+<div class="prophet-detail" id="prophet1">
+<h3>آدم (Adam)</h3>
+<p>💡 <b>القصة:</b> أول البشر، خُلق من تراب وعلَّم أسماء كل شيء. عاش في الجنة ثم نزل إلى الأرض بعد المعصية. علم البشر أساسيات الحياة وطرق العبادة.<br>
+<b>التشريع:</b> العبادة والطاعة لله، تعليم أولاده التوحيد، تأسيس الأسرة الأولى.<br>
+<b>القوم:</b> أول البشر.<br>
+<i>First human and Prophet, created from clay, taught the names of all things. Lived in Paradise then descended to Earth. Commanded to worship Allah alone, taught family and social guidance.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet2">
+<h3>شيث (Seth)</h3>
+<p>💡 <b>القصة:</b> ابن آدم، واصل الهداية بعد وفاة والده، دعا الناس لعبادة الله وتجنب الشرك، أسس أجيالًا صالحة.<br>
+<b>التشريع:</b> الدعوة للتوحيد، تعليم الأجيال.<br>
+<b>القوم:</b> نسل آدم.<br>
+<i>Son of Adam, Prophet after his father, continued guidance, called people to worship Allah and avoid polytheism, guided righteous generations.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet3">
+<h3>إدريس (Enoch)</h3>
+<p>💡 <b>القصة:</b> نبي علم الناس الكتابة، الحساب، العلوم، وكان مثالاً للعبادة والتقوى.<br>
+<b>التشريع:</b> التقوى وطلب العلم، نشر المعرفة.<br>
+<b>القوم:</b> البشر الأوائل.<br>
+<i>Prophet who taught writing, mathematics, sciences, an example of righteousness. Commanded seeking knowledge and piety. People: early humans.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet4">
+<h3>نوح (Noah)</h3>
+<p>💡 <b>القصة:</b> أرسل لقوم عبدوا الأصنام، دعاهم للتوحيد، بنى السفينة وأنقذ المؤمنين من الطوفان.<br>
+<b>التشريع:</b> التوحيد وترك الشرك، الصبر على الكفر.<br>
+<b>القوم:</b> قوم نوح.<br>
+<i>Sent to the idol-worshipping people, called to monotheism, built the Ark, saved believers. Commanded patience and monotheism. People: Noah's people.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet5">
+<h3>هود (Hud)</h3>
+<p>💡 <b>القصة:</b> أرسل إلى قوم عاد، دعاهم للتوحيد والصبر على البلاء.<br>
+<b>التشريع:</b> عبادة الله وحده، الصبر والعدل.<br>
+<b>القوم:</b> قوم عاد.<br>
+<i>Sent to the people of 'Ad, called to worship Allah alone, known for patience and justice. People: 'Ad.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet6">
+<h3>صالح (Salih)</h3>
+<p>💡 <b>القصة:</b> أرسل إلى قوم ثمود، جاء بمعجزة الناقة، دعوته للتوحيد والعدل.<br>
+<b>التشريع:</b> عبادة الله وحده، اتباع المعجزات والحق.<br>
+<b>القوم:</b> قوم ثمود.<br>
+<i>Sent to Thamud, brought the miracle of the she-camel, called to worship Allah alone and follow truth. People: Thamud.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet7">
+<h3>لوط (Lot)</h3>
+<p>💡 <b>القصة:</b> أرسل لقوم سدوم، دعاهم للتوحيد والأخلاق، نجى هو وأهله.<br>
+<b>التشريع:</b> التوحيد والأخلاق، رفض الفساد.<br>
+<b>القوم:</b> قوم سدوم.<br>
+<i>Sent to Sodom, called to monotheism and moral conduct, condemned corruption. People: Sodom.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet8">
+<h3>إبراهيم (Abraham)</h3>
+<p>💡 <b>القصة:</b> خليل الله، دعا للتوحيد، بنى الكعبة، ابتُلي بالكثير ليكون قدوة.<br>
+<b>التشريع:</b> الحج، التوحيد، الدعوة للأمم.<br>
+<b>القوم:</b> العرب وبني إسرائيل.<br>
+<i>Friend of Allah, called to monotheism, built the Kaaba, faced trials to serve as a model. Commanded Hajj, monotheism, guidance to nations. People: Arabs and Israelites.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet9">
+<h3>إسماعيل (Ishmael)</h3>
+<p>💡 <b>القصة:</b> ابن إبراهيم، ساعده في بناء الكعبة، دعا للعبادة والتوحيد.<br>
+<b>التشريع:</b> الصلاة والزكاة، التوحيد.<br>
+<b>القوم:</b> العرب.<br>
+<i>Son of Abraham, helped build the Kaaba, called to worship Allah. Commanded prayer, almsgiving. People: Arabs.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet10">
+<h3>إسحاق (Isaac)</h3>
+<p>💡 <b>القصة:</b> ابن إبراهيم، أب يعقوب، دعا للتوحيد، واصل رسالة أبيه.<br>
+<b>التشريع:</b> التوحيد، التربية الصالحة.<br>
+<b>القوم:</b> بني إسرائيل.<br>
+<i>Son of Abraham, father of Jacob, continued his father's message, called to worship Allah alone. People: Israelites.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet11">
+<h3>يعقوب (Jacob)</h3>
+<p>💡 <b>القصة:</b> ابن إسحاق، أب بني إسرائيل، دعاهم لعبادة الله.<br>
+<b>التشريع:</b> التوحيد، تعليم الأبناء.<br>
+<b>القوم:</b> بني إسرائيل.<br>
+<i>Son of Isaac, father of the Children of Israel, called them to worship Allah alone. People: Israelites.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet12">
+<h3>يوسف (Joseph)</h3>
+<p>💡 <b>القصة:</b> ابن يعقوب، بيع كعبد وأصبح وزيرًا في مصر، صبر على المحن.<br>
+<b>التشريع:</b> التوحيد والإحسان، الصبر على البلاء.<br>
+<b>القوم:</b> بني إسرائيل.<br>
+<i>Son of Jacob, sold as a slave then became minister in Egypt, exemplified patience. Commanded worship and righteousness. People: Israelites.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet13">
+<h3>أيوب (Job)</h3>
+<p>💡 <b>القصة:</b> صبر على الابتلاءات العظيمة وفقد ماله وعائلته وصحته، وعوضه الله.<br>
+<b>التشريع:</b> الصبر والشكر، الثقة بالله.<br>
+<b>القوم:</b> قومه.<br>
+<i>Endured great trials, lost wealth, family, and health, and was rewarded. Commanded patience and gratitude. People: his people.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet14">
+<h3>ذو الكفل (Dhul-Kifl)</h3>
+<p>💡 <b>القصة:</b> نبي معروف بالعدل والصبر، دعا قومه لعبادة الله، كان مثالاً للإخلاص والتحمل.<br>
+<b>التشريع:</b> التوحيد، العدل، الصبر.<br>
+<b>القوم:</b> قومه.<br>
+<i>Prophet known for justice and patience, called his people to worship Allah, exemplified devotion and endurance. Commanded monotheism, justice, and patience. People: his people.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet15">
+<h3>يونس (Jonah)</h3>
+<p>💡 <b>القصة:</b> أرسل إلى قوم نينوى، ابتلعه الحوت بعد هجرانه لقومه ثم تاب ونجا، عاد لدعوته وصبر على الصعاب.<br>
+<b>التشريع:</b> التوبة، الصبر، الرجوع إلى الله.<br>
+<b>القوم:</b> قوم نينوى.<br>
+<i>Sent to the people of Nineveh, swallowed by a whale after leaving his people, repented and survived, returned to his mission. Commanded repentance, patience, and returning to Allah. People: Nineveh.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet16">
+<h3>موسى (Moses)</h3>
+<p>💡 <b>القصة:</b> أرسل لبني إسرائيل، كلم الله على الطور، أنزل التوراة، أخرج بني إسرائيل من مصر، واجه فرعون وجنوده.<br>
+<b>التشريع:</b> التوراة، الصلاة، الصوم، القوانين، العدالة.<br>
+<b>القوم:</b> بني إسرائيل.<br>
+<i>Sent to the Children of Israel, spoke to Allah on Mount Sinai, given the Torah, led Israelites out of Egypt, confronted Pharaoh. Commanded Torah, worship, fasting, laws, and justice. People: Israelites.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet17">
+<h3>هارون (Aaron)</h3>
+<p>💡 <b>القصة:</b> أخو موسى، ناصر رسالته، ساعده في الدعوة وتثبيت قلوب الناس.<br>
+<b>التشريع:</b> دعم الدعوة، التعليم، العدالة.<br>
+<b>القوم:</b> بني إسرائيل.<br>
+<i>Brother of Moses, supported his message, helped in calling people to Allah and stabilizing hearts. Commanded support for guidance, teaching, and justice. People: Israelites.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet18">
+<h3>داوود (David)</h3>
+<p>💡 <b>القصة:</b> ملك ونبي، أنزل الله عليه الزبور، عرف بالحكمة والشجاعة، حكم بالعدل.<br>
+<b>التشريع:</b> الزبور، الصلاة، الصدق، العدل.<br>
+<b>القوم:</b> بني إسرائيل.<br>
+<i>King and Prophet, given the Psalms, known for wisdom and courage, ruled with justice. Commanded Psalms, prayer, truthfulness, and justice. People: Israelites.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet19">
+<h3>سليمان (Solomon)</h3>
+<p>💡 <b>القصة:</b> ابن داوود، نبي وملك، آتاه الله حكمة عظيمة وسلطان على الجن والطير.<br>
+<b>التشريع:</b> الحكمة، العدالة، الحكم بالمعرفة.<br>
+<b>القوم:</b> بني إسرائيل.<br>
+<i>Son of David, Prophet and King, granted great wisdom and control over jinn and birds. Commanded wisdom, justice, and governance by knowledge. People: Israelites.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet20">
+<h3>زكريا (Zechariah)</h3>
+<p>💡 <b>القصة:</b> دعا قومه لعبادة الله، والد يحيى، معروف بالصبر والدعاء.<br>
+<b>التشريع:</b> التوحيد، الصبر، الدعاء.<br>
+<b>القوم:</b> بني إسرائيل.<br>
+<i>Prophet who called his people to worship Allah, father of John, known for patience and prayer. Commanded monotheism, patience, and supplication. People: Israelites.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet21">
+<h3>يحيى (John)</h3>
+<p>💡 <b>القصة:</b> أيد بالروح القدس، دعا للبر والتقوى، معروف بالزهد والتقوى.<br>
+<b>التشريع:</b> التوحيد، الأخلاق، التقوى.<br>
+<b>القوم:</b> بني إسرائيل.<br>
+<i>Supported by the Holy Spirit, called for righteousness and piety, known for asceticism and devotion. Commanded monotheism, ethics, and piety. People: Israelites.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet22">
+<h3>عيسى (Jesus)</h3>
+<p>💡 <b>القصة:</b> ابن مريم، أيد بالروح القدس، جاء بالإنجيل، أجرى المعجزات، دعا للتوحيد والأخلاق.<br>
+<b>التشريع:</b> الإنجيل، الصلاة، الصيام، الأخلاق، الرحمة.<br>
+<b>القوم:</b> بني إسرائيل.<br>
+<i>Son of Mary, supported by the Holy Spirit, brought the Gospel, performed miracles, called to monotheism and ethics. Commanded Gospel, prayer, fasting, morality, and compassion. People: Israelites.</i></p>
+</div>
+
+<div class="prophet-detail" id="prophet23">
+<h3>محمد ﷺ (Muhammad)</h3>
+<p>💡 <b>القصة:</b> خاتم الأنبياء، أرسل لجميع البشر، أنزل الله عليه القرآن، أسس مجتمعاً عادلًا، جاهد لنشر الحق.<br>
+<b>التشريع:</b> القرآن، الصلاة، الزكاة، الصيام، الحج، الأخلاق، العدل، الدعوة لجميع البشر.<br>
+<b>القوم:</b> جميع البشر.<br>
+<i>Seal of the Prophets, sent to all humanity, Quran revealed to him, established a just society, strove to spread the truth. Commanded Quran, prayer, almsgiving, fasting, Hajj, ethics, justice, and universal guidance. People: all humans.</i></p>
+</div>
+
+<button class="closeBtn" onclick="closeProphets()">إغلاق ✖</button>
+</div>
+
+<script> 
+const btn = document.getElementById('prophetsBtn');
+const box = document.getElementById('prophetsBox');
+btn.addEventListener('click', ()=>{ box.style.display = (box.style.display==='block')?'none':'block'; });
+function closeProphets(){ box.style.display='none'; }
+
+const items = document.querySelectorAll('#prophetsBox ul li');
+const details = document.querySelectorAll('.prophet-detail');
+items.forEach(item => {
+    item.addEventListener('click', ()=>{
+        details.forEach(d=>d.classList.remove('active'));
+        const id = item.getAttribute('data-id');
+        document.getElementById(id).classList.add('active');
+    });
+});
+</script>
+
+</body>
+</html>
+
+  <button class="next-btn" onclick="goPage('page3')">📚 الانتقال لصفحة الثالثة</button>
+</div>
+
+<!-- ====================== الصفحة الثالثة ======================= -->
+<div id="page3" class="page">
+
+<!-- ✅ كود خلفيات فيديو مستقلة -->
+<div id="backgroundVideoIndependent">
+  <iframe id="bgVid0" src="https://www.youtube.com/embed/3E20r534TjU?autoplay=1&mute=1&controls=0&loop=1&playlist=3E20r534TjU&modestbranding=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  <iframe id="bgVid1" src="https://www.youtube.com/embed/843Rpqza_6o?autoplay=1&mute=1&controls=0&loop=1&playlist=843Rpqza_6o&modestbranding=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  <iframe id="bgVid2" src="https://www.youtube.com/embed/yLuEx-XH3Uc?autoplay=1&mute=1&controls=0&loop=1&playlist=yLuEx-XH3Uc&modestbranding=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  <iframe id="bgVid3" src="https://www.youtube.com/embed/r6wtfX5vk6A?autoplay=1&mute=1&controls=0&loop=1&playlist=r6wtfX5vk6A&modestbranding=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  <iframe id="bgVid4" src="https://www.youtube.com/embed/WPX2SniBqDU?autoplay=1&mute=1&controls=0&loop=1&playlist=WPX2SniBqDU&modestbranding=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
+
+<div id="backgroundControlsIndependent">
+  <button id="bgChangeBtn">🎬 تغيير الخلفية</button>
+  <button id="bgSoundBtn">🔊 تشغيل الصوت</button>
+</div>
+
+<style>
+  /* 🌌 تنسيق الخلفيات */
+  #backgroundVideoIndependent {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -9999; /* خلف كل العناصر */
+    pointer-events: none;
+  }
+
+  #backgroundVideoIndependent iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120%;
+    height: 120%;
+    transform: translate(-50%, -50%);
+    border: none;
+    display: none;
+  }
+
+  /* 🎛️ أزرار التحكم */
+  #backgroundControlsIndependent {
+    position: fixed;
+    bottom: 630px;
+    left: 120px;
+    display: flex;
+    gap: 10px;
+    z-index: 99999; /* فوق كل شيء */
+  }
+
+  #backgroundControlsIndependent button {
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.85);
+    transition: 0.3s;
+  }
+
+  #backgroundControlsIndependent button:hover {
+    background: rgba(0, 255, 255, 0.8);
+  }
+</style>
+
+<script>
+(function(){
+  // 🎥 جمع الفيديوهات
+  const vids = [
+    document.getElementById('bgVid0'),
+    document.getElementById('bgVid1'),
+    document.getElementById('bgVid2'),
+    document.getElementById('bgVid3'),
+    document.getElementById('bgVid4')
+  ];
+  let current = 0;
+  let muted = true;
+
+  // عرض أول فيديو
+  vids[current].style.display = 'block';
+
+  // 🎬 زر تغيير الخلفية
+  document.getElementById('bgChangeBtn').addEventListener('click', () => {
+    vids[current].style.display = 'none';
+    current = (current + 1) % vids.length;
+    vids[current].style.display = 'block';
+    vids[current].src = vids[current].src.replace(/mute=\d/, 'mute=' + (muted ? '1' : '0'));
+  });
+
+  // 🔊 زر الصوت
+  document.getElementById('bgSoundBtn').addEventListener('click', () => {
+    muted = !muted;
+    document.getElementById('bgSoundBtn').textContent = muted ? "🔊 تشغيل الصوت" : "🔈 إيقاف الصوت";
+    vids[current].src = vids[current].src.replace(/mute=\d/, 'mute=' + (muted ? '1' : '0'));
+  });
+})();
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  try {
+    // أيقونات مهمة تبقى فوق الخلفية
+    const importantSelectors = [
+      '#mainGamesIcon',
+      '#emeraldIcon',
+      '#hideBtn',
+      '.floatingIcon',
+      '#customVideoIcon',     // 🎥 أيقونة الفيديو
+      '#hideIconBtn',         // ❌ زر الإخفاء
+      '#showIconBtn',         // 🔄 زر الإظهار
+      '#customVideoPopup',    // 📺 الإطار المنبثق
+      '#customCloseBtn'       // زر الإغلاق داخل الإطار
+    ];
+
+    importantSelectors.forEach(sel => {
+      document.querySelectorAll(sel).forEach(el => {
+        el.style.position = 'fixed';
+        el.style.zIndex = '2500';  // فوق الخلفية وأي عناصر أخرى
+        el.style.pointerEvents = 'auto';
+        el.style.opacity = '1';
+        el.style.visibility = 'visible';
+      });
+    });
+
+    // تصحيح طبقة الخلفية
+    const bg = document.querySelector('#backgroundVideoIndependent, #backgroundLayer');
+    if (bg) {
+      bg.style.zIndex = '-1';
+      bg.style.pointerEvents = 'none';
+    }
+
+    console.log("🎬 تم تصحيح ظهور أيقونة الفيديو والنافذة المنبثقة بنجاح");
+  } catch (err) {
+    console.warn("⚠️ لم يتم تنفيذ كود تصحيح الفيديو:", err);
+  }
+});
+</script>
+<script>
+  // مثلاً: ضع العرض الذي تريده هنا (px) — غيّر 1200 إلى مقاسك المطلوب
+  const forcedWidth = 1200;
+
+  // نحاول العثور على وسم meta الموجود وتعديله أو إنشاؤه إن لم يكن
+  let mv = document.querySelector('meta[name="viewport"]');
+  if (!mv) {
+    mv = document.createElement('meta');
+    mv.name = 'viewport';
+    document.head.appendChild(mv);
+  }
+  mv.content = `width=${forcedWidth}, initial-scale=1`;
+</script>
+  <button class="back3" onclick="goPage('page2')">⬅️ رجوع</button>
+
+  <h1>
+      <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tiger Icon Popup – abwalqmrzmrd</title>
+
+<style> {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  font-family: "Tajawal", sans-serif;
+}
+
+/* ===== أيقونة النمر المشعة ===== */
+#tigerIcon {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #ffb200;
+  box-shadow: 0 0 25px #ffb200, 0 0 55px #ff8800, 0 0 85px #ff5500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  text-align: center;
+  font-size: 60px;
+  animation: pulse 1.6s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 20px #ff9900, 0 0 40px #ff5500; }
+  50% { box-shadow: 0 0 50px #ffcc00, 0 0 90px #ff7700; }
+  100% { box-shadow: 0 0 20px #ff9900, 0 0 40px #ff5500; }
+}
+
+/* ===== نافذة الصورة ===== */
+#popup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(4px);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* محتوى النافذة */
+#popupContent {
+  position: relative;
+  text-align: center;
+}
+
+#popup img {
+  width: 90%;
+  max-width: 650px;
+  border-radius: 20px;
+  box-shadow: 0 0 40px #ffb200, 0 0 80px #ff7700;
+}
+
+/* زر الإغلاق */
+#closeBtn {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  background: #ffb200;
+  color: #000;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 0 20px #ff8800;
+}
+</style>
+</head>
+<body>
+<script>
+class JokeBar extends HTMLElement {
+  constructor() {
+    super();
+    const shadow = this.attachShadow({ mode: "open" });
+
+    shadow.innerHTML = `
+      <style>
+        .box {
+          position: fixed;
+          top: 610px;
+          left: 892px;
+          transform: translateX(-50%);
+          width: 65%;
+          max-width: 800px;
+          padding: 6px 8px;
+          background: rgba(0,0,0,0.55);
+          border-radius: 14px;
+          border: 1px solid #00ffe5;
+          box-shadow: 0 0 10px #00ffe5, inset 0 0 10px #00ffe5;
+          color: #fff;
+          font-family: "Tajawal", sans-serif;
+          overflow: hidden;
+          backdrop-filter: blur(4px);
+          z-index: 999999999999;
+        }
+
+        /* العربي يبدأ من اليسار ويتجه لليمين */
+        #ar {
+          font-size: 20px;
+          font-weight: bold;
+          white-space: nowrap;
+          margin-bottom: 3px;
+          direction: ltr;
+          text-align: left;
+          animation: slideAR 22s linear infinite;
+        }
+
+        /* الإنجليزي يبدأ من اليمين ويتجه لليسار */
+        #en {
+          font-size: 16px;
+          color: #00ffe5;
+          white-space: nowrap;
+          direction: rtl;
+          text-align: right;
+          animation: slideEN 22s linear infinite;
+        }
+
+        /* حركة العربي: من يسار → يمين */
+        @keyframes slideAR {
+          0% { transform: translateX(-120%); }
+          100% { transform: translateX(120%); }
+        }
+
+        /* حركة الإنجليزي: من يمين → يسار */
+        @keyframes slideEN {
+          0% { transform: translateX(120%); }
+          100% { transform: translateX(-120%); }
+        }
+      </style>
+
+      <div class="box">
+        <div id="ar"></div>
+        <div id="en"></div>
+      </div>
+    `;
+
+    this.ar = shadow.querySelector("#ar");
+    this.en = shadow.querySelector("#en");
+  }
+
+  connectedCallback() {
+    const jokes = [
+      ["🤣 واحد سأل: كم عمري؟ قالوا له: افتح المحفظة… إذا فاضية أنت كبير!", "(Someone asked: How old am I? They said: Check your wallet—if it's empty, you're old!)"],
+      ["😂 واحد قال لصديقه: أنا بخير. قال له: غريبة! أول مرة!", "(Someone said: I'm fine. Friend: Weird! First time ever!)"],
+      ["🤣 المدرس: وين دفترك؟ الطالب: ضاع. المدرس: وين عقلك؟ الطالب: راح يدور على الدفتر!", "(Teacher: Where is your notebook? Student: Lost. Teacher: And your brain? Student: Went to search for it!)"],
+      ["😂 رجل يقول لزوجته: شكلك نحفانة! قالت: إيه من همك!", "(Man to wife: You look thinner! Wife: Yes, from stressing over you!)"],
+      ["🤣 واحد مسك ثعبان… الثعبان قال: والله كنت ألعب!", "(A guy grabbed a snake. Snake said: I swear I was just playing!)"],
+      ["😂 قال لأخوه: عطيني ريال. قال: والله لو معي أعطي نفسي!", "(He told his brother: Give me 1 riyal. Brother: If I had any, I'd give myself!)"],
+      ["🤣 واحد راح للطبيب. الطبيب: وش تحس؟ قال: أحس الدنيا دوامه… الطبيب: افصل المكيف!", "(Guy goes to doctor. Doctor: What do you feel? Guy: The world is spinning… Doctor: Turn off the fan!)"],
+      ["😂 واحد كل ما ياكل يتعب… اكتشفوا إنه يأكل ديون!", "(Every time someone eats he gets tired… turns out he's eating debts!)"],
+      ["🤣 رجل اشترى ساعة… كل ما يطالع فيها يتأخر!", "(Man bought a watch… every time he looks at it he’s late!)"],
+      ["😂 واحد نام بدري… صاحوا الناس: أكيد بطارية جسمه خربانة!", "(Someone slept early… people said: His body battery must be broken!)"],
+      ["🤣 واحد يقول: ما أزعل… بس أنقهر!", "(Someone says: I don’t get angry… I just get deeply upset!)"],
+      ["😂 واحد سأل: ليه ما نتفق؟ قال: لأنك غلط وأنا صح!", "(Someone asked: Why can’t we agree? Answer: Because I'm right and you're wrong!)"],
+      ["🤣 واحد انسرقت فلوسه… قال: الحمد لله بقيت الديون!", "(Someone got robbed… said: Thank God my debts are still here!)"],
+      ["😂 قال أبوالقمر زمرد: المزح بخير… بس الناس اللي يزعلون بسرعة هم المشكلة!", "(Abu Al-Qamar said: Jokes are fine… people who get offended quickly are the problem!)"]
+    ];
+
+    let index = 0;
+
+    const change = () => {
+      this.ar.textContent = jokes[index][0];
+      this.en.textContent = jokes[index][1];
+
+      this.ar.style.animation = "none";
+      this.en.style.animation = "none";
+      void this.ar.offsetWidth;
+
+      this.ar.style.animation = "slideAR 22s linear infinite";
+      this.en.style.animation = "slideEN 22s linear infinite";
+
+      index = (index + 1) % jokes.length;
+    };
+
+    change();
+    setInterval(change, 22000);
+  }
+}
+
+customElements.define("joke-bar", JokeBar);
+</script>
+
+<joke-bar></joke-bar>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>Emerald Music – Abwalqmrzmrd</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<style>
+{
+  margin:0;
+  background:#000;
+  font-family:"Tajawal",sans-serif;
+  color:#fff;
+  overflow:hidden;
+}
+
+/* زر فتح */
+#emz-open-btn{
+  position:fixed;
+  bottom:570px;
+  right:75px;
+  width:75px;
+  height:75px;
+  border-radius:50%;
+  background:rgba(255,255,255,.08);
+  border:2px solid rgba(255,255,255,.25);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:26px;
+  cursor:pointer;
+  backdrop-filter:blur(6px);
+  transition:.25s;
+  z-index:999999;
+}
+#emz-open-btn:hover{
+  background:rgba(0,255,213,.15);
+  border-color:#00ffd5;
+  box-shadow:0 0 12px #00ffd5;
+  transform:scale(1.08);
+}
+
+/* نافذة */
+.emz-modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.75);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  backdrop-filter:blur(6px);
+}
+.emz-box{
+  width:min(900px,95vw);
+  max-height:95vh;
+  overflow:auto;
+  background:#050a10;
+  border:1px solid #00ffd5;
+  border-radius:16px;
+  padding:18px;
+  box-shadow:0 0 22px #00ffd580;
+  position:relative;
+}
+.emz-close{
+  position:absolute;
+  top:10px;
+  right:15px;
+  font-size:26px;
+  cursor:pointer;
+  color:#00ffd5;
+  z-index:50; /* ضمان الظهور فوق الشريط */
+}
+
+/* أزرار عامة */
+.emz-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  justify-content:center;
+  margin:12px 0;
+}
+.emz-btn{
+  padding:6px 12px;
+  border-radius:999px;
+  background:#0b141c;
+  border:1px solid #00ffd540;
+  color:#ddffff;
+  cursor:pointer;
+  transition:.2s;
+  font-size:12px;
+}
+.emz-btn.active{
+  background:#00ffd5;
+  color:#000;
+  box-shadow:0 0 10px #00ffd5;
+}
+
+/* صندوق الاشتراك */
+.emz-sub-box{
+  background:#00151a;
+  border:1px solid #00ffd5;
+  border-radius:12px;
+  padding:14px;
+  text-align:center;
+}
+
+/* شريط الدفع أعلى العزف */
+.emz-paybar{
+  position:sticky;
+  top:0;
+  z-index:20;
+  padding:8px 10px;
+  margin:-6px -6px 8px -6px;
+  border-radius:10px;
+  background:linear-gradient(90deg,#d4af37,#00ffd5,#d4af37);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  font-size:12px;
+  color:#000;
+}
+.emz-paybar span{
+  font-weight:bold;
+  text-shadow:0 0 6px rgba(255,255,255,.7);
+}
+.emz-pay-link{
+  background:#ffc439;
+  border:none;
+  border-radius:999px;
+  padding:6px 10px;
+  font-size:12px;
+  cursor:pointer;
+  font-weight:bold;
+}
+.emz-lang-toggle{
+  background:rgba(0,0,0,.25);
+  color:#000;
+  border:1px solid rgba(0,0,0,.4);
+  border-radius:999px;
+  padding:4px 10px;
+  cursor:pointer;
+  font-size:11px;
+}
+
+/* لوحة المفاتيح */
+.emz-keyboard{
+  margin-top:12px;
+  background:#000;
+  border-radius:14px;
+  padding:10px;
+  overflow-x:auto;
+  white-space:nowrap;
+  position:relative;
+  z-index:999999999 !important;
+  box-shadow:0 0 15px #00ffd5;
+}
+.emz-white{
+  width:48px;
+  height:170px;
+  display:inline-flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  align-items:center;
+  margin:1px;
+  background:linear-gradient(#fff,#ccc);
+  cursor:pointer;
+  border-radius:0 0 10px 10px;
+  padding-bottom:6px;
+}
+.emz-white.active{
+  background:#bfffff;
+  transform:translateY(3px);
+  box-shadow:0 0 12px #00ffd5;
+}
+.note-label{
+  font-size:10px;
+  color:#000;
+  margin-bottom:3px;
+}
+
+/* نافذة النوتات */
+.notes-modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  justify-content:center;
+  align-items:center;
+}
+.notes-box{
+  width:350px;
+  max-height:80vh;
+  background:#021218;
+  border:1px solid #00ffd5;
+  border-radius:12px;
+  padding:14px;
+  box-shadow:0 0 22px #00ffd5;
+  overflow:auto;
+  position:relative;
+}
+.notes-close{
+  position:absolute;
+  top:6px;
+  right:8px;
+  cursor:pointer;
+  font-size:18px;
+  color:#00ffd5;
+}
+.notes-box h3{
+  text-align:center;
+  margin-top:0;
+  margin-bottom:10px;
+  color:#ccffff;
+}
+.notes-box h4{
+  margin:10px 0 4px;
+  color:#ffd580;
+}
+.notes-box ul{
+  padding-left:18px;
+}
+.notes-box li{
+  margin-bottom:2px;
+  font-size:13px;
+}
+
+/* نصوص أسفل */
+.emz-credit{
+  text-align:center;
+  margin-top:15px;
+  font-size:14px;
+  color:#00ffd5;
+  text-shadow:0 0 12px #00ffd5;
+}
+.emz-rec-note{
+  text-align:center;
+  font-size:11px;
+  opacity:.75;
+  margin-top:-4px;
+}
+</style>
+</head>
+<body>
+
+<!-- زر فتح -->
+<div id="emz-open-btn">🎹🎻</div>
+
+<script>
+/* نظام الاشتراك */
+const ONE_MONTH = 2592000000;
+const TRIAL_MS  = 7*60*60*1000;
+function getCookieInt(n){
+  const m=document.cookie.match(new RegExp(n+"=(\\d+)"));
+  return m?parseInt(m[1]):0;
+}
+function isPaid(){return Date.now()<getCookieInt("paid_until");}
+function hasTrial(){return Date.now()<getCookieInt("trial_until");}
+function activate(){
+  document.cookie="paid_until="+(Date.now()+ONE_MONTH)+"; path=/; max-age=31536000";
+}
+function startTrial(){
+  document.cookie="trial_until="+(Date.now()+TRIAL_MS)+"; path=/; max-age=604800";
+}
+
+/* مسارات الصوت */
+const baseUrl={
+  piano :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_grand_piano-mp3/",
+  qanun :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/dulcimer-mp3/",
+  oud   :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_guitar_nylon-mp3/",
+  violin:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/violin-mp3/",
+  sax   :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/alto_sax-mp3/",
+  nay   :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/flute-mp3/",
+  drums :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/standard_kit-mp3/",
+  choir :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/choir_aahs-mp3/"
+};
+
+let globalVolume=1;
+let currentInstrument="piano";
+let mixInstrument="none";
+const sustainInst=["violin","sax","nay","choir"];
+
+/* تشغيل صوت واحد (مع التحكم في الحجم) */
+function playRaw(note,inst,loop=false,vol=1){
+  const a=new Audio(baseUrl[inst]+note+".mp3");
+  a.loop=loop;
+  a.volume=vol*globalVolume;
+  a.play().catch(()=>{});
+  return a;
+}
+
+/* فتح نافذة العزف */
+document.getElementById("emz-open-btn").onclick=()=>{
+  if(document.getElementById("emz-panel"))return;
+
+  const host=document.createElement("div");
+  host.id="emz-panel";
+  host.innerHTML=`
+<div class="emz-modal">
+  <div class="emz-box">
+    <div class="emz-close">✖</div>
+
+    <div id="sub-area" class="emz-sub-box">
+      <h3>اشتراك العزف – Playing Subscription (1 USD)</h3>
+      <p style="font-size:12px;opacity:.85;">
+        افتح كل الآلات الموسيقية مع الدمج والتسجيل مقابل 1 دولار فقط لكل 30 يوم.<br>
+        Unlock full playing, mixing & recording for only 1 USD / 30 days.
+      </p>
+      <div class="emz-row">
+        <button class="emz-btn" id="preview-btn">معاينة مجانية 7 ساعات – 7h Free Preview</button>
+        <button class="emz-btn" id="pay-btn" style="background:#ffc439;color:#000;">الدفع عبر PayPal – Pay with PayPal</button>
+      </div>
+      <p style="font-size:11px;opacity:.8;">
+        يمكنك تفعيل الاشتراك مباشرة عند الضغط على الدفع، ويمكنك الدفع الآن أو لاحقًا حسب الإمكانية.<br>
+        If you cannot pay now, you may try again whenever possible.
+      </p>
+    </div>
+
+    <div id="play-area" style="display:none;">
+
+      <!-- شريط الدفع -->
+      <div class="emz-paybar">
+        <span id="pay-msg">💰 لم تقم بالدفع بعد؟ يمكنك الدفع من هنا</span>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <button class="emz-pay-link" id="pay-top">💰 الدفع الآن | Pay Now</button>
+          <button class="emz-lang-toggle" id="lang-toggle">EN</button>
+        </div>
+      </div>
+
+      <!-- الآلات الرئيسية -->
+      <div class="emz-row">
+        <button class="emz-btn emz-main" data-mode="piano">🎹 Piano</button>
+        <button class="emz-btn emz-main" data-mode="oud">🪕 Oud</button>
+        <button class="emz-btn emz-main" data-mode="qanun">🎼 Qanun</button>
+        <button class="emz-btn emz-main" data-mode="violin">🎻 Violin</button>
+        <button class="emz-btn emz-main" data-mode="sax">🎷 Sax</button>
+        <button class="emz-btn emz-main" data-mode="nay">🎵 Nay</button>
+        <button class="emz-btn emz-main" data-mode="drums">🥁 Drums</button>
+        <button class="emz-btn emz-main" data-mode="choir">🎤 Choir</button>
+        <button class="emz-btn" id="notes-btn">🎼 النوتات / Notes</button>
+      </div>
+
+      <!-- الدمج -->
+      <div class="emz-row">
+        <button class="emz-btn emz-mix active" data-mix="none">❌ No Mix</button>
+        <button class="emz-btn emz-mix" data-mix="piano">🎹 Piano</button>
+        <button class="emz-btn emz-mix" data-mix="oud">🪕 Oud</button>
+        <button class="emz-btn emz-mix" data-mix="qanun">🎼 Qanun</button>
+        <button class="emz-btn emz-mix" data-mix="violin">🎻 Violin</button>
+        <button class="emz-btn emz-mix" data-mix="sax">🎷 Sax</button>
+        <button class="emz-btn emz-mix" data-mix="nay">🎵 Nay</button>
+        <button class="emz-btn emz-mix" data-mix="drums">🥁 Drums</button>
+        <button class="emz-btn emz-mix" data-mix="choir">🎤 Choir</button>
+      </div>
+
+      <!-- التسجيل -->
+      <div class="emz-row">
+        <button class="emz-btn" id="rec-start">⏺ تسجيل / Record</button>
+        <button class="emz-btn" id="rec-stop" disabled>⏹ إيقاف وحفظ / Stop & Save</button>
+      </div>
+      <div class="emz-rec-note">
+        التسجيل من الميكروفون (صوتك + صوت العزف من السماعات) في ملف واحد.<br>
+        Recording uses your microphone (your voice + instrument playback) into one file.
+      </div>
+
+      <!-- مستوى الصوت -->
+      <div class="emz-row">
+        <span style="font-size:12px;opacity:.85;">🔊 مستوى الصوت / Volume:</span>
+        <input id="vol-slider" type="range" min="0" max="100" value="100" style="width:160px;">
+      </div>
+
+      <!-- عزف تلقائي -->
+      <div class="emz-row">
+        <button class="emz-btn" id="demo-hbd">▶️ عيد ميلاد / Happy Birthday</button>
+        <button class="emz-btn" id="demo-ode">▶️ Ode to Joy</button>
+        <button class="emz-btn" id="demo-scale">▶️ استمع للسلم الموسيقي / Listen to Scale</button>
+        <button class="emz-btn" id="demo-stop">⏹ إيقاف التلقائي / Stop Auto</button>
+      </div>
+
+      <div class="emz-keyboard" id="keys"></div>
+
+      <div class="emz-credit">
+        ✨ إعداد وتصميم وإنتاج أبوالقمر زمرد × ChatGPT ✨
+      </div>
+
+      <!-- نافذة النوتات -->
+      <div id="notes-modal" class="notes-modal">
+        <div class="notes-box">
+          <div class="notes-close">✖</div>
+          <h3>🎼 النوتات الموسيقية – Musical Notes</h3>
+
+          <h4>🎂 عيد ميلاد سعيد – Happy Birthday</h4>
+          <p>
+          عربي:<br>
+          دو دو ري دو فا مي<br>
+          دو دو ري دو صول فا<br>
+          دو دو دو لا فا مي ري<br>
+          سي♭ سي♭ لا فا صول فا<br><br>
+          English:<br>
+          C C D C F E<br>
+          C C D C G F<br>
+          C C C A F E D<br>
+          Bb Bb A F G F
+          </p>
+
+          <h4>🎵 Beethoven – Ode to Joy</h4>
+          <p>
+          Arabic label (اسم النغمة فقط):<br>
+          مي مي فا صول صول فا مي ري – دو دو ري مي مي ري ري<br><br>
+          English (notes):<br>
+          E E F G G F E D<br>
+          C C D E E D D
+          </p>
+
+          <h4>🎵 السلم الموسيقي – Musical Scale (C3 → C6)</h4>
+          <p>من C3 حتى C6 – From C3 up to C6:</p>
+          <ul>
+            <li>C3 – دو – C</li>
+            <li>D3 – ري – D</li>
+            <li>E3 – مي – E</li>
+            <li>F3 – فا – F</li>
+            <li>G3 – صول – G</li>
+            <li>A3 – لا – A</li>
+            <li>B3 – سي – B</li>
+            <li>C4 – دو – C</li>
+            <li>D4 – ري – D</li>
+            <li>E4 – مي – E</li>
+            <li>F4 – فا – F</li>
+            <li>G4 – صول – G</li>
+            <li>A4 – لا – A</li>
+            <li>B4 – سي – B</li>
+            <li>C5 – دو – C</li>
+            <li>D5 – ري – D</li>
+            <li>E5 – مي – E</li>
+            <li>F5 – فا – F</li>
+            <li>G5 – صول – G</li>
+            <li>A5 – لا – A</li>
+            <li>B5 – سي – B</li>
+            <li>C6 – دو – C</li>
+          </ul>
+          <p style="font-size:11px;opacity:.8;">
+            يمكنك الاستماع للسلم كاملاً من زر "استمع للسلم الموسيقي" في لوحة العزف.<br>
+            You can listen to the full scale from the "Listen to Scale" button in the main panel.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>`;
+  document.body.appendChild(host);
+
+  /* عناصر أساسية */
+  const closeBtn   = host.querySelector(".emz-close");
+  const subArea    = host.querySelector("#sub-area");
+  const playArea   = host.querySelector("#play-area");
+  const previewBtn = host.querySelector("#preview-btn");
+  const payBtn     = host.querySelector("#pay-btn");
+  const notesBtn   = host.querySelector("#notes-btn");
+  const notesModal = host.querySelector("#notes-modal");
+  const notesClose = host.querySelector(".notes-close");
+  const recStart   = host.querySelector("#rec-start");
+  const recStop    = host.querySelector("#rec-stop");
+  const volSlider  = host.querySelector("#vol-slider");
+  const demoHbd    = host.querySelector("#demo-hbd");
+  const demoOde    = host.querySelector("#demo-ode");
+  const demoScale  = host.querySelector("#demo-scale");
+  const demoStop   = host.querySelector("#demo-stop");
+  const payTop     = host.querySelector("#pay-top");
+  const payMsg     = host.querySelector("#pay-msg");
+  const langToggle = host.querySelector("#lang-toggle");
+
+  /* اللغة */
+  let currentLang="ar";
+  function setLang(lang){
+    currentLang=lang;
+    if(lang==="ar"){
+      payMsg.textContent="💰 لم تقم بالدفع بعد؟ يمكنك الدفع من هنا";
+      langToggle.textContent="EN";
+    }else{
+      payMsg.textContent="💰 Haven't paid yet? You can pay from here";
+      langToggle.textContent="AR";
+    }
+  }
+  langToggle.onclick=()=>setLang(currentLang==="ar"?"en":"ar");
+  setLang("ar");
+
+  /* عرض/إخفاء الاشتراك */
+  function refresh(){
+    if(isPaid()||hasTrial()){
+      subArea.style.display="none";
+      playArea.style.display="block";
+    }else{
+      subArea.style.display="block";
+      playArea.style.display="none";
+    }
+  }
+  refresh();
+
+  previewBtn.onclick=()=>{
+    startTrial();
+    refresh();
+    alert("تم تفعيل المعاينة المجانية لمدة 7 ساعات على هذا الجهاز والمتصفح.\n7h free preview activated on this device/browser.");
+  };
+
+  function openPay(){
+    window.open("https://www.paypal.com/paypalme/abwalqmrzmrd/1","_blank");
+  }
+
+  payBtn.onclick=()=>{
+    openPay();
+    activate();
+    refresh();
+    alert("تم تفعيل الاشتراك لمدة 30 يوم على هذا الجهاز والمتصفح.\n30-day subscription activated on this device/browser.");
+  };
+  payTop.onclick=openPay;
+
+  /* إغلاق النافذة */
+  closeBtn.onclick=()=>{
+    stopMelody();
+    host.remove();
+  };
+
+  /* النوتات */
+  notesBtn.onclick=()=>{notesModal.style.display="flex";};
+  notesClose.onclick=()=>{notesModal.style.display="none";};
+
+  /* مستوى الصوت */
+  volSlider.oninput=()=>{globalVolume=volSlider.value/100;};
+
+  /* اختيار الآلة الرئيسية */
+  host.querySelectorAll(".emz-main").forEach(b=>{
+    b.onclick=()=>{
+      host.querySelectorAll(".emz-main").forEach(x=>x.classList.remove("active"));
+      b.classList.add("active");
+      currentInstrument=b.dataset.mode;
+    };
+  });
+
+  /* اختيار آلة الدمج */
+  host.querySelectorAll(".emz-mix").forEach(b=>{
+    b.onclick=()=>{
+      host.querySelectorAll(".emz-mix").forEach(x=>x.classList.remove("active"));
+      b.classList.add("active");
+      mixInstrument=b.dataset.mix;
+    };
+  });
+
+  /* التسجيل بالمايك */
+  let mediaRecorder=null;
+  let recChunks=[];
+  async function startRecording(){
+    try{
+      const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+      mediaRecorder=new MediaRecorder(stream);
+      recChunks=[];
+      mediaRecorder.ondataavailable=e=>{
+        if(e.data.size>0)recChunks.push(e.data);
+      };
+      mediaRecorder.onstop=()=>{
+        const blob=new Blob(recChunks,{type:"audio/webm"});
+        const url=URL.createObjectURL(blob);
+        const a=document.createElement("a");
+        a.href=url;
+        a.download="emerald-music-recording.webm";
+        a.click();
+      };
+      mediaRecorder.start();
+    }catch(e){
+      alert("تعذر الوصول إلى الميكروفون. يرجى السماح للصوت من إعدادات المتصفح.\nMicrophone access denied. Please allow audio in browser settings.");
+    }
+  }
+  function stopRecording(){
+    if(mediaRecorder && mediaRecorder.state!=="inactive"){
+      mediaRecorder.stop();
+    }
+  }
+
+  recStart.onclick=async()=>{
+    recStart.disabled=true;
+    recStop.disabled=false;
+    await startRecording();
+  };
+  recStop.onclick=()=>{
+    recStop.disabled=true;
+    recStart.disabled=false;
+    stopRecording();
+  };
+
+  /* لوحة المفاتيح */
+  const NOTES = [
+    "C3","D3","E3","F3","G3","A3","B3",
+    "C4","D4","E4","F4","G4","A4","B4",
+    "C5","D5","E5","F5","G5","A5","B5",
+    "C6","D6","E6","F6","G6","A6","B6"
+  ];
+  const KEYS = [
+    "Digit1","Digit2","Digit3","Digit4","Digit5","Digit6",
+    "Digit7","Digit8","Digit9","Digit0",
+    "KeyQ","KeyW","KeyE","KeyR","KeyT","KeyY","KeyU","KeyI","KeyO","KeyP",
+    "KeyA","KeyS","KeyD","KeyF","KeyG","KeyH","KeyJ","KeyK","KeyL",
+    "KeyZ","KeyX","KeyC","KeyV","KeyB","KeyN"
+  ];
+
+  const keyRow   = host.querySelector("#keys");
+  const active   = {};
+  const keyByCode= {};
+  const noteMap  = {};
+
+  /* ضغط قصير مع صدى 20% */
+  function shortPress(elem,note){
+    elem.classList.add("active");
+    setTimeout(()=>elem.classList.remove("active"),120);
+
+    playRaw(note,currentInstrument,false,1);
+    if(mixInstrument!=="none"){
+      playRaw(note,mixInstrument,false,1);
+    }
+
+    // صدى خفيف بعد 220ms بنسبة 20%
+    setTimeout(()=>{
+      playRaw(note,currentInstrument,false,0.2);
+      if(mixInstrument!=="none"){
+        playRaw(note,mixInstrument,false,0.2);
+      }
+    },220);
+  }
+
+  /* ضغط طويل للآلات المستمرة */
+  function startLong(elem,code){
+    const note=elem.dataset.note;
+    if(!sustainInst.includes(currentInstrument)){
+      shortPress(elem,note);
+      return;
+    }
+    if(active[code])return;
+
+    elem.classList.add("active");
+    const audios=[];
+    audios.push(playRaw(note,currentInstrument,true,1));
+    if(mixInstrument!=="none" && mixInstrument!==currentInstrument){
+      audios.push(playRaw(note,mixInstrument,true,1));
+    }
+    active[code]={elem,audios};
+  }
+
+  function endLong(code){
+    if(!active[code])return;
+    active[code].audios.forEach(a=>a.pause());
+    active[code].elem.classList.remove("active");
+    delete active[code];
+  }
+
+  /* إنشاء المفاتيح */
+  NOTES.forEach((note,i)=>{
+    const code=KEYS[i];
+    const k=document.createElement("div");
+    k.className="emz-white";
+    k.dataset.note=note;
+    k.dataset.code=code;
+    k.innerHTML=`<div class="note-label">${note}</div>${code.replace("Digit","").replace("Key","")}`;
+    keyRow.appendChild(k);
+    keyByCode[code]=k;
+    noteMap[note]=k;
+
+    k.onmousedown = ()=>startLong(k,code);
+    k.onmouseup   = ()=>endLong(code);
+    k.onmouseleave= ()=>endLong(code);
+    k.onclick     = ()=>shortPress(k,note);
+  });
+
+  /* لوحة المفاتيح الحقيقية */
+  window.addEventListener("keydown",e=>{
+    if(e.repeat)return;
+    const k=keyByCode[e.code];
+    if(k)startLong(k,e.code);
+  });
+  window.addEventListener("keyup",e=>endLong(e.code));
+
+  /* العزف التلقائي */
+  let demoTimer=null;
+  function stopMelody(){
+    if(demoTimer){
+      clearTimeout(demoTimer);
+      demoTimer=null;
+    }
+  }
+  function playMelody(seq,tempo){
+    stopMelody();
+    let i=0;
+    function step(){
+      if(i>=seq.length){demoTimer=null;return;}
+      const n=seq[i++];
+      if(n!=="REST"){
+        const elem=noteMap[n];
+        if(elem) shortPress(elem,n);
+        else{
+          playRaw(n,currentInstrument,false,1);
+          setTimeout(()=>playRaw(n,currentInstrument,false,0.2),220);
+        }
+      }
+      demoTimer=setTimeout(step,tempo);
+    }
+    step();
+  }
+
+  const MELODY_HBD = [
+    "C4","C4","D4","C4","F4","E4",
+    "C4","C4","D4","C4","G4","F4",
+    "C4","C4","C5","A4","F4","E4","D4",
+    "B4","B4","A4","F4","G4","F4"
+  ];
+  const MELODY_ODE = [
+    "E4","E4","F4","G4","G4","F4","E4","D4",
+    "C4","C4","D4","E4","E4","D4","D4"
+  ];
+
+  /* السلم الموسيقي الممتد C3 → C6 */
+  const SCALE_EXTENDED = [
+    "C3","D3","E3","F3","G3","A3","B3",
+    "C4","D4","E4","F4","G4","A4","B4",
+    "C5","D5","E5","F5","G5","A5","B5",
+    "C6"
+  ];
+  const SCALE_TEMPO = 300; // 300ms كما طلبت
+
+  demoHbd.onclick   = ()=>playMelody(MELODY_HBD,350);
+  demoOde.onclick   = ()=>playMelody(MELODY_ODE,350);
+  demoScale.onclick = ()=>playMelody(SCALE_EXTENDED,SCALE_TEMPO);
+  demoStop.onclick  = ()=>stopMelody();
+
+}; // نهاية onclick
+</script>
+
+</body>
+</html>
+
+<!-- ⚖️ توقيع الحقوق -->
+<footer style="
+  position:fixed;bottom:5px;left:50%;
+  transform:translateX(-50%);
+  text-align:center;color:#aaa;
+  font-size:14px;z-index:9000;">
+  جميع الحقوق محفوظة لصفحة <span style="color:#00ffff;">أبو القمر زمرد</span> © 2025
+</footer>
+
+</body>
+</html>
+
+  <div id="page3Content"
+       style="
+        width:88%;
+        margin:20px auto;
+        padding:25px;
+        background:
+        border:1px solid #00ffff77;
+        border-radius:12px;
+        box-shadow:0 0 15px #00ffff77;
+        font-size:20px;
+        text-align:center;
+       ">
+   
+  </div>
+
+</div>
+
+<!-- popup -->
+<div id="popup">
+  <div id="popupBox">
+    <button id="closeBtn" onclick="closePopup()">✖ إغلاق</button>
+    <div id="popupContent"></div>
+  </div>
+</div>
+
+<script>
+function goPage(page){
+  document.querySelectorAll(".page").forEach(p => p.style.display="none");
+  document.getElementById(page).style.display="block";
+}
+
+function openPopup(content){
+  document.getElementById("popupContent").innerHTML = content;
+  document.getElementById("popup").style.display = "block";
+}
+function closePopup(){
+  document.getElementById("popup").style.display = "none";
+}
+</script>
+
+</body>
+</html>
