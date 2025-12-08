@@ -3915,8 +3915,6 @@ document.addEventListener("DOMContentLoaded", () => {
 </style>
 </head>
 <body>
-
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -3924,7 +3922,7 @@ document.addEventListener("DOMContentLoaded", () => {
 <title>Emerald Music – Abwalqmrzmrd</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-   {
+  body{
     margin:0;
     padding:0;
     background:#000;
@@ -3936,8 +3934,8 @@ document.addEventListener("DOMContentLoaded", () => {
 </head>
 <body>
 
-<!-- 🎹 أيقونة البيانو الجديدة -->
-<div id="emz-open-btn"></div>
+<!-- 🎹 أيقونة البيانو الجديدة (داخلها 🎹🎻) -->
+<div id="emz-open-btn">🎹🎻</div>
 
 <script>
 /* ==================== أيقونة البيانو ==================== */
@@ -3952,16 +3950,14 @@ Object.assign(emzIcon.style, {
   background:"rgba(255,255,255,0.08)",
   border:"2px solid rgba(255,255,255,0.25)",
   backdropFilter:"blur(6px)",
-  /* أيقونة بيانو */
-  backgroundImage:"url('https://i.imgur.com/4uM2sQ8.png')",
-  backgroundSize:"65%",
-  backgroundPosition:"center",
-  backgroundRepeat:"no-repeat",
+  display:"flex",
+  alignItems:"center",
+  justifyContent:"center",
+  fontSize:"26px",
   transition:"0.25s",
   cursor:"pointer",
   zIndex:"999999999"
 });
-
 emzIcon.onmouseover = () => {
   emzIcon.style.backgroundColor="rgba(0,255,213,0.15)";
   emzIcon.style.borderColor="#00ffd5";
@@ -3983,25 +3979,18 @@ function getCookieInt(name){
   const m = document.cookie.match(new RegExp(name + "=(\\d+)"));
   return m ? parseInt(m[1]) : 0;
 }
-
 function getPaidUntil(){  return getCookieInt("paid_until");  }
 function getTrialUntil(){ return getCookieInt("trial_until"); }
 
-function isPaid(){
-  return Date.now() < getPaidUntil();
-}
-function hasTrial(){
-  return Date.now() < getTrialUntil();
-}
+function isPaid(){   return Date.now() < getPaidUntil(); }
+function hasTrial(){ return Date.now() < getTrialUntil(); }
 
 function activate(){
   const exp = Date.now() + ONE_MONTH;
   document.cookie = "paid_until="+exp+"; path=/; max-age=31536000";
 }
-
 function startTrial(){
   const exp = Date.now() + TRIAL_MS;
-  // صلاحية الكوكي أسبوع واحد على الأكثر
   document.cookie = "trial_until="+exp+"; path=/; max-age=604800";
 }
 
@@ -4026,7 +4015,6 @@ emzIcon.onclick = () => {
   backdrop-filter:blur(6px);
   display:flex; justify-content:center; align-items:center;
 }
-
 .emz-box{
   width:min(1000px,96vw);
   background:#050a10;
@@ -4038,18 +4026,15 @@ emzIcon.onclick = () => {
   color:#fff;
   font-family:"Tajawal",sans-serif;
 }
-
 .emz-close{
   position:absolute; top:10px; right:10px;
   font-size:28px; cursor:pointer;
   color:#00ffd5;
 }
-
 .emz-row{
   display:flex; flex-wrap:wrap; gap:8px;
   justify-content:center; margin-bottom:10px;
 }
-
 .emz-btn{
   padding:6px 12px;
   border-radius:999px;
@@ -4065,7 +4050,6 @@ emzIcon.onclick = () => {
   color:#000;
   box-shadow:0 0 10px #00ffd5;
 }
-
 .emz-sub-box{
   padding:16px;
   background:#00151a;
@@ -4104,7 +4088,6 @@ emzIcon.onclick = () => {
   font-size:13px;
   margin-right:6px;
 }
-
 /* ملاحظة الاشتراك */
 .emz-note{
   margin-top:10px;
@@ -4140,12 +4123,20 @@ emzIcon.onclick = () => {
   box-shadow:0 0 12px #00ffd5;
   transform:translateY(3px);
 }
-
 .emz-signature{
   text-align:center;
   margin-top:10px;
   opacity:0.85;
   font-size:13px;
+}
+
+/* سطر دمج الآلات */
+.emz-mix-label{
+  text-align:center;
+  font-size:12px;
+  opacity:.85;
+  margin-top:6px;
+  margin-bottom:2px;
 }
 </style>
 
@@ -4190,13 +4181,28 @@ emzIcon.onclick = () => {
 
 <!-- منطقة العزف -->
 <div id="play-area" style="display:none;">
+  <!-- اختيار الآلة الرئيسية -->
   <div class="emz-row">
-    <button class="emz-btn active" data-mode="piano">🎹 بيانو / Piano</button>
-    <button class="emz-btn" data-mode="oud">🪕 عود / Oud</button>
-    <button class="emz-btn" data-mode="qanun">🎼 قانون / Qanun</button>
-    <button class="emz-btn" data-mode="violin">🎻 كمان / Violin</button>
-    <button class="emz-btn" data-mode="sax">🎷 ساكسفون / Sax</button>
-    <button class="emz-btn" data-mode="nay">🎵 ناي / Nay</button>
+    <button class="emz-btn emz-main-btn active" data-mode="piano">🎹 بيانو / Piano</button>
+    <button class="emz-btn emz-main-btn" data-mode="oud">🪕 عود / Oud</button>
+    <button class="emz-btn emz-main-btn" data-mode="qanun">🎼 قانون / Qanun</button>
+    <button class="emz-btn emz-main-btn" data-mode="violin">🎻 كمان / Violin</button>
+    <button class="emz-btn emz-main-btn" data-mode="sax">🎷 ساكسفون / Sax</button>
+    <button class="emz-btn emz-main-btn" data-mode="nay">🎵 ناي / Nay</button>
+  </div>
+
+  <!-- اختيار آلة للدمج -->
+  <div class="emz-mix-label">
+    دمج مع / Mix with (اختياري):
+  </div>
+  <div class="emz-row">
+    <button class="emz-btn emz-mix-btn active" data-mix="none">❌ بدون دمج / No Mix</button>
+    <button class="emz-btn emz-mix-btn" data-mix="piano">🎹 Piano</button>
+    <button class="emz-btn emz-mix-btn" data-mix="oud">🪕 Oud</button>
+    <button class="emz-btn emz-mix-btn" data-mix="qanun">🎼 Qanun</button>
+    <button class="emz-btn emz-mix-btn" data-mix="violin">🎻 Violin</button>
+    <button class="emz-btn emz-mix-btn" data-mix="sax">🎷 Sax</button>
+    <button class="emz-btn emz-mix-btn" data-mix="nay">🎵 Nay</button>
   </div>
 
   <div class="emz-keyboard" id="keys"></div>
@@ -4212,16 +4218,15 @@ emzIcon.onclick = () => {
 `;
 
   /* ==================== JS الداخلي ==================== */
-  const closeBtn = root.querySelector(".emz-close");
-  const subArea  = root.querySelector("#sub-area");
-  const playArea = root.querySelector("#play-area");
-  const payBtn   = root.querySelector("#pay-btn");
-  const actBtn   = root.querySelector("#activate-btn");
+  const closeBtn   = root.querySelector(".emz-close");
+  const subArea    = root.querySelector("#sub-area");
+  const playArea   = root.querySelector("#play-area");
+  const payBtn     = root.querySelector("#pay-btn");
+  const actBtn     = root.querySelector("#activate-btn");
   const previewBtn = root.querySelector("#preview-btn");
 
   closeBtn.onclick = () => host.remove();
 
-  // حالة العرض: اشتراك أو معاينة → العزف، غير ذلك → شاشة الاشتراك
   function refresh(){
     if(isPaid() || hasTrial()){
       subArea.style.display="none";
@@ -4233,21 +4238,17 @@ emzIcon.onclick = () => {
   }
   refresh();
 
-  // زر المعاينة 7 ساعات
   previewBtn.onclick = ()=>{
     startTrial();
     refresh();
     alert("تم تفعيل المعاينة المجانية لمدة 7 ساعات على هذا المتصفح والجهاز.");
   };
 
-  // زر الدفع
   payBtn.onclick = ()=>{
     window.open("https://www.paypal.com/paypalme/abwalqmrzmrd/1","_blank");
-    // إظهار زر التفعيل فقط بعد الضغط على الدفع
     actBtn.style.display = "inline-block";
   };
 
-  // زر "تم الدفع – تفعيل الاشتراك"
   actBtn.onclick = ()=>{
     activate();
     refresh();
@@ -4255,103 +4256,161 @@ emzIcon.onclick = () => {
   };
 
   /* ===== إعداد لوحة العزف ===== */
-  const keyRow = root.querySelector("#keys");
-  const modeBtns = root.querySelectorAll(".emz-btn");
+  const keyRow    = root.querySelector("#keys");
+  const mainBtns  = root.querySelectorAll(".emz-main-btn");
+  const mixBtns   = root.querySelectorAll(".emz-mix-btn");
 
   let currentInstrument = "piano";
-  const sustainInst = ["violin","sax","nay"];
+  let mixInstrument     = "none";
+  const sustainInst     = ["violin","sax","nay"];
 
+  // المفاتيح من 1 إلى 0 ثم Q..P ثم A..L ثم Z..M
   const KEY_BINDINGS = [
     "Digit1","Digit2","Digit3","Digit4","Digit5","Digit6",
     "Digit7","Digit8","Digit9","Digit0",
     "KeyQ","KeyW","KeyE","KeyR","KeyT","KeyY","KeyU","KeyI","KeyO","KeyP",
     "KeyA","KeyS","KeyD","KeyF","KeyG","KeyH","KeyJ","KeyK","KeyL",
-    "KeyZ","KeyX","KeyC","KeyV","KeyB","KeyN"
+    "KeyZ","KeyX","KeyC","KeyV","KeyB","KeyN","KeyM"
   ];
 
+  // السلم من C3 (رقم 1) حتى C8
   const NOTES = [
     "C3","D3","E3","F3","G3","A3","B3",
     "C4","D4","E4","F4","G4","A4","B4",
     "C5","D5","E5","F5","G5","A5","B5",
-    "C6","D6","E6","F6","G6","A6","B6"
+    "C6","D6","E6","F6","G6","A6","B6",
+    "C7","D7","E7","F7","G7","A7","B7","C8"
   ];
 
   const baseUrl = {
-    piano:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_grand_piano-mp3/",
-    qanun:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/dulcimer-mp3/",
-    oud:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_guitar_nylon-mp3/",
+    piano :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_grand_piano-mp3/",
+    qanun :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/dulcimer-mp3/",
+    oud   :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_guitar_nylon-mp3/",
     violin:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/violin-mp3/",
-    sax:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/alto_sax-mp3/",
-    nay:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/flute-mp3/"
+    sax   :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/alto_sax-mp3/",
+    nay   :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/flute-mp3/"
   };
 
   function play(note, inst, loop=false){
     const a = new Audio(baseUrl[inst]+note+".mp3");
-    a.loop=loop;
-    a.volume=1;
+    a.loop = loop;
+    a.volume = 1;
     a.play().catch(()=>{});
     return a;
   }
 
+  // active[code] = { elem, audios: {inst:audio,...} }
   const active = {};
 
-  function short(elem, note){
+  function shortPlay(elem, note){
+    if(!note) return;
     elem.classList.add("active");
     setTimeout(()=>elem.classList.remove("active"),120);
+    // آلة رئيسية
     play(note,currentInstrument,false);
+    // آلة دمج إن وجدت
+    if(mixInstrument !== "none" && mixInstrument){
+      play(note,mixInstrument,false);
+    }
   }
 
-  function start(elem, code){
+  function startSustain(elem, code){
     const note = elem.dataset.note;
-    if(!sustainInst.includes(currentInstrument)){
-      short(elem,note);
+    const instList = [];
+
+    // الآلة الرئيسية
+    instList.push(currentInstrument);
+    // آلة الدمج
+    if(mixInstrument !== "none" && mixInstrument && mixInstrument !== currentInstrument){
+      instList.push(mixInstrument);
+    }
+
+    // إن لم يكن من آلات السستين → تشغيل قصير فقط
+    const anySustain = instList.some(i => sustainInst.includes(i));
+    if(!anySustain){
+      shortPlay(elem,note);
       return;
     }
+
     if(active[code]) return;
+
     elem.classList.add("active");
-    active[code]={elem, audio:play(note,currentInstrument,true)};
+    const audios = {};
+    instList.forEach(inst=>{
+      if(sustainInst.includes(inst)){
+        audios[inst] = play(note,inst,true);
+      }else{
+        // الآلات غير المستمرة: نعزف ضغطة قصيرة
+        play(note,inst,false);
+      }
+    });
+    active[code] = {elem, audios};
   }
 
-  function end(code){
+  function endSustain(code){
     if(!active[code]) return;
-    active[code].audio.pause();
-    active[code].elem.classList.remove("active");
+    const obj = active[code];
+    Object.values(obj.audios).forEach(a=>{
+      a.pause();
+    });
+    obj.elem.classList.remove("active");
     delete active[code];
   }
 
+  // إنشاء المفاتيح
   NOTES.forEach((note,i)=>{
+    const code = KEY_BINDINGS[i];
+    if(!code) return;
     const k = document.createElement("div");
     k.className="emz-white";
     k.dataset.note=note;
-    k.dataset.code=KEY_BINDINGS[i];
-    k.textContent = KEY_BINDINGS[i].replace("Digit","").replace("Key","");
+    k.dataset.code=code;
+    k.textContent = code.startsWith("Digit") ? code.replace("Digit","") : code.replace("Key","");
     keyRow.appendChild(k);
 
-    k.onmousedown = ()=>start(k,k.dataset.code);
-    k.onmouseup   = ()=>end(k.dataset.code);
-    k.onmouseleave= ()=>end(k.dataset.code);
-    k.onclick     = ()=>short(k,note);
+    k.onmousedown = ()=>startSustain(k,k.dataset.code);
+    k.onmouseup   = ()=>endSustain(k.dataset.code);
+    k.onmouseleave= ()=>endSustain(k.dataset.code);
+    k.onclick     = ()=>shortPlay(k,note);
   });
 
-  modeBtns.forEach(b=>{
+  // اختيار الآلة الرئيسية
+  mainBtns.forEach(b=>{
     b.onclick = ()=>{
-      modeBtns.forEach(x=>x.classList.remove("active"));
+      mainBtns.forEach(x=>x.classList.remove("active"));
       b.classList.add("active");
       currentInstrument = b.dataset.mode;
-      Object.keys(active).forEach(k=>end(k));
+      // إيقاف أي سستين
+      Object.keys(active).forEach(c=>endSustain(c));
     };
   });
 
-  window.addEventListener("keydown",e=>{
-    const elem = root.querySelector('[data-code="'+e.code+'"]');
-    if(elem) start(elem,e.code);
+  // اختيار آلة الدمج
+  mixBtns.forEach(b=>{
+    b.onclick = ()=>{
+      mixBtns.forEach(x=>x.classList.remove("active"));
+      b.classList.add("active");
+      mixInstrument = b.dataset.mix;
+      Object.keys(active).forEach(c=>endSustain(c));
+    };
   });
-  window.addEventListener("keyup",e=> end(e.code));
+
+  // لوحة المفاتيح
+  window.addEventListener("keydown",e=>{
+    if(!document.body.contains(host)) return;
+    const elem = root.querySelector('[data-code="'+e.code+'"]');
+    if(elem) startSustain(elem,e.code);
+  });
+  window.addEventListener("keyup",e=>{
+    if(!document.body.contains(host)) return;
+    endSustain(e.code);
+  });
 };
 </script>
 
 </body>
 </html>
+
 <!-- ========== أيقونة الأعمال ========== -->
 <div id="worksIconContainer" style="
   bottom: 5px;
