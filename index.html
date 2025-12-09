@@ -306,7 +306,6 @@ document.getElementById('radioIcon').onclick=()=>{
   text-align: center;
 }
 
-/* العناوين */
 #christmasCountdown h3 {
   margin: 0 0 8px 0;
   font-size: 18px;
@@ -316,7 +315,6 @@ document.getElementById('radioIcon').onclick=()=>{
   text-shadow: 0 0 10px #ff0000;
 }
 
-/* عنوان رأس السنة */
 .titleNY {
   margin-top: 18px;
   background: linear-gradient(45deg,#00ccff,#ffffff,#ffdd00);
@@ -325,7 +323,6 @@ document.getElementById('radioIcon').onclick=()=>{
   text-shadow: 0 0 10px #00ccff;
 }
 
-/* صناديق الوقت */
 .timeBox {
   display: flex;
   justify-content: center;
@@ -341,7 +338,6 @@ document.getElementById('radioIcon').onclick=()=>{
   box-shadow: 0 0 10px #00ffd5;
 }
 
-/* زر اللغة */
 #langSwitch {
   margin-top: 10px;
   padding: 6px 10px;
@@ -358,11 +354,9 @@ document.getElementById('radioIcon').onclick=()=>{
 
 <div id="christmasCountdown">
 
-  <!-- العنوان العربي -->
   <h3 class="ar">🎄 العد التنازلي للكريسماس 🎅</h3>
   <h3 class="en" style="display:none;">🎄 Christmas Countdown 🎅</h3>
 
-  <!-- عداد الكريسماس -->
   <div class="timeBox">
     <div class="t" id="d1"></div>
     <div class="t" id="h1"></div>
@@ -370,11 +364,9 @@ document.getElementById('radioIcon').onclick=()=>{
     <div class="t" id="s1"></div>
   </div>
 
-  <!-- عنوان رأس السنة -->
   <h3 class="titleNY ar">🎆 العد التنازلي لرأس السنة 🎇</h3>
   <h3 class="titleNY en" style="display:none;">🎆 New Year Countdown 🎇</h3>
 
-  <!-- عداد رأس السنة -->
   <div class="timeBox">
     <div class="t" id="d2"></div>
     <div class="t" id="h2"></div>
@@ -382,7 +374,6 @@ document.getElementById('radioIcon').onclick=()=>{
     <div class="t" id="s2"></div>
   </div>
 
-  <!-- زر اللغة -->
   <div id="langSwitch">ENGLISH</div>
 </div>
 
@@ -394,7 +385,6 @@ document.getElementById("langSwitch").onclick = function () {
 
   this.textContent = (lang === "ar") ? "ENGLISH" : "العربية";
 
-  // تغيير العرض
   document.querySelectorAll(".ar").forEach(el => el.style.display = (lang === "ar" ? "block" : "none"));
   document.querySelectorAll(".en").forEach(el => el.style.display = (lang === "en" ? "block" : "none"));
 
@@ -405,7 +395,7 @@ function updateCountdowns() {
   const now = new Date();
   let year = now.getFullYear();
 
-  // الكريسماس
+  // 🎄 الكريسماس
   let christmas = new Date(`${year}-12-25T00:00:00`);
   if (now > christmas) christmas = new Date(`${year+1}-12-25T00:00:00`);
 
@@ -415,8 +405,8 @@ function updateCountdowns() {
   let m1 = Math.floor((diff1 / (1000 * 60)) % 60);
   let s1 = Math.floor((diff1 / 1000) % 60);
 
-  // رأس السنة
-  let newYear = new Date(`${year+1}-1-1T00:00:00`);
+  // 🎆 رأس السنة
+  let newYear = new Date(`${year+1}-01-01T00:00:00`);
   let diff2 = newYear - now;
 
   let d2 = Math.floor(diff2 / (1000 * 60 * 60 * 24));
@@ -424,24 +414,21 @@ function updateCountdowns() {
   let m2 = Math.floor((diff2 / (1000 * 60)) % 60);
   let s2 = Math.floor((diff2 / 1000) % 60);
 
-  if (lang === "ar") {
-    d1Text = "يوم"; h1Text="ساعة"; m1Text="دقيقة"; s1Text="ثانية";
-    d2Text = "يوم"; h2Text="ساعة"; m2Text="دقيقة"; s2Text="ثانية";
-  } else {
-    d1Text = "Days"; h1Text="Hours"; m1Text="Minutes"; s1Text="Seconds";
-    d2Text = "Days"; h2Text="Hours"; m2Text="Minutes"; s2Text="Seconds";
-  }
+  // 📝 النصوص حسب اللغة
+  let T = (lang === "ar")
+    ? ["يوم","ساعة","دقيقة","ثانية"]
+    : ["Days","Hours","Minutes","Seconds"];
 
-  // تعبئة البيانات
-  d1Elem.textContent = d1 + " " + d1Text;
-  h1Elem.textContent = h1 + " " + h1Text;
-  m1Elem.textContent = m1 + " " + m1Text;
-  s1Elem.textContent = s1 + " " + s1Text;
+  // تعبئة القيم الصحيحة
+  d1Elem.textContent = d1 + " " + T[0];
+  h1Elem.textContent = h1 + " " + T[1];
+  m1Elem.textContent = m1 + " " + T[2];
+  s1Elem.textContent = s1 + " " + T[3];
 
-  d2Elem.textContent = d2 + " " + d2Text;
-  h2Elem.textContent = h2 + " " + h2Text;
-  m2Elem.textContent = m2 + " " + m2Text;
-  s2Elem.textContent = s2 + " " + s2Text;
+  d2Elem.textContent = d2 + " " + T[0];
+  h2Elem.textContent = h2 + " " + T[1];
+  m2Elem.textContent = m2 + " " + T[2];
+  s2Elem.textContent = s2 + " " + T[3];
 }
 
 // ربط العناصر
@@ -458,6 +445,7 @@ const s2Elem = document.getElementById("s2");
 setInterval(updateCountdowns, 1000);
 updateCountdowns();
 </script>
+
 
 <!-- ====================== شريط الأخبار + الوقت + التاريخ + الطقس ====================== -->
 <div class="news-ticker">
