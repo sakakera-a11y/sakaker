@@ -4617,6 +4617,12 @@ customElements.define("joke-bar", JokeBar);
 <meta charset="UTF-8">
 <title>Emerald Music – Abwalqmrzmrd</title>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<!-- ✅ PayPal SDK (كما أعطيتني) -->
+<script 
+  src="https://www.paypal.com/sdk/js?client-id=BAAQAE5C8rFrqoJpWqxpYluOT09waMhuzhF4ug2QGvJm76YmqiCmzkP31wl8xZq9W5WkJSvAx6ZoujIBFw&components=hosted-buttons&disable-funding=venmo&currency=USD">
+</script>
+
 <style>
   body{
     margin:0;
@@ -4725,10 +4731,10 @@ customElements.define("joke-bar", JokeBar);
   /* شريط الدفع أعلى منطقة العزف */
   .emz-paybar{
     position:sticky;
-    top:0;
-    z-index:20;
-    padding:8px 10px;
-    margin:-6px -6px 8px -6px;
+    top:1px
+    z-index:1px
+    padding:3px 1px;
+    margin:6px 6px 8px 6px;
     border-radius:10px;
     background:linear-gradient(90deg,#0d3b3b,#00ffd5,#0d3b3b);
     display:flex;
@@ -4747,7 +4753,7 @@ customElements.define("joke-bar", JokeBar);
     border:none;
     border-radius:999px;
     padding:6px 10px;
-    font-size:12px;
+    font-size:6px;
     cursor:pointer;
     font-weight:bold;
   }
@@ -4857,8 +4863,9 @@ customElements.define("joke-bar", JokeBar);
     box-shadow:0 0 6px #000;
   }
   .emz-key-label{
-    font-size:9px;
+    font-size:10px;
     margin-bottom:1px;
+    font-weight:bold;
   }
   .emz-key-bind{
     font-size:9px;
@@ -4957,31 +4964,31 @@ function startTrial(){
 
 /* ============= إعداد الصوت ============= */
 const baseUrl={
-  piano :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_grand_piano-mp3/",
-  qanun :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/dulcimer-mp3/",
-  oud   :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_guitar_nylon-mp3/",
-  buzuq :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_guitar_steel-mp3/",
-  violin:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/violin-mp3/",
-  sax   :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/alto_sax-mp3/",
-  nay   :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/flute-mp3/",
-  drums :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/standard_kit-mp3/",
-  choir :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/choir_aahs-mp3/"
+  piano  :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_grand_piano-mp3/",
+  qanun  :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/dulcimer-mp3/",
+  oud    :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_guitar_nylon-mp3/",
+  buzuq  :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_guitar_steel-mp3/",
+  guitar :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/electric_guitar_clean-mp3/",
+  violin :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/violin-mp3/",
+  sax    :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/alto_sax-mp3/",
+  nay    :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/flute-mp3/",
+  drums  :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/standard_kit-mp3/",
+  choir  :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/choir_aahs-mp3/"
 };
 
 let currentInstrument="piano";
 let mixInstrument="none";
 let globalVolume=1;
 let echoEnabled=true;
-let echoAmount=1; // 1 = 100%
+let echoAmount=1;
 
 function playOnce(note,inst,volMul){
-  const a=new Audio(baseUrl[inst]+note+".mp3");
+  const folder = baseUrl[inst] ? baseUrl[inst] : baseUrl["piano"];
+  const a=new Audio(folder+note+".mp3");
   a.volume=(globalVolume||1)*(volMul||1);
   a.play().catch(()=>{});
   return a;
 }
-
-/* وميض الخلفية */
 function flashBackground(){
   document.body.classList.add("emz-bg-glow");
   setTimeout(()=>document.body.classList.remove("emz-bg-glow"),160);
@@ -4999,27 +5006,42 @@ document.getElementById("emz-open-btn").onclick=()=>{
       <div class="emz-close">✖</div>
 
       <div id="sub-area" class="emz-sub-box">
-        <h3>اشتراك العزف – Playing Subscription (1 USD)</h3>
+        <!-- ✅ تم تعديل السعر فقط -->
+        <h3>اشتراك العزف – Playing Subscription (3 USD)</h3>
         <p style="font-size:12px;opacity:.85;">
-          افتح جميع الآلات والدمج والتسجيل مقابل 1 دولار فقط لكل 30 يوم.<br>
-          Unlock full playing, mixing & recording for only 1 USD / 30 days.
+          افتح جميع الآلات والدمج والتسجيل مقابل 3 دولار فقط لكل 30 يوم.<br>
+          Unlock full playing, mixing & recording for only 3 USD / 30 days.
         </p>
+
         <div class="emz-row">
           <button class="emz-btn" id="preview-btn">معاينة مجانية 7 ساعات – 7h Free Preview</button>
-          <button class="emz-btn" id="pay-btn" style="background:#ffc439;color:#000;">الدفع عبر PayPal – Pay with PayPal</button>
         </div>
+
+        <!-- ✅ PayPal Hosted Button (بدلاً من الرابط) -->
+        <div style="display:flex;justify-content:center;margin-top:10px;">
+          <div id="paypal-container-UYVXY5FCMHRJJ"></div>
+        </div>
+
+        <!-- ✅ زر تفعيل يدوي بعد الدفع (كما نظامك السابق) -->
+        <div class="emz-row" style="margin-top:10px;">
+          <button class="emz-btn active" id="activate-btn" style="background:#00ffd5;color:#000;">
+            تم الدفع – تفعيل الاشتراك<br>I have paid – Activate subscription
+          </button>
+        </div>
+
         <p style="font-size:11px;opacity:.8;">
-          يمكنك تفعيل الاشتراك مباشرة عند الضغط على الدفع، ويمكنك الدفع الآن أو لاحقًا حسب الإمكانية.<br>
-          If you cannot pay now, you may try again whenever possible.
+          (الاشتراك يعمل على نفس الجهاز والمتصفح فقط)<br>
+          (Subscription works only on the same device & browser)
         </p>
       </div>
 
       <div id="play-area" style="display:none;">
 
         <div class="emz-paybar">
-          <span id="pay-msg">💰 إن لم تكن سددت المبلغ، تستطيع الدخول من هنا</span>
+          <span id="pay-msg">💰 إن لم تكن سددت المبلغ، تستطيع الدفع من هنا</span>
           <div style="display:flex;gap:6px;align-items:center;">
-            <button class="emz-pay-link" id="pay-top">💰 Pay Now</button>
+            <!-- ✅ نفس الدفع داخل لوحة التحكم -->
+            <div id="paypal-container-UYVXY5FCMHRJJ_TOP"></div>
             <button class="emz-lang-toggle" id="lang-toggle">EN</button>
           </div>
         </div>
@@ -5029,6 +5051,7 @@ document.getElementById("emz-open-btn").onclick=()=>{
           <button class="emz-btn emz-main" data-mode="oud">🪕 Oud</button>
           <button class="emz-btn emz-main" data-mode="qanun">🎼 Qanun</button>
           <button class="emz-btn emz-main" data-mode="buzuq">🪕 Buzuq</button>
+          <button class="emz-btn emz-main" data-mode="guitar">🎸 Guitar</button>
           <button class="emz-btn emz-main" data-mode="violin">🎻 Violin</button>
           <button class="emz-btn emz-main" data-mode="sax">🎷 Sax</button>
           <button class="emz-btn emz-main" data-mode="nay">🎵 Nay</button>
@@ -5043,6 +5066,7 @@ document.getElementById("emz-open-btn").onclick=()=>{
           <button class="emz-btn emz-mix" data-mix="oud">🪕 Oud</button>
           <button class="emz-btn emz-mix" data-mix="qanun">🎼 Qanun</button>
           <button class="emz-btn emz-mix" data-mix="buzuq">🪕 Buzuq</button>
+          <button class="emz-btn emz-mix" data-mix="guitar">🎸 Guitar</button>
           <button class="emz-btn emz-mix" data-mix="violin">🎻 Violin</button>
           <button class="emz-btn emz-mix" data-mix="sax">🎷 Sax</button>
           <button class="emz-btn emz-mix" data-mix="nay">🎵 Nay</button>
@@ -5074,16 +5098,15 @@ document.getElementById("emz-open-btn").onclick=()=>{
 
         <div class="emz-row">
           <button class="emz-btn" id="demo-hbd">▶️ Happy Birthday</button>
-          <button class="emz-btn" id="demo-ode">▶️ Ode to Joy</button>
-         
+          <button class="emz-btn" id="demo-fairuz">▶️ Fairuz – Aatini El Nay</button>
           <button class="emz-btn" id="demo-scale">▶️ Play Scale</button>
           <button class="emz-btn" id="demo-stop">⏹ Stop Auto</button>
         </div>
 
         <div class="emz-keys-wrapper">
           <div class="emz-keys-header">
-            <div id="page-indicator">36 Keys – C2 → C6</div>
-            <div class="emz-keys-hint">كل المفاتيح مرئية – يمكنك السحب أفقياً إذا صغرت الشاشة</div>
+            <div id="page-indicator">36 Keys – تبدأ من D2</div>
+            <div class="emz-keys-hint">المفاتيح مرقّمة من 1 إلى 36 – يمكنك السحب أفقياً إذا صغرت الشاشة</div>
           </div>
           <div id="keys"></div>
         </div>
@@ -5105,19 +5128,17 @@ document.getElementById("emz-open-btn").onclick=()=>{
               Bb Bb A F G F
             </p>
 
-            <h4>🎵 Beethoven – Ode to Joy</h4>
+            <h4>🎵 Fairuz – Aatini El Nay (Short)</h4>
             <p>
-              E E F G G F E D<br>
-              C C D E E D D
+              E4 F4 G4 A4 G4 F4 E4 D4<br>
+              E4 F4 G4 A4 G4 F4 E4 D4<br>
+              G4 A4 B4 A4 G4 F4 E4 F4<br>
+              E4 F4 G4 A4 G4 F4 E4
             </p>
 
-            <h4>🎵 Simple Scale (C2 → C6)</h4>
+            <h4>🎵 Simple Scale (D2 → D6 approx)</h4>
             <p>
-              C2 D2 E2 F2 G2 A2 B2 –
-              C3 D3 E3 F3 G3 A3 B3 –
-              C4 D4 E4 F4 G4 A4 B4 –
-              C5 D5 E5 F5 G5 A5 B5 –
-              C6
+              D2 E2 F2 G2 A2 B2 C2 – D3 E3 F3 G3 A3 B3 C3 – D4 E4 F4 G4 A4 B4 C4 – D5 E5 F5 G5 A5 B5 C5 – D6
             </p>
           </div>
         </div>
@@ -5133,21 +5154,23 @@ document.getElementById("emz-open-btn").onclick=()=>{
   const subArea    = host.querySelector("#sub-area");
   const playArea   = host.querySelector("#play-area");
   const previewBtn = host.querySelector("#preview-btn");
-  const payBtn     = host.querySelector("#pay-btn");
-  const payTop     = host.querySelector("#pay-top");
+  const actBtn     = host.querySelector("#activate-btn");
+
   const payMsg     = host.querySelector("#pay-msg");
   const langToggle = host.querySelector("#lang-toggle");
+
   const notesBtn   = host.querySelector("#notes-btn");
   const notesModal = host.querySelector("#notes-modal");
   const notesClose = host.querySelector(".notes-close");
+
   const recStart   = host.querySelector("#rec-start");
   const recStop    = host.querySelector("#rec-stop");
   const volSlider  = host.querySelector("#vol-slider");
   const echoSlider = host.querySelector("#echo-slider");
   const echoToggle = host.querySelector("#echo-toggle");
   const echoLabel  = host.querySelector("#echo-label");
+
   const demoHbd    = host.querySelector("#demo-hbd");
-  const demoOde    = host.querySelector("#demo-ode");
   const demoFairuz = host.querySelector("#demo-fairuz");
   const demoScale  = host.querySelector("#demo-scale");
   const demoStop   = host.querySelector("#demo-stop");
@@ -5158,10 +5181,10 @@ document.getElementById("emz-open-btn").onclick=()=>{
   function setLang(lang){
     currentLang=lang;
     if(lang==="ar"){
-      payMsg.textContent="💰 إن لم تكن سددت المبلغ، تستطيع الدخول من هنا";
+      payMsg.textContent="💰 إن لم تكن سددت المبلغ، تستطيع الدفع من هنا";
       langToggle.textContent="EN";
     }else{
-      payMsg.textContent="💰 If you haven't paid yet, you may enter from here";
+      payMsg.textContent="💰 If you haven't paid yet, you can pay from here";
       langToggle.textContent="AR";
     }
   }
@@ -5186,21 +5209,28 @@ document.getElementById("emz-open-btn").onclick=()=>{
     alert("تم تفعيل المعاينة لمدة 7 ساعات.\n7h preview activated.");
   };
 
-  function openPay(){
-    window.open("https://www.paypal.com/paypalme/abwalqmrzmrd/1","_blank");
-  }
-  payBtn.onclick=()=>{
-    openPay();
+  /* ✅ تفعيل الاشتراك يدويًا بعد الدفع */
+  actBtn.onclick=()=>{
     activate();
     refreshAccess();
-    alert("تم تفعيل الاشتراك لمدة 30 يوم.\n30 days activated.");
+    alert("تم تفعيل الاشتراك لمدة 30 يوم على هذا المتصفح والجهاز.\n30 days activated.");
   };
-  payTop.onclick=openPay;
 
   closeBtn.onclick=()=>{
     stopMelody();
     host.remove();
   };
+
+  /* ✅ PayPal Hosted Buttons render (زرين: داخل الاشتراك + داخل لوحة التحكم) */
+  try{
+    paypal.HostedButtons({ hostedButtonId: "UYVXY5FCMHRJJ" })
+      .render("#paypal-container-UYVXY5FCMHRJJ");
+
+    paypal.HostedButtons({ hostedButtonId: "UYVXY5FCMHRJJ" })
+      .render("#paypal-container-UYVXY5FCMHRJJ_TOP");
+  }catch(e){
+    console.log("PayPal render error:", e);
+  }
 
   /* النوتات */
   notesBtn.onclick=()=>{notesModal.style.display="flex";};
@@ -5221,9 +5251,9 @@ document.getElementById("emz-open-btn").onclick=()=>{
   }
   echoToggle.onclick=()=>{ echoEnabled=!echoEnabled; refreshEchoLabel(); };
   refreshEchoLabel();
-  echoSlider.oninput=()=>{ echoAmount = echoSlider.value/100; }; // 0 → 2
+  echoSlider.oninput=()=>{ echoAmount = echoSlider.value/100; };
 
-  /* اختيار الآلة */
+  /* اختيار الآلة الأساسية */
   host.querySelectorAll(".emz-main").forEach(btn=>{
     btn.onclick=()=>{
       host.querySelectorAll(".emz-main").forEach(b=>b.classList.remove("active"));
@@ -5281,19 +5311,18 @@ document.getElementById("emz-open-btn").onclick=()=>{
     stopRecording();
   };
 
-  /* ========== لوحة مفاتيح 36 نغمة – من C2 إلى C6 ========== */
-
+  /* ========== لوحة مفاتيح 36 نغمة – من D2 ========== */
   const NOTES=[];
-  const letters=["C","D","E","F","G","A","B"];
-  let oct=2; // ⭐ البداية من C2
+  const lettersOrder=["D","E","F","G","A","B","C"];
+  let oct=2;
   while(NOTES.length<36){
-    for(let i=0;i<letters.length && NOTES.length<36;i++){
-      NOTES.push(letters[i]+oct);
+    for(let i=0;i<lettersOrder.length && NOTES.length<36;i++){
+      NOTES.push(lettersOrder[i]+oct);
     }
     oct++;
   }
 
-  const KEY_BINDINGS = [
+  const KEY_BINDINGS=[
     "Digit1","Digit2","Digit3","Digit4","Digit5","Digit6","Digit7","Digit8","Digit9","Digit0",
     "KeyQ","KeyW","KeyE","KeyR","KeyT","KeyY","KeyU","KeyI","KeyO","KeyP",
     "KeyA","KeyS","KeyD","KeyF","KeyG","KeyH","KeyJ","KeyK","KeyL",
@@ -5304,36 +5333,33 @@ document.getElementById("emz-open-btn").onclick=()=>{
 
   function isBlackNote(note){
     const l=note.charAt(0);
-    return (l==="D" || l==="F" || l==="A");
+    return (l==="E" || l==="G" || l==="B");
   }
 
   const activeLong={};
   const elemByIndex={};
 
-  /* ضغطة قصيرة + صدى قوي */
   function shortPress(index,elem){
     const note=NOTES[index];
     if(!note) return;
 
     if(elem){
       elem.classList.add("active");
-      setTimeout(()=>elem.classList.remove("active"),120);
+      elem.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});
+      setTimeout(()=>elem.classList.remove("active"),140);
     }
     flashBackground();
 
-    // آلة أساسية
     playOnce(note,currentInstrument,1);
-    // دمج
     if(mixInstrument!=="none"){
       playOnce(note,mixInstrument,1);
     }
 
-    // صدى يدوي قوي (8 مرات)
     if(echoEnabled && echoAmount>0){
       const repeats=8;
-      const baseDelay=150;
+      const baseDelay=120;
       for(let i=1;i<=repeats;i++){
-        const raw = echoAmount * (1/(i+0.2)); // echoAmount قد يصل 2
+        const raw = echoAmount * (1/(i+0.2));
         const v   = Math.min(1, raw);
         setTimeout(()=>{
           playOnce(note,currentInstrument,v);
@@ -5345,13 +5371,15 @@ document.getElementById("emz-open-btn").onclick=()=>{
     }
   }
 
-  /* الضغطه الطويلة (سستين) لجميع الآلات */
   function startSustain(id,index,elem){
     if(activeLong[id]) return;
     const note=NOTES[index];
     if(!note) return;
 
-    if(elem) elem.classList.add("active");
+    if(elem){
+      elem.classList.add("active");
+      elem.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"});
+    }
     flashBackground();
 
     const instList=[currentInstrument];
@@ -5361,7 +5389,8 @@ document.getElementById("emz-open-btn").onclick=()=>{
 
     const audios=[];
     instList.forEach(inst=>{
-      const a=new Audio(baseUrl[inst]+note+".mp3");
+      const folder = baseUrl[inst] ? baseUrl[inst] : baseUrl["piano"];
+      const a=new Audio(folder+note+".mp3");
       a.loop=true;
       a.volume=globalVolume;
       a.play().catch(()=>{});
@@ -5389,19 +5418,18 @@ document.getElementById("emz-open-btn").onclick=()=>{
     row2.className="emz-keys-row";
 
     NOTES.forEach((note,idx)=>{
-      const code=KEY_BINDINGS[idx] || "";
       const div=document.createElement("div");
       div.className="emz-key "+(isBlackNote(note)?"black":"white");
       div.dataset.index=idx;
 
       const label=document.createElement("div");
       label.className="emz-key-label";
-      label.textContent=note;
+      label.textContent=(idx+1);
       div.appendChild(label);
 
       const bind=document.createElement("div");
       bind.className="emz-key-bind";
-      bind.textContent=code.replace("Digit","").replace("Key","");
+      bind.textContent=note;
       div.appendChild(bind);
 
       const id="key-"+idx;
@@ -5419,10 +5447,8 @@ document.getElementById("emz-open-btn").onclick=()=>{
     keysContainer.appendChild(row1);
     keysContainer.appendChild(row2);
   }
-
   renderKeys();
 
-  /* لوحة مفاتيح الكمبيوتر */
   window.addEventListener("keydown",e=>{
     if(e.repeat) return;
     const idx=KEY_INDEX[e.code];
@@ -5438,7 +5464,6 @@ document.getElementById("emz-open-btn").onclick=()=>{
     endSustain(id);
   });
 
-  /* عزف تلقائي */
   let demoTimer=null;
   function stopMelody(){
     if(demoTimer){
@@ -5472,25 +5497,25 @@ document.getElementById("emz-open-btn").onclick=()=>{
     "C4","C4","C5","A4","F4","E4","D4",
     "B4","B4","A4","F4","G4","F4"
   ];
-  const MELODY_ODE=[
-    "E4","E4","F4","G4","G4","F4","E4","D4",
-    "C4","C4","D4","E4","E4","D4","D4"
+  const MELODY_FAIRUZ=[
+    "E4","F4","G4","A4","G4","F4","E4","D4",
+    "E4","F4","G4","A4","G4","F4","E4","D4",
+    "G4","A4","B4","A4","G4","F4","E4","F4",
+    "E4","F4","G4","A4","G4","F4","E4"
   ];
   const SCALE_SEQ=[
-    "C2","D2","E2","F2","G2","A2","B2",
-    "C3","D3","E3","F3","G3","A3","B3",
-    "C4","D4","E4","F4","G4","A4","B4",
-    "C5","D5","E5","F5","G5","A5","B5",
-    "C6"
+    "D2","E2","F2","G2","A2","B2","C2",
+    "D3","E3","F3","G3","A3","B3","C3",
+    "D4","E4","F4","G4","A4","B4","C4",
+    "D5","E5","F5","G5","A5","B5","C5",
+    "D6"
   ];
 
-  demoHbd.onclick   = ()=>playMelody(MELODY_HBD,340);
-  demoOde.onclick   = ()=>playMelody(MELODY_ODE,340);
-  demoScale.onclick = ()=>playMelody(SCALE_SEQ,260);
-  demoFairuz.onclick= ()=>playMelody(FAIRUZ_SEQ,310);
+  demoHbd.onclick   = ()=>playMelody(MELODY_HBD,420);
+  demoFairuz.onclick= ()=>playMelody(MELODY_FAIRUZ,430);
+  demoScale.onclick = ()=>playMelody(SCALE_SEQ,360);
   demoStop.onclick  = ()=>stopMelody();
-
-}; // نهاية فتح النافذة
+};
 </script>
 
 </body>
