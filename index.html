@@ -64,230 +64,7 @@
 }
 
 </style>
-<!-- ===================== أيقونة الراديو الجديدة ===================== -->
-<style>
-#radioIcon {
-    position: fixed;
-    bottom: 340px;
-    right: 20px;
-    width: 110px;
-    height: 110px;
-    background: radial-gradient(circle, #fff8d2, #e6c200, #b79500);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 38px;
-    cursor: pointer;
-    color: #000;
-    box-shadow: 
-      0 0 25px #ffd700,
-      0 0 55px #ffea8a,
-      inset 0 0 20px #fff6c2;
-    animation: glowPulse 1.6s infinite alternate ease-in-out;
-    z-index: 999999999;
-}
 
-@keyframes glowPulse {
-    0% { box-shadow: 0 0 25px #ffd700, 0 0 55px #ffea8a; transform: scale(1); }
-    100% { box-shadow: 0 0 40px #ffe45c, 0 0 90px #ffea8a; transform: scale(1.08); }
-}
-
-#radioPopup {
-    position: fixed;
-    bottom: 160px;
-    right: 40px;
-    width: 320px;
-    max-height: 450px;
-    overflow-y: auto;
-    background: rgba(0,0,0,0.88);
-    padding: 15px;
-    border-radius: 12px;
-    border: 2px solid #ffd700;
-    color: #fff;
-    display: none;
-    z-index: 999999999;
-    box-shadow: 0 0 25px #ffd700;
-}
-
-.radioItem {
-    background: rgba(255,255,255,0.07);
-    padding: 10px;
-    margin-bottom: 12px;
-    border-radius: 10px;
-    border: 1px solid #ffd70055;
-}
-.radioItem h3 {
-    margin: 0 0 8px 0;
-    font-size: 16px;
-    color: #ffeaa7;
-}
-
-.radioItem button {
-    width: 100%;
-    padding: 8px;
-    border-radius: 8px;
-    border: none;
-    background: linear-gradient(45deg, #ffd700, #ffef9c);
-    color: #000;
-    cursor: pointer;
-    font-weight: bold;
-}
-</style>
-
-<div id="radioIcon">📻</div>
-
-<!-- ===================== نافذة المحطات ===================== -->
-<div id="radioPopup" aria-hidden="true">
-  <div id="statusMsg">جاهز — اختر محطة للتشغيل</div>
-
-
-  <!-- مصر -->
-  <div class="radioItem">
-    <h3>📿 إذاعة القرآن — مصر</h3>
-    <button onclick="startStation('egypt_quran')">تشغيل</button>
-  </div>
-
-  <!-- BBC Arabic -->
-  <div class="radioItem">
-    <h3>🌍 BBC Arabic</h3>
-    <button onclick="startStation('bbc_ar')">تشغيل</button>
-  </div>
-
-  <!-- Sky News -->
-  <div class="radioItem">
-    <h3>🌍 Sky News Arabia Radio</h3>
-    <button onclick="startStation('sky')">تشغيل</button>
-  </div>
-
-  <!-- France 24 -->
-  <div class="radioItem">
-    <h3>🌍 France 24 Radio</h3>
-    <button onclick="startStation('france24')">تشغيل</button>
-  </div>
-
-  <!-- DW -->
-  <div class="radioItem">
-    <h3>🌍 Deutsche Welle – DW</h3>
-    <button onclick="startStation('dw')">تشغيل</button>
-  </div>
-
-  <audio id="radioPlayer" controls style="width:100%;margin-top:12px"></audio>
-
-  <div style="display:flex;gap:8px;margin-top:8px">
-    <button onclick="stopRadio()" style="flex:1;padding:8px;border-radius:8px;background:#ff4d4d;border:none;color:#fff">إيقاف</button>
-    <button onclick="pauseRadio()" style="flex:1;padding:8px;border-radius:8px;background:#444;border:none;color:#fff">إيقاف مؤقت</button>
-  </div>
-</div>
-
-<!-- ===================== سكربت الراديو ===================== -->
-<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.2/dist/hls.min.js"></script>
-
-<script>
-const stations = {
-
-
-  'egypt_quran': { 
-    name:'إذاعة القرآن الكريم - مصر',
-    sources:[
-      'https://stream.radiojar.com/8s5u5tpdtwzuv'
-    ]
-  },
-
- 
-
-  'bbc_ar': { 
-    name:'BBC Arabic',
-    sources:['https://stream.live.vc.bbcmedia.co.uk/bbc_arabic_radio']
-  },
-
-  'sky': {
-    name:'Sky News Arabia',
-    sources:['https://radio.skynewsarabia.com/stream']
-  },
-
-
-  'dw': { 
-    name:'Deutsche Welle – DW',
-    sources:['https://dwstream3-lh.akamaihd.net/i/dwelle_ar@124108/master.m3u8']
-  }
-};
-
-let currentStationId=null,currentSrcIndex=0,hlsInstance=null;
-const player=document.getElementById('radioPlayer');
-const statusMsg=document.getElementById('statusMsg');
-
-function startStation(id){
-  currentStationId=id;
-  currentSrcIndex=0;
-  tryPlayCurrentSource();
-}
-
-function tryPlayCurrentSource(){
-  const s=stations[currentStationId];
-  const url=s.sources[currentSrcIndex];
-
-  if(!url){ setStatus(`فشل تشغيل ${s.name} — انتهت الروابط`,true); return; }
-
-  setStatus(`جاري التشغيل: ${s.name} — محاولة ${currentSrcIndex+1}`);
-
-  if(hlsInstance){
-    try{ hlsInstance.destroy(); }catch(e){}
-  }
-
-  if(url.endsWith('.m3u8')){
-    if(Hls.isSupported()){
-      hlsInstance=new Hls();
-      hlsInstance.loadSource(url);
-      hlsInstance.attachMedia(player);
-      hlsInstance.on(Hls.Events.ERROR,()=>{
-        currentSrcIndex++;
-        tryPlayCurrentSource();
-      });
-      player.play().catch(()=>{});
-    } else {
-      player.src=url;
-      player.play().catch(()=>{
-        currentSrcIndex++;
-        tryPlayCurrentSource();
-      });
-    }
-    return;
-  }
-
-  player.src=url;
-  player.play()
-  .then(()=>{ setStatus(`قيد التشغيل: ${s.name}`); })
-  .catch(()=>{
-    currentSrcIndex++;
-    tryPlayCurrentSource();
-  });
-}
-
-function stopRadio(){
-  if(hlsInstance){
-    try{ hlsInstance.destroy(); }catch(e){}
-  }
-  player.pause();
-  player.src='';
-  setStatus('تم الإيقاف');
-}
-
-function pauseRadio(){
-  player.pause();
-  setStatus('إيقاف مؤقت');
-}
-
-function setStatus(msg,warn=false){
-  statusMsg.textContent=msg;
-  statusMsg.style.color=warn?'#ffb3b3':'#fff7c2';
-}
-
-document.getElementById('radioIcon').onclick=()=>{
-  const box=document.getElementById('radioPopup');
-  box.style.display = box.style.display==='block' ? 'none' : 'block';
-};
-</script>
 <!-- 🎄🎆 عدّاد الكريسماس + عدّاد رأس السنة مع تبديل اللغة -->
 <style>
 #christmasCountdown {
@@ -996,6 +773,26 @@ setInterval(loadWeather, 1800000);
 
   <div class="video-title ar">⭐ مقطع أعجبني – </div>
   <div class="video-title en" style="display:none;">⭐ Liked Video – New</div>
+</div>
+
+<!-- ⭐ مقطع فيديو مضاف -->
+<div class="video-card">
+  <iframe 
+    width="560" 
+    height="315"
+    src="https://www.youtube.com/embed/wH4DHoS_mVo?autoplay=0&controls=1"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen>
+  </iframe>
+
+  <!-- العنوان بالعربي -->
+  <div class="video-title ar">⭐ مقطع أعجبني</div>
+
+  <!-- العنوان بالإنجليزي -->
+  <div class="video-title en" style="display:none;">⭐ Liked Video</div>
 </div>
 
       <!-- ⭐⭐ مقطع أعجبني –  ⭐⭐ -->
@@ -2385,6 +2182,664 @@ pongBtn.addEventListener('mouseleave', () => {
     });
   });
 })();
+</script>
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<title>Emerald Music – Abwalqmrzmrd</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<!-- PayPal SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id=BAAQAE5C8rFrqoJpWqxpYluOT09waMhuzhF4ug2QGvJm76YmqiCmzkP31wl8xZq9W5WkJSvAx6ZoujIBFw&components=hosted-buttons&disable-funding=venmo&currency=USD"></script>
+
+<style>
+:root{--em:#00ffd5}
+body{margin:0;background:#000;color:#eaffff;font-family:"Tajawal",sans-serif;overflow:hidden}
+body.glow{background:radial-gradient(circle at center,rgba(0,255,213,.25),#000 72%)}
+
+/* زر الفتح */
+#openBtn{
+  position:fixed;bottom:58px;right:18px;width:78px;height:78px;border-radius:50%;
+  background:rgba(255,255,255,.08);border:2px solid var(--em);
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;cursor:pointer;box-shadow:0 0 18px var(--em);z-index:9999
+}
+
+/* الغطاء */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;z-index:999999}
+
+/* الصندوق */
+.box{
+  width:min(1200px,96vw);max-height:94vh;overflow:auto;
+  background:#041014;border:1px solid var(--em);border-radius:18px;
+  padding:14px;box-shadow:0 0 28px rgba(0,255,213,.6);position:relative
+}
+.close{position:absolute;top:10px;right:14px;font-size:22px;cursor:pointer;color:var(--em)}
+
+/* مربع PayPal */
+.pay-box{
+  position:absolute;top:12px;left:12px;background:rgba(0,0,0,.6);
+  border:1px solid var(--em);border-radius:14px;padding:8px 10px;
+  font-size:12px;box-shadow:0 0 14px var(--em);text-align:center;z-index:5
+}
+.pay-box b{color:#ffd700}
+#paypal-box{background:#fff;border-radius:10px;margin-top:6px;padding:4px}
+
+/* الكاميرا */
+.cam-box{
+  margin:8px auto 6px;
+  max-width:360px;
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 0 22px var(--em)
+}
+.cam-box video{width:100%;display:block;background:#000}
+
+/* أزرار */
+.row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0}
+.btn{
+  padding:6px 12px;border-radius:999px;background:#0b1b1f;
+  border:1px solid rgba(0,255,213,.4);color:#eaffff;cursor:pointer;font-size:12px
+}
+.btn.active{background:var(--em);color:#000}
+.btn.warn{border-color:rgba(255,170,0,.55)}
+.badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 12px;border-radius:999px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(0,255,213,.35);
+  font-size:12px; color:#dff
+}
+.smallhint{font-size:11px;opacity:.85;text-align:center;margin-top:-4px;line-height:1.5}
+
+/* لوحة المفاتيح */
+.keys-wrap{
+  margin-top:12px;border-radius:16px;
+  background:radial-gradient(circle at top,#003b3b,#000 75%);
+  box-shadow:0 0 24px var(--em);padding:12px
+}
+.keys-row{display:flex;justify-content:center;gap:4px;overflow-x:auto;scrollbar-width:thin}
+.key{
+  width:calc(92vw/12);max-width:64px;min-width:40px;height:24vw;
+  max-height:130px;min-height:90px;border-radius:8px;border:1px solid #555;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+  padding-bottom:6px;cursor:pointer;user-select:none;transition:.1s
+}
+.key.white{background:linear-gradient(#fff,#cfcfcf);color:#000}
+.key.black{background:linear-gradient(#222,#000);color:#fff}
+.key.active{
+  background:linear-gradient(#eaffff,#00ffd5);
+  box-shadow:0 0 24px rgba(0,255,213,.95);
+  border-color:rgba(0,255,213,.95);
+}
+.key small{font-size:9px;opacity:.95}
+.key .n{font-weight:800;font-size:12px;margin-bottom:2px}
+
+/* نافذة النوتات */
+.notes-modal{
+  display:none; position:fixed; inset:0; z-index:1000000;
+  background:rgba(0,0,0,.7);
+  align-items:center; justify-content:center;
+}
+.notes-box{
+  width:min(520px,92vw);
+  max-height:80vh;
+  overflow:auto;
+  background:#04161b;
+  border:1px solid var(--em);
+  border-radius:16px;
+  padding:14px;
+  box-shadow:0 0 26px rgba(0,255,213,.6);
+  position:relative;
+}
+.notes-box h3{margin:0 0 10px;text-align:center;color:#dff}
+.notes-box h4{margin:12px 0 6px;color:#bff}
+.notes-box p{margin:0 0 10px;font-size:13px;line-height:1.6}
+.notes-close{
+  position:absolute;top:10px;right:12px;cursor:pointer;color:var(--em);font-size:18px
+}
+.credit{
+  text-align:center;
+  margin:10px 0 2px;
+  font-size:11px;
+  opacity:.9;
+  color:#bff;
+  text-shadow:0 0 10px rgba(0,255,213,.65);
+}
+</style>
+</head>
+
+<body>
+<div id="openBtn">🎹💎</div>
+
+<script>
+/* ================== الأصوات (آلات كثيرة) ================== */
+const base={
+  piano  :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_grand_piano-mp3/",
+  epiano :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/electric_piano_1-mp3/",
+  oud    :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_guitar_nylon-mp3/",
+  buzuq  :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_guitar_steel-mp3/",
+  guitar :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/electric_guitar_clean-mp3/",
+  bass   :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/electric_bass_finger-mp3/",
+  qanun  :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/dulcimer-mp3/",
+  violin :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/violin-mp3/",
+  strings:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/string_ensemble_1-mp3/",
+  sax    :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/alto_sax-mp3/",
+  trumpet:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/trumpet-mp3/",
+  nay    :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/flute-mp3/",
+  choir  :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/choir_aahs-mp3/",
+  drums  :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/standard_kit-mp3/"
+};
+
+const LABEL={
+  piano:"🎹 Piano", epiano:"🎹 E-Piano", oud:"🪕 Oud", qanun:"🎼 Qanun", buzuq:"🪕 Buzuq",
+  guitar:"🎸 Guitar", bass:"🎸 Bass", violin:"🎻 Violin", strings:"🎻 Strings",
+  sax:"🎷 Sax", trumpet:"🎺 Trumpet", nay:"🎵 Nay", choir:"🎤 Choir", drums:"🥁 Drums"
+};
+
+/* ================== إعدادات ================== */
+let inst="piano", mix="none", vol=1, echo=1, octShift=0;
+const activeHold={}; // ضغطات طويلة
+let keyElByNote = {}; // للتمييز/التحريك أثناء المقطوعات
+
+/* ================== نوتات 36 من D2 ================== */
+const notes=[], order=["D","E","F","G","A","B","C"];
+let o=2; while(notes.length<36){ for(const l of order){ if(notes.length<36) notes.push(l+o); } o++; }
+
+/* ================== مساعدات ================== */
+function glow(){
+  document.body.classList.add("glow");
+  setTimeout(()=>document.body.classList.remove("glow"),120);
+}
+function clamp(n,min,max){ return Math.max(min, Math.min(max,n)); }
+function isBlack(n){ return ["E","G","B"].includes(n[0]); }
+function noteWithOctShift(note){
+  const letter = note[0];
+  const baseOct = parseInt(note.slice(1),10);
+  const finalOct = clamp(baseOct + octShift, 0, 9);
+  return letter + finalOct;
+}
+function highlightKey(note){
+  const el = keyElByNote[note] || null;
+  if(!el) return;
+  el.classList.add("active");
+  // تمرير المفتاح للظهور على الجوال/الشاشات الصغيرة
+  try{ el.scrollIntoView({behavior:"smooth", block:"nearest", inline:"center"}); }catch(_){}
+  setTimeout(()=>el.classList.remove("active"),160);
+}
+
+/* ================== تشغيل (قصير/طويل + دمج + Echo) ================== */
+function playOnce(note, instName, volumeMul=1){
+  const nn = noteWithOctShift(note);
+  const src = (base[instName]||base.piano) + nn + ".mp3";
+  const a = new Audio(src);
+  a.volume = clamp((vol||1) * (volumeMul||1), 0, 1);
+  a.play().catch(()=>{});
+  return a;
+}
+
+function startHold(note, holdId, alsoEl=null){
+  if(activeHold[holdId]) return;
+  const arr=[];
+  // الآلة الأساسية
+  const nn = noteWithOctShift(note);
+  const src1 = (base[inst]||base.piano) + nn + ".mp3";
+  const a1 = new Audio(src1);
+  a1.loop=true;
+  a1.volume=clamp(vol,0,1);
+  a1.play().catch(()=>{});
+  arr.push(a1);
+
+  // الدمج
+  if(mix!=="none" && mix!==inst){
+    const src2=(base[mix]||base.piano)+nn+".mp3";
+    const a2=new Audio(src2);
+    a2.loop=true;
+    a2.volume=clamp(vol,0,1);
+    a2.play().catch(()=>{});
+    arr.push(a2);
+  }
+
+  activeHold[holdId]=arr;
+  glow();
+  if(alsoEl) alsoEl.classList.add("active");
+}
+
+function stopHold(id, alsoEl=null){
+  if(!activeHold[id]) return;
+  activeHold[id].forEach(a=>{ try{a.pause();}catch(_){} });
+  delete activeHold[id];
+  if(alsoEl) alsoEl.classList.remove("active");
+}
+
+function shortPress(note, alsoEl=null){
+  // عزف قصير
+  playOnce(note, inst, 1);
+  if(mix!=="none" && mix!==inst) playOnce(note, mix, 1);
+
+  // Echo متدرّج (على الأساسية + على الدمج إن وجد)
+  const e = clamp(echo,0,2);
+  if(e>0){
+    const repeats=5;
+    const baseDelay=120;
+    for(let i=1;i<=repeats;i++){
+      const v = clamp((e/(i+0.2)) * 0.7, 0, 1);
+      setTimeout(()=>{
+        playOnce(note, inst, v);
+        if(mix!=="none" && mix!==inst) playOnce(note, mix, v);
+      }, baseDelay*i);
+    }
+  }
+
+  glow();
+  if(alsoEl){
+    alsoEl.classList.add("active");
+    try{ alsoEl.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"}); }catch(_){}
+    setTimeout(()=>alsoEl.classList.remove("active"),160);
+  }else{
+    highlightKey(note);
+  }
+}
+
+/* ================== مقطوعات + سلم موسيقي ================== */
+const MELODIES={
+  scale:["D2","E2","F2","G2","A2","B2","C2","D3","E3","F3","G3","A3","B3","C3","D4","E4","F4","G4","A4","B4","C4","D5"],
+  hbd:["C4","C4","D4","C4","F4","E4","C4","C4","D4","C4","G4","F4","C4","C4","C5","A4","F4","E4","D4"],
+  fairuz:["E4","F4","G4","A4","G4","F4","E4","D4","E4","F4","G4","A4","G4","F4","E4","D4"],
+  beethoven9:[
+    // مبسّطة (لأن 36 نغمة فقط) — تعطي إحساس اللحن
+    "E4","E4","F4","G4","G4","F4","E4","D4",
+    "C4","C4","D4","E4","E4","D4","D4",
+    "E4","E4","F4","G4","G4","F4","E4","D4",
+    "C4","C4","D4","E4","D4","C4","C4"
+  ],
+  sabah:[
+    // لحن صباح (مبسّط)
+    "G4","A4","B4","A4","G4","E4","D4","E4",
+    "G4","A4","G4","E4","D4"
+  ]
+};
+
+let timer=null;
+function stopMelody(){
+  if(timer){ clearInterval(timer); timer=null; }
+}
+function playMelody(arr, t=420){
+  stopMelody();
+  let i=0;
+  timer=setInterval(()=>{
+    if(i>=arr.length) return stopMelody();
+    const n=arr[i++];
+    shortPress(n);
+  }, t);
+}
+
+/* ================== تسجيل ويب كام + مايك + Pause/Resume + تشغيل/إيقاف كام/مايك أثناء التسجيل ================== */
+let camStream=null, mediaRecorder=null, chunks=[], camPaused=false;
+let camTrack=null, micTrack=null;
+
+async function startCamRecording(videoEl, recBtn, pauseBtn, camToggleBtn, micToggleBtn){
+  try{
+    camStream = await navigator.mediaDevices.getUserMedia({video:true, audio:true});
+    videoEl.srcObject = camStream;
+
+    camTrack = camStream.getVideoTracks()[0] || null;
+    micTrack = camStream.getAudioTracks()[0] || null;
+
+    chunks=[];
+    mediaRecorder = new MediaRecorder(camStream);
+    mediaRecorder.ondataavailable = e=>{ if(e.data && e.data.size) chunks.push(e.data); };
+    mediaRecorder.onstop = ()=>{
+      const blob = new Blob(chunks,{type:"video/webm"});
+      const url = URL.createObjectURL(blob);
+      const a=document.createElement("a");
+      a.href=url;
+      a.download="emerald-performance.webm";
+      a.click();
+      setTimeout(()=>URL.revokeObjectURL(url), 4000);
+    };
+
+    mediaRecorder.start();
+    camPaused=false;
+
+    recBtn.textContent="⏹ Stop";
+    pauseBtn.style.display="inline-block";
+    pauseBtn.textContent="⏸ Pause";
+    camToggleBtn.style.display="inline-block";
+    micToggleBtn.style.display="inline-block";
+    camToggleBtn.textContent="📷 Camera: ON";
+    micToggleBtn.textContent="🎙 Mic: ON";
+    camToggleBtn.classList.remove("warn");
+    micToggleBtn.classList.remove("warn");
+  }catch(e){
+    alert("تعذر تشغيل الكاميرا/المايك.\nتأكد من HTTPS ومنح الصلاحيات.\n\n" + (e?.message||e));
+  }
+}
+
+function stopCamRecording(recBtn, pauseBtn, camToggleBtn, micToggleBtn){
+  try{
+    if(mediaRecorder && mediaRecorder.state!=="inactive") mediaRecorder.stop();
+  }catch(_){}
+  try{
+    if(camStream) camStream.getTracks().forEach(t=>t.stop());
+  }catch(_){}
+
+  mediaRecorder=null;
+  camStream=null;
+  camTrack=null;
+  micTrack=null;
+  camPaused=false;
+
+  recBtn.textContent="🎥 Record Video";
+  pauseBtn.style.display="none";
+  camToggleBtn.style.display="none";
+  micToggleBtn.style.display="none";
+}
+
+/* ================== فتح اللوحة ================== */
+openBtn.onclick=()=>{
+  if(document.getElementById("panel")) return;
+
+  const p=document.createElement("div");
+  p.id="panel";
+  p.innerHTML=`
+  <div class="modal">
+    <div class="box">
+      <div class="close">✖</div>
+
+      <div class="pay-box">
+        🎵 المعاينة <b>مجانية</b><br>
+        💎 الاشتراك الشهري <b>3$</b>
+        <div id="paypal-box"></div>
+      </div>
+
+      <div class="cam-box">
+        <video id="cam" autoplay muted playsinline></video>
+      </div>
+
+      <div class="row">
+        <button class="btn" id="camRec">🎥 Record Video</button>
+        <button class="btn" id="camPause" style="display:none">⏸ Pause</button>
+        <button class="btn warn" id="camToggle" style="display:none">📷 Camera: ON</button>
+        <button class="btn warn" id="micToggle" style="display:none">🎙 Mic: ON</button>
+      </div>
+
+      <div class="row">
+        <button class="btn" id="mBeet">🎼 Beethoven 9</button>
+        <button class="btn" id="mSabah">🎵 Sabah</button>
+        <button class="btn" id="mScale">🎹 Scale</button>
+        <button class="btn" id="mHbd">🎂 Birthday</button>
+        <button class="btn" id="mFairuz">🎵 Fairuz</button>
+        <button class="btn" id="mStop">⏹ Stop</button>
+        <button class="btn" id="notesBtn">🎼 Notes</button>
+      </div>
+
+      <div class="row">
+        <span class="badge">🎛 الآلة الأساسية</span>
+        ${Object.keys(LABEL).map(k=>`<button class="btn ${k==="piano"?"active":""}" data-i="${k}">${LABEL[k]}</button>`).join("")}
+      </div>
+
+      <div class="row">
+        <span class="badge">🔀 الدمج (Mix)</span>
+        <button class="btn active" data-m="none">❌ Off</button>
+        ${Object.keys(LABEL).map(k=>`<button class="btn" data-m="${k}">${LABEL[k]}</button>`).join("")}
+      </div>
+
+      <div class="row">
+        <span class="badge">🔊 Volume</span>
+        <input id="v" type="range" min="0" max="100" value="100" style="width:160px">
+        <span class="badge">🎚 Echo</span>
+        <input id="e" type="range" min="0" max="200" value="100" style="width:160px">
+        <span class="badge">🎹 Oct</span>
+        <button class="btn" id="octDown">-</button>
+        <span class="badge" id="octVal">0</span>
+        <button class="btn" id="octUp">+</button>
+      </div>
+
+      <div class="smallhint">
+        ✅ ضغطة قصيرة = نغمة واحدة — ضغطة طويلة = استمرار الصوت (Sustain)<br>
+        ⌨️ كيبورد: 1-0 ثم Q..P ثم A..L ثم Z..M (ضغط مستمر = استمرار)
+      </div>
+
+      <div class="keys-wrap">
+        <div id="keys"></div>
+      </div>
+
+      <div class="credit">✨ إعداد وتصميم وإنتاج أبوالقمر زمرد × Emerald Music ✨</div>
+
+      <div id="notesModal" class="notes-modal">
+        <div class="notes-box">
+          <div class="notes-close">✖</div>
+          <h3>🎼 نوتات المقطوعات</h3>
+
+          <h4>🎼 Beethoven 9 (Simplified)</h4>
+          <p>${MELODIES.beethoven9.join(" ")}</p>
+
+          <h4>🎵 Sabah (Simplified)</h4>
+          <p>${MELODIES.sabah.join(" ")}</p>
+
+          <h4>🎹 Scale</h4>
+          <p>${MELODIES.scale.join(" ")}</p>
+
+          <h4>🎂 Happy Birthday</h4>
+          <p>${MELODIES.hbd.join(" ")}</p>
+
+          <h4>🎵 Fairuz (Short)</h4>
+          <p>${MELODIES.fairuz.join(" ")}</p>
+        </div>
+      </div>
+
+    </div>
+  </div>`;
+  document.body.appendChild(p);
+
+  /* PayPal */
+  try{
+    paypal.HostedButtons({hostedButtonId:"UYVXY5FCMHRJJ"}).render("#paypal-box");
+  }catch(e){
+    console.log("PayPal error:", e);
+  }
+
+  /* عناصر */
+  const closeBtn = p.querySelector(".close");
+  const cam = p.querySelector("#cam");
+  const camRec = p.querySelector("#camRec");
+  const camPause = p.querySelector("#camPause");
+  const camToggle = p.querySelector("#camToggle");
+  const micToggle = p.querySelector("#micToggle");
+
+  const notesBtn = p.querySelector("#notesBtn");
+  const notesModal = p.querySelector("#notesModal");
+  const notesClose = p.querySelector(".notes-close");
+
+  /* النوتات */
+  notesBtn.onclick=()=>{ notesModal.style.display="flex"; };
+  notesClose.onclick=()=>{ notesModal.style.display="none"; };
+  notesModal.addEventListener("click",(e)=>{ if(e.target===notesModal) notesModal.style.display="none"; });
+
+  /* إغلاق */
+  closeBtn.onclick=()=>{
+    stopMelody();
+    notesModal.style.display="none";
+
+    // إيقاف تسجيل الفيديو إن كان شغّال
+    try{
+      if(mediaRecorder){
+        stopCamRecording(camRec, camPause, camToggle, micToggle);
+      }
+    }catch(_){}
+
+    // وقف أي ضغطات طويلة
+    Object.keys(activeHold).forEach(id=>stopHold(id));
+    p.remove();
+  };
+
+  /* المقطوعات */
+  p.querySelector("#mBeet").onclick=()=>playMelody(MELODIES.beethoven9, 380);
+  p.querySelector("#mSabah").onclick=()=>playMelody(MELODIES.sabah, 420);
+  p.querySelector("#mScale").onclick=()=>playMelody(MELODIES.scale, 220);
+  p.querySelector("#mHbd").onclick=()=>playMelody(MELODIES.hbd, 420);
+  p.querySelector("#mFairuz").onclick=()=>playMelody(MELODIES.fairuz, 430);
+  p.querySelector("#mStop").onclick=()=>stopMelody();
+
+  /* الآلة الأساسية */
+  p.querySelectorAll("[data-i]").forEach(b=>{
+    b.onclick=()=>{
+      p.querySelectorAll("[data-i]").forEach(x=>x.classList.remove("active"));
+      b.classList.add("active");
+      inst=b.dataset.i;
+    };
+  });
+
+  /* الدمج */
+  p.querySelectorAll("[data-m]").forEach(b=>{
+    b.onclick=()=>{
+      p.querySelectorAll("[data-m]").forEach(x=>x.classList.remove("active"));
+      b.classList.add("active");
+      mix=b.dataset.m;
+    };
+  });
+
+  /* Volume / Echo */
+  p.querySelector("#v").oninput=(e)=>vol = e.target.value/100;
+  p.querySelector("#e").oninput=(e)=>echo = e.target.value/100;
+
+  /* Octave */
+  const octVal=p.querySelector("#octVal");
+  function renderOct(){ octVal.textContent = String(octShift); }
+  p.querySelector("#octDown").onclick=()=>{ octShift=clamp(octShift-1,-2,2); renderOct(); };
+  p.querySelector("#octUp").onclick=()=>{ octShift=clamp(octShift+1,-2,2); renderOct(); };
+  renderOct();
+
+  /* تسجيل فيديو: Start/Stop + Pause/Resume + Toggle Cam/Mic */
+  camRec.onclick=async()=>{
+    if(!mediaRecorder){
+      await startCamRecording(cam, camRec, camPause, camToggle, micToggle);
+    }else{
+      stopCamRecording(camRec, camPause, camToggle, micToggle);
+    }
+  };
+
+  camPause.onclick=()=>{
+    if(!mediaRecorder) return;
+
+    if(!camPaused){
+      try{ mediaRecorder.pause(); }catch(_){}
+      camPause.textContent="▶ Resume";
+      camPaused=true;
+    }else{
+      try{ mediaRecorder.resume(); }catch(_){}
+      camPause.textContent="⏸ Pause";
+      camPaused=false;
+    }
+  };
+
+  camToggle.onclick=()=>{
+    if(!camTrack) return;
+    camTrack.enabled = !camTrack.enabled;
+    if(camTrack.enabled){
+      camToggle.textContent="📷 Camera: ON";
+      camToggle.classList.remove("warn");
+    }else{
+      camToggle.textContent="📷 Camera: OFF";
+      camToggle.classList.add("warn");
+    }
+  };
+
+  micToggle.onclick=()=>{
+    if(!micTrack) return;
+    micTrack.enabled = !micTrack.enabled;
+    if(micTrack.enabled){
+      micToggle.textContent="🎙 Mic: ON";
+      micToggle.classList.remove("warn");
+    }else{
+      micToggle.textContent="🎙 Mic: OFF";
+      micToggle.classList.add("warn");
+    }
+  };
+
+  /* لوحة المفاتيح (قصير/طويل) + حفظ عناصر المفاتيح للنوتات */
+  const keysWrap=p.querySelector("#keys");
+  const r1=document.createElement("div");
+  const r2=document.createElement("div");
+  r1.className=r2.className="keys-row";
+
+  keyElByNote = {}; // reset
+
+  notes.forEach((n,i)=>{
+    const d=document.createElement("div");
+    d.className="key "+(isBlack(n)?"black":"white");
+    d.innerHTML=`<div class="n">${i+1}</div><small>${n}</small>`;
+
+    const id="key-"+i;
+    keyElByNote[n]=d;
+
+    // حماية: لا نجعل click يكرر بعد hold الطويل
+    let downAt=0, didHold=false;
+
+    d.onpointerdown=(ev)=>{
+      ev.preventDefault();
+      downAt=Date.now();
+      didHold=false;
+
+      // بعد 180ms إن لم يُرفع الإصبع -> اعتبره Hold
+      const localDownAt=downAt;
+      setTimeout(()=>{
+        if(downAt===localDownAt){
+          didHold=true;
+          startHold(n, id, d);
+        }
+      }, 180);
+    };
+
+    const endPointer=()=>{
+      if(activeHold[id]) stopHold(id, d);
+      downAt=0;
+    };
+
+    d.onpointerup=endPointer;
+    d.onpointerleave=endPointer;
+    d.onpointercancel=endPointer;
+
+    d.onclick=()=>{
+      if(didHold) return; // كان Hold
+      shortPress(n, d);
+    };
+
+    (i<18?r1:r2).appendChild(d);
+  });
+
+  keysWrap.append(r1,r2);
+};
+
+/* ================== كيبورد الكمبيوتر: ضغط مستمر = Hold ، رفع = Stop ================== */
+const KEY_BIND=[
+  "Digit1","Digit2","Digit3","Digit4","Digit5","Digit6","Digit7","Digit8","Digit9","Digit0",
+  "KeyQ","KeyW","KeyE","KeyR","KeyT","KeyY","KeyU","KeyI","KeyO","KeyP",
+  "KeyA","KeyS","KeyD","KeyF","KeyG","KeyH","KeyJ","KeyK","KeyL",
+  "KeyZ","KeyX","KeyC","KeyV","KeyB","KeyN","KeyM"
+];
+const KI={}; KEY_BIND.forEach((k,i)=>KI[k]=i);
+
+window.addEventListener("keydown",(e)=>{
+  if(e.repeat) return;
+  const idx=KI[e.code];
+  if(idx===undefined || !notes[idx]) return;
+
+  const note=notes[idx];
+  const holdId="kb-"+idx;
+  startHold(note, holdId, keyElByNote[note]||null);
+});
+
+window.addEventListener("keyup",(e)=>{
+  const idx=KI[e.code];
+  if(idx===undefined) return;
+  const note=notes[idx];
+  const holdId="kb-"+idx;
+  stopHold(holdId, keyElByNote[note]||null);
+});
 </script>
 
 <!-- ================= أيقونة القصة + النافذة المعدلة ================= -->
@@ -3950,664 +4405,6 @@ document.getElementById("closeBtn").onclick = () => {
 
 </body>
 </html>
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8" />
-<title>Emerald Music – Abwalqmrzmrd</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-<!-- PayPal SDK -->
-<script src="https://www.paypal.com/sdk/js?client-id=BAAQAE5C8rFrqoJpWqxpYluOT09waMhuzhF4ug2QGvJm76YmqiCmzkP31wl8xZq9W5WkJSvAx6ZoujIBFw&components=hosted-buttons&disable-funding=venmo&currency=USD"></script>
-
-<style>
-:root{--em:#00ffd5}
-body{margin:0;background:#000;color:#eaffff;font-family:"Tajawal",sans-serif;overflow:hidden}
-body.glow{background:radial-gradient(circle at center,rgba(0,255,213,.25),#000 72%)}
-
-/* زر الفتح */
-#openBtn{
-  position:fixed;bottom:18px;right:18px;width:78px;height:78px;border-radius:50%;
-  background:rgba(255,255,255,.08);border:2px solid var(--em);
-  display:flex;align-items:center;justify-content:center;
-  font-size:28px;cursor:pointer;box-shadow:0 0 18px var(--em);z-index:9999
-}
-
-/* الغطاء */
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;z-index:999999}
-
-/* الصندوق */
-.box{
-  width:min(1200px,96vw);max-height:94vh;overflow:auto;
-  background:#041014;border:1px solid var(--em);border-radius:18px;
-  padding:14px;box-shadow:0 0 28px rgba(0,255,213,.6);position:relative
-}
-.close{position:absolute;top:10px;right:14px;font-size:22px;cursor:pointer;color:var(--em)}
-
-/* مربع PayPal */
-.pay-box{
-  position:absolute;top:12px;left:12px;background:rgba(0,0,0,.6);
-  border:1px solid var(--em);border-radius:14px;padding:8px 10px;
-  font-size:12px;box-shadow:0 0 14px var(--em);text-align:center;z-index:5
-}
-.pay-box b{color:#ffd700}
-#paypal-box{background:#fff;border-radius:10px;margin-top:6px;padding:4px}
-
-/* الكاميرا */
-.cam-box{
-  margin:8px auto 6px;
-  max-width:360px;
-  border-radius:14px;
-  overflow:hidden;
-  box-shadow:0 0 22px var(--em)
-}
-.cam-box video{width:100%;display:block;background:#000}
-
-/* أزرار */
-.row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0}
-.btn{
-  padding:6px 12px;border-radius:999px;background:#0b1b1f;
-  border:1px solid rgba(0,255,213,.4);color:#eaffff;cursor:pointer;font-size:12px
-}
-.btn.active{background:var(--em);color:#000}
-.btn.warn{border-color:rgba(255,170,0,.55)}
-.badge{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:6px 12px;border-radius:999px;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(0,255,213,.35);
-  font-size:12px; color:#dff
-}
-.smallhint{font-size:11px;opacity:.85;text-align:center;margin-top:-4px;line-height:1.5}
-
-/* لوحة المفاتيح */
-.keys-wrap{
-  margin-top:12px;border-radius:16px;
-  background:radial-gradient(circle at top,#003b3b,#000 75%);
-  box-shadow:0 0 24px var(--em);padding:12px
-}
-.keys-row{display:flex;justify-content:center;gap:4px;overflow-x:auto;scrollbar-width:thin}
-.key{
-  width:calc(92vw/12);max-width:64px;min-width:40px;height:24vw;
-  max-height:130px;min-height:90px;border-radius:8px;border:1px solid #555;
-  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
-  padding-bottom:6px;cursor:pointer;user-select:none;transition:.1s
-}
-.key.white{background:linear-gradient(#fff,#cfcfcf);color:#000}
-.key.black{background:linear-gradient(#222,#000);color:#fff}
-.key.active{
-  background:linear-gradient(#eaffff,#00ffd5);
-  box-shadow:0 0 24px rgba(0,255,213,.95);
-  border-color:rgba(0,255,213,.95);
-}
-.key small{font-size:9px;opacity:.95}
-.key .n{font-weight:800;font-size:12px;margin-bottom:2px}
-
-/* نافذة النوتات */
-.notes-modal{
-  display:none; position:fixed; inset:0; z-index:1000000;
-  background:rgba(0,0,0,.7);
-  align-items:center; justify-content:center;
-}
-.notes-box{
-  width:min(520px,92vw);
-  max-height:80vh;
-  overflow:auto;
-  background:#04161b;
-  border:1px solid var(--em);
-  border-radius:16px;
-  padding:14px;
-  box-shadow:0 0 26px rgba(0,255,213,.6);
-  position:relative;
-}
-.notes-box h3{margin:0 0 10px;text-align:center;color:#dff}
-.notes-box h4{margin:12px 0 6px;color:#bff}
-.notes-box p{margin:0 0 10px;font-size:13px;line-height:1.6}
-.notes-close{
-  position:absolute;top:10px;right:12px;cursor:pointer;color:var(--em);font-size:18px
-}
-.credit{
-  text-align:center;
-  margin:10px 0 2px;
-  font-size:11px;
-  opacity:.9;
-  color:#bff;
-  text-shadow:0 0 10px rgba(0,255,213,.65);
-}
-</style>
-</head>
-
-<body>
-<div id="openBtn">🎹💎</div>
-
-<script>
-/* ================== الأصوات (آلات كثيرة) ================== */
-const base={
-  piano  :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_grand_piano-mp3/",
-  epiano :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/electric_piano_1-mp3/",
-  oud    :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_guitar_nylon-mp3/",
-  buzuq  :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_guitar_steel-mp3/",
-  guitar :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/electric_guitar_clean-mp3/",
-  bass   :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/electric_bass_finger-mp3/",
-  qanun  :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/dulcimer-mp3/",
-  violin :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/violin-mp3/",
-  strings:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/string_ensemble_1-mp3/",
-  sax    :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/alto_sax-mp3/",
-  trumpet:"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/trumpet-mp3/",
-  nay    :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/flute-mp3/",
-  choir  :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/choir_aahs-mp3/",
-  drums  :"https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/standard_kit-mp3/"
-};
-
-const LABEL={
-  piano:"🎹 Piano", epiano:"🎹 E-Piano", oud:"🪕 Oud", qanun:"🎼 Qanun", buzuq:"🪕 Buzuq",
-  guitar:"🎸 Guitar", bass:"🎸 Bass", violin:"🎻 Violin", strings:"🎻 Strings",
-  sax:"🎷 Sax", trumpet:"🎺 Trumpet", nay:"🎵 Nay", choir:"🎤 Choir", drums:"🥁 Drums"
-};
-
-/* ================== إعدادات ================== */
-let inst="piano", mix="none", vol=1, echo=1, octShift=0;
-const activeHold={}; // ضغطات طويلة
-let keyElByNote = {}; // للتمييز/التحريك أثناء المقطوعات
-
-/* ================== نوتات 36 من D2 ================== */
-const notes=[], order=["D","E","F","G","A","B","C"];
-let o=2; while(notes.length<36){ for(const l of order){ if(notes.length<36) notes.push(l+o); } o++; }
-
-/* ================== مساعدات ================== */
-function glow(){
-  document.body.classList.add("glow");
-  setTimeout(()=>document.body.classList.remove("glow"),120);
-}
-function clamp(n,min,max){ return Math.max(min, Math.min(max,n)); }
-function isBlack(n){ return ["E","G","B"].includes(n[0]); }
-function noteWithOctShift(note){
-  const letter = note[0];
-  const baseOct = parseInt(note.slice(1),10);
-  const finalOct = clamp(baseOct + octShift, 0, 9);
-  return letter + finalOct;
-}
-function highlightKey(note){
-  const el = keyElByNote[note] || null;
-  if(!el) return;
-  el.classList.add("active");
-  // تمرير المفتاح للظهور على الجوال/الشاشات الصغيرة
-  try{ el.scrollIntoView({behavior:"smooth", block:"nearest", inline:"center"}); }catch(_){}
-  setTimeout(()=>el.classList.remove("active"),160);
-}
-
-/* ================== تشغيل (قصير/طويل + دمج + Echo) ================== */
-function playOnce(note, instName, volumeMul=1){
-  const nn = noteWithOctShift(note);
-  const src = (base[instName]||base.piano) + nn + ".mp3";
-  const a = new Audio(src);
-  a.volume = clamp((vol||1) * (volumeMul||1), 0, 1);
-  a.play().catch(()=>{});
-  return a;
-}
-
-function startHold(note, holdId, alsoEl=null){
-  if(activeHold[holdId]) return;
-  const arr=[];
-  // الآلة الأساسية
-  const nn = noteWithOctShift(note);
-  const src1 = (base[inst]||base.piano) + nn + ".mp3";
-  const a1 = new Audio(src1);
-  a1.loop=true;
-  a1.volume=clamp(vol,0,1);
-  a1.play().catch(()=>{});
-  arr.push(a1);
-
-  // الدمج
-  if(mix!=="none" && mix!==inst){
-    const src2=(base[mix]||base.piano)+nn+".mp3";
-    const a2=new Audio(src2);
-    a2.loop=true;
-    a2.volume=clamp(vol,0,1);
-    a2.play().catch(()=>{});
-    arr.push(a2);
-  }
-
-  activeHold[holdId]=arr;
-  glow();
-  if(alsoEl) alsoEl.classList.add("active");
-}
-
-function stopHold(id, alsoEl=null){
-  if(!activeHold[id]) return;
-  activeHold[id].forEach(a=>{ try{a.pause();}catch(_){} });
-  delete activeHold[id];
-  if(alsoEl) alsoEl.classList.remove("active");
-}
-
-function shortPress(note, alsoEl=null){
-  // عزف قصير
-  playOnce(note, inst, 1);
-  if(mix!=="none" && mix!==inst) playOnce(note, mix, 1);
-
-  // Echo متدرّج (على الأساسية + على الدمج إن وجد)
-  const e = clamp(echo,0,2);
-  if(e>0){
-    const repeats=5;
-    const baseDelay=120;
-    for(let i=1;i<=repeats;i++){
-      const v = clamp((e/(i+0.2)) * 0.7, 0, 1);
-      setTimeout(()=>{
-        playOnce(note, inst, v);
-        if(mix!=="none" && mix!==inst) playOnce(note, mix, v);
-      }, baseDelay*i);
-    }
-  }
-
-  glow();
-  if(alsoEl){
-    alsoEl.classList.add("active");
-    try{ alsoEl.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"}); }catch(_){}
-    setTimeout(()=>alsoEl.classList.remove("active"),160);
-  }else{
-    highlightKey(note);
-  }
-}
-
-/* ================== مقطوعات + سلم موسيقي ================== */
-const MELODIES={
-  scale:["D2","E2","F2","G2","A2","B2","C2","D3","E3","F3","G3","A3","B3","C3","D4","E4","F4","G4","A4","B4","C4","D5"],
-  hbd:["C4","C4","D4","C4","F4","E4","C4","C4","D4","C4","G4","F4","C4","C4","C5","A4","F4","E4","D4"],
-  fairuz:["E4","F4","G4","A4","G4","F4","E4","D4","E4","F4","G4","A4","G4","F4","E4","D4"],
-  beethoven9:[
-    // مبسّطة (لأن 36 نغمة فقط) — تعطي إحساس اللحن
-    "E4","E4","F4","G4","G4","F4","E4","D4",
-    "C4","C4","D4","E4","E4","D4","D4",
-    "E4","E4","F4","G4","G4","F4","E4","D4",
-    "C4","C4","D4","E4","D4","C4","C4"
-  ],
-  sabah:[
-    // لحن صباح (مبسّط)
-    "G4","A4","B4","A4","G4","E4","D4","E4",
-    "G4","A4","G4","E4","D4"
-  ]
-};
-
-let timer=null;
-function stopMelody(){
-  if(timer){ clearInterval(timer); timer=null; }
-}
-function playMelody(arr, t=420){
-  stopMelody();
-  let i=0;
-  timer=setInterval(()=>{
-    if(i>=arr.length) return stopMelody();
-    const n=arr[i++];
-    shortPress(n);
-  }, t);
-}
-
-/* ================== تسجيل ويب كام + مايك + Pause/Resume + تشغيل/إيقاف كام/مايك أثناء التسجيل ================== */
-let camStream=null, mediaRecorder=null, chunks=[], camPaused=false;
-let camTrack=null, micTrack=null;
-
-async function startCamRecording(videoEl, recBtn, pauseBtn, camToggleBtn, micToggleBtn){
-  try{
-    camStream = await navigator.mediaDevices.getUserMedia({video:true, audio:true});
-    videoEl.srcObject = camStream;
-
-    camTrack = camStream.getVideoTracks()[0] || null;
-    micTrack = camStream.getAudioTracks()[0] || null;
-
-    chunks=[];
-    mediaRecorder = new MediaRecorder(camStream);
-    mediaRecorder.ondataavailable = e=>{ if(e.data && e.data.size) chunks.push(e.data); };
-    mediaRecorder.onstop = ()=>{
-      const blob = new Blob(chunks,{type:"video/webm"});
-      const url = URL.createObjectURL(blob);
-      const a=document.createElement("a");
-      a.href=url;
-      a.download="emerald-performance.webm";
-      a.click();
-      setTimeout(()=>URL.revokeObjectURL(url), 4000);
-    };
-
-    mediaRecorder.start();
-    camPaused=false;
-
-    recBtn.textContent="⏹ Stop";
-    pauseBtn.style.display="inline-block";
-    pauseBtn.textContent="⏸ Pause";
-    camToggleBtn.style.display="inline-block";
-    micToggleBtn.style.display="inline-block";
-    camToggleBtn.textContent="📷 Camera: ON";
-    micToggleBtn.textContent="🎙 Mic: ON";
-    camToggleBtn.classList.remove("warn");
-    micToggleBtn.classList.remove("warn");
-  }catch(e){
-    alert("تعذر تشغيل الكاميرا/المايك.\nتأكد من HTTPS ومنح الصلاحيات.\n\n" + (e?.message||e));
-  }
-}
-
-function stopCamRecording(recBtn, pauseBtn, camToggleBtn, micToggleBtn){
-  try{
-    if(mediaRecorder && mediaRecorder.state!=="inactive") mediaRecorder.stop();
-  }catch(_){}
-  try{
-    if(camStream) camStream.getTracks().forEach(t=>t.stop());
-  }catch(_){}
-
-  mediaRecorder=null;
-  camStream=null;
-  camTrack=null;
-  micTrack=null;
-  camPaused=false;
-
-  recBtn.textContent="🎥 Record Video";
-  pauseBtn.style.display="none";
-  camToggleBtn.style.display="none";
-  micToggleBtn.style.display="none";
-}
-
-/* ================== فتح اللوحة ================== */
-openBtn.onclick=()=>{
-  if(document.getElementById("panel")) return;
-
-  const p=document.createElement("div");
-  p.id="panel";
-  p.innerHTML=`
-  <div class="modal">
-    <div class="box">
-      <div class="close">✖</div>
-
-      <div class="pay-box">
-        🎵 المعاينة <b>مجانية</b><br>
-        💎 الاشتراك الشهري <b>3$</b>
-        <div id="paypal-box"></div>
-      </div>
-
-      <div class="cam-box">
-        <video id="cam" autoplay muted playsinline></video>
-      </div>
-
-      <div class="row">
-        <button class="btn" id="camRec">🎥 Record Video</button>
-        <button class="btn" id="camPause" style="display:none">⏸ Pause</button>
-        <button class="btn warn" id="camToggle" style="display:none">📷 Camera: ON</button>
-        <button class="btn warn" id="micToggle" style="display:none">🎙 Mic: ON</button>
-      </div>
-
-      <div class="row">
-        <button class="btn" id="mBeet">🎼 Beethoven 9</button>
-        <button class="btn" id="mSabah">🎵 Sabah</button>
-        <button class="btn" id="mScale">🎹 Scale</button>
-        <button class="btn" id="mHbd">🎂 Birthday</button>
-        <button class="btn" id="mFairuz">🎵 Fairuz</button>
-        <button class="btn" id="mStop">⏹ Stop</button>
-        <button class="btn" id="notesBtn">🎼 Notes</button>
-      </div>
-
-      <div class="row">
-        <span class="badge">🎛 الآلة الأساسية</span>
-        ${Object.keys(LABEL).map(k=>`<button class="btn ${k==="piano"?"active":""}" data-i="${k}">${LABEL[k]}</button>`).join("")}
-      </div>
-
-      <div class="row">
-        <span class="badge">🔀 الدمج (Mix)</span>
-        <button class="btn active" data-m="none">❌ Off</button>
-        ${Object.keys(LABEL).map(k=>`<button class="btn" data-m="${k}">${LABEL[k]}</button>`).join("")}
-      </div>
-
-      <div class="row">
-        <span class="badge">🔊 Volume</span>
-        <input id="v" type="range" min="0" max="100" value="100" style="width:160px">
-        <span class="badge">🎚 Echo</span>
-        <input id="e" type="range" min="0" max="200" value="100" style="width:160px">
-        <span class="badge">🎹 Oct</span>
-        <button class="btn" id="octDown">-</button>
-        <span class="badge" id="octVal">0</span>
-        <button class="btn" id="octUp">+</button>
-      </div>
-
-      <div class="smallhint">
-        ✅ ضغطة قصيرة = نغمة واحدة — ضغطة طويلة = استمرار الصوت (Sustain)<br>
-        ⌨️ كيبورد: 1-0 ثم Q..P ثم A..L ثم Z..M (ضغط مستمر = استمرار)
-      </div>
-
-      <div class="keys-wrap">
-        <div id="keys"></div>
-      </div>
-
-      <div class="credit">✨ إعداد وتصميم وإنتاج أبوالقمر زمرد × Emerald Music ✨</div>
-
-      <div id="notesModal" class="notes-modal">
-        <div class="notes-box">
-          <div class="notes-close">✖</div>
-          <h3>🎼 نوتات المقطوعات</h3>
-
-          <h4>🎼 Beethoven 9 (Simplified)</h4>
-          <p>${MELODIES.beethoven9.join(" ")}</p>
-
-          <h4>🎵 Sabah (Simplified)</h4>
-          <p>${MELODIES.sabah.join(" ")}</p>
-
-          <h4>🎹 Scale</h4>
-          <p>${MELODIES.scale.join(" ")}</p>
-
-          <h4>🎂 Happy Birthday</h4>
-          <p>${MELODIES.hbd.join(" ")}</p>
-
-          <h4>🎵 Fairuz (Short)</h4>
-          <p>${MELODIES.fairuz.join(" ")}</p>
-        </div>
-      </div>
-
-    </div>
-  </div>`;
-  document.body.appendChild(p);
-
-  /* PayPal */
-  try{
-    paypal.HostedButtons({hostedButtonId:"UYVXY5FCMHRJJ"}).render("#paypal-box");
-  }catch(e){
-    console.log("PayPal error:", e);
-  }
-
-  /* عناصر */
-  const closeBtn = p.querySelector(".close");
-  const cam = p.querySelector("#cam");
-  const camRec = p.querySelector("#camRec");
-  const camPause = p.querySelector("#camPause");
-  const camToggle = p.querySelector("#camToggle");
-  const micToggle = p.querySelector("#micToggle");
-
-  const notesBtn = p.querySelector("#notesBtn");
-  const notesModal = p.querySelector("#notesModal");
-  const notesClose = p.querySelector(".notes-close");
-
-  /* النوتات */
-  notesBtn.onclick=()=>{ notesModal.style.display="flex"; };
-  notesClose.onclick=()=>{ notesModal.style.display="none"; };
-  notesModal.addEventListener("click",(e)=>{ if(e.target===notesModal) notesModal.style.display="none"; });
-
-  /* إغلاق */
-  closeBtn.onclick=()=>{
-    stopMelody();
-    notesModal.style.display="none";
-
-    // إيقاف تسجيل الفيديو إن كان شغّال
-    try{
-      if(mediaRecorder){
-        stopCamRecording(camRec, camPause, camToggle, micToggle);
-      }
-    }catch(_){}
-
-    // وقف أي ضغطات طويلة
-    Object.keys(activeHold).forEach(id=>stopHold(id));
-    p.remove();
-  };
-
-  /* المقطوعات */
-  p.querySelector("#mBeet").onclick=()=>playMelody(MELODIES.beethoven9, 380);
-  p.querySelector("#mSabah").onclick=()=>playMelody(MELODIES.sabah, 420);
-  p.querySelector("#mScale").onclick=()=>playMelody(MELODIES.scale, 220);
-  p.querySelector("#mHbd").onclick=()=>playMelody(MELODIES.hbd, 420);
-  p.querySelector("#mFairuz").onclick=()=>playMelody(MELODIES.fairuz, 430);
-  p.querySelector("#mStop").onclick=()=>stopMelody();
-
-  /* الآلة الأساسية */
-  p.querySelectorAll("[data-i]").forEach(b=>{
-    b.onclick=()=>{
-      p.querySelectorAll("[data-i]").forEach(x=>x.classList.remove("active"));
-      b.classList.add("active");
-      inst=b.dataset.i;
-    };
-  });
-
-  /* الدمج */
-  p.querySelectorAll("[data-m]").forEach(b=>{
-    b.onclick=()=>{
-      p.querySelectorAll("[data-m]").forEach(x=>x.classList.remove("active"));
-      b.classList.add("active");
-      mix=b.dataset.m;
-    };
-  });
-
-  /* Volume / Echo */
-  p.querySelector("#v").oninput=(e)=>vol = e.target.value/100;
-  p.querySelector("#e").oninput=(e)=>echo = e.target.value/100;
-
-  /* Octave */
-  const octVal=p.querySelector("#octVal");
-  function renderOct(){ octVal.textContent = String(octShift); }
-  p.querySelector("#octDown").onclick=()=>{ octShift=clamp(octShift-1,-2,2); renderOct(); };
-  p.querySelector("#octUp").onclick=()=>{ octShift=clamp(octShift+1,-2,2); renderOct(); };
-  renderOct();
-
-  /* تسجيل فيديو: Start/Stop + Pause/Resume + Toggle Cam/Mic */
-  camRec.onclick=async()=>{
-    if(!mediaRecorder){
-      await startCamRecording(cam, camRec, camPause, camToggle, micToggle);
-    }else{
-      stopCamRecording(camRec, camPause, camToggle, micToggle);
-    }
-  };
-
-  camPause.onclick=()=>{
-    if(!mediaRecorder) return;
-
-    if(!camPaused){
-      try{ mediaRecorder.pause(); }catch(_){}
-      camPause.textContent="▶ Resume";
-      camPaused=true;
-    }else{
-      try{ mediaRecorder.resume(); }catch(_){}
-      camPause.textContent="⏸ Pause";
-      camPaused=false;
-    }
-  };
-
-  camToggle.onclick=()=>{
-    if(!camTrack) return;
-    camTrack.enabled = !camTrack.enabled;
-    if(camTrack.enabled){
-      camToggle.textContent="📷 Camera: ON";
-      camToggle.classList.remove("warn");
-    }else{
-      camToggle.textContent="📷 Camera: OFF";
-      camToggle.classList.add("warn");
-    }
-  };
-
-  micToggle.onclick=()=>{
-    if(!micTrack) return;
-    micTrack.enabled = !micTrack.enabled;
-    if(micTrack.enabled){
-      micToggle.textContent="🎙 Mic: ON";
-      micToggle.classList.remove("warn");
-    }else{
-      micToggle.textContent="🎙 Mic: OFF";
-      micToggle.classList.add("warn");
-    }
-  };
-
-  /* لوحة المفاتيح (قصير/طويل) + حفظ عناصر المفاتيح للنوتات */
-  const keysWrap=p.querySelector("#keys");
-  const r1=document.createElement("div");
-  const r2=document.createElement("div");
-  r1.className=r2.className="keys-row";
-
-  keyElByNote = {}; // reset
-
-  notes.forEach((n,i)=>{
-    const d=document.createElement("div");
-    d.className="key "+(isBlack(n)?"black":"white");
-    d.innerHTML=`<div class="n">${i+1}</div><small>${n}</small>`;
-
-    const id="key-"+i;
-    keyElByNote[n]=d;
-
-    // حماية: لا نجعل click يكرر بعد hold الطويل
-    let downAt=0, didHold=false;
-
-    d.onpointerdown=(ev)=>{
-      ev.preventDefault();
-      downAt=Date.now();
-      didHold=false;
-
-      // بعد 180ms إن لم يُرفع الإصبع -> اعتبره Hold
-      const localDownAt=downAt;
-      setTimeout(()=>{
-        if(downAt===localDownAt){
-          didHold=true;
-          startHold(n, id, d);
-        }
-      }, 180);
-    };
-
-    const endPointer=()=>{
-      if(activeHold[id]) stopHold(id, d);
-      downAt=0;
-    };
-
-    d.onpointerup=endPointer;
-    d.onpointerleave=endPointer;
-    d.onpointercancel=endPointer;
-
-    d.onclick=()=>{
-      if(didHold) return; // كان Hold
-      shortPress(n, d);
-    };
-
-    (i<18?r1:r2).appendChild(d);
-  });
-
-  keysWrap.append(r1,r2);
-};
-
-/* ================== كيبورد الكمبيوتر: ضغط مستمر = Hold ، رفع = Stop ================== */
-const KEY_BIND=[
-  "Digit1","Digit2","Digit3","Digit4","Digit5","Digit6","Digit7","Digit8","Digit9","Digit0",
-  "KeyQ","KeyW","KeyE","KeyR","KeyT","KeyY","KeyU","KeyI","KeyO","KeyP",
-  "KeyA","KeyS","KeyD","KeyF","KeyG","KeyH","KeyJ","KeyK","KeyL",
-  "KeyZ","KeyX","KeyC","KeyV","KeyB","KeyN","KeyM"
-];
-const KI={}; KEY_BIND.forEach((k,i)=>KI[k]=i);
-
-window.addEventListener("keydown",(e)=>{
-  if(e.repeat) return;
-  const idx=KI[e.code];
-  if(idx===undefined || !notes[idx]) return;
-
-  const note=notes[idx];
-  const holdId="kb-"+idx;
-  startHold(note, holdId, keyElByNote[note]||null);
-});
-
-window.addEventListener("keyup",(e)=>{
-  const idx=KI[e.code];
-  if(idx===undefined) return;
-  const note=notes[idx];
-  const holdId="kb-"+idx;
-  stopHold(holdId, keyElByNote[note]||null);
-});
-</script>
-
 </body>
 </html>
 
