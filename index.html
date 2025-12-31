@@ -69,7 +69,7 @@
 <style>
 #christmasCountdown {
   position: fixed;
-  bottom: 320px;
+  bottom: 120px;
   left: 20px;
   background: rgba(0, 0, 0, 0.75);
   padding: 15px 20px;
@@ -232,7 +232,7 @@ updateCountdowns();
     <span id="clock"></span>
     <span id="date"></span>
     <span id="weather"></span>
-    <span id="locationName" style="color:#0ff; font-size:14px; margin-top:4px;"></span>
+    <span id="locationName" style="color:#0ff; font-size:24px; margin-top:4px;"></span>
   </div>
 
   <!-- نص الأخبار المُكرر لحركة سلسة -->
@@ -763,6 +763,26 @@ setInterval(loadWeather, 1800000);
 
     <!-- ⭐ مقاطع أعجبتني -->
     <div id="liked" class="section">
+      <!-- ⭐ مقطع فيديو مضاف -->
+<div class="video-card">
+  <iframe 
+    width="560" 
+    height="315"
+    src="https://www.youtube.com/embed/16ybo9jxXjI?autoplay=0&controls=1"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen>
+  </iframe>
+
+  <!-- العنوان بالعربي -->
+  <div class="video-title ar">⭐ مقطع أعجبني</div>
+
+  <!-- العنوان بالإنجليزي -->
+  <div class="video-title en" style="display:none;">⭐ Liked Video</div>
+</div>
+  
 
 <!-- ⭐⭐ مقطع أعجبني –  ⭐⭐ -->
 <div class="video-card">
