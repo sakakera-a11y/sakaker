@@ -1111,75 +1111,6 @@ updateClock();
 /* تحديث الطقس كل 30 دقيقة */
 setInterval(loadWeather, 1800000);
 </script>
-   <!-- 🔹 زر الموقع التجاري لأبوالقمر زمرد (عربي + إنجليزي) -->
-<button class="sakaker-commercial-btn" onclick="window.open('https://www.sakaker.co/','_blank')">
-  <div class="ar">الموقع التجاري لأبوالقمر زمرد</div>
-  <div class="en">Abwalqmr Zmrd Commercial Website</div>
-</button>
-
-<style>
-.sakaker-commercial-btn {
-  position: fixed; /* غيّرها إلى relative لو لا تريده ثابت */
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 12px 30px;
-  border-radius: 999px;
-  border: 1px solid #00ffe0;
-  background: radial-gradient(circle at 20% 20%, #00ffe0, #006b5f 60%, #001f1c);
-  color: #fff;
-  cursor: pointer;
-  font-family: "Tajawal", sans-serif;
-  text-align: center;
-  box-shadow:
-    0 0 10px #00ffe0,
-    0 0 25px rgba(0, 255, 224, 0.7),
-    0 0 45px rgba(0, 255, 224, 0.4);
-  animation: sakakerGlow 2.4s ease-in-out infinite;
-  font-weight: bold;
-  z-index: 999999;
-}
-
-.sakaker-commercial-btn .ar {
-  font-size: 16px;
-  margin-bottom: 3px;
-}
-
-.sakaker-commercial-btn .en {
-  font-size: 11px;
-  opacity: 0.9;
-}
-
-.sakaker-commercial-btn:hover {
-  transform: translateX(-50%) scale(1.06);
-  box-shadow:
-    0 0 14px #00ffe0,
-    0 0 34px rgba(0, 255, 224, 0.9),
-    0 0 60px rgba(0, 255, 224, 0.6);
-}
-
-@keyframes sakakerGlow {
-  0% {
-    box-shadow:
-      0 0 10px #00ffe0,
-      0 0 20px rgba(0, 255, 224, 0.5),
-      0 0 30px rgba(0, 255, 224, 0.3);
-  }
-  50% {
-    box-shadow:
-      0 0 18px #00ffe0,
-      0 0 40px rgba(0, 255, 224, 0.9),
-      0 0 70px rgba(0, 255, 224, 0.6);
-  }
-  100% {
-    box-shadow:
-      0 0 10px #00ffe0,
-      0 0 20px rgba(0, 255, 224, 0.5),
-      0 0 30px rgba(0, 255, 224, 0.3);
-  }
-}
-</style>
- 
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -2129,7 +2060,192 @@ function enterSite() {
   document.getElementById("entryScreen").style.display = "none";
 }
 </script>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title></title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Tahoma;
+    background:linear-gradient(135deg,#001133,#0044aa,#ffd700,#000000);
+    background-size:400% 400%;
+    animation:bgMove 10s infinite alternate;
+    text-align:center;
+    overflow-x:hidden;
+}
+
+@keyframes bgMove{
+    0%{background-position:left;}
+    100%{background-position:right;}
+}
+
+/* الايقونة */
+#iconButton{
+    position:fixed;
+    bottom:20px;
+    right:420px;
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    overflow:hidden;
+    border:5px solid gold;
+    box-shadow:0 0 30px gold;
+    cursor:pointer;
+    z-index:9999;
+    transition:0.4s;
+    background:black;
+}
+
+#iconButton:hover{
+    transform:scale(1.08);
+}
+
+#iconButton img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* نافذة الخبر */
+#newsBox{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.93);
+    z-index:99999;
+    overflow:auto;
+    padding-top:50px;
+}
+
+/* زر الإغلاق */
+.closeBtn{
+    position:absolute;
+    top:20px;
+    left:20px;
+    background:red;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:12px;
+    font-size:22px;
+    cursor:pointer;
+    box-shadow:0 0 20px red;
+}
+
+/* الصورة الكبيرة */
+.main-image{
+    width:320px;
+    height:320px;
+    border-radius:50%;
+    border:8px solid gold;
+    object-fit:cover;
+    box-shadow:0 0 40px gold;
+}
+
+/* العنوان */
+.main-title{
+    color:gold;
+    font-size:55px;
+    font-weight:bold;
+    text-shadow:0 0 20px gold;
+    margin-top:25px;
+}
+
+/* العنوان الأزرق */
+.blue-title{
+    color:#00aaff;
+    font-size:90px;
+    font-weight:bold;
+    text-shadow:0 0 25px #00aaff;
+    margin-top:10px;
+}
+
+/* النص */
+.text{
+    width:90%;
+    margin:auto;
+    margin-top:40px;
+    font-size:42px;
+    font-weight:bold;
+    line-height:2;
+    background:linear-gradient(90deg,yellow,blue,black);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+/* صورة الخبر تحت النص */
+.story-image{
+    width:90%;
+    max-width:900px;
+    margin:40px auto;
+    display:block;
+    border-radius:30px;
+    border:5px solid gold;
+    box-shadow:0 0 35px gold;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- الايقونة -->
+<div id="iconButton" onclick="openNews()">
+
+<img src="https://f.top4top.io/p_3796bnxbo1.png">
+
+</div>
+
+<!-- نافذة الخبر -->
+<div id="newsBox">
+
+<button class="closeBtn" onclick="closeNews()">إغلاق</button>
+
+<img class="main-image" src="https://f.top4top.io/p_3796bnxbo1.png">
+
+<div class="main-title">
+قصتي مع كره القدم
+</div>
+
+<div class="blue-title">
+لكل رياضه ثقافه
+</div>
+
+<div class="text">
+
+عشقت كرة القدم منذ الطفولة وكانت لي ذكريات جميلة
+مع الأندية العربية والعالمية ومتابعة المباريات
+والبطولات المختلفة عبر السنين.
+
+<br><br>
+
+</div>
+
+<!-- الصورة الجديدة تحت النص -->
+<img class="story-image" src="https://i.postimg.cc/02GZ1xv6/nady.png">
+
+</div>
+
+<script>
+
+function openNews(){
+    document.getElementById("newsBox").style.display="block";
+}
+
+function closeNews(){
+    document.getElementById("newsBox").style.display="none";
+}
+
+</script>
+
+</body>
+</html>
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -2796,6 +2912,75 @@ document.getElementById("closeShip_new").onclick = () => {
 </script>
 <!-- ================= نهاية الكود المنعزل ================= -->
   
+   <!-- 🔹 زر الموقع التجاري لأبوالقمر زمرد (عربي + إنجليزي) -->
+<button class="sakaker-commercial-btn" onclick="window.open('https://www.sakaker.co/','_blank')">
+  <div class="ar">الموقع التجاري لأبوالقمر زمرد</div>
+  <div class="en">Abwalqmr Zmrd Commercial Website</div>
+</button>
+
+<style>
+.sakaker-commercial-btn {
+  position: fixed; /* غيّرها إلى relative لو لا تريده ثابت */
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 30px;
+  border-radius: 999px;
+  border: 1px solid #00ffe0;
+  background: radial-gradient(circle at 20% 20%, #00ffe0, #006b5f 60%, #001f1c);
+  color: #fff;
+  cursor: pointer;
+  font-family: "Tajawal", sans-serif;
+  text-align: center;
+  box-shadow:
+    0 0 10px #00ffe0,
+    0 0 25px rgba(0, 255, 224, 0.7),
+    0 0 45px rgba(0, 255, 224, 0.4);
+  animation: sakakerGlow 2.4s ease-in-out infinite;
+  font-weight: bold;
+  z-index: 999999;
+}
+
+.sakaker-commercial-btn .ar {
+  font-size: 16px;
+  margin-bottom: 3px;
+}
+
+.sakaker-commercial-btn .en {
+  font-size: 11px;
+  opacity: 0.9;
+}
+
+.sakaker-commercial-btn:hover {
+  transform: translateX(-50%) scale(1.06);
+  box-shadow:
+    0 0 14px #00ffe0,
+    0 0 34px rgba(0, 255, 224, 0.9),
+    0 0 60px rgba(0, 255, 224, 0.6);
+}
+
+@keyframes sakakerGlow {
+  0% {
+    box-shadow:
+      0 0 10px #00ffe0,
+      0 0 20px rgba(0, 255, 224, 0.5),
+      0 0 30px rgba(0, 255, 224, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 18px #00ffe0,
+      0 0 40px rgba(0, 255, 224, 0.9),
+      0 0 70px rgba(0, 255, 224, 0.6);
+  }
+  100% {
+    box-shadow:
+      0 0 10px #00ffe0,
+      0 0 20px rgba(0, 255, 224, 0.5),
+      0 0 30px rgba(0, 255, 224, 0.3);
+  }
+}
+</style>
+ 
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
