@@ -1,37 +1,4 @@
 
-<!-- خلفية طبيعية متحركة -->
-<div id="nature-bg">
-    <iframe
-        src="https://www.youtube.com/embed/6LTY6G9qA5Q?autoplay=1&mute=1&loop=1&playlist=6LTY6G9qA5Q&controls=0&showinfo=0&rel=0&playsinline=1"
-        allow="autoplay"
-        frameborder="0">
-    </iframe>
-</div>
-
-<style>
-#nature-bg{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    overflow:hidden;
-    z-index:-5; /* اجعلها خلف الأيقونات */
-    pointer-events:none;
-}
-
-#nature-bg iframe{
-    position:absolute;
-    top:50%;
-    left:50%;
-    width:177.78vh;
-    height:56.25vw;
-    min-width:100%;
-    min-height:100%;
-    transform:translate(-50%,-50%);
-    border:none;
-}
-</style>
 <!-- 🐦 أيقونة صوت الطيور بتوهج زمردي -->
 <div id="bird-sound-btn" title="تشغيل/إيقاف صوت الطيور" style="
   position: fixed;
@@ -937,8 +904,8 @@ overflow:hidden;
 <div class="clock-box">
 <span id="clock"></span>
 <span id="date"></span>
-<span id="weather">جارٍ تحميل الطقس...</span>
-<span id="locationName">📍</span>
+<span id="weather"></span>
+<span id="locationName"></span>
 </div>
 <div class="ticker-wrapper"><span id="newsContent"> .</span></div>
 </div>
@@ -1160,36 +1127,6 @@ jokeIcon.addEventListener('click', () => {
 });
 </script>
 
-<!-- ========== أيقونة الأعمال ========== -->
-<div id="worksIconContainer" style="
-  bottom: 5px;
-  right: 125px;
-  text-align:center;
-  margin:30px 0;
-  z-index:9999;
-  position:relative;
-">
-  
-  <div onclick="toggleWorksCard()" style="
-    width:50px;
-    height:50px;
-    border-radius:50%;
-    border:3px solid #00ffff;
-    box-shadow:0 0 20px #00ffff;
-    background:#000;
-    overflow:hidden;
-    cursor:pointer;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    margin:auto;
-  ">
-    <img src="https://a.top4top.io/p_3607x4is91.jpg"
-         style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
-  </div>
-
-</div>
-
 
 <!-- ========== الكرت (صورة يسار — فيديو يمين) ========== -->
 <div id="worksSmallCard" style="
@@ -1240,12 +1177,6 @@ jokeIcon.addEventListener('click', () => {
            z-index:2;
          ">
 
-    <!-- ✔ الفيديو يمين + زر الصوت + شريط الصوت -->
-    <div style="width:48%; height:380px; position:relative;">
-
-        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen>
-      </iframe>
 
       <!-- زر الصوت -->
       <button id="soundBtn" onclick="toggleWorkSound()" style="
@@ -2286,6 +2217,7 @@ langBtn.onclick=()=>{
       allow="autoplay; encrypted-media"
       frameborder="0"></iframe>
   </div>
+  
 <div class="video-circle" data-video="FiQz0tUFqdw">
   <iframe class="miniVideo"
     src="https://www.youtube.com/embed/FiQz0tUFqdw?autoplay=1&mute=1&playsinline=1&controls=0&loop=1&playlist=FiQz0tUFqdw"
@@ -2848,7 +2780,7 @@ document.getElementById("closeShip_new").onclick = () => {
 /* 🔹 أيقونة النجمة */
 .launcher {
   position: fixed;
-  bottom: 25px; 
+  bottom: 125px; 
   right: 325px;
   width: 50px;
   height: 50px;
@@ -2917,7 +2849,7 @@ iframe.map { height: 200px; }
 
 .close {
   position: absolute;
-  top: 109px;
+  top: 10px;
   right: -12px;
   width: 28px;
   height: 28px;
@@ -3381,8 +3313,8 @@ supportBtn.addEventListener('click', () => {
 /* مودال خاص بمكتبة الفيديو الزمردية */
 #emeraldModal {
   position: fixed;
-  top: 0px;
-  left: 0px;
+  top: 20px;
+  left: 20px;
   width:100%;
   height:100%;
   background:rgba(0,0,0,0.9);
@@ -3875,333 +3807,132 @@ supportBtn.addEventListener('click', () => {
   });
 })();
 </script>
-<!-- ال id="closeShip_new">✖</button>
-  <div style="margin:20px; padding:15px; background:rgba(0,0,0,0.55); border:1px solid #00ffd5; border-radius:12px; font-family:'Tajawal',sans-serif; color:white; line-height:1.9;">
-/div>
- الفكرة العامة</h3>
-<p>القصيدة تتناول رحلة الشاعر مع الزمن، وتستعرض تجاربه مع الخذلان والخيانة والتحولات في الحياة. تتخللها تأملات في البشر والطبيعة الإنسانية، إضافة إلى الصبر والحكمة التي تأتي بعد التجارب.</p>
-
-<hr>
-<h3>📜 تحليل الأبيات</h3>
-<ul>
-  <li><em>"قررت الرحيل من أمد... فخانني الزمان وأوفى به القدر"</em>: بداية قوية تعكس قرار الشاعر بالمضي في الحياة أو الرحيل عن الماضي، مع إدراك أن الزمن قد يخوننا، لكن القدر يظل في حكمه.</li>
-  <li><em>"فلا بصيره من لا يرى بأعينه.... ولو طال له الطريق والسفر"</em>: يشير إلى أن الرؤية الحقيقية والفهم لا تتحقق إلا بالوعي الداخلي، وأن طول التجربة وحده لا يكفي.</li>
-  <li><em>"وكلام لا ينجي صاحبه... تزدريه الحضوض ومقله البشر"</em>: يصف حالة الضعف أمام أحكام الناس، وأن الكلمات وحدها قد لا تنقذ الشخص من سوء الحظ أو انتقاد الآخرين.</li>
-  <li><em>"تعجبت من زمان أدور به.... وكيف تغيرت المخاطر إلى خطر"</em>: استغراب من تغير الحياة، وأن ما كان تحديًا قد أصبح تهديدًا حقيقيًا مع مرور الزمن.</li>
-  <li><em>"كطفل ينمو في مراحله... وبأن فيه الشيب والقصر"</em>: استعارة جميلة تشير إلى دورة الحياة، من البراءة والطفولة إلى النضج والشيب.</li>
-  <li><em>"فهذا حال الزمان لمن جال به.... يغدو لعلمه يبوح به أو يسر"</em>: تأمل في أن تجربة الإنسان مع الزمن تمنحه الحكمة، وقد يشاركها أو يحتفظ بها لنفسه.</li>
-  <li><em>"كمثل الكلب حين في طبعه.... وحين يتشبه بالأسماك والنسر"</em>: تشبيه للطبيعة البشرية، وكيف يمكن للمرء أن يتصرف بما لا يتفق مع طبعه تحت تأثير الظروف.</li>
-  <li><em>"فوجهي هذا من الماضي صورته... طلت علي من الجوال بفجر"</em>: لمسة شخصية تعكس الحنين والذكريات، وكيف يمكن للأشياء البسيطة أن تثير الماضي.</li>
-  <li><em>"فذكرتني بعهد لم أكن انساه... ولكن لا تجود الأرواح إلا بصبر"</em>: دعوة للصبر على تجارب الحياة، فالروح تحتاج الصبر لتستعيد قوتها.</li>
-  <li><em>"فلكل أمر له شقوته.... ولا بعد العسر إلا يسر"</em>: حكمة خالدة: بعد كل صعوبة يأتي الفرج، وكل تجربة تحمل درسًا.</li>
-  <li><em>"ولا أشره علا السارق بسطوته... فهاذي تجارب النفس والبصر"</em>: خلاصة القول: التجارب تصقل النفس وتعلم الإنسان الرؤية والفهم.</li>
-</ul>
-`;
-
-document.getElementById("storyText_new").innerHTML = snqStory_new;
-
-// فتح النافذة
-document.getElementById("shipIcon_new").onclick = () => {
-
-<!-- ========== أيقونة الأعمال ========== -->
-<div id="worksIconContainer" style="
-  bottom: 5px;
-  right: 125px;
-  text-align:center;
-  margin:30px 0;
-  z-index:9999;
-  position:relative;
-">
-  
-  <div onclick="toggleWorksCard()" style="
-    width:50px;
-    height:50px;
-    border-radius:50%;
-    border:3px solid #00ffff;
-    box-shadow:0 0 20px #00ffff;
-    background:#000;
-    overflow:hidden;
-    cursor:pointer;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    margin:auto;
-  ">
-    <img src="https://a.top4top.io/p_3607x4is91.jpg"
-         style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
-  </div>
-
-</div>
-
-
-<!-- ========== الكرت (صورة يسار — فيديو يمين) ========== -->
-<div id="worksSmallCard" style="
-  display:none;
-  position:fixed;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  background:#001515;
-  border-radius:15px;
-  padding:15px;
-  box-shadow:0 0 25px #00ffff;
-  z-index:100000;
-  width:90%;
-  max-width:470px;
-">
-
-  <!-- زر الإغلاق -->
-  <button onclick="toggleWorksCard()" style="
-    background:red;
-    color:#fff;
-    border:none;
-    padding:6px 12px;
-    border-radius:6px;
-    cursor:pointer;
-    margin-bottom:10px;
-    float:left;
-  ">✖</button>
-
-  <!-- ⭐ المحتوى -->
-  <div style="
-      display:flex;
-      gap:10px;
-      margin-top:40px;
-      flex-direction:row;
-      direction:ltr;
-      width:100%;
-  ">
-
-    <!-- ✔ الصورة يسار -->
-    <img src="https://a.top4top.io/p_3607x4is91.jpg"
-         style="
-           width:48%;
-           height:380px;
-           object-fit:cover;
-           border-radius:12px;
-           box-shadow:0 0 12px #00ffff;
-           z-index:2;
-         ">
-
-    <!-- ✔ الفيديو يمين + زر الصوت + شريط الصوت -->
-    <div style="width:48%; height:380px; position:relative;">
-
-      <!-- الفيديو -->
-      <iframe id="workVideo"
-        src="https://www.youtube.com/embed/FzfIvHt4AaU?autoplay=1&mute=1&enablejsapi=1"
-        style="
-          width:100%;
-          height:100%;
-          border:none;
-          border-radius:12px;
-          box-shadow:0 0 12px #00ffff;
-          position:relative;
-          z-index:2;
-        "
-        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen>
-      </iframe>
-
-      <!-- زر الصوت -->
-      <button id="soundBtn" onclick="toggleWorkSound()" style="
-        position:absolute;
-        bottom:10px;
-        left:10px;
-        background:rgba(0,255,255,0.7);
-        border:none;
-        padding:6px 10px;
-        border-radius:8px;
-        cursor:pointer;
-        font-weight:bold;
-        color:#000;
-        z-index:5;
-        box-shadow:0 0 10px #00ffff;
-        font-size:12px;
-      ">
-        🔊 تشغيل الصوت
-      </button>
-
-      <!-- شريط الصوت -->
-      <input type="range" id="volumeSlider" min="0" max="100" value="100" 
-        oninput="setWorkVolume(this.value)"
-        style="
-          position:absolute;
-          bottom:10px;
-          right:10px;
-          width:65px;
-          z-index:5;
-          cursor:pointer;
-        ">
-    </div>
-
-  </div>
-
-</div>
+<style>
+/* تحسين عرض الأيقونات والفيديو عند الوضع الأفقي (Landscape) */
+@media (orientation: landscape) and (max-width: 768px) {
+  /* رفع أيقونات الحياة لتصبح مرئية */
+  .icon-container, .icon-container-lite {
+    top: 10% !important;
+    right: 5px !important;
+    transform: translateY(0) !important;
+  }
+  /* نقل أزرار التحكم بالفيديو أعلى الشاشة */
+  .controls, .controls-lite {
+    bottom: auto !important;
+    top: 15px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    gap: 4px;
+  }
+  /* توسيط لعبة Pong أفقيًا */
+  #pongContainer, #pongContainerLite {
+    margin: 20px auto !important;
+  }
+}
+</style>
 
 <script>
-function toggleWorksCard(){
-  let card = document.getElementById("worksSmallCard");
-  card.style.display = (card.style.display === "block") ? "none" : "block";
+// إعادة ضبط موضع الأيقونات وأزرار التحكم عند تدوير الجهاز
+function adjustLayoutOnOrientation() {
+  if(window.matchMedia("(orientation: landscape)").matches) {
+    // الوضع الأفقي: أزرار وأيقونات أعلى الشاشة
+    document.querySelectorAll('.icon-container, .icon-container-lite').forEach(el=>{
+      el.style.top='10%';
+      el.style.transform='translateY(0)';
+    });
+    document.querySelectorAll('.controls, .controls-lite').forEach(el=>{
+      el.style.top='15px';
+      el.style.bottom='auto';
+      el.style.left='50%';
+      el.style.transform='translateX(-50%)';
+    });
+  } else {
+    // الوضع العمودي: استرجاع القيم الأصلية
+    document.querySelectorAll('.icon-container').forEach(el=>{
+      el.style.top='60%';
+      el.style.transform='translateY(-50%)';
+    });
+    document.querySelectorAll('.icon-container-lite').forEach(el=>{
+      el.style.top='55%';
+      el.style.transform='translateY(-50%)';
+    });
+    document.querySelectorAll('.controls').forEach(el=>{
+      el.style.bottom='10px';
+      el.style.top='auto';
+      el.style.transform='translateX(-50%)';
+    });
+    document.querySelectorAll('.controls-lite').forEach(el=>{
+      el.style.bottom='5px';
+      el.style.top='auto';
+      el.style.transform='translateX(-50%)';
+    });
+  }
 }
 
-// ========================== التحكم بالصوت ==========================
-
-let soundOn = false;
-
-// زر تشغيل / إيقاف الصوت
-function toggleWorkSound(){
-  const iframe = document.getElementById("workVideo");
-  const btn = document.getElementById("soundBtn");
-
-  soundOn = !soundOn;
-
-  iframe.contentWindow.postMessage(JSON.stringify({
-    event: "command",
-    func: soundOn ? "unMute" : "mute",
-    args: []
-  }), "*");
-
-  btn.textContent = soundOn ? "🔈 إيقاف الصوت" : "🔊 تشغيل الصوت";
-}
-
-
-// تغيير مستوى الصوت من السلايدر
-function setWorkVolume(vol){
-  const iframe = document.getElementById("workVideo");
-
-  iframe.contentWindow.postMessage(JSON.stringify({
-    event: "command",
-    func: "setVolume",
-    args: [vol]
-  }), "*");
-}
+// استدعاء عند التحميل وعند تدوير الجهاز
+window.addEventListener('load', adjustLayoutOnOrientation);
+window.addEventListener('orientationchange', adjustLayoutOnOrientation);
 </script>
-
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الأقسامsakaker wep</title>
-<style> {
-  font-family:'Tajawal', sans-serif;
-  margin:0;
-  padding:0;
-  background:transparent;
-  color: silver;
-  text-align:center;
-}
-
-/* ===== أيقونة التشغيل ===== */ 
-#scrollbox-icon {
-  position: fixed;
-  bottom: 230px;
-  left: 20%;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  border: 2px solid #00ffaa;
-  color: #00ffaa;
-  background: rgba(255,255,255,0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 34px;
-  cursor: pointer;
-  box-shadow: 0 0 20px rgba(0,255,170,0.4);
-  transition: all 0.3s ease;
-  backdrop-filter: blur(6px);
-  z-index: 99999;
-}
-#scrollbox-icon:hover {
-  transform: translateX(-50%) scale(1.1);
-  box-shadow: 0 0 30px #00f2fe;
-}
-
-/* ===== الخلفية ===== */
-#scrollbox-overlay {
-  display:none;
-  position:fixed;
-  top:0;left:0;
-  width:100%;height:100%;
-  background:rgba(0,0,0,0.6);
-  backdrop-filter:blur(4px);
-  z-index:99998;
-  opacity:0;
-  transition:opacity 0.3s ease;
-}
-#scrollbox-overlay.active {
-  display:block;
-  opacity:1;
-}
-
-/* ===== النافذة ===== */
-#scrollbox-popup {
-  display:none;
-  position:fixed;
-  top:50%;left:50%;
-  transform:translate(-50%,-50%) scale(0.9);
-  width:90%;
-  max-width:900px;
-  height:85%;
-  background:rgba(255,255,255,0.97);
-  color:#111;
-  border-radius:14px;
-  box-shadow:0 0 25px rgba(255,255,255,0.2);
-  z-index:100000;
-  opacity:0;
-  transition:all 0.3s ease;
-  overflow:hidden;
-  text-align:right;
-}
-#scrollbox-popup.active {
-  display:block;
-  opacity:1;
-  transform:translate(-50%,-50%) scale(1);
-}
-
-/* ===== التبويبات ===== */
-.scrollbox-tabs {
-  display:flex;
-  justify-content:space-around;
-  background:rgba(0,0,0,0.05);
-  border-bottom:1px solid rgba(0,0,0,0.1);
-}
-.scrollbox-tab {
-  flex:1;
-  text-align:center;
-  padding:10px;
-  cursor:pointer;
-  font-weight:bold;
-  transition:background 0.3s;
-}
-.scrollbox-tab:hover { background:rgba(0,0,0,0.1); }
-.scrollbox-tab.active { background:rgba(0,0,0,0.2); }
-
-/* ===== المحتوى ===== */
-.scrollbox-content {
-  display:none;
-  height:calc(100% - 60px);
-  padding:20px;
-  overflow:hidden;
-  position:relative;
-}
-.scrollbox-content.active { display:block; }
-
-/* ===== النص المتحرك ===== */
-.scrollbox-text {
-  position:absolute;
-  bottom:-100%;
-  width:100%;
-  animation:scrollbox-up 220s linear infinite; /* سرعة بطيئة جدًا */
-  line-height:1.9;
-}
-@keyframes scrollbox-up {
-  from { bottom:-100%; }
-  to { bottom:100%; }
-}
-.scrollbox-text:hover {
-  animation-play-state: paused;
-}
 <style>
+/* تحسين عرض الأيقونات والفيديو عند الوضع الأفقي (Landscape) */
+@media (orientation: landscape) and (max-width: 768px) {
+  .icon-container, .icon-container-lite {
+    top: 10% !important;       /* رفع الأيقونات للأعلى */
+    right: 5px !important;
+    transform: translateY(0) !important;
+  }
+  .controls, .controls-lite {
+    bottom: auto !important;
+    top: 15px !important;       /* نقل أزرار الفيديو للأعلى */
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    gap: 4px;
+  }
+  #pongContainer, #pongContainerLite {
+    margin: 20px auto !important; /* توسيط لعبة Pong */
+  }
+}
+</style>
+
+<script>
+// إعادة ضبط موضع العناصر عند تدوير الجهاز
+function adjustLayoutOnOrientation() {
+  if(window.matchMedia("(orientation: landscape)").matches) {
+    // الوضع الأفقي
+    document.querySelectorAll('.icon-container, .icon-container-lite').forEach(el=>{
+      el.style.top='10%';
+      el.style.transform='translateY(0)';
+    });
+    document.querySelectorAll('.controls, .controls-lite').forEach(el=>{
+      el.style.top='15px';
+      el.style.bottom='auto';
+      el.style.left='50%';
+      el.style.transform='translateX(-50%)';
+    });
+  } else {
+    // الوضع العمودي
+    document.querySelectorAll('.icon-container').forEach(el=>{
+      el.style.top='60%';
+      el.style.transform='translateY(-50%)';
+    });
+    document.querySelectorAll('.icon-container-lite').forEach(el=>{
+      el.style.top='55%';
+      el.style.transform='translateY(-50%)';
+    });
+    document.querySelectorAll('.controls').forEach(el=>{
+      el.style.bottom='10px';
+      el.style.top='auto';
+      el.style.transform='translateX(-50%)';
+    });
+    document.querySelectorAll('.controls-lite').forEach(el=>{
+      el.style.bottom='5px';
+      el.style.top='auto';
+      el.style.transform='translateX(-50%)';
+    });
+  }
+}
+
+// استدعاء عند تحميل الصفحة وعند تدوير الهاتف
+window.addEventListener('load', adjustLayoutOnOrientation);
+window.addEventListener('orientationchange', adjustLayoutOnOrientation);
+</script>
