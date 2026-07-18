@@ -1,69 +1,60 @@
-<!-- =============== شاشة الدخول ================= -->
-<div id="entryScreen" style="
-  position:fixed;
-  top: 9px; left: 9px;
-  width:100%; height:100%;
-  z-index:999999999;
-  overflow:hidden;
-  display:block;
+
+
+<!-- 🐦 أيقونة صوت الطيور بتوهج زمردي -->
+<div id="bird-sound-btn" title="تشغيل/إيقاف صوت الطيور" style="
+  position: fixed;
+  top: 30px; /* مرفوعة حوالي خمس أسطر */
+  right: 202px;
+  width: 75px;
+  height: 75px;
+  background:
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 34px;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 0 25px rgba(0,255,200,0.9), 0 0 50px rgba(0,255,200,0.4);
+  z-index: 1001;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 ">
-    <style>
-#radioIcon{
-  position:fixed;
-  bottom:10px;
-  right:30px; 
-  width:70px; 
-  height:70px;
-  background:#0ff;
-  border-radius:15px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  font-size:38px;
-  z-index:99999;
-}
+  🐦
+</div>
 
-#radioPopup{
-  position:fixed;
-  top:20px;
-  left:40%;
-  transform:translateX(-50%);
-  width:360px;
-  height:480px;
-  background:rgba(0,0,0,0.88);
-  border:2px solid #0ff;
-  border-radius:14px;
-  padding:12px;
-  overflow:auto;
-  z-index:999999;
-  display:none;
-  color:#fff;
-}
+<!-- 🎵 صوت تغريد الطيور وخرير الماء -->
+<audio id="bird-sound" loop playsinline>
+  <source src="https://www.orangefreesounds.com/wp-content/uploads/2016/04/Birds-chirping-and-water-flowing.mp3" type="audio/mp3">
+  متصفحك لا يدعم تشغيل الصوت.
+</audio>
 
-.radioItem{
-  background:#111;
-  border:1px solid #0ff;
-  margin:10px 0;
-  padding:10px;
-  border-radius:10px;
-}
-.radioItem h3{
-  margin:0 0 8px;
-  color:#0ff;
-  font-size:15px;
-}
+<script>
+const birdBtn = document.getElementById('bird-sound-btn');
+const birdAudio = document.getElementById('bird-sound');
 
-#statusMsg{
-  font-size:13px; 
-  color:#e6fff8;
-  background:rgba(255,255,255,0.06);
-  padding:8px;
-  border-radius:8px;
-  margin-bottom:8px;
-}
+// حالة أولية
+birdBtn.textContent = "🐦";
 
-</style>
+// عند النقر على الأيقونة
+birdBtn.addEventListener('click', async () => {
+  try {
+    if (birdAudio.paused) {
+      await birdAudio.play();
+      birdBtn.textContent = "🔊";
+      birdBtn.style.boxShadow = "0 0 35px rgba(0,255,200,1), 0 0 70px rgba(0,255,200,0.6)";
+      birdBtn.style.transform = "scale(1.1)";
+    } else {
+      birdAudio.pause();
+      birdBtn.textContent = "🐦";
+      birdBtn.style.boxShadow = "0 0 25px rgba(0,255,200,0.9), 0 0 50px rgba(0,255,200,0.4)";
+      birdBtn.style.transform = "scale(1)";
+    }
+  } catch (err) {
+    console.error("حدث خطأ أثناء تشغيل الصوت:", err);
+    alert("قد يمنع المتصفح التشغيل التلقائي. حاول النقر مرة أخرى.");
+  }
+});
+</script>
 
 <!-- Emerald Music Overlay START -->
 <div id="emeraldMusicHost">
@@ -85,7 +76,7 @@
 /* زر الفتح */
 #emeraldMusicHost #emOpenBtn{
   pointer-events:auto;
-  position:fixed;bottom:108px;right:18px;width:78px;height:78px;border-radius:50%;
+  position:fixed;bottom:108px;right:218px;width:78px;height:78px;border-radius:50%;
   background:rgba(255,255,255,.08);border:2px solid var(--em);
   display:flex;align-items:center;justify-content:center;
   font-size:28px;cursor:pointer;box-shadow:0 0 18px var(--em);
@@ -706,13 +697,13 @@ window.addEventListener("keyup",(e)=>{
   z-index: 9999;
   position: fixed;
   bottom : 20px;
-  right: 30px;
+  right: 230px;
   padding: 2px 2px;
   border: none;
   border-radius: 24px;
   background: linear-gradient(45deg, #007bff, #00ffff);
   color: #fff;
-  font-size: 10px;
+  font-size: 20px;
   font-weight: bold;
   cursor: pointer;
   box-shadow: 0 0 20px rgba(0,255,255,0.8);
@@ -908,13 +899,13 @@ pongBtn.addEventListener('mouseleave', () => {
 .news-ticker {
   width: 100%;
   background: rgba(0, 0, 0, 0.15) !important;
-  color: #fff;
-  padding: 5px 0;
+  color: 
+  padding: 6px 0;
   overflow: hidden;
   white-space: nowrap;
   position: fixed;
-  top: 120px;
-  right: 0;
+  top: 420px;
+  right: 10px;
   font-size: 26px;
   z-index: 9999;
   display: flex;
@@ -1111,6 +1102,522 @@ updateClock();
 /* تحديث الطقس كل 30 دقيقة */
 setInterval(loadWeather, 1800000);
 </script>
+
+<!-- أيقونة التشغيل -->
+<div id="scrollbox-icon">📜</div>
+
+<!-- الخلفية -->
+<div id="scrollbox-overlay"></div>
+
+<!-- النافذة -->
+<div id="scrollbox-popup">
+  <button id="scrollbox-close">❌</button>
+
+  <div class="scrollbox-tabs">
+    <div class="scrollbox-tab active" data-target="scrollbox-culture">🌍 ثقافة</div>
+    <div class="scrollbox-tab" data-target="scrollbox-islamic">🕌 إسلامي</div>
+    <div class="scrollbox-tab" data-target="scrollbox-thoughts">💭 خواطر</div>
+  </div>
+
+  <!-- ===== القسم الأول: ثقافة عامة ===== -->
+ <div id="scrollbox-culture" class="scrollbox-content active">
+  <div class="scrollbox-text">
+    <h2>🌍 ثقافة عامة</h2>
+
+    <p>الثقافة العامة هي المرآة التي تعكس وعي الإنسان ونظرته للحياة،  
+    وهي الجسر الذي يصل بين الفكر والعلم والإبداع.  
+    من خلالها يستطيع الإنسان أن يفهم ذاته، ويتواصل مع مجتمعه،  
+    ويستوعب الحضارات من حوله دون أن يفقد هويته.</p>
+
+    <p>الثقافة ليست مجرد كمٍّ من المعلومات، بل هي طريقة تفكير،  
+    وسلوك حضاري ينبع من الإدراك العميق لقيمة العلم والإنسان.  
+    فالمثقف لا يكرر ما يسمع، بل يُعيد بناءه على أسس المنطق والمعرفة.</p>
+
+    <p>من أبرز ما قدّمته الحضارات للثقافة الإنسانية:  
+    <ul>
+      <li><strong>الحضارة الإسلامية:</strong> التي أبدعت في الطب والفلك والرياضيات والفلسفة، وقدّمت للعالم أسماء خالدة كابن سينا والرازي والخوارزمي.</li>
+      <li><strong>الحضارة المصرية القديمة:</strong> التي أنارت العالم بعلوم التحنيط والهندسة والعمارة، وشهدت ولادة الكتابة والطب المبكر.</li>
+      <li><strong>الحضارة اليونانية:</strong> التي أرست قواعد الفلسفة والمنطق، وقدّمت للعالم سقراط وأفلاطون وأرسطو.</li>
+      <li><strong>الحضارة الصينية:</strong> التي برعت في الورق والحرير والبارود، وأسست مفاهيم الانسجام بين الإنسان والطبيعة.</li>
+    </ul>
+    </p>
+
+    <p>الثقافة الحقيقية تنبع من التوازن بين الأصالة والمعاصرة،  
+    أي أن نحافظ على جذورنا وهويتنا، وفي الوقت نفسه ننفتح على كل جديد مفيد.  
+    فالمجتمع الذي لا يقرأ يتوقف، والذي يقرأ بلا وعي يتشتت،  
+    أما الذي يقرأ بعقل ناقد ويُبدع فهو الذي يصنع التاريخ.</p>
+
+    <p>الثقافة أيضًا هي أخلاق، لأنها تصنع فينا حسّ المسؤولية،  
+    وتمنحنا القدرة على فهم الآخر واحترام اختلافه،  
+    وتزرع فينا قيم التسامح والمحبة والفضيلة.</p>
+
+    <p><em>اقرأ، تفكر، ناقش، واكتب... فالثقافة ليست نهاية طريق، بل بداية حياة.</em></p>
+  </div>
+</div>
+
+
+  <!-- ===== القسم الثاني: التاريخ الإسلامي ===== -->
+  <div id="scrollbox-islamic" class="scrollbox-content">
+    <div class="scrollbox-text">
+      <h2>🕌 التاريخ الإسلامي</h2>
+      <h3>📜 النبي محمد ﷺ</h3>
+      <p>محمد بن عبد الله، خاتم الأنبياء والمرسلين، ولد في مكة عام 571م في عام الفيل.  
+      نزل عليه الوحي في سن الأربعين، فدعا إلى عبادة الله وحده ونبذ الشرك.  
+      استمرت دعوته 23 عامًا، عانى فيها وأصحابه من الاضطهاد حتى هاجر إلى المدينة المنورة، حيث أسس أول دولة إسلامية.  
+      توفي ﷺ سنة 632م، تاركًا أمة موحدة وكتاب الله بين أيدي المسلمين.</p>
+      <hr>
+      <h3>🕌 الخلفاء الراشدون</h3>
+      <p><strong>أبو بكر الصديق</strong> (632–634م): أول الخلفاء، وأقرب الصحابة إلى النبي ﷺ. ثبت المسلمين بعد وفاته ﷺ، وجمع القرآن الكريم في مصحف واحد.</p>
+      <p><strong>عمر بن الخطاب</strong> (634–644م): ثاني الخلفاء، اشتهر بالعدل والحزم، ووسع الدولة الإسلامية لتشمل بلاد فارس والشام ومصر.</p>
+      <p><strong>عثمان بن عفان</strong> (644–656م): ثالث الخلفاء، جمع الناس على مصحف واحد بلغة قريش، وفتح أرمينية وخراسان.</p>
+      <p><strong>علي بن أبي طالب</strong> (656–661م): رابع الخلفاء، وابن عم النبي ﷺ، عُرف بالشجاعة والعلم، وواجه الفتن الكبرى في الأمة.</p>
+      <hr>
+      <h3>⚔️ معاوية بن أبي سفيان</h3>
+      <p>معاوية بن أبي سفيان، صحابي وكاتب وحي للنبي ﷺ، ووالي الشام في عهد عمر وعثمان.  
+      أسس الدولة الأموية سنة 661م بعد تنازل الحسن بن علي له، وجعل دمشق عاصمة للدولة، واشتهر بالحكمة والسياسة والقدرة على إدارة الدولة.</p>
+      <hr>
+      <h3>⚖️ عمر بن عبدالعزيز</h3>
+      <p>عمر بن عبدالعزيز بن مروان، الخليفة الأموي الثامن، يُلقب بخامس الخلفاء الراشدين لزهده وعدله.  
+      وُلد سنة 682م وتولى الخلافة سنة 717م، فعمل على نشر العدل والمساواة، ورد المظالم، وإلغاء كثير من الضرائب الظالمة.  
+      توفي سنة 720م تاركًا سيرةً ناصعة في الحكم الصالح.</p>
+    </div>
+  </div>
+
+  <!-- ===== القسم الثالث: خواطر ===== -->
+  <div id="scrollbox-thoughts" class="scrollbox-content">
+    <div class="scrollbox-text">
+      <h2>💭 خواطر</h2>
+      <h3>قصتي مع التيتنك</h3>
+      <p>في صباح هادئ، شددت أشرعتي متجهًا نحو المجهول، عازمًا على استكشاف أسرار البحار التي لا يعرفها أحد.  
+      كانت الأمواج تعانق قاربي، والريح تدفعني نحو مغامرة لا تُنسى.</p>
+      <p>قادتني التيارات إلى مشهد أسطوري… هناك، في عمقٍ سحيق، ظهرت أمامي سفينة التايتنك، شامخة رغم جراح الزمن، صامتة وكأنها تحكي قصتها الحزينة.  
+      اقتربت منها، ولم أقاوم رغبتي في ترك أثر، فكتبت اسمي على إحدى بقاياها المعدنية المكسوة بالصدأ والمرجان.</p>
+      <p>وبينما أستكشف المكان، لمح بصري ظلاً ضخماً… كان حوتًا عظيمًا غارقًا في سبات عميق بجوار السفينة، وكأنهما رفيقا عزلة.  
+      فاتخذت الحوت فندقًا عائمًا لمدة يومين؛ أستريح فوق ظهره، أراقب النجوم ليلًا، وأتجول بين بقايا السفينة نهارًا.</p>
+
+      <hr>
+      <h3>قصة التنين الفضي</h3>
+      <p>بينما كان أبو القمر زمرد يجلس على صخرة تطل على البحر في ليلة هادئة، لاحظ ضوءًا غريبًا يلمع وسط الضباب.  
+      اقترب أكثر، فإذا به يكتشف كائنًا أسطوريًا ذو حراشف لامعة كالفضة، إنه التنين الفضي.</p>
+      <p>اقترب التنين ببطء وصوته العميق يروي حكايات عن الجبال البعيدة والبحار المجهولة.  
+      دعاه لرحلة بين الغيوم، حيث حلقا فوق الغابات والأنهار، وشاهدا معًا روائع لم ترها عين بشر من قبل.</p>
+      <p>عاد أبو القمر زمرد من تلك المغامرة وهو يدرك أن المغامرة الحقيقية ليست فقط في استكشاف الأماكن، بل في الجرأة على خوض المجهول بقلب مفتوح.</p>
+
+      <hr>
+      <h3>القمر والزمرد 🌙💎</h3>
+      <p>قصَّ أبو القمر حكاية يوم استطاع أن يمزج أنوار القمر بأحجار الزمرد الكريمة التي حصل عليها من شعب المرجان.  
+      كان ينظر إلى بريق الزمرد في أعماق البحر، حتى سطع نور القمر وانعكس على تلك الأحجار الساحرة.</p>
+      <p>ومنذ ذلك الحين، صار هذا الطريق بوابة لتحقيق الأحلام وتحويلها إلى حقيقة بإذن الله.</p>
+
+      <hr>
+      <h3>أبو القمر زمرد حارس الأندلس القديم</h3>
+      <p>في زمن بعيد، حين كانت الأندلس جنة على الأرض، عاش رجل يُدعى أبو القمر زمرد، حارس أسوار قرطبة وراعي مفاتيح بواباتها.  
+      كان معروفًا بشجاعته وذكائه، حتى أن الملوك كانوا يستشيرونه في أمور الحرب والسلم.</p>
+      <p>وفي إحدى الليالي، رأى نورًا غريبًا يلمع فوق قصر الحمراء، فاتجه نحوه بسرعة، وهناك وجد مخطوطة قديمة تحمل أسرار الدفاع عن الأندلس.  
+      أدرك أن مهمته الحقيقية ليست فقط حماية الأسوار، بل حماية سرّ الأندلس من أن يضيع إلى الأبد.</p>
+
+      <hr>
+      <h3>رحلة أبو القمر إلى ما وراء المجرات</h3>
+      <p>بعد أن أنهى أبو القمر تصميم موقعه على الويب وتفعيله، شعر بإرهاق شديد، وقرر أن يأخذ إجازة لمدة شهر بعيدًا عن التفكير والروتين.  
+      وفي ليلة هادئة، نظر إلى القمر، فرأى انعكاسًا براقًا للزمرد يلمع في ضوئه، فركب شعاع الضوء وانطلق بسرعة تفوق الضوء،  
+      حتى وصل إلى مجرة بعيدة مغطاة بحدائق من ثمار لا تُحصى وكائنات ودودة.</p>
+      <p>تزوج هناك ورُزق بأبناء، لكن الحنين إلى الأرض أشعل قلبه فعاد عبر بوابة ضوء نادرة،  
+      إلا أن المسار انحرف ليصل إلى مدينة الكريستال الأزرق، حيث بدأت مغامرة جديدة غيّرت مصيره إلى الأبد.</p>
+
+      <hr>
+      <h3>العودة بعد الانبطاح</h3>
+      <p>وبعد طول انتظار في مدينة النوم والانبطاح، نهض البطل ببطء،  
+      وكأن الأرض التي احتضنته طوال تلك الفترة لم ترغب في إفلاته.  
+      تنفّس عميقًا ومسح عن كتفيه غبار الاستسلام، ثم خطا أولى خطوات العودة؛  
+      فهو يعلم أن الانبطاح أحيانًا هدنة، ولكن العودة هي المعركة الحقيقية.  
+      <strong>إلى الأرض... إلى الحياة... إلى النور.</strong></p>
+    </div>
+  </div>
+</div>
+
+<script>
+    
+(function(){
+  const icon = document.getElementById('scrollbox-icon');
+  const popup = document.getElementById('scrollbox-popup');
+  const overlay = document.getElementById('scrollbox-overlay');
+  const close = document.getElementById('scrollbox-close');
+  const tabs = document.querySelectorAll('.scrollbox-tab');
+  const sections = document.querySelectorAll('.scrollbox-content');
+
+  icon.addEventListener('click', ()=>{
+    popup.classList.add('active');
+    overlay.classList.add('active');
+  });
+  close.addEventListener('click', closeAll);
+  overlay.addEventListener('click', closeAll);
+
+  function closeAll(){
+    popup.classList.remove('active');
+    overlay.classList.remove('active');
+  }
+
+  tabs.forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      tabs.forEach(t=>t.classList.remove('active'));
+      sections.forEach(s=>s.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.getAttribute('data-target')).classList.add('active');
+    });
+  });
+})();
+</script>
+<!-- ال id="closeShip_new">✖</button>
+  <div style="margin:20px; padding:15px; background:rgba(0,0,0,0.55); border:1px solid #00ffd5; border-radius:12px; font-family:'Tajawal',sans-serif; color:white; line-height:1.9;">
+/div>
+ الفكرة العامة</h3>
+<p>القصيدة تتناول رحلة الشاعر مع الزمن، وتستعرض تجاربه مع الخذلان والخيانة والتحولات في الحياة. تتخللها تأملات في البشر والطبيعة الإنسانية، إضافة إلى الصبر والحكمة التي تأتي بعد التجارب.</p>
+
+<hr>
+<h3>📜 تحليل الأبيات</h3>
+<ul>
+  <li><em>"قررت الرحيل من أمد... فخانني الزمان وأوفى به القدر"</em>: بداية قوية تعكس قرار الشاعر بالمضي في الحياة أو الرحيل عن الماضي، مع إدراك أن الزمن قد يخوننا، لكن القدر يظل في حكمه.</li>
+  <li><em>"فلا بصيره من لا يرى بأعينه.... ولو طال له الطريق والسفر"</em>: يشير إلى أن الرؤية الحقيقية والفهم لا تتحقق إلا بالوعي الداخلي، وأن طول التجربة وحده لا يكفي.</li>
+  <li><em>"وكلام لا ينجي صاحبه... تزدريه الحضوض ومقله البشر"</em>: يصف حالة الضعف أمام أحكام الناس، وأن الكلمات وحدها قد لا تنقذ الشخص من سوء الحظ أو انتقاد الآخرين.</li>
+  <li><em>"تعجبت من زمان أدور به.... وكيف تغيرت المخاطر إلى خطر"</em>: استغراب من تغير الحياة، وأن ما كان تحديًا قد أصبح تهديدًا حقيقيًا مع مرور الزمن.</li>
+  <li><em>"كطفل ينمو في مراحله... وبأن فيه الشيب والقصر"</em>: استعارة جميلة تشير إلى دورة الحياة، من البراءة والطفولة إلى النضج والشيب.</li>
+  <li><em>"فهذا حال الزمان لمن جال به.... يغدو لعلمه يبوح به أو يسر"</em>: تأمل في أن تجربة الإنسان مع الزمن تمنحه الحكمة، وقد يشاركها أو يحتفظ بها لنفسه.</li>
+  <li><em>"كمثل الكلب حين في طبعه.... وحين يتشبه بالأسماك والنسر"</em>: تشبيه للطبيعة البشرية، وكيف يمكن للمرء أن يتصرف بما لا يتفق مع طبعه تحت تأثير الظروف.</li>
+  <li><em>"فوجهي هذا من الماضي صورته... طلت علي من الجوال بفجر"</em>: لمسة شخصية تعكس الحنين والذكريات، وكيف يمكن للأشياء البسيطة أن تثير الماضي.</li>
+  <li><em>"فذكرتني بعهد لم أكن انساه... ولكن لا تجود الأرواح إلا بصبر"</em>: دعوة للصبر على تجارب الحياة، فالروح تحتاج الصبر لتستعيد قوتها.</li>
+  <li><em>"فلكل أمر له شقوته.... ولا بعد العسر إلا يسر"</em>: حكمة خالدة: بعد كل صعوبة يأتي الفرج، وكل تجربة تحمل درسًا.</li>
+  <li><em>"ولا أشره علا السارق بسطوته... فهاذي تجارب النفس والبصر"</em>: خلاصة القول: التجارب تصقل النفس وتعلم الإنسان الرؤية والفهم.</li>
+</ul>
+`;
+
+document.getElementById("storyText_new").innerHTML = snqStory_new;
+
+// فتح النافذة
+document.getElementById("shipIcon_new").onclick = () => {
+
+<!-- 🌙 حاوية الفيديو المخفية -->
+<div id="jokeVideoContainer" style="display:none; position:fixed; top:60px; left:50%; transform:translateX(-50%); z-index:10000;">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/EXAMPLE_VIDEO?autoplay=1" frameborder="0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
+</div>
+
+<script>
+const jokeIcon = document.getElementById('jokeVideoIcon');
+const jokeContainer = document.getElementById('jokeVideoContainer');
+
+jokeIcon.addEventListener('click', () => {
+    if(jokeContainer.style.display === 'none') {
+        jokeContainer.style.display = 'block';
+    } else {
+        jokeContainer.style.display = 'none';
+        // لإيقاف الفيديو عند الإغلاق، نعيد src لإعادة التحميل
+        const iframe = jokeContainer.querySelector('iframe');
+        iframe.src = iframe.src;
+    }
+});
+</script>
+
+<!-- ========== أيقونة الأعمال ========== -->
+<div id="worksIconContainer" style="
+  bottom: 5px;
+  right: 125px;
+  text-align:center;
+  margin:30px 0;
+  z-index:9999;
+  position:relative;
+">
+  
+  <div onclick="toggleWorksCard()" style="
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    border:3px solid #00ffff;
+    box-shadow:0 0 20px #00ffff;
+    background:#000;
+    overflow:hidden;
+    cursor:pointer;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin:auto;
+  ">
+    <img src="https://a.top4top.io/p_3607x4is91.jpg"
+         style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+  </div>
+
+</div>
+
+
+<!-- ========== الكرت (صورة يسار — فيديو يمين) ========== -->
+<div id="worksSmallCard" style="
+  display:none;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:#001515;
+  border-radius:15px;
+  padding:15px;
+  box-shadow:0 0 25px #00ffff;
+  z-index:100000;
+  width:90%;
+  max-width:470px;
+">
+
+  <!-- زر الإغلاق -->
+  <button onclick="toggleWorksCard()" style="
+    background:red;
+    color:#fff;
+    border:none;
+    padding:6px 12px;
+    border-radius:6px;
+    cursor:pointer;
+    margin-bottom:10px;
+    float:left;
+  ">✖</button>
+
+  <!-- ⭐ المحتوى -->
+  <div style="
+      display:flex;
+      gap:10px;
+      margin-top:40px;
+      flex-direction:row;
+      direction:ltr;
+      width:100%;
+  ">
+
+    <!-- ✔ الصورة يسار -->
+    <img src="https://a.top4top.io/p_3607x4is91.jpg"
+         style="
+           width:48%;
+           height:380px;
+           object-fit:cover;
+           border-radius:12px;
+           box-shadow:0 0 12px #00ffff;
+           z-index:2;
+         ">
+
+    <!-- ✔ الفيديو يمين + زر الصوت + شريط الصوت -->
+    <div style="width:48%; height:380px; position:relative;">
+
+      <!-- الفيديو -->
+      <iframe id="workVideo"
+        src="https://www.youtube.com/embed/FzfIvHt4AaU?autoplay=1&mute=1&enablejsapi=1"
+        style="
+          width:100%;
+          height:100%;
+          border:none;
+          border-radius:12px;
+          box-shadow:0 0 12px #00ffff;
+          position:relative;
+          z-index:2;
+        "
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+
+      <!-- زر الصوت -->
+      <button id="soundBtn" onclick="toggleWorkSound()" style="
+        position:absolute;
+        bottom:10px;
+        left:10px;
+        background:rgba(0,255,255,0.7);
+        border:none;
+        padding:6px 10px;
+        border-radius:8px;
+        cursor:pointer;
+        font-weight:bold;
+        color:#000;
+        z-index:5;
+        box-shadow:0 0 10px #00ffff;
+        font-size:12px;
+      ">
+        🔊 تشغيل الصوت
+      </button>
+
+      <!-- شريط الصوت -->
+      <input type="range" id="volumeSlider" min="0" max="100" value="100" 
+        oninput="setWorkVolume(this.value)"
+        style="
+          position:absolute;
+          bottom:10px;
+          right:10px;
+          width:65px;
+          z-index:5;
+          cursor:pointer;
+        ">
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+function toggleWorksCard(){
+  let card = document.getElementById("worksSmallCard");
+  card.style.display = (card.style.display === "block") ? "none" : "block";
+}
+
+// ========================== التحكم بالصوت ==========================
+
+let soundOn = false;
+
+// زر تشغيل / إيقاف الصوت
+function toggleWorkSound(){
+  const iframe = document.getElementById("workVideo");
+  const btn = document.getElementById("soundBtn");
+
+  soundOn = !soundOn;
+
+  iframe.contentWindow.postMessage(JSON.stringify({
+    event: "command",
+    func: soundOn ? "unMute" : "mute",
+    args: []
+  }), "*");
+
+  btn.textContent = soundOn ? "🔈 إيقاف الصوت" : "🔊 تشغيل الصوت";
+}
+
+
+// تغيير مستوى الصوت من السلايدر
+function setWorkVolume(vol){
+  const iframe = document.getElementById("workVideo");
+
+  iframe.contentWindow.postMessage(JSON.stringify({
+    event: "command",
+    func: "setVolume",
+    args: [vol]
+  }), "*");
+}
+</script>
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الأقسامsakaker wep</title>
+<style> {
+  font-family:'Tajawal', sans-serif;
+  margin:0;
+  padding:0;
+  background:transparent;
+  color: silver;
+  text-align:center;
+}
+
+/* ===== أيقونة التشغيل ===== */ 
+#scrollbox-icon {
+  position: fixed;
+  bottom: 230px;
+  left: 20%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid #00ffaa;
+  color: #00ffaa;
+  background: rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(0,255,170,0.4);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(6px);
+  z-index: 99999;
+}
+#scrollbox-icon:hover {
+  transform: translateX(-50%) scale(1.1);
+  box-shadow: 0 0 30px #00f2fe;
+}
+
+/* ===== الخلفية ===== */
+#scrollbox-overlay {
+  display:none;
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(4px);
+  z-index:99998;
+  opacity:0;
+  transition:opacity 0.3s ease;
+}
+#scrollbox-overlay.active {
+  display:block;
+  opacity:1;
+}
+
+/* ===== النافذة ===== */
+#scrollbox-popup {
+  display:none;
+  position:fixed;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%) scale(0.9);
+  width:90%;
+  max-width:900px;
+  height:85%;
+  background:rgba(255,255,255,0.97);
+  color:#111;
+  border-radius:14px;
+  box-shadow:0 0 25px rgba(255,255,255,0.2);
+  z-index:100000;
+  opacity:0;
+  transition:all 0.3s ease;
+  overflow:hidden;
+  text-align:right;
+}
+#scrollbox-popup.active {
+  display:block;
+  opacity:1;
+  transform:translate(-50%,-50%) scale(1);
+}
+
+/* ===== التبويبات ===== */
+.scrollbox-tabs {
+  display:flex;
+  justify-content:space-around;
+  background:rgba(0,0,0,0.05);
+  border-bottom:1px solid rgba(0,0,0,0.1);
+}
+.scrollbox-tab {
+  flex:1;
+  text-align:center;
+  padding:10px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:background 0.3s;
+}
+.scrollbox-tab:hover { background:rgba(0,0,0,0.1); }
+.scrollbox-tab.active { background:rgba(0,0,0,0.2); }
+
+/* ===== المحتوى ===== */
+.scrollbox-content {
+  display:none;
+  height:calc(100% - 60px);
+  padding:20px;
+  overflow:hidden;
+  position:relative;
+}
+.scrollbox-content.active { display:block; }
+
+/* ===== النص المتحرك ===== */
+.scrollbox-text {
+  position:absolute;
+  bottom:-100%;
+  width:100%;
+  animation:scrollbox-up 220s linear infinite; /* سرعة بطيئة جدًا */
+  line-height:1.9;
+}
+@keyframes scrollbox-up {
+  from { bottom:-100%; }
+  to { bottom:100%; }
+}
+.scrollbox-text:hover {
+  animation-play-state: paused;
+}
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -1189,7 +1696,7 @@ setInterval(loadWeather, 1800000);
 .video-title{margin-top:10px;font-size:18px;}
 </style>
 </head>
-<body>
+
 
 <!-- زر تبديل اللغة -->
 <div id="langBtn">EN</div>
@@ -1932,490 +2439,6 @@ langBtn.onclick=()=>{
 </body>
 </html>
 
-  <!-- الخلفية 1 -->
-  <div id="bg1" style="
-    position:fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    background-size:cover;
-    background-position:center;
-    transition:opacity 1.2s ease-in-out;
-    opacity:1;
-    z-index:-1;
-  "></div>
-
-<!-- 🐦 أيقونة صوت الطيور بتوهج زمردي -->
-<div id="bird-sound-btn" title="تشغيل/إيقاف صوت الطيور" style="
-  position: fixed;
-  top: 30px; /* مرفوعة حوالي خمس أسطر */
-  right: 12px;
-  width: 75px;
-  height: 75px;
-  background:
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 34px;
-  color: white;
-  cursor: pointer;
-  box-shadow: 0 0 25px rgba(0,255,200,0.9), 0 0 50px rgba(0,255,200,0.4);
-  z-index: 1001;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-">
-  🐦
-</div>
-
-<!-- 🎵 صوت تغريد الطيور وخرير الماء -->
-<audio id="bird-sound" loop playsinline>
-  <source src="https://www.orangefreesounds.com/wp-content/uploads/2016/04/Birds-chirping-and-water-flowing.mp3" type="audio/mp3">
-  متصفحك لا يدعم تشغيل الصوت.
-</audio>
-
-<script>
-const birdBtn = document.getElementById('bird-sound-btn');
-const birdAudio = document.getElementById('bird-sound');
-
-// حالة أولية
-birdBtn.textContent = "🐦";
-
-// عند النقر على الأيقونة
-birdBtn.addEventListener('click', async () => {
-  try {
-    if (birdAudio.paused) {
-      await birdAudio.play();
-      birdBtn.textContent = "🔊";
-      birdBtn.style.boxShadow = "0 0 35px rgba(0,255,200,1), 0 0 70px rgba(0,255,200,0.6)";
-      birdBtn.style.transform = "scale(1.1)";
-    } else {
-      birdAudio.pause();
-      birdBtn.textContent = "🐦";
-      birdBtn.style.boxShadow = "0 0 25px rgba(0,255,200,0.9), 0 0 50px rgba(0,255,200,0.4)";
-      birdBtn.style.transform = "scale(1)";
-    }
-  } catch (err) {
-    console.error("حدث خطأ أثناء تشغيل الصوت:", err);
-    alert("قد يمنع المتصفح التشغيل التلقائي. حاول النقر مرة أخرى.");
-  }
-});
-</script>
-  <!-- الخلفية 2 -->
-  <div id="bg2" style="
-    position:fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    background-size:cover;
-    background-position:center;
-    transition:opacity 1.2s ease-in-out;
-    opacity:0;
-    z-index:-1;
-  "></div>
-
-  <!-- محتوى الدخول -->
-  <div style="
-    position:absolute;
-    top:50%; left:50%;
-    transform:translate(-50%, -50%);
-    text-align:center;
-    color:white;
-    font-family:Tajawal;
-  ">
-    <h1 style="font-size:38px; text-shadow:0 0 15px #00ffff;">
-    
-    </h1>
-
-    <button onclick="enterSite()" style="
-      margin-top:40px;
-      padding:12px 28px;
-      font-size:22px;
-      border:none;
-      border-radius:12px;
-      background:
-      color:#000;
-      font-weight:bold;
-      cursor:pointer;
-      box-shadow:0 0 20px #00ffff;
-    ">
-      دخول الموقع entrance
-    </button>
-  </div>
-</div>
-
-<script>
-/* =============== الخلفيات المتغيرة =============== */
-const backgrounds = [
-  "https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072823_1280.jpg",
-  
-];
-
-let index = 0; 
-let front = true;
-
-/* أول خلفية */
-bg1.style.backgroundImage = `url('${backgrounds[0]}')`;
-index = 1;
-
-/* إخفاء شاشة الدخول */
-function enterSite() {
-  document.getElementById("entryScreen").style.display = "none";
-}
-</script>
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title></title>
-
-<style>
-
-body{
-    margin:0;
-    font-family:Tahoma;
-    background:linear-gradient(135deg,#001133,#0044aa,#ffd700,#000000);
-    background-size:400% 400%;
-    animation:bgMove 10s infinite alternate;
-    text-align:center;
-    overflow-x:hidden;
-}
-
-@keyframes bgMove{
-    0%{background-position:left;}
-    100%{background-position:right;}
-}
-
-/* الايقونة */
-#iconButton{
-    position:fixed;
-    bottom:20px;
-    right:420px;
-    width:120px;
-    height:120px;
-    border-radius:50%;
-    overflow:hidden;
-    border:5px solid gold;
-    box-shadow:0 0 30px gold;
-    cursor:pointer;
-    z-index:9999;
-    transition:0.4s;
-    background:black;
-}
-
-#iconButton:hover{
-    transform:scale(1.08);
-}
-
-#iconButton img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
-
-/* نافذة الخبر */
-#newsBox{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.93);
-    z-index:99999;
-    overflow:auto;
-    padding-top:50px;
-}
-
-/* زر الإغلاق */
-.closeBtn{
-    position:absolute;
-    top:20px;
-    left:20px;
-    background:red;
-    color:white;
-    border:none;
-    padding:12px 20px;
-    border-radius:12px;
-    font-size:22px;
-    cursor:pointer;
-    box-shadow:0 0 20px red;
-}
-
-/* الصورة الكبيرة */
-.main-image{
-    width:320px;
-    height:320px;
-    border-radius:50%;
-    border:8px solid gold;
-    object-fit:cover;
-    box-shadow:0 0 40px gold;
-}
-
-/* العنوان */
-.main-title{
-    color:gold;
-    font-size:55px;
-    font-weight:bold;
-    text-shadow:0 0 20px gold;
-    margin-top:25px;
-}
-
-/* العنوان الأزرق */
-.blue-title{
-    color:#00aaff;
-    font-size:90px;
-    font-weight:bold;
-    text-shadow:0 0 25px #00aaff;
-    margin-top:10px;
-}
-
-/* النص */
-.text{
-    width:90%;
-    margin:auto;
-    margin-top:40px;
-    font-size:42px;
-    font-weight:bold;
-    line-height:2;
-    background:linear-gradient(90deg,yellow,blue,black);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-}
-
-/* صورة الخبر تحت النص */
-.story-image{
-    width:90%;
-    max-width:900px;
-    margin:40px auto;
-    display:block;
-    border-radius:30px;
-    border:5px solid gold;
-    box-shadow:0 0 35px gold;
-}
-
-</style>
-</head>
-
-<body>
-
-<!-- الايقونة -->
-<div id="iconButton" onclick="openNews()">
-
-<img src="https://f.top4top.io/p_3796bnxbo1.png">
-
-</div>
-
-<!-- نافذة الخبر -->
-<div id="newsBox">
-
-<button class="closeBtn" onclick="closeNews()">إغلاق</button>
-
-<img class="main-image" src="https://f.top4top.io/p_3796bnxbo1.png">
-
-<div class="main-title">
-قصتي مع كره القدم
-</div>
-
-<div class="blue-title">
-لكل رياضه ثقافه
-</div>
-
-<div class="text">
-
-عشقت كرة القدم منذ الطفولة وكانت لي ذكريات جميلة
-مع الأندية العربية والعالمية ومتابعة المباريات
-والبطولات المختلفة عبر السنين.
-
-<br><br>
-
-</div>
-
-<!-- الصورة الجديدة تحت النص -->
-<img class="story-image" src="https://i.postimg.cc/02GZ1xv6/nady.png">
-
-</div>
-
-<script>
-
-function openNews(){
-    document.getElementById("newsBox").style.display="block";
-}
-
-function closeNews(){
-    document.getElementById("newsBox").style.display="none";
-}
-
-</script>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title> good time   </title>
-
-<style>
-{
-  margin:0; padding:0;
-  height:100%;
-  font-family:"Tajawal",sans-serif;
-  color:#fff;
-  overflow:hidden;
-}
-
-/* إخفاء الصفحات */
-.page{
-  display:none;
-  width:100%;
-  height:100%;
-  position:absolute;
-  top:0; left:0;
-}
-
-/* --- الصفحة الرئيسية --- */
-#home video{
-  width:100%; height:100%;
-  object-fit:cover;
-}
-.btn{
-  position:absolute;
-  bottom:40px;
-  left:50%;
-  transform:translateX(-50%);
-  background:linear-gradient(45deg,#00ffcc,#0066ff);
-  border:none;
-  padding:15px 30px;
-  border-radius:15px;
-  font-size:20px;
-  cursor:pointer;
-  box-shadow:0 0 20px #00ffff55;
-}
-
-/* --- الصفحة الثانية --- */
-#page2{
-  background:url('https://cdn.pixabay.com/photo/2017/02/01/22/02/mountains-2031539_1280.jpg') center/cover;
-}
-.page-btn{
-  position:absolute;
-  top:20px;
-  left:20px;
-  padding:10px 20px;
-  border-radius:12px;
-  background:linear-gradient(45deg,#00ffcc,#0066ff);
-  border:none;
-  color:#fff;
-  cursor:pointer;
-}
-.next-btn{
-  position:absolute;
-  bottom:40px;
-  left:50%;
-  transform:translateX(-50%);
-  padding:15px 25px;
-  font-size:20px;
-  background:rgba(0,0,0,0.6);
-  border:1px solid #00ffff77;
-  color:#00ffff;
-  border-radius:12px;
-  cursor:pointer;
-}
-
-/* --- الصفحة الثالثة --- */
-#page3 iframe{
-  width:100%;
-  height:100%;
-  pointer-events:none;
-  position:absolute;
-  z-index:-1;
-}
-h1{
-  text-align:center;
-  margin-top:70px;
-  font-size:30px;
-  text-shadow:0 0 12px #00ffff;
-}
-
-.info-box{
-  margin:20px auto;
-  width:85%;
-  padding:15px 20px;
-  background:rgba(0,0,0,0.5);
-  border:1px solid #00ffff55;
-  border-radius:12px;
-  text-align:center;
-  box-shadow:0 0 15px #00ffff55;
-  font-size:18px;
-}
-
-.cards{
-  display:grid;
-  grid-template-columns:repeat(2, 1fr);
-  gap:20px;
-  padding:20px;
-}
-.card{
-  background:rgba(0,0,0,0.55);
-  border:1px solid #00ffff77;
-  padding:20px;
-  border-radius:12px;
-  text-align:center;
-  font-size:22px;
-  cursor:pointer;
-  transition:0.3s;
-}
-.card:hover{
-  background:rgba(0,0,0,0.75);
-  transform:scale(1.07);
-}
-
-/* زر الرجوع من الصفحة الثالثة */
-.back3{
-  position:absolute;
-  top:20px;
-  left:20px;
-  padding:10px 20px;
-  background:linear-gradient(45deg,#00ffcc,#0066ff);
-  border:none;
-  border-radius:12px;
-  color:#fff;
-  cursor:pointer;
-  z-index:9999;
-}
-
-/* popup */
-#popup{
-  display:none;
-  position:fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  background:rgba(0,0,0,0.75);
-  backdrop-filter:blur(5px);
-  z-index:999999;
-}
-#popupBox{
-  background:rgba(0,0,0,0.6);
-  border:1px solid #00ffffaa;
-  width:80%; max-width:600px;
-  margin:90px auto;
-  padding:25px;
-  border-radius:12px;
-  position:relative;
-  box-shadow:0 0 20px #00ffff88;
-}
-#closeBtn{
-  position:absolute;
-  top:10px;
-  left:10px;
-  background:#ff4444;
-  padding:5px 12px;
-  border:none;
-  color:#fff;
-  border-radius:8px;
-  cursor:pointer;
-}
-</style>
-</head>
-<body>
-    
 <!-- ====================== الصفحة الرئيسية ======================= -->
 <div id="home" class="page" style="display:block;">
   <video autoplay muted loop playsinline>
@@ -2449,7 +2472,7 @@ h1{
 /* ====== الدوائر ====== */
 .video-top-container-fixed {
   position: fixed;
-  top: 250px;
+  top: 150px;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -2559,8 +2582,8 @@ function closeVideoModal() {
 /* أيقونة القصة */
 #shipIcon_new {
   position: fixed;
-  bottom: 230px;
-  right: 210px;
+  bottom: 180px;
+  right: 380px;
   width: 110px;
   height: 110px;
   background: url('https://i.top4top.io/p_3602p1v3s1.png') center/cover no-repeat;
@@ -2991,7 +3014,7 @@ document.getElementById("closeShip_new").onclick = () => {
 /* 🔹 أيقونة النجمة */
 .launcher {
   position: fixed;
-  bottom: 225px;
+  bottom: 425px; 
   right: 25px;
   width: 50px;
   height: 50px;
@@ -3060,7 +3083,7 @@ iframe.map { height: 200px; }
 
 .close {
   position: absolute;
-  top: 309px;
+  top: 109px;
   right: -12px;
   width: 28px;
   height: 28px;
@@ -3315,8 +3338,8 @@ supportBtn.addEventListener('click', () => {
 /* 🌟 أيقونة فليشر القنوات المباشرة */
 #liveFlasher {
   position: fixed;
-  top: 580px;
-  right: 20px;
+  top: 550px;
+  right: 10px;
   transform: translateY(-50%);
   width: 150px;
   height: 150px;
@@ -3461,8 +3484,8 @@ supportBtn.addEventListener('click', () => {
 /* زر مكتبة الفيديو الزمردية */
 #emeraldLibraryButton {
   position: fixed;
-  right: 20px;
-  top: 40px;
+  right: 900px;
+  top: 600px;
   z-index: 9500;
   cursor: pointer;
   padding: 10px 15px;
@@ -3477,8 +3500,8 @@ supportBtn.addEventListener('click', () => {
 #emeraldLibraryContent {
   display: none;
   position: fixed;
-  right: 40px;
-  top:10px;
+  right: 140px;
+  top:50px;
   max-height: 70%;
   overflow-y: auto;
   background: rgba(0,0,0,0.85);
@@ -3495,7 +3518,7 @@ supportBtn.addEventListener('click', () => {
   border-radius: 10px;
   cursor: pointer;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 24px;
   margin-bottom: 5px;
 }
 
@@ -3865,3 +3888,656 @@ supportBtn.addEventListener('click', () => {
   }
 </script>
 
+
+<!-- ====================== الصفحة الرئيسية ======================= -->
+<div id="home" class="page" style="display:block;">
+  <video autoplay muted loop playsinline>
+    <source src="https://assets.mixkit.co/videos/51445/51445-720.mp4" type="video/mp4">
+  </video>
+
+
+<!-- ====== الدوائر ====== -->
+<div class="video-top-container-fixed">
+  <div class="video-circle" data-video="n7eQejkXbnM">
+    <iframe class="miniVideo"
+      src="https://www.youtube.com/embed/n7eQejkXbnM?autoplay=1&mute=1&playsinline=1&controls=0&loop=1&playlist=n7eQejkXbnM"
+      allow="autoplay; encrypted-media"
+      frameborder="0"></iframe>
+  </div>
+
+  <div class="video-circle" data-video="zi9knajcejY">
+    <iframe class="miniVideo"
+      src="https://www.youtube.com/embed/zi9knajcejY?autoplay=1&mute=1&playsinline=1&controls=0&loop=1&playlist=zi9knajcejY"
+      allow="autoplay; encrypted-media"
+      frameborder="0"></iframe>
+  </div>
+</div>
+
+<!-- ====== مربع الفيديو ====== -->
+<div id="videoBoxFixed">
+  <iframe id="fixedVideo" src="" allowfullscreen></iframe>
+</div>
+
+<style>
+/* ====== الدوائر ====== */
+.video-top-container-fixed {
+  position: fixed;
+  top: 250px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 25px;
+  z-index: 50000;
+}
+
+.video-circle {
+  width:125px;
+  height: 105px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  transition: 0.3s ease;
+  overflow: hidden;
+  font-size: 12px;
+  border: 1px solid rgba(255,255,255,0.4);
+  position: relative;
+}
+
+.video-circle:hover {
+  transform: scale(1.1);
+  background: rgba(255,255,255,0.2);
+}
+
+/* ====== الفيديو المصغّر داخل الدائرة ====== */
+.miniVideo {
+  position: absolute;
+  width: 160%;
+  height: 160%;
+  top: -30%;
+  left: -30%;
+  border: none;
+  pointer-events: none; /* يمنع مشاكل الضغط */
+  opacity: 0.85;
+}
+
+/* ====== مربع الفيديو ====== */
+#videoBoxFixed {
+  position: fixed;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 330px;
+  height: 200px;
+  background: #000;
+  border-radius: 14px;
+  box-shadow: 0 0 20px rgba(0,255,255,0.5);
+  display: none;
+  z-index: 49999;
+  overflow: hidden;
+}
+
+#videoBoxFixed iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+</style>
+
+<!-- ====== سكربت الفتح والإغلاق ====== -->
+<script>
+document.querySelectorAll(".video-circle").forEach(circle => {
+  circle.addEventListener("click", () => {
+    const box = document.getElementById("videoBoxFixed");
+    const iframe = document.getElementById("fixedVideo");
+    const videoId = circle.getAttribute("data-video");
+
+    // إغلاق إذا كان مفتوح
+    if (box.style.display === "block") {
+      iframe.src = "";
+      box.style.display = "none";
+      return;
+    }
+
+    // فتح المربع
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1&playsinline=1`;
+    box.style.display = "block";
+  });
+});
+</script>
+
+<!-- ====== JavaScript ====== -->
+<script>
+function openVideoModal(videoId) {
+  const modal = document.getElementById('videoModal');
+  const modalVideo = document.getElementById('modalVideo');
+  modalVideo.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0`;
+  modal.style.display = 'flex';
+}
+
+function closeVideoModal() {
+  const modal = document.getElementById('videoModal');
+  const modalVideo = document.getElementById('modalVideo');
+  modalVideo.src = ''; // إيقاف الفيديو عند الإغلاق
+  modal.style.display = 'none';
+}
+</script>
+ 
+<!-- أيقونة التشغيل -->
+<div id="scrollbox-icon">📜</div>
+
+<!-- الخلفية -->
+<div id="scrollbox-overlay"></div>
+
+<!-- النافذة -->
+<div id="scrollbox-popup">
+  <button id="scrollbox-close">❌</button>
+
+  <div class="scrollbox-tabs">
+    <div class="scrollbox-tab active" data-target="scrollbox-culture">🌍 ثقافة</div>
+    <div class="scrollbox-tab" data-target="scrollbox-islamic">🕌 إسلامي</div>
+    <div class="scrollbox-tab" data-target="scrollbox-thoughts">💭 خواطر</div>
+  </div>
+
+  <!-- ===== القسم الأول: ثقافة عامة ===== -->
+ <div id="scrollbox-culture" class="scrollbox-content active">
+  <div class="scrollbox-text">
+    <h2>🌍 ثقافة عامة</h2>
+
+    <p>الثقافة العامة هي المرآة التي تعكس وعي الإنسان ونظرته للحياة،  
+    وهي الجسر الذي يصل بين الفكر والعلم والإبداع.  
+    من خلالها يستطيع الإنسان أن يفهم ذاته، ويتواصل مع مجتمعه،  
+    ويستوعب الحضارات من حوله دون أن يفقد هويته.</p>
+
+    <p>الثقافة ليست مجرد كمٍّ من المعلومات، بل هي طريقة تفكير،  
+    وسلوك حضاري ينبع من الإدراك العميق لقيمة العلم والإنسان.  
+    فالمثقف لا يكرر ما يسمع، بل يُعيد بناءه على أسس المنطق والمعرفة.</p>
+
+    <p>من أبرز ما قدّمته الحضارات للثقافة الإنسانية:  
+    <ul>
+      <li><strong>الحضارة الإسلامية:</strong> التي أبدعت في الطب والفلك والرياضيات والفلسفة، وقدّمت للعالم أسماء خالدة كابن سينا والرازي والخوارزمي.</li>
+      <li><strong>الحضارة المصرية القديمة:</strong> التي أنارت العالم بعلوم التحنيط والهندسة والعمارة، وشهدت ولادة الكتابة والطب المبكر.</li>
+      <li><strong>الحضارة اليونانية:</strong> التي أرست قواعد الفلسفة والمنطق، وقدّمت للعالم سقراط وأفلاطون وأرسطو.</li>
+      <li><strong>الحضارة الصينية:</strong> التي برعت في الورق والحرير والبارود، وأسست مفاهيم الانسجام بين الإنسان والطبيعة.</li>
+    </ul>
+    </p>
+
+    <p>الثقافة الحقيقية تنبع من التوازن بين الأصالة والمعاصرة،  
+    أي أن نحافظ على جذورنا وهويتنا، وفي الوقت نفسه ننفتح على كل جديد مفيد.  
+    فالمجتمع الذي لا يقرأ يتوقف، والذي يقرأ بلا وعي يتشتت،  
+    أما الذي يقرأ بعقل ناقد ويُبدع فهو الذي يصنع التاريخ.</p>
+
+    <p>الثقافة أيضًا هي أخلاق، لأنها تصنع فينا حسّ المسؤولية،  
+    وتمنحنا القدرة على فهم الآخر واحترام اختلافه،  
+    وتزرع فينا قيم التسامح والمحبة والفضيلة.</p>
+
+    <p><em>اقرأ، تفكر، ناقش، واكتب... فالثقافة ليست نهاية طريق، بل بداية حياة.</em></p>
+  </div>
+</div>
+
+
+  <!-- ===== القسم الثاني: التاريخ الإسلامي ===== -->
+  <div id="scrollbox-islamic" class="scrollbox-content">
+    <div class="scrollbox-text">
+      <h2>🕌 التاريخ الإسلامي</h2>
+      <h3>📜 النبي محمد ﷺ</h3>
+      <p>محمد بن عبد الله، خاتم الأنبياء والمرسلين، ولد في مكة عام 571م في عام الفيل.  
+      نزل عليه الوحي في سن الأربعين، فدعا إلى عبادة الله وحده ونبذ الشرك.  
+      استمرت دعوته 23 عامًا، عانى فيها وأصحابه من الاضطهاد حتى هاجر إلى المدينة المنورة، حيث أسس أول دولة إسلامية.  
+      توفي ﷺ سنة 632م، تاركًا أمة موحدة وكتاب الله بين أيدي المسلمين.</p>
+      <hr>
+      <h3>🕌 الخلفاء الراشدون</h3>
+      <p><strong>أبو بكر الصديق</strong> (632–634م): أول الخلفاء، وأقرب الصحابة إلى النبي ﷺ. ثبت المسلمين بعد وفاته ﷺ، وجمع القرآن الكريم في مصحف واحد.</p>
+      <p><strong>عمر بن الخطاب</strong> (634–644م): ثاني الخلفاء، اشتهر بالعدل والحزم، ووسع الدولة الإسلامية لتشمل بلاد فارس والشام ومصر.</p>
+      <p><strong>عثمان بن عفان</strong> (644–656م): ثالث الخلفاء، جمع الناس على مصحف واحد بلغة قريش، وفتح أرمينية وخراسان.</p>
+      <p><strong>علي بن أبي طالب</strong> (656–661م): رابع الخلفاء، وابن عم النبي ﷺ، عُرف بالشجاعة والعلم، وواجه الفتن الكبرى في الأمة.</p>
+      <hr>
+      <h3>⚔️ معاوية بن أبي سفيان</h3>
+      <p>معاوية بن أبي سفيان، صحابي وكاتب وحي للنبي ﷺ، ووالي الشام في عهد عمر وعثمان.  
+      أسس الدولة الأموية سنة 661م بعد تنازل الحسن بن علي له، وجعل دمشق عاصمة للدولة، واشتهر بالحكمة والسياسة والقدرة على إدارة الدولة.</p>
+      <hr>
+      <h3>⚖️ عمر بن عبدالعزيز</h3>
+      <p>عمر بن عبدالعزيز بن مروان، الخليفة الأموي الثامن، يُلقب بخامس الخلفاء الراشدين لزهده وعدله.  
+      وُلد سنة 682م وتولى الخلافة سنة 717م، فعمل على نشر العدل والمساواة، ورد المظالم، وإلغاء كثير من الضرائب الظالمة.  
+      توفي سنة 720م تاركًا سيرةً ناصعة في الحكم الصالح.</p>
+    </div>
+  </div>
+
+  <!-- ===== القسم الثالث: خواطر ===== -->
+  <div id="scrollbox-thoughts" class="scrollbox-content">
+    <div class="scrollbox-text">
+      <h2>💭 خواطر</h2>
+      <h3>قصتي مع التيتنك</h3>
+      <p>في صباح هادئ، شددت أشرعتي متجهًا نحو المجهول، عازمًا على استكشاف أسرار البحار التي لا يعرفها أحد.  
+      كانت الأمواج تعانق قاربي، والريح تدفعني نحو مغامرة لا تُنسى.</p>
+      <p>قادتني التيارات إلى مشهد أسطوري… هناك، في عمقٍ سحيق، ظهرت أمامي سفينة التايتنك، شامخة رغم جراح الزمن، صامتة وكأنها تحكي قصتها الحزينة.  
+      اقتربت منها، ولم أقاوم رغبتي في ترك أثر، فكتبت اسمي على إحدى بقاياها المعدنية المكسوة بالصدأ والمرجان.</p>
+      <p>وبينما أستكشف المكان، لمح بصري ظلاً ضخماً… كان حوتًا عظيمًا غارقًا في سبات عميق بجوار السفينة، وكأنهما رفيقا عزلة.  
+      فاتخذت الحوت فندقًا عائمًا لمدة يومين؛ أستريح فوق ظهره، أراقب النجوم ليلًا، وأتجول بين بقايا السفينة نهارًا.</p>
+
+      <hr>
+      <h3>قصة التنين الفضي</h3>
+      <p>بينما كان أبو القمر زمرد يجلس على صخرة تطل على البحر في ليلة هادئة، لاحظ ضوءًا غريبًا يلمع وسط الضباب.  
+      اقترب أكثر، فإذا به يكتشف كائنًا أسطوريًا ذو حراشف لامعة كالفضة، إنه التنين الفضي.</p>
+      <p>اقترب التنين ببطء وصوته العميق يروي حكايات عن الجبال البعيدة والبحار المجهولة.  
+      دعاه لرحلة بين الغيوم، حيث حلقا فوق الغابات والأنهار، وشاهدا معًا روائع لم ترها عين بشر من قبل.</p>
+      <p>عاد أبو القمر زمرد من تلك المغامرة وهو يدرك أن المغامرة الحقيقية ليست فقط في استكشاف الأماكن، بل في الجرأة على خوض المجهول بقلب مفتوح.</p>
+
+      <hr>
+      <h3>القمر والزمرد 🌙💎</h3>
+      <p>قصَّ أبو القمر حكاية يوم استطاع أن يمزج أنوار القمر بأحجار الزمرد الكريمة التي حصل عليها من شعب المرجان.  
+      كان ينظر إلى بريق الزمرد في أعماق البحر، حتى سطع نور القمر وانعكس على تلك الأحجار الساحرة.</p>
+      <p>ومنذ ذلك الحين، صار هذا الطريق بوابة لتحقيق الأحلام وتحويلها إلى حقيقة بإذن الله.</p>
+
+      <hr>
+      <h3>أبو القمر زمرد حارس الأندلس القديم</h3>
+      <p>في زمن بعيد، حين كانت الأندلس جنة على الأرض، عاش رجل يُدعى أبو القمر زمرد، حارس أسوار قرطبة وراعي مفاتيح بواباتها.  
+      كان معروفًا بشجاعته وذكائه، حتى أن الملوك كانوا يستشيرونه في أمور الحرب والسلم.</p>
+      <p>وفي إحدى الليالي، رأى نورًا غريبًا يلمع فوق قصر الحمراء، فاتجه نحوه بسرعة، وهناك وجد مخطوطة قديمة تحمل أسرار الدفاع عن الأندلس.  
+      أدرك أن مهمته الحقيقية ليست فقط حماية الأسوار، بل حماية سرّ الأندلس من أن يضيع إلى الأبد.</p>
+
+      <hr>
+      <h3>رحلة أبو القمر إلى ما وراء المجرات</h3>
+      <p>بعد أن أنهى أبو القمر تصميم موقعه على الويب وتفعيله، شعر بإرهاق شديد، وقرر أن يأخذ إجازة لمدة شهر بعيدًا عن التفكير والروتين.  
+      وفي ليلة هادئة، نظر إلى القمر، فرأى انعكاسًا براقًا للزمرد يلمع في ضوئه، فركب شعاع الضوء وانطلق بسرعة تفوق الضوء،  
+      حتى وصل إلى مجرة بعيدة مغطاة بحدائق من ثمار لا تُحصى وكائنات ودودة.</p>
+      <p>تزوج هناك ورُزق بأبناء، لكن الحنين إلى الأرض أشعل قلبه فعاد عبر بوابة ضوء نادرة،  
+      إلا أن المسار انحرف ليصل إلى مدينة الكريستال الأزرق، حيث بدأت مغامرة جديدة غيّرت مصيره إلى الأبد.</p>
+
+      <hr>
+      <h3>العودة بعد الانبطاح</h3>
+      <p>وبعد طول انتظار في مدينة النوم والانبطاح، نهض البطل ببطء،  
+      وكأن الأرض التي احتضنته طوال تلك الفترة لم ترغب في إفلاته.  
+      تنفّس عميقًا ومسح عن كتفيه غبار الاستسلام، ثم خطا أولى خطوات العودة؛  
+      فهو يعلم أن الانبطاح أحيانًا هدنة، ولكن العودة هي المعركة الحقيقية.  
+      <strong>إلى الأرض... إلى الحياة... إلى النور.</strong></p>
+    </div>
+  </div>
+</div>
+
+<script>
+    
+(function(){
+  const icon = document.getElementById('scrollbox-icon');
+  const popup = document.getElementById('scrollbox-popup');
+  const overlay = document.getElementById('scrollbox-overlay');
+  const close = document.getElementById('scrollbox-close');
+  const tabs = document.querySelectorAll('.scrollbox-tab');
+  const sections = document.querySelectorAll('.scrollbox-content');
+
+  icon.addEventListener('click', ()=>{
+    popup.classList.add('active');
+    overlay.classList.add('active');
+  });
+  close.addEventListener('click', closeAll);
+  overlay.addEventListener('click', closeAll);
+
+  function closeAll(){
+    popup.classList.remove('active');
+    overlay.classList.remove('active');
+  }
+
+  tabs.forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      tabs.forEach(t=>t.classList.remove('active'));
+      sections.forEach(s=>s.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(tab.getAttribute('data-target')).classList.add('active');
+    });
+  });
+})();
+</script>
+<!-- ال id="closeShip_new">✖</button>
+  <div style="margin:20px; padding:15px; background:rgba(0,0,0,0.55); border:1px solid #00ffd5; border-radius:12px; font-family:'Tajawal',sans-serif; color:white; line-height:1.9;">
+/div>
+ الفكرة العامة</h3>
+<p>القصيدة تتناول رحلة الشاعر مع الزمن، وتستعرض تجاربه مع الخذلان والخيانة والتحولات في الحياة. تتخللها تأملات في البشر والطبيعة الإنسانية، إضافة إلى الصبر والحكمة التي تأتي بعد التجارب.</p>
+
+<hr>
+<h3>📜 تحليل الأبيات</h3>
+<ul>
+  <li><em>"قررت الرحيل من أمد... فخانني الزمان وأوفى به القدر"</em>: بداية قوية تعكس قرار الشاعر بالمضي في الحياة أو الرحيل عن الماضي، مع إدراك أن الزمن قد يخوننا، لكن القدر يظل في حكمه.</li>
+  <li><em>"فلا بصيره من لا يرى بأعينه.... ولو طال له الطريق والسفر"</em>: يشير إلى أن الرؤية الحقيقية والفهم لا تتحقق إلا بالوعي الداخلي، وأن طول التجربة وحده لا يكفي.</li>
+  <li><em>"وكلام لا ينجي صاحبه... تزدريه الحضوض ومقله البشر"</em>: يصف حالة الضعف أمام أحكام الناس، وأن الكلمات وحدها قد لا تنقذ الشخص من سوء الحظ أو انتقاد الآخرين.</li>
+  <li><em>"تعجبت من زمان أدور به.... وكيف تغيرت المخاطر إلى خطر"</em>: استغراب من تغير الحياة، وأن ما كان تحديًا قد أصبح تهديدًا حقيقيًا مع مرور الزمن.</li>
+  <li><em>"كطفل ينمو في مراحله... وبأن فيه الشيب والقصر"</em>: استعارة جميلة تشير إلى دورة الحياة، من البراءة والطفولة إلى النضج والشيب.</li>
+  <li><em>"فهذا حال الزمان لمن جال به.... يغدو لعلمه يبوح به أو يسر"</em>: تأمل في أن تجربة الإنسان مع الزمن تمنحه الحكمة، وقد يشاركها أو يحتفظ بها لنفسه.</li>
+  <li><em>"كمثل الكلب حين في طبعه.... وحين يتشبه بالأسماك والنسر"</em>: تشبيه للطبيعة البشرية، وكيف يمكن للمرء أن يتصرف بما لا يتفق مع طبعه تحت تأثير الظروف.</li>
+  <li><em>"فوجهي هذا من الماضي صورته... طلت علي من الجوال بفجر"</em>: لمسة شخصية تعكس الحنين والذكريات، وكيف يمكن للأشياء البسيطة أن تثير الماضي.</li>
+  <li><em>"فذكرتني بعهد لم أكن انساه... ولكن لا تجود الأرواح إلا بصبر"</em>: دعوة للصبر على تجارب الحياة، فالروح تحتاج الصبر لتستعيد قوتها.</li>
+  <li><em>"فلكل أمر له شقوته.... ولا بعد العسر إلا يسر"</em>: حكمة خالدة: بعد كل صعوبة يأتي الفرج، وكل تجربة تحمل درسًا.</li>
+  <li><em>"ولا أشره علا السارق بسطوته... فهاذي تجارب النفس والبصر"</em>: خلاصة القول: التجارب تصقل النفس وتعلم الإنسان الرؤية والفهم.</li>
+</ul>
+`;
+
+document.getElementById("storyText_new").innerHTML = snqStory_new;
+
+// فتح النافذة
+document.getElementById("shipIcon_new").onclick = () => {
+
+<!-- 🌙 حاوية الفيديو المخفية -->
+<div id="jokeVideoContainer" style="display:none; position:fixed; top:60px; left:50%; transform:translateX(-50%); z-index:10000;">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/EXAMPLE_VIDEO?autoplay=1" frameborder="0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
+</div>
+
+<script>
+const jokeIcon = document.getElementById('jokeVideoIcon');
+const jokeContainer = document.getElementById('jokeVideoContainer');
+
+jokeIcon.addEventListener('click', () => {
+    if(jokeContainer.style.display === 'none') {
+        jokeContainer.style.display = 'block';
+    } else {
+        jokeContainer.style.display = 'none';
+        // لإيقاف الفيديو عند الإغلاق، نعيد src لإعادة التحميل
+        const iframe = jokeContainer.querySelector('iframe');
+        iframe.src = iframe.src;
+    }
+});
+</script>
+
+<!-- ========== أيقونة الأعمال ========== -->
+<div id="worksIconContainer" style="
+  bottom: 5px;
+  right: 125px;
+  text-align:center;
+  margin:30px 0;
+  z-index:9999;
+  position:relative;
+">
+  
+  <div onclick="toggleWorksCard()" style="
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    border:3px solid #00ffff;
+    box-shadow:0 0 20px #00ffff;
+    background:#000;
+    overflow:hidden;
+    cursor:pointer;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin:auto;
+  ">
+    <img src="https://a.top4top.io/p_3607x4is91.jpg"
+         style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+  </div>
+
+</div>
+
+
+<!-- ========== الكرت (صورة يسار — فيديو يمين) ========== -->
+<div id="worksSmallCard" style="
+  display:none;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:#001515;
+  border-radius:15px;
+  padding:15px;
+  box-shadow:0 0 25px #00ffff;
+  z-index:100000;
+  width:90%;
+  max-width:470px;
+">
+
+  <!-- زر الإغلاق -->
+  <button onclick="toggleWorksCard()" style="
+    background:red;
+    color:#fff;
+    border:none;
+    padding:6px 12px;
+    border-radius:6px;
+    cursor:pointer;
+    margin-bottom:10px;
+    float:left;
+  ">✖</button>
+
+  <!-- ⭐ المحتوى -->
+  <div style="
+      display:flex;
+      gap:10px;
+      margin-top:40px;
+      flex-direction:row;
+      direction:ltr;
+      width:100%;
+  ">
+
+    <!-- ✔ الصورة يسار -->
+    <img src="https://a.top4top.io/p_3607x4is91.jpg"
+         style="
+           width:48%;
+           height:380px;
+           object-fit:cover;
+           border-radius:12px;
+           box-shadow:0 0 12px #00ffff;
+           z-index:2;
+         ">
+
+    <!-- ✔ الفيديو يمين + زر الصوت + شريط الصوت -->
+    <div style="width:48%; height:380px; position:relative;">
+
+      <!-- الفيديو -->
+      <iframe id="workVideo"
+        src="https://www.youtube.com/embed/FzfIvHt4AaU?autoplay=1&mute=1&enablejsapi=1"
+        style="
+          width:100%;
+          height:100%;
+          border:none;
+          border-radius:12px;
+          box-shadow:0 0 12px #00ffff;
+          position:relative;
+          z-index:2;
+        "
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+
+      <!-- زر الصوت -->
+      <button id="soundBtn" onclick="toggleWorkSound()" style="
+        position:absolute;
+        bottom:10px;
+        left:10px;
+        background:rgba(0,255,255,0.7);
+        border:none;
+        padding:6px 10px;
+        border-radius:8px;
+        cursor:pointer;
+        font-weight:bold;
+        color:#000;
+        z-index:5;
+        box-shadow:0 0 10px #00ffff;
+        font-size:12px;
+      ">
+        🔊 تشغيل الصوت
+      </button>
+
+      <!-- شريط الصوت -->
+      <input type="range" id="volumeSlider" min="0" max="100" value="100" 
+        oninput="setWorkVolume(this.value)"
+        style="
+          position:absolute;
+          bottom:10px;
+          right:10px;
+          width:65px;
+          z-index:5;
+          cursor:pointer;
+        ">
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+function toggleWorksCard(){
+  let card = document.getElementById("worksSmallCard");
+  card.style.display = (card.style.display === "block") ? "none" : "block";
+}
+
+// ========================== التحكم بالصوت ==========================
+
+let soundOn = false;
+
+// زر تشغيل / إيقاف الصوت
+function toggleWorkSound(){
+  const iframe = document.getElementById("workVideo");
+  const btn = document.getElementById("soundBtn");
+
+  soundOn = !soundOn;
+
+  iframe.contentWindow.postMessage(JSON.stringify({
+    event: "command",
+    func: soundOn ? "unMute" : "mute",
+    args: []
+  }), "*");
+
+  btn.textContent = soundOn ? "🔈 إيقاف الصوت" : "🔊 تشغيل الصوت";
+}
+
+
+// تغيير مستوى الصوت من السلايدر
+function setWorkVolume(vol){
+  const iframe = document.getElementById("workVideo");
+
+  iframe.contentWindow.postMessage(JSON.stringify({
+    event: "command",
+    func: "setVolume",
+    args: [vol]
+  }), "*");
+}
+</script>
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الأقسامsakaker wep</title>
+<style> {
+  font-family:'Tajawal', sans-serif;
+  margin:0;
+  padding:0;
+  background:transparent;
+  color: silver;
+  text-align:center;
+}
+
+/* ===== أيقونة التشغيل ===== */ 
+#scrollbox-icon {
+  position: fixed;
+  bottom: 230px;
+  left: 20%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid #00ffaa;
+  color: #00ffaa;
+  background: rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(0,255,170,0.4);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(6px);
+  z-index: 99999;
+}
+#scrollbox-icon:hover {
+  transform: translateX(-50%) scale(1.1);
+  box-shadow: 0 0 30px #00f2fe;
+}
+
+/* ===== الخلفية ===== */
+#scrollbox-overlay {
+  display:none;
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(4px);
+  z-index:99998;
+  opacity:0;
+  transition:opacity 0.3s ease;
+}
+#scrollbox-overlay.active {
+  display:block;
+  opacity:1;
+}
+
+/* ===== النافذة ===== */
+#scrollbox-popup {
+  display:none;
+  position:fixed;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%) scale(0.9);
+  width:90%;
+  max-width:900px;
+  height:85%;
+  background:rgba(255,255,255,0.97);
+  color:#111;
+  border-radius:14px;
+  box-shadow:0 0 25px rgba(255,255,255,0.2);
+  z-index:100000;
+  opacity:0;
+  transition:all 0.3s ease;
+  overflow:hidden;
+  text-align:right;
+}
+#scrollbox-popup.active {
+  display:block;
+  opacity:1;
+  transform:translate(-50%,-50%) scale(1);
+}
+
+/* ===== التبويبات ===== */
+.scrollbox-tabs {
+  display:flex;
+  justify-content:space-around;
+  background:rgba(0,0,0,0.05);
+  border-bottom:1px solid rgba(0,0,0,0.1);
+}
+.scrollbox-tab {
+  flex:1;
+  text-align:center;
+  padding:10px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:background 0.3s;
+}
+.scrollbox-tab:hover { background:rgba(0,0,0,0.1); }
+.scrollbox-tab.active { background:rgba(0,0,0,0.2); }
+
+/* ===== المحتوى ===== */
+.scrollbox-content {
+  display:none;
+  height:calc(100% - 60px);
+  padding:20px;
+  overflow:hidden;
+  position:relative;
+}
+.scrollbox-content.active { display:block; }
+
+/* ===== النص المتحرك ===== */
+.scrollbox-text {
+  position:absolute;
+  bottom:-100%;
+  width:100%;
+  animation:scrollbox-up 220s linear infinite; /* سرعة بطيئة جدًا */
+  line-height:1.9;
+}
+@keyframes scrollbox-up {
+  from { bottom:-100%; }
+  to { bottom:100%; }
+}
+.scrollbox-text:hover {
+  animation-play-state: paused;
+}
