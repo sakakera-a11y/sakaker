@@ -2271,13 +2271,15 @@ langBtn.onclick=()=>{
       allow="autoplay; encrypted-media"
       frameborder="0"></iframe>
   </div>
-
-  <div class="video-circle" data-video="zi9knajcejY">
-    <iframe class="miniVideo"
-      src="https://www.youtube.com/embed/zi9knajcejY?autoplay=1&mute=1&playsinline=1&controls=0&loop=1&playlist=zi9knajcejY"
-      allow="autoplay; encrypted-media"
-      frameborder="0"></iframe>
-  </div>
+<div class="video-circle" data-video="FiQz0tUFqdw">
+  <iframe class="miniVideo"
+    src="https://www.youtube.com/embed/FiQz0tUFqdw?autoplay=1&mute=1&playsinline=1&controls=0&loop=1&playlist=FiQz0tUFqdw"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin"
+    frameborder="0"
+    allowfullscreen>
+  </iframe>
+</div>
 </div>
 
 <!-- ====== مربع الفيديو ====== -->
@@ -2831,7 +2833,7 @@ document.getElementById("closeShip_new").onclick = () => {
 /* 🔹 أيقونة النجمة */
 .launcher {
   position: fixed;
-  bottom: 425px; 
+  bottom: 25px; 
   right: 325px;
   width: 50px;
   height: 50px;
@@ -2914,7 +2916,6 @@ iframe.map { height: 200px; }
 }
 </style>
 </head>
-<body>
 
 <div class="launcher" title="عرض الفيديو والخريطة">
   <span>خرائط<br>Map</span>
@@ -2987,8 +2988,8 @@ closeBtn.addEventListener('click', () => {
 <!-- 🌟 قسم قائمة التواصل -->
 <div id="support-section" style="
   position: fixed;
-  top: 43%;
-  right: 70px;
+  top: 20%;
+  right: 170px;
   background: rgba(0, 0, 30, 0.85);
   padding: 18px;
   border-radius: 14px;
@@ -3898,27 +3899,6 @@ document.getElementById("storyText_new").innerHTML = snqStory_new;
 
 // فتح النافذة
 document.getElementById("shipIcon_new").onclick = () => {
-
-<!-- 🌙 حاوية الفيديو المخفية -->
-<div id="jokeVideoContainer" style="display:none; position:fixed; top:60px; left:50%; transform:translateX(-50%); z-index:10000;">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/EXAMPLE_VIDEO?autoplay=1" frameborder="0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
-</div>
-
-<script>
-const jokeIcon = document.getElementById('jokeVideoIcon');
-const jokeContainer = document.getElementById('jokeVideoContainer');
-
-jokeIcon.addEventListener('click', () => {
-    if(jokeContainer.style.display === 'none') {
-        jokeContainer.style.display = 'block';
-    } else {
-        jokeContainer.style.display = 'none';
-        // لإيقاف الفيديو عند الإغلاق، نعيد src لإعادة التحميل
-        const iframe = jokeContainer.querySelector('iframe');
-        iframe.src = iframe.src;
-    }
-});
-</script>
 
 <!-- ========== أيقونة الأعمال ========== -->
 <div id="worksIconContainer" style="
