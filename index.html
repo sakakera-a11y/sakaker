@@ -1,5 +1,37 @@
 
+<!-- خلفية طبيعية متحركة -->
+<div id="nature-bg">
+    <iframe
+        src="https://www.youtube.com/embed/6LTY6G9qA5Q?autoplay=1&mute=1&loop=1&playlist=6LTY6G9qA5Q&controls=0&showinfo=0&rel=0&playsinline=1"
+        allow="autoplay"
+        frameborder="0">
+    </iframe>
+</div>
 
+<style>
+#nature-bg{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    z-index:-5; /* اجعلها خلف الأيقونات */
+    pointer-events:none;
+}
+
+#nature-bg iframe{
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:177.78vh;
+    height:56.25vw;
+    min-width:100%;
+    min-height:100%;
+    transform:translate(-50%,-50%);
+    border:none;
+}
+</style>
 <!-- 🐦 أيقونة صوت الطيور بتوهج زمردي -->
 <div id="bird-sound-btn" title="تشغيل/إيقاف صوت الطيور" style="
   position: fixed;
@@ -887,7 +919,7 @@ overflow:hidden;
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Professional News Bar</title>
+<title>abwalqmrzmrd</title>
 <style>
 :root{--h:82px}
 *{box-sizing:border-box}body{margin:0;padding-top:var(--h);background:#111;color:#fff;font-family:Arial}
@@ -1112,11 +1144,6 @@ document.getElementById("storyText_new").innerHTML = snqStory_new;
 // فتح النافذة
 document.getElementById("shipIcon_new").onclick = () => {
 
-<!-- 🌙 حاوية الفيديو المخفية -->
-<div id="jokeVideoContainer" style="display:none; position:fixed; top:60px; left:50%; transform:translateX(-50%); z-index:10000;">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/EXAMPLE_VIDEO?autoplay=1" frameborder="0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
-</div>
-
 <script>
 const jokeIcon = document.getElementById('jokeVideoIcon');
 const jokeContainer = document.getElementById('jokeVideoContainer');
@@ -1216,18 +1243,6 @@ jokeIcon.addEventListener('click', () => {
     <!-- ✔ الفيديو يمين + زر الصوت + شريط الصوت -->
     <div style="width:48%; height:380px; position:relative;">
 
-      <!-- الفيديو -->
-      <iframe id="workVideo"
-        src="https://www.youtube.com/embed/FzfIvHt4AaU?autoplay=1&mute=1&enablejsapi=1"
-        style="
-          width:100%;
-          height:100%;
-          border:none;
-          border-radius:12px;
-          box-shadow:0 0 12px #00ffff;
-          position:relative;
-          z-index:2;
-        "
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen>
       </iframe>
@@ -3425,18 +3440,6 @@ supportBtn.addEventListener('click', () => {
 </style>
 </head>
 <body>
-
-<!-- خلفية فيديو جديدة -->
-<div id="video-background">
-  <iframe
-    src="https://www.youtube.com/embed/79fzeNUqQbQ?autoplay=1&mute=1&loop=1&playlist=79fzeNUqQbQ&controls=0&modestbranding=1&playsinline=1"
-    title="خلفية فيديو"
-    allow="autoplay; encrypted-media; picture-in-picture"
-    allowfullscreen>
-  </iframe>
-</div>
-
-<div class="emerald-glow"></div>
 
 <!-- 🌟 أيقونة فليشر القنوات المباشرة -->
 <div id="liveFlasher" onclick="toggleLivePopup()">
