@@ -3,8 +3,8 @@
 <!-- 🐦 أيقونة صوت الطيور بتوهج زمردي -->
 <div id="bird-sound-btn" title="تشغيل/إيقاف صوت الطيور" style="
   position: fixed;
-  top: 30px; /* مرفوعة حوالي خمس أسطر */
-  right: 202px;
+  top: 30px;
+  right: 102px;
   width: 75px;
   height: 75px;
   background:
@@ -696,11 +696,11 @@ window.addEventListener("keyup",(e)=>{
 <button id="pongGame-btn" style="
   z-index: 9999;
   position: fixed;
-  bottom : 20px;
-  right: 230px;
+  bottom : 220px;
+  right: 130px;
   padding: 2px 2px;
   border: none;
-  border-radius: 24px;
+  border-radius: 14px;
   background: linear-gradient(45deg, #007bff, #00ffff);
   color: #fff;
   font-size: 20px;
@@ -738,10 +738,18 @@ pongBtn.addEventListener('mouseleave', () => {
 </script>
 
 <html lang="ar" dir="rtl">
-<head>
-<!-- 🔹 حاوية اللعبة -->
-<div id="pongGame-container" style="display:none;position:fixed;top:0;left:0;width:100vw;height:90vh;background:black;z-index:10000;overflow:hidden;">
-
+<head><!-- 🔹 حاوية اللعبة -->
+<div id="pongGame-container" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100vw;
+height:100vh;
+background:black;
+z-index:2147483647;
+overflow:hidden;
+">
   <!-- ✅ فيديو الخلفية لا يلتقط النقرات -->
   <iframe id="pongGame-video"
     src="https://www.youtube.com/embed/bG4NtWR2e88?autoplay=1&mute=1&loop=1&playlist=bG4NtWR2e88&enablejsapi=1"
@@ -874,234 +882,43 @@ pongBtn.addEventListener('mouseleave', () => {
 </body>
 </html>
 
-
-<!-- ====================== شريط الأخبار + الوقت + التاريخ + الطقس ====================== -->
-<div class="news-ticker">
-  
-  <!-- صندوق الوقت والتاريخ والطقس -->
-  <div class="clock-box">
-    <span id="clock"></span>
-    <span id="date"></span>
-    <span id="weather"></span>
-    <span id="locationName" style="color:#0ff; font-size:24px; margin-top:4px;"></span>
-  </div>
-
-  <!-- نص الأخبار المُكرر لحركة سلسة -->
-  <div class="ticker-wrapper">
-    <span id="newsContent"></span>
-    <span id="newsContentClone"></span>
-  </div>
-
-</div>
-
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Professional News Bar</title>
 <style>
-/* =================== شريط الأخبار =================== */
-.news-ticker {
-  width: 100%;
-  background: rgba(0, 0, 0, 0.15) !important;
-  color: 
-  padding: 6px 0;
-  overflow: hidden;
-  white-space: nowrap;
-  position: fixed;
-  top: 420px;
-  right: 10px;
-  font-size: 26px;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-
-  /* ✨✨ التوهج الذهبي ✨✨ */
-  box-shadow: 
-      0 0 12px rgba(255, 215, 0, 0.75),
-      0 0 25px rgba(255, 215, 0, 0.55),
-      inset 0 -2px 3px rgba(255, 215, 0, 0.9);
-  border-bottom: 1px solid rgba(255, 215, 0, 0.75);
-
-  animation: goldGlow 2.2s infinite ease-in-out;
-}
-
-/* ✨ نبض اللمعان الذهبي ✨ */
-@keyframes goldGlow {
-  0%   { box-shadow: 0 0 10px rgba(255,215,0,0.6), 0 0 25px rgba(255,215,0,0.35); }
-  50%  { box-shadow: 0 0 25px rgba(255,215,0,0.9), 0 0 45px rgba(255,215,0,0.6); }
-  100% { box-shadow: 0 0 10px rgba(255,215,0,0.6), 0 0 25px rgba(255,215,0,0.35); }
-}
-
-/* =================== محتوى الأخبار =================== */
-.ticker-wrapper {
-  position: relative;
-  display: inline-block;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 80%;
-}
-
-#newsContent,
-#newsContentClone {
-  display: inline-block;
-  padding-right: 50px;
-  animation: tickerMove 300s linear infinite;
-}
-
-/* حركة من اليسار → اليمين */
-@keyframes tickerMove {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
-
-/* =================== صندوق الوقت + التاريخ + الطقس =================== */
-.clock-box {
-  margin-right: 15px;
-  padding: 0;
-  background: transparent !important;
-  border: none !important;
-  font-size: 40px;
-  display: flex;
-  flex-direction: column;
-  line-height: 1.1;
-}
-
-#clock { color: #0f0; font-weight: bold; }
-#date  { color: #ccc; font-size: 15px; }
-#weather { color: #7cf; font-size: 18px; font-weight: bold; }
+:root{--h:82px}
+*{box-sizing:border-box}body{margin:0;padding-top:var(--h);background:#111;color:#fff;font-family:Arial}
+.news-ticker{position:fixed;top:0;left:0;right:0;height:var(--h);display:flex;align-items:center;padding:8px 12px;background:rgba(0,0,0,.45);backdrop-filter:blur(12px);box-shadow:0 0 20px rgba(255,215,0,.5);overflow:hidden}
+.clock-box{min-width:140px}
+#clock{font-size:22px;color:#3f6;font-weight:bold}
+#date,#weather,#locationName{display:block;font-size:12px}
+.ticker-wrapper{flex:1;overflow:hidden;white-space:nowrap}
+#newsContent{display:inline-block;padding-inline:2rem;animation:move 40s linear infinite}
+@keyframes move{from{transform:translateX(100%)}to{transform:translateX(-100%)}}
 </style>
-
+</head>
+<body>
+<div class="news-ticker">
+<div class="clock-box">
+<span id="clock"></span>
+<span id="date"></span>
+<span id="weather">جارٍ تحميل الطقس...</span>
+<span id="locationName">📍</span>
+</div>
+<div class="ticker-wrapper"><span id="newsContent"> .</span></div>
+</div>
 <script>
-/* =================== روابط مصادر الأخبار =================== */
-const feeds = [
-  ["الجزيرة", "https://www.aljazeera.net/aljazeerarss/arabe.xml"],
-  ["العربية", "https://www.alarabiya.net/.mrss/ar.xml"],
-  ["BBC عربي", "https://www.bbc.com/arabic/index.xml"],
-  ["CNN عربي", "https://arabic.cnn.com/rss.xml"],
-  ["الشرق الأوسط", "https://aawsat.com/rss.xml"],
-  ["سكاي نيوز", "https://www.skynewsarabia.com/web/rss"],
-  ["فرانس 24", "https://www.france24.com/ar/rss"],
-  ["روسيا اليوم", "https://arabic.rt.com/rss/"],
-  ["TRT عربي", "https://www.trtarabi.com/rss"]
-];
-
-/* =================== جلب الأخبار =================== */
-async function loadNews() {
-  let allNews = [];
-
-  for (const [name, url] of feeds) {
-    try {
-      const response = await fetch("https://api.allorigins.win/get?url=" + encodeURIComponent(url));
-      const data = await response.json();
-      const xml = new DOMParser().parseFromString(data.contents, "text/xml");
-      const items = xml.querySelectorAll("item");
-
-      items.forEach((item, i) => {
-        if (i < 3) {
-          const title = item.querySelector("title").textContent.trim();
-          allNews.push(`🔸 (${name}) ${title}`);
-        }
-      });
-
-    } catch (e) {
-      console.log("خطأ في جلب الأخبار من:", name);
-    }
-  }
-
-  const finalText = allNews.length > 0 ? allNews.join(" | ") : "تعذّر تحميل الأخبار حالياً.";
-
-  document.getElementById("newsContent").textContent = finalText;
-  document.getElementById("newsContentClone").textContent = finalText;
+function upd(){
+ const n=new Date();
+ clock.textContent=n.toLocaleTimeString('ar-SA');
+ date.textContent=n.toLocaleDateString('ar-SA',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 }
-
-/* =================== الساعة والتاريخ =================== */
-function updateClock() {
-  const now = new Date();
-
-  let h = String(now.getHours()).padStart(2, '0');
-  let m = String(now.getMinutes()).padStart(2, '0');
-  let s = String(now.getSeconds()).padStart(2, '0');
-
-  document.getElementById("clock").textContent = `${h}:${m}:${s}`;
-
-  const days = ["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
-  const dayName = days[now.getDay()];
-  const d = now.getDate();
-  const mon = now.getMonth() + 1;
-  const y = now.getFullYear();
-
-  document.getElementById("date").textContent = `${dayName} - ${y}/${mon}/${d}`;
-}
-
-/* =================== الطقس + تحديد المدينة =================== */
-function loadWeather() {
-  if (!navigator.geolocation) {
-    document.getElementById("weather").textContent = "تعذّر تحديد الموقع";
-    document.getElementById("locationName").textContent = "📍 غير معروف";
-    return;
-  }
-
-  navigator.geolocation.getCurrentPosition(async (pos) => {
-
-    const lat = pos.coords.latitude;
-    const lon = pos.coords.longitude;
-
-    /* === استخراج اسم المدينة === */
-    try {
-      const locRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
-      const locData = await locRes.json();
-
-      const city = locData.address.city || locData.address.town || locData.address.village || "مدينة غير معروفة";
-      const country = locData.address.country || "";
-
-      document.getElementById("locationName").textContent = `📍 ${city} - ${country}`;
-
-    } catch {
-      document.getElementById("locationName").textContent = "📍 الموقع غير متوفر";
-    }
-
-    /* === بيانات الطقس === */
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code`;
-
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
-      const temp = data.current.temperature_2m;
-      const code = data.current.weather_code;
-
-      const conditions = {
-        0: "☀️ صافٍ",
-        1: "🌤 غالبًا صافٍ",
-        2: "⛅ غائم جزئيًا",
-        3: "☁️ غائم",
-        45: "🌫 ضباب",
-        48: "🌫 ضباب متجمد",
-        51: "🌦 رشاش خفيف",
-        61: "🌧 مطر",
-        71: "❄️ ثلوج",
-        95: "🌩 عواصف رعدية"
-      };
-
-      const condText = conditions[code] || "🌡 غير معروف";
-
-      document.getElementById("weather").textContent =
-        `${temp}°C - ${condText}`;
-
-    } catch {
-      document.getElementById("weather").textContent = "خطأ بالطقس";
-    }
-
-  }, () => {
-    document.getElementById("weather").textContent = "لم يتم السماح بالموقع";
-    document.getElementById("locationName").textContent = "📍 غير معروف";
-  });
-}
-
-/* =================== تشغيل =================== */
-loadNews();
-loadWeather();
-setInterval(updateClock, 1000);
-updateClock();
-
-/* تحديث الطقس كل 30 دقيقة */
-setInterval(loadWeather, 1800000);
+setInterval(upd,1000);upd();
 </script>
+</body></html>
 
 <!-- أيقونة التشغيل -->
 <div id="scrollbox-icon">📜</div>
@@ -1495,7 +1312,7 @@ function setWorkVolume(vol){
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الأقسامsakaker wep</title>
+<titleابوالقمرزمردp</title>
 <style> {
   font-family:'Tajawal', sans-serif;
   margin:0;
@@ -3015,7 +2832,7 @@ document.getElementById("closeShip_new").onclick = () => {
 .launcher {
   position: fixed;
   bottom: 425px; 
-  right: 25px;
+  right: 325px;
   width: 50px;
   height: 50px;
   background: conic-gradient(red, orange, yellow, green, blue, indigo, violet, red);
@@ -3148,8 +2965,8 @@ closeBtn.addEventListener('click', () => {
 <!-- 🌈 أيقونة فتح/إغلاق قائمة الاتصال -->
 <div id="support-toggle-btn" style="
   position: fixed;
-  top: 5%;
-  right:;
+  top: 5px;
+  right:200px;
   width: 65px;
   height: 65px;
   background: linear-gradient(45deg, #007bff, #ff69b4);
@@ -3171,7 +2988,7 @@ closeBtn.addEventListener('click', () => {
 <div id="support-section" style="
   position: fixed;
   top: 43%;
-  right: 170px;
+  right: 70px;
   background: rgba(0, 0, 30, 0.85);
   padding: 18px;
   border-radius: 14px;
@@ -3267,8 +3084,8 @@ supportBtn.addEventListener('click', () => {
 
 <style>
  {
-    margin: 0;
-    padding: 0;
+    margin:10 px;
+    padding: 10px;
     font-family: "Tajawal","Cairo",system-ui,sans-serif;
     background: #000;
     color: #fff;
@@ -3278,8 +3095,8 @@ supportBtn.addEventListener('click', () => {
 /* خلفية الفيديو */
 #video-background {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 30px;
+  left: 30px;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -3338,7 +3155,7 @@ supportBtn.addEventListener('click', () => {
 /* 🌟 أيقونة فليشر القنوات المباشرة */
 #liveFlasher {
   position: fixed;
-  top: 550px;
+  top: 450px;
   right: 10px;
   transform: translateY(-50%);
   width: 150px;
@@ -3485,7 +3302,7 @@ supportBtn.addEventListener('click', () => {
 #emeraldLibraryButton {
   position: fixed;
   right: 900px;
-  top: 600px;
+  top: 30px;
   z-index: 9500;
   cursor: pointer;
   padding: 10px 15px;
@@ -3500,8 +3317,8 @@ supportBtn.addEventListener('click', () => {
 #emeraldLibraryContent {
   display: none;
   position: fixed;
-  right: 140px;
-  top:50px;
+  right: 540px;
+  top:90px;
   max-height: 70%;
   overflow-y: auto;
   background: rgba(0,0,0,0.85);
@@ -3889,143 +3706,6 @@ supportBtn.addEventListener('click', () => {
 </script>
 
 
-<!-- ====================== الصفحة الرئيسية ======================= -->
-<div id="home" class="page" style="display:block;">
-  <video autoplay muted loop playsinline>
-    <source src="https://assets.mixkit.co/videos/51445/51445-720.mp4" type="video/mp4">
-  </video>
-
-
-<!-- ====== الدوائر ====== -->
-<div class="video-top-container-fixed">
-  <div class="video-circle" data-video="n7eQejkXbnM">
-    <iframe class="miniVideo"
-      src="https://www.youtube.com/embed/n7eQejkXbnM?autoplay=1&mute=1&playsinline=1&controls=0&loop=1&playlist=n7eQejkXbnM"
-      allow="autoplay; encrypted-media"
-      frameborder="0"></iframe>
-  </div>
-
-  <div class="video-circle" data-video="zi9knajcejY">
-    <iframe class="miniVideo"
-      src="https://www.youtube.com/embed/zi9knajcejY?autoplay=1&mute=1&playsinline=1&controls=0&loop=1&playlist=zi9knajcejY"
-      allow="autoplay; encrypted-media"
-      frameborder="0"></iframe>
-  </div>
-</div>
-
-<!-- ====== مربع الفيديو ====== -->
-<div id="videoBoxFixed">
-  <iframe id="fixedVideo" src="" allowfullscreen></iframe>
-</div>
-
-<style>
-/* ====== الدوائر ====== */
-.video-top-container-fixed {
-  position: fixed;
-  top: 250px;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 25px;
-  z-index: 50000;
-}
-
-.video-circle {
-  width:125px;
-  height: 105px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.08);
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  user-select: none;
-  transition: 0.3s ease;
-  overflow: hidden;
-  font-size: 12px;
-  border: 1px solid rgba(255,255,255,0.4);
-  position: relative;
-}
-
-.video-circle:hover {
-  transform: scale(1.1);
-  background: rgba(255,255,255,0.2);
-}
-
-/* ====== الفيديو المصغّر داخل الدائرة ====== */
-.miniVideo {
-  position: absolute;
-  width: 160%;
-  height: 160%;
-  top: -30%;
-  left: -30%;
-  border: none;
-  pointer-events: none; /* يمنع مشاكل الضغط */
-  opacity: 0.85;
-}
-
-/* ====== مربع الفيديو ====== */
-#videoBoxFixed {
-  position: fixed;
-  top: 50px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 330px;
-  height: 200px;
-  background: #000;
-  border-radius: 14px;
-  box-shadow: 0 0 20px rgba(0,255,255,0.5);
-  display: none;
-  z-index: 49999;
-  overflow: hidden;
-}
-
-#videoBoxFixed iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-</style>
-
-<!-- ====== سكربت الفتح والإغلاق ====== -->
-<script>
-document.querySelectorAll(".video-circle").forEach(circle => {
-  circle.addEventListener("click", () => {
-    const box = document.getElementById("videoBoxFixed");
-    const iframe = document.getElementById("fixedVideo");
-    const videoId = circle.getAttribute("data-video");
-
-    // إغلاق إذا كان مفتوح
-    if (box.style.display === "block") {
-      iframe.src = "";
-      box.style.display = "none";
-      return;
-    }
-
-    // فتح المربع
-    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1&playsinline=1`;
-    box.style.display = "block";
-  });
-});
-</script>
-
-<!-- ====== JavaScript ====== -->
-<script>
-function openVideoModal(videoId) {
-  const modal = document.getElementById('videoModal');
-  const modalVideo = document.getElementById('modalVideo');
-  modalVideo.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0`;
-  modal.style.display = 'flex';
-}
-
-function closeVideoModal() {
-  const modal = document.getElementById('videoModal');
-  const modalVideo = document.getElementById('modalVideo');
-  modalVideo.src = ''; // إيقاف الفيديو عند الإغلاق
-  modal.style.display = 'none';
-}
-</script>
  
 <!-- أيقونة التشغيل -->
 <div id="scrollbox-icon">📜</div>
@@ -4541,3 +4221,4 @@ function setWorkVolume(vol){
 .scrollbox-text:hover {
   animation-play-state: paused;
 }
+<style>
