@@ -695,7 +695,7 @@ window.addEventListener("keyup",(e)=>{
 <button id="pongGame-btn" style="
   z-index: 9999;
   position: fixed;
-  bottom : 220px;
+  bottom : 350px;
   right: 130px;
   padding: 2px 2px;
   border: none;
@@ -885,7 +885,7 @@ overflow:hidden;
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+
 <title>abwalqmrzmrd</title>
 <style>
 :root{--h:82px}
@@ -1257,7 +1257,7 @@ function setWorkVolume(vol){
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <titleابوالقمرزمردp</title>
 <style> {
   font-family:'Tajawal', sans-serif;
@@ -1385,7 +1385,7 @@ function setWorkVolume(vol){
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>أبوالقمر زمرد – يوتيوب</title>
 
 <style>
@@ -2774,7 +2774,7 @@ document.getElementById("closeShip_new").onclick = () => {
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>🎬 فيديو + 🗺️ خريطة</title>
 <style>
 /* 🔹 أيقونة النجمة */
@@ -3027,7 +3027,8 @@ supportBtn.addEventListener('click', () => {
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <title>موقع أبوالقمر زمرد - القنوات المباشرة والمكتبة واللعبة</title>
 
 <style>
@@ -3060,45 +3061,6 @@ supportBtn.addEventListener('click', () => {
   pointer-events: none;
   border: none;
 }
-
-/* توهج زمردي على الحواف */
-.emerald-glow {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  background: radial-gradient(circle at center,
-    rgba(80, 200, 120, 0.15) 0%,
-    rgba(0, 0, 0, 0.85) 90%);
-  box-shadow: inset 0 0 100px 40px rgba(80, 200, 120, 0.2);
-  z-index: -9;
-  animation: glowPulse 5s ease-in-out infinite;
-}
-@keyframes glowPulse {
-  0% { box-shadow: inset 0 0 80px 30px rgba(80, 200, 120, 0.25); }
-  50% { box-shadow: inset 0 0 120px 50px rgba(80, 200, 120, 0.35); }
-  100% { box-shadow: inset 0 0 80px 30px rgba(80, 200, 120, 0.25); }
-}
-
-/* شريط حالة الاتصال وعدد اللاعبين */
-#statusBar {
-  position: fixed;
-  top: 5px;
-  left: 10px;
-  z-index: 9000;
-  background: rgba(0,0,0,0.6);
-  border-radius: 10px;
-  padding: 4px 8px;
-  font-size: 12px;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  border: 1px solid rgba(0,255,255,0.4);
-}
-#connectionStatus { font-weight: bold; }
-#playerCount { font-weight: bold; }
 
 /* 🌟 أيقونة فليشر القنوات المباشرة */
 #liveFlasher {
@@ -3935,4 +3897,99 @@ function adjustLayoutOnOrientation() {
 // استدعاء عند تحميل الصفحة وعند تدوير الهاتف
 window.addEventListener('load', adjustLayoutOnOrientation);
 window.addEventListener('orientationchange', adjustLayoutOnOrientation);
+</script>
+<script>
+(function () {
+
+    function fixMobile() {
+
+        // منع التكبير الأفقي
+        document.documentElement.style.overflowX = "hidden";
+        document.body.style.overflowX = "hidden";
+        document.body.style.maxWidth = "100vw";
+        document.body.style.width = "100%";
+
+        // إصلاح ارتفاع الشاشة الحقيقي
+        let vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', vh + 'px');
+
+        // إصلاح جميع العناصر الثابتة
+        document.querySelectorAll("*").forEach(el => {
+
+            const st = getComputedStyle(el);
+
+            if (st.position === "fixed") {
+
+                if (el.style.height === "100vh")
+                    el.style.height = "calc(var(--vh) * 100)";
+
+                if (el.style.width === "100vw")
+                    el.style.width = "100vw";
+            }
+
+        });
+
+        // منع تمدد الصفحة
+        document.body.scrollLeft = 0;
+        window.scrollTo(0, window.scrollY);
+
+    }
+
+    function fixCanvas(){
+
+        document.querySelectorAll("canvas").forEach(c=>{
+
+            const rect = c.getBoundingClientRect();
+
+            if(rect.width>0 && rect.height>0){
+
+                c.width = rect.width;
+                c.height = rect.height;
+
+            }
+
+        });
+
+    }
+
+    function fixIframe(){
+
+        document.querySelectorAll("iframe").forEach(f=>{
+
+            f.style.maxWidth="100%";
+            f.style.maxHeight="100%";
+
+        });
+
+    }
+
+    window.addEventListener("load",()=>{
+
+        fixMobile();
+        fixCanvas();
+        fixIframe();
+
+        setTimeout(fixMobile,300);
+        setTimeout(fixMobile,800);
+        setTimeout(fixMobile,1500);
+
+    });
+
+    window.addEventListener("resize",()=>{
+
+        fixMobile();
+        fixCanvas();
+
+    });
+
+    window.addEventListener("orientationchange",()=>{
+
+        setTimeout(()=>{
+            fixMobile();
+            fixCanvas();
+        },300);
+
+    });
+
+})();
 </script>
