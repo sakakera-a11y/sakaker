@@ -3821,4 +3821,144 @@ content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cove
     document.body.appendChild(modal);
   }
 </script>
+<!-- ===========================
+     Smart Mobile Fix Final v2.0
+     ضع هذا قبل </body>
+=========================== -->
 
+<style>
+
+@media screen and (max-width:768px){
+
+html{
+    -webkit-text-size-adjust:100%;
+    scroll-behavior:smooth;
+}
+
+html,
+body{
+    margin:0;
+    padding:0;
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden;
+    padding-bottom:env(safe-area-inset-bottom);
+}
+
+*{
+    box-sizing:border-box;
+}
+
+img,
+video,
+canvas,
+iframe{
+    max-width:100%!important;
+    height:auto!important;
+    display:block;
+}
+
+/* جميع النوافذ */
+[id*="Popup"]{
+    width:95%!important;
+    max-width:95%!important;
+    left:50%!important;
+    top:50%!important;
+    transform:translate(-50%,-50%)!important;
+    max-height:90vh!important;
+    overflow-y:auto!important;
+}
+
+/* جميع الأيقونات */
+[id*="Icon"]{
+    width:72px!important;
+    height:72px!important;
+    left:auto!important;
+    right:12px!important;
+    transition:.3s;
+}
+
+/* النصوص */
+h1{font-size:24px!important;}
+h2{font-size:21px!important;}
+h3{font-size:19px!important;}
+
+p,
+li{
+    font-size:16px!important;
+    line-height:1.8!important;
+}
+
+/* الأزرار */
+button{
+    min-height:42px;
+    font-size:16px;
+}
+
+}
+
+</style>
+
+<script>
+
+(function(){
+
+function mobileFix(){
+
+    if(window.innerWidth>768) return;
+
+    document.documentElement.style.overflowX="hidden";
+    document.body.style.overflowX="hidden";
+
+    /* ترتيب الأيقونات تلقائياً */
+
+    const icons=[...document.querySelectorAll('[id*="Icon"]')];
+
+    let bottom=20;
+
+    icons.forEach(function(icon){
+
+        if(getComputedStyle(icon).position==="fixed"){
+
+            icon.style.left="auto";
+            icon.style.right="12px";
+            icon.style.bottom=bottom+"px";
+
+            bottom+=82;
+
+        }
+
+    });
+
+    /* إصلاح النوافذ */
+
+    document.querySelectorAll('[id*="Popup"]').forEach(function(pop){
+
+        pop.style.maxHeight="90vh";
+        pop.style.overflowY="auto";
+
+    });
+
+}
+
+/* تشغيل الإصلاح */
+
+window.addEventListener("load",mobileFix);
+window.addEventListener("resize",mobileFix);
+window.addEventListener("orientationchange",function(){
+
+    setTimeout(mobileFix,300);
+
+});
+
+/* دعم Safari و iPhone */
+
+if(window.visualViewport){
+
+    window.visualViewport.addEventListener("resize",mobileFix);
+
+}
+
+})();
+
+</script>
