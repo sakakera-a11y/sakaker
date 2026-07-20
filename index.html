@@ -3962,3 +3962,76 @@ if(window.visualViewport){
 })();
 
 </script>
+
+<style>
+/* ===== إصلاح شامل للجوال ===== */
+@media only screen and (max-width:768px){
+
+html,body{
+    width:100% !important;
+    max-width:100% !important;
+    overflow-x:hidden !important;
+}
+
+*{
+    box-sizing:border-box !important;
+    max-width:100% !important;
+}
+
+img,
+video,
+iframe,
+canvas{
+    max-width:100% !important;
+    height:auto !important;
+}
+
+/* جميع العناصر الثابتة */
+[style*="position:fixed"]{
+    max-width:95vw !important;
+}
+
+/* السفينة */
+#shipIcon_new{
+    width:72px !important;
+    height:72px !important;
+    right:10px !important;
+    bottom:90px !important;
+}
+
+/* نافذة السفينة */
+#shipPopup_new{
+    width:96% !important;
+    max-width:96% !important;
+    max-height:88vh !important;
+    overflow-y:auto !important;
+    padding:15px !important;
+}
+
+/* النصوص */
+h1,h2,h3{
+    font-size:22px !important;
+}
+
+p,li{
+    font-size:17px !important;
+    line-height:1.9 !important;
+}
+
+/* الجداول */
+table{
+    display:block !important;
+    overflow-x:auto !important;
+}
+
+/* الأزرار والمدخلات */
+button,
+input,
+textarea,
+select{
+    width:100% !important;
+    max-width:100% !important;
+}
+
+}
+</style>
