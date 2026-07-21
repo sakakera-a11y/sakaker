@@ -2883,7 +2883,7 @@ overflow:hidden;
 /* 🔹 أيقونة النجمة */
 .launcher {
   position: fixed;
-  bottom: 275px; 
+  bottom: 235px; 
   right: 125px;
   width: 50px;
   height: 50px;
@@ -3168,8 +3168,8 @@ content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cove
 /* 🌟 أيقونة فليشر القنوات المباشرة */
 #liveFlasher {
   position: fixed;
-  top: 410px;
-  right: 10px;
+  top: 580px;
+  right: 610px;
   transform: 
   width: 50px;
   height: 50px;
@@ -5780,3 +5780,26 @@ document.querySelectorAll('.video-icon').forEach(icon => {
   });
 });
 </script>
+<!-- Firebase -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCZw747d_KJa85KTDSOVI8EeX_J9Grpqrk",
+    authDomain: "sakaker-9247f.firebaseapp.com",
+    projectId: "sakaker-9247f",
+    storageBucket: "sakaker-9247f.firebasestorage.app",
+    messagingSenderId: "689588937441",
+    appId: "1:689588937441:web:4d17a1d02e72189bbfcda0",
+    measurementId: "G-RB0V6GTVER"
+  };
+
+  // تهيئة Firebase
+  const app = initializeApp(firebaseConfig);
+
+  // تفعيل Analytics
+  const analytics = getAnalytics(app);
+</script>
+</body>
+</html>
