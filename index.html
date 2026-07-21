@@ -2424,7 +2424,9 @@ emOpenBtn.onclick=()=>{
 
         <div class="emTopbar">
           <div class="emPayBox">
-            🎵  <b></b><br>            💎  <b>3$</b>
+            🎵  <b></b><br>            💎  <b>لا يوجد حد أدنى للدفع أو الاشتراك، فلا تبخل علينا ولو لمرة واحدة لكي نسعد بخدمتكم ويستمر العطاء.
+
+There is no minimum limit for payment or subscription. Please support us, even if only once, so we can gladly serve you and continue our giving.</b>
             <div id="emPaypalBox"></div>
           </div>
 
@@ -2498,14 +2500,16 @@ emOpenBtn.onclick=()=>{
   `;
   emeraldHost.appendChild(p);
 
-  /* PayPal render */
-  function renderPay(){
-    try{
-      if(window.paypal && paypal.HostedButtons){
-        paypal.HostedButtons({hostedButtonId:"UYVXY5FCMHRJJ"}).render("#emPaypalBox");
-      }
-    }catch(e){ console.log("PayPal error:", e); }
-  }
+ /* PayPal render */
+function renderPay(){
+  try{
+    if(window.paypal && paypal.HostedButtons){
+      paypal.HostedButtons({hostedButtonId:"S9YLL5P5H47P4"}).render("#emPaypalBox");
+    }
+  }catch(e){ console.log("PayPal error:", e); }
+}
+
+
   // قد يتأخر تحميل SDK
   setTimeout(renderPay, 0);
   setTimeout(renderPay, 900);
