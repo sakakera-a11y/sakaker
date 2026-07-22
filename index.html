@@ -1,6 +1,6 @@
 
 <!-- =====================================
-     Sakaker Business Floating Title
+     Sakaker Business Title + Hand
      عالم الأعمال
 ===================================== -->
 
@@ -17,9 +17,17 @@
 </div>
 
 
+<!-- اليد المشيرة -->
+
+<div id="SK_Business_Hand">
+    ☝️
+</div>
+
+
+
 <style>
 
-/* الحاوية فوق كل محتوى الصفحة */
+/* العنوان فوق جميع المحتوى */
 #SK_Business_Title_Box {
 
     position:fixed;
@@ -36,7 +44,8 @@
 
 
 
-/* العنوان */
+/* رابط العنوان */
+
 #SK_Business_Title_Link {
 
 
@@ -104,12 +113,12 @@
 
     transition:.4s;
 
-
 }
 
 
 
-/* تأثير عند المرور */
+/* تكبير عند المرور */
+
 #SK_Business_Title_Link:hover {
 
 
@@ -120,12 +129,12 @@
 
     drop-shadow(0 0 25px gold);
 
-
 }
 
 
 
-/* حركة اللمعان */
+/* حركة لمعان المعادن */
+
 @keyframes SK_Business_Gold_Shine {
 
 
@@ -146,6 +155,72 @@
     100% {
 
         background-position:0% 50%;
+
+    }
+
+}
+
+
+
+
+/* اليد */
+
+#SK_Business_Hand {
+
+
+    position:fixed;
+
+
+    top:355px;
+
+
+    left:calc(50% + 20px);
+
+
+    z-index:999999999;
+
+
+
+    font-size:35px;
+
+
+
+    animation:
+
+    SK_Hand_Move 1.2s infinite;
+
+
+
+    filter:
+
+    drop-shadow(0 0 8px gold);
+
+}
+
+
+
+/* حركة اليد */
+
+@keyframes SK_Hand_Move {
+
+
+    0% {
+
+        transform:translateY(0);
+
+    }
+
+
+    50% {
+
+        transform:translateY(10px);
+
+    }
+
+
+    100% {
+
+        transform:translateY(0);
 
     }
 
