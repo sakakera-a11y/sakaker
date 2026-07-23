@@ -1,4 +1,205 @@
 
+<!-- =======================
+     خلفية موقع أبوالقمر زمرد
+======================= -->
+
+<style>
+
+html,
+body{
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    overflow-x:hidden;
+}
+
+/* الخلفية الرئيسية */
+
+#site-background{
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    background-image:url("images/abwalqmrzmrd-background.jpg");
+
+    background-size:cover;
+
+    background-position:center center;
+
+    background-repeat:no-repeat;
+
+    background-attachment:fixed;
+
+    z-index:-100;
+
+}
+
+/* طبقة تعتيم خفيفة */
+
+#site-background::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+
+    linear-gradient(
+
+    to bottom,
+
+    rgba(0,20,35,.15),
+
+    rgba(0,0,0,.45)
+
+    );
+
+}
+
+/* التوهج الزمردي */
+
+#site-background::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+
+    radial-gradient(
+
+    circle at center,
+
+    rgba(0,255,180,.10),
+
+    transparent 55%
+
+    ),
+
+    radial-gradient(
+
+    circle at top,
+
+    rgba(0,180,255,.08),
+
+    transparent 45%
+
+    ),
+
+    radial-gradient(
+
+    circle at bottom,
+
+    rgba(255,215,0,.06),
+
+    transparent 60%
+
+    );
+
+    animation:emeraldGlow 10s ease-in-out infinite;
+
+}
+
+/* حركة التوهج */
+
+@keyframes emeraldGlow{
+
+0%{
+
+opacity:.6;
+transform:scale(1);
+
+}
+
+50%{
+
+opacity:1;
+transform:scale(1.03);
+
+}
+
+100%{
+
+opacity:.6;
+transform:scale(1);
+
+}
+
+}
+
+/* نجوم خفيفة */
+
+#stars{
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+pointer-events:none;
+
+background-image:
+
+radial-gradient(white 1px, transparent 1px);
+
+background-size:90px 90px;
+
+opacity:.25;
+
+animation:starsMove 120s linear infinite;
+
+z-index:-99;
+
+}
+
+@keyframes starsMove{
+
+from{
+
+transform:translateY(0);
+
+}
+
+to{
+
+transform:translateY(-250px);
+
+}
+
+}
+
+/* توافق الجوال */
+
+@media(max-width:768px){
+
+#site-background{
+
+background-attachment:scroll;
+
+background-position:center;
+
+}
+
+}
+
+</style>
+
+<div id="site-background"></div>
+
+<div id="stars"></div>
 <!-- =====================================
      Sakaker Business Title + Hand
      عالم الأعمال
@@ -920,1124 +1121,6 @@ birdBtn.addEventListener('click', async () => {
   }
 });
 </script>
-
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-
-<head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title> أبو القمرزمرد</title>
-
-<style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-html,
-body{
-    width:100%;
-    height:100%;
-    overflow:hidden;
-}
-
-/* الخلفية */
-
-body{
-    background:url('https://a.top4top.io/p_3607x4is91.jpg') center center / cover no-repeat fixed;
-    position:relative;
-}
-
-/* طبقة شفافة لإبراز الأيقونات */
-
-body::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:rgba(0,20,35,.25);
-    pointer-events:none;
-}
-
-/* أمواج خفيفة */
-
-.wave{
-    position:absolute;
-    left:-50%;
-    width:200%;
-    height:120px;
-    border-radius:45%;
-    background:rgba(255,255,255,.10);
-    animation:waveMove 15s linear infinite;
-}
-
-.wave1{
-    bottom:0;
-}
-
-.wave2{
-    bottom:40px;
-    opacity:.45;
-    animation-duration:22s;
-}
-
-.wave3{
-    bottom:80px;
-    opacity:.25;
-    animation-duration:30s;
-}
-
-@keyframes waveMove{
-
-0%{
-    transform:translateX(0);
-}
-
-100%{
-    transform:translateX(25%);
-}
-
-}
-
-/* فقاعات */
-
-.bubble{
-    position:absolute;
-    bottom:-40px;
-    border-radius:50%;
-    background:rgba(255,255,255,.35);
-    animation:bubbleUp linear infinite;
-}
-
-@keyframes bubbleUp{
-
-0%{
-    transform:translateY(0);
-    opacity:0;
-}
-
-20%{
-    opacity:.8;
-}
-
-100%{
-    transform:translateY(-110vh);
-    opacity:0;
-}
-
-}
-
-</style>
-
-</head>
-
-<body>
-
-<div class="wave wave1"></div>
-<div class="wave wave2"></div>
-<div class="wave wave3"></div>
-
-<script>
-
-/* إنشاء الفقاعات */
-
-for(let i=0;i<35;i++){
-
-    const b=document.createElement("div");
-
-    b.className="bubble";
-
-    const size=Math.random()*12+6;
-
-    b.style.width=size+"px";
-    b.style.height=size+"px";
-
-    b.style.left=Math.random()*100+"%";
-
-    b.style.animationDuration=(8+Math.random()*10)+"s";
-
-    b.style.animationDelay=(Math.random()*8)+"s";
-
-    document.body.appendChild(b);
-
-}
-
-</script>
-
-</body>
-</html>
-
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-
-<title>أبوالقمر زمرد – يوتيوب</title>
-
-<style>
-{
-  margin:0;
-  background: radial-gradient(circle at 10% 0%, #00ffd5 0%, #004736 40%, #000000 100%);
-  color:#fff;
-  font-family:"Tajawal",sans-serif;
-}
-
-/* زر اللغة */
-#langBtn{
-  position:fixed;top:10px;left:10px;background:#00eaff;
-  padding:7px 15px;border-radius:6px;cursor:pointer;color:#000;
-  z-index:999999;font-weight:bold;
-}
-
-/* زر الصفحة الرابعة */
-.page4-btn{
-  background:linear-gradient(45deg,#d4af37,#ffffff,#d4af37);
-  color:#000;padding:14px 30px;font-size:22px;border-radius:40px;
-  border:2px solid #d4af37;cursor:pointer;font-weight:bold;
-  box-shadow:0 0 15px #ffd700aa;margin:50px auto;display:block;
-}
-.page4-btn:hover{transform:scale(1.08);}
-
-/* نافذة الصفحة الرابعة */
-.page4-overlay{
-  display:none;position:fixed;top:0;left:0;width:100%;height:100%;
-  background:rgba(0,0,0,0.85);z-index:9999999;overflow-y:auto;
-}
-.page4-box{padding:20px;}
-
-/* زر الإغلاق */
-.close-btn{
-  background:red;color:white;border:none;padding:10px 22px;
-  font-size:20px;border-radius:10px;cursor:pointer;margin-bottom:20px;
-}
-.close-btn:hover{background:darkred;}
-
-/* زر الاشتراك */
-.sub-box{
-  display:block;margin:15px auto;
-  background:#fff;color:#000;font-weight:bold;
-  padding:10px 22px;border-radius:30px;
-  width:fit-content;cursor:pointer;border:3px solid gold;
-  text-decoration:none;
-}
-
-/* التبويبات */
-.tabs{
-  display:flex;gap:20px;padding:12px;border-bottom:1px solid #333;
-  background:#050505;justify-content:center;
-}
-.tab{cursor:pointer;font-size:18px;padding-bottom:6px;}
-.tab.active{color:#00ffea;border-bottom:2px solid #00ffea;}
-
-/* الصفحات */
-.section{display:none;padding:20px;}
-.section.active{display:block;}
-
-/* بطاقات الفيديو */
-.video-card{
-  background:#111;border:1px solid #333;border-radius:12px;
-  margin-bottom:20px;padding:10px;box-shadow:0 0 10px #00ffee44;
-}
-.video-card iframe{
-  width:100%;height:210px;border-radius:12px;
-}
-
-.video-title{margin-top:10px;font-size:18px;}
-</style>
-</head>
-
-
-<!-- زر تبديل اللغة -->
-<div id="langBtn">EN</div>
-
-<!-- زر الصفحة الرابعة -->
-<button id="openPage4" class="page4-btn">
-  <span class="ar"> ابوالقمرزمرد</span>
-  <span class="en" style="display:none;">Abwalqmrzmrd</span>
-</button>
-
-<!-- الصفحة الرابعة -->
-<div id="page4" class="page4-overlay">
-  <div class="page4-box">
-
-    <button id="closePage4" class="close-btn">✖</button>
-
-    <!-- العنوان -->
-    <h1 class="ar" style="text-align:center;">أبوالقمر زمرد –</h1>
-    <h1 class="en" style="display:none;text-align:center;">Abwalqmrzmrd </h1>
-
-    <!-- زر الاشتراك -->
-    <a class="sub-box" href="https://www.youtube.com/@sakakera?sub_confirmation=1">
-      <span class="ar">اشترك الآن</span>
-      <span class="en" style="display:none;">Subscribe Now</span>
-    </a>
-
-    <!-- التبويبات -->
-    <div class="tabs">
-      <div class="tab active" data-page="videos">
-        📺 <span class="ar">الفيديوهات</span><span class="en" style="display:none;">Videos</span>
-      </div>
-
-      <div class="tab" data-page="liked">
-        ⭐ <span class="ar">مقاطع أعجبتني</span><span class="en" style="display:none;">Liked Videos</span>
-      </div>
-
-      <div class="tab" data-page="science">
-        📘 <span class="ar">دروس علمية</span><span class="en" style="display:none;">Science</span>
-      </div>
-
-      <div class="tab" data-page="tips">
-        💡 <span class="ar">نصائح مهمّة</span><span class="en" style="display:none;">Important Tips</span>
-      </div>
-
-      <!-- زر كرتون الجديد هنا -->
-      <div class="tab" data-page="cartoon">
-        🎬 <span class="ar">كرتون</span>
-            <span class="en" style="display:none;">Cartoon</span>
-      </div>
-      
-      <div class="tab" data-page="live">
-        🔴 <span class="ar" style="color:#c0c0c0;">البث المباشر</span>
-            <span class="en" style="display:none;color:#c0c0c0;">Live Stream</span>
-            
-      </div>
-<div class="tab" data-page="mrsakaker">
-  🌙 <span class="ar">mr:sakaker – معنى الحياة</span>
-      <span class="en" style="display:none;">mr:sakaker – Meaning of Life</span>
-</div>
-
-      <div class="tab" data-page="about">
-        ℹ️ <span class="ar" style="color:#c0c0c0;">حول القناة</span>
-            <span class="en" style="display:none;color:#c0c0c0;">About</span>
-      </div>
-    </div>
-
-    <!-- 📺 الفيديوهات الأساسية -->
-    <div id="videos" class="section active">
-
-      <div class="video-card">
-        <iframe src="https://www.youtube.com/embed/kPTspab3Z8o" allowfullscreen></iframe>
-        <div class="video-title ar">🎬 الفيديو الأول</div>
-        <div class="video-title en" style="display:none;">🎬 First Video</div>
-      </div>
-
-      <div class="video-card">
-        <iframe src="https://www.youtube.com/embed/FzfIvHt4AaU" allowfullscreen></iframe>
-        <div class="video-title ar">🎬 الفيديو الثاني</div>
-        <div class="video-title en" style="display:none;">🎬 Second Video</div>
-      </div>
-
-    </div>
-
-    <!-- ⭐ مقاطع أعجبتني -->
-    <div id="liked" class="section">
-      <!-- ⭐ مقطع فيديو مضاف -->
-<div class="video-card">
-  <iframe 
-    width="560" 
-    height="315"
-    src="https://www.youtube.com/embed/16ybo9jxXjI?autoplay=0&controls=1"
-    title="YouTube video player"
-    frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    referrerpolicy="strict-origin-when-cross-origin"
-    allowfullscreen>
-  </iframe>
-
-  <!-- العنوان بالعربي -->
-  <div class="video-title ar">⭐ مقطع أعجبني</div>
-
-  <!-- العنوان بالإنجليزي -->
-  <div class="video-title en" style="display:none;">⭐ Liked Video</div>
-</div>
-  
-
-<!-- ⭐⭐ مقطع أعجبني –  ⭐⭐ -->
-<div class="video-card">
-  <iframe 
-    width="560" height="315"
-    src="https://www.youtube.com/embed/bDvw4kz8tFY?si=uOXnjFXVxAfVcY3W"
-    allowfullscreen></iframe>
-
-  <div class="video-title ar">⭐ مقطع أعجبني – </div>
-  <div class="video-title en" style="display:none;">⭐ Liked Video – New</div>
-</div>
-
-<!-- ⭐ مقطع فيديو مضاف -->
-<div class="video-card">
-  <iframe 
-    width="560" 
-    height="315"
-    src="https://www.youtube.com/embed/wH4DHoS_mVo?autoplay=0&controls=1"
-    title="YouTube video player"
-    frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    referrerpolicy="strict-origin-when-cross-origin"
-    allowfullscreen>
-  </iframe>
-
-  <!-- العنوان بالعربي -->
-  <div class="video-title ar">⭐ مقطع أعجبني</div>
-
-  <!-- العنوان بالإنجليزي -->
-  <div class="video-title en" style="display:none;">⭐ Liked Video</div>
-</div>
-
-      <!-- ⭐⭐ مقطع أعجبني –  ⭐⭐ -->
-<div class="video-card">
-  <iframe 
-    width="560" height="315"
-    src="https://www.youtube.com/embed/6bT3qoEuW6g?si=fI7XO3AFAwdqxEJA"
-    allowfullscreen></iframe>
-
-  <div class="video-title ar">⭐ مقطع أعجبني – </div>
-  <div class="video-title en" style="display:none;">⭐ Liked Video – New</div>
-</div>
-
-      <div class="video-card"><iframe src="https://www.youtube.com/embed/vp2o0tLW-t4"></iframe>
-        <div class="video-title ar">⭐ مقطع أعجبني 1</div>
-        <div class="video-title en" style="display:none;">⭐ Liked Video 1</div>
-      </div>
-
-      <div class="video-card"><iframe src="https://www.youtube.com/embed/fO9e9jnhYK8"></iframe>
-        <div class="video-title ar">⭐ مقطع أعجبني 2</div>
-        <div class="video-title en" style="display:none;">⭐ Liked Video 2</div>
-      </div>
-
-      <div class="video-card"><iframe src="https://www.youtube.com/embed/n_M-0Ac9_t4"></iframe>
-        <div class="video-title ar">⭐ مقطع أعجبني 3</div>
-        <div class="video-title en" style="display:none;">⭐ Liked Video 3</div>
-      </div>
-
-      <div class="video-card"><iframe src="https://www.youtube.com/embed/o1JWRGmWr4w"></iframe>
-        <div class="video-title ar">⭐ مقطع أعجبني 4</div>
-        <div class="video-title en" style="display:none;">⭐ Liked Video 4</div>
-      </div>
-
-      <div class="video-card"><iframe src="https://www.youtube.com/embed/qMT5FZEiCCU"></iframe>
-        <div class="video-title ar">⭐ مقطع أعجبني 5</div>
-        <div class="video-title en" style="display:none;">⭐ Liked Video 5</div>
-      </div>
-
-      <div class="video-card"><iframe src="https://www.youtube.com/embed/8F8SpXR9pqA"></iframe>
-        <div class="video-title ar">⭐ مقطع أعجبني 6</div>
-        <div class="video-title en" style="display:none;">⭐ Liked Video 6</div>
-      </div>
-
-      <div class="video-card"><iframe src="https://www.youtube.com/embed/M4QdwpIlyxs"></iframe>
-        <div class="video-title ar">⭐ مقطع أعجبني 7</div>
-        <div class="video-title en" style="display:none;">⭐ Liked Video 7</div>
-      </div>
-
-      <div class="video-card"><iframe src="https://www.youtube.com/embed/B1Xnu3r-UGw"></iframe>
-        <div class="video-title ar">⭐ مقطع إضافي 8</div>
-        <div class="video-title en" style="display:none;">⭐ Liked Video 8</div>
-      </div>
-
-      <div class="video-card"><iframe src="https://www.youtube.com/embed/_oQ0mESSu9g"></iframe>
-        <div class="video-title ar">⭐ مقطع إضافي 9</div>
-        <div class="video-title en" style="display:none;">⭐ Liked Video 9</div>
-      </div>
-
-      <div class="video-card"><iframe src="https://www.youtube.com/embed/AJuT6qnO1pI"></iframe>
-        <div class="video-title ar">⭐ مقطع إضافي 10</div>
-        <div class="video-title en" style="display:none;">⭐ Liked Video 10</div>
-        <!-- ================= مقاطع أعجبتني (12–16) ================= -->
-
-<div class="video-card">
-  <iframe src="https://www.youtube.com/embed/7fWZdVQvEew?si=XJCeuBA7kKSZ9eEg"></iframe>
-  <div class="video-title ar">⭐ مقطع أعجبني 12</div>
-  <div class="video-title en" style="display:none;">⭐ Liked Video 12</div>
-</div>
-
-<div class="video-card">
-  <iframe src="https://www.youtube.com/embed/gegz0tJk8Tk?si=ZME5n9tq0vDfUqOc"></iframe>
-  <div class="video-title ar">⭐ مقطع أعجبني 13</div>
-  <div class="video-title en" style="display:none;">⭐ Liked Video 13</div>
-</div>
-
-<div class="video-card">
-  <iframe src="https://www.youtube.com/embed/dC3EsUKalEI?si=nA5As3VDhVd-aZy2"></iframe>
-  <div class="video-title ar">⭐ مقطع أعجبني 14</div>
-  <div class="video-title en" style="display:none;">⭐ Liked Video 14</div>
-</div>
-
-<div class="video-card">
-  <iframe src="https://www.youtube.com/embed/oknJ1wdigJw?si=p05AEKeGIETCoEgI"></iframe>
-  <div class="video-title ar">⭐ مقطع أعجبني 15</div>
-  <div class="video-title en" style="display:none;">⭐ Liked Video 15</div>
-</div>
-
-<div class="video-card">
-  <iframe src="https://www.youtube.com/embed/TrfE-N93pE4?si=qxTd5wAXXUEFBNPp"></iframe>
-  <div class="video-title ar">⭐ مقطع أعجبني 16</div>
-  <div class="video-title en" style="display:none;">⭐ Liked Video 16</div>
-</div>
-
-<!-- ========================================================= -->
-
-      </div>
-<div class="video-card">
-  <iframe 
-    width="560" 
-    height="315" 
-    src="https://www.youtube.com/embed/SDBD_LjrQEM?si=-6Jz8ca_wtyNi8yv" 
-    title="YouTube video player" 
-    frameborder="0" 
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-    referrerpolicy="strict-origin-when-cross-origin" 
-    allowfullscreen>
-  </iframe>
-
-  <div class="video-title ar">⭐ مقطع أعجبني 11</div>
-  <div class="video-title en" style="display:none;">⭐ Liked Video 11</div>
-</div>
-
-    </div>
-<!-- 🎬 قسم الكرتون -->
-<div id="cartoon" class="section">
-
-  <h2 class="ar" style="
-    text-align:center;
-    background: linear-gradient(45deg,#ffd700,#ffffff,#d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 12px #ffd700;
-    margin-bottom:20px;
-  ">🎬 كرتون</h2>
-
-  <h2 class="en" style="
-    display:none;
-    text-align:center;
-    background: linear-gradient(45deg,#ffd700,#ffffff,#d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 12px #ffd700;
-    margin-bottom:20px;
-  ">🎬 Cartoon</h2>
-
-  <!-- ⭐⭐ كرتون — مقطع أعجبني 17 ⭐⭐ -->
-  <div class="video-card">
-    <iframe 
-      width="560" height="315"
-      src="https://www.youtube.com/embed/dl17e4CmfHs?si=wsziDJElHXehtCLm"
-      allowfullscreen></iframe>
-
-    <div class="video-title ar">⭐ مقطع أعجبني 17 – كرتون</div>
-    <div class="video-title en" style="display:none;">⭐ Liked Video 17 – Cartoon</div>
-  </div>
-
-</div>
-
-    <!-- 📘 دروس علمية -->
-    <div id="science" class="section">
-
-      <h2 class="ar" style="text-align:center;margin-bottom:20px;">📘 دروس علمية</h2>
-      <h2 class="en" style="display:none;text-align:center;margin-bottom:20px;">📘 Science Lessons</h2>
-
-      <div class="video-card">
-        <iframe src="https://www.youtube.com/embed/OdzuClwyjfo"></iframe>
-        <div class="video-title ar">📘 درس علمي 1</div>
-        <div class="video-title en" style="display:none;">📘 Science Lesson 1</div>
-      </div>
-
-      <div class="video-card">
-        <iframe src="https://www.youtube.com/embed/9Az3O2EUtPg"></iframe>
-        <div class="video-title ar">📘 درس علمي 2</div>
-        <div class="video-title en" style="display:none;">📘 Science Lesson 2</div>
-      </div>
-
-      <div class="video-card">
-        <iframe src="https://www.youtube.com/embed/N1U0liCMqfc"></iframe>
-        <div class="video-title ar">📘 درس علمي 3</div>
-        <div class="video-title en" style="display:none;">📘 Science Lesson 3</div>
-      </div>
-
-      <div class="video-card">
-        <iframe src="https://www.youtube.com/embed/QmjwqwQn958"></iframe>
-        <div class="video-title ar">📘 درس علمي 4</div>
-        <div class="video-title en" style="display:none;">📘 Science Lesson 4</div>
-      </div>
-
-      <div class="video-card">
-        <iframe src="https://www.youtube.com/embed/1-McO6eak14"></iframe>
-        <div class="video-title ar">📘 درس علمي 5</div>
-        <div class="video-title en" style="display:none;">📘 Science Lesson 5</div>
-      </div>
-<!-- ⭐ درس علمي (إضافة جديدة) -->
-<div class="video-card">
-  <iframe 
-    width="560" 
-    height="315"
-    src="https://www.youtube.com/embed/-GiTF1Nv_6o?si=QuQNy6oJmfI_Sd5_"
-    allowfullscreen></iframe>
-
-  <div class="video-title ar">📘 درس علمي إضافي</div>
-  <div class="video-title en" style="display:none;">📘 Extra Science Lesson</div>
-</div>
-
-    </div>
-<!-- 💡 نصائح مهمّة -->
-<div id="tips" class="section">
-
-  <!-- العنوان الرئيسي -->
-  <h2 class="ar" style="
-    text-align:center;
-    background: linear-gradient(45deg,#d4af37,#ffffff,#d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 12px #ffd700;
-    margin-bottom:20px;
-  ">⭐ نصائح مهمّة</h2>
-
-  <h2 class="en" style="
-    display:none;
-    text-align:center;
-    background: linear-gradient(45deg,#d4af37,#ffffff,#d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 12px #ffd700;
-    margin-bottom:20px;
-  ">⭐ Important Tips</h2>
-
-
-  <!-- عنوان فرعي -->
-  <h3 class="ar" style="
-    background: linear-gradient(45deg,#c0c0c0,#ffd700,#ffffff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">🌟 نصائح عامة</h3>
-
-  <h3 class="en" style="
-    display:none;
-    background: linear-gradient(45deg,#c0c0c0,#ffd700,#ffffff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">🌟 General Advice</h3>
-
-
-  <!-- النصوص -->
-  <p class="ar" style="color:#e9e7dc;text-shadow:0 0 6px #ffd700;">✔ عامل الناس بما يُظهرونه لك… لا بما تتمنى.</p>
-  <p class="en" style="display:none;color:#e9e7dc;text-shadow:0 0 6px #ffd700;">✔ Treat people by what they show you, not by what you wish for.</p>
-
-  <p class="ar" style="color:#e9e7dc;text-shadow:0 0 6px #ffd700;">✔ انتبه لكلماتك… فالجرح بالكلمة أعمق من السكين.</p>
-  <p class="en" style="display:none;color:#e9e7dc;text-shadow:0 0 6px #ffd700;">✔ Watch your words… verbal wounds can be deeper than knives.</p>
-
-  <p class="ar" style="color:#e9e7dc;text-shadow:0 0 6px #ffd700;">✔ لا تعاتب كثيرًا… فالأرواح تتعب قبل الآذان.</p>
-  <p class="en" style="display:none;color:#e9e7dc;text-shadow:0 0 6px #ffd700;">✔ Don’t blame too much… souls tire before ears.</p>
-
-  <p class="ar" style="color:#e9e7dc;text-shadow:0 0 6px #ffd700;">✔ راحة بالك أهم من إرضاء الآخرين.</p>
-  <p class="en" style="display:none;color:#e9e7dc;text-shadow:0 0 6px #ffd700;">✔ Your peace is more important than pleasing others.</p>
-
-  <hr style="border-color:#555;">
-
-
-  <!-- نصائح إضافية -->
-  <h3 class="ar" style="
-    background: linear-gradient(45deg,#ffffff,#ffd700,#c0c0c0);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">🌟 نصائح إضافية</h3>
-
-  <h3 class="en" style="
-    display:none;
-    background: linear-gradient(45deg,#ffffff,#ffd700,#c0c0c0);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">🌟 Extra Tips</h3>
-
-
-  <p class="ar" style="color:#fff3d1;text-shadow:0 0 6px #ffd700;">✔ كل تأخير فيه خير… حتى لو لم تفهم الآن.</p>
-  <p class="en" style="display:none;color:#fff3d1;text-shadow:0 0 6px #ffd700;">✔ Every delay has goodness… even if you don’t understand it now.</p>
-
-  <p class="ar" style="color:#fff3d1;text-shadow:0 0 6px #ffd700;">✔ صمتك أحيانًا احترام لنفسك.</p>
-  <p class="en" style="display:none;color:#fff3d1;text-shadow:0 0 6px #ffd700;">✔ Silence is sometimes self-respect.</p>
-
-  <hr style="border-color:#555;">
-
-
-  <!-- نصائح الذكاء -->
-  <h3 class="ar" style="
-    background: linear-gradient(45deg,#d4af37,#ffffff,#ffd700);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">🧠 نصائح للذكاء والتفكير</h3>
-
-  <h3 class="en" style="
-    display:none;
-    background: linear-gradient(45deg,#d4af37,#ffffff,#ffd700);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">🧠 Intelligence Tips</h3>
-
-
-  <p class="ar" style="color:#f8f6e7;text-shadow:0 0 6px #ffd700;">✔ اقرأ حتى لو لم تفهم… عقلك يخزن.</p>
-  <p class="en" style="display:none;color:#f8f6e7;text-shadow:0 0 6px #ffd700;">✔ Read even if you don’t understand… your brain stores more than you think.</p>
-
-  <hr style="border-color:#555;">
-
-
-  <!-- العلاقات -->
-  <h3 class="ar" style="
-    background: linear-gradient(45deg,#fff,#d4af37,#ffd700);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">🤝 العلاقات</h3>
-
-  <h3 class="en" style="
-    display:none;
-    background: linear-gradient(45deg,#fff,#d4af37,#ffd700);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">🤝 Relationships</h3>
-
-
-  <p class="ar" style="color:#f3eede;text-shadow:0 0 6px #ffd700;">✔ اختر القلوب التي تشبه قلبك.</p>
-  <p class="en" style="display:none;color:#f3eede;text-shadow:0 0 6px #ffd700;">✔ Choose hearts that match yours.</p>
-
-  <hr style="border-color:#555;">
-
-
-  <!-- الإنسانية -->
-  <h3 class="ar" style="
-    background: linear-gradient(45deg,#ffd700,#ffffff,#c0c0c0);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">🌍 الإنسانية</h3>
-
-  <h3 class="en" style="
-    display:none;
-    background: linear-gradient(45deg,#ffd700,#ffffff,#c0c0c0);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">🌍 Humanity</h3>
-
-
-  <p class="ar" style="color:#f4eede;text-shadow:0 0 6px #ffd700;">✔ كن إنسانًا قبل أن تكون قويًا.</p>
-  <p class="en" style="display:none;color:#f4eede;text-shadow:0 0 6px #ffd700;">✔ Be human before being strong.</p>
-
-  <hr style="border-color:#555;">
-
-
-  <!-- الطعام -->
-  <h3 class="ar" style="
-    background: linear-gradient(45deg,#ffffff,#ffd700,#d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">🍽️ الطعام والشرب</h3>
-
-  <h3 class="en" style="
-    display:none;
-    background: linear-gradient(45deg,#ffffff,#ffd700,#d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">🍽️ Food & Drinks</h3>
-
-
-  <p class="ar" style="color:#f9f5e7;text-shadow:0 0 6px #ffd700;">✔ اشرب ماء بكثرة.</p>
-  <p class="en" style="display:none;color:#f9f5e7;text-shadow:0 0 6px #ffd700;">✔ Drink plenty of water.</p>
-
-  <hr style="border-color:#555;">
-
-
-  <!-- السفر -->
-  <h3 class="ar" style="
-    background: linear-gradient(45deg,#ffd700,#ffffff,#d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">✈️ السفر</h3>
-
-  <h3 class="en" style="
-    display:none;
-    background: linear-gradient(45deg,#ffd700,#ffffff,#d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">✈️ Travel</h3>
-
-
-  <p class="ar" style="color:#f5f2e7;text-shadow:0 0 6px #ffd700;">✔ لا تسافر مع من لا يشبهك.</p>
-  <p class="en" style="display:none;color:#f5f2e7;text-shadow:0 0 6px #ffd700;">✔ Don’t travel with people who don’t resemble you.</p>
-
-  <hr style="border-color:#555;">
-
-
-  <!-- الصحة النفسية -->
-  <h3 class="ar" style="
-    background: linear-gradient(45deg,#ffffff,#ffd700,#c0c0c0);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">❤️ الصحة النفسية</h3>
-
-  <h3 class="en" style="
-    display:none;
-    background: linear-gradient(45deg,#ffffff,#ffd700,#c0c0c0);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">❤️ Mental Health</h3>
-
-
-  <p class="ar" style="color:#fbf7ea;text-shadow:0 0 6px #ffd700;">✔ خصص وقتًا لنفسك.</p>
-  <p class="en" style="display:none;color:#fbf7ea;text-shadow:0 0 6px #ffd700;">✔ Give yourself time daily.</p>
-
-</div>
-
-    <!-- البث المباشر -->
-    <div id="live" class="section">
-      <p class="ar" style="color:#c0c0c0;">سيتم إضافة البث لاحقًا.</p>
-      <p class="en" style="display:none;color:#c0c0c0;">Live stream will be added soon.</p>
-    </div>
-
-    <!-- حول -->
-    <div id="about" class="section">
-      <p class="ar" style="color:#c0c0c0;">هذه االايقونه اهذف ان تكون شامله ومستجده ا.</p>
-      <p class="en" style="display:none;color:#c0c0c0;">This page is dedicated to Abwalqmrzmrd’s YouTube content.</p>
-    </div>
-<!-- 🌙 mr:sakaker – Section Ready -->
-<div id="mrsakaker" class="section">
-
-  <!-- العنوان الرئيسي عربي -->
-  <h2 class="ar" style="
-    text-align:center;
-    background: linear-gradient(45deg,#d4af37,#ffffff,#d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 12px #ffd700;
-    margin-bottom:20px;
-  ">🌙 mr:sakaker – منظور جديد</h2>
-
-  <!-- العنوان الرئيسي إنجليزي -->
-  <h2 class="en" style="
-    display:none;
-    text-align:center;
-    background: linear-gradient(45deg,#d4af37,#ffffff,#d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 12px #ffd700;
-    margin-bottom:20px;
-  ">🌙 mr:sakaker – Refined Perspective</h2>
-
-
-  <!-- النص العربي الأول (بعد الاستبدال) -->
-  <p class="ar" style="
-    line-height:2; font-size:18px;
-    direction:rtl; text-align:left;
-    color:#f2f2f2; text-shadow:0 0 6px #ffd700aa;
-  ">
-mr:sakaker هذا هو الاسم الذي أحببته لأن والدي هو من أطلقه علي،  
-أما في الحياة العامة فهو لا يعدو كونه اسمًا مثل بقية أسماء المجتمع المتعارف عليها.  
-وفي عام 2001 تقريبًا، وكان عمري حوالي 25 سنة، اكتشفت أن لدي بعض الهوايات،  
-وخاصة الفنية منها مثل الشعر، فأطلقت اسم "أبوالقمر زمرد" ليكون الاسم الأساسي  
-لكل أشعاري العربية، ثم أصبح شبه عام لكتاباتي ولظهوري في مواقع التواصل.
-  </p>
-
-  <hr style="border-color:#444;margin:20px 0;">
-
-  <!-- عنوان عربي فرعي -->
-  <h3 class="ar" style="
-    background: linear-gradient(45deg,#ffffff,#ffd700,#d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700;
-  ">🔶 معنى الحياة بمنظور أبوالقمر زمرد – النسخة المُنقّحة</h3>
-
-  <!-- النص العربي الرئيسي -->
-  <p class="ar" style="
-    line-height:2; font-size:18px;
-    direction:rtl; text-align:left;
-    color:#f2f2f2; text-shadow:0 0 6px #ffd700aa;
-  ">
-الحياة عند أبوالقمر زمرد ليست سباقًا للحاق بأحد،  
-ولا محاولة للفت الأنظار،  
-بل هي رحلة هادئة يخوضها الإنسان مع نفسه كل يوم؛  
-يراجع خطواته، يحاول فهم ذاته، ويتعلّم مما يمرّ به.
-
-ومع ذلك… لا ينفصل الإنسان عن رعاية الله،  
-ولا عن المجتمع الذي شارك في بناء حضارات عبر الزمن وما يزال يبني.  
-فالإنسان جزء من نَسَقٍ أكبر،  
-لكن طريقه الخاص هو ما يمنحه بصمته ومساره.
-
-يرى أبوالقمر أن قيمة الإنسان يصنعها هو بجهده وصدق نيّته،  
-وأن التوفيق بيد الله،  
-وأن كل إنسان ميسّر لما خُلق له،  
-يمضي بخطوات قد تبدو بسيطة… لكنها تحمل معاني كبيرة.
-
-الحياة لديه ليست نجاحًا فقط،  
-بل توازن بين العقل والقلب، بين الخير والشر،  
-وبين ما نرغبه نحن… وما تختاره لنا حكمة الأيام.
-  </p>
-
-  <!-- ========================= -->
-  <!-- ====== النسخة الإنجليزية ====== -->
-  <!-- ========================= -->
-
-  <!-- النص الإنجليزي الأول بعد التعديل -->
-  <p class="en" style="
-    display:none;
-    line-height:2; font-size:18px;
-    direction:ltr; text-align:right;
-    color:#f2f2f2; text-shadow:0 0 6px #ffd700aa;
-  ">
-mr:sakaker is a name I loved because it was given to me by my father.  
-In everyday life, it is simply a name like any other in society.  
-Around 2001, when I was about 25 years old, I discovered that I had  
-creative talents — especially poetry — so I adopted “Abwalqmr Zmrd”  
-as the main signature for all my Arabic writings,  
-and it later became a general identity for my work  
-and presence on social platforms.
-  </p>
-
-  <hr style="border-color:#444;margin:20px 0;">
-
-  <h3 class="en" style="
-    display:none;
-    background: linear-gradient(45deg,#ffffff,#ffd700,#d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700;
-  ">🔶 The Meaning of Life – Refined Version</h3>
-
-  <!-- النص الإنجليزي الرئيسي -->
-  <p class="en" style="
-    display:none;
-    line-height:2; font-size:18px;
-    direction:ltr; text-align:right;
-    color:#f2f2f2; text-shadow:0 0 6px #ffd700aa;
-  ">
-For Abwalqmr Zmrd, life is neither a race nor a pursuit of attention.  
-It is a quiet journey a person makes with himself each day —  
-reflecting, understanding, and learning from what he experiences.
-
-Yet he believes that no one walks alone;  
-God’s care surrounds every step,  
-and society — with all its history and shared effort —  
-continues to shape the world we live in.
-
-He sees that a person’s true value is built through sincerity and effort,  
-while guidance and success remain in God’s hands.  
-Every human is guided toward what he was created for,  
-moving through life with steps that may appear small,  
-but carry deep meaning.
-
-To him, life is not defined by success alone,  
-but by a balance between mind and heart,  
-between good and wrong,  
-and between what we desire… and what time wisely chooses for us.
-  </p>
-
-</div>
-
-  </div>
-</div>
-
-<script>
-const langBtn   = document.getElementById('langBtn');
-const openPage4 = document.getElementById('openPage4');
-const closePage4= document.getElementById('closePage4');
-const page4     = document.getElementById('page4');
-
-/* التبويبات */
-document.querySelectorAll('.tab').forEach(tab=>{
-  tab.onclick=()=>{
-    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-    tab.classList.add('active');
-    document.getElementById(tab.dataset.page).classList.add('active');
-  };
-});
-
-/* زر فتح */
-openPage4.onclick = ()=> page4.style.display="block";
-
-/* زر إغلاق */
-closePage4.onclick = ()=> page4.style.display="none";
-
-/* اللغة */
-langBtn.onclick=()=>{
-  const ar=document.querySelectorAll(".ar");
-  const en=document.querySelectorAll(".en");
-  if(langBtn.innerText==="EN"){
-    langBtn.innerText="AR";
-    ar.forEach(e=>e.style.display="none");
-    en.forEach(e=>e.style.display="inline");
-    document.documentElement.dir="ltr";
-  }else{
-    langBtn.innerText="EN";
-    ar.forEach(e=>e.style.display="inline");
-    en.forEach(e=>e.style.display="none");
-    document.documentElement.dir="rtl";
-  }
-};
-</script>
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-
-<head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>عالم أبو القمر زمرد</title>
-
-<style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-html,
-body{
-    width:100%;
-    height:100%;
-    overflow:hidden;
-}
-
-/* الخلفية */
-
-body{
-    background:url('https://a.top4top.io/p_3607x4is91.jpg') center center / cover no-repeat fixed;
-    position:relative;
-}
-
-/* طبقة شفافة لإبراز الأيقونات */
-
-body::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:rgba(0,20,35,.25);
-    pointer-events:none;
-}
-
-/* أمواج خفيفة */
-
-.wave{
-    position:absolute;
-    left:-50%;
-    width:200%;
-    height:120px;
-    border-radius:45%;
-    background:rgba(255,255,255,.10);
-    animation:waveMove 15s linear infinite;
-}
-
-.wave1{
-    bottom:0;
-}
-
-.wave2{
-    bottom:40px;
-    opacity:.45;
-    animation-duration:22s;
-}
-
-.wave3{
-    bottom:80px;
-    opacity:.25;
-    animation-duration:30s;
-}
-
-@keyframes waveMove{
-
-0%{
-    transform:translateX(0);
-}
-
-100%{
-    transform:translateX(25%);
-}
-
-}
-
-/* فقاعات */
-
-.bubble{
-    position:absolute;
-    bottom:-40px;
-    border-radius:50%;
-    background:rgba(255,255,255,.35);
-    animation:bubbleUp linear infinite;
-}
-
-@keyframes bubbleUp{
-
-0%{
-    transform:translateY(0);
-    opacity:0;
-}
-
-20%{
-    opacity:.8;
-}
-
-100%{
-    transform:translateY(-110vh);
-    opacity:0;
-}
-
-}
-
-</style>
-
-</head>
-
-<body>
-
-<div class="wave wave1"></div>
-<div class="wave wave2"></div>
-<div class="wave wave3"></div>
-
-<script>
-
-/* إنشاء الفقاعات */
-
-for(let i=0;i<35;i++){
-
-    const b=document.createElement("div");
-
-    b.className="bubble";
-
-    const size=Math.random()*12+6;
-
-    b.style.width=size+"px";
-    b.style.height=size+"px";
-
-    b.style.left=Math.random()*100+"%";
-
-    b.style.animationDuration=(8+Math.random()*10)+"s";
-
-    b.style.animationDelay=(Math.random()*8)+"s";
-
-    document.body.appendChild(b);
-
-}
-
-</script>
-
-</body>
-</html>
-
 <!-- ================= الساعة البحرية ================= -->
 
 <div id="oceanClock">
@@ -5113,823 +4196,7 @@ langBtn.onclick=()=>{
 </body>
 </html>
 
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
 
-<title>أبوالقمر زمرد – يوتيوب</title>
-
-<style>
-{
-  margin:0;
-  background: radial-gradient(circle at 10% 0%, #00ffd5 0%, #004736 40%, #000000 100%);
-  color:#fff;
-  font-family:"Tajawal",sans-serif;
-}
-
-/* زر اللغة */
-#langBtn{
-  position:fixed;top:10px;left:10px;background:#00eaff;
-  padding:7px 15px;border-radius:6px;cursor:pointer;color:#000;
-  z-index:999999;font-weight:bold;
-}
-
-/* زر الصفحة الرابعة */
-.page4-btn{
-  background:linear-gradient(45deg,#d4af37,#ffffff,#d4af37);
-  color:#000;padding:14px 30px;font-size:22px;border-radius:40px;
-  border:2px solid #d4af37;cursor:pointer;font-weight:bold;
-  box-shadow:0 0 15px #ffd700aa;margin:50px auto;display:block;
-}
-.page4-btn:hover{transform:scale(1.08);}
-
-/* نافذة الصفحة الرابعة */
-.page4-overlay{
-  display:none;position:fixed;top:0;left:0;width:100%;height:100%;
-  background:rgba(0,0,0,0.85);z-index:9999999;overflow-y:auto;
-}
-.page4-box{padding:20px;}
-
-/* زر الإغلاق */
-.close-btn{
-  background:red;color:white;border:none;padding:10px 22px;
-  font-size:20px;border-radius:10px;cursor:pointer;margin-bottom:20px;
-}
-.close-btn:hover{background:darkred;}
-
-/* زر الاشتراك */
-.sub-box{
-  display:block;margin:15px auto;
-  background:#fff;color:#000;font-weight:bold;
-  padding:10px 22px;border-radius:30px;
-  width:fit-content;cursor:pointer;border:3px solid gold;
-  text-decoration:none;
-}
-
-/* التبويبات */
-.tabs{
-  display:flex;gap:20px;padding:12px;border-bottom:1px solid #333;
-  background:#050505;justify-content:center;
-}
-.tab{cursor:pointer;font-size:18px;padding-bottom:6px;}
-.tab.active{color:#00ffea;border-bottom:2px solid #00ffea;}
-
-/* الصفحات */
-.section{display:none;padding:20px;}
-.section.active{display:block;}
-
-/* بطاقات الفيديو */
-.video-card{
-  background:#111;border:1px solid #333;border-radius:12px;
-  margin-bottom:20px;padding:10px;box-shadow:0 0 10px #00ffee44;
-}
-.video-card iframe{
-  width:100%;height:210px;border-radius:12px;
-}
-
-.video-title{margin-top:10px;font-size:18px;}
-</style>
-</head>
-
-
-<!-- زر تبديل اللغة -->
-<div id="langBtn">EN</div>
-
-<!-- زر الصفحة الرابعة -->
-<button id="openPage4" class="page4-btn">
-  <span class="ar"> ابوالقمرزمرد</span>
-  <span class="en" style="display:none;">Abwalqmrzmrd</span>
-</button>
-
-<!-- الصفحة الرابعة -->
-<div id="page4" class="page4-overlay">
-  <div class="page4-box">
-
-    <button id="closePage4" class="close-btn">✖</button>
-
-    <!-- العنوان -->
-    <h1 class="ar" style="text-align:center;">أبوالقمر زمرد –</h1>
-    <h1 class="en" style="display:none;text-align:center;">Abwalqmrzmrd </h1>
-
-    <!-- زر الاشتراك -->
-    <a class="sub-box" href="https://www.youtube.com/@sakakera?sub_confirmation=1">
-      <span class="ar">اشترك الآن</span>
-      <span class="en" style="display:none;">Subscribe Now</span>
-    </a>
-
-    <!-- التبويبات -->
-    <div class="tabs">
-      <div class="tab active" data-page="videos">
-        📺 <span class="ar">الفيديوهات</span><span class="en" style="display:none;">Videos</span>
-      </div>
-
-      <div class="tab" data-page="liked">
-        ⭐ <span class="ar">مقاطع أعجبتني</span><span class="en" style="display:none;">Liked Videos</span>
-      </div>
-
-      <div class="tab" data-page="science">
-        📘 <span class="ar">دروس علمية</span><span class="en" style="display:none;">Science</span>
-      </div>
-
-      <div class="tab" data-page="tips">
-        💡 <span class="ar">نصائح مهمّة</span><span class="en" style="display:none;">Important Tips</span>
-      </div>
-
-      <!-- زر كرتون الجديد هنا -->
-      <div class="tab" data-page="cartoon">
-        🎬 <span class="ar">كرتون</span>
-            <span class="en" style="display:none;">Cartoon</span>
-      </div>
-      
-      <div class="tab" data-page="live">
-        🔴 <span class="ar" style="color:#c0c0c0;">البث المباشر</span>
-            <span class="en" style="display:none;color:#c0c0c0;">Live Stream</span>
-            
-      </div>
-<div class="tab" data-page="mrsakaker">
-  🌙 <span class="ar">mr:sakaker – معنى الحياة</span>
-      <span class="en" style="display:none;">mr:sakaker – Meaning of Life</span>
-</div>
-
-      <div class="tab" data-page="about">
-        ℹ️ <span class="ar" style="color:#c0c0c0;">حول القناة</span>
-            <span class="en" style="display:none;color:#c0c0c0;">About</span>
-      </div>
-    </div>
-
-    <!-- 📺 الفيديوهات الأساسية -->
-    <div id="videos" class="section active">
-
-      <div class="video-card">
-        <iframe src="https://www.youtube.com/embed/kPTspab3Z8o" allowfullscreen></iframe>
-        <div class="video-title ar">🎬 الفيديو الأول</div>
-        <div class="video-title en" style="display:none;">🎬 First Video</div>
-      </div>
-
-      <div class="video-card">
-        <iframe src="https://www.youtube.com/embed/FzfIvHt4AaU" allowfullscreen></iframe>
-        <div class="video-title ar">🎬 الفيديو الثاني</div>
-        <div class="video-title en" style="display:none;">🎬 Second Video</div>
-      </div>
-
-    </div>
-
-    <!-- ⭐ مقاطع أعجبتني -->
-    <div id="liked" class="section">
-      <!-- ⭐ مقطع فيديو مضاف -->
-<div class="video-card">
-  <iframe 
-    width="560" 
-    height="315"
-    src="https://www.youtube.com/embed/16ybo9jxXjI?autoplay=0&controls=1"
-    title="YouTube video player"
-    frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    referrerpolicy="strict-origin-when-cross-origin"
-    allowfullscreen>
-  </iframe>
-
-  <!-- العنوان بالعربي -->
-  <div class="video-title ar">⭐ مقطع أعجبني</div>
-
-  <!-- العنوان بالإنجليزي -->
-  <div class="video-title en" style="display:none;">⭐ Liked Video</div>
-</div>
-  
-
-<!-- ⭐⭐ مقطع أعجبني –  ⭐⭐ -->
-<div class="video-card">
-  <iframe 
-    width="560" height="315"
-    src="https://www.youtube.com/embed/bDvw4kz8tFY?si=uOXnjFXVxAfVcY3W"
-    allowfullscreen></iframe>
-
-  <div class="video-title ar">⭐ مقطع أعجبني – </div>
-  <div class="video-title en" style="display:none;">⭐ Liked Video – New</div>
-</div>
-
-<!-- ⭐ مقطع فيديو مضاف -->
-<div class="video-card">
-  <iframe 
-    width="560" 
-    height="315"
-    src="https://www.youtube.com/embed/wH4DHoS_mVo?autoplay=0&controls=1"
-    title="YouTube video player"
-    frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    referrerpolicy="strict-origin-when-cross-origin"
-    allowfullscreen>
-  </iframe>
-
-  <!-- العنوان بالعربي -->
-  <div class="video-title ar">⭐ مقطع أعجبني</div>
-
-  <!-- العنوان بالإنجليزي -->
-  <div class="video-title en" style="display:none;">⭐ Liked Video</div>
-</div>
-
-      <!-- ⭐⭐ مقطع أعجبني –  ⭐⭐ -->
-<div class="video-card">
-  <iframe 
-    width="560" height="315"
-    src="https://www.youtube.com/embed/6bT3qoEuW6g?si=fI7XO3AFAwdqxEJA"
-    allowfullscreen></iframe>
-
-  <div class="video-title ar">⭐ مقطع أعجبني – </div>
-  <div class="video-title en" style="display:none;">⭐ Liked Video – New</div>
-</div>
-
-      <div class="video-card"><iframe src="https://www.youtube.com/embed/vp2o0tLW-t4"></iframe>
-        <div class="video-title ar">⭐ مقطع أعجبني 1</div>
-        <div class="video-title en" style="display:none;">⭐ Liked Video 1</div>
-      </div>
-
-      <div class="video-card"><iframe src="https://www.youtube.com/embed/fO9e9jnhYK8"></iframe>
-        <div class="video-title ar">⭐ مقطع أعجبني 2</div>
-        <div class="video-title en" style="display:none;">⭐ Liked Video 2</div>
-      </div>
-
-      <div class="video-card"><iframe src="https://www.youtube.com/embed/n_M-0Ac9_t4"></iframe>
-        <div class="video-title ar">⭐ مقطع أعجبني 3</div>
-        <div class="video-title en" style="display:none;">⭐ Liked Video 3</div>
-      </div>
-
-      <div class="video-card"><iframe src="https://www.youtube.com/embed/o1JWRGmWr4w"></iframe>
-        <div class="video-title ar">⭐ مقطع أعجبني 4</div>
-        <div class="video-title en" style="display:none;">⭐ Liked Video 4</div>
-      </div>
-
-      <div class="video-card"><iframe src="https://www.youtube.com/embed/qMT5FZEiCCU"></iframe>
-        <div class="video-title ar">⭐ مقطع أعجبني 5</div>
-        <div class="video-title en" style="display:none;">⭐ Liked Video 5</div>
-      </div>
-
-      <div class="video-card"><iframe src="https://www.youtube.com/embed/8F8SpXR9pqA"></iframe>
-        <div class="video-title ar">⭐ مقطع أعجبني 6</div>
-        <div class="video-title en" style="display:none;">⭐ Liked Video 6</div>
-      </div>
-
-      <div class="video-card"><iframe src="https://www.youtube.com/embed/M4QdwpIlyxs"></iframe>
-        <div class="video-title ar">⭐ مقطع أعجبني 7</div>
-        <div class="video-title en" style="display:none;">⭐ Liked Video 7</div>
-      </div>
-
-      <div class="video-card"><iframe src="https://www.youtube.com/embed/B1Xnu3r-UGw"></iframe>
-        <div class="video-title ar">⭐ مقطع إضافي 8</div>
-        <div class="video-title en" style="display:none;">⭐ Liked Video 8</div>
-      </div>
-
-      <div class="video-card"><iframe src="https://www.youtube.com/embed/_oQ0mESSu9g"></iframe>
-        <div class="video-title ar">⭐ مقطع إضافي 9</div>
-        <div class="video-title en" style="display:none;">⭐ Liked Video 9</div>
-      </div>
-
-      <div class="video-card"><iframe src="https://www.youtube.com/embed/AJuT6qnO1pI"></iframe>
-        <div class="video-title ar">⭐ مقطع إضافي 10</div>
-        <div class="video-title en" style="display:none;">⭐ Liked Video 10</div>
-        <!-- ================= مقاطع أعجبتني (12–16) ================= -->
-
-<div class="video-card">
-  <iframe src="https://www.youtube.com/embed/7fWZdVQvEew?si=XJCeuBA7kKSZ9eEg"></iframe>
-  <div class="video-title ar">⭐ مقطع أعجبني 12</div>
-  <div class="video-title en" style="display:none;">⭐ Liked Video 12</div>
-</div>
-
-<div class="video-card">
-  <iframe src="https://www.youtube.com/embed/gegz0tJk8Tk?si=ZME5n9tq0vDfUqOc"></iframe>
-  <div class="video-title ar">⭐ مقطع أعجبني 13</div>
-  <div class="video-title en" style="display:none;">⭐ Liked Video 13</div>
-</div>
-
-<div class="video-card">
-  <iframe src="https://www.youtube.com/embed/dC3EsUKalEI?si=nA5As3VDhVd-aZy2"></iframe>
-  <div class="video-title ar">⭐ مقطع أعجبني 14</div>
-  <div class="video-title en" style="display:none;">⭐ Liked Video 14</div>
-</div>
-
-<div class="video-card">
-  <iframe src="https://www.youtube.com/embed/oknJ1wdigJw?si=p05AEKeGIETCoEgI"></iframe>
-  <div class="video-title ar">⭐ مقطع أعجبني 15</div>
-  <div class="video-title en" style="display:none;">⭐ Liked Video 15</div>
-</div>
-
-<div class="video-card">
-  <iframe src="https://www.youtube.com/embed/TrfE-N93pE4?si=qxTd5wAXXUEFBNPp"></iframe>
-  <div class="video-title ar">⭐ مقطع أعجبني 16</div>
-  <div class="video-title en" style="display:none;">⭐ Liked Video 16</div>
-</div>
-
-<!-- ========================================================= -->
-
-      </div>
-<div class="video-card">
-  <iframe 
-    width="560" 
-    height="315" 
-    src="https://www.youtube.com/embed/SDBD_LjrQEM?si=-6Jz8ca_wtyNi8yv" 
-    title="YouTube video player" 
-    frameborder="0" 
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-    referrerpolicy="strict-origin-when-cross-origin" 
-    allowfullscreen>
-  </iframe>
-
-  <div class="video-title ar">⭐ مقطع أعجبني 11</div>
-  <div class="video-title en" style="display:none;">⭐ Liked Video 11</div>
-</div>
-
-    </div>
-<!-- 🎬 قسم الكرتون -->
-<div id="cartoon" class="section">
-
-  <h2 class="ar" style="
-    text-align:center;
-    background: linear-gradient(45deg,#ffd700,#ffffff,#d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 12px #ffd700;
-    margin-bottom:20px;
-  ">🎬 كرتون</h2>
-
-  <h2 class="en" style="
-    display:none;
-    text-align:center;
-    background: linear-gradient(45deg,#ffd700,#ffffff,#d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 12px #ffd700;
-    margin-bottom:20px;
-  ">🎬 Cartoon</h2>
-
-  <!-- ⭐⭐ كرتون — مقطع أعجبني 17 ⭐⭐ -->
-  <div class="video-card">
-    <iframe 
-      width="560" height="315"
-      src="https://www.youtube.com/embed/dl17e4CmfHs?si=wsziDJElHXehtCLm"
-      allowfullscreen></iframe>
-
-    <div class="video-title ar">⭐ مقطع أعجبني 17 – كرتون</div>
-    <div class="video-title en" style="display:none;">⭐ Liked Video 17 – Cartoon</div>
-  </div>
-
-</div>
-
-    <!-- 📘 دروس علمية -->
-    <div id="science" class="section">
-
-      <h2 class="ar" style="text-align:center;margin-bottom:20px;">📘 دروس علمية</h2>
-      <h2 class="en" style="display:none;text-align:center;margin-bottom:20px;">📘 Science Lessons</h2>
-
-      <div class="video-card">
-        <iframe src="https://www.youtube.com/embed/OdzuClwyjfo"></iframe>
-        <div class="video-title ar">📘 درس علمي 1</div>
-        <div class="video-title en" style="display:none;">📘 Science Lesson 1</div>
-      </div>
-
-      <div class="video-card">
-        <iframe src="https://www.youtube.com/embed/9Az3O2EUtPg"></iframe>
-        <div class="video-title ar">📘 درس علمي 2</div>
-        <div class="video-title en" style="display:none;">📘 Science Lesson 2</div>
-      </div>
-
-      <div class="video-card">
-        <iframe src="https://www.youtube.com/embed/N1U0liCMqfc"></iframe>
-        <div class="video-title ar">📘 درس علمي 3</div>
-        <div class="video-title en" style="display:none;">📘 Science Lesson 3</div>
-      </div>
-
-      <div class="video-card">
-        <iframe src="https://www.youtube.com/embed/QmjwqwQn958"></iframe>
-        <div class="video-title ar">📘 درس علمي 4</div>
-        <div class="video-title en" style="display:none;">📘 Science Lesson 4</div>
-      </div>
-
-      <div class="video-card">
-        <iframe src="https://www.youtube.com/embed/1-McO6eak14"></iframe>
-        <div class="video-title ar">📘 درس علمي 5</div>
-        <div class="video-title en" style="display:none;">📘 Science Lesson 5</div>
-      </div>
-<!-- ⭐ درس علمي (إضافة جديدة) -->
-<div class="video-card">
-  <iframe 
-    width="560" 
-    height="315"
-    src="https://www.youtube.com/embed/-GiTF1Nv_6o?si=QuQNy6oJmfI_Sd5_"
-    allowfullscreen></iframe>
-
-  <div class="video-title ar">📘 درس علمي إضافي</div>
-  <div class="video-title en" style="display:none;">📘 Extra Science Lesson</div>
-</div>
-
-    </div>
-<!-- 💡 نصائح مهمّة -->
-<div id="tips" class="section">
-
-  <!-- العنوان الرئيسي -->
-  <h2 class="ar" style="
-    text-align:center;
-    background: linear-gradient(45deg,#d4af37,#ffffff,#d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 12px #ffd700;
-    margin-bottom:20px;
-  ">⭐ نصائح مهمّة</h2>
-
-  <h2 class="en" style="
-    display:none;
-    text-align:center;
-    background: linear-gradient(45deg,#d4af37,#ffffff,#d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 12px #ffd700;
-    margin-bottom:20px;
-  ">⭐ Important Tips</h2>
-
-
-  <!-- عنوان فرعي -->
-  <h3 class="ar" style="
-    background: linear-gradient(45deg,#c0c0c0,#ffd700,#ffffff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">🌟 نصائح عامة</h3>
-
-  <h3 class="en" style="
-    display:none;
-    background: linear-gradient(45deg,#c0c0c0,#ffd700,#ffffff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">🌟 General Advice</h3>
-
-
-  <!-- النصوص -->
-  <p class="ar" style="color:#e9e7dc;text-shadow:0 0 6px #ffd700;">✔ عامل الناس بما يُظهرونه لك… لا بما تتمنى.</p>
-  <p class="en" style="display:none;color:#e9e7dc;text-shadow:0 0 6px #ffd700;">✔ Treat people by what they show you, not by what you wish for.</p>
-
-  <p class="ar" style="color:#e9e7dc;text-shadow:0 0 6px #ffd700;">✔ انتبه لكلماتك… فالجرح بالكلمة أعمق من السكين.</p>
-  <p class="en" style="display:none;color:#e9e7dc;text-shadow:0 0 6px #ffd700;">✔ Watch your words… verbal wounds can be deeper than knives.</p>
-
-  <p class="ar" style="color:#e9e7dc;text-shadow:0 0 6px #ffd700;">✔ لا تعاتب كثيرًا… فالأرواح تتعب قبل الآذان.</p>
-  <p class="en" style="display:none;color:#e9e7dc;text-shadow:0 0 6px #ffd700;">✔ Don’t blame too much… souls tire before ears.</p>
-
-  <p class="ar" style="color:#e9e7dc;text-shadow:0 0 6px #ffd700;">✔ راحة بالك أهم من إرضاء الآخرين.</p>
-  <p class="en" style="display:none;color:#e9e7dc;text-shadow:0 0 6px #ffd700;">✔ Your peace is more important than pleasing others.</p>
-
-  <hr style="border-color:#555;">
-
-
-  <!-- نصائح إضافية -->
-  <h3 class="ar" style="
-    background: linear-gradient(45deg,#ffffff,#ffd700,#c0c0c0);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">🌟 نصائح إضافية</h3>
-
-  <h3 class="en" style="
-    display:none;
-    background: linear-gradient(45deg,#ffffff,#ffd700,#c0c0c0);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">🌟 Extra Tips</h3>
-
-
-  <p class="ar" style="color:#fff3d1;text-shadow:0 0 6px #ffd700;">✔ كل تأخير فيه خير… حتى لو لم تفهم الآن.</p>
-  <p class="en" style="display:none;color:#fff3d1;text-shadow:0 0 6px #ffd700;">✔ Every delay has goodness… even if you don’t understand it now.</p>
-
-  <p class="ar" style="color:#fff3d1;text-shadow:0 0 6px #ffd700;">✔ صمتك أحيانًا احترام لنفسك.</p>
-  <p class="en" style="display:none;color:#fff3d1;text-shadow:0 0 6px #ffd700;">✔ Silence is sometimes self-respect.</p>
-
-  <hr style="border-color:#555;">
-
-
-  <!-- نصائح الذكاء -->
-  <h3 class="ar" style="
-    background: linear-gradient(45deg,#d4af37,#ffffff,#ffd700);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">🧠 نصائح للذكاء والتفكير</h3>
-
-  <h3 class="en" style="
-    display:none;
-    background: linear-gradient(45deg,#d4af37,#ffffff,#ffd700);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">🧠 Intelligence Tips</h3>
-
-
-  <p class="ar" style="color:#f8f6e7;text-shadow:0 0 6px #ffd700;">✔ اقرأ حتى لو لم تفهم… عقلك يخزن.</p>
-  <p class="en" style="display:none;color:#f8f6e7;text-shadow:0 0 6px #ffd700;">✔ Read even if you don’t understand… your brain stores more than you think.</p>
-
-  <hr style="border-color:#555;">
-
-
-  <!-- العلاقات -->
-  <h3 class="ar" style="
-    background: linear-gradient(45deg,#fff,#d4af37,#ffd700);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">🤝 العلاقات</h3>
-
-  <h3 class="en" style="
-    display:none;
-    background: linear-gradient(45deg,#fff,#d4af37,#ffd700);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">🤝 Relationships</h3>
-
-
-  <p class="ar" style="color:#f3eede;text-shadow:0 0 6px #ffd700;">✔ اختر القلوب التي تشبه قلبك.</p>
-  <p class="en" style="display:none;color:#f3eede;text-shadow:0 0 6px #ffd700;">✔ Choose hearts that match yours.</p>
-
-  <hr style="border-color:#555;">
-
-
-  <!-- الإنسانية -->
-  <h3 class="ar" style="
-    background: linear-gradient(45deg,#ffd700,#ffffff,#c0c0c0);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">🌍 الإنسانية</h3>
-
-  <h3 class="en" style="
-    display:none;
-    background: linear-gradient(45deg,#ffd700,#ffffff,#c0c0c0);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">🌍 Humanity</h3>
-
-
-  <p class="ar" style="color:#f4eede;text-shadow:0 0 6px #ffd700;">✔ كن إنسانًا قبل أن تكون قويًا.</p>
-  <p class="en" style="display:none;color:#f4eede;text-shadow:0 0 6px #ffd700;">✔ Be human before being strong.</p>
-
-  <hr style="border-color:#555;">
-
-
-  <!-- الطعام -->
-  <h3 class="ar" style="
-    background: linear-gradient(45deg,#ffffff,#ffd700,#d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">🍽️ الطعام والشرب</h3>
-
-  <h3 class="en" style="
-    display:none;
-    background: linear-gradient(45deg,#ffffff,#ffd700,#d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">🍽️ Food & Drinks</h3>
-
-
-  <p class="ar" style="color:#f9f5e7;text-shadow:0 0 6px #ffd700;">✔ اشرب ماء بكثرة.</p>
-  <p class="en" style="display:none;color:#f9f5e7;text-shadow:0 0 6px #ffd700;">✔ Drink plenty of water.</p>
-
-  <hr style="border-color:#555;">
-
-
-  <!-- السفر -->
-  <h3 class="ar" style="
-    background: linear-gradient(45deg,#ffd700,#ffffff,#d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">✈️ السفر</h3>
-
-  <h3 class="en" style="
-    display:none;
-    background: linear-gradient(45deg,#ffd700,#ffffff,#d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">✈️ Travel</h3>
-
-
-  <p class="ar" style="color:#f5f2e7;text-shadow:0 0 6px #ffd700;">✔ لا تسافر مع من لا يشبهك.</p>
-  <p class="en" style="display:none;color:#f5f2e7;text-shadow:0 0 6px #ffd700;">✔ Don’t travel with people who don’t resemble you.</p>
-
-  <hr style="border-color:#555;">
-
-
-  <!-- الصحة النفسية -->
-  <h3 class="ar" style="
-    background: linear-gradient(45deg,#ffffff,#ffd700,#c0c0c0);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">❤️ الصحة النفسية</h3>
-
-  <h3 class="en" style="
-    display:none;
-    background: linear-gradient(45deg,#ffffff,#ffd700,#c0c0c0);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700aa;
-  ">❤️ Mental Health</h3>
-
-
-  <p class="ar" style="color:#fbf7ea;text-shadow:0 0 6px #ffd700;">✔ خصص وقتًا لنفسك.</p>
-  <p class="en" style="display:none;color:#fbf7ea;text-shadow:0 0 6px #ffd700;">✔ Give yourself time daily.</p>
-
-</div>
-
-    <!-- البث المباشر -->
-    <div id="live" class="section">
-      <p class="ar" style="color:#c0c0c0;">سيتم إضافة البث لاحقًا.</p>
-      <p class="en" style="display:none;color:#c0c0c0;">Live stream will be added soon.</p>
-    </div>
-
-    <!-- حول -->
-    <div id="about" class="section">
-      <p class="ar" style="color:#c0c0c0;">هذه االايقونه اهذف ان تكون شامله ومستجده ا.</p>
-      <p class="en" style="display:none;color:#c0c0c0;">This page is dedicated to Abwalqmrzmrd’s YouTube content.</p>
-    </div>
-<!-- 🌙 mr:sakaker – Section Ready -->
-<div id="mrsakaker" class="section">
-
-  <!-- العنوان الرئيسي عربي -->
-  <h2 class="ar" style="
-    text-align:center;
-    background: linear-gradient(45deg,#d4af37,#ffffff,#d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 12px #ffd700;
-    margin-bottom:20px;
-  ">🌙 mr:sakaker – منظور جديد</h2>
-
-  <!-- العنوان الرئيسي إنجليزي -->
-  <h2 class="en" style="
-    display:none;
-    text-align:center;
-    background: linear-gradient(45deg,#d4af37,#ffffff,#d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 12px #ffd700;
-    margin-bottom:20px;
-  ">🌙 mr:sakaker – Refined Perspective</h2>
-
-
-  <!-- النص العربي الأول (بعد الاستبدال) -->
-  <p class="ar" style="
-    line-height:2; font-size:18px;
-    direction:rtl; text-align:left;
-    color:#f2f2f2; text-shadow:0 0 6px #ffd700aa;
-  ">
-mr:sakaker هذا هو الاسم الذي أحببته لأن والدي هو من أطلقه علي،  
-أما في الحياة العامة فهو لا يعدو كونه اسمًا مثل بقية أسماء المجتمع المتعارف عليها.  
-وفي عام 2001 تقريبًا، وكان عمري حوالي 25 سنة، اكتشفت أن لدي بعض الهوايات،  
-وخاصة الفنية منها مثل الشعر، فأطلقت اسم "أبوالقمر زمرد" ليكون الاسم الأساسي  
-لكل أشعاري العربية، ثم أصبح شبه عام لكتاباتي ولظهوري في مواقع التواصل.
-  </p>
-
-  <hr style="border-color:#444;margin:20px 0;">
-
-  <!-- عنوان عربي فرعي -->
-  <h3 class="ar" style="
-    background: linear-gradient(45deg,#ffffff,#ffd700,#d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700;
-  ">🔶 معنى الحياة بمنظور أبوالقمر زمرد – النسخة المُنقّحة</h3>
-
-  <!-- النص العربي الرئيسي -->
-  <p class="ar" style="
-    line-height:2; font-size:18px;
-    direction:rtl; text-align:left;
-    color:#f2f2f2; text-shadow:0 0 6px #ffd700aa;
-  ">
-الحياة عند أبوالقمر زمرد ليست سباقًا للحاق بأحد،  
-ولا محاولة للفت الأنظار،  
-بل هي رحلة هادئة يخوضها الإنسان مع نفسه كل يوم؛  
-يراجع خطواته، يحاول فهم ذاته، ويتعلّم مما يمرّ به.
-
-ومع ذلك… لا ينفصل الإنسان عن رعاية الله،  
-ولا عن المجتمع الذي شارك في بناء حضارات عبر الزمن وما يزال يبني.  
-فالإنسان جزء من نَسَقٍ أكبر،  
-لكن طريقه الخاص هو ما يمنحه بصمته ومساره.
-
-يرى أبوالقمر أن قيمة الإنسان يصنعها هو بجهده وصدق نيّته،  
-وأن التوفيق بيد الله،  
-وأن كل إنسان ميسّر لما خُلق له،  
-يمضي بخطوات قد تبدو بسيطة… لكنها تحمل معاني كبيرة.
-
-الحياة لديه ليست نجاحًا فقط،  
-بل توازن بين العقل والقلب، بين الخير والشر،  
-وبين ما نرغبه نحن… وما تختاره لنا حكمة الأيام.
-  </p>
-
-  <!-- ========================= -->
-  <!-- ====== النسخة الإنجليزية ====== -->
-  <!-- ========================= -->
-
-  <!-- النص الإنجليزي الأول بعد التعديل -->
-  <p class="en" style="
-    display:none;
-    line-height:2; font-size:18px;
-    direction:ltr; text-align:right;
-    color:#f2f2f2; text-shadow:0 0 6px #ffd700aa;
-  ">
-mr:sakaker is a name I loved because it was given to me by my father.  
-In everyday life, it is simply a name like any other in society.  
-Around 2001, when I was about 25 years old, I discovered that I had  
-creative talents — especially poetry — so I adopted “Abwalqmr Zmrd”  
-as the main signature for all my Arabic writings,  
-and it later became a general identity for my work  
-and presence on social platforms.
-  </p>
-
-  <hr style="border-color:#444;margin:20px 0;">
-
-  <h3 class="en" style="
-    display:none;
-    background: linear-gradient(45deg,#ffffff,#ffd700,#d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow:0 0 10px #ffd700;
-  ">🔶 The Meaning of Life – Refined Version</h3>
-
-  <!-- النص الإنجليزي الرئيسي -->
-  <p class="en" style="
-    display:none;
-    line-height:2; font-size:18px;
-    direction:ltr; text-align:right;
-    color:#f2f2f2; text-shadow:0 0 6px #ffd700aa;
-  ">
-For Abwalqmr Zmrd, life is neither a race nor a pursuit of attention.  
-It is a quiet journey a person makes with himself each day —  
-reflecting, understanding, and learning from what he experiences.
-
-Yet he believes that no one walks alone;  
-God’s care surrounds every step,  
-and society — with all its history and shared effort —  
-continues to shape the world we live in.
-
-He sees that a person’s true value is built through sincerity and effort,  
-while guidance and success remain in God’s hands.  
-Every human is guided toward what he was created for,  
-moving through life with steps that may appear small,  
-but carry deep meaning.
-
-To him, life is not defined by success alone,  
-but by a balance between mind and heart,  
-between good and wrong,  
-and between what we desire… and what time wisely chooses for us.
-  </p>
-
-</div>
-
-  </div>
-</div>
-
-<script>
-const langBtn   = document.getElementById('langBtn');
-const openPage4 = document.getElementById('openPage4');
-const closePage4= document.getElementById('closePage4');
-const page4     = document.getElementById('page4');
-
-/* التبويبات */
-document.querySelectorAll('.tab').forEach(tab=>{
-  tab.onclick=()=>{
-    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-    tab.classList.add('active');
-    document.getElementById(tab.dataset.page).classList.add('active');
-  };
-});
-
-/* زر فتح */
-openPage4.onclick = ()=> page4.style.display="block";
-
-/* زر إغلاق */
-closePage4.onclick = ()=> page4.style.display="none";
-
-/* اللغة */
-langBtn.onclick=()=>{
-  const ar=document.querySelectorAll(".ar");
-  const en=document.querySelectorAll(".en");
-  if(langBtn.innerText==="EN"){
-    langBtn.innerText="AR";
-    ar.forEach(e=>e.style.display="none");
-    en.forEach(e=>e.style.display="inline");
-    document.documentElement.dir="ltr";
-  }else{
-    langBtn.innerText="EN";
-    ar.forEach(e=>e.style.display="inline");
-    en.forEach(e=>e.style.display="none");
-    document.documentElement.dir="rtl";
-  }
-};
-</script>
 <style>
 /* تحسين عرض الأيقونات والفيديو عند الوضع الأفقي (Landscape) */
 @media (orientation: landscape) and (max-width: 768px) {
