@@ -1,4 +1,396 @@
 
+<!-- 🔒 منع ظهور محتوى الموقع قبل تسجيل الدخول -->
+<style>
+body.locked > *:not(#loginOverlay){
+visibility:hidden;
+}
+</style>
+
+<script>
+document.body.classList.add("locked");
+</script>
+
+
+<!-- 🔒 نافذة الدخول -->
+<div id="loginOverlay" style="
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:url('https://i.ytimg.com/vi/0go3k0frmjc/maxresdefault.jpg') center/cover no-repeat;
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:999999;
+backdrop-filter:blur(5px);
+">
+
+<div style="
+background:rgba(0,0,0,.8);
+padding:25px;
+width:90%;
+max-width:420px;
+border-radius:18px;
+text-align:center;
+color:white;
+font-family:Tajawal;
+box-shadow:0 0 30px #00ffcc;
+">
+
+
+<h2 style="color:#00ffcc">
+🔐 تسجيل الدخول
+</h2>
+
+
+<input id="emailInput"
+type="email"
+placeholder="📧 البريد الإلكتروني"
+style="
+width:100%;
+padding:12px;
+margin:8px 0;
+border-radius:10px;
+border:none;
+background:#ffffff22;
+color:white;
+">
+
+
+<input id="passwordInput"
+type="password"
+placeholder="🔒 كلمة المرور"
+style="
+width:100%;
+padding:12px;
+margin:8px 0;
+border-radius:10px;
+border:none;
+background:#ffffff22;
+color:white;
+">
+
+
+<button id="loginButton" style="
+width:100%;
+padding:12px;
+margin-top:10px;
+border:none;
+border-radius:10px;
+background:#00ffcc;
+font-weight:bold;
+cursor:pointer;
+">
+دخول
+</button>
+
+
+<button id="googleButton" style="
+width:100%;
+padding:12px;
+margin-top:10px;
+border:none;
+border-radius:10px;
+background:#4285F4;
+color:white;
+font-weight:bold;
+cursor:pointer;
+">
+🔵 الدخول بواسطة Google
+</button>
+
+
+<div id="loginError"
+style="color:#ff8888;margin:10px">
+</div>
+
+
+<button id="signupButton" style="
+width:100%;
+padding:12px;
+border-radius:10px;
+background:#ffffff22;
+color:white;
+border:1px solid #00ffcc;
+cursor:pointer;
+">
+📝 إنشاء حساب جديد
+</button>
+
+
+</div>
+</div>
+
+
+
+<!-- 👤 بيانات المستخدم -->
+<div id="userProfile" style="
+display:none;
+position:fixed;
+top:15px;
+right:15px;
+z-index:99999;
+background:#000c;
+padding:10px;
+border-radius:15px;
+border:1px solid #00ffcc;
+color:white;
+align-items:center;
+gap:10px;
+">
+
+<img id="userPhoto"
+style="
+width:45px;
+height:45px;
+border-radius:50%;
+border:2px solid gold;
+">
+
+<span id="userName"></span>
+
+<button id="logoutButton">
+خروج
+</button>
+
+</div>
+
+
+
+<script type="module">
+
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+
+
+import { getAnalytics }
+from "https://www.gstatic.com/firebasejs/12.16.0/firebase-analytics.js";
+
+
+import {
+getAuth,
+signInWithEmailAndPassword,
+createUserWithEmailAndPassword,
+GoogleAuthProvider,
+signInWithPopup,
+onAuthStateChanged,
+setPersistence,
+browserLocalPersistence,
+signOut
+}
+from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+
+import { getFirestore }
+from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+
+import { getStorage }
+from "https://www.gstatic.com/firebasejs/12.16.0/firebase-storage.js";
+
+
+
+const firebaseConfig = {
+
+apiKey:"AIzaSyBXqge71Xec5iNNZuYVvODJPgXZltojVCA",
+
+authDomain:"sakaker-basnusse.firebaseapp.com",
+
+projectId:"sakaker-basnusse",
+
+storageBucket:"sakaker-basnusse.firebasestorage.app",
+
+messagingSenderId:"369109440957",
+
+appId:"1:369109440957:web:a3a460e5ef14c46a0d5ad4",
+
+measurementId:"G-FKQFWD7E2Z"
+
+};
+
+
+
+const app=initializeApp(firebaseConfig);
+
+
+const analytics=getAnalytics(app);
+
+const auth=getAuth(app);
+
+const db=getFirestore(app);
+
+const storage=getStorage(app);
+
+
+
+window.firebaseApp=app;
+
+window.firebaseAuth=auth;
+
+window.firebaseDB=db;
+
+window.firebaseStorage=storage;
+
+
+
+await setPersistence(
+auth,
+browserLocalPersistence
+);
+
+
+
+const overlay=document.getElementById("loginOverlay");
+
+const email=document.getElementById("emailInput");
+
+const pass=document.getElementById("passwordInput");
+
+const error=document.getElementById("loginError");
+
+
+
+/* دخول */
+
+document.getElementById("loginButton").onclick=async()=>{
+
+
+try{
+
+
+await signInWithEmailAndPassword(
+auth,
+email.value,
+pass.value
+);
+
+
+}catch(e){
+
+error.textContent="❌ "+e.message;
+
+}
+
+};
+
+
+
+/* إنشاء حساب */
+
+document.getElementById("signupButton").onclick=async()=>{
+
+
+try{
+
+
+await createUserWithEmailAndPassword(
+auth,
+email.value,
+pass.value
+);
+
+
+}catch(e){
+
+error.textContent="❌ "+e.message;
+
+}
+
+};
+
+
+
+
+/* Google */
+
+document.getElementById("googleButton").onclick=async()=>{
+
+
+const provider=new GoogleAuthProvider();
+
+
+try{
+
+
+await signInWithPopup(
+auth,
+provider
+);
+
+
+}catch(e){
+
+error.textContent="❌ "+e.message;
+
+}
+
+
+};
+
+
+
+
+
+/* مراقبة الدخول */
+
+onAuthStateChanged(auth,(user)=>{
+
+
+if(user){
+
+
+overlay.style.display="none";
+
+document.body.classList.remove("locked");
+
+
+document.getElementById("userProfile").style.display="flex";
+
+
+document.getElementById("userName").textContent =
+user.displayName || user.email;
+
+
+document.getElementById("userPhoto").src =
+user.photoURL ||
+"https://cdn-icons-png.flaticon.com/512/149/149071.png";
+
+
+}else{
+
+
+overlay.style.display="flex";
+
+document.body.classList.add("locked");
+
+
+document.getElementById("userProfile").style.display="none";
+
+
+}
+
+
+});
+
+
+
+
+
+/* خروج */
+
+document.getElementById("logoutButton").onclick=async()=>{
+
+await signOut(auth);
+
+};
+
+
+
+console.log("SAKAKER Firebase Ready");
+
+</script>
 <!-- =======================
      خلفية موقع أبوالقمر زمرد
 ======================= -->
@@ -2250,7 +2642,7 @@ overflow:hidden;
 <head>
 <meta charset="UTF-8">
 
-<title️ </title>
+<title>🎬 فيديو + 🗺️ خريطة</title>
 <style>
 /* 🔹 أيقونة النجمة */
 .launcher {
