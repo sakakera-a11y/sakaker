@@ -1,15 +1,12 @@
-Put your HTML text here<div id="loginOverlay">
-
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
-<title>تسجيل الدخول | Sakaker</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>Login</title>
 
 <style>
 
@@ -20,25 +17,25 @@ box-sizing:border-box;
 font-family:Tahoma,Arial,sans-serif;
 }
 
-body{
-
-background:
-linear-gradient(rgba(70,70,20,.55),rgba(0,0,0,.75)),
-url("https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80");
-
-background-size:cover;
-background-position:center;
-background-attachment:fixed;
-
-display:flex;
-justify-content:center;
-align-items:center;
-
-min-height:100vh;
-
-overflow-x:hidden;
-
+html,body{
+width:100%;
+height:100%;
+overflow:hidden;
+background:#000;
 }
+
+/* إخفاء الموقع حتى يتم تسجيل الدخول */
+
+body.login-lock{
+overflow:hidden !important;
+}
+
+body.login-lock > *:not(#loginOverlay){
+display:none !important;
+}
+
+/* صفحة الدخول */
+
 #loginOverlay{
 
 position:fixed;
@@ -49,672 +46,323 @@ left:0;
 width:100vw;
 height:100vh;
 
-background:#000; /* أو ضع صورة الخلفية هنا */
+display:flex;
+
+justify-content:center;
+
+align-items:center;
 
 z-index:2147483647;
-
-display:flex;
-justify-content:center;
-align-items:center;
 
 overflow:hidden;
 
 }
-@keyframes fade{
 
-from{
+/* فيديو الخلفية */
 
-opacity:0;
-transform:translateY(40px);
+#bgVideo{
 
-}
+position:absolute;
 
-to{
+top:0;
+left:0;
 
-opacity:1;
-transform:none;
+width:100%;
+height:100%;
 
-}
+object-fit:cover;
 
-}
+filter:brightness(.45);
 
-.logo{
-
-text-align:center;
-
-font-size:34px;
-
-margin-bottom:10px;
+z-index:-2;
 
 }
 
-.title{
+/* طبقة شفافة */
 
-text-align:center;
+#dark{
 
-font-size:28px;
+position:absolute;
 
-font-weight:bold;
+top:0;
+left:0;
 
-color:gold;
+width:100%;
+height:100%;
 
-margin-bottom:6px;
+background:rgba(0,0,0,.30);
 
-}
+backdrop-filter:blur(2px);
 
-.sub{
-
-text-align:center;
-
-color:#ddd;
-
-margin-bottom:25px;
-
-font-size:15px;
+z-index:-1;
 
 }
 
-input{
+/* صندوق تسجيل الدخول */
+
+.loginBox{
+
+width:92%;
+
+max-width:380px;
+
+padding:30px;
+
+border-radius:18px;
+
+background:rgba(255,255,255,.12);
+
+backdrop-filter:blur(18px);
+
+border:1px solid rgba(255,255,255,.25);
+
+box-shadow:0 0 35px rgba(0,0,0,.45);
+
+}
+
+/* الحقول */
+
+.loginBox input{
 
 width:100%;
 
-padding:15px;
+padding:14px;
 
-margin:10px 0;
+margin-bottom:12px;
 
 border:none;
-
-border-radius:12px;
-
-font-size:16px;
 
 outline:none;
 
-background:#f2f2f2;
+border-radius:10px;
+
+background:rgba(255,255,255,.18);
+
+color:#fff;
+
+font-size:16px;
 
 }
 
-.main-btn{
+.loginBox input::placeholder{
+
+color:#eee;
+
+}
+
+/* زر البريد */
+
+#emailLogin{
 
 width:100%;
 
-padding:15px;
+padding:14px;
 
 border:none;
 
-border-radius:12px;
+border-radius:10px;
 
-cursor:pointer;
+background:linear-gradient(90deg,#FFD700,#0A6BFF);
 
-font-size:18px;
+font-size:16px;
 
 font-weight:bold;
 
-background:linear-gradient(90deg,#ffd700,#ffb300);
+cursor:pointer;
 
-margin-top:10px;
-
-transition:.3s;
+margin-bottom:12px;
 
 }
 
-.main-btn:hover{
+/* زر جوجل */
 
-transform:scale(1.03);
+#googleLogin{
 
-}
+width:100%;
 
-.divider{
+padding:14px;
+
+border:none;
+
+border-radius:10px;
+
+background:#fff;
+
+font-size:16px;
+
+font-weight:bold;
+
+cursor:pointer;
 
 display:flex;
+
+justify-content:center;
 
 align-items:center;
 
-margin:22px 0;
-
-color:#aaa;
+gap:10px;
 
 }
 
-.divider::before,
-.divider::after{
+#googleLogin img{
 
-content:"";
-
-flex:1;
-
-height:1px;
-
-background:#555;
+width:22px;
 
 }
 
-.divider span{
+#loginError{
 
-margin:0 10px;
-
-}
-
-.social{
-
-display:flex;
-
-flex-direction:column;
-
-gap:12px;
-
-}
-
-.social button{
-
-border:none;
-
-border-radius:12px;
-
-padding:15px;
-
-cursor:pointer;
-
-font-size:17px;
-
-font-weight:bold;
-
-transition:.3s;
-
-color:white;
-
-}
-
-.social button:hover{
-
-transform:scale(1.03);
-
-}
-
-.google{
-
-background:#db4437;
-
-}
-
-.facebook{
-
-background:#1877F2;
-
-}
-
-.microsoft{
-
-background:#0078D4;
-
-}
-
-.logout{
-
-background:#444;
-
-margin-top:18px;
-
-display:none;
-
-}
-
-.user{
-
-display:none;
+margin-top:12px;
 
 text-align:center;
 
-margin-bottom:20px;
+color:#ffb6b6;
 
-}
-
-.user img{
-
-width:90px;
-
-height:90px;
-
-border-radius:50%;
-
-border:3px solid gold;
-
-margin-bottom:10px;
-
-}
-
-.user h3{
-
-color:gold;
-
-margin-bottom:5px;
-
-}
-
-.user p{
-
-color:#ddd;
-
-font-size:14px;
-
-word-break:break-all;
-
-}
-
-.link{
-
-margin-top:18px;
-
-text-align:center;
-
-color:#ccc;
-
-font-size:14px;
-
-}
-
-.link a{
-
-color:gold;
-
-text-decoration:none;
-
-cursor:pointer;
-
-}
-
-.status{
-
-margin-top:18px;
-
-text-align:center;
-
-color:#7CFC00;
-
-font-weight:bold;
-
-min-height:24px;
-
-}
-
-@media(max-width:600px){
-
-.login-box{
-
-padding:22px;
-
-}
-
-.title{
-
-font-size:24px;
-
-}
-
-.social button{
-
-font-size:15px;
-
-}
+min-height:20px;
 
 }
 
 </style>
+
 </head>
 
-<body>
+<body class="login-lock">
 
-<div class="login-box">
+<div id="loginOverlay">
 
-<div class="logo">
-💎
-</div>
+<video
+id="bgVideo"
+autoplay
+muted
+loop
+playsinline>
 
-<div class="title">
-Sakaker
-</div>
+<source
+src="https://cdn.coverr.co/videos/coverr-tropical-ocean-waves-1586/1080p.mp4"
+type="video/mp4">
 
-<div class="sub">
-تسجيل الدخول إلى الموقع
-</div>
+</video>
 
-<div class="user" id="userCard">
+<div id="dark"></div>
 
-<img id="photo">
-
-<h3 id="name"></h3>
-
-<p id="emailView"></p>
-
-</div>
+<div class="loginBox">
 
 <input
-type="email"
 id="email"
-placeholder="البريد الإلكتروني">
+type="email"
+placeholder="📧 البريد الإلكتروني">
 
 <input
-type="password"
 id="password"
-placeholder="كلمة المرور">
+type="password"
+placeholder="🔒 كلمة المرور">
 
-<button
-class="main-btn"
-id="loginBtn">
+<button id="emailLogin">
 
 تسجيل الدخول
 
 </button>
 
-<button
-class="main-btn"
-id="registerBtn">
+<button id="googleLogin">
 
-إنشاء حساب جديد
+<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">
 
-</button>
-
-<div class="divider">
-
-<span>
-
-أو
-
-</span>
-
-</div>
-
-<div class="social">
-
-<button
-class="google"
-id="googleBtn">
-
-🔴 المتابعة باستخدام Google
+الدخول بواسطة Google
 
 </button>
 
-<button
-class="facebook"
-id="facebookBtn">
-
-🔵 المتابعة باستخدام Facebook
-
-</button>
-
-<button
-class="microsoft"
-id="microsoftBtn">
-
-🟦 المتابعة باستخدام Microsoft
-
-</button>
-
-<button
-class="logout"
-id="logoutBtn">
-
-🚪 تسجيل الخروج
-
-</button>
-
-</div>
-
-<div
-class="status"
-id="status">
-
-</div>
-
-<div class="link">
-
-© Sakaker.co
+<div id="loginError"></div>
 
 </div>
 
 </div>
-
-<!-- الجزء الثاني سيحتوي على Firebase -->
-<!-- Firebase SDK -->
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-analytics.js";
 
 import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithEmailAndPassword,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
-getAuth,
-
-GoogleAuthProvider,
-
-FacebookAuthProvider,
-
-OAuthProvider,
-
-createUserWithEmailAndPassword,
-
-signInWithEmailAndPassword,
-
-signInWithPopup,
-
-signOut,
-
-onAuthStateChanged
-
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+/* Firebase */
 
 const firebaseConfig = {
-
-apiKey:"AIzaSyCZw747d_KJa85KTDSOVI8EeX_J9Grpqrk",
-
-authDomain:"sakaker-9247f.firebaseapp.com",
-
-projectId:"sakaker-9247f",
-
-storageBucket:"sakaker-9247f.firebasestorage.app",
-
-messagingSenderId:"689588937441",
-
-appId:"1:689588937441:web:4d17a1d02e72189bbfcda0",
-
-measurementId:"G-RB0V6GTVER"
-
+  apiKey: "AIzaSyCZw747d_KJa85KTDSOVI8EeX_J9Grpqrk",
+  authDomain: "sakaker-9247f.firebaseapp.com",
+  projectId: "sakaker-9247f",
+  storageBucket: "sakaker-9247f.firebasestorage.app",
+  messagingSenderId: "689588937441",
+  appId: "1:689588937441:web:4d17a1d02e72189bbfcda0",
+  measurementId: "G-RB0V6GTVER"
 };
 
 const app = initializeApp(firebaseConfig);
-
 getAnalytics(app);
-
 const auth = getAuth(app);
 
-const googleProvider = new GoogleAuthProvider();
+/* دخول بالبريد */
 
-const facebookProvider = new FacebookAuthProvider();
+document.getElementById("emailLogin").onclick = async () => {
 
-const microsoftProvider = new OAuthProvider("microsoft.com");
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
 
-const email=document.getElementById("email");
+  if (!email || !password) {
+    document.getElementById("loginError").textContent =
+      "أدخل البريد الإلكتروني وكلمة المرور";
+    return;
+  }
 
-const password=document.getElementById("password");
+  try {
 
-const status=document.getElementById("status");
+    await signInWithEmailAndPassword(auth, email, password);
 
-window.loginGoogle=async()=>{
+  } catch (e) {
 
-try{
+    document.getElementById("loginError").textContent = e.message;
 
-await signInWithPopup(auth,googleProvider);
-
-status.innerHTML="✅ تم تسجيل الدخول بواسطة Google";
-
-}catch(e){
-
-status.innerHTML=e.message;
-
-}
+  }
 
 };
 
-window.loginFacebook=async()=>{
+/* Google */
 
-try{
+document.getElementById("googleLogin").onclick = async () => {
 
-await signInWithPopup(auth,facebookProvider);
+  try {
 
-status.innerHTML="✅ تم تسجيل الدخول بواسطة Facebook";
+    await signInWithPopup(auth, new GoogleAuthProvider());
 
-}catch(e){
+  } catch (e) {
 
-status.innerHTML=e.message;
+    document.getElementById("loginError").textContent = e.message;
 
-}
-
-};
-
-window.loginMicrosoft=async()=>{
-
-try{
-
-await signInWithPopup(auth,microsoftProvider);
-
-status.innerHTML="✅ تم تسجيل الدخول بواسطة Microsoft";
-
-}catch(e){
-
-status.innerHTML=e.message;
-
-}
+  }
 
 };
 
-window.loginEmail=async()=>{
-
-try{
-
-await signInWithEmailAndPassword(
-
-auth,
-
-email.value,
-
-password.value
-
-);
-document.getElementById("loginOverlay").style.display = "none";
-document.getElementById("siteContent").style.display = "block";
-window.registerEmail=async()=>{
-
-try{
-
-await createUserWithEmailAndPassword(
-
-auth,
-
-email.value,
-
-password.value
-
-);
-
-status.innerHTML="✅ تم إنشاء الحساب";
-
-}catch(e){
-
-status.innerHTML=e.message;
-
-}
-
-};
-
-window.logoutUser=async()=>{
-
-await signOut(auth);
-document.getElementById("siteContent").style.display = "none";
-document.getElementById("loginOverlay").style.display = "flex";
-window.auth=auth;
-
-window.onAuthStateChanged=onAuthStateChanged;
-
-</script>
-<script type="module">
-
-const loginBtn = document.getElementById("loginBtn");
-const registerBtn = document.getElementById("registerBtn");
-
-const googleBtn = document.getElementById("googleBtn");
-const facebookBtn = document.getElementById("facebookBtn");
-const microsoftBtn = document.getElementById("microsoftBtn");
-
-const logoutBtn = document.getElementById("logoutBtn");
-
-const userCard = document.getElementById("userCard");
-const photo = document.getElementById("photo");
-const name = document.getElementById("name");
-const emailView = document.getElementById("emailView");
-
-loginBtn.onclick = () => loginEmail();
-
-registerBtn.onclick = () => registerEmail();
-
-googleBtn.onclick = () => loginGoogle();
-
-facebookBtn.onclick = () => loginFacebook();
-
-microsoftBtn.onclick = () => loginMicrosoft();
-
-logoutBtn.onclick = () => logoutUser();
+/* عند نجاح تسجيل الدخول */
 
 onAuthStateChanged(auth, (user) => {
 
-if (user) {
+  if (user) {
 
-userCard.style.display = "block";
+    document.getElementById("loginOverlay").style.display = "none";
 
-logoutBtn.style.display = "block";
+    document.body.classList.remove("login-lock");
 
-loginBtn.style.display = "none";
+  } else {
 
-registerBtn.style.display = "none";
+    document.getElementById("loginOverlay").style.display = "flex";
 
-googleBtn.style.display = "none";
+    document.body.classList.add("login-lock");
 
-facebookBtn.style.display = "none";
-
-microsoftBtn.style.display = "none";
-
-photo.src = user.photoURL || "https://ui-avatars.com/api/?background=FFD700&color=000&name=" + encodeURIComponent(user.displayName || "User");
-
-name.textContent = user.displayName || "مستخدم";
-
-emailView.textContent = user.email || "";
-
-status.textContent = "✅ مرحباً بك " + (user.displayName || "");
-
-} else {
-
-userCard.style.display = "none";
-
-logoutBtn.style.display = "none";
-
-loginBtn.style.display = "block";
-
-registerBtn.style.display = "block";
-
-googleBtn.style.display = "block";
-
-facebookBtn.style.display = "block";
-
-microsoftBtn.style.display = "block";
-
-photo.src = "";
-
-name.textContent = "";
-
-emailView.textContent = "";
-
-status.textContent = "";
-
-}
+  }
 
 });
 
@@ -722,6 +370,10 @@ status.textContent = "";
 
 </body>
 </html>
+<!-- =======================
+     خلفية موقع أبوالقمر زمرد
+======================= -->
+
 <style>
 
 html,
@@ -919,11 +571,6 @@ background-position:center;
 <div id="site-background"></div>
 
 <div id="stars"></div>
-</div>
-
-<div id="siteContent" style="display:none;">
-
-  
 <!-- =====================================
      Sakaker Business Title + Hand
      عالم الأعمال
@@ -2974,7 +2621,7 @@ overflow:hidden;
 <head>
 <meta charset="UTF-8">
 
-<title>🎬 abwalqmrzmrd🗺️ </title>
+<title>🎬 فيديو + 🗺️ خريطة</title>
 <style>
 /* 🔹 أيقونة النجمة */
 .launcher {
@@ -5096,6 +4743,3 @@ console.log("✅ Firebase جاهز للعمل");
 </script>
 </body>
 </html>
-
-
-</div>
