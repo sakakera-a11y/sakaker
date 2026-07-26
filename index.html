@@ -19,7 +19,7 @@ top:0;
 left:0;
 width:100%;
 height:100%;
-background:url('https://i.ytimg.com/vi/0go3k0frmjc/maxresdefault.jpg') center/cover no-repeat;
+background:url("https://d.top4top.io/p_3858dvoq11.png"); center/cover no-repeat;
 display:flex;
 align-items:center;
 justify-content:center;
@@ -422,6 +422,63 @@ body>*{
     z-index:1;
 }
 </style>
+
+<!-- 🐦 أيقونة صوت الطيور بتوهج زمردي -->
+<div id="bird-sound-btn" title="تشغيل/إيقاف صوت الطيور" style="
+  position: fixed;
+  top: 30px;
+  right: 102px;
+  width: 75px;
+  height: 75px;
+  background:
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 34px;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 0 25px rgba(0,255,200,0.9), 0 0 50px rgba(0,255,200,0.4);
+  z-index: 1001;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+">
+  🐦
+</div>
+
+<!-- 🎵 صوت تغريد الطيور وخرير الماء -->
+<audio id="bird-sound" loop playsinline>
+  <source src="https://www.orangefreesounds.com/wp-content/uploads/2016/04/Birds-chirping-and-water-flowing.mp3" type="audio/mp3">
+  متصفحك لا يدعم تشغيل الصوت.
+</audio>
+
+<script>
+const birdBtn = document.getElementById('bird-sound-btn');
+const birdAudio = document.getElementById('bird-sound');
+
+// حالة أولية
+birdBtn.textContent = "🐦";
+
+// عند النقر على الأيقونة
+birdBtn.addEventListener('click', async () => {
+  try {
+    if (birdAudio.paused) {
+      await birdAudio.play();
+      birdBtn.textContent = "🔊";
+      birdBtn.style.boxShadow = "0 0 35px rgba(0,255,200,1), 0 0 70px rgba(0,255,200,0.6)";
+      birdBtn.style.transform = "scale(1.1)";
+    } else {
+      birdAudio.pause();
+      birdBtn.textContent = "🐦";
+      birdBtn.style.boxShadow = "0 0 25px rgba(0,255,200,0.9), 0 0 50px rgba(0,255,200,0.4)";
+      birdBtn.style.transform = "scale(1)";
+    }
+  } catch (err) {
+    console.error("حدث خطأ أثناء تشغيل الصوت:", err);
+    alert("قد يمنع المتصفح التشغيل التلقائي. حاول النقر مرة أخرى.");
+  }
+});
+</script>
+
 <!-- =====================================
      Sakaker Business Title + Hand
      عالم الأعمال
@@ -1291,8 +1348,8 @@ document.getElementById("closeShip_new").onclick = () => {
 <!-- 🐦 أيقونة صوت الطيور بتوهج زمردي -->
 <div id="bird-sound-btn" title="تشغيل/إيقاف صوت الطيور" style="
   position: fixed;
-  top: 30px;
-  right: 102px;
+  top: 60px;
+  right: 202px;
   width: 75px;
   height: 75px;
   background:
@@ -2611,7 +2668,7 @@ closeBtn.addEventListener('click', () => {
 <div id="support-toggle-btn" style="
   position: fixed;
   top: 5px;
-  right:200px;
+  right:500px;
   width: 65px;
   height: 65px;
   background: linear-gradient(45deg, #007bff, #ff69b4);
