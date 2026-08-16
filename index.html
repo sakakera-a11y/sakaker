@@ -426,8 +426,8 @@ body>*{
 <!-- 🌈 أيقونة فتح/إغلاق قائمة الاتصال -->
 <div id="support-toggle-btn" style="
   position: fixed;
-  top: 5px;
-  right:500px;
+  top: 605px;
+  right:900px;
   width: 65px;
   height: 65px;
   background: linear-gradient(45deg, #007bff, #ff69b4);
@@ -534,4 +534,497 @@ supportBtn.addEventListener('click', () => {
     setTimeout(() => { supportSection.style.display = 'none'; }, 400);
   }
 });
+</script>
+<!-- ==================================================
+     ⭐💎 روابط النطاقات الفرعية
+     Business + General
+================================================== -->
+
+<style>
+
+.sakaker-subdomains{
+    position:fixed;
+    right:300px;
+    bottom:25px;
+    z-index:999999;
+
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+
+/* ==================================================
+   الأيقونات
+================================================== */
+
+.sakaker-subdomain{
+
+    width:68px;
+    height:68px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    text-decoration:none;
+
+    border-radius:50%;
+
+    cursor:pointer;
+
+    transition:
+        transform .3s ease,
+        filter .3s ease;
+
+}
+
+
+/* تأثير عند المرور */
+
+.sakaker-subdomain:hover{
+
+    transform:scale(1.15);
+
+}
+
+
+/* ==================================================
+   ⭐ النجمة الفضية - Business
+================================================== */
+
+.sakaker-business{
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #ffffff,
+            #d8d8d8 30%,
+            #8f8f8f 65%,
+            #444 100%
+        );
+
+    color:#fff;
+
+    border:
+        2px solid #eeeeee;
+
+    box-shadow:
+        0 0 10px #ffffff,
+        0 0 25px rgba(220,220,220,.8),
+        inset 0 0 12px #fff;
+
+}
+
+
+/* النجمة */
+
+.sakaker-business::before{
+
+    content:"★";
+
+    font-size:38px;
+
+    color:#ffffff;
+
+    text-shadow:
+        0 0 4px #fff,
+        0 0 10px #777,
+        2px 2px 4px #333;
+
+}
+
+
+/* ==================================================
+   💎 الجوهرة الزمردية - General
+================================================== */
+
+.sakaker-general{
+
+    background:
+        linear-gradient(
+            135deg,
+            #003b32,
+            #00a889 35%,
+            #00ffcc 55%,
+            #007d68 75%,
+            #00251f
+        );
+
+    border:
+        2px solid #00ffcc;
+
+    box-shadow:
+        0 0 10px #00ffcc,
+        0 0 25px rgba(0,255,204,.8),
+        inset 0 0 15px #00ffcc;
+
+    clip-path:
+        polygon(
+            50% 0%,
+            82% 18%,
+            100% 50%,
+            82% 82%,
+            50% 100%,
+            18% 82%,
+            0% 50%,
+            18% 18%
+        );
+
+}
+
+
+/* الجوهرة */
+
+.sakaker-general::before{
+
+    content:"◆";
+
+    font-size:38px;
+
+    color:#00ffcc;
+
+    text-shadow:
+        0 0 5px #ffffff,
+        0 0 15px #00ffcc,
+        0 0 25px #00ffcc;
+
+}
+
+
+/* ==================================================
+   النص أسفل الأيقونة
+================================================== */
+
+.sakaker-label{
+
+    position:absolute;
+
+    bottom:-25px;
+
+    width:100px;
+
+    text-align:center;
+
+    color:#fff;
+
+    font-family:
+        Tahoma,
+        Arial,
+        sans-serif;
+
+    font-size:12px;
+
+    text-shadow:
+        0 0 5px #000;
+
+    pointer-events:none;
+
+}
+
+
+/* ==================================================
+   📱 الجوال
+================================================== */
+
+@media(max-width:600px){
+
+    .sakaker-subdomains{
+
+        right:10px;
+
+        bottom:15px;
+
+        gap:10px;
+
+    }
+
+
+    .sakaker-subdomain{
+
+        width:54px;
+
+        height:54px;
+
+    }
+
+
+    .sakaker-business::before,
+    .sakaker-general::before{
+
+        font-size:30px;
+
+    }
+
+
+    .sakaker-label{
+
+        font-size:10px;
+
+        bottom:-20px;
+
+    }
+
+}
+
+</style>
+
+
+<!-- ==================================================
+     ⭐💎 الأيقونات
+================================================== -->
+
+<div class="sakaker-subdomains">
+
+
+    <!-- ⭐ Business -->
+
+    <a
+        href="https://business.sakaker.co"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="sakaker-subdomain sakaker-business"
+        title="Business"
+        aria-label="Business">
+
+        <span class="sakaker-label">
+            Business
+        </span>
+
+    </a>
+
+
+    <!-- 💎 General -->
+
+    <a
+        href="https://general.sakaker.co"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="sakaker-subdomain sakaker-general"
+        title="General"
+        aria-label="General">
+
+        <span class="sakaker-label">
+            General
+        </span>
+
+    </a>
+
+
+</div>
+
+<!-- 🐦 أيقونة صوت الطيور بتوهج زمردي -->
+<div id="bird-sound-btn" title="تشغيل/إيقاف صوت الطيور" style="
+  position: fixed;
+  top: 560px;
+  right: 20px;
+  width: 75px;
+  height: 75px;
+  background:
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 34px;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 0 25px rgba(0,255,200,0.9), 0 0 50px rgba(0,255,200,0.4);
+  z-index: 1001;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+">
+  🐦
+</div>
+
+<!-- 🎵 صوت تغريد الطيور وخرير الماء -->
+<audio id="bird-sound" loop playsinline>
+  <source src="https://www.orangefreesounds.com/wp-content/uploads/2016/04/Birds-chirping-and-water-flowing.mp3" type="audio/mp3">
+  متصفحك لا يدعم تشغيل الصوت.
+</audio>
+
+<script>
+const birdBtn = document.getElementById('bird-sound-btn');
+const birdAudio = document.getElementById('bird-sound');
+
+// حالة أولية
+birdBtn.textContent = "🐦";
+
+// عند النقر على الأيقونة
+birdBtn.addEventListener('click', async () => {
+  try {
+    if (birdAudio.paused) {
+      await birdAudio.play();
+      birdBtn.textContent = "🔊";
+      birdBtn.style.boxShadow = "0 0 35px rgba(0,255,200,1), 0 0 70px rgba(0,255,200,0.6)";
+      birdBtn.style.transform = "scale(1.1)";
+    } else {
+      birdAudio.pause();
+      birdBtn.textContent = "🐦";
+      birdBtn.style.boxShadow = "0 0 25px rgba(0,255,200,0.9), 0 0 50px rgba(0,255,200,0.4)";
+      birdBtn.style.transform = "scale(1)";
+    }
+  } catch (err) {
+    console.error("حدث خطأ أثناء تشغيل الصوت:", err);
+    alert("قد يمنع المتصفح التشغيل التلقائي. حاول النقر مرة أخرى.");
+  }
+});
+</script>
+<!-- ================= الساعة البحرية ================= -->
+
+<div id="oceanClock">
+    <div id="clockTime">00:00:00</div>
+    <div id="clockDate">...</div>
+</div>
+
+<style>
+
+#oceanClock{
+position:absolute;
+top:auto;
+left:auto;
+right:auto;
+bottom:auto;
+margin:0;
+transform:none;
+
+animation:floatClock 4s ease-in-out infinite;
+
+user-select:none;
+
+}
+
+#oceanClock:hover{
+
+transform:scale(1.05);
+
+box-shadow:
+0 0 20px #00ffff,
+0 0 45px rgba(0,255,255,.45);
+
+}
+
+#clockTime{
+
+font-size:28px;
+
+font-weight:bold;
+
+letter-spacing:2px;
+
+color:#00ffff;
+
+text-shadow:
+0 0 8px #00ffff,
+0 0 16px #00aaff;
+
+}
+
+#clockDate{
+
+margin-top:5px;
+
+font-size:15px;
+
+color:#ffffff;
+
+opacity:.95;
+
+}
+
+@keyframes floatClock{
+
+0%,100%{
+
+transform:translateY(0);
+
+}
+
+50%{
+
+transform:translateY(-4px);
+
+}
+
+}
+
+/* الجوال */
+
+@media(max-width:768px){
+
+#oceanClock{
+
+top:10px;
+
+right:10px;
+
+min-width:145px;
+
+padding:8px 12px;
+
+border-radius:12px;
+
+}
+
+#clockTime{
+
+font-size:21px;
+
+}
+
+#clockDate{
+
+font-size:12px;
+
+}
+
+}
+
+</style>
+
+<script>
+
+function updateOceanClock(){
+
+const now=new Date();
+
+const days=[
+"الأحد",
+"الإثنين",
+"الثلاثاء",
+"الأربعاء",
+"الخميس",
+"الجمعة",
+"السبت"
+];
+
+const months=[
+"يناير",
+"فبراير",
+"مارس",
+"أبريل",
+"مايو",
+"يونيو",
+"يوليو",
+"أغسطس",
+"سبتمبر",
+"أكتوبر",
+"نوفمبر",
+"ديسمبر"
+];
+
+const h=String(now.getHours()).padStart(2,"0");
+const m=String(now.getMinutes()).padStart(2,"0");
+const s=String(now.getSeconds()).padStart(2,"0");
+
+document.getElementById("clockTime").textContent=
+`${h}:${m}:${s}`;
+
+document.getElementById("clockDate").textContent=
+`${days[now.getDay()]} ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+
+}
+
+updateOceanClock();
+
+setInterval(updateOceanClock,1000);
+
 </script>
