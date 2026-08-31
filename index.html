@@ -534,34 +534,42 @@ supportBtn.addEventListener('click', () => {
     setTimeout(() => { supportSection.style.display = 'none'; }, 400);
   }
 });
-</script>
-<!-- ==================================================
-     ⭐💎 روابط النطاقات الفرعية
+</script>```html
+<!-- =========================================================
+     ⭐💎 SAKAKER SUBDOMAINS — 3D REALISTIC ICONS
      Business + General
-================================================== -->
+========================================================= -->
 
 <style>
+
+/* =========================================================
+   الحاوية
+========================================================= */
 
 .sakaker-subdomains{
     position:fixed;
     right:300px;
-    bottom:25px;
+    bottom:30px;
+
     z-index:999999;
 
     display:flex;
-    align-items:center;
-    gap:18px;
+    align-items:flex-end;
+    gap:28px;
+
+    perspective:1000px;
 }
 
 
-/* ==================================================
-   الأيقونات
-================================================== */
+/* =========================================================
+   كل أيقونة مستقلة
+========================================================= */
 
 .sakaker-subdomain{
+    position:relative;
 
-    width:68px;
-    height:68px;
+    width:78px;
+    height:78px;
 
     display:flex;
     align-items:center;
@@ -569,144 +577,342 @@ supportBtn.addEventListener('click', () => {
 
     text-decoration:none;
 
-    border-radius:50%;
-
     cursor:pointer;
 
-    transition:
-        transform .3s ease,
-        filter .3s ease;
+    isolation:isolate;
 
+    transition:
+        transform .35s cubic-bezier(.2,.8,.2,1),
+        filter .35s ease;
 }
 
 
-/* تأثير عند المرور */
+/* =========================================================
+   تأثير التحويم
+========================================================= */
 
 .sakaker-subdomain:hover{
+    transform:
+        translateY(-10px)
+        rotateX(8deg)
+        scale(1.08);
 
-    transform:scale(1.15);
-
+    filter:brightness(1.18);
 }
 
 
-/* ==================================================
-   ⭐ النجمة الفضية - Business
-================================================== */
+/* =========================================================
+   قاعدة زجاجية خلف الأيقونة
+========================================================= */
+
+.sakaker-subdomain::after{
+    content:"";
+
+    position:absolute;
+
+    width:76px;
+    height:76px;
+
+    border-radius:22px;
+
+    z-index:-2;
+
+    opacity:.8;
+
+    backdrop-filter:blur(5px);
+
+    transform:rotate(45deg) scale(.82);
+
+    transition:.35s ease;
+}
+
+
+.sakaker-subdomain:hover::after{
+    transform:rotate(45deg) scale(.94);
+}
+
+
+/* =========================================================
+   ⭐ BUSINESS
+   نجمة فضية ثلاثية الأبعاد
+========================================================= */
 
 .sakaker-business{
 
+    border-radius:50%;
+
     background:
         radial-gradient(
-            circle at 35% 30%,
-            #ffffff,
-            #d8d8d8 30%,
-            #8f8f8f 65%,
-            #444 100%
+            circle at 32% 25%,
+            #ffffff 0%,
+            #ffffff 8%,
+            #e9e9e9 18%,
+            #bcbcbc 38%,
+            #777 65%,
+            #292929 100%
         );
 
-    color:#fff;
-
-    border:
-        2px solid #eeeeee;
+    border:2px solid rgba(255,255,255,.95);
 
     box-shadow:
-        0 0 10px #ffffff,
-        0 0 25px rgba(220,220,220,.8),
-        inset 0 0 12px #fff;
 
+        /* ظل خارجي */
+        0 10px 18px rgba(0,0,0,.65),
+
+        /* توهج */
+        0 0 10px rgba(255,255,255,.9),
+        0 0 25px rgba(210,210,210,.65),
+
+        /* عمق */
+        inset 5px 5px 10px rgba(255,255,255,.9),
+        inset -8px -10px 15px rgba(0,0,0,.65);
 }
 
 
-/* النجمة */
+/* الحلقة الخلفية */
+
+.sakaker-business::after{
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.4),
+            rgba(120,120,120,.15),
+            rgba(0,0,0,.4)
+        );
+
+    border:
+        1px solid rgba(255,255,255,.4);
+
+    box-shadow:
+        0 0 18px rgba(255,255,255,.4),
+        inset 0 0 12px rgba(255,255,255,.35);
+}
+
+
+/* =========================================================
+   النجمة
+========================================================= */
 
 .sakaker-business::before{
 
     content:"★";
 
-    font-size:38px;
+    position:absolute;
 
-    color:#ffffff;
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:48px;
+
+    line-height:1;
+
+    color:#f7f7f7;
+
+    transform:
+        translateY(-1px)
+        rotate(-4deg);
 
     text-shadow:
-        0 0 4px #fff,
-        0 0 10px #777,
-        2px 2px 4px #333;
 
+        /* حافة */
+        1px 1px 0 #777,
+        2px 2px 0 #555,
+
+        /* عمق */
+        3px 4px 5px rgba(0,0,0,.8),
+
+        /* لمعان */
+        0 0 4px #fff,
+        0 0 12px rgba(255,255,255,.95);
 }
 
 
-/* ==================================================
-   💎 الجوهرة الزمردية - General
-================================================== */
+/* =========================================================
+   💎 GENERAL
+   جوهرة زمردية ثلاثية الأبعاد
+========================================================= */
 
 .sakaker-general{
+
+    width:78px;
+    height:78px;
+
+    border-radius:22px;
+
+    transform:rotate(45deg);
 
     background:
         linear-gradient(
             135deg,
-            #003b32,
-            #00a889 35%,
-            #00ffcc 55%,
-            #007d68 75%,
-            #00251f
+            #001c17 0%,
+            #004c3e 18%,
+            #00a98d 38%,
+            #39ffe0 50%,
+            #008d76 65%,
+            #003f34 82%,
+            #00140f 100%
         );
 
     border:
-        2px solid #00ffcc;
+        2px solid #52ffe5;
 
     box-shadow:
-        0 0 10px #00ffcc,
-        0 0 25px rgba(0,255,204,.8),
-        inset 0 0 15px #00ffcc;
 
-    clip-path:
-        polygon(
-            50% 0%,
-            82% 18%,
-            100% 50%,
-            82% 82%,
-            50% 100%,
-            18% 82%,
-            0% 50%,
-            18% 18%
-        );
+        0 10px 20px rgba(0,0,0,.7),
 
+        0 0 12px rgba(0,255,204,.95),
+        0 0 28px rgba(0,255,204,.75),
+        0 0 50px rgba(0,180,150,.35),
+
+        inset 5px 5px 12px rgba(255,255,255,.55),
+        inset -10px -12px 18px rgba(0,30,25,.8);
 }
 
 
-/* الجوهرة */
+/* =========================================================
+   إطار الجوهرة
+========================================================= */
+
+.sakaker-general::after{
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.38),
+            rgba(0,255,204,.12),
+            rgba(0,0,0,.45)
+        );
+
+    border:
+        1px solid rgba(82,255,229,.7);
+
+    box-shadow:
+        0 0 20px rgba(0,255,204,.65),
+        inset 0 0 15px rgba(255,255,255,.25);
+}
+
+
+/* =========================================================
+   شكل الجوهرة
+========================================================= */
 
 .sakaker-general::before{
 
     content:"◆";
 
-    font-size:38px;
+    position:absolute;
 
-    color:#00ffcc;
+    z-index:2;
+
+    font-size:45px;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    color:#63ffe7;
+
+    transform:
+        rotate(-45deg)
+        translateY(-1px);
 
     text-shadow:
-        0 0 5px #ffffff,
-        0 0 15px #00ffcc,
-        0 0 25px #00ffcc;
 
+        1px 1px 0 #00715f,
+        2px 2px 0 #00483d,
+
+        3px 5px 7px rgba(0,0,0,.8),
+
+        0 0 5px #fff,
+        0 0 14px #00ffcc,
+        0 0 28px #00ffcc;
 }
 
 
-/* ==================================================
-   النص أسفل الأيقونة
-================================================== */
+/* =========================================================
+   لمعان متحرك — Business
+========================================================= */
+
+.sakaker-business span::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:10px;
+    left:12px;
+
+    width:20px;
+    height:10px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.9);
+
+    filter:blur(4px);
+
+    transform:rotate(-25deg);
+
+    opacity:.8;
+}
+
+
+/* =========================================================
+   لمعان الجوهرة
+========================================================= */
+
+.sakaker-general span::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:10px;
+    left:12px;
+
+    width:25px;
+    height:9px;
+
+    border-radius:50%;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.9),
+            rgba(255,255,255,0)
+        );
+
+    filter:blur(3px);
+
+    transform:rotate(-45deg);
+
+    opacity:.9;
+}
+
+
+/* =========================================================
+   النص
+========================================================= */
 
 .sakaker-label{
 
     position:absolute;
 
-    bottom:-25px;
+    top:91px;
 
-    width:100px;
+    left:50%;
 
-    text-align:center;
+    transform:translateX(-50%);
 
-    color:#fff;
+    width:max-content;
+
+    padding:4px 10px;
+
+    border-radius:10px;
 
     font-family:
         Tahoma,
@@ -715,37 +921,186 @@ supportBtn.addEventListener('click', () => {
 
     font-size:12px;
 
+    font-weight:bold;
+
+    letter-spacing:.4px;
+
+    color:#fff;
+
+    background:
+        rgba(0,0,0,.65);
+
+    border:
+        1px solid rgba(255,255,255,.25);
+
+    box-shadow:
+        0 3px 8px rgba(0,0,0,.5);
+
     text-shadow:
         0 0 5px #000;
 
     pointer-events:none;
 
+    white-space:nowrap;
 }
 
 
-/* ==================================================
+/* =========================================================
+   Business label
+========================================================= */
+
+.sakaker-business .sakaker-label{
+    box-shadow:
+        0 0 8px rgba(255,255,255,.25),
+        0 3px 8px rgba(0,0,0,.6);
+}
+
+
+/* =========================================================
+   General label
+========================================================= */
+
+.sakaker-general .sakaker-label{
+    box-shadow:
+        0 0 10px rgba(0,255,204,.4),
+        0 3px 8px rgba(0,0,0,.6);
+}
+
+
+/* =========================================================
+   حركة تنفس خفيفة
+========================================================= */
+
+@keyframes sakakerBusinessGlow{
+
+    0%,100%{
+        box-shadow:
+            0 10px 18px rgba(0,0,0,.65),
+            0 0 10px rgba(255,255,255,.8),
+            0 0 25px rgba(210,210,210,.55),
+            inset 5px 5px 10px rgba(255,255,255,.9),
+            inset -8px -10px 15px rgba(0,0,0,.65);
+    }
+
+    50%{
+        box-shadow:
+            0 10px 18px rgba(0,0,0,.65),
+            0 0 15px rgba(255,255,255,1),
+            0 0 35px rgba(230,230,230,.8),
+            inset 5px 5px 10px rgba(255,255,255,1),
+            inset -8px -10px 15px rgba(0,0,0,.65);
+    }
+}
+
+
+@keyframes sakakerGeneralGlow{
+
+    0%,100%{
+        box-shadow:
+            0 10px 20px rgba(0,0,0,.7),
+            0 0 12px rgba(0,255,204,.85),
+            0 0 28px rgba(0,255,204,.6),
+            inset 5px 5px 12px rgba(255,255,255,.55),
+            inset -10px -12px 18px rgba(0,30,25,.8);
+    }
+
+    50%{
+        box-shadow:
+            0 10px 20px rgba(0,0,0,.7),
+            0 0 18px rgba(0,255,204,1),
+            0 0 42px rgba(0,255,204,.8),
+            inset 5px 5px 12px rgba(255,255,255,.7),
+            inset -10px -12px 18px rgba(0,30,25,.8);
+    }
+}
+
+
+.sakaker-business{
+    animation:sakakerBusinessGlow 3s ease-in-out infinite;
+}
+
+
+.sakaker-general{
+    animation:sakakerGeneralGlow 3s ease-in-out infinite;
+}
+
+
+/* =========================================================
    📱 الجوال
-================================================== */
+========================================================= */
 
 @media(max-width:600px){
 
     .sakaker-subdomains{
 
-        right:10px;
+        right:14px;
+        bottom:24px;
 
-        bottom:15px;
-
-        gap:10px;
-
+        gap:20px;
     }
 
 
-    .sakaker-subdomain{
+    .sakaker-subdomain,
+    .sakaker-general{
 
-        width:54px;
+        width:58px;
+        height:58px;
+    }
 
-        height:54px;
 
+    .sakaker-business::before,
+    .sakaker-general::before{
+
+        font-size:35px;
+    }
+
+
+    .sakaker-subdomain::after{
+
+        width:58px;
+        height:58px;
+    }
+
+
+    .sakaker-label{
+
+        top:70px;
+
+        font-size:10px;
+
+        padding:3px 7px;
+    }
+
+}
+
+
+/* =========================================================
+   📱 الشاشات الصغيرة جدًا
+========================================================= */
+
+@media(max-width:380px){
+
+    .sakaker-subdomains{
+
+        right:8px;
+        bottom:20px;
+
+        gap:14px;
+    }
+
+
+    .sakaker-subdomain,
+    .sakaker-general{
+
+        width:50px;
+        height:50px;
+    }
+
+
+    .sakaker-subdomain::after{
+
+        width:50px;
+        height:50px;
     }
 
 
@@ -753,16 +1108,6 @@ supportBtn.addEventListener('click', () => {
     .sakaker-general::before{
 
         font-size:30px;
-
-    }
-
-
-    .sakaker-label{
-
-        font-size:10px;
-
-        bottom:-20px;
-
     }
 
 }
@@ -770,22 +1115,24 @@ supportBtn.addEventListener('click', () => {
 </style>
 
 
-<!-- ==================================================
-     ⭐💎 الأيقونات
-================================================== -->
+<!-- =========================================================
+     ⭐💎 ICONS
+========================================================= -->
 
 <div class="sakaker-subdomains">
 
 
-    <!-- ⭐ Business -->
+    <!-- =====================================================
+         ⭐ BUSINESS
+    ====================================================== -->
 
     <a
         href="https://business.sakaker.co"
         target="_blank"
         rel="noopener noreferrer"
         class="sakaker-subdomain sakaker-business"
-        title="Business"
-        aria-label="Business">
+        title="Sakaker Business"
+        aria-label="Sakaker Business">
 
         <span class="sakaker-label">
             Business
@@ -794,15 +1141,17 @@ supportBtn.addEventListener('click', () => {
     </a>
 
 
-    <!-- 💎 General -->
+    <!-- =====================================================
+         💎 GENERAL
+    ====================================================== -->
 
     <a
         href="https://general.sakaker.co"
         target="_blank"
         rel="noopener noreferrer"
         class="sakaker-subdomain sakaker-general"
-        title="General"
-        aria-label="General">
+        title="Sakaker General"
+        aria-label="Sakaker General">
 
         <span class="sakaker-label">
             General
@@ -812,6 +1161,8 @@ supportBtn.addEventListener('click', () => {
 
 
 </div>
+```
+
 
 <!-- 🐦 أيقونة صوت الطيور بتوهج زمردي -->
 <div id="bird-sound-btn" title="تشغيل/إيقاف صوت الطيور" style="
@@ -1028,7 +1379,7 @@ updateOceanClock();
 setInterval(updateOceanClock,1000);
 
 </script>
-```html
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -1148,8 +1499,8 @@ shadow.innerHTML = `
 
     position:fixed;
 
-    left:50%;
-    top:50%;
+    left:40%;
+    top:90%;
 
     transform:
     translate(-50%,-50%);
@@ -1163,14 +1514,10 @@ shadow.innerHTML = `
     2px solid #ffd700;
 
     background:
-    radial-gradient(
-        circle at 35% 30%,
-        #1689b8,
-        #063b58 45%,
-        #01151f 100%
+   
     );
 
-    color:#fff;
+    color:
 
     font-family:
     Arial,
@@ -1239,8 +1586,8 @@ shadow.innerHTML = `
     transform:
     translate(-50%,-50%);
 
-    width:850px;
-    height:650px;
+    width:650px;
+    height:450px;
 
     max-width:
     calc(100vw - 24px);
@@ -1260,7 +1607,7 @@ shadow.innerHTML = `
     1px solid
     rgba(255,215,0,.45);
 
-    background:#021923;
+    background:
 
     color:#fff;
 
@@ -3161,4 +3508,4 @@ applyLanguage();
 
 </body>
 </html>
-```
+
