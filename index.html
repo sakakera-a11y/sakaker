@@ -1,4 +1,2077 @@
+<!-- =========================================================
+     💎 SAKAKER CRYSTAL CHAT
+     Firebase + Anonymous Auth + Realtime Database
+     ========================================================= -->
 
+<style>
+/* =========================================================
+   CRYSTAL CHAT - CSS ISOLATED
+   ========================================================= */
+
+#sakakerCrystalChatRoot{
+    --sc-gold:#ffd700;
+    --sc-green:#00d9a5;
+    --sc-white:#ffffff;
+    --sc-glass:rgba(10,18,22,.72);
+    --sc-border:rgba(255,255,255,.20);
+
+    font-family:
+        "Segoe UI",
+        Tahoma,
+        Arial,
+        sans-serif;
+
+    position:relative;
+    z-index:999999;
+}
+
+/* زر الدردشة */
+#sakakerCrystalChatButton{
+    position:fixed;
+    right:120px;
+    bottom:202px;
+
+    width:68px;
+    height:68px;
+
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.35);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.28),
+            rgba(0,0,0,.38)
+        );
+
+    backdrop-filter:blur(15px);
+    -webkit-backdrop-filter:blur(15px);
+
+    box-shadow:
+        0 0 15px rgba(0,217,165,.45),
+        0 0 35px rgba(255,215,0,.18),
+        inset 0 0 15px rgba(255,255,255,.15);
+
+    color:#fff;
+    font-size:30px;
+
+    cursor:pointer;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    transition:
+        transform .35s ease,
+        box-shadow .35s ease,
+        background .35s ease;
+
+    animation:
+        sakakerCrystalPulse 2.5s infinite;
+}
+
+#sakakerCrystalChatButton:hover{
+    transform:scale(1.10) rotate(3deg);
+
+    box-shadow:
+        0 0 20px rgba(0,217,165,.75),
+        0 0 50px rgba(255,215,0,.30),
+        inset 0 0 20px rgba(255,255,255,.25);
+}
+
+#sakakerCrystalChatButton:active{
+    transform:scale(.94);
+}
+
+@keyframes sakakerCrystalPulse{
+    0%,100%{
+        box-shadow:
+            0 0 15px rgba(0,217,165,.45),
+            0 0 35px rgba(255,215,0,.18);
+    }
+
+    50%{
+        box-shadow:
+            0 0 25px rgba(0,217,165,.75),
+            0 0 50px rgba(255,215,0,.32);
+    }
+}
+
+/* نقطة الاتصال */
+#sakakerCrystalChatOnlineDot{
+    position:absolute;
+
+    width:13px;
+    height:13px;
+
+    right:3px;
+    top:3px;
+
+    border-radius:50%;
+
+    background:#00ff91;
+
+    border:2px solid rgba(0,0,0,.65);
+
+    box-shadow:
+        0 0 8px #00ff91,
+        0 0 16px #00ff91;
+}
+
+/* نافذة الدردشة */
+#sakakerCrystalChatWindow{
+    position:fixed;
+
+    right:22px;
+    bottom:102px;
+
+    width:390px;
+    max-width:calc(100vw - 30px);
+
+    height:570px;
+    max-height:calc(100vh - 125px);
+
+    display:flex;
+    flex-direction:column;
+
+    overflow:hidden;
+
+    border-radius:28px;
+
+    border:1px solid rgba(255,255,255,.24);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.13),
+            rgba(8,18,22,.82)
+        );
+
+    backdrop-filter:blur(24px);
+    -webkit-backdrop-filter:blur(24px);
+
+    box-shadow:
+        0 20px 80px rgba(0,0,0,.55),
+        0 0 35px rgba(0,217,165,.16),
+        inset 0 0 35px rgba(255,255,255,.035);
+
+    opacity:0;
+    visibility:hidden;
+
+    transform:
+        translateY(25px)
+        scale(.92);
+
+    transform-origin:
+        bottom right;
+
+    transition:
+        opacity .35s ease,
+        transform .4s cubic-bezier(.2,.8,.2,1),
+        visibility .35s ease;
+}
+
+#sakakerCrystalChatWindow.sakaker-chat-open{
+    opacity:1;
+    visibility:visible;
+
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+/* لمعان النافذة */
+#sakakerCrystalChatWindow::before{
+    content:"";
+
+    position:absolute;
+
+    top:-80px;
+    left:-80px;
+
+    width:220px;
+    height:220px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,.13),
+            transparent 68%
+        );
+
+    pointer-events:none;
+}
+
+/* الرأس */
+#sakakerCrystalChatHeader{
+    position:relative;
+
+    min-height:78px;
+
+    padding:12px 15px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    border-bottom:
+        1px solid rgba(255,255,255,.12);
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,217,165,.10),
+            rgba(255,215,0,.08),
+            rgba(255,255,255,.05)
+        );
+}
+
+.sakaker-crystal-chat-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.sakaker-crystal-chat-logo{
+    width:46px;
+    height:46px;
+
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:23px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.25),
+            rgba(0,217,165,.13)
+        );
+
+    border:
+        1px solid rgba(255,255,255,.25);
+
+    box-shadow:
+        0 0 16px rgba(0,217,165,.25),
+        inset 0 0 12px rgba(255,255,255,.10);
+}
+
+.sakaker-crystal-chat-name{
+    color:#fff;
+    font-size:17px;
+    font-weight:800;
+}
+
+.sakaker-crystal-chat-status{
+    margin-top:3px;
+
+    color:rgba(255,255,255,.68);
+
+    font-size:12px;
+}
+
+.sakaker-crystal-online{
+    color:#00ff9d;
+    font-weight:700;
+}
+
+/* زر الإغلاق */
+#sakakerCrystalChatClose{
+    width:38px;
+    height:38px;
+
+    border-radius:50%;
+
+    border:
+        1px solid rgba(255,255,255,.18);
+
+    background:
+        rgba(255,255,255,.07);
+
+    color:#fff;
+
+    font-size:21px;
+
+    cursor:pointer;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    transition:.25s;
+}
+
+#sakakerCrystalChatClose:hover{
+    background:rgba(255,80,80,.18);
+    transform:rotate(90deg);
+}
+
+/* منطقة الاسم */
+#sakakerCrystalChatNameBox{
+    padding:13px 15px;
+
+    border-bottom:
+        1px solid rgba(255,255,255,.08);
+
+    background:
+        rgba(0,0,0,.12);
+}
+
+#sakakerCrystalChatNameRow{
+    display:flex;
+    gap:8px;
+}
+
+#sakakerCrystalChatNameInput{
+    flex:1;
+
+    min-width:0;
+
+    height:40px;
+
+    padding:0 13px;
+
+    border-radius:14px;
+
+    border:
+        1px solid rgba(255,255,255,.16);
+
+    outline:none;
+
+    background:
+        rgba(255,255,255,.07);
+
+    color:#fff;
+
+    font-size:14px;
+
+    box-sizing:border-box;
+}
+
+#sakakerCrystalChatNameInput::placeholder{
+    color:rgba(255,255,255,.50);
+}
+
+#sakakerCrystalChatNameInput:focus{
+    border-color:rgba(0,217,165,.65);
+
+    box-shadow:
+        0 0 12px rgba(0,217,165,.15);
+}
+
+#sakakerCrystalChatNameSave{
+    width:75px;
+
+    border:none;
+    border-radius:13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #00b98c,
+            #00d9a5
+        );
+
+    color:#001c16;
+
+    font-weight:800;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+#sakakerCrystalChatNameSave:hover{
+    transform:translateY(-1px);
+    box-shadow:0 0 16px rgba(0,217,165,.35);
+}
+
+/* الرسائل */
+#sakakerCrystalChatMessages{
+    flex:1;
+
+    min-height:0;
+
+    overflow-y:auto;
+
+    padding:16px 13px;
+
+    scroll-behavior:smooth;
+}
+
+/* scrollbar */
+#sakakerCrystalChatMessages::-webkit-scrollbar{
+    width:5px;
+}
+
+#sakakerCrystalChatMessages::-webkit-scrollbar-track{
+    background:transparent;
+}
+
+#sakakerCrystalChatMessages::-webkit-scrollbar-thumb{
+    background:rgba(255,255,255,.18);
+    border-radius:20px;
+}
+
+/* رسالة */
+.sakaker-crystal-message{
+    display:flex;
+
+    margin-bottom:12px;
+
+    animation:
+        sakakerMessageIn .3s ease;
+}
+
+@keyframes sakakerMessageIn{
+    from{
+        opacity:0;
+        transform:translateY(8px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.sakaker-crystal-message.mine{
+    justify-content:flex-start;
+}
+
+.sakaker-crystal-message.other{
+    justify-content:flex-end;
+}
+
+.sakaker-crystal-bubble{
+    max-width:82%;
+
+    padding:9px 12px;
+
+    border-radius:18px;
+
+    border:
+        1px solid rgba(255,255,255,.14);
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,.13);
+}
+
+.sakaker-crystal-message.mine
+.sakaker-crystal-bubble{
+    border-bottom-right-radius:5px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,217,165,.20),
+            rgba(0,130,105,.17)
+        );
+}
+
+.sakaker-crystal-message.other
+.sakaker-crystal-bubble{
+    border-bottom-left-radius:5px;
+
+    background:
+        rgba(255,255,255,.08);
+}
+
+.sakaker-crystal-message-user{
+    font-size:11px;
+
+    color:#ffd700;
+
+    margin-bottom:4px;
+
+    font-weight:700;
+}
+
+.sakaker-crystal-message-text{
+    color:#fff;
+
+    font-size:14px;
+
+    line-height:1.5;
+
+    word-break:break-word;
+}
+
+.sakaker-crystal-message-time{
+    margin-top:4px;
+
+    font-size:9px;
+
+    color:rgba(255,255,255,.45);
+
+    text-align:left;
+}
+
+/* رسالة عدم وجود رسائل */
+#sakakerCrystalChatEmpty{
+    height:100%;
+
+    display:flex;
+    flex-direction:column;
+
+    align-items:center;
+    justify-content:center;
+
+    color:rgba(255,255,255,.55);
+
+    text-align:center;
+
+    padding:20px;
+}
+
+#sakakerCrystalChatEmptyIcon{
+    font-size:45px;
+
+    margin-bottom:10px;
+
+    filter:
+        drop-shadow(
+            0 0 12px
+            rgba(0,217,165,.45)
+        );
+}
+
+#sakakerCrystalChatEmptyTitle{
+    color:#fff;
+
+    font-size:16px;
+
+    font-weight:800;
+
+    margin-bottom:5px;
+}
+
+#sakakerCrystalChatEmptyText{
+    font-size:12px;
+}
+
+/* أسفل الدردشة */
+#sakakerCrystalChatFooter{
+    position:relative;
+
+    padding:10px;
+
+    border-top:
+        1px solid rgba(255,255,255,.10);
+
+    background:
+        rgba(0,0,0,.16);
+}
+
+#sakakerCrystalChatInputRow{
+    display:flex;
+
+    align-items:center;
+
+    gap:7px;
+}
+
+#sakakerCrystalChatEmoji{
+    flex:0 0 40px;
+
+    width:40px;
+    height:40px;
+
+    border-radius:13px;
+
+    border:
+        1px solid rgba(255,255,255,.15);
+
+    background:
+        rgba(255,255,255,.07);
+
+    color:#fff;
+
+    font-size:19px;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+#sakakerCrystalChatEmoji:hover{
+    background:
+        rgba(255,215,0,.13);
+
+    transform:scale(1.05);
+}
+
+#sakakerCrystalChatInput{
+    flex:1;
+
+    min-width:0;
+
+    height:40px;
+
+    padding:0 12px;
+
+    box-sizing:border-box;
+
+    border-radius:14px;
+
+    border:
+        1px solid rgba(255,255,255,.16);
+
+    outline:none;
+
+    background:
+        rgba(255,255,255,.07);
+
+    color:#fff;
+
+    font-size:14px;
+}
+
+#sakakerCrystalChatInput::placeholder{
+    color:rgba(255,255,255,.45);
+}
+
+#sakakerCrystalChatInput:focus{
+    border-color:
+        rgba(0,217,165,.55);
+
+    box-shadow:
+        0 0 12px
+        rgba(0,217,165,.13);
+}
+
+#sakakerCrystalChatSend{
+    flex:0 0 42px;
+
+    width:42px;
+    height:42px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffd700,
+            #e5a900
+        );
+
+    color:#191300;
+
+    font-size:18px;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+#sakakerCrystalChatSend:hover{
+    transform:scale(1.06);
+
+    box-shadow:
+        0 0 16px
+        rgba(255,215,0,.35);
+}
+
+#sakakerCrystalChatSend:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+    transform:none;
+}
+
+/* العداد */
+#sakakerCrystalChatCounter{
+    height:16px;
+
+    padding-top:3px;
+
+    text-align:right;
+
+    font-size:9px;
+
+    color:rgba(255,255,255,.42);
+}
+
+/* لوحة الإيموجي */
+#sakakerCrystalEmojiPanel{
+    position:absolute;
+
+    left:10px;
+    bottom:67px;
+
+    width:245px;
+
+    padding:10px;
+
+    border-radius:18px;
+
+    border:
+        1px solid rgba(255,255,255,.18);
+
+    background:
+        rgba(8,15,19,.92);
+
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+
+    box-shadow:
+        0 15px 45px rgba(0,0,0,.45),
+        0 0 20px rgba(0,217,165,.10);
+
+    display:none;
+
+    grid-template-columns:
+        repeat(7,1fr);
+
+    gap:5px;
+
+    z-index:10;
+}
+
+#sakakerCrystalEmojiPanel.sakaker-emoji-open{
+    display:grid;
+
+    animation:
+        sakakerEmojiIn .2s ease;
+}
+
+@keyframes sakakerEmojiIn{
+    from{
+        opacity:0;
+        transform:translateY(8px) scale(.96);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
+
+.sakaker-crystal-emoji-item{
+    width:29px;
+    height:29px;
+
+    border:none;
+
+    border-radius:9px;
+
+    background:
+        rgba(255,255,255,.06);
+
+    cursor:pointer;
+
+    font-size:17px;
+
+    transition:.18s;
+}
+
+.sakaker-crystal-emoji-item:hover{
+    background:
+        rgba(255,215,0,.16);
+
+    transform:scale(1.15);
+}
+
+/* مؤشر التحميل */
+#sakakerCrystalChatLoading{
+    display:none;
+
+    text-align:center;
+
+    color:rgba(255,255,255,.55);
+
+    font-size:12px;
+
+    padding:20px;
+}
+
+#sakakerCrystalChatLoading.sakaker-loading-show{
+    display:block;
+}
+
+/* الجوال */
+@media(max-width:600px){
+
+    #sakakerCrystalChatButton{
+        width:58px;
+        height:58px;
+
+        right:14px;
+        bottom:14px;
+
+        font-size:25px;
+    }
+
+    #sakakerCrystalChatWindow{
+        right:8px;
+        bottom:82px;
+
+        width:calc(100vw - 16px);
+
+        height:
+            min(600px, calc(100vh - 100px));
+
+        max-height:
+            calc(100vh - 95px);
+
+        border-radius:24px;
+
+        transform-origin:
+            bottom right;
+    }
+
+    .sakaker-crystal-chat-title{
+        gap:8px;
+    }
+
+    .sakaker-crystal-chat-logo{
+        width:42px;
+        height:42px;
+    }
+
+    .sakaker-crystal-chat-name{
+        font-size:15px;
+    }
+
+    #sakakerCrystalEmojiPanel{
+        width:calc(100% - 20px);
+
+        grid-template-columns:
+            repeat(8,1fr);
+    }
+
+    .sakaker-crystal-emoji-item{
+        width:30px;
+        height:30px;
+    }
+}
+
+/* شاشة صغيرة جدًا */
+@media(max-width:360px){
+
+    #sakakerCrystalChatWindow{
+        right:5px;
+        width:calc(100vw - 10px);
+    }
+
+    #sakakerCrystalChatNameSave{
+        width:65px;
+    }
+}
+</style>
+
+
+<!-- =========================================================
+     HTML
+     ========================================================= -->
+
+<div id="sakakerCrystalChatRoot">
+
+    <!-- زر فتح الدردشة -->
+    <button
+        id="sakakerCrystalChatButton"
+        type="button"
+        aria-label="فتح الدردشة"
+        title="الدردشة العامة">
+
+        💬
+
+        <span id="sakakerCrystalChatOnlineDot"></span>
+    </button>
+
+
+    <!-- نافذة الدردشة -->
+    <div
+        id="sakakerCrystalChatWindow"
+        aria-hidden="true">
+
+        <!-- الرأس -->
+        <div id="sakakerCrystalChatHeader">
+
+            <div class="sakaker-crystal-chat-title">
+
+                <div class="sakaker-crystal-chat-logo">
+                    💎
+                </div>
+
+                <div>
+
+                    <div class="sakaker-crystal-chat-name">
+                        الغرفة العامة
+                    </div>
+
+                    <div class="sakaker-crystal-chat-status">
+
+                        🌐 General Chat
+                        ·
+                        <span
+                            id="sakakerCrystalOnlineCount"
+                            class="sakaker-crystal-online">
+                            0
+                        </span>
+                        متصل
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <button
+                id="sakakerCrystalChatClose"
+                type="button"
+                aria-label="إغلاق">
+                ×
+            </button>
+
+        </div>
+
+
+        <!-- الاسم -->
+        <div id="sakakerCrystalChatNameBox">
+
+            <div id="sakakerCrystalChatNameRow">
+
+                <input
+                    id="sakakerCrystalChatNameInput"
+                    type="text"
+                    maxlength="20"
+                    autocomplete="off"
+                    placeholder="اكتب اسمك هنا">
+
+                <button
+                    id="sakakerCrystalChatNameSave"
+                    type="button">
+                    دخول
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- الرسائل -->
+        <div id="sakakerCrystalChatMessages">
+
+            <div id="sakakerCrystalChatLoading">
+                جاري الاتصال...
+            </div>
+
+            <div id="sakakerCrystalChatEmpty">
+
+                <div id="sakakerCrystalChatEmptyIcon">
+                    💎
+                </div>
+
+                <div id="sakakerCrystalChatEmptyTitle">
+                    مرحبًا بك في الغرفة العامة
+                </div>
+
+                <div id="sakakerCrystalChatEmptyText">
+                    اكتب رسالة وابدأ المحادثة
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- الأسفل -->
+        <div id="sakakerCrystalChatFooter">
+
+            <!-- الإيموجي -->
+            <div id="sakakerCrystalEmojiPanel">
+
+                <button class="sakaker-crystal-emoji-item" type="button">😀</button>
+                <button class="sakaker-crystal-emoji-item" type="button">😂</button>
+                <button class="sakaker-crystal-emoji-item" type="button">🤣</button>
+                <button class="sakaker-crystal-emoji-item" type="button">😊</button>
+                <button class="sakaker-crystal-emoji-item" type="button">😍</button>
+                <button class="sakaker-crystal-emoji-item" type="button">🥰</button>
+                <button class="sakaker-crystal-emoji-item" type="button">😘</button>
+
+                <button class="sakaker-crystal-emoji-item" type="button">😎</button>
+                <button class="sakaker-crystal-emoji-item" type="button">🤩</button>
+                <button class="sakaker-crystal-emoji-item" type="button">😢</button>
+                <button class="sakaker-crystal-emoji-item" type="button">😭</button>
+                <button class="sakaker-crystal-emoji-item" type="button">😡</button>
+                <button class="sakaker-crystal-emoji-item" type="button">🤔</button>
+                <button class="sakaker-crystal-emoji-item" type="button">😴</button>
+
+                <button class="sakaker-crystal-emoji-item" type="button">❤️</button>
+                <button class="sakaker-crystal-emoji-item" type="button">💚</button>
+                <button class="sakaker-crystal-emoji-item" type="button">💙</button>
+                <button class="sakaker-crystal-emoji-item" type="button">💛</button>
+                <button class="sakaker-crystal-emoji-item" type="button">💎</button>
+                <button class="sakaker-crystal-emoji-item" type="button">🔥</button>
+                <button class="sakaker-crystal-emoji-item" type="button">✨</button>
+
+                <button class="sakaker-crystal-emoji-item" type="button">👍</button>
+                <button class="sakaker-crystal-emoji-item" type="button">👏</button>
+                <button class="sakaker-crystal-emoji-item" type="button">🙏</button>
+                <button class="sakaker-crystal-emoji-item" type="button">🎉</button>
+                <button class="sakaker-crystal-emoji-item" type="button">🌹</button>
+                <button class="sakaker-crystal-emoji-item" type="button">⭐</button>
+                <button class="sakaker-crystal-emoji-item" type="button">🌙</button>
+
+            </div>
+
+
+            <!-- الإدخال -->
+            <div id="sakakerCrystalChatInputRow">
+
+                <button
+                    id="sakakerCrystalChatEmoji"
+                    type="button"
+                    aria-label="الإيموجي">
+                    😊
+                </button>
+
+                <input
+                    id="sakakerCrystalChatInput"
+                    type="text"
+                    maxlength="20"
+                    autocomplete="off"
+                    placeholder="اكتب رسالتك...">
+
+                <button
+                    id="sakakerCrystalChatSend"
+                    type="button"
+                    disabled>
+                    ➤
+                </button>
+
+            </div>
+
+
+            <div id="sakakerCrystalChatCounter">
+                0 / 20
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     FIREBASE + CHAT JAVASCRIPT
+     ========================================================= -->
+
+<script type="module">
+
+/* =========================================================
+   Firebase
+   ========================================================= */
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+import {
+    getAuth,
+    signInAnonymously,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+import {
+    getDatabase,
+    ref,
+    push,
+    set,
+    remove,
+    onValue,
+    onDisconnect,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+
+
+/* =========================================================
+   إعدادات Firebase الخاصة بموقعك
+   ========================================================= */
+
+const sakakerCrystalFirebaseConfig = {
+
+    apiKey:
+        "AIzaSyCZw747d_KJa85KTDSOVI8EeX_J9Grpqrk",
+
+    authDomain:
+        "sakaker-9247f.firebaseapp.com",
+
+    databaseURL:
+        "https://sakaker-9247f-default-rtdb.asia-southeast1.firebasedatabase.app",
+
+    projectId:
+        "sakaker-9247f",
+
+    storageBucket:
+        "sakaker-9247f.firebasestorage.app",
+
+    messagingSenderId:
+        "689588937441",
+
+    appId:
+        "1:689588937441:web:4d17a1d02e72189bbfcda0",
+
+    measurementId:
+        "G-RB0V6GTVER"
+};
+
+
+/* =========================================================
+   تشغيل Firebase
+   ========================================================= */
+
+const sakakerCrystalApp =
+    initializeApp(
+        sakakerCrystalFirebaseConfig
+    );
+
+const sakakerCrystalAuth =
+    getAuth(
+        sakakerCrystalApp
+    );
+
+const sakakerCrystalDatabase =
+    getDatabase(
+        sakakerCrystalApp
+    );
+
+
+/* =========================================================
+   عناصر الواجهة
+   ========================================================= */
+
+const sakakerCrystalButton =
+    document.getElementById(
+        "sakakerCrystalChatButton"
+    );
+
+const sakakerCrystalWindow =
+    document.getElementById(
+        "sakakerCrystalChatWindow"
+    );
+
+const sakakerCrystalClose =
+    document.getElementById(
+        "sakakerCrystalChatClose"
+    );
+
+const sakakerCrystalNameInput =
+    document.getElementById(
+        "sakakerCrystalChatNameInput"
+    );
+
+const sakakerCrystalNameSave =
+    document.getElementById(
+        "sakakerCrystalChatNameSave"
+    );
+
+const sakakerCrystalMessages =
+    document.getElementById(
+        "sakakerCrystalChatMessages"
+    );
+
+const sakakerCrystalInput =
+    document.getElementById(
+        "sakakerCrystalChatInput"
+    );
+
+const sakakerCrystalSend =
+    document.getElementById(
+        "sakakerCrystalChatSend"
+    );
+
+const sakakerCrystalEmoji =
+    document.getElementById(
+        "sakakerCrystalChatEmoji"
+    );
+
+const sakakerCrystalEmojiPanel =
+    document.getElementById(
+        "sakakerCrystalEmojiPanel"
+    );
+
+const sakakerCrystalCounter =
+    document.getElementById(
+        "sakakerCrystalChatCounter"
+    );
+
+const sakakerCrystalOnlineCount =
+    document.getElementById(
+        "sakakerCrystalOnlineCount"
+    );
+
+const sakakerCrystalEmpty =
+    document.getElementById(
+        "sakakerCrystalChatEmpty"
+    );
+
+const sakakerCrystalLoading =
+    document.getElementById(
+        "sakakerCrystalChatLoading"
+    );
+
+
+/* =========================================================
+   متغيرات
+   ========================================================= */
+
+let sakakerCrystalUser = null;
+
+let sakakerCrystalUserName =
+    localStorage.getItem(
+        "sakakerCrystalChatName"
+    ) || "";
+
+let sakakerCrystalMessagesCache = {};
+
+const sakakerCrystalMessageLifetime =
+    3 * 60 * 1000;
+
+
+/* =========================================================
+   الاسم المحفوظ
+   ========================================================= */
+
+if(sakakerCrystalUserName){
+
+    sakakerCrystalNameInput.value =
+        sakakerCrystalUserName;
+}
+
+
+/* =========================================================
+   فتح وإغلاق الدردشة
+   ========================================================= */
+
+function sakakerCrystalOpenChat(){
+
+    sakakerCrystalWindow.classList.add(
+        "sakaker-chat-open"
+    );
+
+    sakakerCrystalWindow.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+    setTimeout(() => {
+
+        if(!sakakerCrystalUserName){
+
+            sakakerCrystalNameInput.focus();
+
+        }else{
+
+            sakakerCrystalInput.focus();
+
+        }
+
+    },350);
+}
+
+
+function sakakerCrystalCloseChat(){
+
+    sakakerCrystalWindow.classList.remove(
+        "sakaker-chat-open"
+    );
+
+    sakakerCrystalWindow.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+    sakakerCrystalEmojiPanel.classList.remove(
+        "sakaker-emoji-open"
+    );
+}
+
+
+sakakerCrystalButton.addEventListener(
+    "click",
+    sakakerCrystalOpenChat
+);
+
+sakakerCrystalClose.addEventListener(
+    "click",
+    sakakerCrystalCloseChat
+);
+
+
+/* =========================================================
+   تسجيل الدخول المجهول
+   ========================================================= */
+
+sakakerCrystalLoading.classList.add(
+    "sakaker-loading-show"
+);
+
+signInAnonymously(
+    sakakerCrystalAuth
+).catch(error => {
+
+    console.error(
+        "Firebase Anonymous Auth Error:",
+        error
+    );
+
+    sakakerCrystalLoading.textContent =
+        "تعذر الاتصال بالخدمة";
+});
+
+
+onAuthStateChanged(
+    sakakerCrystalAuth,
+    user => {
+
+        if(!user){
+
+            return;
+        }
+
+        sakakerCrystalUser =
+            user;
+
+        sakakerCrystalLoading.classList.remove(
+            "sakaker-loading-show"
+        );
+
+        sakakerCrystalSetupPresence();
+
+        sakakerCrystalListenMessages();
+
+        sakakerCrystalListenOnlineUsers();
+    }
+);
+
+
+/* =========================================================
+   حفظ الاسم
+   ========================================================= */
+
+function sakakerCrystalSaveName(){
+
+    let name =
+        sakakerCrystalNameInput.value
+            .trim()
+            .substring(0,20);
+
+    if(!name){
+
+        alert("اكتب اسمك أولاً");
+
+        sakakerCrystalNameInput.focus();
+
+        return;
+    }
+
+    sakakerCrystalUserName =
+        name;
+
+    localStorage.setItem(
+        "sakakerCrystalChatName",
+        name
+    );
+
+    sakakerCrystalUpdatePresence();
+
+    sakakerCrystalInput.focus();
+}
+
+
+sakakerCrystalNameSave.addEventListener(
+    "click",
+    sakakerCrystalSaveName
+);
+
+
+sakakerCrystalNameInput.addEventListener(
+    "keydown",
+    event => {
+
+        if(event.key === "Enter"){
+
+            sakakerCrystalSaveName();
+        }
+    }
+);
+
+
+/* =========================================================
+   Presence - المتصلون
+   ========================================================= */
+
+function sakakerCrystalSetupPresence(){
+
+    if(!sakakerCrystalUser){
+
+        return;
+    }
+
+    const userRef =
+        ref(
+            sakakerCrystalDatabase,
+            "onlineUsers/" +
+            sakakerCrystalUser.uid
+        );
+
+    onDisconnect(userRef)
+        .remove()
+        .catch(error => {
+
+            console.error(
+                "Presence disconnect error:",
+                error
+            );
+
+        });
+
+    sakakerCrystalUpdatePresence();
+}
+
+
+function sakakerCrystalUpdatePresence(){
+
+    if(
+        !sakakerCrystalUser ||
+        !sakakerCrystalUserName
+    ){
+
+        return;
+    }
+
+    const userRef =
+        ref(
+            sakakerCrystalDatabase,
+            "onlineUsers/" +
+            sakakerCrystalUser.uid
+        );
+
+    set(
+        userRef,
+        {
+            name:
+                sakakerCrystalUserName
+                    .substring(0,20),
+
+            uid:
+                sakakerCrystalUser.uid,
+
+            timestamp:
+                serverTimestamp()
+        }
+    ).catch(error => {
+
+        console.error(
+            "Presence update error:",
+            error
+        );
+
+    });
+}
+
+
+/* =========================================================
+   الاستماع للمتصلين
+   ========================================================= */
+
+function sakakerCrystalListenOnlineUsers(){
+
+    const onlineRef =
+        ref(
+            sakakerCrystalDatabase,
+            "onlineUsers"
+        );
+
+    onValue(
+        onlineRef,
+        snapshot => {
+
+            let count = 0;
+
+            snapshot.forEach(
+                child => {
+
+                    const data =
+                        child.val();
+
+                    if(data){
+
+                        count++;
+                    }
+
+                }
+            );
+
+            sakakerCrystalOnlineCount.textContent =
+                count;
+        }
+    );
+}
+
+
+/* =========================================================
+   الاستماع للرسائل
+   ========================================================= */
+
+function sakakerCrystalListenMessages(){
+
+    const messagesRef =
+        ref(
+            sakakerCrystalDatabase,
+            "publicChat"
+        );
+
+    onValue(
+        messagesRef,
+        snapshot => {
+
+            sakakerCrystalMessagesCache =
+                snapshot.val() || {};
+
+            sakakerCrystalRenderMessages();
+        }
+    );
+}
+
+
+/* =========================================================
+   عرض الرسائل
+   ========================================================= */
+
+function sakakerCrystalRenderMessages(){
+
+    const now =
+        Date.now();
+
+    const visibleMessages = [];
+
+    Object.entries(
+        sakakerCrystalMessagesCache
+    ).forEach(
+        ([id, message]) => {
+
+            if(!message){
+
+                return;
+            }
+
+            const timestamp =
+                Number(message.timestamp);
+
+            if(
+                !timestamp ||
+                now - timestamp >
+                sakakerCrystalMessageLifetime
+            ){
+
+                return;
+            }
+
+            visibleMessages.push({
+                id,
+                ...message
+            });
+        }
+    );
+
+
+    visibleMessages.sort(
+        (a,b) =>
+            Number(a.timestamp) -
+            Number(b.timestamp)
+    );
+
+
+    /* إزالة العناصر القديمة */
+    const existingMessages =
+        sakakerCrystalMessages.querySelectorAll(
+            ".sakaker-crystal-message"
+        );
+
+    existingMessages.forEach(
+        element =>
+            element.remove()
+    );
+
+
+    if(visibleMessages.length === 0){
+
+        sakakerCrystalEmpty.style.display =
+            "flex";
+
+        return;
+
+    }else{
+
+        sakakerCrystalEmpty.style.display =
+            "none";
+    }
+
+
+    visibleMessages.forEach(
+        message => {
+
+            const wrapper =
+                document.createElement(
+                    "div"
+                );
+
+            wrapper.className =
+                "sakaker-crystal-message " +
+                (
+                    message.uid ===
+                    sakakerCrystalUser?.uid
+                    ? "mine"
+                    : "other"
+                );
+
+
+            const bubble =
+                document.createElement(
+                    "div"
+                );
+
+            bubble.className =
+                "sakaker-crystal-bubble";
+
+
+            const user =
+                document.createElement(
+                    "div"
+                );
+
+            user.className =
+                "sakaker-crystal-message-user";
+
+            user.textContent =
+                message.name ||
+                "زائر";
+
+
+            const text =
+                document.createElement(
+                    "div"
+                );
+
+            text.className =
+                "sakaker-crystal-message-text";
+
+            /*
+             * textContent وليس innerHTML
+             * لمنع إدخال HTML أو JavaScript
+             */
+
+            text.textContent =
+                message.text || "";
+
+
+            const time =
+                document.createElement(
+                    "div"
+                );
+
+            time.className =
+                "sakaker-crystal-message-time";
+
+
+            time.textContent =
+                sakakerCrystalFormatTime(
+                    message.timestamp
+                );
+
+
+            bubble.appendChild(
+                user
+            );
+
+            bubble.appendChild(
+                text
+            );
+
+            bubble.appendChild(
+                time
+            );
+
+            wrapper.appendChild(
+                bubble
+            );
+
+            sakakerCrystalMessages.appendChild(
+                wrapper
+            );
+        }
+    );
+
+
+    /*
+     * الانتقال لآخر رسالة
+     */
+    sakakerCrystalMessages.scrollTop =
+        sakakerCrystalMessages.scrollHeight;
+}
+
+
+/* =========================================================
+   الوقت
+   ========================================================= */
+
+function sakakerCrystalFormatTime(
+    timestamp
+){
+
+    try{
+
+        return new Date(
+            Number(timestamp)
+        ).toLocaleTimeString(
+            "ar-SA",
+            {
+                hour:"2-digit",
+                minute:"2-digit"
+            }
+        );
+
+    }catch(error){
+
+        return "";
+    }
+}
+
+
+/* =========================================================
+   إرسال الرسالة
+   ========================================================= */
+
+async function sakakerCrystalSendMessage(){
+
+    if(!sakakerCrystalUser){
+
+        return;
+    }
+
+
+    if(!sakakerCrystalUserName){
+
+        alert(
+            "اكتب اسمك أولاً"
+        );
+
+        sakakerCrystalNameInput.focus();
+
+        return;
+    }
+
+
+    let text =
+        sakakerCrystalInput.value
+            .trim()
+            .substring(0,20);
+
+
+    if(!text){
+
+        return;
+    }
+
+
+    sakakerCrystalSend.disabled =
+        true;
+
+
+    try{
+
+        const messagesRef =
+            ref(
+                sakakerCrystalDatabase,
+                "publicChat"
+            );
+
+        const newMessage =
+            push(messagesRef);
+
+
+        await set(
+            newMessage,
+            {
+
+                name:
+                    sakakerCrystalUserName
+                        .substring(0,20),
+
+                text:
+                    text,
+
+                uid:
+                    sakakerCrystalUser.uid,
+
+                timestamp:
+                    serverTimestamp()
+
+            }
+        );
+
+
+        sakakerCrystalInput.value =
+            "";
+
+        sakakerCrystalUpdateCounter();
+
+        sakakerCrystalEmojiPanel.classList.remove(
+            "sakaker-emoji-open"
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "Send message error:",
+            error
+        );
+
+        alert(
+            "تعذر إرسال الرسالة، حاول مرة أخرى"
+        );
+
+    }finally{
+
+        sakakerCrystalSend.disabled =
+            false;
+
+        sakakerCrystalInput.focus();
+    }
+}
+
+
+/* =========================================================
+   زر الإرسال
+   ========================================================= */
+
+sakakerCrystalSend.addEventListener(
+    "click",
+    sakakerCrystalSendMessage
+);
+
+
+/* =========================================================
+   Enter للإرسال
+   ========================================================= */
+
+sakakerCrystalInput.addEventListener(
+    "keydown",
+    event => {
+
+        if(
+            event.key === "Enter" &&
+            !event.shiftKey
+        ){
+
+            event.preventDefault();
+
+            sakakerCrystalSendMessage();
+        }
+    }
+);
+
+
+/* =========================================================
+   عداد الأحرف
+   ========================================================= */
+
+function sakakerCrystalUpdateCounter(){
+
+    let value =
+        sakakerCrystalInput.value;
+
+    if(value.length > 20){
+
+        value =
+            value.substring(0,20);
+
+        sakakerCrystalInput.value =
+            value;
+    }
+
+    sakakerCrystalCounter.textContent =
+        value.length +
+        " / 20";
+
+    sakakerCrystalSend.disabled =
+        !value.trim();
+}
+
+
+sakakerCrystalInput.addEventListener(
+    "input",
+    sakakerCrystalUpdateCounter
+);
+
+
+/* =========================================================
+   الإيموجي
+   ========================================================= */
+
+sakakerCrystalEmoji.addEventListener(
+    "click",
+    event => {
+
+        event.stopPropagation();
+
+        sakakerCrystalEmojiPanel.classList.toggle(
+            "sakaker-emoji-open"
+        );
+    }
+);
+
+
+document
+    .querySelectorAll(
+        "#sakakerCrystalEmojiPanel .sakaker-crystal-emoji-item"
+    )
+    .forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    const emoji =
+                        button.textContent;
+
+                    const current =
+                        sakakerCrystalInput.value;
+
+                    if(
+                        current.length +
+                        emoji.length <= 20
+                    ){
+
+                        sakakerCrystalInput.value =
+                            current + emoji;
+
+                    }
+
+                    sakakerCrystalUpdateCounter();
+
+                    sakakerCrystalInput.focus();
+                }
+            );
+        }
+    );
+
+
+/* =========================================================
+   إغلاق لوحة الإيموجي عند الضغط خارجها
+   ========================================================= */
+
+document.addEventListener(
+    "click",
+    event => {
+
+        if(
+            !sakakerCrystalEmojiPanel.contains(
+                event.target
+            ) &&
+            event.target !==
+            sakakerCrystalEmoji
+        ){
+
+            sakakerCrystalEmojiPanel.classList.remove(
+                "sakaker-emoji-open"
+            );
+        }
+    }
+);
+
+
+/* =========================================================
+   تحديث الرسائل كل ثانية
+   حتى تختفي بعد 3 دقائق من الشاشة
+   ========================================================= */
+
+setInterval(
+    () => {
+
+        sakakerCrystalRenderMessages();
+
+    },
+    1000
+);
+
+
+/* =========================================================
+   تحديث Presence كل دقيقة
+   ========================================================= */
+
+setInterval(
+    () => {
+
+        sakakerCrystalUpdatePresence();
+
+    },
+    60000
+);
+
+
+/* =========================================================
+   تنظيف Presence عند إغلاق الصفحة
+   ========================================================= */
+
+window.addEventListener(
+    "beforeunload",
+    () => {
+
+        if(
+            sakakerCrystalUser
+        ){
+
+            const userRef =
+                ref(
+                    sakakerCrystalDatabase,
+                    "onlineUsers/" +
+                    sakakerCrystalUser.uid
+                );
+
+            remove(
+                userRef
+            ).catch(
+                () => {}
+            );
+        }
+    }
+);
+
+
+/* =========================================================
+   منع فتح الدردشة بالزر عند الضغط داخل النافذة
+   ========================================================= */
+
+sakakerCrystalWindow.addEventListener(
+    "click",
+    event => {
+
+        event.stopPropagation();
+    }
+);
+
+
+/* =========================================================
+   أول تحديث للعداد
+   ========================================================= */
+
+sakakerCrystalUpdateCounter();
+
+</script>
 
 <!-- 🔒 منع ظهور محتوى الموقع قبل تسجيل الدخول -->
 <style>
