@@ -10856,6 +10856,64 @@ window.addEventListener(
 );
 
 </script>
+<!-- 🐦 صوت الطيور -->
+<audio id="birdAudio" loop preload="auto">
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_6b0d7b5c5f.mp3" type="audio/mpeg">
+</audio>
+
+<button id="birdBtn" title="صوت الطيور">🐦</button>
+
+<style>
+#birdBtn{
+position:fixed;
+right:410px;
+bottom:600px;
+width:42px;
+height:42px;
+border-radius:50%;
+border:1px solid #FFD700;
+background:linear-gradient(145deg,#064d3b,#087f63);
+color:#FFD700;
+font-size:21px;
+cursor:pointer;
+z-index:999999;
+box-shadow:0 0 12px #00ffcc;
+}
+</style>
+
+<script>
+(function(){
+
+const audio=document.getElementById("birdAudio");
+const btn=document.getElementById("birdBtn");
+
+if(!audio || !btn) return;
+
+audio.volume=0.20;
+
+btn.onclick=function(e){
+
+e.stopPropagation();
+
+if(audio.paused){
+
+audio.play().then(function(){
+btn.innerHTML="🔊";
+}).catch(function(error){
+console.log("Audio error:",error);
+});
+
+}else{
+
+audio.pause();
+btn.innerHTML="🐦";
+
+}
+
+};
+
+})();
+</script>
 <!-- =========================================================
      Emerald Music Overlay END
      ========================================================= -->
