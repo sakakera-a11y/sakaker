@@ -40,7 +40,7 @@ body.locked > *:not(#loginOverlay){
         url("https://github.com/sakakera-a11y/sakaker/blob/main/file_00000000a34081f4908563062166807a.png?raw=true");
 
     background-size:cover;
-    background-position:center center;
+    background-position:center
     background-repeat:no-repeat;
 
     backdrop-filter:blur(2px);
@@ -2893,6 +2893,3135 @@ setInterval(updateClock, 1000);
 /* تحديث الطقس كل 30 دقيقة */
 setInterval(loadWeather, 1800000);
 </script>
+
+<!-- =========================================================
+     SAKAKER • CHAT + VIDEO CALL
+     نظام دردشة + حجز مكالمات فيديو
+     ========================================================= -->
+
+<style>
+/* =========================================================
+   SAKAKER CHAT - ISOLATED STYLE
+   ========================================================= */
+
+#sakakerChatApp,
+#sakakerChatApp *{
+  box-sizing:border-box;
+  font-family:Arial,Tahoma,sans-serif;
+}
+
+#sakakerChatApp{
+  direction:rtl;
+  position:relative;
+  z-index:2147483000;
+}
+
+/* زر الدردشة */
+#sakakerChatOpen{
+  position:fixed;
+  right:18px;
+  bottom:118px;
+  width:62px;
+  height:62px;
+  border-radius:50%;
+  border:2px solid rgba(255,215,0,.8);
+  background:
+    radial-gradient(circle at 30% 25%,#fff8b0 0%,#ffd700 12%,#159b79 45%,#063d36 100%);
+  color:#fff;
+  font-size:28px;
+  cursor:pointer;
+  box-shadow:
+    0 0 10px #ffd700,
+    0 0 25px rgba(0,255,200,.55),
+    inset 0 0 15px rgba(255,255,255,.35);
+  transition:.3s;
+  animation:sakakerChatGlow 2s infinite;
+}
+
+#sakakerChatOpen:hover{
+  transform:scale(1.1);
+}
+
+@keyframes sakakerChatGlow{
+  0%,100%{
+    box-shadow:
+      0 0 8px #ffd700,
+      0 0 18px rgba(0,255,200,.4);
+  }
+  50%{
+    box-shadow:
+      0 0 18px #ffd700,
+      0 0 40px rgba(0,255,200,.85);
+  }
+}
+
+/* نافذة الدردشة */
+#sakakerChatWindow{
+  display:none;
+  position:fixed;
+  right:18px;
+  bottom:90px;
+  width:390px;
+  max-width:calc(100vw - 25px);
+  height:610px;
+  max-height:calc(100vh - 110px);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(5,30,28,.98),
+      rgba(8,18,25,.98)
+    );
+  border:1px solid rgba(255,215,0,.55);
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:
+    0 0 20px rgba(255,215,0,.25),
+    0 0 55px rgba(0,255,200,.18);
+  backdrop-filter:blur(15px);
+}
+
+/* رأس الدردشة */
+#sakakerChatHeader{
+  height:15px;
+  padding:8px 12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0,128,96,.85),
+      rgba(20,20,25,.95),
+      rgba(0,128,96,.85)
+    );
+  border-bottom:1px solid rgba(255,215,0,.35);
+}
+
+#sakakerChatTitle{
+  color:#ffd700;
+  font-size:18px;
+  font-weight:bold;
+}
+
+#sakakerChatSubtitle{
+  color:#b8fff0;
+  font-size:11px;
+  margin-top:3px;
+}
+
+.sakakerHeaderButtons{
+  display:flex;
+  gap:5px;
+}
+
+.sakakerHeaderButtons button{
+  width:35px;
+  height:35px;
+  border:none;
+  border-radius:50%;
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  cursor:pointer;
+  font-size:17px;
+}
+
+.sakakerHeaderButtons button:hover{
+  background:rgba(255,215,0,.2);
+}
+
+/* تسجيل الاسم */
+#sakakerChatLogin{
+  padding:18px;
+}
+
+#sakakerChatLogin h3{
+  color:#ffd700;
+  text-align:center;
+  margin:5px 0 20px;
+}
+
+#sakakerChatLogin input{
+  width:100%;
+  padding:13px;
+  border-radius:12px;
+  border:1px solid rgba(255,215,0,.35);
+  outline:none;
+  background:rgba(255,255,255,.06);
+  color:#fff;
+  text-align:center;
+  margin-bottom:10px;
+}
+
+#sakakerChatLogin button{
+  width:100%;
+  padding:13px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(135deg,#ffd700,#b8860b);
+  color:#111;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* المحتوى الرئيسي */
+#sakakerChatMain{
+  display:none;
+  height:calc(100% - 65px);
+  flex-direction:column;
+}
+
+/* المستخدم */
+#sakakerUserBar{
+  padding:8px 10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  background:rgba(0,0,0,.15);
+}
+
+#sakakerCurrentUser{
+  color:#fff;
+  font-size:13px;
+}
+
+#sakakerOnlineCount{
+  color:#72ffd8;
+  font-size:11px;
+}
+
+/* الغرف */
+#sakakerRooms{
+  display:flex;
+  gap:5px;
+  padding:7px;
+  overflow-x:auto;
+}
+
+.sakakerRoomBtn{
+  flex:1;
+  min-width:75px;
+  border:1px solid rgba(255,215,0,.25);
+  background:rgba(255,255,255,.04);
+  color:#ddd;
+  border-radius:10px;
+  padding:8px 5px;
+  cursor:pointer;
+  font-size:11px;
+}
+
+.sakakerRoomBtn.active{
+  background:rgba(255,215,0,.16);
+  border-color:#ffd700;
+  color:#ffd700;
+}
+
+/* منطقة الرسائل */
+#sakakerMessages{
+  flex:1;
+  overflow-y:auto;
+  padding:10px;
+}
+
+.sakakerMessage{
+  margin-bottom:9px;
+  padding:9px 11px;
+  border-radius:14px;
+  background:rgba(255,255,255,.055);
+  border-right:3px solid #0fc9a0;
+}
+
+.sakakerMessage.mine{
+  border-right-color:#ffd700;
+  background:rgba(255,215,0,.07);
+}
+
+.sakakerMessageName{
+  color:#ffd700;
+  font-size:11px;
+  font-weight:bold;
+  margin-bottom:4px;
+}
+
+.sakakerMessageText{
+  color:#fff;
+  font-size:13px;
+  line-height:1.5;
+  word-break:break-word;
+}
+
+.sakakerMessageTime{
+  color:#777;
+  font-size:9px;
+  margin-top:4px;
+}
+
+/* المستخدمون */
+#sakakerOnlineUsers{
+  max-height:90px;
+  overflow-y:auto;
+  padding:5px 9px;
+  border-top:1px solid rgba(255,255,255,.06);
+}
+
+.sakakerOnlineUser{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  margin:2px;
+  padding:4px 7px;
+  border-radius:10px;
+  background:rgba(0,255,180,.06);
+  color:#baffef;
+  font-size:10px;
+}
+
+.sakakerOnlineDot{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#00ff9d;
+  box-shadow:0 0 7px #00ff9d;
+}
+
+/* إدخال الرسائل */
+#sakakerMessageForm{
+  display:flex;
+  gap:6px;
+  padding:8px;
+  border-top:1px solid rgba(255,255,255,.1);
+}
+
+#sakakerMessageInput{
+  flex:1;
+  min-width:0;
+  border:1px solid rgba(255,215,0,.25);
+  border-radius:12px;
+  padding:11px;
+  background:rgba(255,255,255,.06);
+  color:#fff;
+  outline:none;
+}
+
+#sakakerMessageSend{
+  width:48px;
+  border:none;
+  border-radius:12px;
+  background:#ffd700;
+  color:#111;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* =========================================================
+   VIDEO BOOKING
+   ========================================================= */
+
+#sakakerVideoPanel{
+  display:none;
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(4,25,24,.99),
+      rgba(4,12,18,.99)
+    );
+  z-index:50;
+  padding:15px;
+  overflow-y:auto;
+}
+
+#sakakerVideoPanel h3{
+  color:#ffd700;
+  text-align:center;
+  margin:5px 0 15px;
+}
+
+.sakakerVideoSection{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,215,0,.15);
+  border-radius:14px;
+  padding:10px;
+  margin-bottom:10px;
+}
+
+.sakakerVideoSectionTitle{
+  color:#72ffd8;
+  font-size:12px;
+  margin-bottom:8px;
+}
+
+#sakakerTargetUsers{
+  max-height:150px;
+  overflow-y:auto;
+}
+
+.sakakerTargetUser{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:9px;
+  margin-bottom:5px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;
+  background:rgba(255,255,255,.04);
+  color:#fff;
+  cursor:pointer;
+}
+
+.sakakerTargetUser.selected{
+  border-color:#ffd700;
+  background:rgba(255,215,0,.1);
+}
+
+.sakakerVideoPanel input,
+.sakakerVideoPanel select{
+  width:100%;
+  padding:10px;
+  border-radius:10px;
+  border:1px solid rgba(255,215,0,.25);
+  background:#10221f;
+  color:#fff;
+  outline:none;
+  margin-bottom:7px;
+}
+
+.sakakerVideoAction{
+  width:100%;
+  padding:11px;
+  border:none;
+  border-radius:11px;
+  background:linear-gradient(135deg,#ffd700,#b8860b);
+  color:#111;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:5px;
+}
+
+.sakakerClosePanel{
+  width:100%;
+  padding:9px;
+  border:none;
+  border-radius:10px;
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  cursor:pointer;
+  margin-top:8px;
+}
+
+/* الحجوزات */
+#sakakerBookingsList{
+  max-height:180px;
+  overflow-y:auto;
+}
+
+.sakakerBooking{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;
+  padding:9px;
+  margin-bottom:7px;
+  color:#fff;
+  font-size:11px;
+}
+
+.sakakerBooking strong{
+  color:#ffd700;
+}
+
+.sakakerBookingButtons{
+  display:flex;
+  gap:5px;
+  margin-top:7px;
+}
+
+.sakakerBookingButtons button{
+  flex:1;
+  border:none;
+  border-radius:8px;
+  padding:7px;
+  cursor:pointer;
+  font-size:11px;
+}
+
+.sakakerAccept{
+  background:#00b894;
+  color:#fff;
+}
+
+.sakakerReject{
+  background:#8b2635;
+  color:#fff;
+}
+
+/* =========================================================
+   VIDEO CALL WINDOW
+   ========================================================= */
+
+#sakakerVideoCall{
+  display:none;
+  position:absolute;
+  inset:0;
+  z-index:100;
+  background:#020708;
+}
+
+#sakakerRemoteVideo{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  background:#000;
+}
+
+#sakakerLocalVideo{
+  position:absolute;
+  top:12px;
+  right:12px;
+  width:105px;
+  height:145px;
+  object-fit:cover;
+  background:#111;
+  border:2px solid #ffd700;
+  border-radius:13px;
+  z-index:5;
+  transform:scaleX(-1);
+}
+
+#sakakerCallTimer{
+  position:absolute;
+  top:12px;
+  left:12px;
+  z-index:6;
+  padding:7px 10px;
+  border-radius:10px;
+  background:rgba(0,0,0,.65);
+  color:#ffd700;
+  font-weight:bold;
+  font-size:13px;
+}
+
+#sakakerCallStatus{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  color:#fff;
+  background:rgba(0,0,0,.55);
+  padding:10px 15px;
+  border-radius:12px;
+  z-index:4;
+  text-align:center;
+}
+
+#sakakerCallControls{
+  position:absolute;
+  bottom:15px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:9px;
+  z-index:10;
+}
+
+.sakakerCallBtn{
+  width:48px;
+  height:48px;
+  border:none;
+  border-radius:50%;
+  background:rgba(255,255,255,.12);
+  color:#fff;
+  cursor:pointer;
+  font-size:18px;
+}
+
+.sakakerCallBtn:hover{
+  background:rgba(255,255,255,.25);
+}
+
+#sakakerEndCall{
+  background:#b32635;
+}
+
+/* إشعار الحجز */
+#sakakerBookingNotice{
+  display:none;
+  position:fixed;
+  right:20px;
+  top:20px;
+  width:330px;
+  max-width:calc(100vw - 30px);
+  background:
+    linear-gradient(145deg,#102e29,#101820);
+  border:1px solid #ffd700;
+  border-radius:17px;
+  padding:14px;
+  color:#fff;
+  z-index:2147483640;
+  box-shadow:0 0 30px rgba(255,215,0,.3);
+}
+
+#sakakerBookingNoticeTitle{
+  color:#ffd700;
+  font-weight:bold;
+  margin-bottom:7px;
+}
+
+#sakakerBookingNoticeText{
+  font-size:12px;
+  line-height:1.6;
+}
+
+#sakakerBookingNoticeButtons{
+  display:flex;
+  gap:7px;
+  margin-top:10px;
+}
+
+#sakakerBookingNoticeButtons button{
+  flex:1;
+  padding:9px;
+  border:none;
+  border-radius:9px;
+  cursor:pointer;
+}
+
+#sakakerNoticeAccept{
+  background:#00b894;
+  color:#fff;
+}
+
+#sakakerNoticeReject{
+  background:#8b2635;
+  color:#fff;
+}
+
+/* متجاوب للجوال */
+@media(max-width:600px){
+
+  #sakakerChatOpen{
+    width:55px;
+    height:55px;
+    right:12px;
+    bottom:12px;
+  }
+
+  #sakakerChatWindow{
+    right:7px;
+    bottom:75px;
+    width:calc(100vw - 14px);
+    height:calc(100vh - 90px);
+    max-height:none;
+    border-radius:19px;
+  }
+
+  #sakakerLocalVideo{
+    width:82px;
+    height:115px;
+  }
+
+  #sakakerBookingNotice{
+    top:10px;
+    right:10px;
+    width:calc(100vw - 20px);
+  }
+}
+</style>
+
+
+<!-- =========================================================
+     HTML
+     ========================================================= -->
+
+<div id="sakakerChatApp">
+
+  <!-- زر فتح الدردشة -->
+  <button id="sakakerChatOpen" aria-label="Chat">
+    💬
+  </button>
+
+  <!-- نافذة الدردشة -->
+  <div id="sakakerChatWindow">
+
+    <!-- الرأس -->
+    <div id="sakakerChatHeader">
+
+      <div>
+        <div id="sakakerChatTitle">
+          💬 دردشة سكاكر
+        </div>
+
+        <div id="sakakerChatSubtitle">
+          Sakaker Live Chat
+        </div>
+      </div>
+
+      <div class="sakakerHeaderButtons">
+
+        <button id="sakakerLanguageBtn">
+          EN
+        </button>
+
+        <button id="sakakerVideoOpenBtn">
+          📹
+        </button>
+
+        <button id="sakakerChatClose">
+          ×
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- تسجيل الاسم -->
+    <div id="sakakerChatLogin">
+
+      <h3 id="sakakerLoginTitle">
+        ✨ مرحبًا بك في دردشة سكاكر
+      </h3>
+
+      <input
+        id="sakakerNameInput"
+        maxlength="20"
+        placeholder="اكتب اسمك"
+      >
+
+      <button id="sakakerLoginBtn">
+        دخول الدردشة
+      </button>
+
+    </div>
+
+
+    <!-- المحتوى -->
+    <div id="sakakerChatMain">
+
+      <div id="sakakerUserBar">
+
+        <span id="sakakerCurrentUser">
+          👤
+        </span>
+
+        <span id="sakakerOnlineCount">
+          🟢 0
+        </span>
+
+      </div>
+
+
+      <!-- الغرف -->
+      <div id="sakakerRooms">
+
+        <button class="sakakerRoomBtn active"
+                data-room="general">
+          💬 عام
+        </button>
+
+        <button class="sakakerRoomBtn"
+                data-room="games">
+          🎮 ألعاب
+        </button>
+
+        <button class="sakakerRoomBtn"
+                data-room="music">
+          🎵 موسيقى
+        </button>
+
+      </div>
+
+
+      <!-- الرسائل -->
+      <div id="sakakerMessages"></div>
+
+
+      <!-- المستخدمون -->
+      <div id="sakakerOnlineUsers"></div>
+
+
+      <!-- إرسال -->
+      <form id="sakakerMessageForm">
+
+        <input
+          id="sakakerMessageInput"
+          maxlength="200"
+          autocomplete="off"
+          placeholder="اكتب رسالتك..."
+        >
+
+        <button id="sakakerMessageSend"
+                type="submit">
+          ➤
+        </button>
+
+      </form>
+
+    </div>
+
+
+    <!-- =====================================================
+         لوحة الفيديو والحجوزات
+         ===================================================== -->
+
+    <div id="sakakerVideoPanel">
+
+      <h3>
+        📹 مكالمات الفيديو
+      </h3>
+
+
+      <div class="sakakerVideoSection">
+
+        <div class="sakakerVideoSectionTitle">
+          👥 اختر الشخص الذي تريد الاتصال به
+        </div>
+
+        <div id="sakakerTargetUsers">
+          لا يوجد مستخدمون متاحون حاليًا
+        </div>
+
+      </div>
+
+
+      <div class="sakakerVideoSection">
+
+        <div class="sakakerVideoSectionTitle">
+          📅 حجز مكالمة
+        </div>
+
+        <input
+          type="datetime-local"
+          id="sakakerBookingTime"
+        >
+
+        <button
+          class="sakakerVideoAction"
+          id="sakakerCreateBooking">
+          📅 إرسال طلب الحجز
+        </button>
+
+      </div>
+
+
+      <div class="sakakerVideoSection">
+
+        <div class="sakakerVideoSectionTitle">
+          📋 الحجوزات
+        </div>
+
+        <div id="sakakerBookingsList">
+          لا توجد حجوزات
+        </div>
+
+      </div>
+
+
+      <button
+        class="sakakerClosePanel"
+        id="sakakerVideoPanelClose">
+        ← العودة للدردشة
+      </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         نافذة الاتصال
+         ===================================================== -->
+
+    <div id="sakakerVideoCall">
+
+      <video
+        id="sakakerRemoteVideo"
+        autoplay
+        playsinline>
+      </video>
+
+      <video
+        id="sakakerLocalVideo"
+        autoplay
+        muted
+        playsinline>
+      </video>
+
+      <div id="sakakerCallTimer">
+        05:00
+      </div>
+
+      <div id="sakakerCallStatus">
+        جاري الاتصال...
+      </div>
+
+      <div id="sakakerCallControls">
+
+        <button
+          class="sakakerCallBtn"
+          id="sakakerMuteBtn">
+          🎙️
+        </button>
+
+        <button
+          class="sakakerCallBtn"
+          id="sakakerCameraBtn">
+          📷
+        </button>
+
+        <button
+          class="sakakerCallBtn"
+          id="sakakerEndCall">
+          📞
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     إشعار الحجز
+     ========================================================= -->
+
+<div id="sakakerBookingNotice">
+
+  <div id="sakakerBookingNoticeTitle">
+    📹 طلب مكالمة فيديو
+  </div>
+
+  <div id="sakakerBookingNoticeText"></div>
+
+  <div id="sakakerBookingNoticeButtons">
+
+    <button id="sakakerNoticeAccept">
+      قبول
+    </button>
+
+    <button id="sakakerNoticeReject">
+      رفض
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     FIREBASE
+     ========================================================= -->
+
+<script type="module">
+
+/* =========================================================
+   FIREBASE IMPORTS
+   ========================================================= */
+
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+
+import {
+  getAuth,
+  signInAnonymously,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+
+import {
+  getDatabase,
+  ref,
+  push,
+  set,
+  update,
+  remove,
+  onValue,
+  onDisconnect,
+  query,
+  orderByChild,
+  limitToLast
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
+
+
+/* =========================================================
+   FIREBASE CONFIG
+   ========================================================= */
+
+const firebaseConfig = {
+
+  apiKey:
+    "AIzaSyCZw747d_KJa85KTDSOVI8EeX_J9Grpqrk",
+
+  authDomain:
+    "sakaker-9247f.firebaseapp.com",
+
+  databaseURL:
+    "https://sakaker-9247f-default-rtdb.asia-southeast1.firebasedatabase.app",
+
+  projectId:
+    "sakaker-9247f",
+
+  storageBucket:
+    "sakaker-9247f.firebasestorage.app",
+
+  messagingSenderId:
+    "689588937441",
+
+  appId:
+    "1:689588937441:web:4d17a1d02e72189bbfcda0",
+
+  measurementId:
+    "G-RB0V6GTVER"
+};
+
+
+/* =========================================================
+   FIREBASE START
+   ========================================================= */
+
+const sakakerApp =
+  initializeApp(firebaseConfig);
+
+const sakakerAuth =
+  getAuth(sakakerApp);
+
+const sakakerDB =
+  getDatabase(sakakerApp);
+
+
+/* =========================================================
+   ELEMENTS
+   ========================================================= */
+
+const chatOpen =
+  document.getElementById("sakakerChatOpen");
+
+const chatWindow =
+  document.getElementById("sakakerChatWindow");
+
+const chatClose =
+  document.getElementById("sakakerChatClose");
+
+const loginBox =
+  document.getElementById("sakakerChatLogin");
+
+const chatMain =
+  document.getElementById("sakakerChatMain");
+
+const nameInput =
+  document.getElementById("sakakerNameInput");
+
+const loginBtn =
+  document.getElementById("sakakerLoginBtn");
+
+const currentUser =
+  document.getElementById("sakakerCurrentUser");
+
+const onlineCount =
+  document.getElementById("sakakerOnlineCount");
+
+const messagesBox =
+  document.getElementById("sakakerMessages");
+
+const messageInput =
+  document.getElementById("sakakerMessageInput");
+
+const messageForm =
+  document.getElementById("sakakerMessageForm");
+
+const onlineUsersBox =
+  document.getElementById("sakakerOnlineUsers");
+
+const videoOpenBtn =
+  document.getElementById("sakakerVideoOpenBtn");
+
+const videoPanel =
+  document.getElementById("sakakerVideoPanel");
+
+const videoPanelClose =
+  document.getElementById("sakakerVideoPanelClose");
+
+const targetUsersBox =
+  document.getElementById("sakakerTargetUsers");
+
+const bookingTime =
+  document.getElementById("sakakerBookingTime");
+
+const createBooking =
+  document.getElementById("sakakerCreateBooking");
+
+const bookingsList =
+  document.getElementById("sakakerBookingsList");
+
+const bookingNotice =
+  document.getElementById("sakakerBookingNotice");
+
+const bookingNoticeText =
+  document.getElementById("sakakerBookingNoticeText");
+
+const noticeAccept =
+  document.getElementById("sakakerNoticeAccept");
+
+const noticeReject =
+  document.getElementById("sakakerNoticeReject");
+
+const videoCall =
+  document.getElementById("sakakerVideoCall");
+
+const remoteVideo =
+  document.getElementById("sakakerRemoteVideo");
+
+const localVideo =
+  document.getElementById("sakakerLocalVideo");
+
+const callTimer =
+  document.getElementById("sakakerCallTimer");
+
+const callStatus =
+  document.getElementById("sakakerCallStatus");
+
+const muteBtn =
+  document.getElementById("sakakerMuteBtn");
+
+const cameraBtn =
+  document.getElementById("sakakerCameraBtn");
+
+const endCallBtn =
+  document.getElementById("sakakerEndCall");
+
+const languageBtn =
+  document.getElementById("sakakerLanguageBtn");
+
+
+/* =========================================================
+   STATE
+   ========================================================= */
+
+let sakakerUser = null;
+
+let sakakerName = "";
+
+let currentRoom = "general";
+
+let selectedTargetUid = null;
+
+let selectedTargetName = null;
+
+let currentBookings = {};
+
+let currentCallId = null;
+
+let currentBookingId = null;
+
+let peerConnection = null;
+
+let localStream = null;
+
+let callTimerInterval = null;
+
+let isMuted = false;
+
+let isCameraOff = false;
+
+let language = "ar";
+
+
+/* =========================================================
+   LANGUAGE
+   ========================================================= */
+
+const translations = {
+
+  ar:{
+    title:"💬 دردشة سكاكر",
+    subtitle:"Sakaker Live Chat",
+    login:"✨ مرحبًا بك في دردشة سكاكر",
+    name:"اكتب اسمك",
+    loginBtn:"دخول الدردشة",
+    general:"💬 عام",
+    games:"🎮 ألعاب",
+    music:"🎵 موسيقى",
+    placeholder:"اكتب رسالتك...",
+    video:"📹",
+    videoTitle:"📹 مكالمات الفيديو",
+    choose:"👥 اختر الشخص الذي تريد الاتصال به",
+    booking:"📅 حجز مكالمة",
+    sendBooking:"📅 إرسال طلب الحجز",
+    bookings:"📋 الحجوزات",
+    back:"← العودة للدردشة",
+    noUsers:"لا يوجد مستخدمون متاحون حاليًا",
+    noBookings:"لا توجد حجوزات",
+    accepted:"تم قبول الحجز",
+    rejected:"تم رفض الحجز",
+    request:"طلب مكالمة فيديو",
+    incoming:"طلب مكالمة فيديو من"
+  },
+
+  en:{
+    title:"💬 Sakaker Chat",
+    subtitle:"Sakaker Live Chat",
+    login:"✨ Welcome to Sakaker Chat",
+    name:"Enter your name",
+    loginBtn:"Enter Chat",
+    general:"💬 General",
+    games:"🎮 Games",
+    music:"🎵 Music",
+    video:"📹",
+    videoTitle:"📹 Video Calls",
+    choose:"👥 Choose a person",
+    booking:"📅 Book a Call",
+    sendBooking:"📅 Send Booking Request",
+    bookings:"📋 Bookings",
+    back:"← Back to Chat",
+    noUsers:"No users available",
+    noBookings:"No bookings",
+    accepted:"Booking accepted",
+    rejected:"Booking rejected",
+    request:"Video Call Request",
+    incoming:"Video call request from"
+  }
+
+};
+
+
+function updateLanguage(){
+
+  const t =
+    translations[language];
+
+  document.documentElement.lang =
+    language;
+
+  document.getElementById(
+    "sakakerChatTitle"
+  ).textContent = t.title;
+
+  document.getElementById(
+    "sakakerChatSubtitle"
+  ).textContent = t.subtitle;
+
+  document.getElementById(
+    "sakakerLoginTitle"
+  ).textContent = t.login;
+
+  nameInput.placeholder =
+    t.name;
+
+  loginBtn.textContent =
+    t.loginBtn;
+
+  document.querySelector(
+    '[data-room="general"]'
+  ).textContent = t.general;
+
+  document.querySelector(
+    '[data-room="games"]'
+  ).textContent = t.games;
+
+  document.querySelector(
+    '[data-room="music"]'
+  ).textContent = t.music;
+
+  messageInput.placeholder =
+    t.placeholder;
+
+  videoOpenBtn.textContent =
+    t.video;
+
+  document.querySelector(
+    "#sakakerVideoPanel h3"
+  ).textContent =
+    t.videoTitle;
+
+  document.querySelector(
+    ".sakakerClosePanel"
+  ).textContent =
+    t.back;
+
+  languageBtn.textContent =
+    language === "ar" ? "EN" : "AR";
+
+  if(language === "ar"){
+
+    document.getElementById(
+      "sakakerChatApp"
+    ).style.direction = "rtl";
+
+  }else{
+
+    document.getElementById(
+      "sakakerChatApp"
+    ).style.direction = "ltr";
+
+  }
+}
+
+
+/* =========================================================
+   OPEN / CLOSE
+   ========================================================= */
+
+chatOpen.onclick = () => {
+
+  chatWindow.style.display = "block";
+
+};
+
+chatClose.onclick = () => {
+
+  chatWindow.style.display = "none";
+
+};
+
+videoOpenBtn.onclick = () => {
+
+  videoPanel.style.display = "block";
+
+  loadTargetUsers();
+
+};
+
+videoPanelClose.onclick = () => {
+
+  videoPanel.style.display = "none";
+
+};
+
+languageBtn.onclick = () => {
+
+  language =
+    language === "ar"
+      ? "en"
+      : "ar";
+
+  updateLanguage();
+
+};
+
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+loginBtn.onclick = async () => {
+
+  const enteredName =
+    nameInput.value.trim();
+
+  if(!enteredName){
+
+    alert(
+      language === "ar"
+        ? "اكتب اسمك أولاً"
+        : "Enter your name first"
+    );
+
+    return;
+  }
+
+  if(enteredName.length > 20){
+
+    alert(
+      language === "ar"
+        ? "الاسم يجب ألا يتجاوز 20 حرفًا"
+        : "Name must be 20 characters or less"
+    );
+
+    return;
+  }
+
+  try{
+
+    if(!sakakerAuth.currentUser){
+
+      await signInAnonymously(
+        sakakerAuth
+      );
+
+    }
+
+    sakakerName =
+      enteredName;
+
+    localStorage.setItem(
+      "sakaker_chat_name",
+      sakakerName
+    );
+
+    startUser();
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "Firebase Login Error: " +
+      error.message
+    );
+
+  }
+
+};
+
+
+/* =========================================================
+   AUTH
+   ========================================================= */
+
+onAuthStateChanged(
+  sakakerAuth,
+  user => {
+
+    if(user){
+
+      sakakerUser =
+        user;
+
+      const savedName =
+        localStorage.getItem(
+          "sakaker_chat_name"
+        );
+
+      if(savedName){
+
+        sakakerName =
+          savedName;
+
+        startUser();
+
+      }
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   START USER
+   ========================================================= */
+
+async function startUser(){
+
+  if(!sakakerUser || !sakakerName)
+    return;
+
+  loginBox.style.display =
+    "none";
+
+  chatMain.style.display =
+    "flex";
+
+  currentUser.textContent =
+    "👤 " + sakakerName;
+
+  const userRef =
+    ref(
+      sakakerDB,
+      "onlineUsers/" +
+      sakakerUser.uid
+    );
+
+  await set(
+    userRef,
+    {
+      uid:
+        sakakerUser.uid,
+
+      name:
+        sakakerName,
+
+      timestamp:
+        Date.now()
+    }
+  );
+
+  onDisconnect(
+    userRef
+  ).remove();
+
+  loadMessages();
+
+  loadOnlineUsers();
+
+  loadBookings();
+
+}
+
+
+/* =========================================================
+   ROOM
+   ========================================================= */
+
+document.querySelectorAll(
+  ".sakakerRoomBtn"
+).forEach(btn => {
+
+  btn.onclick = () => {
+
+    document.querySelectorAll(
+      ".sakakerRoomBtn"
+    ).forEach(b =>
+      b.classList.remove("active")
+    );
+
+    btn.classList.add("active");
+
+    currentRoom =
+      btn.dataset.room;
+
+    loadMessages();
+
+  };
+
+});
+
+
+/* =========================================================
+   LOAD MESSAGES
+   ========================================================= */
+
+function loadMessages(){
+
+  if(!sakakerUser)
+    return;
+
+  const messagesRef =
+    query(
+      ref(
+        sakakerDB,
+        "publicChat/" +
+        currentRoom
+      ),
+      orderByChild("timestamp"),
+      limitToLast(100)
+    );
+
+  onValue(
+    messagesRef,
+    snapshot => {
+
+      messagesBox.innerHTML = "";
+
+      const data =
+        snapshot.val();
+
+      if(!data)
+        return;
+
+      Object.values(data)
+        .forEach(message => {
+
+          renderMessage(
+            message
+          );
+
+        });
+
+      messagesBox.scrollTop =
+        messagesBox.scrollHeight;
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   RENDER MESSAGE
+   ========================================================= */
+
+function renderMessage(message){
+
+  const div =
+    document.createElement("div");
+
+  div.className =
+    "sakakerMessage";
+
+  if(
+    sakakerUser &&
+    message.uid === sakakerUser.uid
+  ){
+
+    div.classList.add("mine");
+
+  }
+
+  const name =
+    document.createElement("div");
+
+  name.className =
+    "sakakerMessageName";
+
+  name.textContent =
+    message.name;
+
+  const text =
+    document.createElement("div");
+
+  text.className =
+    "sakakerMessageText";
+
+  text.textContent =
+    message.text;
+
+  const time =
+    document.createElement("div");
+
+  time.className =
+    "sakakerMessageTime";
+
+  time.textContent =
+    new Date(
+      message.timestamp
+    ).toLocaleTimeString(
+      language === "ar"
+        ? "ar-SA"
+        : "en-US",
+      {
+        hour:"2-digit",
+        minute:"2-digit"
+      }
+    );
+
+  div.appendChild(name);
+
+  div.appendChild(text);
+
+  div.appendChild(time);
+
+  messagesBox.appendChild(div);
+
+}
+
+
+/* =========================================================
+   SEND MESSAGE
+   ========================================================= */
+
+messageForm.onsubmit =
+async event => {
+
+  event.preventDefault();
+
+  const text =
+    messageInput.value.trim();
+
+  if(!text || !sakakerUser)
+    return;
+
+  if(text.length > 200)
+    return;
+
+  const messageRef =
+    push(
+      ref(
+        sakakerDB,
+        "publicChat/" +
+        currentRoom
+      )
+    );
+
+  try{
+
+    await set(
+      messageRef,
+      {
+        name:
+          sakakerName,
+
+        text:
+          text,
+
+        uid:
+          sakakerUser.uid,
+
+        timestamp:
+          Date.now()
+      }
+    );
+
+    messageInput.value = "";
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      language === "ar"
+        ? "تعذر إرسال الرسالة"
+        : "Message could not be sent"
+    );
+
+  }
+
+};
+
+
+/* =========================================================
+   ONLINE USERS
+   ========================================================= */
+
+function loadOnlineUsers(){
+
+  const usersRef =
+    ref(
+      sakakerDB,
+      "onlineUsers"
+    );
+
+  onValue(
+    usersRef,
+    snapshot => {
+
+      onlineUsersBox.innerHTML = "";
+
+      const users =
+        snapshot.val() || {};
+
+      const list =
+        Object.values(users);
+
+      onlineCount.textContent =
+        "🟢 " + list.length;
+
+      list.forEach(user => {
+
+        if(
+          !sakakerUser ||
+          user.uid === sakakerUser.uid
+        )
+          return;
+
+        const div =
+          document.createElement("div");
+
+        div.className =
+          "sakakerOnlineUser";
+
+        div.dataset.uid =
+          user.uid;
+
+        div.dataset.name =
+          user.name;
+
+        div.innerHTML =
+          `<span class="sakakerOnlineDot"></span>`;
+
+        const name =
+          document.createElement("span");
+
+        name.textContent =
+          user.name;
+
+        div.appendChild(name);
+
+        onlineUsersBox.appendChild(div);
+
+      });
+
+      loadTargetUsers();
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   VIDEO TARGET USERS
+   ========================================================= */
+
+function loadTargetUsers(){
+
+  if(!sakakerUser)
+    return;
+
+  const usersRef =
+    ref(
+      sakakerDB,
+      "onlineUsers"
+    );
+
+  onValue(
+    usersRef,
+    snapshot => {
+
+      targetUsersBox.innerHTML = "";
+
+      const users =
+        snapshot.val() || {};
+
+      const list =
+        Object.values(users);
+
+      const others =
+        list.filter(
+          user =>
+            user.uid !==
+            sakakerUser.uid
+        );
+
+      if(!others.length){
+
+        targetUsersBox.textContent =
+          translations[language].noUsers;
+
+        return;
+
+      }
+
+      others.forEach(user => {
+
+        const div =
+          document.createElement("div");
+
+        div.className =
+          "sakakerTargetUser";
+
+        if(
+          selectedTargetUid ===
+          user.uid
+        ){
+
+          div.classList.add(
+            "selected"
+          );
+
+        }
+
+        div.innerHTML =
+          `
+          <span>
+            🟢 ${escapeHtml(user.name)}
+          </span>
+          <span>📹</span>
+          `;
+
+        div.onclick = () => {
+
+          document
+            .querySelectorAll(
+              ".sakakerTargetUser"
+            )
+            .forEach(x =>
+              x.classList.remove(
+                "selected"
+              )
+            );
+
+          div.classList.add(
+            "selected"
+          );
+
+          selectedTargetUid =
+            user.uid;
+
+          selectedTargetName =
+            user.name;
+
+        };
+
+        targetUsersBox.appendChild(div);
+
+      });
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   CREATE BOOKING
+   ========================================================= */
+
+createBooking.onclick =
+async () => {
+
+  if(!selectedTargetUid){
+
+    alert(
+      language === "ar"
+        ? "اختر مستخدمًا أولاً"
+        : "Choose a user first"
+    );
+
+    return;
+  }
+
+  if(!bookingTime.value){
+
+    alert(
+      language === "ar"
+        ? "اختر موعد المكالمة"
+        : "Choose a call time"
+    );
+
+    return;
+  }
+
+  const selectedTime =
+    new Date(
+      bookingTime.value
+    ).getTime();
+
+  if(
+    !Number.isFinite(
+      selectedTime
+    )
+  ){
+
+    return;
+
+  }
+
+  if(
+    selectedTime <
+    Date.now() + 30000
+  ){
+
+    alert(
+      language === "ar"
+        ? "اختر وقتًا مستقبليًا"
+        : "Choose a future time"
+    );
+
+    return;
+  }
+
+  const bookingRef =
+    push(
+      ref(
+        sakakerDB,
+        "videoBookings"
+      )
+    );
+
+  const bookingId =
+    bookingRef.key;
+
+  const booking = {
+
+    bookingId:
+      bookingId,
+
+    callerUid:
+      sakakerUser.uid,
+
+    callerName:
+      sakakerName,
+
+    targetUid:
+      selectedTargetUid,
+
+    targetName:
+      selectedTargetName,
+
+    startTime:
+      selectedTime,
+
+    duration:
+      300000,
+
+    status:
+      "pending",
+
+    createdAt:
+      Date.now()
+
+  };
+
+  try{
+
+    await set(
+      bookingRef,
+      booking
+    );
+
+    alert(
+      language === "ar"
+        ? "تم إرسال طلب الحجز"
+        : "Booking request sent"
+    );
+
+    bookingTime.value = "";
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "Booking Error: " +
+      error.message
+    );
+
+  }
+
+};
+
+
+/* =========================================================
+   LOAD BOOKINGS
+   ========================================================= */
+
+function loadBookings(){
+
+  const bookingsRef =
+    ref(
+      sakakerDB,
+      "videoBookings"
+    );
+
+  onValue(
+    bookingsRef,
+    snapshot => {
+
+      const data =
+        snapshot.val() || {};
+
+      currentBookings =
+        data;
+
+      renderBookings(
+        data
+      );
+
+      checkIncomingBookings(
+        data
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   RENDER BOOKINGS
+   ========================================================= */
+
+function renderBookings(data){
+
+  bookingsList.innerHTML = "";
+
+  const list =
+    Object.values(data)
+      .filter(
+        booking =>
+          booking.callerUid ===
+            sakakerUser.uid ||
+          booking.targetUid ===
+            sakakerUser.uid
+      )
+      .sort(
+        (a,b) =>
+          a.startTime -
+          b.startTime
+      );
+
+  if(!list.length){
+
+    bookingsList.textContent =
+      translations[language].noBookings;
+
+    return;
+
+  }
+
+  list.forEach(
+    booking => {
+
+      const div =
+        document.createElement("div");
+
+      div.className =
+        "sakakerBooking";
+
+      const isCaller =
+        booking.callerUid ===
+        sakakerUser.uid;
+
+      const otherName =
+        isCaller
+          ? booking.targetName
+          : booking.callerName;
+
+      const date =
+        new Date(
+          booking.startTime
+        ).toLocaleString(
+          language === "ar"
+            ? "ar-SA"
+            : "en-US"
+        );
+
+      let statusText =
+        booking.status;
+
+      if(
+        booking.status ===
+        "pending"
+      ){
+
+        statusText =
+          language === "ar"
+            ? "⏳ بانتظار الرد"
+            : "⏳ Pending";
+
+      }else if(
+        booking.status ===
+        "accepted"
+      ){
+
+        statusText =
+          language === "ar"
+            ? "✅ مقبول"
+            : "✅ Accepted";
+
+      }else if(
+        booking.status ===
+        "rejected"
+      ){
+
+        statusText =
+          language === "ar"
+            ? "❌ مرفوض"
+            : "❌ Rejected";
+
+      }else if(
+        booking.status ===
+        "completed"
+      ){
+
+        statusText =
+          language === "ar"
+            ? "✔️ مكتمل"
+            : "✔️ Completed";
+
+      }else if(
+        booking.status ===
+        "cancelled"
+      ){
+
+        statusText =
+          language === "ar"
+            ? "🚫 ملغي"
+            : "🚫 Cancelled";
+
+      }
+
+      div.innerHTML =
+        `
+        <div>
+          <strong>
+            📹 ${escapeHtml(otherName)}
+          </strong>
+        </div>
+
+        <div>
+          ${escapeHtml(date)}
+        </div>
+
+        <div>
+          ⏱️ 5 ${language === "ar" ? "دقائق" : "minutes"}
+        </div>
+
+        <div>
+          ${statusText}
+        </div>
+        `;
+
+
+      /* قبول / رفض */
+
+      if(
+        booking.targetUid ===
+        sakakerUser.uid &&
+        booking.status ===
+        "pending"
+      ){
+
+        const buttons =
+          document.createElement("div");
+
+        buttons.className =
+          "sakakerBookingButtons";
+
+        const accept =
+          document.createElement("button");
+
+        accept.className =
+          "sakakerAccept";
+
+        accept.textContent =
+          language === "ar"
+            ? "قبول"
+            : "Accept";
+
+        accept.onclick =
+          () =>
+            updateBookingStatus(
+              booking.bookingId,
+              "accepted"
+            );
+
+
+        const reject =
+          document.createElement("button");
+
+        reject.className =
+          "sakakerReject";
+
+        reject.textContent =
+          language === "ar"
+            ? "رفض"
+            : "Reject";
+
+        reject.onclick =
+          () =>
+            updateBookingStatus(
+              booking.bookingId,
+              "rejected"
+            );
+
+        buttons.appendChild(
+          accept
+        );
+
+        buttons.appendChild(
+          reject
+        );
+
+        div.appendChild(
+          buttons
+        );
+
+      }
+
+
+      /* زر الاتصال */
+
+      if(
+        booking.status ===
+        "accepted"
+      ){
+
+        const now =
+          Date.now();
+
+        const end =
+          booking.startTime +
+          booking.duration;
+
+        const callButton =
+          document.createElement("button");
+
+        callButton.className =
+          "sakakerVideoAction";
+
+        callButton.textContent =
+          "📹 " +
+          (
+            language === "ar"
+              ? "دخول المكالمة"
+              : "Join Call"
+          );
+
+        callButton.onclick =
+          () =>
+            startCallFromBooking(
+              booking
+            );
+
+        if(
+          now >
+          end
+        ){
+
+          callButton.disabled =
+            true;
+
+          callButton.style.opacity =
+            ".4";
+
+        }
+
+        div.appendChild(
+          callButton
+        );
+
+      }
+
+      bookingsList.appendChild(
+        div
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   UPDATE BOOKING
+   ========================================================= */
+
+async function updateBookingStatus(
+  bookingId,
+  status
+){
+
+  try{
+
+    await update(
+      ref(
+        sakakerDB,
+        "videoBookings/" +
+        bookingId
+      ),
+      {
+        status:
+          status
+      }
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      error.message
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   INCOMING BOOKING NOTICE
+   ========================================================= */
+
+let lastNoticeBooking = null;
+
+function checkIncomingBookings(
+  data
+){
+
+  if(!sakakerUser)
+    return;
+
+  const incoming =
+    Object.values(data)
+      .filter(
+        booking =>
+          booking.targetUid ===
+            sakakerUser.uid &&
+          booking.status ===
+            "pending"
+      )
+      .sort(
+        (a,b) =>
+          b.createdAt -
+          a.createdAt
+      );
+
+  if(!incoming.length){
+
+    bookingNotice.style.display =
+      "none";
+
+    return;
+
+  }
+
+  const booking =
+    incoming[0];
+
+  if(
+    lastNoticeBooking ===
+    booking.bookingId
+  )
+    return;
+
+  lastNoticeBooking =
+    booking.bookingId;
+
+  bookingNoticeText.textContent =
+    translations[language].incoming +
+    " " +
+    booking.callerName;
+
+  bookingNotice.style.display =
+    "block";
+
+  noticeAccept.onclick =
+    async () => {
+
+      await updateBookingStatus(
+        booking.bookingId,
+        "accepted"
+      );
+
+      bookingNotice.style.display =
+        "none";
+
+    };
+
+  noticeReject.onclick =
+    async () => {
+
+      await updateBookingStatus(
+        booking.bookingId,
+        "rejected"
+      );
+
+      bookingNotice.style.display =
+        "none";
+
+    };
+
+}
+
+
+/* =========================================================
+   WEBRTC CONFIG
+   ========================================================= */
+
+const rtcConfig = {
+
+  iceServers:[
+    {
+      urls:
+        "stun:stun.l.google.com:19302"
+    },
+
+    {
+      urls:
+        "stun:stun1.l.google.com:19302"
+    }
+  ]
+
+};
+
+
+/* =========================================================
+   START CALL
+   ========================================================= */
+
+async function startCallFromBooking(
+  booking
+){
+
+  const now =
+    Date.now();
+
+  const end =
+    booking.startTime +
+    booking.duration;
+
+  if(
+    now <
+    booking.startTime
+  ){
+
+    const seconds =
+      Math.ceil(
+        (booking.startTime -
+         now) / 1000
+      );
+
+    alert(
+      language === "ar"
+        ? "المكالمة تبدأ بعد " +
+          seconds +
+          " ثانية"
+        : "Call starts in " +
+          seconds +
+          " seconds"
+    );
+
+    return;
+  }
+
+  if(
+    now >= end
+  ){
+
+    alert(
+      language === "ar"
+        ? "انتهى وقت الحجز"
+        : "Booking time has ended"
+    );
+
+    return;
+  }
+
+  currentBookingId =
+    booking.bookingId;
+
+  currentCallId =
+    booking.bookingId;
+
+  await openVideoInterface(
+    booking
+  );
+
+}
+
+
+/* =========================================================
+   OPEN VIDEO
+   ========================================================= */
+
+async function openVideoInterface(
+  booking
+){
+
+  videoPanel.style.display =
+    "none";
+
+  videoCall.style.display =
+    "block";
+
+  callStatus.textContent =
+    language === "ar"
+      ? "جاري تشغيل الكاميرا..."
+      : "Starting camera...";
+
+  try{
+
+    localStream =
+      await navigator.mediaDevices
+        .getUserMedia({
+          video:true,
+          audio:true
+        });
+
+    localVideo.srcObject =
+      localStream;
+
+    peerConnection =
+      new RTCPeerConnection(
+        rtcConfig
+      );
+
+    localStream
+      .getTracks()
+      .forEach(
+        track => {
+
+          peerConnection.addTrack(
+            track,
+            localStream
+          );
+
+        }
+      );
+
+
+    peerConnection.ontrack =
+      event => {
+
+        if(
+          event.streams &&
+          event.streams[0]
+        ){
+
+          remoteVideo.srcObject =
+            event.streams[0];
+
+        }
+
+        callStatus.style.display =
+          "none";
+
+      };
+
+
+    peerConnection.onicecandidate =
+      async event => {
+
+        if(!event.candidate)
+          return;
+
+        const branch =
+          sakakerUser.uid ===
+          booking.callerUid
+            ? "callerCandidates"
+            : "calleeCandidates";
+
+        await push(
+          ref(
+            sakakerDB,
+            "videoCalls/" +
+            currentCallId +
+            "/" +
+            branch
+          ),
+          event.candidate.toJSON()
+        );
+
+      };
+
+
+    await set(
+      ref(
+        sakakerDB,
+        "videoCalls/" +
+        currentCallId
+      ),
+      {
+        callerUid:
+          booking.callerUid,
+
+        targetUid:
+          booking.targetUid
+      }
+    );
+
+
+    setupCallSignaling(
+      booking
+    );
+
+
+    if(
+      sakakerUser.uid ===
+      booking.callerUid
+    ){
+
+      const offer =
+        await peerConnection
+          .createOffer();
+
+      await peerConnection
+        .setLocalDescription(
+          offer
+        );
+
+      await update(
+        ref(
+          sakakerDB,
+          "videoCalls/" +
+          currentCallId
+        ),
+        {
+          offer:{
+            type:
+              offer.type,
+
+            sdp:
+              offer.sdp
+          }
+        }
+      );
+
+    }
+
+
+    startFiveMinuteTimer(
+      booking
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+    callStatus.textContent =
+      language === "ar"
+        ? "تعذر تشغيل الكاميرا"
+        : "Camera could not start";
+
+    alert(
+      language === "ar"
+        ? "تأكد من السماح للمتصفح بالكاميرا والمايكروفون وأن الموقع يعمل عبر HTTPS."
+        : "Allow camera/microphone and make sure the site uses HTTPS."
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   SIGNALING
+   ========================================================= */
+
+function setupCallSignaling(
+  booking
+){
+
+  const callRef =
+    ref(
+      sakakerDB,
+      "videoCalls/" +
+      currentCallId
+    );
+
+  onValue(
+    callRef,
+    async snapshot => {
+
+      const call =
+        snapshot.val();
+
+      if(!call || !peerConnection)
+        return;
+
+
+      /* المتصل يستقبل answer */
+
+      if(
+        sakakerUser.uid ===
+          booking.callerUid &&
+        call.answer &&
+        !peerConnection
+          .currentRemoteDescription
+      ){
+
+        try{
+
+          await peerConnection
+            .setRemoteDescription(
+              new RTCSessionDescription(
+                call.answer
+              )
+            );
+
+        }catch(error){
+
+          console.error(error);
+
+        }
+
+      }
+
+
+      /* المستقبل يستقبل offer */
+
+      if(
+        sakakerUser.uid ===
+          booking.targetUid &&
+        call.offer &&
+        !peerConnection
+          .currentRemoteDescription
+      ){
+
+        try{
+
+          await peerConnection
+            .setRemoteDescription(
+              new RTCSessionDescription(
+                call.offer
+              )
+            );
+
+          const answer =
+            await peerConnection
+              .createAnswer();
+
+          await peerConnection
+            .setLocalDescription(
+              answer
+            );
+
+          await update(
+            callRef,
+            {
+              answer:{
+                type:
+                  answer.type,
+
+                sdp:
+                  answer.sdp
+              }
+            }
+          );
+
+        }catch(error){
+
+          console.error(error);
+
+        }
+
+      }
+
+    }
+  );
+
+
+  /* ICE من الطرف الآخر */
+
+  const remoteBranch =
+    sakakerUser.uid ===
+    booking.callerUid
+      ? "calleeCandidates"
+      : "callerCandidates";
+
+
+  onValue(
+    ref(
+      sakakerDB,
+      "videoCalls/" +
+      currentCallId +
+      "/" +
+      remoteBranch
+    ),
+    snapshot => {
+
+      const data =
+        snapshot.val();
+
+      if(!data)
+        return;
+
+      Object.values(data)
+        .forEach(
+          async candidate => {
+
+            try{
+
+              await peerConnection
+                ?.addIceCandidate(
+                  new RTCIceCandidate(
+                    candidate
+                  )
+                );
+
+            }catch(error){
+
+              console.error(
+                "ICE error",
+                error
+              );
+
+            }
+
+          }
+        );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   FIVE MINUTE TIMER
+   ========================================================= */
+
+function startFiveMinuteTimer(
+  booking
+){
+
+  clearInterval(
+    callTimerInterval
+  );
+
+  const endTime =
+    booking.startTime +
+    booking.duration;
+
+
+  function tick(){
+
+    const remaining =
+      Math.max(
+        0,
+        endTime -
+        Date.now()
+      );
+
+    const seconds =
+      Math.ceil(
+        remaining / 1000
+      );
+
+    const minutes =
+      Math.floor(
+        seconds / 60
+      );
+
+    const secs =
+      seconds % 60;
+
+    callTimer.textContent =
+      String(minutes)
+        .padStart(2,"0") +
+      ":" +
+      String(secs)
+        .padStart(2,"0");
+
+
+    if(
+      remaining <= 0
+    ){
+
+      clearInterval(
+        callTimerInterval
+      );
+
+      finishCall();
+
+    }
+
+  }
+
+  tick();
+
+  callTimerInterval =
+    setInterval(
+      tick,
+      500
+    );
+
+}
+
+
+/* =========================================================
+   MUTE
+   ========================================================= */
+
+muteBtn.onclick = () => {
+
+  if(!localStream)
+    return;
+
+  const audioTracks =
+    localStream.getAudioTracks();
+
+  audioTracks.forEach(
+    track => {
+
+      track.enabled =
+        !track.enabled;
+
+      isMuted =
+        !track.enabled;
+
+    }
+  );
+
+  muteBtn.textContent =
+    isMuted
+      ? "🔇"
+      : "🎙️";
+
+};
+
+
+/* =========================================================
+   CAMERA
+   ========================================================= */
+
+cameraBtn.onclick = () => {
+
+  if(!localStream)
+    return;
+
+  const videoTracks =
+    localStream.getVideoTracks();
+
+  videoTracks.forEach(
+    track => {
+
+      track.enabled =
+        !track.enabled;
+
+      isCameraOff =
+        !track.enabled;
+
+    }
+  );
+
+  cameraBtn.textContent =
+    isCameraOff
+      ? "🚫"
+      : "📷";
+
+};
+
+
+/* =========================================================
+   END CALL
+   ========================================================= */
+
+endCallBtn.onclick =
+() => {
+
+  finishCall();
+
+};
+
+
+/* =========================================================
+   FINISH CALL
+   ========================================================= */
+
+async function finishCall(){
+
+  clearInterval(
+    callTimerInterval
+  );
+
+  callTimerInterval =
+    null;
+
+
+  if(localStream){
+
+    localStream
+      .getTracks()
+      .forEach(
+        track =>
+          track.stop()
+      );
+
+    localStream =
+      null;
+
+  }
+
+
+  if(peerConnection){
+
+    peerConnection.close();
+
+    peerConnection =
+      null;
+
+  }
+
+
+  remoteVideo.srcObject =
+    null;
+
+  localVideo.srcObject =
+    null;
+
+  videoCall.style.display =
+    "none";
+
+
+  if(
+    currentBookingId
+  ){
+
+    try{
+
+      await update(
+        ref(
+          sakakerDB,
+          "videoBookings/" +
+          currentBookingId
+        ),
+        {
+          status:
+            "completed"
+        }
+      );
+
+    }catch(error){
+
+      console.error(error);
+
+    }
+
+  }
+
+  currentCallId =
+    null;
+
+  currentBookingId =
+    null;
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+   ========================================================= */
+
+function escapeHtml(value){
+
+  const div =
+    document.createElement("div");
+
+  div.textContent =
+    value ?? "";
+
+  return div.innerHTML;
+
+}
+
+
+/* =========================================================
+   DEFAULT LANGUAGE
+   ========================================================= */
+
+updateLanguage();
+
+
+/* =========================================================
+   RESTORE SAVED NAME
+   ========================================================= */
+
+const savedName =
+  localStorage.getItem(
+    "sakaker_chat_name"
+  );
+
+if(savedName){
+
+  nameInput.value =
+    savedName;
+
+}
+
+
+/* =========================================================
+   CLEANUP WHEN PAGE CLOSES
+   ========================================================= */
+
+window.addEventListener(
+  "beforeunload",
+  () => {
+
+    if(
+      sakakerUser
+    ){
+
+      remove(
+        ref(
+          sakakerDB,
+          "onlineUsers/" +
+          sakakerUser.uid
+        )
+      );
+
+    }
+
+    if(localStream){
+
+      localStream
+        .getTracks()
+        .forEach(
+          track =>
+            track.stop()
+        );
+
+    }
+
+  }
+);
+
+</script>
+
 <!-- =========================================================
      🏓 PONG ONLINE - SAKAKER
      ملف واحد كامل
@@ -8318,3190 +11447,60 @@ window.addEventListener(
 );
 
 </script>
-<!-- =========================================================
-     SAKAKER • CHAT + VIDEO CALL
-     نظام دردشة + حجز مكالمات فيديو
-     ========================================================= -->
-
-<style>
-/* =========================================================
-   SAKAKER CHAT - ISOLATED STYLE
-   ========================================================= */
-
-#sakakerChatApp,
-#sakakerChatApp *{
-  box-sizing:border-box;
-  font-family:Arial,Tahoma,sans-serif;
-}
-
-#sakakerChatApp{
-  direction:rtl;
-  position:relative;
-  z-index:2147483000;
-}
-
-/* زر الدردشة */
-#sakakerChatOpen{
-  position:fixed;
-  right:18px;
-  bottom:118px;
-  width:62px;
-  height:62px;
-  border-radius:50%;
-  border:2px solid rgba(255,215,0,.8);
+<!-- 🐦 أيقونة صوت الطيور بتوهج زمردي -->
+<div id="bird-sound-btn" title="تشغيل/إيقاف صوت الطيور" style="
+  position: fixed;
+  top: 460px;
+  right: 202px;
+  width: 75px;
+  height: 75px;
   background:
-    radial-gradient(circle at 30% 25%,#fff8b0 0%,#ffd700 12%,#159b79 45%,#063d36 100%);
-  color:#fff;
-  font-size:28px;
-  cursor:pointer;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 34px;
+  color: white;
+  cursor: pointer;
   box-shadow:
-    0 0 10px #ffd700,
-    0 0 25px rgba(0,255,200,.55),
-    inset 0 0 15px rgba(255,255,255,.35);
-  transition:.3s;
-  animation:sakakerChatGlow 2s infinite;
-}
-
-#sakakerChatOpen:hover{
-  transform:scale(1.1);
-}
-
-@keyframes sakakerChatGlow{
-  0%,100%{
-    box-shadow:
-      0 0 8px #ffd700,
-      0 0 18px rgba(0,255,200,.4);
-  }
-  50%{
-    box-shadow:
-      0 0 18px #ffd700,
-      0 0 40px rgba(0,255,200,.85);
-  }
-}
-
-/* نافذة الدردشة */
-#sakakerChatWindow{
-  display:none;
-  position:fixed;
-  right:18px;
-  bottom:90px;
-  width:390px;
-  max-width:calc(100vw - 25px);
-  height:610px;
-  max-height:calc(100vh - 110px);
-  background:
-    linear-gradient(
-      145deg,
-      rgba(5,30,28,.98),
-      rgba(8,18,25,.98)
-    );
-  border:1px solid rgba(255,215,0,.55);
-  border-radius:24px;
-  overflow:hidden;
-  box-shadow:
-    0 0 20px rgba(255,215,0,.25),
-    0 0 55px rgba(0,255,200,.18);
-  backdrop-filter:blur(15px);
-}
-
-/* رأس الدردشة */
-#sakakerChatHeader{
-  height:65px;
-  padding:8px 12px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  background:
-    linear-gradient(
-      90deg,
-      rgba(0,128,96,.85),
-      rgba(20,20,25,.95),
-      rgba(0,128,96,.85)
-    );
-  border-bottom:1px solid rgba(255,215,0,.35);
-}
-
-#sakakerChatTitle{
-  color:#ffd700;
-  font-size:18px;
-  font-weight:bold;
-}
-
-#sakakerChatSubtitle{
-  color:#b8fff0;
-  font-size:11px;
-  margin-top:3px;
-}
-
-.sakakerHeaderButtons{
-  display:flex;
-  gap:5px;
-}
-
-.sakakerHeaderButtons button{
-  width:35px;
-  height:35px;
-  border:none;
-  border-radius:50%;
-  background:rgba(255,255,255,.08);
-  color:#fff;
-  cursor:pointer;
-  font-size:17px;
-}
-
-.sakakerHeaderButtons button:hover{
-  background:rgba(255,215,0,.2);
-}
-
-/* تسجيل الاسم */
-#sakakerChatLogin{
-  padding:18px;
-}
-
-#sakakerChatLogin h3{
-  color:#ffd700;
-  text-align:center;
-  margin:5px 0 20px;
-}
-
-#sakakerChatLogin input{
-  width:100%;
-  padding:13px;
-  border-radius:12px;
-  border:1px solid rgba(255,215,0,.35);
-  outline:none;
-  background:rgba(255,255,255,.06);
-  color:#fff;
-  text-align:center;
-  margin-bottom:10px;
-}
-
-#sakakerChatLogin button{
-  width:100%;
-  padding:13px;
-  border:none;
-  border-radius:12px;
-  background:linear-gradient(135deg,#ffd700,#b8860b);
-  color:#111;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-/* المحتوى الرئيسي */
-#sakakerChatMain{
-  display:none;
-  height:calc(100% - 65px);
-  flex-direction:column;
-}
-
-/* المستخدم */
-#sakakerUserBar{
-  padding:8px 10px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-bottom:1px solid rgba(255,255,255,.08);
-  background:rgba(0,0,0,.15);
-}
-
-#sakakerCurrentUser{
-  color:#fff;
-  font-size:13px;
-}
-
-#sakakerOnlineCount{
-  color:#72ffd8;
-  font-size:11px;
-}
-
-/* الغرف */
-#sakakerRooms{
-  display:flex;
-  gap:5px;
-  padding:7px;
-  overflow-x:auto;
-}
-
-.sakakerRoomBtn{
-  flex:1;
-  min-width:75px;
-  border:1px solid rgba(255,215,0,.25);
-  background:rgba(255,255,255,.04);
-  color:#ddd;
-  border-radius:10px;
-  padding:8px 5px;
-  cursor:pointer;
-  font-size:11px;
-}
-
-.sakakerRoomBtn.active{
-  background:rgba(255,215,0,.16);
-  border-color:#ffd700;
-  color:#ffd700;
-}
-
-/* منطقة الرسائل */
-#sakakerMessages{
-  flex:1;
-  overflow-y:auto;
-  padding:10px;
-}
-
-.sakakerMessage{
-  margin-bottom:9px;
-  padding:9px 11px;
-  border-radius:14px;
-  background:rgba(255,255,255,.055);
-  border-right:3px solid #0fc9a0;
-}
-
-.sakakerMessage.mine{
-  border-right-color:#ffd700;
-  background:rgba(255,215,0,.07);
-}
-
-.sakakerMessageName{
-  color:#ffd700;
-  font-size:11px;
-  font-weight:bold;
-  margin-bottom:4px;
-}
-
-.sakakerMessageText{
-  color:#fff;
-  font-size:13px;
-  line-height:1.5;
-  word-break:break-word;
-}
-
-.sakakerMessageTime{
-  color:#777;
-  font-size:9px;
-  margin-top:4px;
-}
-
-/* المستخدمون */
-#sakakerOnlineUsers{
-  max-height:90px;
-  overflow-y:auto;
-  padding:5px 9px;
-  border-top:1px solid rgba(255,255,255,.06);
-}
-
-.sakakerOnlineUser{
-  display:inline-flex;
-  align-items:center;
-  gap:4px;
-  margin:2px;
-  padding:4px 7px;
-  border-radius:10px;
-  background:rgba(0,255,180,.06);
-  color:#baffef;
-  font-size:10px;
-}
-
-.sakakerOnlineDot{
-  width:6px;
-  height:6px;
-  border-radius:50%;
-  background:#00ff9d;
-  box-shadow:0 0 7px #00ff9d;
-}
-
-/* إدخال الرسائل */
-#sakakerMessageForm{
-  display:flex;
-  gap:6px;
-  padding:8px;
-  border-top:1px solid rgba(255,255,255,.1);
-}
-
-#sakakerMessageInput{
-  flex:1;
-  min-width:0;
-  border:1px solid rgba(255,215,0,.25);
-  border-radius:12px;
-  padding:11px;
-  background:rgba(255,255,255,.06);
-  color:#fff;
-  outline:none;
-}
-
-#sakakerMessageSend{
-  width:48px;
-  border:none;
-  border-radius:12px;
-  background:#ffd700;
-  color:#111;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-/* =========================================================
-   VIDEO BOOKING
-   ========================================================= */
-
-#sakakerVideoPanel{
-  display:none;
-  position:absolute;
-  inset:0;
-  background:
-    linear-gradient(
-      145deg,
-      rgba(4,25,24,.99),
-      rgba(4,12,18,.99)
-    );
-  z-index:50;
-  padding:15px;
-  overflow-y:auto;
-}
-
-#sakakerVideoPanel h3{
-  color:#ffd700;
-  text-align:center;
-  margin:5px 0 15px;
-}
-
-.sakakerVideoSection{
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,215,0,.15);
-  border-radius:14px;
-  padding:10px;
-  margin-bottom:10px;
-}
-
-.sakakerVideoSectionTitle{
-  color:#72ffd8;
-  font-size:12px;
-  margin-bottom:8px;
-}
-
-#sakakerTargetUsers{
-  max-height:150px;
-  overflow-y:auto;
-}
-
-.sakakerTargetUser{
-  width:100%;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:9px;
-  margin-bottom:5px;
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:10px;
-  background:rgba(255,255,255,.04);
-  color:#fff;
-  cursor:pointer;
-}
-
-.sakakerTargetUser.selected{
-  border-color:#ffd700;
-  background:rgba(255,215,0,.1);
-}
-
-.sakakerVideoPanel input,
-.sakakerVideoPanel select{
-  width:100%;
-  padding:10px;
-  border-radius:10px;
-  border:1px solid rgba(255,215,0,.25);
-  background:#10221f;
-  color:#fff;
-  outline:none;
-  margin-bottom:7px;
-}
-
-.sakakerVideoAction{
-  width:100%;
-  padding:11px;
-  border:none;
-  border-radius:11px;
-  background:linear-gradient(135deg,#ffd700,#b8860b);
-  color:#111;
-  font-weight:bold;
-  cursor:pointer;
-  margin-top:5px;
-}
-
-.sakakerClosePanel{
-  width:100%;
-  padding:9px;
-  border:none;
-  border-radius:10px;
-  background:rgba(255,255,255,.08);
-  color:#fff;
-  cursor:pointer;
-  margin-top:8px;
-}
-
-/* الحجوزات */
-#sakakerBookingsList{
-  max-height:180px;
-  overflow-y:auto;
-}
-
-.sakakerBooking{
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:12px;
-  padding:9px;
-  margin-bottom:7px;
-  color:#fff;
-  font-size:11px;
-}
-
-.sakakerBooking strong{
-  color:#ffd700;
-}
-
-.sakakerBookingButtons{
-  display:flex;
-  gap:5px;
-  margin-top:7px;
-}
-
-.sakakerBookingButtons button{
-  flex:1;
-  border:none;
-  border-radius:8px;
-  padding:7px;
-  cursor:pointer;
-  font-size:11px;
-}
-
-.sakakerAccept{
-  background:#00b894;
-  color:#fff;
-}
-
-.sakakerReject{
-  background:#8b2635;
-  color:#fff;
-}
-
-/* =========================================================
-   VIDEO CALL WINDOW
-   ========================================================= */
-
-#sakakerVideoCall{
-  display:none;
-  position:absolute;
-  inset:0;
-  z-index:100;
-  background:#020708;
-}
-
-#sakakerRemoteVideo{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  background:#000;
-}
-
-#sakakerLocalVideo{
-  position:absolute;
-  top:12px;
-  right:12px;
-  width:105px;
-  height:145px;
-  object-fit:cover;
-  background:#111;
-  border:2px solid #ffd700;
-  border-radius:13px;
-  z-index:5;
-  transform:scaleX(-1);
-}
-
-#sakakerCallTimer{
-  position:absolute;
-  top:12px;
-  left:12px;
-  z-index:6;
-  padding:7px 10px;
-  border-radius:10px;
-  background:rgba(0,0,0,.65);
-  color:#ffd700;
-  font-weight:bold;
-  font-size:13px;
-}
-
-#sakakerCallStatus{
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  color:#fff;
-  background:rgba(0,0,0,.55);
-  padding:10px 15px;
-  border-radius:12px;
-  z-index:4;
-  text-align:center;
-}
-
-#sakakerCallControls{
-  position:absolute;
-  bottom:15px;
-  left:50%;
-  transform:translateX(-50%);
-  display:flex;
-  gap:9px;
-  z-index:10;
-}
-
-.sakakerCallBtn{
-  width:48px;
-  height:48px;
-  border:none;
-  border-radius:50%;
-  background:rgba(255,255,255,.12);
-  color:#fff;
-  cursor:pointer;
-  font-size:18px;
-}
-
-.sakakerCallBtn:hover{
-  background:rgba(255,255,255,.25);
-}
-
-#sakakerEndCall{
-  background:#b32635;
-}
-
-/* إشعار الحجز */
-#sakakerBookingNotice{
-  display:none;
-  position:fixed;
-  right:20px;
-  top:20px;
-  width:330px;
-  max-width:calc(100vw - 30px);
-  background:
-    linear-gradient(145deg,#102e29,#101820);
-  border:1px solid #ffd700;
-  border-radius:17px;
-  padding:14px;
-  color:#fff;
-  z-index:2147483640;
-  box-shadow:0 0 30px rgba(255,215,0,.3);
-}
-
-#sakakerBookingNoticeTitle{
-  color:#ffd700;
-  font-weight:bold;
-  margin-bottom:7px;
-}
-
-#sakakerBookingNoticeText{
-  font-size:12px;
-  line-height:1.6;
-}
-
-#sakakerBookingNoticeButtons{
-  display:flex;
-  gap:7px;
-  margin-top:10px;
-}
-
-#sakakerBookingNoticeButtons button{
-  flex:1;
-  padding:9px;
-  border:none;
-  border-radius:9px;
-  cursor:pointer;
-}
-
-#sakakerNoticeAccept{
-  background:#00b894;
-  color:#fff;
-}
-
-#sakakerNoticeReject{
-  background:#8b2635;
-  color:#fff;
-}
-
-/* متجاوب للجوال */
-@media(max-width:600px){
-
-  #sakakerChatOpen{
-    width:55px;
-    height:55px;
-    right:12px;
-    bottom:12px;
-  }
-
-  #sakakerChatWindow{
-    right:7px;
-    bottom:75px;
-    width:calc(100vw - 14px);
-    height:calc(100vh - 90px);
-    max-height:none;
-    border-radius:19px;
-  }
-
-  #sakakerLocalVideo{
-    width:82px;
-    height:115px;
-  }
-
-  #sakakerBookingNotice{
-    top:10px;
-    right:10px;
-    width:calc(100vw - 20px);
-  }
-}
-</style>
-
-
-<!-- =========================================================
-     HTML
-     ========================================================= -->
-
-<div id="sakakerChatApp">
-
-  <!-- زر فتح الدردشة -->
-  <button id="sakakerChatOpen" aria-label="Chat">
-    💬
-  </button>
-
-  <!-- نافذة الدردشة -->
-  <div id="sakakerChatWindow">
-
-    <!-- الرأس -->
-    <div id="sakakerChatHeader">
-
-      <div>
-        <div id="sakakerChatTitle">
-          💬 دردشة سكاكر
-        </div>
-
-        <div id="sakakerChatSubtitle">
-          Sakaker Live Chat
-        </div>
-      </div>
-
-      <div class="sakakerHeaderButtons">
-
-        <button id="sakakerLanguageBtn">
-          EN
-        </button>
-
-        <button id="sakakerVideoOpenBtn">
-          📹
-        </button>
-
-        <button id="sakakerChatClose">
-          ×
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <!-- تسجيل الاسم -->
-    <div id="sakakerChatLogin">
-
-      <h3 id="sakakerLoginTitle">
-        ✨ مرحبًا بك في دردشة سكاكر
-      </h3>
-
-      <input
-        id="sakakerNameInput"
-        maxlength="20"
-        placeholder="اكتب اسمك"
-      >
-
-      <button id="sakakerLoginBtn">
-        دخول الدردشة
-      </button>
-
-    </div>
-
-
-    <!-- المحتوى -->
-    <div id="sakakerChatMain">
-
-      <div id="sakakerUserBar">
-
-        <span id="sakakerCurrentUser">
-          👤
-        </span>
-
-        <span id="sakakerOnlineCount">
-          🟢 0
-        </span>
-
-      </div>
-
-
-      <!-- الغرف -->
-      <div id="sakakerRooms">
-
-        <button class="sakakerRoomBtn active"
-                data-room="general">
-          💬 عام
-        </button>
-
-        <button class="sakakerRoomBtn"
-                data-room="games">
-          🎮 ألعاب
-        </button>
-
-        <button class="sakakerRoomBtn"
-                data-room="music">
-          🎵 موسيقى
-        </button>
-
-      </div>
-
-
-      <!-- الرسائل -->
-      <div id="sakakerMessages"></div>
-
-
-      <!-- المستخدمون -->
-      <div id="sakakerOnlineUsers"></div>
-
-
-      <!-- إرسال -->
-      <form id="sakakerMessageForm">
-
-        <input
-          id="sakakerMessageInput"
-          maxlength="200"
-          autocomplete="off"
-          placeholder="اكتب رسالتك..."
-        >
-
-        <button id="sakakerMessageSend"
-                type="submit">
-          ➤
-        </button>
-
-      </form>
-
-    </div>
-
-
-    <!-- =====================================================
-         لوحة الفيديو والحجوزات
-         ===================================================== -->
-
-    <div id="sakakerVideoPanel">
-
-      <h3>
-        📹 مكالمات الفيديو
-      </h3>
-
-
-      <div class="sakakerVideoSection">
-
-        <div class="sakakerVideoSectionTitle">
-          👥 اختر الشخص الذي تريد الاتصال به
-        </div>
-
-        <div id="sakakerTargetUsers">
-          لا يوجد مستخدمون متاحون حاليًا
-        </div>
-
-      </div>
-
-
-      <div class="sakakerVideoSection">
-
-        <div class="sakakerVideoSectionTitle">
-          📅 حجز مكالمة
-        </div>
-
-        <input
-          type="datetime-local"
-          id="sakakerBookingTime"
-        >
-
-        <button
-          class="sakakerVideoAction"
-          id="sakakerCreateBooking">
-          📅 إرسال طلب الحجز
-        </button>
-
-      </div>
-
-
-      <div class="sakakerVideoSection">
-
-        <div class="sakakerVideoSectionTitle">
-          📋 الحجوزات
-        </div>
-
-        <div id="sakakerBookingsList">
-          لا توجد حجوزات
-        </div>
-
-      </div>
-
-
-      <button
-        class="sakakerClosePanel"
-        id="sakakerVideoPanelClose">
-        ← العودة للدردشة
-      </button>
-
-    </div>
-
-
-    <!-- =====================================================
-         نافذة الاتصال
-         ===================================================== -->
-
-    <div id="sakakerVideoCall">
-
-      <video
-        id="sakakerRemoteVideo"
-        autoplay
-        playsinline>
-      </video>
-
-      <video
-        id="sakakerLocalVideo"
-        autoplay
-        muted
-        playsinline>
-      </video>
-
-      <div id="sakakerCallTimer">
-        05:00
-      </div>
-
-      <div id="sakakerCallStatus">
-        جاري الاتصال...
-      </div>
-
-      <div id="sakakerCallControls">
-
-        <button
-          class="sakakerCallBtn"
-          id="sakakerMuteBtn">
-          🎙️
-        </button>
-
-        <button
-          class="sakakerCallBtn"
-          id="sakakerCameraBtn">
-          📷
-        </button>
-
-        <button
-          class="sakakerCallBtn"
-          id="sakakerEndCall">
-          📞
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
-
+  z-index: 1001;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+">
+  🐦
 </div>
 
-
-<!-- =========================================================
-     إشعار الحجز
-     ========================================================= -->
-
-<div id="sakakerBookingNotice">
-
-  <div id="sakakerBookingNoticeTitle">
-    📹 طلب مكالمة فيديو
-  </div>
-
-  <div id="sakakerBookingNoticeText"></div>
-
-  <div id="sakakerBookingNoticeButtons">
-
-    <button id="sakakerNoticeAccept">
-      قبول
-    </button>
-
-    <button id="sakakerNoticeReject">
-      رفض
-    </button>
-
-  </div>
-
-</div>
-
-
-<!-- =========================================================
-     FIREBASE
-     ========================================================= -->
-
-<script type="module">
-
-/* =========================================================
-   FIREBASE IMPORTS
-   ========================================================= */
-
-import {
-  initializeApp
-} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-
-import {
-  getAuth,
-  signInAnonymously,
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-
-import {
-  getDatabase,
-  ref,
-  push,
-  set,
-  update,
-  remove,
-  onValue,
-  onDisconnect,
-  query,
-  orderByChild,
-  limitToLast
-} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
-
-
-/* =========================================================
-   FIREBASE CONFIG
-   ========================================================= */
-
-const firebaseConfig = {
-
-  apiKey:
-    "AIzaSyCZw747d_KJa85KTDSOVI8EeX_J9Grpqrk",
-
-  authDomain:
-    "sakaker-9247f.firebaseapp.com",
-
-  databaseURL:
-    "https://sakaker-9247f-default-rtdb.asia-southeast1.firebasedatabase.app",
-
-  projectId:
-    "sakaker-9247f",
-
-  storageBucket:
-    "sakaker-9247f.firebasestorage.app",
-
-  messagingSenderId:
-    "689588937441",
-
-  appId:
-    "1:689588937441:web:4d17a1d02e72189bbfcda0",
-
-  measurementId:
-    "G-RB0V6GTVER"
-};
-
-
-/* =========================================================
-   FIREBASE START
-   ========================================================= */
-
-const sakakerApp =
-  initializeApp(firebaseConfig);
-
-const sakakerAuth =
-  getAuth(sakakerApp);
-
-const sakakerDB =
-  getDatabase(sakakerApp);
-
-
-/* =========================================================
-   ELEMENTS
-   ========================================================= */
-
-const chatOpen =
-  document.getElementById("sakakerChatOpen");
-
-const chatWindow =
-  document.getElementById("sakakerChatWindow");
-
-const chatClose =
-  document.getElementById("sakakerChatClose");
-
-const loginBox =
-  document.getElementById("sakakerChatLogin");
-
-const chatMain =
-  document.getElementById("sakakerChatMain");
-
-const nameInput =
-  document.getElementById("sakakerNameInput");
-
-const loginBtn =
-  document.getElementById("sakakerLoginBtn");
-
-const currentUser =
-  document.getElementById("sakakerCurrentUser");
-
-const onlineCount =
-  document.getElementById("sakakerOnlineCount");
-
-const messagesBox =
-  document.getElementById("sakakerMessages");
-
-const messageInput =
-  document.getElementById("sakakerMessageInput");
-
-const messageForm =
-  document.getElementById("sakakerMessageForm");
-
-const onlineUsersBox =
-  document.getElementById("sakakerOnlineUsers");
-
-const videoOpenBtn =
-  document.getElementById("sakakerVideoOpenBtn");
-
-const videoPanel =
-  document.getElementById("sakakerVideoPanel");
-
-const videoPanelClose =
-  document.getElementById("sakakerVideoPanelClose");
-
-const targetUsersBox =
-  document.getElementById("sakakerTargetUsers");
-
-const bookingTime =
-  document.getElementById("sakakerBookingTime");
-
-const createBooking =
-  document.getElementById("sakakerCreateBooking");
-
-const bookingsList =
-  document.getElementById("sakakerBookingsList");
-
-const bookingNotice =
-  document.getElementById("sakakerBookingNotice");
-
-const bookingNoticeText =
-  document.getElementById("sakakerBookingNoticeText");
-
-const noticeAccept =
-  document.getElementById("sakakerNoticeAccept");
-
-const noticeReject =
-  document.getElementById("sakakerNoticeReject");
-
-const videoCall =
-  document.getElementById("sakakerVideoCall");
-
-const remoteVideo =
-  document.getElementById("sakakerRemoteVideo");
-
-const localVideo =
-  document.getElementById("sakakerLocalVideo");
-
-const callTimer =
-  document.getElementById("sakakerCallTimer");
-
-const callStatus =
-  document.getElementById("sakakerCallStatus");
-
-const muteBtn =
-  document.getElementById("sakakerMuteBtn");
-
-const cameraBtn =
-  document.getElementById("sakakerCameraBtn");
-
-const endCallBtn =
-  document.getElementById("sakakerEndCall");
-
-const languageBtn =
-  document.getElementById("sakakerLanguageBtn");
-
-
-/* =========================================================
-   STATE
-   ========================================================= */
-
-let sakakerUser = null;
-
-let sakakerName = "";
-
-let currentRoom = "general";
-
-let selectedTargetUid = null;
-
-let selectedTargetName = null;
-
-let currentBookings = {};
-
-let currentCallId = null;
-
-let currentBookingId = null;
-
-let peerConnection = null;
-
-let localStream = null;
-
-let callTimerInterval = null;
-
-let isMuted = false;
-
-let isCameraOff = false;
-
-let language = "ar";
-
-
-/* =========================================================
-   LANGUAGE
-   ========================================================= */
-
-const translations = {
-
-  ar:{
-    title:"💬 دردشة سكاكر",
-    subtitle:"Sakaker Live Chat",
-    login:"✨ مرحبًا بك في دردشة سكاكر",
-    name:"اكتب اسمك",
-    loginBtn:"دخول الدردشة",
-    general:"💬 عام",
-    games:"🎮 ألعاب",
-    music:"🎵 موسيقى",
-    placeholder:"اكتب رسالتك...",
-    video:"📹",
-    videoTitle:"📹 مكالمات الفيديو",
-    choose:"👥 اختر الشخص الذي تريد الاتصال به",
-    booking:"📅 حجز مكالمة",
-    sendBooking:"📅 إرسال طلب الحجز",
-    bookings:"📋 الحجوزات",
-    back:"← العودة للدردشة",
-    noUsers:"لا يوجد مستخدمون متاحون حاليًا",
-    noBookings:"لا توجد حجوزات",
-    accepted:"تم قبول الحجز",
-    rejected:"تم رفض الحجز",
-    request:"طلب مكالمة فيديو",
-    incoming:"طلب مكالمة فيديو من"
-  },
-
-  en:{
-    title:"💬 Sakaker Chat",
-    subtitle:"Sakaker Live Chat",
-    login:"✨ Welcome to Sakaker Chat",
-    name:"Enter your name",
-    loginBtn:"Enter Chat",
-    general:"💬 General",
-    games:"🎮 Games",
-    music:"🎵 Music",
-    video:"📹",
-    videoTitle:"📹 Video Calls",
-    choose:"👥 Choose a person",
-    booking:"📅 Book a Call",
-    sendBooking:"📅 Send Booking Request",
-    bookings:"📋 Bookings",
-    back:"← Back to Chat",
-    noUsers:"No users available",
-    noBookings:"No bookings",
-    accepted:"Booking accepted",
-    rejected:"Booking rejected",
-    request:"Video Call Request",
-    incoming:"Video call request from"
-  }
-
-};
-
-
-function updateLanguage(){
-
-  const t =
-    translations[language];
-
-  document.documentElement.lang =
-    language;
-
-  document.getElementById(
-    "sakakerChatTitle"
-  ).textContent = t.title;
-
-  document.getElementById(
-    "sakakerChatSubtitle"
-  ).textContent = t.subtitle;
-
-  document.getElementById(
-    "sakakerLoginTitle"
-  ).textContent = t.login;
-
-  nameInput.placeholder =
-    t.name;
-
-  loginBtn.textContent =
-    t.loginBtn;
-
-  document.querySelector(
-    '[data-room="general"]'
-  ).textContent = t.general;
-
-  document.querySelector(
-    '[data-room="games"]'
-  ).textContent = t.games;
-
-  document.querySelector(
-    '[data-room="music"]'
-  ).textContent = t.music;
-
-  messageInput.placeholder =
-    t.placeholder;
-
-  videoOpenBtn.textContent =
-    t.video;
-
-  document.querySelector(
-    "#sakakerVideoPanel h3"
-  ).textContent =
-    t.videoTitle;
-
-  document.querySelector(
-    ".sakakerClosePanel"
-  ).textContent =
-    t.back;
-
-  languageBtn.textContent =
-    language === "ar" ? "EN" : "AR";
-
-  if(language === "ar"){
-
-    document.getElementById(
-      "sakakerChatApp"
-    ).style.direction = "rtl";
-
-  }else{
-
-    document.getElementById(
-      "sakakerChatApp"
-    ).style.direction = "ltr";
-
-  }
-}
-
-
-/* =========================================================
-   OPEN / CLOSE
-   ========================================================= */
-
-chatOpen.onclick = () => {
-
-  chatWindow.style.display = "block";
-
-};
-
-chatClose.onclick = () => {
-
-  chatWindow.style.display = "none";
-
-};
-
-videoOpenBtn.onclick = () => {
-
-  videoPanel.style.display = "block";
-
-  loadTargetUsers();
-
-};
-
-videoPanelClose.onclick = () => {
-
-  videoPanel.style.display = "none";
-
-};
-
-languageBtn.onclick = () => {
-
-  language =
-    language === "ar"
-      ? "en"
-      : "ar";
-
-  updateLanguage();
-
-};
-
-
-/* =========================================================
-   LOGIN
-   ========================================================= */
-
-loginBtn.onclick = async () => {
-
-  const enteredName =
-    nameInput.value.trim();
-
-  if(!enteredName){
-
-    alert(
-      language === "ar"
-        ? "اكتب اسمك أولاً"
-        : "Enter your name first"
-    );
-
-    return;
-  }
-
-  if(enteredName.length > 20){
-
-    alert(
-      language === "ar"
-        ? "الاسم يجب ألا يتجاوز 20 حرفًا"
-        : "Name must be 20 characters or less"
-    );
-
-    return;
-  }
-
-  try{
-
-    if(!sakakerAuth.currentUser){
-
-      await signInAnonymously(
-        sakakerAuth
-      );
-
-    }
-
-    sakakerName =
-      enteredName;
-
-    localStorage.setItem(
-      "sakaker_chat_name",
-      sakakerName
-    );
-
-    startUser();
-
-  }catch(error){
-
-    console.error(error);
-
-    alert(
-      "Firebase Login Error: " +
-      error.message
-    );
-
-  }
-
-};
-
-
-/* =========================================================
-   AUTH
-   ========================================================= */
-
-onAuthStateChanged(
-  sakakerAuth,
-  user => {
-
-    if(user){
-
-      sakakerUser =
-        user;
-
-      const savedName =
-        localStorage.getItem(
-          "sakaker_chat_name"
-        );
-
-      if(savedName){
-
-        sakakerName =
-          savedName;
-
-        startUser();
-
-      }
-
-    }
-
-  }
-);
-
-
-/* =========================================================
-   START USER
-   ========================================================= */
-
-async function startUser(){
-
-  if(!sakakerUser || !sakakerName)
-    return;
-
-  loginBox.style.display =
-    "none";
-
-  chatMain.style.display =
-    "flex";
-
-  currentUser.textContent =
-    "👤 " + sakakerName;
-
-  const userRef =
-    ref(
-      sakakerDB,
-      "onlineUsers/" +
-      sakakerUser.uid
-    );
-
-  await set(
-    userRef,
-    {
-      uid:
-        sakakerUser.uid,
-
-      name:
-        sakakerName,
-
-      timestamp:
-        Date.now()
-    }
-  );
-
-  onDisconnect(
-    userRef
-  ).remove();
-
-  loadMessages();
-
-  loadOnlineUsers();
-
-  loadBookings();
-
-}
-
-
-/* =========================================================
-   ROOM
-   ========================================================= */
-
-document.querySelectorAll(
-  ".sakakerRoomBtn"
-).forEach(btn => {
-
-  btn.onclick = () => {
-
-    document.querySelectorAll(
-      ".sakakerRoomBtn"
-    ).forEach(b =>
-      b.classList.remove("active")
-    );
-
-    btn.classList.add("active");
-
-    currentRoom =
-      btn.dataset.room;
-
-    loadMessages();
-
-  };
-
-});
-
-
-/* =========================================================
-   LOAD MESSAGES
-   ========================================================= */
-
-function loadMessages(){
-
-  if(!sakakerUser)
-    return;
-
-  const messagesRef =
-    query(
-      ref(
-        sakakerDB,
-        "publicChat/" +
-        currentRoom
-      ),
-      orderByChild("timestamp"),
-      limitToLast(100)
-    );
-
-  onValue(
-    messagesRef,
-    snapshot => {
-
-      messagesBox.innerHTML = "";
-
-      const data =
-        snapshot.val();
-
-      if(!data)
-        return;
-
-      Object.values(data)
-        .forEach(message => {
-
-          renderMessage(
-            message
-          );
-
-        });
-
-      messagesBox.scrollTop =
-        messagesBox.scrollHeight;
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-   RENDER MESSAGE
-   ========================================================= */
-
-function renderMessage(message){
-
-  const div =
-    document.createElement("div");
-
-  div.className =
-    "sakakerMessage";
-
-  if(
-    sakakerUser &&
-    message.uid === sakakerUser.uid
-  ){
-
-    div.classList.add("mine");
-
-  }
-
-  const name =
-    document.createElement("div");
-
-  name.className =
-    "sakakerMessageName";
-
-  name.textContent =
-    message.name;
-
-  const text =
-    document.createElement("div");
-
-  text.className =
-    "sakakerMessageText";
-
-  text.textContent =
-    message.text;
-
-  const time =
-    document.createElement("div");
-
-  time.className =
-    "sakakerMessageTime";
-
-  time.textContent =
-    new Date(
-      message.timestamp
-    ).toLocaleTimeString(
-      language === "ar"
-        ? "ar-SA"
-        : "en-US",
-      {
-        hour:"2-digit",
-        minute:"2-digit"
-      }
-    );
-
-  div.appendChild(name);
-
-  div.appendChild(text);
-
-  div.appendChild(time);
-
-  messagesBox.appendChild(div);
-
-}
-
-
-/* =========================================================
-   SEND MESSAGE
-   ========================================================= */
-
-messageForm.onsubmit =
-async event => {
-
-  event.preventDefault();
-
-  const text =
-    messageInput.value.trim();
-
-  if(!text || !sakakerUser)
-    return;
-
-  if(text.length > 200)
-    return;
-
-  const messageRef =
-    push(
-      ref(
-        sakakerDB,
-        "publicChat/" +
-        currentRoom
-      )
-    );
-
-  try{
-
-    await set(
-      messageRef,
-      {
-        name:
-          sakakerName,
-
-        text:
-          text,
-
-        uid:
-          sakakerUser.uid,
-
-        timestamp:
-          Date.now()
-      }
-    );
-
-    messageInput.value = "";
-
-  }catch(error){
-
-    console.error(error);
-
-    alert(
-      language === "ar"
-        ? "تعذر إرسال الرسالة"
-        : "Message could not be sent"
-    );
-
-  }
-
-};
-
-
-/* =========================================================
-   ONLINE USERS
-   ========================================================= */
-
-function loadOnlineUsers(){
-
-  const usersRef =
-    ref(
-      sakakerDB,
-      "onlineUsers"
-    );
-
-  onValue(
-    usersRef,
-    snapshot => {
-
-      onlineUsersBox.innerHTML = "";
-
-      const users =
-        snapshot.val() || {};
-
-      const list =
-        Object.values(users);
-
-      onlineCount.textContent =
-        "🟢 " + list.length;
-
-      list.forEach(user => {
-
-        if(
-          !sakakerUser ||
-          user.uid === sakakerUser.uid
-        )
-          return;
-
-        const div =
-          document.createElement("div");
-
-        div.className =
-          "sakakerOnlineUser";
-
-        div.dataset.uid =
-          user.uid;
-
-        div.dataset.name =
-          user.name;
-
-        div.innerHTML =
-          `<span class="sakakerOnlineDot"></span>`;
-
-        const name =
-          document.createElement("span");
-
-        name.textContent =
-          user.name;
-
-        div.appendChild(name);
-
-        onlineUsersBox.appendChild(div);
-
-      });
-
-      loadTargetUsers();
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-   VIDEO TARGET USERS
-   ========================================================= */
-
-function loadTargetUsers(){
-
-  if(!sakakerUser)
-    return;
-
-  const usersRef =
-    ref(
-      sakakerDB,
-      "onlineUsers"
-    );
-
-  onValue(
-    usersRef,
-    snapshot => {
-
-      targetUsersBox.innerHTML = "";
-
-      const users =
-        snapshot.val() || {};
-
-      const list =
-        Object.values(users);
-
-      const others =
-        list.filter(
-          user =>
-            user.uid !==
-            sakakerUser.uid
-        );
-
-      if(!others.length){
-
-        targetUsersBox.textContent =
-          translations[language].noUsers;
-
-        return;
-
-      }
-
-      others.forEach(user => {
-
-        const div =
-          document.createElement("div");
-
-        div.className =
-          "sakakerTargetUser";
-
-        if(
-          selectedTargetUid ===
-          user.uid
-        ){
-
-          div.classList.add(
-            "selected"
-          );
-
-        }
-
-        div.innerHTML =
-          `
-          <span>
-            🟢 ${escapeHtml(user.name)}
-          </span>
-          <span>📹</span>
-          `;
-
-        div.onclick = () => {
-
-          document
-            .querySelectorAll(
-              ".sakakerTargetUser"
-            )
-            .forEach(x =>
-              x.classList.remove(
-                "selected"
-              )
-            );
-
-          div.classList.add(
-            "selected"
-          );
-
-          selectedTargetUid =
-            user.uid;
-
-          selectedTargetName =
-            user.name;
-
-        };
-
-        targetUsersBox.appendChild(div);
-
-      });
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-   CREATE BOOKING
-   ========================================================= */
-
-createBooking.onclick =
-async () => {
-
-  if(!selectedTargetUid){
-
-    alert(
-      language === "ar"
-        ? "اختر مستخدمًا أولاً"
-        : "Choose a user first"
-    );
-
-    return;
-  }
-
-  if(!bookingTime.value){
-
-    alert(
-      language === "ar"
-        ? "اختر موعد المكالمة"
-        : "Choose a call time"
-    );
-
-    return;
-  }
-
-  const selectedTime =
-    new Date(
-      bookingTime.value
-    ).getTime();
-
-  if(
-    !Number.isFinite(
-      selectedTime
-    )
-  ){
-
-    return;
-
-  }
-
-  if(
-    selectedTime <
-    Date.now() + 30000
-  ){
-
-    alert(
-      language === "ar"
-        ? "اختر وقتًا مستقبليًا"
-        : "Choose a future time"
-    );
-
-    return;
-  }
-
-  const bookingRef =
-    push(
-      ref(
-        sakakerDB,
-        "videoBookings"
-      )
-    );
-
-  const bookingId =
-    bookingRef.key;
-
-  const booking = {
-
-    bookingId:
-      bookingId,
-
-    callerUid:
-      sakakerUser.uid,
-
-    callerName:
-      sakakerName,
-
-    targetUid:
-      selectedTargetUid,
-
-    targetName:
-      selectedTargetName,
-
-    startTime:
-      selectedTime,
-
-    duration:
-      300000,
-
-    status:
-      "pending",
-
-    createdAt:
-      Date.now()
-
-  };
-
-  try{
-
-    await set(
-      bookingRef,
-      booking
-    );
-
-    alert(
-      language === "ar"
-        ? "تم إرسال طلب الحجز"
-        : "Booking request sent"
-    );
-
-    bookingTime.value = "";
-
-  }catch(error){
-
-    console.error(error);
-
-    alert(
-      "Booking Error: " +
-      error.message
-    );
-
-  }
-
-};
-
-
-/* =========================================================
-   LOAD BOOKINGS
-   ========================================================= */
-
-function loadBookings(){
-
-  const bookingsRef =
-    ref(
-      sakakerDB,
-      "videoBookings"
-    );
-
-  onValue(
-    bookingsRef,
-    snapshot => {
-
-      const data =
-        snapshot.val() || {};
-
-      currentBookings =
-        data;
-
-      renderBookings(
-        data
-      );
-
-      checkIncomingBookings(
-        data
-      );
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-   RENDER BOOKINGS
-   ========================================================= */
-
-function renderBookings(data){
-
-  bookingsList.innerHTML = "";
-
-  const list =
-    Object.values(data)
-      .filter(
-        booking =>
-          booking.callerUid ===
-            sakakerUser.uid ||
-          booking.targetUid ===
-            sakakerUser.uid
-      )
-      .sort(
-        (a,b) =>
-          a.startTime -
-          b.startTime
-      );
-
-  if(!list.length){
-
-    bookingsList.textContent =
-      translations[language].noBookings;
-
-    return;
-
-  }
-
-  list.forEach(
-    booking => {
-
-      const div =
-        document.createElement("div");
-
-      div.className =
-        "sakakerBooking";
-
-      const isCaller =
-        booking.callerUid ===
-        sakakerUser.uid;
-
-      const otherName =
-        isCaller
-          ? booking.targetName
-          : booking.callerName;
-
-      const date =
-        new Date(
-          booking.startTime
-        ).toLocaleString(
-          language === "ar"
-            ? "ar-SA"
-            : "en-US"
-        );
-
-      let statusText =
-        booking.status;
-
-      if(
-        booking.status ===
-        "pending"
-      ){
-
-        statusText =
-          language === "ar"
-            ? "⏳ بانتظار الرد"
-            : "⏳ Pending";
-
-      }else if(
-        booking.status ===
-        "accepted"
-      ){
-
-        statusText =
-          language === "ar"
-            ? "✅ مقبول"
-            : "✅ Accepted";
-
-      }else if(
-        booking.status ===
-        "rejected"
-      ){
-
-        statusText =
-          language === "ar"
-            ? "❌ مرفوض"
-            : "❌ Rejected";
-
-      }else if(
-        booking.status ===
-        "completed"
-      ){
-
-        statusText =
-          language === "ar"
-            ? "✔️ مكتمل"
-            : "✔️ Completed";
-
-      }else if(
-        booking.status ===
-        "cancelled"
-      ){
-
-        statusText =
-          language === "ar"
-            ? "🚫 ملغي"
-            : "🚫 Cancelled";
-
-      }
-
-      div.innerHTML =
-        `
-        <div>
-          <strong>
-            📹 ${escapeHtml(otherName)}
-          </strong>
-        </div>
-
-        <div>
-          ${escapeHtml(date)}
-        </div>
-
-        <div>
-          ⏱️ 5 ${language === "ar" ? "دقائق" : "minutes"}
-        </div>
-
-        <div>
-          ${statusText}
-        </div>
-        `;
-
-
-      /* قبول / رفض */
-
-      if(
-        booking.targetUid ===
-        sakakerUser.uid &&
-        booking.status ===
-        "pending"
-      ){
-
-        const buttons =
-          document.createElement("div");
-
-        buttons.className =
-          "sakakerBookingButtons";
-
-        const accept =
-          document.createElement("button");
-
-        accept.className =
-          "sakakerAccept";
-
-        accept.textContent =
-          language === "ar"
-            ? "قبول"
-            : "Accept";
-
-        accept.onclick =
-          () =>
-            updateBookingStatus(
-              booking.bookingId,
-              "accepted"
-            );
-
-
-        const reject =
-          document.createElement("button");
-
-        reject.className =
-          "sakakerReject";
-
-        reject.textContent =
-          language === "ar"
-            ? "رفض"
-            : "Reject";
-
-        reject.onclick =
-          () =>
-            updateBookingStatus(
-              booking.bookingId,
-              "rejected"
-            );
-
-        buttons.appendChild(
-          accept
-        );
-
-        buttons.appendChild(
-          reject
-        );
-
-        div.appendChild(
-          buttons
-        );
-
-      }
-
-
-      /* زر الاتصال */
-
-      if(
-        booking.status ===
-        "accepted"
-      ){
-
-        const now =
-          Date.now();
-
-        const end =
-          booking.startTime +
-          booking.duration;
-
-        const callButton =
-          document.createElement("button");
-
-        callButton.className =
-          "sakakerVideoAction";
-
-        callButton.textContent =
-          "📹 " +
-          (
-            language === "ar"
-              ? "دخول المكالمة"
-              : "Join Call"
-          );
-
-        callButton.onclick =
-          () =>
-            startCallFromBooking(
-              booking
-            );
-
-        if(
-          now >
-          end
-        ){
-
-          callButton.disabled =
-            true;
-
-          callButton.style.opacity =
-            ".4";
-
-        }
-
-        div.appendChild(
-          callButton
-        );
-
-      }
-
-      bookingsList.appendChild(
-        div
-      );
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-   UPDATE BOOKING
-   ========================================================= */
-
-async function updateBookingStatus(
-  bookingId,
-  status
-){
-
-  try{
-
-    await update(
-      ref(
-        sakakerDB,
-        "videoBookings/" +
-        bookingId
-      ),
-      {
-        status:
-          status
-      }
-    );
-
-  }catch(error){
-
-    console.error(error);
-
-    alert(
-      error.message
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   INCOMING BOOKING NOTICE
-   ========================================================= */
-
-let lastNoticeBooking = null;
-
-function checkIncomingBookings(
-  data
-){
-
-  if(!sakakerUser)
-    return;
-
-  const incoming =
-    Object.values(data)
-      .filter(
-        booking =>
-          booking.targetUid ===
-            sakakerUser.uid &&
-          booking.status ===
-            "pending"
-      )
-      .sort(
-        (a,b) =>
-          b.createdAt -
-          a.createdAt
-      );
-
-  if(!incoming.length){
-
-    bookingNotice.style.display =
-      "none";
-
-    return;
-
-  }
-
-  const booking =
-    incoming[0];
-
-  if(
-    lastNoticeBooking ===
-    booking.bookingId
-  )
-    return;
-
-  lastNoticeBooking =
-    booking.bookingId;
-
-  bookingNoticeText.textContent =
-    translations[language].incoming +
-    " " +
-    booking.callerName;
-
-  bookingNotice.style.display =
-    "block";
-
-  noticeAccept.onclick =
-    async () => {
-
-      await updateBookingStatus(
-        booking.bookingId,
-        "accepted"
-      );
-
-      bookingNotice.style.display =
-        "none";
-
-    };
-
-  noticeReject.onclick =
-    async () => {
-
-      await updateBookingStatus(
-        booking.bookingId,
-        "rejected"
-      );
-
-      bookingNotice.style.display =
-        "none";
-
-    };
-
-}
-
-
-/* =========================================================
-   WEBRTC CONFIG
-   ========================================================= */
-
-const rtcConfig = {
-
-  iceServers:[
-    {
-      urls:
-        "stun:stun.l.google.com:19302"
-    },
-
-    {
-      urls:
-        "stun:stun1.l.google.com:19302"
-    }
-  ]
-
-};
-
-
-/* =========================================================
-   START CALL
-   ========================================================= */
-
-async function startCallFromBooking(
-  booking
-){
-
-  const now =
-    Date.now();
-
-  const end =
-    booking.startTime +
-    booking.duration;
-
-  if(
-    now <
-    booking.startTime
-  ){
-
-    const seconds =
-      Math.ceil(
-        (booking.startTime -
-         now) / 1000
-      );
-
-    alert(
-      language === "ar"
-        ? "المكالمة تبدأ بعد " +
-          seconds +
-          " ثانية"
-        : "Call starts in " +
-          seconds +
-          " seconds"
-    );
-
-    return;
-  }
-
-  if(
-    now >= end
-  ){
-
-    alert(
-      language === "ar"
-        ? "انتهى وقت الحجز"
-        : "Booking time has ended"
-    );
-
-    return;
-  }
-
-  currentBookingId =
-    booking.bookingId;
-
-  currentCallId =
-    booking.bookingId;
-
-  await openVideoInterface(
-    booking
-  );
-
-}
-
-
-/* =========================================================
-   OPEN VIDEO
-   ========================================================= */
-
-async function openVideoInterface(
-  booking
-){
-
-  videoPanel.style.display =
-    "none";
-
-  videoCall.style.display =
-    "block";
-
-  callStatus.textContent =
-    language === "ar"
-      ? "جاري تشغيل الكاميرا..."
-      : "Starting camera...";
-
-  try{
-
-    localStream =
-      await navigator.mediaDevices
-        .getUserMedia({
-          video:true,
-          audio:true
-        });
-
-    localVideo.srcObject =
-      localStream;
-
-    peerConnection =
-      new RTCPeerConnection(
-        rtcConfig
-      );
-
-    localStream
-      .getTracks()
-      .forEach(
-        track => {
-
-          peerConnection.addTrack(
-            track,
-            localStream
-          );
-
-        }
-      );
-
-
-    peerConnection.ontrack =
-      event => {
-
-        if(
-          event.streams &&
-          event.streams[0]
-        ){
-
-          remoteVideo.srcObject =
-            event.streams[0];
-
-        }
-
-        callStatus.style.display =
-          "none";
-
-      };
-
-
-    peerConnection.onicecandidate =
-      async event => {
-
-        if(!event.candidate)
-          return;
-
-        const branch =
-          sakakerUser.uid ===
-          booking.callerUid
-            ? "callerCandidates"
-            : "calleeCandidates";
-
-        await push(
-          ref(
-            sakakerDB,
-            "videoCalls/" +
-            currentCallId +
-            "/" +
-            branch
-          ),
-          event.candidate.toJSON()
-        );
-
-      };
-
-
-    await set(
-      ref(
-        sakakerDB,
-        "videoCalls/" +
-        currentCallId
-      ),
-      {
-        callerUid:
-          booking.callerUid,
-
-        targetUid:
-          booking.targetUid
-      }
-    );
-
-
-    setupCallSignaling(
-      booking
-    );
-
-
-    if(
-      sakakerUser.uid ===
-      booking.callerUid
-    ){
-
-      const offer =
-        await peerConnection
-          .createOffer();
-
-      await peerConnection
-        .setLocalDescription(
-          offer
-        );
-
-      await update(
-        ref(
-          sakakerDB,
-          "videoCalls/" +
-          currentCallId
-        ),
-        {
-          offer:{
-            type:
-              offer.type,
-
-            sdp:
-              offer.sdp
-          }
-        }
-      );
-
-    }
-
-
-    startFiveMinuteTimer(
-      booking
-    );
-
-  }catch(error){
-
-    console.error(error);
-
-    callStatus.textContent =
-      language === "ar"
-        ? "تعذر تشغيل الكاميرا"
-        : "Camera could not start";
-
-    alert(
-      language === "ar"
-        ? "تأكد من السماح للمتصفح بالكاميرا والمايكروفون وأن الموقع يعمل عبر HTTPS."
-        : "Allow camera/microphone and make sure the site uses HTTPS."
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   SIGNALING
-   ========================================================= */
-
-function setupCallSignaling(
-  booking
-){
-
-  const callRef =
-    ref(
-      sakakerDB,
-      "videoCalls/" +
-      currentCallId
-    );
-
-  onValue(
-    callRef,
-    async snapshot => {
-
-      const call =
-        snapshot.val();
-
-      if(!call || !peerConnection)
-        return;
-
-
-      /* المتصل يستقبل answer */
-
-      if(
-        sakakerUser.uid ===
-          booking.callerUid &&
-        call.answer &&
-        !peerConnection
-          .currentRemoteDescription
-      ){
-
-        try{
-
-          await peerConnection
-            .setRemoteDescription(
-              new RTCSessionDescription(
-                call.answer
-              )
-            );
-
-        }catch(error){
-
-          console.error(error);
-
-        }
-
-      }
-
-
-      /* المستقبل يستقبل offer */
-
-      if(
-        sakakerUser.uid ===
-          booking.targetUid &&
-        call.offer &&
-        !peerConnection
-          .currentRemoteDescription
-      ){
-
-        try{
-
-          await peerConnection
-            .setRemoteDescription(
-              new RTCSessionDescription(
-                call.offer
-              )
-            );
-
-          const answer =
-            await peerConnection
-              .createAnswer();
-
-          await peerConnection
-            .setLocalDescription(
-              answer
-            );
-
-          await update(
-            callRef,
-            {
-              answer:{
-                type:
-                  answer.type,
-
-                sdp:
-                  answer.sdp
-              }
-            }
-          );
-
-        }catch(error){
-
-          console.error(error);
-
-        }
-
-      }
-
-    }
-  );
-
-
-  /* ICE من الطرف الآخر */
-
-  const remoteBranch =
-    sakakerUser.uid ===
-    booking.callerUid
-      ? "calleeCandidates"
-      : "callerCandidates";
-
-
-  onValue(
-    ref(
-      sakakerDB,
-      "videoCalls/" +
-      currentCallId +
-      "/" +
-      remoteBranch
-    ),
-    snapshot => {
-
-      const data =
-        snapshot.val();
-
-      if(!data)
-        return;
-
-      Object.values(data)
-        .forEach(
-          async candidate => {
-
-            try{
-
-              await peerConnection
-                ?.addIceCandidate(
-                  new RTCIceCandidate(
-                    candidate
-                  )
-                );
-
-            }catch(error){
-
-              console.error(
-                "ICE error",
-                error
-              );
-
-            }
-
-          }
-        );
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-   FIVE MINUTE TIMER
-   ========================================================= */
-
-function startFiveMinuteTimer(
-  booking
-){
-
-  clearInterval(
-    callTimerInterval
-  );
-
-  const endTime =
-    booking.startTime +
-    booking.duration;
-
-
-  function tick(){
-
-    const remaining =
-      Math.max(
-        0,
-        endTime -
-        Date.now()
-      );
-
-    const seconds =
-      Math.ceil(
-        remaining / 1000
-      );
-
-    const minutes =
-      Math.floor(
-        seconds / 60
-      );
-
-    const secs =
-      seconds % 60;
-
-    callTimer.textContent =
-      String(minutes)
-        .padStart(2,"0") +
-      ":" +
-      String(secs)
-        .padStart(2,"0");
-
-
-    if(
-      remaining <= 0
-    ){
-
-      clearInterval(
-        callTimerInterval
-      );
-
-      finishCall();
-
-    }
-
-  }
-
-  tick();
-
-  callTimerInterval =
-    setInterval(
-      tick,
-      500
-    );
-
-}
-
-
-/* =========================================================
-   MUTE
-   ========================================================= */
-
-muteBtn.onclick = () => {
-
-  if(!localStream)
-    return;
-
-  const audioTracks =
-    localStream.getAudioTracks();
-
-  audioTracks.forEach(
-    track => {
-
-      track.enabled =
-        !track.enabled;
-
-      isMuted =
-        !track.enabled;
-
-    }
-  );
-
-  muteBtn.textContent =
-    isMuted
-      ? "🔇"
-      : "🎙️";
-
-};
-
-
-/* =========================================================
-   CAMERA
-   ========================================================= */
-
-cameraBtn.onclick = () => {
-
-  if(!localStream)
-    return;
-
-  const videoTracks =
-    localStream.getVideoTracks();
-
-  videoTracks.forEach(
-    track => {
-
-      track.enabled =
-        !track.enabled;
-
-      isCameraOff =
-        !track.enabled;
-
-    }
-  );
-
-  cameraBtn.textContent =
-    isCameraOff
-      ? "🚫"
-      : "📷";
-
-};
-
-
-/* =========================================================
-   END CALL
-   ========================================================= */
-
-endCallBtn.onclick =
-() => {
-
-  finishCall();
-
-};
-
-
-/* =========================================================
-   FINISH CALL
-   ========================================================= */
-
-async function finishCall(){
-
-  clearInterval(
-    callTimerInterval
-  );
-
-  callTimerInterval =
-    null;
-
-
-  if(localStream){
-
-    localStream
-      .getTracks()
-      .forEach(
-        track =>
-          track.stop()
-      );
-
-    localStream =
-      null;
-
-  }
-
-
-  if(peerConnection){
-
-    peerConnection.close();
-
-    peerConnection =
-      null;
-
-  }
-
-
-  remoteVideo.srcObject =
-    null;
-
-  localVideo.srcObject =
-    null;
-
-  videoCall.style.display =
-    "none";
-
-
-  if(
-    currentBookingId
-  ){
-
-    try{
-
-      await update(
-        ref(
-          sakakerDB,
-          "videoBookings/" +
-          currentBookingId
-        ),
-        {
-          status:
-            "completed"
-        }
-      );
-
-    }catch(error){
-
-      console.error(error);
-
-    }
-
-  }
-
-  currentCallId =
-    null;
-
-  currentBookingId =
-    null;
-
-}
-
-
-/* =========================================================
-   ESCAPE HTML
-   ========================================================= */
-
-function escapeHtml(value){
-
-  const div =
-    document.createElement("div");
-
-  div.textContent =
-    value ?? "";
-
-  return div.innerHTML;
-
-}
-
-
-/* =========================================================
-   DEFAULT LANGUAGE
-   ========================================================= */
-
-updateLanguage();
-
-
-/* =========================================================
-   RESTORE SAVED NAME
-   ========================================================= */
-
-const savedName =
-  localStorage.getItem(
-    "sakaker_chat_name"
-  );
-
-if(savedName){
-
-  nameInput.value =
-    savedName;
-
-}
-
-
-/* =========================================================
-   CLEANUP WHEN PAGE CLOSES
-   ========================================================= */
-
-window.addEventListener(
-  "beforeunload",
-  () => {
-
-    if(
-      sakakerUser
-    ){
-
-      remove(
-        ref(
-          sakakerDB,
-          "onlineUsers/" +
-          sakakerUser.uid
-        )
-      );
-
-    }
-
-    if(localStream){
-
-      localStream
-        .getTracks()
-        .forEach(
-          track =>
-            track.stop()
-        );
-
-    }
-
-  }
-);
-
-</script>
-<!-- 🐦 صوت الطيور -->
-<audio id="birdAudio" loop preload="auto">
-  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_6b0d7b5c5f.mp3" type="audio/mpeg">
+<!-- 🎵 صوت تغريد الطيور وخرير الماء -->
+<audio id="bird-sound" loop playsinline>
+  <source src="https://www.orangefreesounds.com/wp-content/uploads/2016/04/Birds-chirping-and-water-flowing.mp3" type="audio/mp3">
+  متصفحك لا يدعم تشغيل الصوت.
 </audio>
 
-<button id="birdBtn" title="صوت الطيور">🐦</button>
-
-<style>
-#birdBtn{
-position:fixed;
-right:410px;
-bottom:600px;
-width:42px;
-height:42px;
-border-radius:50%;
-border:1px solid #FFD700;
-background:linear-gradient(145deg,#064d3b,#087f63);
-color:#FFD700;
-font-size:21px;
-cursor:pointer;
-z-index:999999;
-box-shadow:0 0 12px #00ffcc;
-}
-</style>
-
 <script>
-(function(){
+const birdBtn = document.getElementById('bird-sound-btn');
+const birdAudio = document.getElementById('bird-sound');
 
-const audio=document.getElementById("birdAudio");
-const btn=document.getElementById("birdBtn");
+// حالة أولية
+birdBtn.textContent = "🐦";
 
-if(!audio || !btn) return;
-
-audio.volume=0.20;
-
-btn.onclick=function(e){
-
-e.stopPropagation();
-
-if(audio.paused){
-
-audio.play().then(function(){
-btn.innerHTML="🔊";
-}).catch(function(error){
-console.log("Audio error:",error);
+// عند النقر على الأيقونة
+birdBtn.addEventListener('click', async () => {
+  try {
+    if (birdAudio.paused) {
+      await birdAudio.play();
+      birdBtn.textContent = "🔊";
+      birdBtn.style.boxShadow = "0 0 35px rgba(0,255,200,1), 0 0 70px rgba(0,255,200,0.6)";
+      birdBtn.style.transform = "scale(1.1)";
+    } else {
+      birdAudio.pause();
+      birdBtn.textContent = "🐦";
+      birdBtn.style.boxShadow = "0 0 25px rgba(0,255,200,0.9), 0 0 50px rgba(0,255,200,0.4)";
+      birdBtn.style.transform = "scale(1)";
+    }
+  } catch (err) {
+    console.error("حدث خطأ أثناء تشغيل الصوت:", err);
+    alert("قد يمنع المتصفح التشغيل التلقائي. حاول النقر مرة أخرى.");
+  }
 });
-
-}else{
-
-audio.pause();
-btn.innerHTML="🐦";
-
-}
-
-};
-
-})();
 </script>
 <!-- =========================================================
      Emerald Music Overlay END
