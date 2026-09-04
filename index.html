@@ -1,291 +1,762 @@
 
 
+<!-- =========================================================
+     🔒 SAKAKER LOGIN SYSTEM
+     صفحة تسجيل الدخول
+========================================================= -->
+
 <!-- 🔒 منع ظهور محتوى الموقع قبل تسجيل الدخول -->
 <style>
 body.locked > *:not(#loginOverlay){
-  visibility:hidden;
+    visibility:hidden !important;
 }
 
-/* 🌐 زر اللغة */
-#loginLanguageButton{
-  position:absolute;
-  top:12px;
-  left:12px;
-  padding:7px 12px;
-  border:1px solid #00ffcc;
-  border-radius:20px;
-  background:#ffffff18;
-  color:#00ffcc;
-  cursor:pointer;
-  font-weight:bold;
-  font-family:Tajawal,Arial,sans-serif;
-}
+/* =========================================================
+   🌌 صفحة الدخول
+========================================================= */
 
-/* 🔐 نافذة الدخول */
 #loginOverlay{
-  direction:rtl;
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:999999;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    overflow-y:auto;
+    overflow-x:hidden;
+
+    direction:rtl;
+
+    /* 🖼️ خلفية صفحة الدخول فقط */
+    background-image:
+        linear-gradient(
+            rgba(0,0,0,.30),
+            rgba(0,0,0,.55)
+        ),
+        url("https://github.com/sakakera-a11y/sakaker/blob/main/file_00000000a34081f4908563062166807a.png?raw=true");
+
+    background-size:cover;
+    background-position:center center;
+    background-repeat:no-repeat;
+
+    backdrop-filter:blur(2px);
+
+    box-sizing:border-box;
+    padding:30px 15px;
 }
+
+
+/* =========================================================
+   🪟 صندوق تسجيل الدخول
+========================================================= */
 
 #loginBox{
-  position:relative;
+    position:relative;
+
+    width:min(420px, 92%);
+    box-sizing:border-box;
+
+    padding:32px 28px 24px;
+
+    border-radius:26px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(0,0,0,.72),
+            rgba(0,25,22,.62)
+        );
+
+    border:1px solid rgba(0,255,204,.55);
+
+    box-shadow:
+        0 0 15px rgba(0,255,204,.25),
+        0 0 45px rgba(0,255,204,.18),
+        inset 0 0 30px rgba(0,255,204,.04);
+
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+
+    color:white;
+    text-align:center;
+
+    font-family:
+        Tajawal,
+        Tahoma,
+        Arial,
+        sans-serif;
+
+    animation:loginBoxShow .7s ease;
 }
 
-/* 👤 بيانات المستخدم */
+@keyframes loginBoxShow{
+    from{
+        opacity:0;
+        transform:translateY(25px) scale(.96);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
+
+
+/* =========================================================
+   🌐 زر اللغة
+========================================================= */
+
+#loginLanguageButton{
+    position:absolute;
+
+    top:15px;
+    left:15px;
+
+    min-width:92px;
+
+    padding:8px 14px;
+
+    border:1px solid #00ffcc;
+    border-radius:25px;
+
+    background:rgba(0,0,0,.38);
+
+    color:#00ffcc;
+
+    cursor:pointer;
+
+    font-size:14px;
+    font-weight:bold;
+
+    font-family:
+        Tajawal,
+        Tahoma,
+        Arial,
+        sans-serif;
+
+    transition:
+        .25s ease;
+
+    box-shadow:
+        0 0 10px rgba(0,255,204,.12);
+}
+
+#loginLanguageButton:hover{
+    background:#00ffcc;
+    color:#002b25;
+
+    box-shadow:
+        0 0 18px rgba(0,255,204,.65);
+
+    transform:translateY(-1px);
+}
+
+
+/* =========================================================
+   🔐 عنوان الدخول
+========================================================= */
+
+#loginTitle{
+    margin:18px 0 25px;
+
+    color:#00ffcc;
+
+    font-size:27px;
+
+    font-weight:800;
+
+    text-shadow:
+        0 0 10px rgba(0,255,204,.45);
+}
+
+
+/* =========================================================
+   📦 خانات الإدخال
+========================================================= */
+
+.loginInput{
+    width:100%;
+
+    height:52px;
+
+    box-sizing:border-box;
+
+    margin:8px 0;
+
+    padding:0 16px;
+
+    border-radius:14px;
+
+    border:1px solid rgba(255,255,255,.14);
+
+    outline:none;
+
+    background:
+        rgba(255,255,255,.10);
+
+    color:white;
+
+    font-size:15px;
+
+    font-family:
+        Tajawal,
+        Tahoma,
+        Arial,
+        sans-serif;
+
+    transition:
+        border-color .25s,
+        background .25s,
+        box-shadow .25s,
+        transform .25s;
+}
+
+.loginInput::placeholder{
+    color:rgba(255,255,255,.72);
+}
+
+.loginInput:focus{
+    background:
+        rgba(0,255,204,.09);
+
+    border-color:#00ffcc;
+
+    box-shadow:
+        0 0 0 3px rgba(0,255,204,.10),
+        0 0 15px rgba(0,255,204,.18);
+
+    transform:translateY(-1px);
+}
+
+
+/* =========================================================
+   🔘 الأزرار العامة
+========================================================= */
+
+.loginAction{
+    width:100%;
+
+    height:52px;
+
+    box-sizing:border-box;
+
+    margin-top:10px;
+
+    border:none;
+    border-radius:14px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    font-weight:800;
+
+    font-family:
+        Tajawal,
+        Tahoma,
+        Arial,
+        sans-serif;
+
+    transition:
+        .25s ease;
+}
+
+.loginAction:hover{
+    transform:translateY(-2px);
+}
+
+
+/* =========================================================
+   🟢 زر الدخول
+========================================================= */
+
+#loginButton{
+    background:
+        linear-gradient(
+            135deg,
+            #00ffcc,
+            #00d9ad
+        );
+
+    color:#00352c;
+
+    box-shadow:
+        0 5px 18px rgba(0,255,204,.22);
+}
+
+#loginButton:hover{
+    box-shadow:
+        0 8px 25px rgba(0,255,204,.42);
+}
+
+
+/* =========================================================
+   🔵 Google
+========================================================= */
+
+#googleButton{
+    background:
+        rgba(66,133,244,.92);
+
+    color:white;
+
+    box-shadow:
+        0 5px 15px rgba(0,0,0,.20);
+}
+
+#googleButton:hover{
+    background:#357ae8;
+
+    box-shadow:
+        0 8px 22px rgba(66,133,244,.35);
+}
+
+
+/* =========================================================
+   📝 إنشاء الحساب
+========================================================= */
+
+#signupButton{
+    background:
+        rgba(255,255,255,.07);
+
+    color:#00ffcc;
+
+    border:1px solid rgba(0,255,204,.65);
+}
+
+#signupButton:hover{
+    background:
+        rgba(0,255,204,.12);
+
+    box-shadow:
+        0 0 18px rgba(0,255,204,.15);
+}
+
+
+/* =========================================================
+   ❌ رسائل الخطأ
+========================================================= */
+
+#loginError{
+    min-height:22px;
+
+    margin:10px 0 4px;
+
+    color:#ff8d8d;
+
+    font-size:14px;
+
+    font-weight:bold;
+}
+
+
+/* =========================================================
+   © الحقوق
+========================================================= */
+
+#loginCopyright{
+    margin-top:22px;
+
+    padding-top:16px;
+
+    border-top:
+        1px solid
+        rgba(255,255,255,.13);
+
+    color:
+        rgba(255,255,255,.78);
+
+    font-size:13px;
+
+    line-height:1.9;
+}
+
+#loginCopyright .siteName{
+    color:#00ffcc;
+
+    font-weight:bold;
+}
+
+#loginCopyright .email{
+    color:#ffd700;
+
+    text-decoration:none;
+
+    transition:.2s;
+}
+
+#loginCopyright .email:hover{
+    color:white;
+
+    text-shadow:
+        0 0 10px #ffd700;
+}
+
+
+/* =========================================================
+   👤 بيانات المستخدم بعد الدخول
+========================================================= */
+
 #userProfile{
-  direction:rtl;
+    display:none;
+
+    position:fixed;
+
+    top:15px;
+    right:15px;
+
+    z-index:99999;
+
+    align-items:center;
+
+    gap:10px;
+
+    padding:10px 12px;
+
+    border-radius:18px;
+
+    background:
+        rgba(0,0,0,.78);
+
+    border:
+        1px solid
+        #00ffcc;
+
+    color:white;
+
+    font-family:
+        Tajawal,
+        Tahoma,
+        Arial,
+        sans-serif;
+
+    box-shadow:
+        0 0 18px
+        rgba(0,255,204,.18);
+
+    backdrop-filter:blur(10px);
 }
 
-/* 📱 الجوال */
-@media(max-width:480px){
-  #loginBox{
-    width:90% !important;
-    padding:20px !important;
-  }
+#userPhoto{
+    width:45px;
+    height:45px;
 
-  #userProfile{
-    top:10px !important;
-    right:10px !important;
-  }
+    border-radius:50%;
 
-  #userName{
-    max-width:100px;
+    border:2px solid gold;
+
+    object-fit:cover;
+}
+
+#userName{
+    max-width:180px;
+
     overflow:hidden;
+
     text-overflow:ellipsis;
+
     white-space:nowrap;
-  }
+}
 
-  #logoutText{
-    display:none;
-  }
 
-  #logoutButton{
-    width:42px;
-    height:42px;
-    padding:0 !important;
-    border-radius:50% !important;
-  }
+/* =========================================================
+   🚪 زر الخروج
+========================================================= */
+
+#logoutButton{
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    gap:5px;
+
+    min-width:70px;
+
+    height:38px;
+
+    padding:5px 12px;
+
+    border:1px solid gold;
+
+    border-radius:20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #fff3a0,
+            #ffd700,
+            #b8860b
+        );
+
+    color:#3a2900;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+#logoutButton:hover{
+    transform:scale(1.04);
+
+    box-shadow:
+        0 0 15px
+        rgba(255,215,0,.45);
+}
+
+
+/* =========================================================
+   📱 الجوال
+========================================================= */
+
+@media(max-width:600px){
+
+    #loginOverlay{
+        padding:
+            20px 10px;
+    }
+
+    #loginBox{
+        width:94%;
+
+        padding:
+            30px 18px 20px;
+
+        border-radius:22px;
+    }
+
+    #loginTitle{
+        font-size:23px;
+
+        margin-top:22px;
+    }
+
+    #loginLanguageButton{
+        top:12px;
+        left:12px;
+
+        min-width:82px;
+
+        padding:
+            7px 10px;
+
+        font-size:13px;
+    }
+
+    .loginInput,
+    .loginAction{
+        height:50px;
+    }
+
+    #userProfile{
+        top:10px;
+        right:10px;
+
+        max-width:
+            calc(100% - 20px);
+    }
+
+    #userName{
+        max-width:100px;
+    }
+
+    #logoutButton{
+        width:42px;
+        min-width:42px;
+
+        height:42px;
+
+        padding:0;
+
+        border-radius:50%;
+    }
+
+    #logoutText{
+        display:none;
+    }
+
+    #loginCopyright{
+        font-size:12px;
+    }
+}
+
+
+/* =========================================================
+   📱 شاشات صغيرة جدًا
+========================================================= */
+
+@media(max-width:360px){
+
+    #loginBox{
+        padding:
+            28px 14px 18px;
+    }
+
+    #loginTitle{
+        font-size:21px;
+    }
+
+    .loginInput,
+    .loginAction{
+        height:48px;
+
+        font-size:14px;
+    }
+
+    #loginCopyright{
+        margin-top:16px;
+    }
 }
 </style>
 
+
 <script>
+/* 🔒 قفل الموقع قبل تسجيل الدخول */
 document.body.classList.add("locked");
 </script>
 
 
-<!-- 🔒 نافذة الدخول -->
-<div id="loginOverlay" style="
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-display:flex;
-align-items:center;
-justify-content:center;
-z-index:999999;
-backdrop-filter:blur(5px);
-background:rgba(0,0,0,.35);
-">
+<!-- =========================================================
+     🔐 نافذة تسجيل الدخول
+========================================================= -->
 
-  <div id="loginBox" style="
-  background:rgba(0,0,0,.8);
-  padding:25px;
-  width:90%;
-  max-width:420px;
-  border-radius:18px;
-  text-align:center;
-  color:white;
-  font-family:Tajawal,Arial,sans-serif;
-  box-shadow:0 0 30px #00ffcc;
-  ">
+<div id="loginOverlay">
 
-    <!-- 🌐 تغيير اللغة -->
-    <button id="loginLanguageButton" type="button">
-      English
-    </button>
+    <div id="loginBox">
+
+        <!-- 🌐 اللغة -->
+        <button
+            id="loginLanguageButton"
+            type="button"
+        >
+            English
+        </button>
 
 
-    <!-- 🔐 العنوان -->
-    <h2 id="loginTitle" style="color:#00ffcc;margin-top:15px;">
-      🔐 تسجيل الدخول
-    </h2>
+        <!-- 🔐 العنوان -->
+        <h2 id="loginTitle">
+            🔐 تسجيل الدخول
+        </h2>
 
 
-    <!-- 📧 البريد -->
-    <input
-      id="emailInput"
-      type="email"
-      placeholder="📧 البريد الإلكتروني"
-      autocomplete="email"
-      style="
-      box-sizing:border-box;
-      width:100%;
-      padding:12px;
-      margin:8px 0;
-      border-radius:10px;
-      border:none;
-      background:#ffffff22;
-      color:white;
-      outline:none;
-      "
-    >
+        <!-- 📧 البريد -->
+        <input
+            id="emailInput"
+            class="loginInput"
+            type="email"
+            placeholder="📧 البريد الإلكتروني"
+            autocomplete="email"
+        >
 
 
-    <!-- 🔒 كلمة المرور -->
-    <input
-      id="passwordInput"
-      type="password"
-      placeholder="🔒 كلمة المرور"
-      autocomplete="current-password"
-      style="
-      box-sizing:border-box;
-      width:100%;
-      padding:12px;
-      margin:8px 0;
-      border-radius:10px;
-      border:none;
-      background:#ffffff22;
-      color:white;
-      outline:none;
-      "
-    >
+        <!-- 🔒 كلمة المرور -->
+        <input
+            id="passwordInput"
+            class="loginInput"
+            type="password"
+            placeholder="🔒 كلمة المرور"
+            autocomplete="current-password"
+        >
 
 
-    <!-- دخول -->
-    <button
-      id="loginButton"
-      style="
-      width:100%;
-      padding:12px;
-      margin-top:10px;
-      border:none;
-      border-radius:10px;
-      background:#00ffcc;
-      color:#00332b;
-      font-weight:bold;
-      cursor:pointer;
-      "
-    >
-      دخول
-    </button>
+        <!-- 🟢 دخول -->
+        <button
+            id="loginButton"
+            class="loginAction"
+            type="button"
+        >
+            دخول
+        </button>
 
 
-    <!-- Google -->
-    <button
-      id="googleButton"
-      style="
-      width:100%;
-      padding:12px;
-      margin-top:10px;
-      border:none;
-      border-radius:10px;
-      background:#4285F4;
-      color:white;
-      font-weight:bold;
-      cursor:pointer;
-      "
-    >
-      🔵 الدخول بواسطة Google
-    </button>
+        <!-- 🔵 Google -->
+        <button
+            id="googleButton"
+            class="loginAction"
+            type="button"
+        >
+            🔵 الدخول بواسطة Google
+        </button>
 
 
-    <!-- الخطأ -->
-    <div
-      id="loginError"
-      style="
-      color:#ff8888;
-      margin:10px;
-      min-height:20px;
-      "
-    ></div>
+        <!-- ❌ الخطأ -->
+        <div id="loginError"></div>
 
 
-    <!-- إنشاء حساب -->
-    <button
-      id="signupButton"
-      style="
-      width:100%;
-      padding:12px;
-      border-radius:10px;
-      background:#ffffff22;
-      color:white;
-      border:1px solid #00ffcc;
-      cursor:pointer;
-      "
-    >
-      📝 إنشاء حساب جديد
-    </button>
-
-  </div>
-</div>
+        <!-- 📝 إنشاء حساب -->
+        <button
+            id="signupButton"
+            class="loginAction"
+            type="button"
+        >
+            📝 إنشاء حساب جديد
+        </button>
 
 
+        <!-- © الحقوق -->
+        <div id="loginCopyright">
 
-<!-- 👤 بيانات المستخدم -->
-<div id="userProfile" style="
-display:none;
-position:fixed;
-top:15px;
-right:15px;
-z-index:99999;
-background:rgba(0,0,0,.75);
-padding:10px;
-border-radius:15px;
-border:1px solid #00ffcc;
-color:white;
-align-items:center;
-gap:10px;
-font-family:Tajawal,Arial,sans-serif;
-">
+            <div>
+                جميع الحقوق محفوظة
+                <span class="siteName">
+                    sakaker.co
+                </span>
+            </div>
 
-  <img
-    id="userPhoto"
-    alt="User"
-    style="
-    width:45px;
-    height:45px;
-    border-radius:50%;
-    border:2px solid gold;
-    object-fit:cover;
-    "
-  >
+            <div>
+                للتواصل:
+                <a
+                    class="email"
+                    href="mailto:sakaker@outlook.com"
+                >
+                    sakaker@outlook.com
+                </a>
+            </div>
 
-  <span id="userName"></span>
+        </div>
 
-
-  <!-- 🚪 خروج -->
-  <button
-    id="logoutButton"
-    type="button"
-    style="
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:5px;
-    min-width:70px;
-    height:38px;
-    padding:5px 10px;
-    border:1px solid gold;
-    border-radius:18px;
-    background:linear-gradient(145deg,#fff3a0,#ffd700,#b8860b);
-    color:#3a2900;
-    font-weight:bold;
-    cursor:pointer;
-    "
-  >
-    <span id="logoutIcon">🚪</span>
-    <span id="logoutText">خروج</span>
-  </button>
+    </div>
 
 </div>
 
 
+<!-- =========================================================
+     👤 بيانات المستخدم
+========================================================= -->
+
+<div id="userProfile">
+
+    <img
+        id="userPhoto"
+        alt="User"
+    >
+
+    <span id="userName"></span>
+
+    <button
+        id="logoutButton"
+        type="button"
+        title="خروج"
+        aria-label="خروج"
+    >
+        <span id="logoutIcon">🚪</span>
+        <span id="logoutText">خروج</span>
+    </button>
+
+</div>
+
+
+<!-- =========================================================
+     🔥 FIREBASE
+========================================================= -->
 
 <script type="module">
-
-/* =====================================================
-   🔥 Firebase
-===================================================== */
 
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
@@ -294,15 +765,15 @@ import { getAnalytics }
 from "https://www.gstatic.com/firebasejs/12.16.0/firebase-analytics.js";
 
 import {
-  getAuth,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-  onAuthStateChanged,
-  setPersistence,
-  browserLocalPersistence,
-  signOut
+    getAuth,
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    GoogleAuthProvider,
+    signInWithPopup,
+    onAuthStateChanged,
+    setPersistence,
+    browserLocalPersistence,
+    signOut
 }
 from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
@@ -313,430 +784,548 @@ import { getStorage }
 from "https://www.gstatic.com/firebasejs/12.16.0/firebase-storage.js";
 
 
+/* =========================================================
+   🔥 Firebase Configuration
+========================================================= */
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCZw747d_KJa85KTDSOVI8EeX_J9Grpqrk",
-  authDomain: "sakaker-9247f.firebaseapp.com",
-  projectId: "sakaker-9247f",
-  storageBucket: "sakaker-9247f.firebasestorage.app",
-  messagingSenderId: "689588937441",
-  appId: "1:689588937441:web:4d17a1d02e72189bbfcda0",
-  measurementId: "G-RB0V6GTVER"
+
+    apiKey:
+        "AIzaSyCZw747d_KJa85KTDSOVI8EeX_J9Grpqrk",
+
+    authDomain:
+        "sakaker-9247f.firebaseapp.com",
+
+    projectId:
+        "sakaker-9247f",
+
+    storageBucket:
+        "sakaker-9247f.firebasestorage.app",
+
+    messagingSenderId:
+        "689588937441",
+
+    appId:
+        "1:689588937441:web:4d17a1d02e72189bbfcda0",
+
+    measurementId:
+        "G-RB0V6GTVER"
 };
 
 
+/* =========================================================
+   🚀 تشغيل Firebase
+========================================================= */
 
-const app = initializeApp(firebaseConfig);
+const app =
+    initializeApp(firebaseConfig);
 
-const analytics = getAnalytics(app);
+const analytics =
+    getAnalytics(app);
 
-const auth = getAuth(app);
+const auth =
+    getAuth(app);
 
-const db = getFirestore(app);
+const db =
+    getFirestore(app);
 
-const storage = getStorage(app);
+const storage =
+    getStorage(app);
 
 
-window.firebaseApp = app;
-window.firebaseAuth = auth;
-window.firebaseDB = db;
-window.firebaseStorage = storage;
+window.firebaseApp =
+    app;
 
+window.firebaseAuth =
+    auth;
+
+window.firebaseDB =
+    db;
+
+window.firebaseStorage =
+    storage;
+
+
+/* =========================================================
+   💾 حفظ تسجيل الدخول
+========================================================= */
 
 await setPersistence(
-  auth,
-  browserLocalPersistence
+    auth,
+    browserLocalPersistence
 );
 
 
-
-/* =====================================================
+/* =========================================================
    🌐 نظام اللغة
-===================================================== */
+========================================================= */
 
 let currentLang =
-  localStorage.getItem("sakakerLoginLanguage") || "ar";
+    localStorage.getItem(
+        "sakakerLoginLanguage"
+    ) || "ar";
 
 
 const translations = {
 
-  ar: {
+    ar: {
 
-    direction: "rtl",
+        direction:"rtl",
 
-    languageButton: "English",
+        languageButton:"English",
 
-    title: "🔐 تسجيل الدخول",
+        title:"🔐 تسجيل الدخول",
 
-    email: "📧 البريد الإلكتروني",
+        email:"📧 البريد الإلكتروني",
 
-    password: "🔒 كلمة المرور",
+        password:"🔒 كلمة المرور",
 
-    login: "دخول",
+        login:"دخول",
 
-    google: "🔵 الدخول بواسطة Google",
+        google:"🔵 الدخول بواسطة Google",
 
-    signup: "📝 إنشاء حساب جديد",
+        signup:"📝 إنشاء حساب جديد",
 
-    logout: "خروج",
+        logout:"خروج"
 
-    user: "المستخدم"
-
-  },
+    },
 
 
-  en: {
+    en: {
 
-    direction: "ltr",
+        direction:"ltr",
 
-    languageButton: "العربية",
+        languageButton:"العربية",
 
-    title: "🔐 Login",
+        title:"🔐 Login",
 
-    email: "📧 Email Address",
+        email:"📧 Email Address",
 
-    password: "🔒 Password",
+        password:"🔒 Password",
 
-    login: "Login",
+        login:"Login",
 
-    google: "🔵 Sign in with Google",
+        google:"🔵 Sign in with Google",
 
-    signup: "📝 Create New Account",
+        signup:"📝 Create New Account",
 
-    logout: "Logout",
+        logout:"Logout"
 
-    user: "User"
-
-  }
+    }
 
 };
 
 
+/* =========================================================
+   🌐 تحديث اللغة
+========================================================= */
 
 function updateLoginLanguage(lang){
 
-  currentLang = lang;
+    currentLang = lang;
 
-  localStorage.setItem(
-    "sakakerLoginLanguage",
-    lang
-  );
-
-
-  const t = translations[lang];
+    localStorage.setItem(
+        "sakakerLoginLanguage",
+        lang
+    );
 
 
-  /* اتجاه النافذة */
-
-  document.getElementById("loginOverlay")
-    .style.direction = t.direction;
+    const t =
+        translations[lang];
 
 
-  document.getElementById("loginBox")
-    .style.direction = t.direction;
+    /* اتجاه الصفحة */
+    document.getElementById(
+        "loginOverlay"
+    ).style.direction =
+        t.direction;
 
 
-  document.getElementById("userProfile")
-    .style.direction = t.direction;
+    document.getElementById(
+        "loginBox"
+    ).style.direction =
+        t.direction;
 
 
-  /* زر اللغة */
-
-  document.getElementById(
-    "loginLanguageButton"
-  ).textContent = t.languageButton;
-
-
-  /* العنوان */
-
-  document.getElementById(
-    "loginTitle"
-  ).textContent = t.title;
+    document.getElementById(
+        "userProfile"
+    ).style.direction =
+        t.direction;
 
 
-  /* الحقول */
-
-  document.getElementById(
-    "emailInput"
-  ).placeholder = t.email;
-
-
-  document.getElementById(
-    "passwordInput"
-  ).placeholder = t.password;
+    /* زر اللغة */
+    document.getElementById(
+        "loginLanguageButton"
+    ).textContent =
+        t.languageButton;
 
 
-  /* الأزرار */
-
-  document.getElementById(
-    "loginButton"
-  ).textContent = t.login;
-
-
-  document.getElementById(
-    "googleButton"
-  ).textContent = t.google;
+    /* العنوان */
+    document.getElementById(
+        "loginTitle"
+    ).textContent =
+        t.title;
 
 
-  document.getElementById(
-    "signupButton"
-  ).textContent = t.signup;
+    /* البريد */
+    document.getElementById(
+        "emailInput"
+    ).placeholder =
+        t.email;
 
 
-  /* زر الخروج */
-
-  document.getElementById(
-    "logoutText"
-  ).textContent = t.logout;
-
-
-  document.getElementById(
-    "logoutButton"
-  ).title = t.logout;
+    /* كلمة المرور */
+    document.getElementById(
+        "passwordInput"
+    ).placeholder =
+        t.password;
 
 
-  document.getElementById(
-    "logoutButton"
-  ).setAttribute(
-    "aria-label",
-    t.logout
-  );
+    /* دخول */
+    document.getElementById(
+        "loginButton"
+    ).textContent =
+        t.login;
+
+
+    /* Google */
+    document.getElementById(
+        "googleButton"
+    ).textContent =
+        t.google;
+
+
+    /* إنشاء حساب */
+    document.getElementById(
+        "signupButton"
+    ).textContent =
+        t.signup;
+
+
+    /* خروج */
+    document.getElementById(
+        "logoutText"
+    ).textContent =
+        t.logout;
+
+
+    document.getElementById(
+        "logoutButton"
+    ).title =
+        t.logout;
 
 }
 
 
-/* زر تبديل اللغة */
+/* =========================================================
+   🌐 زر اللغة
+========================================================= */
 
 document.getElementById(
-  "loginLanguageButton"
+    "loginLanguageButton"
 ).onclick = () => {
 
-  updateLoginLanguage(
-    currentLang === "ar"
-      ? "en"
-      : "ar"
-  );
+    updateLoginLanguage(
+
+        currentLang === "ar"
+            ? "en"
+            : "ar"
+
+    );
 
 };
 
 
 /* تشغيل اللغة */
+updateLoginLanguage(
+    currentLang
+);
 
-updateLoginLanguage(currentLang);
 
-
-
-/* =====================================================
-   🔐 عناصر تسجيل الدخول
-===================================================== */
+/* =========================================================
+   🔐 العناصر
+========================================================= */
 
 const overlay =
-  document.getElementById("loginOverlay");
+    document.getElementById(
+        "loginOverlay"
+    );
 
 const email =
-  document.getElementById("emailInput");
+    document.getElementById(
+        "emailInput"
+    );
 
 const pass =
-  document.getElementById("passwordInput");
+    document.getElementById(
+        "passwordInput"
+    );
 
 const error =
-  document.getElementById("loginError");
+    document.getElementById(
+        "loginError"
+    );
 
 
-
-/* =====================================================
+/* =========================================================
    🔑 دخول بالبريد وكلمة المرور
-===================================================== */
+========================================================= */
 
 document.getElementById(
-  "loginButton"
+    "loginButton"
 ).onclick = async () => {
 
-  error.textContent = "";
+    error.textContent = "";
 
-  try {
+    const emailValue =
+        email.value.trim();
 
-    await signInWithEmailAndPassword(
-      auth,
-      email.value.trim(),
-      pass.value
-    );
-
-  } catch(e) {
-
-    error.textContent =
-      "❌ " +
-      (
-        currentLang === "en"
-        ? "Login failed"
-        : "فشل تسجيل الدخول"
-      );
-
-    console.error(e);
-
-  }
-
-};
+    const passwordValue =
+        pass.value;
 
 
+    if(!emailValue || !passwordValue){
 
-/* =====================================================
-   📝 إنشاء حساب
-===================================================== */
+        error.textContent =
+            currentLang === "en"
+            ? "❌ Please enter email and password"
+            : "❌ يرجى إدخال البريد الإلكتروني وكلمة المرور";
 
-document.getElementById(
-  "signupButton"
-).onclick = async () => {
-
-  error.textContent = "";
-
-  try {
-
-    await createUserWithEmailAndPassword(
-      auth,
-      email.value.trim(),
-      pass.value
-    );
-
-  } catch(e) {
-
-    error.textContent =
-      "❌ " +
-      (
-        currentLang === "en"
-        ? "Account creation failed"
-        : "فشل إنشاء الحساب"
-      );
-
-    console.error(e);
-
-  }
-
-};
+        return;
+    }
 
 
+    try{
 
-/* =====================================================
-   🔵 Google
-===================================================== */
-
-document.getElementById(
-  "googleButton"
-).onclick = async () => {
-
-  error.textContent = "";
-
-  const provider =
-    new GoogleAuthProvider();
-
-  try {
-
-    await signInWithPopup(
-      auth,
-      provider
-    );
-
-  } catch(e) {
-
-    error.textContent =
-      "❌ " +
-      (
-        currentLang === "en"
-        ? "Google sign-in failed"
-        : "فشل تسجيل الدخول بواسطة Google"
-      );
-
-    console.error(e);
-
-  }
-
-};
-
-
-
-/* =====================================================
-   👤 مراقبة حالة الدخول
-===================================================== */
-
-onAuthStateChanged(
-  auth,
-  (user) => {
-
-    if(user){
-
-      overlay.style.display = "none";
-
-      document.body.classList.remove(
-        "locked"
-      );
-
-
-      document.getElementById(
-        "userProfile"
-      ).style.display = "flex";
-
-
-      document.getElementById(
-        "userName"
-      ).textContent =
-        user.displayName ||
-        user.email;
-
-
-      document.getElementById(
-        "userPhoto"
-      ).src =
-        user.photoURL ||
-        "https://cdn-icons-png.flaticon.com/512/149/149071.png";
-
-
-    }else{
-
-      overlay.style.display = "flex";
-
-      document.body.classList.add(
-        "locked"
-      );
-
-
-      document.getElementById(
-        "userProfile"
-      ).style.display = "none";
+        await signInWithEmailAndPassword(
+            auth,
+            emailValue,
+            passwordValue
+        );
 
     }
 
-  }
-);
+    catch(e){
 
+        console.error(e);
 
+        error.textContent =
+            currentLang === "en"
+            ? "❌ Login failed"
+            : "❌ فشل تسجيل الدخول";
 
-/* =====================================================
-   🚪 تسجيل الخروج
-===================================================== */
-
-document.getElementById(
-  "logoutButton"
-).onclick = async () => {
-
-  try {
-
-    await signOut(auth);
-
-  } catch(e) {
-
-    console.error(e);
-
-  }
+    }
 
 };
 
 
+/* =========================================================
+   📝 إنشاء حساب
+========================================================= */
+
+document.getElementById(
+    "signupButton"
+).onclick = async () => {
+
+    error.textContent = "";
+
+    const emailValue =
+        email.value.trim();
+
+    const passwordValue =
+        pass.value;
+
+
+    if(!emailValue || !passwordValue){
+
+        error.textContent =
+            currentLang === "en"
+            ? "❌ Enter email and password first"
+            : "❌ أدخل البريد الإلكتروني وكلمة المرور أولاً";
+
+        return;
+    }
+
+
+    if(passwordValue.length < 6){
+
+        error.textContent =
+            currentLang === "en"
+            ? "❌ Password must be at least 6 characters"
+            : "❌ كلمة المرور يجب أن تكون 6 أحرف على الأقل";
+
+        return;
+    }
+
+
+    try{
+
+        await createUserWithEmailAndPassword(
+            auth,
+            emailValue,
+            passwordValue
+        );
+
+    }
+
+    catch(e){
+
+        console.error(e);
+
+        error.textContent =
+            currentLang === "en"
+            ? "❌ Account creation failed"
+            : "❌ فشل إنشاء الحساب";
+
+    }
+
+};
+
+
+/* =========================================================
+   🔵 Google Login
+========================================================= */
+
+document.getElementById(
+    "googleButton"
+).onclick = async () => {
+
+    error.textContent = "";
+
+    const provider =
+        new GoogleAuthProvider();
+
+
+    try{
+
+        await signInWithPopup(
+            auth,
+            provider
+        );
+
+    }
+
+    catch(e){
+
+        console.error(e);
+
+        error.textContent =
+            currentLang === "en"
+            ? "❌ Google sign-in failed"
+            : "❌ فشل تسجيل الدخول بواسطة Google";
+
+    }
+
+};
+
+
+/* =========================================================
+   👤 مراقبة حالة الدخول
+========================================================= */
+
+onAuthStateChanged(
+    auth,
+    (user) => {
+
+        if(user){
+
+            /* إخفاء صفحة الدخول */
+            overlay.style.display =
+                "none";
+
+
+            /* فتح الموقع */
+            document.body.classList.remove(
+                "locked"
+            );
+
+
+            /* إظهار بيانات المستخدم */
+            document.getElementById(
+                "userProfile"
+            ).style.display =
+                "flex";
+
+
+            /* الاسم */
+            document.getElementById(
+                "userName"
+            ).textContent =
+                user.displayName ||
+                user.email ||
+                (
+                    currentLang === "en"
+                    ? "User"
+                    : "المستخدم"
+                );
+
+
+            /* الصورة */
+            document.getElementById(
+                "userPhoto"
+            ).src =
+                user.photoURL ||
+                "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+
+        }
+
+        else{
+
+            /* إظهار صفحة الدخول */
+            overlay.style.display =
+                "flex";
+
+
+            /* قفل الموقع */
+            document.body.classList.add(
+                "locked"
+            );
+
+
+            /* إخفاء بيانات المستخدم */
+            document.getElementById(
+                "userProfile"
+            ).style.display =
+                "none";
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   🚪 تسجيل الخروج
+========================================================= */
+
+document.getElementById(
+    "logoutButton"
+).onclick = async () => {
+
+    try{
+
+        await signOut(auth);
+
+    }
+
+    catch(e){
+
+        console.error(e);
+
+    }
+
+};
+
+
+/* =========================================================
+   ✅ جاهز
+========================================================= */
+
 console.log(
-  "SAKAKER Firebase Ready"
+    "SAKAKER Login System Ready"
 );
 
 </script>
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
