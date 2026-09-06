@@ -3830,9 +3830,11 @@ import {
 from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
 
 
-/* تطبيق حضور مستقل — بنفس إعدادات Firebase المركزية */
-const presenceAuth = getAuth(window.firebaseApp);
-const database = window.firebaseRTDB;
+/* تطبيق حضور مستقل — نفس إعدادات Firebase المركزية،
+   لكن Auth مستقل حتى لا يستبدل تسجيل دخول الموقع الرئيسي */
+const presenceApp = initializeApp(window.sakakerFirebaseConfig, "sakakerPresenceApp");
+const presenceAuth = getAuth(presenceApp);
+const database = getDatabase(presenceApp);
 
 
 /* إنشاء رقم عشوائي خاص بهذه الزيارة */
@@ -6940,11 +6942,12 @@ from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
    🔥 إعداد Firebase
 ========================================================= */
 
-/* Pong له جلسة Auth مستقلة حتى لا يؤثر Anonymous Auth
-   الخاص باللعبة على تسجيل دخول الموقع الرئيسي.
-   الإعدادات نفسها 100% من نفس firebaseConfig المركزي. */
-const db = window.firebaseRTDB;
-const auth = getAuth(window.firebaseApp);
+/* Pong له جلسة Firebase مستقلة بالكامل:
+   نفس firebaseConfig 100%، لكن Auth وRTDB منفصلان عن تسجيل دخول الموقع.
+   هذا يمنع signInAnonymously من استبدال حساب المستخدم الرئيسي. */
+const pongApp = initializeApp(window.sakakerFirebaseConfig, "sakakerPongApp");
+const db = getDatabase(pongApp);
+const auth = getAuth(pongApp);
 
 
 /* =========================================================
@@ -7080,6 +7083,12 @@ let w = false;
 
 let s = false;
 
+
+/* =========================================================
+   🔍 تشخيص اتصال Pong
+========================================================= */
+console.info("[Sakaker Pong] Firebase project:", window.sakakerFirebaseConfig.projectId);
+console.info("[Sakaker Pong] RTDB:", window.sakakerFirebaseConfig.databaseURL);
 
 /* =========================================================
    🔹 تسجيل الدخول المجهول
