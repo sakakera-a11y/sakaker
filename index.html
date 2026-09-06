@@ -1326,6 +1326,2417 @@ console.log(
 );
 
 </script>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<meta name="description"
+content="موقع أبو القمر زمرد - خواطر، قصص، ثقافة عامة، معلومات، ألغاز، اختبر معلوماتك ومنوعات.">
+
+<title>أبو القمر زمرد | sakaker</title>
+
+<style>
+
+:root{
+  --bg:#071311;
+  --panel:rgba(13,33,29,.12);
+  --panel2:rgba(16,43,37,.10);
+  --gold:#e8c76a;
+  --emerald:#18a77b;
+  --emerald2:#0b6b52;
+  --text:#f7fbf9;
+  --muted:#b9cbc5;
+  --border:rgba(232,199,106,.24);
+  --shadow:0 18px 50px rgba(0,0,0,.20);
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--text);
+  font-family:"Tahoma","Segoe UI",Arial,sans-serif;
+
+  background:
+    radial-gradient(
+      circle at 85% 15%,
+      rgba(232,199,106,.10),
+      transparent 28%
+    ),
+    linear-gradient(
+      135deg,
+      #04100e,
+      #071a16 55%,
+      #06110f
+    );
+}
+
+button{
+  font:inherit;
+}
+
+/* ================================
+   المنطقة العلوية الشفافة
+================================ */
+
+.hero{
+  max-width:1050px;
+
+  margin:auto;
+
+  padding:28px 18px 8px;
+
+  text-align:center;
+
+  background:
+}
+
+.logo{
+  width:78px;
+  height:78px;
+
+  margin:auto;
+
+  border-radius:50%;
+
+  display:grid;
+  place-items:center;
+
+  border:1px solid rgba(232,199,106,.65);
+
+  background:
+  box-shadow:
+    0 0 20px rgba(24,167,123,.10),
+    inset 0 0 14px rgba(232,199,106,.04);
+
+  font-size:2.15rem;
+
+  opacity:.88;
+}
+
+/* ================================
+   إخفاء أي كتابات علوية
+================================ */
+
+.hero h1,
+.hero p,
+.signature{
+  display:none !important;
+}
+
+/* ================================
+   شريط الأخبار
+================================ */
+
+.news-wrap{
+  max-width:1050px;
+
+  margin:8px auto 10px;
+
+  padding:0 18px;
+
+  background:
+}
+
+.news{
+  overflow:hidden;
+
+  border:1px solid rgba(232,199,106,.22);
+
+  background:
+
+  border-radius:16px;
+
+  box-shadow:
+    0 8px 25px rgba(0,0,0,.12);
+
+  display:flex;
+
+  align-items:center;
+}
+
+.news-label{
+  background:
+
+  color:#071311;
+
+  font-weight:800;
+
+  padding:10px 14px;
+
+  white-space:nowrap;
+}
+
+.news-track{
+  white-space:nowrap;
+
+  overflow:hidden;
+
+  flex:1;
+}
+
+.news-text{
+  display:inline-block;
+
+  padding:10px 30px;
+
+  animation:ticker 22s linear infinite;
+
+  color:rgba(247,251,249,.90);
+}
+
+@keyframes ticker{
+
+  from{
+    transform:translateX(100%);
+  }
+
+  to{
+    transform:translateX(-100%);
+  }
+
+}
+
+/* ================================
+   البطاقات
+================================ */
+
+.cards{
+  max-width:1050px;
+
+  margin:30px auto 55px;
+
+  padding:0 18px;
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,minmax(0,1fr));
+
+  gap:18px;
+}
+
+.icon-card{
+
+  min-height:35px;
+
+  padding:10px 8px;
+
+  border:1px solid rgba(232,199,106,.25);
+
+  border-radius:24px;
+
+  background:
+  box-shadow:
+    0 10px 28px rgba(0,0,0,.16);
+
+  cursor:pointer;
+
+  text-align:center;
+
+  transition:.22s ease;
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:center;
+
+  align-items:center;
+
+  user-select:none;
+}
+
+.icon-card:hover{
+
+  transform:translateY(-6px);
+
+  border-color:
+    rgba(232,199,106,.65);
+
+  background:
+    
+
+  box-shadow:
+    0 18px 38px rgba(0,0,0,.24);
+}
+
+.icon-svg{
+
+  width:44px;
+  height:44px;
+
+  margin-bottom:9px;
+}
+
+.icon-svg *{
+
+  stroke:var(--gold)!important;
+}
+
+.icon-label{
+
+  font-weight:800;
+
+  line-height:1.5;
+}
+
+.sub{
+
+  font-size:.78rem;
+
+  color:var(--muted);
+
+  margin-top:5px;
+}
+
+.feature{
+
+  grid-column:span 2;
+}
+
+/* ================================
+   الفوتر
+================================ */
+
+footer{
+
+  text-align:center;
+
+  padding:24px 16px 35px;
+
+  color:var(--muted);
+
+  border-top:1px solid rgba(232,199,106,.18);
+
+  background:
+}
+
+footer strong{
+
+  color:var(--gold);
+}
+
+/* ================================
+   النوافذ
+================================ */
+
+.modal{
+
+  display:none;
+
+  position:fixed;
+
+  inset:0;
+
+  z-index:2000;
+
+  background:
+
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+
+  padding:22px;
+
+  overflow:auto;
+}
+
+.panel{
+
+  width:min(850px,100%);
+
+  margin:4vh auto;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(16,37,31,.82),
+      rgba(7,22,19,.82)
+    );
+
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+
+  border:1px solid var(--border);
+
+  border-radius:22px;
+
+  box-shadow:var(--shadow);
+
+  overflow:hidden;
+}
+
+.panel-head{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  padding:15px 18px;
+
+  border-bottom:1px solid var(--border);
+
+  background:
+}
+
+.panel-title{
+
+  font-weight:900;
+
+  color:var(--gold);
+
+  font-size:1.2rem;
+}
+
+.close{
+
+  border:0;
+
+  background:transparent;
+
+  color:#fff;
+
+  font-size:2rem;
+
+  cursor:pointer;
+
+  line-height:1;
+}
+
+.close:hover{
+
+  color:var(--gold);
+}
+
+.panel-body{
+
+  padding:20px;
+
+  line-height:1.9;
+
+  color:#f2f7f5;
+
+  background:
+}
+
+.panel-body h3{
+
+  color:var(--gold);
+
+  margin:8px 0;
+}
+
+.panel-body hr{
+
+  border:0;
+
+  border-top:1px solid var(--border);
+
+  margin:22px 0;
+}
+
+.panel-body li{
+
+  margin:7px 0;
+}
+
+.item-btn{
+
+  display:block;
+
+  width:100%;
+
+  margin:9px 0;
+
+  padding:12px 14px;
+
+  text-align:right;
+
+  border:1px solid var(--border);
+
+  border-radius:12px;
+
+  background:
+
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+
+  color:#fff;
+
+  cursor:pointer;
+
+  transition:.15s;
+}
+
+.item-btn:hover{
+
+  background:
+
+  transform:translateX(-3px);
+}
+
+.action-row{
+
+  display:flex;
+
+  gap:10px;
+
+  flex-wrap:wrap;
+
+  margin-top:14px;
+}
+
+.action-row .item-btn{
+
+  width:auto;
+
+  display:inline-block;
+}
+
+.media{
+
+  width:100%;
+
+  max-height:520px;
+
+  border-radius:14px;
+
+  background:#000;
+}
+
+.video-box{
+
+  position:relative;
+
+  width:100%;
+
+  max-width:800px;
+
+  margin:20px auto;
+
+  aspect-ratio:16/9;
+
+  overflow:hidden;
+
+  border-radius:16px;
+
+  background:#000;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.35);
+}
+
+.video-box iframe{
+
+  position:absolute;
+
+  inset:0;
+
+  width:100%;
+
+  height:100%;
+
+  border:0;
+}
+
+.about-box{
+
+  background:
+
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+
+  color:#f2f7f5;
+
+  border:1px solid var(--border);
+
+  padding:18px;
+
+  border-radius:15px;
+
+  line-height:1.9;
+}
+
+.about-box strong{
+
+  color:var(--gold);
+}
+
+.result{
+
+  font-size:1.2rem;
+
+  text-align:center;
+
+  padding:15px;
+
+  border-radius:12px;
+
+  background:
+    rgba(24,167,123,.055);
+
+  border:1px solid rgba(24,167,123,.18);
+}
+
+.muted{
+
+  color:var(--muted);
+}
+
+.progress{
+
+  height:9px;
+
+  background:
+
+  border-radius:20px;
+
+  overflow:hidden;
+
+  margin:10px 0 20px;
+}
+
+.progress-bar{
+
+  height:100%;
+
+  width:0;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--emerald),
+      var(--gold)
+    );
+
+  transition:.3s;
+}
+
+.riddle-number{
+
+  display:inline-block;
+
+  padding:5px 10px;
+
+  border-radius:20px;
+
+  background:rgba(232,199,106,.07);
+
+  color:var(--gold);
+
+  font-size:.62rem;
+
+  margin-bottom:10px;
+}
+
+.answer-box{
+
+  margin-top:15px;
+
+  padding:14px;
+
+  border-radius:13px;
+
+  border:1px solid rgba(24,167,123,.3);
+
+  background:
+
+  color:#79e3b8;
+
+  font-weight:800;
+}
+
+.story-box{
+
+  padding:17px;
+
+  border-radius:15px;
+
+  background:
+  border:1px solid rgba(232,199,106,.20);
+
+  margin:14px 0;
+}
+
+.warning-box{
+
+  padding:14px;
+
+  border-radius:13px;
+
+  border:1px solid rgba(232,199,106,.25);
+
+  background:rgba(232,199,106,.035);
+
+  color:#f4df9a;
+
+  margin:15px 0;
+}
+
+/* ================================
+   الجوال
+================================ */
+
+@media(max-width:850px){
+
+  .cards{
+
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+  }
+
+  .feature{
+
+    grid-column:span 2;
+  }
+
+}
+
+@media(max-width:520px){
+
+  .hero{
+
+    padding-top:18px;
+
+    padding-bottom:3px;
+  }
+
+  .logo{
+
+    width:64px;
+    height:64px;
+
+    font-size:1.8rem;
+  }
+
+  .cards{
+
+    grid-template-columns:1fr 1fr;
+
+    gap:11px;
+
+    padding:0 12px;
+  }
+
+  .icon-card{
+
+    min-height:135px;
+
+    border-radius:18px;
+
+    padding:12px 7px;
+  }
+
+  .icon-svg{
+
+    width:36px;
+
+    height:36px;
+
+    margin-bottom:7px;
+  }
+
+  .icon-label{
+
+    font-size:.88rem;
+  }
+
+  .feature{
+
+    grid-column:span 2;
+  }
+
+  .modal{
+
+    padding:10px;
+  }
+
+  .panel{
+
+    margin:2vh auto;
+
+    border-radius:16px;
+  }
+
+  .panel-body{
+
+    padding:14px;
+  }
+
+  .news-wrap{
+
+    padding:0 12px;
+
+    margin-top:5px;
+  }
+
+  .news-label{
+
+    padding:9px 10px;
+
+    font-size:.85rem;
+  }
+
+  .news-text{
+
+    padding:9px 20px;
+
+    font-size:.88rem;
+  }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- ================================
+     الواجهة الرئيسية
+     بدون أي كتابات فوق الأخبار
+================================ -->
+
+<main>
+
+<section class="hero">
+
+  <div class="logo">
+    
+  </div>
+
+</section>
+
+
+<!-- ================================
+     شريط الأخبار
+================================ -->
+
+<section
+  class="news-wrap"
+  aria-label="شريط الأخبار">
+
+  <div class="news">
+
+    <div class="news-label">
+      📰 الأخبار
+    </div>
+
+    <div class="news-track">
+
+      <div
+        class="news-text"
+        id="newsText">
+
+        نقوم حاليًا بتحديث بعض الأيقونات وإضافة
+        ميزات جديدة لتطوير الموقع — تابعونا للمزيد.
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================================
+     البطاقات
+================================ -->
+
+<section
+  class="cards"
+  aria-label="خدمات الموقع">
+
+
+  <!-- خواطر -->
+
+  <div
+    class="icon-card"
+    onclick="openFolder(1)"
+    role="button">
+
+    <svg
+      class="icon-svg"
+      viewBox="0 0 24 24"
+      fill="none">
+
+      <path
+        d="M3 7c0-1.1.9-2 2-2h4l2 2h8c1.1 0 2 .9 2 2v9c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V7Z"
+        stroke-width="1.4"
+        stroke-linejoin="round"/>
+
+    </svg>
+
+    <div class="icon-label">
+      خواطر
+    </div>
+
+    <div class="sub">
+      قصص وحكايات
+    </div>
+
+  </div>
+
+
+  <!-- الاختبار -->
+
+  <div
+    class="icon-card"
+    onclick="startQuiz()"
+    role="button">
+
+    <svg
+      class="icon-svg"
+      viewBox="0 0 24 24"
+      fill="none">
+
+      <circle
+        cx="12"
+        cy="12"
+        r="9"
+        stroke-width="1.4"/>
+
+      <path
+        d="M8 12h8M8 16h5M8 8h8"
+        stroke-width="1.4"
+        stroke-linecap="round"/>
+
+    </svg>
+
+    <div class="icon-label">
+      اختبر معلوماتك
+    </div>
+
+    <div class="sub">
+      20 سؤالًا متنوعًا
+    </div>
+
+  </div>
+
+
+  <!-- الثقافة -->
+
+  <div
+    class="icon-card"
+    onclick="openFolder(4)"
+    role="button">
+
+    <svg
+      class="icon-svg"
+      viewBox="0 0 24 24"
+      fill="none">
+
+      <circle
+        cx="12"
+        cy="12"
+        r="9"
+        stroke-width="1.4"/>
+
+      <path
+        d="M12 8v.01M10.8 11H12c.7 0 1.2.5 1.2 1.2V16"
+        stroke-width="1.4"
+        stroke-linecap="round"/>
+
+    </svg>
+
+    <div class="icon-label">
+      ثقافة عامة
+    </div>
+
+    <div class="sub">
+      معلومات وموضوعات متنوعة
+    </div>
+
+  </div>
+
+
+  <!-- مختارات -->
+
+  <div
+    class="icon-card"
+    onclick="openFolder(2)"
+    role="button">
+
+    <svg
+      class="icon-svg"
+      viewBox="0 0 24 24"
+      fill="none">
+
+      <rect
+        x="3"
+        y="6"
+        width="18"
+        height="12"
+        rx="2"
+        stroke-width="1.4"/>
+
+      <path
+        d="m10 9 5 3-5 3V9Z"
+        fill="none"
+        stroke-width="1.4"/>
+
+    </svg>
+
+    <div class="icon-label">
+      مختارات
+    </div>
+
+    <div class="sub">
+      فيديو YouTube
+    </div>
+
+  </div>
+
+
+  <!-- معلومة اليوم -->
+
+  <div
+    class="icon-card feature"
+    onclick="openTodayFact()"
+    role="button">
+
+    <svg
+      class="icon-svg"
+      viewBox="0 0 24 24"
+      fill="none">
+
+      <circle
+        cx="12"
+        cy="12"
+        r="9"
+        stroke-width="1.4"/>
+
+      <path
+        d="M12 8v4l3 3"
+        stroke-width="1.4"
+        stroke-linecap="round"/>
+
+    </svg>
+
+    <div class="icon-label">
+      معلومة اليوم
+    </div>
+
+    <div class="sub">
+      معلومة جديدة بحسب اليوم
+    </div>
+
+  </div>
+
+
+  <!-- الألغاز -->
+
+  <div
+    class="icon-card"
+    onclick="openPuzzle()"
+    role="button">
+
+    <svg
+      class="icon-svg"
+      viewBox="0 0 24 24"
+      fill="none">
+
+      <path
+        d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"
+        stroke-width="1.2"/>
+
+    </svg>
+
+    <div class="icon-label">
+      ألغاز
+    </div>
+
+    <div class="sub">
+      30 لغزًا متنوعًا
+    </div>
+
+  </div>
+
+
+  <!-- تعريف الموقع -->
+
+  <div
+    class="icon-card"
+    onclick="openFolder(5)"
+    role="button">
+
+    <svg
+      class="icon-svg"
+      viewBox="0 0 24 24"
+      fill="none">
+
+      <path
+        d="M7 5h6l4 4v10H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"
+        stroke-width="1.3"/>
+
+      <path
+        d="M13 5v5h4"
+        stroke-width="1.3"/>
+
+    </svg>
+
+    <div class="icon-label">
+      تعريف بالموقع
+    </div>
+
+    <div class="sub">
+      عن الموقع وفكرته
+    </div>
+
+  </div>
+
+
+</section>
+
+</main>
+
+
+<!-- ================================
+     الفوتر
+================================ -->
+
+<footer>
+
+  © <span id="year"></span>
+
+  <strong>
+    أبو القمر زمرد
+  </strong>
+
+  — sakaker
+
+</footer>
+
+
+<!-- ================================
+     نافذة المجلدات
+================================ -->
+
+<div
+  class="modal"
+  id="folderModal"
+  onclick="if(event.target===this)closeFolder()">
+
+  <div
+    class="panel"
+    role="dialog"
+    aria-modal="true">
+
+    <div class="panel-head">
+
+      <div
+        class="panel-title"
+        id="folderTitle">
+
+        مجلد
+
+      </div>
+
+      <button
+        class="close"
+        onclick="closeFolder()"
+        aria-label="إغلاق">
+
+        ×
+
+      </button>
+
+    </div>
+
+    <div
+      class="panel-body"
+      id="folderBody">
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ================================
+     نافذة الاختبار
+================================ -->
+
+<div
+  class="modal"
+  id="quizModal"
+  onclick="if(event.target===this)closeQuiz()">
+
+  <div
+    class="panel"
+    role="dialog"
+    aria-modal="true">
+
+    <div class="panel-head">
+
+      <div class="panel-title">
+        اختبر معلوماتك
+      </div>
+
+      <button
+        class="close"
+        onclick="closeQuiz()"
+        aria-label="إغلاق">
+
+        ×
+
+      </button>
+
+    </div>
+
+    <div
+      class="panel-body"
+      id="quizBody">
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ================================
+     نافذة الألغاز
+================================ -->
+
+<div
+  class="modal"
+  id="puzzleModal"
+  onclick="if(event.target===this)closePuzzle()">
+
+  <div
+    class="panel"
+    role="dialog"
+    aria-modal="true">
+
+    <div class="panel-head">
+
+      <div class="panel-title">
+        ألغاز ومسابقات
+      </div>
+
+      <button
+        class="close"
+        onclick="closePuzzle()"
+        aria-label="إغلاق">
+
+        ×
+
+      </button>
+
+    </div>
+
+    <div class="panel-body">
+
+      <div id="riddleNumber"></div>
+
+      <h3>
+        🔍 حاول التفكير قبل كشف الحل
+      </h3>
+
+      <p id="puzzleQuestion"></p>
+
+      <p
+        id="puzzleHint"
+        class="muted"
+        style="display:none">
+      </p>
+
+      <div
+        id="puzzleAnswer"
+        class="answer-box"
+        style="display:none">
+      </div>
+
+      <div class="action-row">
+
+        <button
+          class="item-btn"
+          onclick="revealHint()">
+          💡 إظهار تلميح
+        </button>
+
+        <button
+          class="item-btn"
+          onclick="revealAnswer()">
+          ✅ كشف الحل
+        </button>
+
+        <button
+          class="item-btn"
+          onclick="nextRiddle()">
+          🔁 لغز آخر
+        </button>
+
+        <button
+          class="item-btn"
+          onclick="shareRiddle()">
+          📤 مشاركة اللغز
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* ==================================================
+   الألغاز - 30 لغزًا
+================================================== */
+
+const riddles=[
+
+{
+q:'لديك 3 مفاتيح خارج غرفة مغلقة، وداخل الغرفة مصباح واحد. مفتاح واحد فقط يشغّل المصباح. يمكنك دخول الغرفة مرة واحدة فقط. كيف تعرف المفتاح الصحيح؟',
+hint:'استخدم الحرارة وليس الضوء فقط.',
+a:'شغّل المفتاح الأول مدة ثم أطفئه، شغّل الثاني واتركه، ثم ادخل. إن كان المصباح مضاءً فهو الثاني، وإن كان مطفأً لكنه دافئ فهو الأول، وإن كان باردًا فهو الثالث.'
+},
+
+{
+q:'رجل ينظر إلى صورة ويقول: ليس لي أخ أو أخت، لكن والد هذا الرجل هو ابن أبي. من في الصورة؟',
+hint:'فكر في عبارة "ابن أبي".',
+a:'ابنه.'
+},
+
+{
+q:'لديك 8 كرات متشابهة، واحدة منها أثقل قليلًا، وميزان ذو كفتين. ما أقل عدد من الوزنات لمعرفة الكرة الأثقل؟',
+hint:'قسّم الكرات إلى مجموعات.',
+a:'وزنتان. زن 3 مقابل 3، ثم استخدم الوزن الثاني لتحديد الكرة من المجموعة الأثقل أو من الكرتين المتبقيتين.'
+},
+
+{
+q:'ما الشيء الذي إذا وضعته في الثلاجة لا يبرد؟',
+hint:'ليس شيئًا ماديًا.',
+a:'الفلفل الحار إذا كان المقصود كلمة "حار" في المعنى المجازي؟ والأدق في هذا اللغز: الفلفل الحار لا يزال يسمى حارًا، لكن هذا لغز لفظي.'
+},
+
+{
+q:'رجل خرج تحت المطر دون مظلة أو قبعة، ولم تبتل شعرة واحدة من رأسه. لماذا؟',
+hint:'المشكلة ليست في المطر.',
+a:'لأنه أصلع.'
+},
+
+{
+q:'ما الرقم التالي: 1، 11، 21، 1211، 111221، ؟',
+hint:'اقرأ كل رقم بوصفه وصفًا للرقم السابق.',
+a:'312211، لأن 111221 تعني ثلاثة 1، واثنان 2، وواحد 1.'
+},
+
+{
+q:'شيء كلما زاد نقص، فما هو؟',
+hint:'فكر في العمر.',
+a:'العمر المتبقي.'
+},
+
+{
+q:'رجل لديه 10 جوارب سوداء و10 بيضاء في غرفة مظلمة. ما أقل عدد يسحبه ليضمن زوجًا من اللون نفسه؟',
+hint:'لا تحتاج لمعرفة اللون الأول.',
+a:'3 جوارب؛ لأن اللونين فقط، والثالث سيطابق أحد اللونين.'
+},
+
+{
+q:'ما الشيء الذي له مدن بلا بيوت، وأنهار بلا ماء، وغابات بلا أشجار؟',
+hint:'شيء يستخدم في السفر.',
+a:'الخريطة.'
+},
+
+{
+q:'إذا كان لديك كوب ممتلئ بالماء ووضعت فيه حجرًا ثم أخرجته، ماذا يحدث لمستوى الماء؟',
+hint:'الحجر أزاح جزءًا من الماء.',
+a:'ينخفض مستوى الماء بعد إخراج الحجر.'
+},
+
+{
+q:'ما الشيء الذي تستطيع كسره دون أن تلمسه؟',
+hint:'قد يكون شيئًا معنويًا.',
+a:'الوعد.'
+},
+
+{
+q:'بيت من طابق واحد، كل شيء فيه أحمر: الجدران والأبواب والأثاث. ما لون الدرج؟',
+hint:'انتبه إلى عدد الطوابق.',
+a:'لا يوجد درج؛ لأنه طابق واحد.'
+},
+
+{
+q:'لديك ساعة رملية مدتها 7 دقائق وأخرى مدتها 11 دقيقة. كيف تقيس 15 دقيقة؟',
+hint:'ابدأ الساعتين معًا.',
+a:'شغّل الساعتين. عندما تنتهي 7 دقائق اقلبها. عندما تنتهي 11 دقيقة اقلب ساعة الـ7 مرة أخرى. ستنتهي بعد 4 دقائق، أي بعد 15 دقيقة من البداية.'
+},
+
+{
+q:'ما الذي يمشي حول العالم وهو في مكانه؟',
+hint:'تجده على شيء يُرسل.',
+a:'الطابع البريدي.'
+},
+
+{
+q:'شيء إذا أعطيته لغيرك يبقى معك، وإذا احتفظت به لا ينتفع به أحد. ما هو؟',
+hint:'مرتبط بالمعرفة.',
+a:'المعلومة.'
+},
+
+{
+q:'ما الشيء الذي كلما أخذت منه كبر؟',
+hint:'الفراغ الناتج عنه.',
+a:'الحفرة.'
+},
+
+{
+q:'ما الشيء الذي لا يدخل إلا إذا ضُرب؟',
+hint:'يُستخدم في البناء.',
+a:'المسمار.'
+},
+
+{
+q:'رجل يملك سيارة، لكنه لا يستطيع قيادتها إلا إلى الأمام ولا يستطيع الرجوع بها للخلف. كيف؟',
+hint:'ليست المشكلة في السيارة.',
+a:'السيارة في لعبة أو على طريق لا يسمح بالرجوع.'
+},
+
+{
+q:'ما الذي له عين ولا يرى؟',
+hint:'تجده في أدوات الخياطة.',
+a:'الإبرة.'
+},
+
+{
+q:'ما الشيء الذي تسمعه ولا تستطيع رؤيته، وإذا رأيته لا تستطيع سماعه؟',
+hint:'فكر في ظاهرة طبيعية.',
+a:'البرق والرعد: تسمع الرعد وترى البرق، لكن العبارة لغز لفظي وليست قاعدة علمية مطلقة.'
+},
+
+{
+q:'لديك 5 تفاحات، أخذت منها 2. كم أصبح معك؟',
+hint:'السؤال عن الذي أخذته أنت.',
+a:'2.'
+},
+
+{
+q:'ما الشيء الذي يولد كبيرًا ويموت صغيرًا؟',
+hint:'يستخدم في الحياة اليومية.',
+a:'قلم الرصاص.'
+},
+
+{
+q:'رجل عاش 20 عامًا لكنه احتفل بعيد ميلاده الخامس فقط. كيف؟',
+hint:'فكر في تاريخ الميلاد.',
+a:'ولد في 29 فبراير.'
+},
+
+{
+q:'ما الشيء الذي إذا مشى فقد جزءًا منه؟',
+hint:'يُستخدم للكتابة.',
+a:'قلم الرصاص.'
+},
+
+{
+q:'ما العدد الذي إذا ضربته في نفسه ثم أضفت إليه نفسه كان الناتج 20؟',
+hint:'المعادلة x² + x = 20.',
+a:'4، لأن 4×4 + 4 = 20.'
+},
+
+{
+q:'لديك حبلان، كل واحد منهما يحترق في ساعة كاملة، لكن الاحتراق غير منتظم. كيف تقيس 45 دقيقة؟',
+hint:'أشعل أكثر من طرف.',
+a:'أشعل الحبل الأول من الطرفين والحبل الثاني من طرف واحد. عندما ينتهي الأول تكون 30 دقيقة. عندها أشعل الطرف الآخر من الثاني؛ ما تبقى منه سيحترق خلال 15 دقيقة.'
+},
+
+{
+q:'ما الشيء الذي يمكنه ملء غرفة كاملة لكنه لا يشغل مساحة؟',
+hint:'لا يمكنك الإمساك به.',
+a:'الضوء.'
+},
+
+{
+q:'رجل لديه 4 أبناء، ولكل ابن أخت واحدة. كم عدد الأبناء والبنات؟',
+hint:'الأخت نفسها يمكن أن تكون أختًا للجميع.',
+a:'4 أبناء وبنت واحدة.'
+},
+
+{
+q:'إذا كان أمس هو غد الخميس، فما اليوم؟',
+hint:'رتب الأيام زمنيًا.',
+a:'السبت.'
+},
+
+{
+q:'ما الشيء الذي إذا نطقته اختفى؟',
+hint:'شيء هادئ.',
+a:'الصمت.'
+}
+
+];
+
+let riddleIndex=0;
+
+function renderRiddle(){
+
+const r=riddles[riddleIndex];
+
+document.getElementById('riddleNumber').innerHTML=
+'<span class="riddle-number">لغز '+
+(riddleIndex+1)+
+' من '+riddles.length+
+'</span>';
+
+document.getElementById('puzzleQuestion').textContent=r.q;
+
+document.getElementById('puzzleHint').textContent=
+'💡 التلميح: '+r.hint;
+
+document.getElementById('puzzleAnswer').textContent=
+'✅ الحل: '+r.a;
+
+document.getElementById('puzzleHint').style.display='none';
+
+document.getElementById('puzzleAnswer').style.display='none';
+
+}
+
+function openPuzzle(){
+
+document.getElementById('puzzleModal').style.display='block';
+
+renderRiddle();
+
+}
+
+function closePuzzle(){
+
+document.getElementById('puzzleModal').style.display='none';
+
+}
+
+function revealHint(){
+
+document.getElementById('puzzleHint').style.display='block';
+
+}
+
+function revealAnswer(){
+
+document.getElementById('puzzleAnswer').style.display='block';
+
+}
+
+function nextRiddle(){
+
+riddleIndex=
+(riddleIndex+1)%riddles.length;
+
+renderRiddle();
+
+}
+
+function shareRiddle(){
+
+const text=
+'🔍 لغز من أبو القمر زمرد:\n\n'+
+document.getElementById('puzzleQuestion').textContent+
+'\n\nجرب حله هنا:\n'+
+location.href;
+
+window.open(
+'https://api.whatsapp.com/send?text='+
+encodeURIComponent(text),
+'_blank'
+);
+
+}
+
+
+/* ==================================================
+   معلومة اليوم
+================================================== */
+
+const todayFacts=[
+
+'🔬 ألبرت أينشتاين — أسهمت أعماله في تغيير فهم الفيزياء للزمان والمكان والجاذبية.',
+
+'⚡ نيكولا تسلا — ارتبط اسمه بتطوير أنظمة التيار المتناوب وتجارب في الكهرباء.',
+
+'📜 ابن خلدون — صاحب المقدمة الشهيرة وأحد أبرز مفكري التاريخ والعمران البشري.',
+
+'⚗️ أبو بكر الرازي — طبيب وفيلسوف من أعلام الطب في الحضارة الإسلامية.',
+
+'🪂 عباس بن فرناس — عالم أندلسي ارتبط اسمه بمحاولة مبكرة للطيران.',
+
+'🌙 القمر — القمر الطبيعي الوحيد للأرض، وله تأثير مهم في ظاهرة المد والجزر.',
+
+'💎 الزمرد — حجر كريم أخضر ينتمي إلى مجموعة البريل.',
+
+'🧠 الدماغ البشري — يضم عشرات المليارات من الخلايا العصبية، وتُقدّر غالبًا بنحو 86 مليارًا.',
+
+'🌍 الأرض — هي الكوكب الوحيد المعروف حاليًا بوجود حياة عليه.',
+
+'☀️ الشمس — نجم يقع في مركز النظام الشمسي وتدور حوله الكواكب.'
+
+];
+
+function openTodayFact(){
+
+const i=
+Math.floor(
+Date.now()/86400000
+)%todayFacts.length;
+
+document.getElementById('folderTitle').textContent=
+'معلومة اليوم';
+
+document.getElementById('folderBody').innerHTML=
+'<div class="result">'+
+todayFacts[i]+
+'</div>';
+
+document.getElementById('folderModal').style.display='block';
+
+}
+
+
+/* ==================================================
+   المجلدات
+================================================== */
+
+function openFolder(n){
+
+const body=
+document.getElementById('folderBody');
+
+document.getElementById('folderModal').style.display='block';
+
+if(n===1)
+return showKhwater(body);
+
+if(n===2)
+return showMonowaat(body);
+
+if(n===4)
+return showCulture(body);
+
+if(n===5)
+return showAbout(body);
+
+document.getElementById('folderTitle').textContent='مجلد';
+
+body.innerHTML=
+'<p>لا يوجد محتوى حاليًا.</p>';
+
+}
+
+function closeFolder(){
+
+document.getElementById('folderModal').style.display='none';
+
+document.getElementById('folderBody').innerHTML='';
+
+}
+
+
+/* ==================================================
+   الفيديو
+================================================== */
+
+function showMonowaat(el){
+
+document.getElementById('folderTitle').textContent=
+'مختارات أبو القمر زمرد';
+
+el.innerHTML=`
+
+<h3>
+🎬 فيديو مختارات
+</h3>
+
+<p class="muted">
+شاهد الفيديو مباشرة من YouTube داخل الموقع.
+</p>
+
+<div class="video-box">
+
+<iframe
+src="https://www.youtube.com/embed/jtT5Ifr-3VA?si=oPW7UabNf2Yz6MCx"
+title="فيديو مختارات أبو القمر زمرد"
+loading="lazy"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+referrerpolicy="strict-origin-when-cross-origin"
+allowfullscreen>
+</iframe>
+
+</div>
+
+<div class="about-box">
+
+<strong>
+🎥 مختارات أبو القمر زمرد
+</strong>
+
+<br>
+
+يتم عرض الفيديو مباشرة من YouTube،
+لذلك لم تعد بحاجة إلى رفع ملف MP4 داخل مستودع الموقع.
+
+</div>
+
+`;
+
+}
+
+
+/* ==================================================
+   الخواطر والقصص
+================================================== */
+
+function showKhwater(el){
+
+document.getElementById('folderTitle').textContent=
+'خواطر وقصص';
+
+el.innerHTML=`
+
+<h3>
+⚔️ عنترة بن شداد — الفارس الذي أثبت نفسه
+</h3>
+
+<div class="story-box">
+
+<p>
+كان عنترة بن شداد من أشهر فرسان العرب في الجاهلية،
+واشتهر بالشجاعة والفروسية والشعر.
+</p>
+
+<p>
+واجه في بداية حياته ظروفًا اجتماعية صعبة،
+لكنه استطاع أن يفرض مكانته من خلال شجاعته
+ومواقفه في الحروب.
+</p>
+
+<p>
+وارتبط اسمه كذلك بقصة حبه لعبلة، فأصبحت
+سيرته جزءًا مشهورًا من التراث العربي.
+</p>
+
+</div>
+
+<hr>
+
+<h3>
+🏰 المعتمد بن عباد — من الملك إلى الأسر
+</h3>
+
+<div class="story-box">
+
+<p>
+كان المعتمد بن عباد ملكًا على إشبيلية
+في عصر ملوك الطوائف بالأندلس.
+</p>
+
+<p>
+استعان بيوسف بن تاشفين عندما اشتد خطر
+ألفونسو السادس، ووقعت معركة الزلاقة سنة
+1086م وانتهت بانتصار المسلمين.
+</p>
+
+<p>
+لكن التحولات السياسية أدت في النهاية
+إلى سقوط حكم المعتمد ونقله إلى أغمات
+في المغرب، حيث عاش آخر أيامه بعيدًا
+عن ملكه.
+</p>
+
+</div>
+
+<hr>
+
+<h3>
+🦁 صلاح الدين الأيوبي
+</h3>
+
+<div class="story-box">
+
+<p>
+كان صلاح الدين الأيوبي قائدًا بارزًا في
+فترة الحروب الصليبية.
+</p>
+
+<p>
+وفي عام 1187م انتصر المسلمون في معركة حطين،
+ثم استعادوا القدس.
+</p>
+
+<p>
+وبقيت شخصية صلاح الدين حاضرة في كتب التاريخ
+والأدب، واختلفت الروايات في تفاصيل بعض
+المواقف المنسوبة إليه، لذلك ينبغي التمييز
+بين المصادر التاريخية والروايات الأدبية.
+</p>
+
+</div>
+
+<hr>
+
+<h3>
+🐎 خالد بن الوليد
+</h3>
+
+<div class="story-box">
+
+<p>
+كان خالد بن الوليد من أبرز القادة العسكريين
+في صدر الإسلام، وعُرف بالسرعة في المناورة
+وحسن إدارة المعارك.
+</p>
+
+<p>
+شارك في معارك عديدة، ومن أشهر الأحداث
+المرتبطة به معركة مؤتة، حيث تولى القيادة
+بعد استشهاد القادة الثلاثة.
+</p>
+
+</div>
+
+<hr>
+
+<h3>
+🌌 قصص خيالية بأسلوب واقعي
+</h3>
+
+<div class="warning-box">
+
+⚠️ تنبيه مهم:
+القصص التالية خيالية من إعداد الموقع،
+وليست أحداثًا تاريخية حقيقية.
+تمت كتابتها بأسلوب قصصي واقعي للمتعة
+والتشويق، ولا ينبغي نقلها باعتبارها وقائع موثقة.
+
+</div>
+
+<div class="story-box">
+
+<h3>
+🏜️ حكاية حارس البئر القديم
+</h3>
+
+<p>
+في قرية صغيرة على أطراف الصحراء، كان هناك بئر
+قديم يتجنب أهل القرية الاقتراب منه بعد غروب الشمس.
+</p>
+
+<p>
+كان الحارس العجوز يقول إن البئر يخفي سرًا
+يعود إلى زمن القوافل القديمة. وفي إحدى الليالي
+وجد شاب من أهل القرية قطعة معدنية صغيرة قرب
+البئر، محفورًا عليها رمز غريب.
+</p>
+
+<p>
+بدأ الشاب يبحث عن معنى الرمز، حتى اكتشف أن
+القطعة ليست كنزًا ولا أثرًا سحريًا، بل علامة
+تركها مسافر قديم لتحديد اتجاه طريق القافلة.
+</p>
+
+<p>
+وهكذا تحول "سر البئر" الذي تناقلته الأجيال
+إلى درس بسيط: بعض الأسرار التي تكبر مع الزمن
+تبدأ بحادثة صغيرة جدًا.
+</p>
+
+</div>
+
+<div class="story-box">
+
+<h3>
+🚂 القطار الذي وصل متأخرًا
+</h3>
+
+<p>
+في مدينة خيالية، كان موظف أرشيف يحتفظ بسجل
+قديم لقطار قيل إنه وصل إلى المحطة بعد موعده
+بثلاثين عامًا.
+</p>
+
+<p>
+بدأ الرجل يبحث في السجلات، فاكتشف أن القصة
+بدأت بخطأ مطبعي في تاريخ إحدى الرحلات.
+</p>
+
+<p>
+ومع مرور السنوات، تناقل الناس القصة حتى
+أصبحت حكاية عن "قطار الزمن"، بينما الحقيقة
+في هذه القصة الخيالية أن الخطأ كان مجرد رقم
+كُتب بطريقة خاطئة.
+</p>
+
+</div>
+
+<div class="story-box">
+
+<h3>
+🌊 رسالة الجزيرة البعيدة
+</h3>
+
+<p>
+عثر صياد في قصة خيالية على زجاجة طافية
+في البحر، وبداخلها رسالة تقول:
+"إذا وصلت إليك، فقد حان وقت العودة."
+</p>
+
+<p>
+ظل يبحث عن صاحب الرسالة، حتى اكتشف أنها
+كانت جزءًا من لعبة قديمة نظمها مجموعة من
+البحارة لإخفاء خريطة كنز وهمية.
+</p>
+
+<p>
+لم يجد الصياد ذهبًا، لكنه وجد دفترًا قديمًا
+يحوي أسماء رحلات بحرية وقصصًا عن البحر.
+</p>
+
+</div>
+
+<div class="about-box">
+
+<strong>
+أبو القمر زمرد
+</strong>
+
+<br>
+
+نميز في الموقع بين التاريخ الموثق،
+والمعلومات العامة، والقصص الخيالية.
+الهدف أن تكون المتعة حاضرة دون تقديم
+الخيال على أنه حقيقة.
+
+</div>
+
+`;
+
+}
+
+
+/* ==================================================
+   الثقافة العامة
+================================================== */
+
+function showCulture(el){
+
+document.getElementById('folderTitle').textContent=
+'ثقافة عامة';
+
+el.innerHTML=`
+
+<h3>
+🧠 نيكولا تسلا
+</h3>
+
+<p>
+مخترع ومهندس ارتبط اسمه بالكهرباء والتيار
+المتناوب وتجارب النقل اللاسلكي للطاقة.
+</p>
+
+<hr>
+
+<h3>
+🌊 مثلث برمودا
+</h3>
+
+<p>
+اشتهرت المنطقة بقصص عن اختفاء السفن والطائرات،
+لكن كثيرًا من القصص المتداولة حولها تعرضت
+للمبالغة والأسطرة، ويمكن تفسير العديد من الحوادث
+بعوامل طبيعية وبشرية.
+</p>
+
+<hr>
+
+<h3>
+📜 ابن خلدون
+</h3>
+
+<p>
+من أبرز مفكري التاريخ والعمران البشري،
+واشتهر بكتاب "المقدمة".
+</p>
+
+<hr>
+
+<h3>
+🌙 القمر
+</h3>
+
+<ul>
+
+<li>
+القمر الطبيعي الوحيد للأرض.
+</li>
+
+<li>
+يبلغ قطره نحو 3474 كم.
+</li>
+
+<li>
+تسهم جاذبيته في ظاهرة المد والجزر.
+</li>
+
+<li>
+يظهر من الأرض بأطوار مختلفة.
+</li>
+
+</ul>
+
+<hr>
+
+<h3>
+💎 الزمرد
+</h3>
+
+<ul>
+
+<li>
+نوع من معدن البريل.
+</li>
+
+<li>
+لونه الأخضر يرتبط بعناصر أثرية مثل الكروم
+أو الفاناديوم في بعض أنواعه.
+</li>
+
+<li>
+من أشهر مصادره كولومبيا وزامبيا والبرازيل.
+</li>
+
+</ul>
+
+<hr>
+
+<h3>
+🪐 النظام الشمسي
+</h3>
+
+<p>
+يتكون النظام الشمسي من الشمس ومجموعة من الأجرام
+التي تدور حولها، ومنها الكواكب الثمانية.
+</p>
+
+`;
+
+}
+
+
+/* ==================================================
+   تعريف الموقع
+================================================== */
+
+function showAbout(el){
+
+document.getElementById('folderTitle').textContent=
+'تعريف بالموقع';
+
+el.innerHTML=`
+
+<div class="about-box">
+
+هذا الموقع من إعداد
+<strong>أبو القمر زمرد</strong>.
+
+<br><br>
+
+يهدف الموقع إلى تقديم محتوى يجمع بين
+المعرفة والثقافة والقصص والألغاز
+والمعلومات العامة بأسلوب ممتع.
+
+<br><br>
+
+ستجد هنا:
+
+<ul>
+
+<li>
+خواطر وقصص.
+</li>
+
+<li>
+ثقافة عامة.
+</li>
+
+<li>
+معلومات يومية.
+</li>
+
+<li>
+ألغاز ومسابقات.
+</li>
+
+<li>
+اختبار معلومات من 20 سؤالًا.
+</li>
+
+<li>
+مختارات فيديو.
+</li>
+
+</ul>
+
+<br>
+
+<strong>
+ملاحظة:
+</strong>
+
+بعض المواد قد تُكتب بمساعدة أدوات الذكاء
+الاصطناعي، ويُفضّل الرجوع إلى المصادر الأصلية
+عند الحاجة إلى التحقق التاريخي أو العلمي.
+
+<br><br>
+
+<strong>
+ستكون هنا بنفس أيقونة الخدمات.
+</strong>
+
+</div>
+
+`;
+
+}
+
+
+/* ==================================================
+   اختبار المعلومات - 20 سؤالًا
+================================================== */
+
+const quizQuestions=[
+
+{
+q:'ما عاصمة أستراليا؟',
+o:['سيدني','ملبورن','كانبيرا','بيرث'],
+a:2
+},
+
+{
+q:'ما أكبر محيط على سطح الأرض؟',
+o:['الأطلسي','الهندي','الهادئ','المتجمد الشمالي'],
+a:2
+},
+
+{
+q:'أي كوكب يُعرف بالكوكب الأحمر؟',
+o:['الزهرة','المريخ','زحل','عطارد'],
+a:1
+},
+
+{
+q:'ما العنصر الكيميائي الذي رمزه Au؟',
+o:['الفضة','الذهب','النحاس','الألومنيوم'],
+a:1
+},
+
+{
+q:'من مؤلف كتاب "المقدمة"؟',
+o:['ابن خلدون','الجاحظ','الطبري','المسعودي'],
+a:0
+},
+
+{
+q:'في أي عام هبط الإنسان على القمر لأول مرة؟',
+o:['1965','1967','1969','1971'],
+a:2
+},
+
+{
+q:'ما اللغة الأكثر انتشارًا من حيث عدد المتحدثين الأصليين؟',
+o:['الإنجليزية','الإسبانية','الصينية المندرينية','العربية'],
+a:2
+},
+
+{
+q:'ما أصغر دولة في العالم من حيث المساحة؟',
+o:['موناكو','الفاتيكان','سان مارينو','مالطا'],
+a:1
+},
+
+{
+q:'ما الوحدة الأساسية لقياس شدة التيار الكهربائي؟',
+o:['الفولت','الواط','الأمبير','الأوم'],
+a:2
+},
+
+{
+q:'من رسم لوحة الموناليزا؟',
+o:['ليوناردو دافنشي','بيكاسو','فان غوخ','رامبرانت'],
+a:0
+},
+
+{
+q:'ما أكبر قارة من حيث المساحة؟',
+o:['أفريقيا','آسيا','أوروبا','أمريكا الشمالية'],
+a:1
+},
+
+{
+q:'أي غاز يشكل النسبة الأكبر من الغلاف الجوي للأرض؟',
+o:['الأكسجين','ثاني أكسيد الكربون','النيتروجين','الهيدروجين'],
+a:2
+},
+
+{
+q:'ما عاصمة كندا؟',
+o:['تورنتو','فانكوفر','أوتاوا','مونتريال'],
+a:2
+},
+
+{
+q:'كم عدد عظام جسم الإنسان البالغ تقريبًا؟',
+o:['106','206','306','406'],
+a:1
+},
+
+{
+q:'أي بحر يفصل بين شبه الجزيرة العربية وشمال شرق أفريقيا؟',
+o:['البحر الأحمر','بحر العرب','البحر المتوسط','بحر قزوين'],
+a:0
+},
+
+{
+q:'من العالم الذي ارتبط اسمه بقوانين الحركة والجاذبية الكلاسيكية؟',
+o:['نيوتن','داروين','باستور','فاراداي'],
+a:0
+},
+
+{
+q:'ما الكوكب الأكبر في النظام الشمسي؟',
+o:['زحل','المشتري','نبتون','الأرض'],
+a:1
+},
+
+{
+q:'أي حضارة بنت مدينة ماتشو بيتشو؟',
+o:['الرومان','الإنكا','الفراعنة','الإغريق'],
+a:1
+},
+
+{
+q:'ما عاصمة اليابان؟',
+o:['كيوتو','أوساكا','طوكيو','هيروشيما'],
+a:2
+},
+
+{
+q:'ما اسم العملية التي تحول فيها النباتات الضوء إلى طاقة كيميائية؟',
+o:['التنفس','البناء الضوئي','التخمّر','التبخر'],
+a:1
+}
+
+];
+
+let quizIndex=0;
+
+let quizScore=0;
+
+function startQuiz(){
+
+quizIndex=0;
+
+quizScore=0;
+
+document.getElementById('quizModal').style.display='block';
+
+showQuizQuestion();
+
+}
+
+function showQuizQuestion(){
+
+const q=
+quizQuestions[quizIndex];
+
+const progress=
+((quizIndex)/
+quizQuestions.length)*100;
+
+document.getElementById('quizBody').innerHTML=
+
+'<div class="progress">'+
+
+'<div class="progress-bar" '+
+'style="width:'+progress+'%">'+
+'</div>'+
+
+'</div>'+
+
+'<h3>'+
+'🧠 سؤال '+
+(quizIndex+1)+
+' من '+
+quizQuestions.length+
+'</h3>'+
+
+'<p style="font-size:1.12rem;font-weight:700">'+
+q.q+
+'</p>'+
+
+q.o.map(
+(x,i)=>
+'<button class="item-btn" '+
+'onclick="checkQuizAnswer('+i+')">'+
+x+
+'</button>'
+).join('');
+
+}
+
+function checkQuizAnswer(i){
+
+if(
+i===
+quizQuestions[quizIndex].a
+){
+
+quizScore++;
+
+}
+
+quizIndex++;
+
+if(
+quizIndex<
+quizQuestions.length
+){
+
+showQuizQuestion();
+
+}else{
+
+showQuizResult();
+
+}
+
+}
+
+function showQuizResult(){
+
+let message='';
+
+if(quizScore>=18){
+
+message=
+'🏆 ممتاز جدًا! مستوى معلوماتك رائع.';
+
+}else if(quizScore>=15){
+
+message=
+'🥇 رائع! لديك معرفة قوية.';
+
+}else if(quizScore>=11){
+
+message=
+'👏 جيد جدًا، ويمكنك الوصول إلى نتيجة أعلى.';
+
+}else if(quizScore>=7){
+
+message=
+'👍 بداية جيدة، جرّب الاختبار مرة أخرى.';
+
+}else{
+
+message=
+'💡 لا بأس، التحدي فرصة للتعلم وزيادة المعرفة.';
+
+}
+
+document.getElementById('quizBody').innerHTML=
+
+'<div class="result">'+
+
+'<div style="font-size:2rem">🎉</div>'+
+
+'<strong>'+
+'انتهى الاختبار'+
+'</strong>'+
+
+'<br><br>'+
+
+'نتيجتك: '+
+
+'<strong>'+
+quizScore+
+' من '+
+quizQuestions.length+
+'</strong>'+
+
+'<br><br>'+
+
+message+
+
+'</div>'+
+
+'<button class="item-btn" '+
+'onclick="startQuiz()">'+
+
+'🔁 إعادة الاختبار'+
+
+'</button>';
+
+}
+
+function closeQuiz(){
+
+document.getElementById('quizModal').style.display='none';
+
+}
+
+
+/* ==================================================
+   السنة
+================================================== */
+
+document.getElementById('year').textContent=
+new Date().getFullYear();
+
+
+/* ==================================================
+   زر ESC
+================================================== */
+
+document.addEventListener(
+'keydown',
+e=>{
+
+if(e.key==='Escape'){
+
+closeFolder();
+
+closeQuiz();
+
+closePuzzle();
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
+
 <!-- ================= أيقونة القصة + النافذة المعدلة ================= -->
 <style>
 /* أيقونة القصة */
@@ -3257,1722 +5668,6 @@ function closeVideoModal(){
 }
 
 </script>
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="موقع أبو القمر زمرد - خواطر، ثقافة عامة، معلومات، ألغاز، اختبر معلوماتك ومنوعات.">
-<title>أبو القمر زمرد | sakaker</title>
-
-<style>
-:root{
-  --bg:#071311;
-  --panel:#0d211d;
-  --panel2:#102b25;
-  --gold:#e8c76a;
-  --emerald:#18a77b;
-  --emerald2:#0b6b52;
-  --text:#f7fbf9;
-  --muted:#b9cbc5;
-  --border:rgba(232,199,106,.32);
-  --shadow:0 18px 50px rgba(0,0,0,.38)
-}
-
-*{
-  box-sizing:border-box
-}
-
-html{
-  scroll-behavior:smooth
-}
-
-body{
-  margin:0;
-  min-height:100vh;
-  color:var(--text);
-  font-family:"Tahoma","Segoe UI",Arial,sans-serif;
-  background:
-    radial-gradient(circle at 15% 10%,rgba(24,167,123,.16),transparent 30%),
-    radial-gradient(circle at 85% 15%,rgba(232,199,106,.10),transparent 28%),
-    linear-gradient(135deg,#04100e,#071a16 55%,#06110f);
-}
-
-button{
-  font:inherit
-}
-
-/* الشريط العلوي */
-.topbar{
-  position:sticky;
-  top:0;
-  z-index:1000;
-  backdrop-filter:blur(14px);
-  background:rgba(4,16,14,.82);
-  border-bottom:1px solid var(--border);
-  padding:10px 16px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px
-}
-
-.brand{
-  font-weight:800;
-  color:var(--gold);
-  font-size:1.08rem
-}
-
-.brand small{
-  display:block;
-  color:var(--muted);
-  font-size:.72rem;
-  font-weight:500
-}
-
-.controls{
-  display:flex;
-  gap:8px;
-  align-items:center
-}
-
-.control-btn{
-  border:1px solid var(--border);
-  background:
-  color:#fff;
-  border-radius:999px;
-  padding:8px 12px;
-  cursor:pointer
-}
-
-.control-btn:hover{
-  background:rgba(24,167,123,.18)
-}
-
-/* الواجهة الرئيسية */
-.hero{
-  max-width:1050px;
-  margin:auto;
-  padding:46px 18px 20px;
-  text-align:center
-}
-
-.logo{
-  width:92px;
-  height:92px;
-  margin:auto;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  border:2px solid var(--gold);
-  background:
-  box-shadow:
-    0 0 35px rgba(24,167,123,.25),
-    inset 0 0 25px rgba(232,199,106,.12);
-  font-size:2.7rem
-}
-
-h1{
-  margin:15px 0 6px;
-  font-size:clamp(1.7rem,5vw,3rem);
-  color:var(--gold)
-}
-
-.hero p{
-  margin:0 auto;
-  color:var(--muted);
-  max-width:720px;
-  line-height:1.9
-}
-
-.signature{
-  margin-top:10px;
-  color:#d9eee7;
-  font-weight:700
-}
-
-/* شريط الأخبار */
-.news-wrap{
-  max-width:1050px;
-  margin:18px auto 10px;
-  padding:0 18px
-}
-
-.news{
-  overflow:hidden;
-  border:1px solid var(--border);
-  background:rgba(13,33,29,.8);
-  border-radius:16px;
-  box-shadow:var(--shadow);
-  display:flex;
-  align-items:center
-}
-
-.news-label{
-  background:var(--gold);
-  color:#071311;
-  font-weight:800;
-  padding:11px 15px;
-  white-space:nowrap
-}
-
-.news-track{
-  white-space:nowrap;
-  overflow:hidden;
-  flex:1
-}
-
-.news-text{
-  display:inline-block;
-  padding:11px 30px;
-  animation:ticker 18s linear infinite
-}
-
-@keyframes ticker{
-  from{
-    transform:translateX(100%)
-  }
-  to{
-    transform:translateX(-100%)
-  }
-}
-
-/* الأيقونات */
-.cards{
-  max-width:1050px;
-  margin:30px auto 55px;
-  padding:0 18px;
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:18px
-}
-
-.icon-card{
-  min-height:155px;
-  padding:18px 12px;
-  border:1px solid var(--border);
-  border-radius:24px;
-  background:
-    
-  box-shadow:0 10px 28px rgba(0,0,0,.26);
-  cursor:pointer;
-  text-align:center;
-  transition:.22s ease;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  user-select:none
-}
-
-.icon-card:hover{
-  transform:translateY(-6px);
-  border-color:rgba(232,199,106,.75);
-  box-shadow:0 18px 42px rgba(0,0,0,.38)
-}
-
-.icon-svg{
-  width:58px;
-  height:58px;
-  margin-bottom:10px
-}
-
-.icon-svg *{
-  stroke:var(--gold)!important
-}
-
-.icon-label{
-  font-weight:800;
-  line-height:1.5
-}
-
-.sub{
-  font-size:.78rem;
-  color:var(--muted);
-  margin-top:5px
-}
-
-.feature{
-  grid-column:span 2
-}
-
-/* الفوتر */
-footer{
-  text-align:center;
-  padding:24px 16px 35px;
-  color:var(--muted);
-  border-top:1px solid var(--border)
-}
-
-footer strong{
-  color:var(--gold)
-}
-
-/* النوافذ */
-.modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  z-index:2000;
-  background:rgba(0,0,0,.76);
-  padding:22px;
-  overflow:auto
-}
-
-.panel{
-  width:min(850px,100%);
-  margin:4vh auto;
-  background:linear-gradient(145deg,#10251f,#071613);
-  border:1px solid var(--border);
-  border-radius:22px;
-  box-shadow:var(--shadow);
-  overflow:hidden
-}
-
-.panel-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:15px 18px;
-  border-bottom:1px solid var(--border)
-}
-
-.panel-title{
-  font-weight:900;
-  color:var(--gold);
-  font-size:1.2rem
-}
-
-.close{
-  border:0;
-  background:transparent;
-  color:#fff;
-  font-size:2rem;
-  cursor:pointer;
-  line-height:1
-}
-
-.close:hover{
-  color:var(--gold)
-}
-
-.panel-body{
-  padding:20px;
-  line-height:1.9;
-  color:#f2f7f5
-}
-
-.panel-body h3{
-  color:var(--gold);
-  margin:8px 0
-}
-
-.panel-body hr{
-  border:0;
-  border-top:1px solid var(--border);
-  margin:22px 0
-}
-
-.panel-body li{
-  margin:7px 0
-}
-
-.item-btn{
-  display:block;
-  width:100%;
-  margin:9px 0;
-  padding:12px 14px;
-  text-align:right;
-  border:1px solid var(--border);
-  border-radius:12px;
-  background:rgba(255,255,255,.045);
-  color:#fff;
-  cursor:pointer;
-  transition:.15s
-}
-
-.item-btn:hover{
-  background:rgba(24,167,123,.18);
-  transform:translateX(-3px)
-}
-
-.action-row{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:14px
-}
-
-.action-row .item-btn{
-  width:auto;
-  display:inline-block
-}
-
-.media{
-  width:100%;
-  max-height:520px;
-  border-radius:14px;
-  background:#000
-}
-
-.about-box{
-  background:#fff;
-  color:#101514;
-  border:2px solid var(--gold);
-  padding:18px;
-  border-radius:15px;
-  line-height:1.9
-}
-
-.about-box strong{
-  color:#9a7600
-}
-
-.result{
-  font-size:1.2rem;
-  text-align:center;
-  padding:12px;
-  border-radius:12px;
-  background:rgba(24,167,123,.12)
-}
-
-.muted{
-  color:var(--muted)
-}
-
-/* الجوال */
-@media(max-width:850px){
-
-  .cards{
-    grid-template-columns:repeat(2,minmax(0,1fr))
-  }
-
-  .feature{
-    grid-column:span 2
-  }
-}
-
-@media(max-width:520px){
-
-  .topbar{
-    padding:8px 10px
-  }
-
-  .brand{
-    font-size:.95rem
-  }
-
-  .control-btn{
-    padding:7px 9px
-  }
-
-  .hero{
-    padding-top:32px
-  }
-
-  .cards{
-    grid-template-columns:1fr 1fr;
-    gap:11px;
-    padding:0 12px
-  }
-
-  .icon-card{
-    min-height:135px;
-    border-radius:18px;
-    padding:12px 7px
-  }
-
-  .icon-svg{
-    width:48px;
-    height:48px
-  }
-
-  .icon-label{
-    font-size:.88rem
-  }
-
-  .feature{
-    grid-column:span 2
-  }
-
-  .modal{
-    padding:10px
-  }
-
-  .panel{
-    margin:2vh auto;
-    border-radius:16px
-  }
-
-  .panel-body{
-    padding:14px
-  }
-}
-</style>
-</head>
-
-<body>
-
-
-</header>
-
-<main>
-
-  <p>
-  </p>
-
-
-</section>
-
-<!-- شريط الأخبار -->
-<section
-  class="news-wrap"
-  aria-label="شريط الأخبار">
-
-  <div class="news">
-
-    <div class="news-label">
-      📰 الأخبار
-    </div>
-
-    <div class="news-track">
-
-      <div
-        class="news-text"
-        id="newsText">
-
-        نقوم حاليا بتحديث بعض الايقونات واضافه ميزات جديدة لتطوير الموقع —
-
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-<!-- البطاقات -->
-<section
-  class="cards"
-  aria-label="خدمات الموقع">
-
-  <!-- خواطر -->
-  <div
-    class="icon-card"
-    onclick="openFolder(1)"
-    role="button">
-
-    <svg
-      class="icon-svg"
-      viewBox="0 0 24 24"
-      fill="none">
-
-      <path
-        d="M3 7c0-1.1.9-2 2-2h4l2 2h8c1.1 0 2 .9 2 2v9c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V7Z"
-        stroke-width="1.4"
-        stroke-linejoin="round"/>
-
-    </svg>
-
-    <div class="icon-label">
-      خواطر
-    </div>
-
-    <div class="sub">
-      قصص وحكايات 
-    </div>
-
-  </div>
-
-
-  <!-- الاختبار -->
-  <div
-    class="icon-card"
-    onclick="startQuiz()"
-    role="button">
-
-    <svg
-      class="icon-svg"
-      viewBox="0 0 24 24"
-      fill="none">
-
-      <circle
-        cx="12"
-        cy="12"
-        r="9"
-        stroke-width="1.4"/>
-
-      <path
-        d="M8 12h8M8 16h5M8 8h8"
-        stroke-width="1.4"
-        stroke-linecap="round"/>
-
-    </svg>
-
-    <div class="icon-label">
-      اختبر معلوماتك
-    </div>
-
-    <div class="sub">
-      أسئلة ومسابقات
-    </div>
-
-  </div>
-
-
-  <!-- الثقافة -->
-  <div
-    class="icon-card"
-    onclick="openFolder(4)"
-    role="button">
-
-    <svg
-      class="icon-svg"
-      viewBox="0 0 24 24"
-      fill="none">
-
-      <circle
-        cx="12"
-        cy="12"
-        r="9"
-        stroke-width="1.4"/>
-
-      <path
-        d="M12 8v.01M10.8 11H12c.7 0 1.2.5 1.2 1.2V16"
-        stroke-width="1.4"
-        stroke-linecap="round"/>
-
-    </svg>
-
-    <div class="icon-label">
-      ثقافة عامة
-    </div>
-
-    <div class="sub">
-      معلومات وموضوعات متنوعة
-    </div>
-
-  </div>
-
-
-  <!-- المنوعات -->
-  <div
-    class="icon-card"
-    onclick="openFolder(2)"
-    role="button">
-
-    <svg
-      class="icon-svg"
-      viewBox="0 0 24 24"
-      fill="none">
-
-      <rect
-        x="3"
-        y="6"
-        width="18"
-        height="12"
-        rx="2"
-        stroke-width="1.4"/>
-
-      <path
-        d="m10 9 5 3-5 3V9Z"
-        fill="none"
-        stroke-width="1.4"/>
-
-    </svg>
-
-    <div class="icon-label">
-      مختارات 
-    </div>
-
-    <div class="sub">
-      فيديو 
-    </div>
-
-  </div>
-
-
-  <!-- معلومة اليوم -->
-  <div
-    class="icon-card feature"
-    onclick="openTodayFact()"
-    role="button">
-
-    <svg
-      class="icon-svg"
-      viewBox="0 0 24 24"
-      fill="none">
-
-      <circle
-        cx="12"
-        cy="12"
-        r="9"
-        stroke-width="1.4"/>
-
-      <path
-        d="M12 8v4l3 3"
-        stroke-width="1.4"
-        stroke-linecap="round"/>
-
-    </svg>
-
-    <div class="icon-label">
-      معلومة اليوم
-    </div>
-
-    <div class="sub">
-      معلومة جديدة بحسب اليوم
-    </div>
-
-  </div>
-
-
-  <!-- الألغاز -->
-  <div
-    class="icon-card"
-    onclick="openPuzzle()"
-    role="button">
-
-    <svg
-      class="icon-svg"
-      viewBox="0 0 24 24"
-      fill="none">
-
-      <path
-        d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"
-        stroke-width="1.2"/>
-
-    </svg>
-
-    <div class="icon-label">
-      ألغاز
-    </div>
-
-    <div class="sub">
-      حاول الوصول إلى الحل
-    </div>
-
-  </div>
-
-
-  <!-- تعريف الموقع -->
-  <div
-    class="icon-card"
-    onclick="openFolder(5)"
-    role="button">
-
-    <svg
-      class="icon-svg"
-      viewBox="0 0 24 24"
-      fill="none">
-
-      <path
-        d="M7 5h6l4 4v10H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"
-        stroke-width="1.3"/>
-
-      <path
-        d="M13 5v5h4"
-        stroke-width="1.3"/>
-
-    </svg>
-
-    <div class="icon-label">
-      تعريف بالموقع
-    </div>
-
-    <div class="sub">
-      عن الموقع وفكرته
-    </div>
-
-  </div>
-
-</section>
-
-</main>
-
-
-<!-- الفوتر -->
-<footer>
-
-  © <span id="year"></span>
-
-  <strong>
-    أبو القمر زمرد
-  </strong>
-
-  — sakaker
-
-</footer>
-
-
-<!-- نافذة المجلدات -->
-<div
-  class="modal"
-  id="folderModal"
-  onclick="if(event.target===this)closeFolder()">
-
-  <div
-    class="panel"
-    role="dialog"
-    aria-modal="true">
-
-    <div class="panel-head">
-
-      <div
-        class="panel-title"
-        id="folderTitle">
-        مجلد
-      </div>
-
-      <button
-        class="close"
-        onclick="closeFolder()"
-        aria-label="إغلاق">
-        ×
-      </button>
-
-    </div>
-
-    <div
-      class="panel-body"
-      id="folderBody">
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- نافذة الاختبار -->
-<div
-  class="modal"
-  id="quizModal"
-  onclick="if(event.target===this)closeQuiz()">
-
-  <div
-    class="panel"
-    role="dialog"
-    aria-modal="true">
-
-    <div class="panel-head">
-
-      <div class="panel-title">
-        اختبر معلوماتك
-      </div>
-
-      <button
-        class="close"
-        onclick="closeQuiz()"
-        aria-label="إغلاق">
-        ×
-      </button>
-
-    </div>
-
-    <div
-      class="panel-body"
-      id="quizBody">
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- نافذة الألغاز -->
-<div
-  class="modal"
-  id="puzzleModal"
-  onclick="if(event.target===this)closePuzzle()">
-
-  <div
-    class="panel"
-    role="dialog"
-    aria-modal="true">
-
-    <div class="panel-head">
-
-      <div class="panel-title">
-        ألغاز ومسابقات
-      </div>
-
-      <button
-        class="close"
-        onclick="closePuzzle()"
-        aria-label="إغلاق">
-        ×
-      </button>
-
-    </div>
-
-    <div class="panel-body">
-
-      <h3>
-        🔍 لغز اليوم
-      </h3>
-
-      <p id="puzzleQuestion">
-      </p>
-
-      <p
-        id="puzzleHint"
-        class="muted"
-        style="display:none">
-      </p>
-
-      <p
-        id="puzzleAnswer"
-        style="display:none;font-weight:800;color:#79e3b8">
-      </p>
-
-      <div class="action-row">
-
-        <button
-          class="item-btn"
-          onclick="revealHint()">
-          💡 إظهار تلميح
-        </button>
-
-        <button
-          class="item-btn"
-          onclick="revealAnswer()">
-          ✅ كشف الحل
-        </button>
-
-        <button
-          class="item-btn"
-          onclick="nextRiddle()">
-          🔁 لغز آخر
-        </button>
-
-        <button
-          class="item-btn"
-          onclick="shareRiddle()">
-          📤 مشاركة اللغز
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<script>
-
-/* ================================
-   الألغاز
-================================ */
-
-const riddles = [
-
-  {
-    q:'ما هو الشيء الذي كلما أخذت منه ازداد؟',
-    hint:'له علاقة بالثقوب أو الفراغ.',
-    a:'الحفرة'
-  },
-
-  {
-    q:'ما هو الشيء الذي يدخل الماء ولا يبتل؟',
-    hint:'ليس حيوانًا.',
-    a:'الظل'
-  },
-
-  {
-    q:'ما الشيء الذي يكتب ولا يقرأ؟',
-    hint:'أداة مدرسية.',
-    a:'القلم'
-  },
-
-  {
-    q:'يمشي بلا رجلين ويبكي بلا عينين، ما هو؟',
-    hint:'يوجد في الطبيعة.',
-    a:'السحاب'
-  },
-
-  {
-    q:'له رقبة ولكن بلا رأس، ما هو؟',
-    hint:'تجده في المطبخ.',
-    a:'الزجاجة'
-  },
-
-  {
-    q:'ما هو الشيء الذي إذا ذكرته كسرته؟',
-    hint:'شيء معنوي.',
-    a:'الصمت'
-  },
-
-  {
-    q:'لديه أسنان ولا يعض، ما هو؟',
-    hint:'يُستخدم لتصفيف الشعر.',
-    a:'المشط'
-  },
-
-  {
-    q:'شيء تملكه ويستخدمه الآخرون أكثر منك، ما هو؟',
-    hint:'يرتبط بك شخصيًا.',
-    a:'اسمك'
-  },
-
-  {
-    q:'يقرصك ولا تراه، ما هو؟',
-    hint:'ظاهرة طبيعية.',
-    a:'البرد'
-  },
-
-  {
-    q:'يوجد في كلمة الليل ثلاث مرات وفي كلمة النهار مرة واحدة، ما هو؟',
-    hint:'حرف.',
-    a:'حرف اللام'
-  }
-
-];
-
-let riddleIndex=0;
-
-function renderRiddle(){
-
-  const r=riddles[riddleIndex];
-
-  document.getElementById('puzzleQuestion').textContent=r.q;
-
-  document.getElementById('puzzleHint').textContent=
-    '💡 التلميح: '+r.hint;
-
-  document.getElementById('puzzleAnswer').textContent=
-    '✅ الجواب: '+r.a;
-
-  document.getElementById('puzzleHint').style.display='none';
-
-  document.getElementById('puzzleAnswer').style.display='none';
-
-}
-
-function openPuzzle(){
-
-  document.getElementById('puzzleModal').style.display='block';
-
-  renderRiddle();
-
-}
-
-function closePuzzle(){
-
-  document.getElementById('puzzleModal').style.display='none';
-
-}
-
-function revealHint(){
-
-  document.getElementById('puzzleHint').style.display='block';
-
-}
-
-function revealAnswer(){
-
-  document.getElementById('puzzleAnswer').style.display='block';
-
-}
-
-function nextRiddle(){
-
-  riddleIndex=(riddleIndex+1)%riddles.length;
-
-  renderRiddle();
-
-}
-
-function shareRiddle(){
-
-  const text=
-    '🔍 لغز ممتع:\n'+
-    document.getElementById('puzzleQuestion').textContent+
-    '\nجرب تحله هنا: '+
-    location.href;
-
-  window.open(
-    'https://api.whatsapp.com/send?text='+
-    encodeURIComponent(text),
-    '_blank'
-  );
-
-}
-
-
-/* ================================
-   معلومة اليوم
-================================ */
-
-const todayFacts=[
-
-  '🔬 ألبرت أينشتاين — صاحب النظرية النسبية، غيّر فهمنا للزمن والمكان.',
-
-  '⚡ نيكولا تسلا — مهندس ومخترع ارتبط اسمه بتطوير أنظمة التيار المتناوب.',
-
-  '📜 ابن خلدون — صاحب المقدمة الشهيرة وأحد أبرز مفكري التاريخ.',
-
-  '⚗️ أبو بكر الرازي — طبيب وفيلسوف من أعلام الطب في الحضارة الإسلامية.',
-
-  '🪂 عباس بن فرناس — عالم أندلسي ارتبط اسمه بمحاولة مبكرة للطيران.',
-
-  '🌙 القمر — القمر الطبيعي الوحيد للأرض.',
-
-  '💎 الزمرد — حجر كريم أخضر من مجموعة البريل.',
-
-  '🧠 الدماغ البشري — يحتوي على نحو 86 مليار خلية عصبية وفق تقديرات علمية شائعة.'
-
-];
-
-function openTodayFact(){
-
-  const i=
-    Math.floor(Date.now()/86400000)
-    %
-    todayFacts.length;
-
-  document.getElementById('folderTitle').textContent=
-    'معلومة اليوم';
-
-  document.getElementById('folderBody').innerHTML=
-    '<div class="result">'+
-    todayFacts[i]+
-    '</div>';
-
-  document.getElementById('folderModal').style.display=
-    'block';
-
-}
-
-
-/* ================================
-   المجلدات
-================================ */
-
-function openFolder(n){
-
-  const body=document.getElementById('folderBody');
-
-  const title=document.getElementById('folderTitle');
-
-  document.getElementById('folderModal').style.display=
-    'block';
-
-  if(n===1)
-    return showKhwater(body);
-
-  if(n===2)
-    return showMonowaat(body);
-
-  if(n===4)
-    return showCulture(body);
-
-  if(n===5)
-    return showAbout(body);
-
-  title.textContent='مجلد';
-
-  body.innerHTML=
-    '<p>لا يوجد محتوى حاليًا.</p>';
-
-}
-
-function closeFolder(){
-
-  document.getElementById('folderModal').style.display=
-    'none';
-
-  document.getElementById('folderBody').innerHTML='';
-
-}
-
-
-/* ================================
-   الخواطر
-================================ */
-function showKhwater(el){
-
-  document.getElementById('folderTitle').textContent=
-    'قصص من التاريخ';
-
-  el.innerHTML=`
-
-  <h3>
-    ⚔️ عنترة بن شداد — الفارس الذي أثبت نفسه
-  </h3>
-
-  <p>
-    كان عنترة بن شداد من أشهر فرسان العرب في الجاهلية،
-    وعُرف بالشجاعة والقوة والفروسية. وكانت حياته في بدايتها
-    صعبة، فقد واجه نظرة المجتمع إليه بسبب نسبه، لكنه لم يسمح
-    لذلك أن يمنعه من إثبات نفسه.
-  </p>
-
-  <p>
-    ومع مرور الأيام أصبح عنترة فارسًا يُحسب له ألف حساب،
-    وشارك في المعارك، واشتهر بثباته وشجاعته في مواجهة الأعداء.
-    وكان يرى أن مكانة الرجل لا يصنعها نسبه وحده، وإنما تصنعها
-    أفعاله ومواقفه.
-  </p>
-
-  <p>
-    وارتبط اسم عنترة كذلك بحبه لعبلة، فأصبحت قصتهما من أشهر
-    قصص الحب والفروسية في التراث العربي، وبقي شعره وسيرته
-    حاضرين في الأدب العربي حتى يومنا هذا.
-  </p>
-
-  <hr>
-
-  <h3>
-    🏰 المعتمد بن عباد — الملك الذي انتهى به المطاف أسيرًا
-  </h3>
-
-  <p>
-    كان المعتمد بن عباد ملكًا على إشبيلية في الأندلس،
-    وكان من أشهر ملوك الطوائف. عاش في زمن كانت فيه
-    الأندلس تمر بمرحلة سياسية صعبة، وكانت الممالك
-    المسيحية في الشمال تزداد قوة.
-  </p>
-
-  <p>
-    وعندما اشتد خطر ألفونسو السادس ملك قشتالة،
-    طلب المعتمد المساعدة من يوسف بن تاشفين، أمير المرابطين،
-    فاجتمع المسلمون في معركة الزلاقة، وحققوا نصرًا كبيرًا
-    على جيش ألفونسو السادس.
-  </p>
-
-  <p>
-    لكن الأحداث السياسية تغيرت بعد ذلك، ودخل المرابطون
-    الأندلس، وانتهى حكم المعتمد بن عباد في إشبيلية.
-    ونُقل مع أسرته إلى أغمات في المغرب، بعيدًا عن قصره
-    وملكه الذي عاش فيه سنوات طويلة.
-  </p>
-
-  <p>
-    وتحولت نهاية المعتمد إلى واحدة من أشهر المآسي في تاريخ
-    الأندلس؛ ملك كان يعيش في القصور، ثم وجد نفسه بعيدًا
-    عن وطنه وملكه، يتأمل تغير الأيام وتقلب الدنيا.
-  </p>
-
-  <hr>
-
-  <h3>
-    🦁 صلاح الدين الأيوبي — التسامح بعد النصر
-  </h3>
-
-  <p>
-    كان صلاح الدين الأيوبي قائدًا مسلمًا اشتهر في عصر
-    الحروب الصليبية، وتمكن من توحيد أجزاء واسعة من بلاد
-    المسلمين، ثم واجه القوات الصليبية في عدد من المعارك.
-  </p>
-
-  <p>
-    وفي عام 1187م وقعت معركة حطين، التي انتهت بانتصار
-    المسلمين، وكان لهذا الانتصار أثر كبير في استعادة
-    عدد من المدن التي كانت تحت سيطرة الصليبيين.
-  </p>
-
-  <p>
-    وبعد ذلك توجه صلاح الدين إلى القدس، ودخلها المسلمون
-    بعد سنوات طويلة من سيطرة الصليبيين عليها.
-    واشتهرت الروايات التاريخية بذكر تعامله مع سكان المدينة
-    بعد دخولها، مقارنة بما حدث عند سقوط القدس في أيدي
-    الصليبيين قبل ذلك بسنوات.
-  </p>
-
-  <p>
-    ولهذا بقي اسم صلاح الدين حاضرًا في التاريخ ليس فقط
-    بسبب المعارك التي خاضها، وإنما أيضًا بسبب الصورة التي
-    ارتبطت به كقائد جمع بين القوة والرحمة في عدد من مواقفه.
-  </p>
-
-  <hr>
-
-  <h3>
-    🐎 خالد بن الوليد — سيف الله
-  </h3>
-
-  <p>
-    كان خالد بن الوليد من أبرز القادة العسكريين في التاريخ
-    الإسلامي، واشتهر بمهارته في التخطيط للمعارك وسرعة
-    الحركة والمناورة.
-  </p>
-
-  <p>
-    خاض خالد بن الوليد معارك عديدة في عهد النبي ﷺ وبعده،
-    وشارك في حروب الردة ثم في الفتوحات الإسلامية في العراق
-    وبلاد الشام.
-  </p>
-
-  <p>
-    ومن أشهر المعارك التي ارتبط اسمه بها معركة مؤتة،
-    حيث تولى القيادة بعد استشهاد القادة الثلاثة الذين
-    سبقوه، وتمكن من إعادة تنظيم الجيش والانسحاب به.
-  </p>
-
-  <p>
-    وقد اشتهر خالد بلقب "سيف الله المسلول"، وبقي اسمه
-    مثالًا للقائد العسكري الذي جمع بين الجرأة وسرعة
-    اتخاذ القرار وحسن إدارة المعركة.
-  </p>
-
-  <hr>
-
-  <h3>
-    📜 من قصص التاريخ
-  </h3>
-
-  <p>
-    التاريخ مليء بالقصص التي تكشف لنا كيف تتغير حياة
-    الإنسان بين القوة والضعف، وبين النصر والهزيمة،
-    وبين الملك والفقر.
-  </p>
-
-  <p>
-    وقصص الرجال الذين تركوا أثرًا في التاريخ لا تُروى
-    لمجرد التسلية، بل لكي نتأمل مواقفهم وقراراتهم،
-    ونتعلم أن الأيام لا تبقى على حال واحد.
-  </p>
-
-  <div class="about-box">
-
-    <strong>أبو القمر زمرد</strong><br>
-
-    هنا نروي قصصًا من التاريخ بأسلوب مبسط وممتع،
-    مع الحرص على التمييز بين الأحداث التاريخية
-    والروايات الأدبية التي أضيفت إليها عبر الزمن.
-
-  </div>
-
-  `;
-
-}
-
-
-/* ================================
-   المنوعات والفيديو
-================================ */
-
-function showMonowaat(el){
-
-  document.getElementById('folderTitle').textContent=
-    'مختارات أبو القمر زمرد';
-
-  el.innerHTML=`
-
-  <p class="muted">
-    فيديو المنوعات المحلي. إذا كان اسم الملف موجودًا
-    في مستودع الموقع فسيعمل مباشرة.
-  </p>
-
-  <video
-    id="videoPlayer"
-    class="media"
-    controls
-    playsinline
-    preload="metadata">
-
-    <source
-      src="WhatsApp Video 2025-08-11 at 12.23.19 PM.mp4"
-      type="video/mp4">
-
-    المتصفح لا يدعم تشغيل الفيديو.
-
-  </video>
-
-  <div class="action-row">
-
-    <button
-      class="item-btn"
-      onclick="makeFullscreen()">
-
-      ⛶ تكبير الفيديو
-
-    </button>
-
-  </div>
-
-  `;
-
-}
-
-function makeFullscreen(){
-
-  const v=document.getElementById('videoPlayer');
-
-  if(!v)return;
-
-  if(v.requestFullscreen)
-    v.requestFullscreen();
-
-  else if(v.webkitRequestFullscreen)
-    v.webkitRequestFullscreen();
-
-}
-
-
-/* ================================
-   الثقافة العامة
-================================ */
-
-function showCulture(el){
-
-  document.getElementById('folderTitle').textContent=
-    'ثقافة عامة';
-
-  el.innerHTML=`
-
-  <h3>
-    🧠 نيكولا تسلا
-  </h3>
-
-  <p>
-    مخترع ومهندس ارتبط اسمه بالكهرباء والتيار المتناوب
-    وتجارب النقل اللاسلكي للطاقة.
-  </p>
-
-  <hr>
-
-  <h3>
-    🌊 مثلث برمودا
-  </h3>
-
-  <p>
-    منطقة بحرية اشتهرت بقصص وحكايات عن اختفاء السفن
-    والطائرات. كثير من القصص المتداولة حولها دخلت
-    في نطاق الأساطير والمبالغات، بينما يمكن تفسير
-    كثير من الحوادث بعوامل طبيعية وبشرية.
-  </p>
-
-  <hr>
-
-  <h3>
-    📜 ابن خلدون
-  </h3>
-
-  <p>
-    من أبرز مفكري التاريخ، وصاحب كتاب المقدمة الذي تناول
-    العمران البشري وأسباب قيام الدول وتغير المجتمعات.
-  </p>
-
-  <hr>
-
-  <h3>
-    🌙 معلومات عن القمر
-  </h3>
-
-  <ul>
-
-    <li>
-      هو القمر الطبيعي الوحيد للأرض.
-    </li>
-
-    <li>
-      يبلغ قطره نحو 3474 كم.
-    </li>
-
-    <li>
-      يسهم بجاذبيته في ظاهرة المد والجزر.
-    </li>
-
-    <li>
-      يظهر من الأرض بأطوار مختلفة.
-    </li>
-
-  </ul>
-
-  <hr>
-
-  <h3>
-    💎 معلومات عن الزمرد
-  </h3>
-
-  <ul>
-
-    <li>
-      الزمرد نوع من معدن البريل.
-    </li>
-
-    <li>
-      يأخذ لونه الأخضر من عناصر أثرية مثل الكروم
-      أو الفاناديوم.
-    </li>
-
-    <li>
-      من أشهر مصادره كولومبيا وزامبيا والبرازيل وزيمبابوي.
-    </li>
-
-  </ul>
-
-  `;
-
-}
-
-
-/* ================================
-   تعريف الموقع
-================================ */
-
-function showAbout(el){
-
-  document.getElementById('folderTitle').textContent=
-    'تعريف بالموقع';
-
-  el.innerHTML=`
-
-  <div class="about-box">
-
-    هذا الموقع من إعداد
-    <strong>أبو القمر زمرد</strong>،
-    ويهدف إلى تقديم محتوى يجمع بين المعرفة والعلم
-    والخيال بأسلوب ممتع وغير ممل، مع الاستعانة
-    بالذكاء الاصطناعي ChatGPT في إعداد بعض المواد.
-
-    <br><br>
-
-    هنا ستجدون خواطر، مقالات، قصصًا، معلومات عامة،
-    ألغازًا وأسئلة، في تجربة تمزج بين الأصالة والحداثة
-    وبين الثقافة والمتعة.
-
-    <br><br>
-
-    <strong>
-      ستكون هنا بنفس أيقونة الخدمات:
-    </strong>
-
-    يمكن إضافة أي قسم جديد لاحقًا دون تغيير
-    تصميم الصفحة الأساسي.
-
-  </div>
-
-  `;
-
-}
-
-
-/* ================================
-   اختبار المعلومات
-================================ */
-
-const quizQuestions=[
-
-  {
-    q:'ما هي عاصمة فرنسا؟',
-    o:['باريس','لندن','روما'],
-    a:0
-  },
-
-  {
-    q:'كم عدد القارات في العالم وفق التصنيف الشائع؟',
-    o:['5','6','7'],
-    a:2
-  },
-
-  {
-    q:'ما هو الكوكب المعروف بالكوكب الأحمر؟',
-    o:['الزهرة','المريخ','المشتري'],
-    a:1
-  },
-
-  {
-    q:'ما عاصمة تركيا؟',
-    o:['أنقرة','إسطنبول','إزمير'],
-    a:0
-  },
-
-  {
-    q:'كم عدد الساعات في اليوم؟',
-    o:['12','24','36'],
-    a:1
-  },
-
-  {
-    q:'ما أكبر قارة من حيث المساحة؟',
-    o:['أفريقيا','آسيا','أوروبا'],
-    a:1
-  },
-
-  {
-    q:'في أي سنة هبط الإنسان على القمر لأول مرة؟',
-    o:['1969','1972','1965'],
-    a:0
-  },
-
-  {
-    q:'ما عاصمة إيطاليا؟',
-    o:['روما','ميلانو','نابولي'],
-    a:0
-  },
-
-  {
-    q:'كم عدد ألوان قوس قزح في التصنيف الشائع؟',
-    o:['5','6','7'],
-    a:2
-  },
-
-  {
-    q:'من مؤلف رواية الحرب والسلام؟',
-    o:['تولستوي','دوستويفسكي','تشيخوف'],
-    a:0
-  }
-
-];
-
-let quizIndex=0;
-let quizScore=0;
-
-function startQuiz(){
-
-  quizIndex=0;
-  quizScore=0;
-
-  document.getElementById('quizModal').style.display=
-    'block';
-
-  showQuizQuestion();
-
-}
-
-function showQuizQuestion(){
-
-  const q=quizQuestions[quizIndex];
-
-  document.getElementById('quizBody').innerHTML=
-
-    '<h3>سؤال '+
-    (quizIndex+1)+
-    ' من '+
-    quizQuestions.length+
-    '</h3>'+
-
-    '<p>'+
-    q.q+
-    '</p>'+
-
-    q.o.map(
-      (x,i)=>
-      '<button class="item-btn" onclick="checkQuizAnswer('+i+')">'+
-      x+
-      '</button>'
-    ).join('');
-
-}
-
-function checkQuizAnswer(i){
-
-  if(i===quizQuestions[quizIndex].a)
-    quizScore++;
-
-  quizIndex++;
-
-  if(quizIndex<quizQuestions.length)
-    showQuizQuestion();
-
-  else
-    showQuizResult();
-
-}
-
-function showQuizResult(){
-
-  document.getElementById('quizBody').innerHTML=
-
-    '<div class="result">'+
-
-    '🎉 انتهى الاختبار'+
-
-    '<br>'+
-
-    '<strong>'+
-    'نتيجتك: '+
-    quizScore+
-    ' من '+
-    quizQuestions.length+
-    '</strong>'+
-
-    '</div>'+
-
-    '<button class="item-btn" onclick="startQuiz()">'+
-    '🔁 إعادة المحاولة'+
-    '</button>';
-
-}
-
-function closeQuiz(){
-
-  document.getElementById('quizModal').style.display=
-    'none';
-
-}
-
-
-/* ================================
-   الصوت
-================================ */
-
-const audio=
-  document.getElementById('bg-audio');
-
-function toggleAudio(){
-
-  const b=
-    document.getElementById('muteBtn');
-
-  if(audio.paused){
-
-    audio.play()
-      .then(
-        ()=>{
-          b.textContent='🔊'
-        }
-      )
-      .catch(
-        ()=>{
-          b.textContent='🔇'
-        }
-      );
-
-  }else{
-
-    audio.pause();
-
-    b.textContent='🔇';
-
-  }
-
-}
-
-
-/* ================================
-   السنة
-================================ */
-
-document.getElementById('year').textContent=
-  new Date().getFullYear();
-
-
-/* ================================
-   زر ESC
-================================ */
-
-document.addEventListener(
-  'keydown',
-  e=>{
-
-    if(e.key==='Escape'){
-
-      closeFolder();
-      closeQuiz();
-      closePuzzle();
-
-    }
-
-  }
-);
-
-</script>
 
 <!-- =========================================================
      أيقونة الخدمات
@@ -5005,13 +5700,15 @@ document.addEventListener(
     <div class="services-title">
       ✦ الخدمات ✦
     </div>
-<div class="services-ar">
-  <a href="https://business.sakaker.co/" target="_blank" rel="noopener noreferrer">
-    https://business.sakaker.co/
-  </a>
-</div>
+
+    <div class="services-ar">
+      قريبًا سوف يتم تحديث لعبة بونج والقنوات المباشرة ومكتبة الفيديو وأخرى،
+      وستكون هنا بنفس أيقونة الخدمات.
+    </div>
+
     <div class="services-en">
-      Coming soon more
+      Coming soon, Pong game, Live Channels, Video Library and more will be updated,
+      and they will be available here through the same Services icon.
     </div>
 
     <div class="services-soon">
@@ -5633,7 +6330,7 @@ left:0;
 width:100vw;
 height:100vh;
 
- background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1400&q=80');
+ background:url('https://cdn.pixabay.com/photo/2017/02/01/22/02/mountains-2031539_1280.jpg') center/cover;
 }
     center center
     / cover
