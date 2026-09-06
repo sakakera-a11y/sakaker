@@ -1,5 +1,14 @@
 
 
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAKAKER</title>
+</head>
+<body>
 <!-- =========================================================
      🔒 SAKAKER LOGIN SYSTEM
      صفحة تسجيل الدخول
@@ -799,6 +808,9 @@ const firebaseConfig = {
     projectId:
         "sakaker-9247f",
 
+    databaseURL:
+        "https://sakaker-9247f-default-rtdb.firebaseio.com",
+
     storageBucket:
         "sakaker-9247f.firebasestorage.app",
 
@@ -819,6 +831,10 @@ const firebaseConfig = {
 
 const app =
     initializeApp(firebaseConfig);
+
+/* التطبيق المركزي — كل أجزاء الموقع تستخدم نفس إعدادات Firebase */
+window.firebaseApp = app;
+window.sakakerFirebaseConfig = firebaseConfig;
 
 const analytics =
     getAnalytics(app);
@@ -1326,9 +1342,6 @@ console.log(
 );
 
 </script>
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
@@ -2098,10 +2111,10 @@ footer strong{
 }
 
 </style>
-</head>
 
 
-<body>
+
+
 
 
 <!-- ================================
@@ -3734,14 +3747,17 @@ closePuzzle();
 
 </script>
 
-</body>
-</html>
 <!-- =========================================================
      👥 عداد المتواجدين الآن - SAKAKER
 ========================================================= -->
 
 <style>
 #sakakerVisitors{
+  position:fixed;
+  top:8px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:10002;
   width:max-content;
   max-width:calc(100% - 24px);
   margin:18px auto 12px;
@@ -3792,7 +3808,7 @@ closePuzzle();
 }
 
 #sakakerVisitors:hover{
-  transform:translateY(-2px);
+  transform:translateX(-50%) translateY(-2px);
 
   border-color:
     rgba(232,199,106,.65);
@@ -3905,6 +3921,20 @@ closePuzzle();
    👥 SAKAKER LIVE VISITORS
 ========================================================= */
 
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+
+import {
+  getAuth,
+  signInAnonymously
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+
+import { getAuth, signInAnonymously }
+from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
 import {
   getDatabase,
   ref,
@@ -3916,9 +3946,13 @@ import {
 from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
 
 
-/* استخدام تطبيق Firebase الموجود في موقعك */
-
-const database = getDatabase(window.firebaseApp);
+/* تطبيق حضور مستقل — بنفس إعدادات Firebase المركزية */
+const presenceApp = initializeApp(
+  window.sakakerFirebaseConfig,
+  "sakakerPresenceApp"
+);
+const presenceAuth = getAuth(presenceApp);
+const database = getDatabase(presenceApp);
 
 
 /* إنشاء رقم عشوائي خاص بهذه الزيارة */
@@ -3990,6 +4024,11 @@ onValue(
 
     }
 
+  },
+  error => {
+    console.error("Sakaker visitor read error:", error);
+    const counter = document.getElementById("sakakerVisitorCount");
+    if (counter) counter.textContent = "—";
   }
 );
 
@@ -7029,33 +7068,25 @@ import {
   push,
   serverTimestamp
 }
-from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
 
 import {
   getAuth,
   signInAnonymously,
   onAuthStateChanged
 }
-from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
 
 /* =========================================================
    🔥 إعداد Firebase
 ========================================================= */
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCZw747d_KJa85KTDSOVI8EeX_J9Grpqrk",
-  authDomain: "sakaker-9247f.firebaseapp.com",
-  projectId: "sakaker-9247f",
-  storageBucket: "sakaker-9247f.firebasestorage.app",
-  messagingSenderId: "689588937441",
-  appId: "1:689588937441:web:4d17a1d02e72189bbfcda0",
-  measurementId: "G-RB0V6GTVER"
-};
-
-
+/* Pong له جلسة Auth مستقلة حتى لا يؤثر Anonymous Auth
+   الخاص باللعبة على تسجيل دخول الموقع الرئيسي.
+   الإعدادات نفسها 100% من نفس firebaseConfig المركزي. */
 const firebaseApp = initializeApp(
-  firebaseConfig,
+  window.sakakerFirebaseConfig,
   "sakakerPongOnlineApp"
 );
 
@@ -8832,7 +8863,7 @@ window.addEventListener(
 
 </script>
 
-</body><!-- =========================================================
+<!-- =========================================================
      EMERALD MUSIC — SAKAKER
      Emerald / Gold Music Studio
      ========================================================= -->
@@ -11927,10 +11958,10 @@ window.addEventListener(
      Emerald Music Overlay END
      ========================================================= -->
 
-    <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+    
 
-<head>
+
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -12253,10 +12284,10 @@ window.addEventListener(
 
 </style>
 
-</head>
 
 
-<body>
+
+
 
 
 <!-- ⭐ أيقونة الخرائط -->
@@ -12501,19 +12532,26 @@ document.addEventListener(
 <style>
 /* =================== شريط الأخبار =================== */
 .news-ticker {
-  width: 50%;
-  background: 
+  position: fixed;
+  top: 62px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(96vw, 1100px);
+  min-height: 46px;
+  box-sizing: border-box;
+  background: rgba(4,18,15,.82);
   color: #fff;
-  padding: 5px 0;
+  padding: 6px 12px;
   overflow: hidden;
   white-space: nowrap;
-  position: fixed;
-  top: 10px;
-  right: 540px;
   font-size: 16px;
   z-index: 9999;
   display: flex;
   align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 
   /* ✨✨ التوهج الذهبي ✨✨ */
   box-shadow: 
@@ -12556,11 +12594,16 @@ document.addEventListener(
 
 /* =================== صندوق الوقت + التاريخ + الطقس =================== */
 .clock-box {
-  margin-right: 55px;
+  position: fixed;
+  top: 48px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10001;
+  margin: 0;
   padding: 0;
   background: transparent !important;
   border: none !important;
-  font-size: 40px;
+  font-size: 20px;
   display: flex;
   flex-direction: column;
   line-height: 1.1;
@@ -12889,9 +12932,12 @@ document.addEventListener("click", e => {
     window.sakakerSetTranslateCookie(siteLang);
   }
 
-  setTimeout(() => {
-    window.location.reload();
-  }, 80);
+  /* ترجمة كامل محتوى الصفحة عبر Google Translate مع الاحتفاظ
+     باللغة المختارة في كل زيارة. */
+  const gt = siteLang === "ar" ? "/ar/ar" : "/ar/en";
+  document.cookie = "googtrans=" + gt + "; path=/";
+  document.cookie = "googtrans=" + gt + "; path=/; domain=" + location.hostname;
+  setTimeout(() => window.location.reload(), 120);
 });
 
 /* =================== الساعة والتاريخ =================== */
@@ -13018,9 +13064,9 @@ setInterval(loadWeather, 1800000);
 
 
 
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
+
+
+
 <meta charset="UTF-8">
 <meta name="viewport"
 content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
@@ -13299,8 +13345,8 @@ content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cove
   }
 }
 </style>
-</head>
-<body>
+
+
 
 <!-- 🌟 أيقونة فليشر القنوات المباشرة -->
 <div id="liveFlasher" onclick="toggleLivePopup()">
@@ -13614,7 +13660,7 @@ content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cove
 </script>
 <!-- ===========================
      Smart Mobile Fix Final v2.0
-     ضع هذا قبل </body>
+     ضع هذا قبل 
 =========================== -->
 
 <style>
@@ -13754,12 +13800,52 @@ if(window.visualViewport){
 
 </script>
 
-</body>
-</html>
+<!-- =========================================================
+     🌐 SAKAKER GLOBAL LANGUAGE ENGINE
+     ترجمة كامل محتوى الموقع دون الحاجة لتعديل كل عنصر يدويًا
+========================================================= -->
+<div id="google_translate_element" style="display:none !important;position:absolute;left:-99999px;top:-99999px;"></div>
+<script>
+window.sakakerGoogleTranslateInit = function(){
+  try {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ar',
+      includedLanguages: 'ar,en',
+      autoDisplay: false
+    }, 'google_translate_element');
+  } catch(e) { console.warn('Google Translate init:', e); }
+};
+(function(){
+  if (!document.querySelector('script[data-sakaker-google-translate]')) {
+    const s=document.createElement('script');
+    s.src='https://translate.google.com/translate_a/element.js?cb=sakakerGoogleTranslateInit';
+    s.async=true;
+    s.dataset.sakakerGoogleTranslate='1';
+    document.head.appendChild(s);
+  }
+})();
+</script>
+<style>
+html,body{scroll-padding-top:165px;}
+.goog-te-banner-frame.skiptranslate{display:none!important;}
+body{top:0!important;}
+.goog-tooltip,.goog-te-balloon-frame{display:none!important;}
+@media(max-width:700px){
+  #sakakerVisitors{top:6px;font-size:11px;padding:7px 12px;gap:6px;}
+  .clock-box{top:52px;font-size:24px!important;line-height:1.05;}
+  #date{font-size:11px!important;}
+  #weather{font-size:13px!important;}
+  .news-ticker{top:104px;width:94vw;min-height:40px;font-size:13px;padding:5px 8px;}
+  .ticker-wrapper{width:100%;}
+}
+</style>
 
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
+
+
+
+
+
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>قنوات العاب موسيقى</title>
@@ -13796,5 +13882,5 @@ if(window.visualViewport){
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
         }
     </style>
-</head>
-<body>
+</body>
+</html>
