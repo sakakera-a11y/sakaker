@@ -3736,7 +3736,279 @@ closePuzzle();
 
 </body>
 </html>
+<!-- =========================================================
+     👥 عداد المتواجدين الآن - SAKAKER
+========================================================= -->
 
+<style>
+#sakakerVisitors{
+  width:max-content;
+  max-width:calc(100% - 24px);
+  margin:18px auto 12px;
+  padding:9px 18px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+
+  direction:rtl;
+
+  border:1px solid rgba(232,199,106,.35);
+  border-radius:30px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(13,40,34,.72),
+      rgba(6,24,20,.82)
+    );
+
+  box-shadow:
+    0 8px 25px rgba(0,0,0,.20),
+    0 0 18px rgba(24,167,123,.08),
+    inset 0 0 15px rgba(232,199,106,.03);
+
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+
+  color:#f7fbf9;
+
+  font-family:
+    "Tahoma",
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+  font-size:14px;
+  font-weight:700;
+
+  user-select:none;
+
+  transition:
+    transform .25s ease,
+    border-color .25s ease,
+    box-shadow .25s ease;
+}
+
+#sakakerVisitors:hover{
+  transform:translateY(-2px);
+
+  border-color:
+    rgba(232,199,106,.65);
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.25),
+    0 0 20px rgba(24,167,123,.14);
+}
+
+.sakaker-online-dot{
+  width:9px;
+  height:9px;
+
+  border-radius:50%;
+
+  background:#18d995;
+
+  box-shadow:
+    0 0 6px #18d995,
+    0 0 13px rgba(24,217,149,.65);
+
+  animation:
+    sakakerPulse 1.8s infinite;
+}
+
+@keyframes sakakerPulse{
+  0%,100%{
+    opacity:1;
+    transform:scale(1);
+  }
+
+  50%{
+    opacity:.45;
+    transform:scale(.78);
+  }
+}
+
+.sakaker-online-icon{
+  font-size:17px;
+  line-height:1;
+}
+
+#sakakerVisitorCount{
+  color:#e8c76a;
+
+  min-width:20px;
+
+  text-align:center;
+
+  font-size:16px;
+  font-weight:900;
+
+  text-shadow:
+    0 0 8px rgba(232,199,106,.25);
+}
+
+.sakaker-online-text{
+  color:#d9e8e3;
+}
+
+.sakaker-online-now{
+  color:#18d995;
+  font-size:12px;
+}
+
+@media(max-width:520px){
+
+  #sakakerVisitors{
+    margin:14px auto 10px;
+    padding:8px 14px;
+    font-size:12px;
+  }
+
+  .sakaker-online-icon{
+    font-size:15px;
+  }
+
+  #sakakerVisitorCount{
+    font-size:15px;
+  }
+}
+</style>
+
+
+<div id="sakakerVisitors"
+     aria-label="عدد المتواجدين الآن">
+
+  <span class="sakaker-online-dot"></span>
+
+  <span class="sakaker-online-icon">👥</span>
+
+  <span class="sakaker-online-text">
+    المتواجدون الآن
+  </span>
+
+  <strong id="sakakerVisitorCount">
+    0
+  </strong>
+
+  <span class="sakaker-online-now">
+    ● مباشر
+  </span>
+
+</div>
+
+
+<script type="module">
+
+/* =========================================================
+   👥 SAKAKER LIVE VISITORS
+========================================================= */
+
+import {
+  getDatabase,
+  ref,
+  onValue,
+  onDisconnect,
+  set,
+  serverTimestamp
+}
+from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
+
+
+/* استخدام تطبيق Firebase الموجود في موقعك */
+
+const database = getDatabase(window.firebaseApp);
+
+
+/* إنشاء رقم عشوائي خاص بهذه الزيارة */
+
+const visitorId =
+  "visitor_" +
+  Date.now() +
+  "_" +
+  Math.random()
+    .toString(36)
+    .substring(2,10);
+
+
+/* مسار الزائر */
+
+const visitorRef =
+  ref(
+    database,
+    "sakakerPresence/" + visitorId
+  );
+
+
+/* =========================================================
+   🟢 تسجيل الزائر
+========================================================= */
+
+set(visitorRef,{
+  online:true,
+  timestamp:serverTimestamp()
+});
+
+
+/* =========================================================
+   🔴 حذف الزائر عند إغلاق الصفحة
+========================================================= */
+
+onDisconnect(visitorRef).remove();
+
+
+/* =========================================================
+   👥 قراءة عدد المتواجدين
+========================================================= */
+
+const presenceRef =
+  ref(database,"sakakerPresence");
+
+
+onValue(
+  presenceRef,
+  (snapshot)=>{
+
+    const data =
+      snapshot.val() || {};
+
+    const count =
+      Object.keys(data).length;
+
+    const counter =
+      document.getElementById(
+        "sakakerVisitorCount"
+      );
+
+    if(counter){
+
+      counter.textContent =
+        count.toLocaleString(
+          "ar-SA"
+        );
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   ❤️ تحديث حالة الاتصال
+========================================================= */
+
+window.addEventListener(
+  "beforeunload",
+  ()=>{
+    set(
+      visitorRef,
+      null
+    );
+  }
+);
+
+</script>
 <!-- ================= أيقونة القصة + النافذة المعدلة ================= -->
 <style>
 /* أيقونة القصة */
