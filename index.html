@@ -1906,6 +1906,1163 @@ https://business.sakaker.co/    </div>
 })();
 
 </script>
+<!-- =====================================================
+     🎬 أيقونة فيديو فيسبوك
+     ===================================================== -->
+
+<div id="facebookVideoIcon"
+     role="button"
+     tabindex="0"
+     aria-label="فيديو فيسبوك">
+
+  <div class="fbIconRays"></div>
+
+  <div class="fbIconCircle">
+    <span>f</span>
+  </div>
+
+  <div class="fbIconText">فيديو</div>
+</div>
+
+
+<!-- =====================================================
+     🎬 نافذة الفيديو
+     ===================================================== -->
+
+<div id="facebookVideoPopup">
+
+  <div class="fbVideoBox">
+
+    <!-- زر الإغلاق -->
+    <button id="facebookVideoClose" aria-label="إغلاق">
+      ✕
+    </button>
+
+    <!-- العنوان -->
+    <div class="fbVideoTitle">
+      <span>▶</span>
+      فيديو فيسبوك
+    </div>
+
+
+    <!-- الفيديو -->
+
+    <div class="fbVideoFrame">
+
+      <iframe
+        src="https://www.facebook.com/plugins/video.php?height=378&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1028563299794826%2F&show_text=true&width=560&t=0"
+        width="560"
+        height="493"
+        style="border:none;overflow:hidden"
+        scrolling="no"
+        frameborder="0"
+        allowfullscreen="true"
+        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+        allowFullScreen="true">
+      </iframe>
+
+    </div>
+
+
+    <!-- =================================================
+         💬 التعليقات
+         ================================================= -->
+
+    <div class="fbComments">
+
+      <div class="fbCommentsTitle">
+        💬 التعليقات
+      </div>
+
+
+      <div id="fbCommentsList">
+
+        <div class="fbNoComments">
+          كن أول من يعلق على الفيديو ✨
+        </div>
+
+      </div>
+
+
+      <!-- كتابة تعليق -->
+
+      <div class="fbCommentWrite">
+
+        <input
+          id="fbCommentInput"
+          type="text"
+          maxlength="300"
+          placeholder="اكتب تعليقك هنا...">
+
+        <button id="fbCommentSend">
+          إرسال
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<style>
+
+/* =====================================================
+   🎬 أيقونة الفيديو
+   ===================================================== */
+
+#facebookVideoIcon{
+
+  position:fixed;
+
+  right:18px;
+  bottom:350px;
+
+  width:86px;
+  height:86px;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
+  cursor:pointer;
+
+  z-index:99999999;
+
+  user-select:none;
+
+  background:transparent;
+
+  transition:
+    transform .35s ease,
+    opacity .5s ease;
+
+  filter:
+    drop-shadow(0 0 8px rgba(0,255,210,.9))
+    drop-shadow(0 0 18px rgba(0,255,180,.75))
+    drop-shadow(0 0 30px rgba(255,215,0,.55));
+
+  animation:
+    fbFloat 3s ease-in-out infinite,
+    fbGlow 2s ease-in-out infinite;
+}
+
+
+/* =====================================================
+   ✨ هالة الإضاءة
+   ===================================================== */
+
+.fbIconRays{
+
+  position:absolute;
+
+  width:64px;
+  height:64px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(0,255,210,.30),
+      rgba(0,255,190,.12) 40%,
+      rgba(255,215,0,.08) 55%,
+      transparent 72%
+    );
+
+  box-shadow:
+
+    0 0 10px rgba(0,255,200,.8),
+
+    0 0 22px rgba(0,255,200,.65),
+
+    0 0 42px rgba(255,215,0,.4);
+
+  animation:
+    fbRayPulse 1.5s ease-in-out infinite,
+    fbRayRotate 8s linear infinite;
+}
+
+
+/* =====================================================
+   🔵 دائرة فيسبوك
+   ===================================================== */
+
+.fbIconCircle{
+
+  position:relative;
+
+  width:52px;
+  height:52px;
+
+  border-radius:50%;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  background:
+
+    radial-gradient(
+      circle at 35% 30%,
+      #ffffff 0%,
+      #65eaff 8%,
+      #1877f2 38%,
+      #0759c7 65%,
+      #003b91 100%
+    );
+
+  border:1px solid rgba(255,255,255,.75);
+
+  box-shadow:
+
+    inset 0 0 10px rgba(255,255,255,.5),
+
+    0 0 8px rgba(0,191,255,.9),
+
+    0 0 18px rgba(0,191,255,.8),
+
+    0 0 30px rgba(255,215,0,.45);
+
+  z-index:2;
+
+  animation:
+    fbCirclePulse 1.8s ease-in-out infinite;
+}
+
+
+/* حرف f */
+
+.fbIconCircle span{
+
+  color:#fff;
+
+  font-family:
+    Arial,
+    sans-serif;
+
+  font-size:42px;
+
+  font-weight:900;
+
+  line-height:1;
+
+  text-shadow:
+
+    0 0 4px #fff,
+
+    0 0 10px #00eaff,
+
+    0 0 18px #00bfff;
+}
+
+
+/* =====================================================
+   📝 اسم الأيقونة
+   ===================================================== */
+
+.fbIconText{
+
+  position:relative;
+
+  z-index:3;
+
+  margin-top:2px;
+
+  color:#fff;
+
+  font-family:
+    Tajawal,
+    Tahoma,
+    Arial,
+    sans-serif;
+
+  font-size:13px;
+
+  font-weight:900;
+
+  white-space:nowrap;
+
+  text-shadow:
+
+    0 0 5px #00ffd0,
+
+    0 0 10px #00ffd0,
+
+    0 0 15px #FFD700;
+}
+
+
+/* =====================================================
+   🎬 نافذة الفيديو
+   ===================================================== */
+
+#facebookVideoPopup{
+
+  position:fixed;
+
+  inset:0;
+
+  width:100%;
+  height:100%;
+
+  display:none;
+
+  align-items:center;
+  justify-content:center;
+
+  padding:20px;
+
+  box-sizing:border-box;
+
+  background:
+    rgba(0,0,0,.82);
+
+  backdrop-filter:
+    blur(7px);
+
+  z-index:2147483646;
+}
+
+
+/* عند الفتح */
+
+#facebookVideoPopup.active{
+
+  display:flex;
+
+  animation:
+    fbPopupIn .35s ease;
+}
+
+
+/* =====================================================
+   🟢 صندوق الفيديو
+   ===================================================== */
+
+.fbVideoBox{
+
+  position:relative;
+
+  width:
+    min(620px,96vw);
+
+  max-height:94vh;
+
+  overflow:auto;
+
+  padding:15px;
+
+  box-sizing:border-box;
+
+  border-radius:22px;
+
+  background:
+
+    linear-gradient(
+      145deg,
+      rgba(3,50,39,.98),
+      rgba(4,28,25,.98)
+    );
+
+  border:1px solid rgba(0,255,190,.55);
+
+  box-shadow:
+
+    0 0 12px rgba(0,255,190,.65),
+
+    0 0 35px rgba(0,255,190,.35),
+
+    0 0 60px rgba(255,215,0,.18);
+
+  scrollbar-width:thin;
+}
+
+
+/* =====================================================
+   ❌ زر الإغلاق
+   ===================================================== */
+
+#facebookVideoClose{
+
+  position:absolute;
+
+  top:8px;
+  right:8px;
+
+  width:34px;
+  height:34px;
+
+  border:none;
+
+  border-radius:50%;
+
+  background:
+    rgba(0,0,0,.65);
+
+  color:#fff;
+
+  font-size:19px;
+
+  font-weight:bold;
+
+  cursor:pointer;
+
+  z-index:10;
+
+  box-shadow:
+    0 0 10px rgba(255,0,80,.55);
+
+  transition:.25s;
+}
+
+
+#facebookVideoClose:hover{
+
+  transform:scale(1.12);
+
+  background:#8b0038;
+
+}
+
+
+/* =====================================================
+   🎥 عنوان الفيديو
+   ===================================================== */
+
+.fbVideoTitle{
+
+  text-align:center;
+
+  color:#fff;
+
+  font-family:
+    Tajawal,
+    Tahoma,
+    Arial,
+    sans-serif;
+
+  font-size:17px;
+
+  font-weight:900;
+
+  margin-bottom:10px;
+
+  text-shadow:
+
+    0 0 6px #00ffd0,
+
+    0 0 12px #FFD700;
+}
+
+
+.fbVideoTitle span{
+
+  color:#00ffd0;
+
+  margin-left:5px;
+}
+
+
+/* =====================================================
+   🎥 إطار الفيديو
+   ===================================================== */
+
+.fbVideoFrame{
+
+  width:100%;
+
+  display:flex;
+
+  justify-content:center;
+
+  overflow:hidden;
+
+  border-radius:14px;
+
+  background:#000;
+
+  box-shadow:
+    0 0 20px rgba(0,0,0,.8);
+}
+
+
+.fbVideoFrame iframe{
+
+  display:block;
+
+  width:560px;
+
+  max-width:100%;
+
+  height:493px;
+
+  max-height:65vh;
+
+  border:none;
+}
+
+
+/* =====================================================
+   💬 التعليقات
+   ===================================================== */
+
+.fbComments{
+
+  margin-top:14px;
+
+  padding:12px;
+
+  border-radius:15px;
+
+  background:
+    rgba(0,255,190,.055);
+
+  border:
+    1px solid rgba(0,255,190,.22);
+}
+
+
+/* عنوان التعليقات */
+
+.fbCommentsTitle{
+
+  color:#FFD700;
+
+  font-size:16px;
+
+  font-weight:900;
+
+  margin-bottom:9px;
+
+  text-shadow:
+    0 0 8px rgba(255,215,0,.7);
+}
+
+
+/* قائمة التعليقات */
+
+#fbCommentsList{
+
+  max-height:190px;
+
+  overflow-y:auto;
+
+  padding:3px;
+
+}
+
+
+/* لا توجد تعليقات */
+
+.fbNoComments{
+
+  color:rgba(255,255,255,.55);
+
+  text-align:center;
+
+  font-size:13px;
+
+  padding:15px 5px;
+}
+
+
+/* تعليق */
+
+.fbComment{
+
+  padding:8px 10px;
+
+  margin-bottom:7px;
+
+  border-radius:10px;
+
+  background:
+    rgba(0,0,0,.3);
+
+  border-right:
+    2px solid #00ffd0;
+
+  color:#fff;
+
+  font-size:13px;
+
+  line-height:1.5;
+}
+
+
+/* وقت التعليق */
+
+.fbCommentTime{
+
+  display:block;
+
+  color:#00ffd0;
+
+  font-size:10px;
+
+  margin-top:3px;
+}
+
+
+/* =====================================================
+   ✍️ كتابة تعليق
+   ===================================================== */
+
+.fbCommentWrite{
+
+  display:flex;
+
+  gap:7px;
+
+  margin-top:9px;
+}
+
+
+#fbCommentInput{
+
+  flex:1;
+
+  min-width:0;
+
+  height:40px;
+
+  padding:0 12px;
+
+  box-sizing:border-box;
+
+  border-radius:12px;
+
+  border:1px solid rgba(0,255,200,.4);
+
+  outline:none;
+
+  background:
+    rgba(0,0,0,.38);
+
+  color:#fff;
+
+  font-family:
+    Tajawal,
+    Tahoma,
+    Arial,
+    sans-serif;
+
+  font-size:13px;
+
+  direction:rtl;
+
+  box-shadow:
+    inset 0 0 8px rgba(0,255,190,.08);
+}
+
+
+#fbCommentInput::placeholder{
+
+  color:
+    rgba(255,255,255,.48);
+}
+
+
+#fbCommentInput:focus{
+
+  border-color:#00ffd0;
+
+  box-shadow:
+    0 0 10px rgba(0,255,200,.35);
+}
+
+
+/* زر الإرسال */
+
+#fbCommentSend{
+
+  height:40px;
+
+  padding:
+    0 15px;
+
+  border:none;
+
+  border-radius:12px;
+
+  cursor:pointer;
+
+  color:#052c24;
+
+  background:
+    linear-gradient(
+      135deg,
+      #00ffd0,
+      #FFD700
+    );
+
+  font-weight:900;
+
+  font-family:
+    Tajawal,
+    Tahoma,
+    Arial,
+    sans-serif;
+
+  box-shadow:
+    0 0 12px rgba(0,255,200,.45);
+
+  transition:.25s;
+}
+
+
+#fbCommentSend:hover{
+
+  transform:
+    translateY(-2px)
+    scale(1.03);
+
+  box-shadow:
+    0 0 20px rgba(0,255,200,.75);
+}
+
+
+/* =====================================================
+   ✨ الحركات
+   ===================================================== */
+
+@keyframes fbFloat{
+
+  0%,100%{
+    transform:translateY(0);
+  }
+
+  50%{
+    transform:translateY(-8px);
+  }
+
+}
+
+
+@keyframes fbGlow{
+
+  0%,100%{
+
+    filter:
+      drop-shadow(0 0 7px rgba(0,255,200,.7))
+      drop-shadow(0 0 16px rgba(0,255,190,.55))
+      drop-shadow(0 0 28px rgba(255,215,0,.4));
+
+  }
+
+  50%{
+
+    filter:
+      drop-shadow(0 0 14px rgba(0,255,220,1))
+      drop-shadow(0 0 28px rgba(0,255,190,.9))
+      drop-shadow(0 0 48px rgba(255,215,0,.85));
+
+  }
+
+}
+
+
+@keyframes fbRayPulse{
+
+  0%,100%{
+    transform:scale(.8);
+    opacity:.5;
+  }
+
+  50%{
+    transform:scale(1.25);
+    opacity:1;
+  }
+
+}
+
+
+@keyframes fbRayRotate{
+
+  from{
+    rotate:0deg;
+  }
+
+  to{
+    rotate:360deg;
+  }
+
+}
+
+
+@keyframes fbCirclePulse{
+
+  0%,100%{
+    transform:scale(1);
+  }
+
+  50%{
+    transform:scale(1.08);
+  }
+
+}
+
+
+@keyframes fbPopupIn{
+
+  from{
+    opacity:0;
+    transform:scale(.88);
+  }
+
+  to{
+    opacity:1;
+    transform:scale(1);
+  }
+
+}
+
+
+/* =====================================================
+   📱 الجوال
+   ===================================================== */
+
+@media(max-width:600px){
+
+  #facebookVideoIcon{
+
+    right:9px;
+
+    bottom:250px;
+
+    width:70px;
+    height:70px;
+  }
+
+
+  .fbIconRays{
+
+    width:52px;
+    height:52px;
+  }
+
+
+  .fbIconCircle{
+
+    width:44px;
+    height:44px;
+  }
+
+
+  .fbIconCircle span{
+
+    font-size:34px;
+  }
+
+
+  .fbIconText{
+
+    font-size:11px;
+  }
+
+
+  #facebookVideoPopup{
+
+    padding:8px;
+  }
+
+
+  .fbVideoBox{
+
+    width:96vw;
+
+    padding:10px;
+
+    border-radius:17px;
+  }
+
+
+  .fbVideoFrame iframe{
+
+    width:100%;
+
+    height:55vh;
+
+    min-height:300px;
+  }
+
+
+  .fbCommentWrite{
+
+    gap:5px;
+  }
+
+
+  #fbCommentSend{
+
+    padding:0 11px;
+
+  }
+
+}
+
+
+/* =====================================================
+   📱 الجوال الصغير
+   ===================================================== */
+
+@media(max-width:380px){
+
+  #facebookVideoIcon{
+
+    right:6px;
+
+    bottom:225px;
+
+    width:60px;
+    height:60px;
+  }
+
+
+  .fbIconRays{
+
+    width:44px;
+    height:44px;
+  }
+
+
+  .fbIconCircle{
+
+    width:38px;
+    height:38px;
+  }
+
+
+  .fbIconCircle span{
+
+    font-size:29px;
+  }
+
+
+  .fbIconText{
+
+    font-size:10px;
+  }
+
+}
+
+</style>
+
+
+<script>
+
+(function(){
+
+  const icon =
+    document.getElementById("facebookVideoIcon");
+
+  const popup =
+    document.getElementById("facebookVideoPopup");
+
+  const close =
+    document.getElementById("facebookVideoClose");
+
+  const input =
+    document.getElementById("fbCommentInput");
+
+  const send =
+    document.getElementById("fbCommentSend");
+
+  const list =
+    document.getElementById("fbCommentsList");
+
+
+  if(!icon || !popup) return;
+
+
+  /* فتح الفيديو */
+
+  function openVideo(){
+
+    popup.classList.add("active");
+
+    document.body.style.overflow="hidden";
+
+  }
+
+
+  /* إغلاق الفيديو */
+
+  function closeVideo(){
+
+    popup.classList.remove("active");
+
+    document.body.style.overflow="";
+
+  }
+
+
+  icon.addEventListener(
+    "click",
+    openVideo
+  );
+
+
+  close.addEventListener(
+    "click",
+    closeVideo
+  );
+
+
+  /* الضغط خارج الصندوق */
+
+  popup.addEventListener(
+    "click",
+    function(e){
+
+      if(e.target === popup){
+
+        closeVideo();
+
+      }
+
+    }
+  );
+
+
+  /* زر ESC */
+
+  document.addEventListener(
+    "keydown",
+    function(e){
+
+      if(e.key==="Escape"){
+
+        closeVideo();
+
+      }
+
+    }
+  );
+
+
+  /* Enter لفتح الأيقونة */
+
+  icon.addEventListener(
+    "keydown",
+    function(e){
+
+      if(
+        e.key==="Enter" ||
+        e.key===" "
+      ){
+
+        e.preventDefault();
+
+        openVideo();
+
+      }
+
+    }
+  );
+
+
+  /* =================================================
+     💬 نظام التعليقات المحلي
+     ================================================= */
+
+  function addComment(){
+
+    const text =
+      input.value.trim();
+
+    if(!text) return;
+
+
+    /* إزالة رسالة لا توجد تعليقات */
+
+    const empty =
+      list.querySelector(".fbNoComments");
+
+    if(empty){
+
+      empty.remove();
+
+    }
+
+
+    const comment =
+      document.createElement("div");
+
+    comment.className =
+      "fbComment";
+
+
+    /* حماية من HTML */
+
+    const safeText =
+      document.createElement("div");
+
+    safeText.textContent =
+      text;
+
+
+    const time =
+      document.createElement("span");
+
+    time.className =
+      "fbCommentTime";
+
+    time.textContent =
+      "الآن";
+
+
+    comment.appendChild(
+      safeText
+    );
+
+    comment.appendChild(
+      time
+    );
+
+
+    list.appendChild(
+      comment
+    );
+
+
+    input.value="";
+
+    list.scrollTop =
+      list.scrollHeight;
+
+  }
+
+
+  send.addEventListener(
+    "click",
+    addComment
+  );
+
+
+  input.addEventListener(
+    "keydown",
+    function(e){
+
+      if(e.key==="Enter"){
+
+        e.preventDefault();
+
+        addComment();
+
+      }
+
+    }
+  );
+
+})();
+
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
