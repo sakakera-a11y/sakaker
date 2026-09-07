@@ -7132,66 +7132,6 @@ function toggleLivePopup() {
   }
 </script>
 
-(function(){
-
-function mobileFix(){
-
-    if(window.innerWidth>768) return;
-
-    document.documentElement.style.overflowX="hidden";
-    document.body.style.overflowX="hidden";
-
-    /* ترتيب الأيقونات تلقائياً */
-
-    const icons=[...document.querySelectorAll('[id*="Icon"]')];
-
-    let bottom=20;
-
-    icons.forEach(function(icon){
-
-        if(getComputedStyle(icon).position==="fixed"){
-
-            icon.style.left="auto";
-            icon.style.right="12px";
-            icon.style.bottom=bottom+"px";
-
-            bottom+=82;
-
-        }
-
-    });
-
-    /* إصلاح النوافذ */
-
-    document.querySelectorAll('[id*="Popup"]').forEach(function(pop){
-
-        pop.style.maxHeight="90vh";
-        pop.style.overflowY="auto";
-
-    });
-
-}
-
-/* تشغيل الإصلاح */
-
-window.addEventListener("load",mobileFix);
-window.addEventListener("resize",mobileFix);
-window.addEventListener("orientationchange",function(){
-
-    setTimeout(mobileFix,300);
-
-});
-
-/* دعم Safari و iPhone */
-
-if(window.visualViewport){
-
-    window.visualViewport.addEventListener("resize",mobileFix);
-
-}
-
-})();
-</script>
 <script>
 // إعادة ضبط موضع العناصر عند تدوير الجهاز
 function adjustLayoutOnOrientation() {
