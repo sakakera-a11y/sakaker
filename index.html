@@ -1350,6 +1350,562 @@ console.log(
 );
 
 </script>
+
+<!-- =========================================================
+     أيقونة الخدمات
+     نفس التصميم والحركة — مع رسالة عند الضغط
+========================================================= -->
+
+<div id="serviceIcon_new" tabindex="0">
+
+  <div class="service-rays"></div>
+
+  <div class="service-crystal">✦</div>
+
+  <div class="service-label">
+    The new location
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     نافذة رسالة الخدمات
+===================================================== -->
+
+<div id="servicesComingSoon">
+
+  <div class="services-message">
+
+    <button id="servicesClose" aria-label="إغلاق">×</button>
+
+    <div class="services-title">
+      ✦ The new location ✦
+    </div>
+
+    <div class="services-ar">
+https://business.sakaker.co/    </div>
+
+    <div class="services-en">
+     https://business.sakaker.co/
+    </div>
+
+    <div class="services-soon">
+جديد •new
+    </div>
+
+  </div>
+
+</div>
+
+
+<style>
+
+/* ===== أيقونة الخدمات الأصلية ===== */
+
+#serviceIcon_new{
+  position:fixed;
+  right:718px;
+  bottom:40px;
+  width:88px;
+  height:88px;
+  z-index:99999;
+
+  border-radius:50%;
+  cursor:pointer;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(0,255,180,.18),
+      rgba(0,80,60,.15),
+      transparent 70%
+    );
+
+  border:1px solid rgba(0,255,180,.55);
+
+  box-shadow:
+    0 0 12px rgba(0,255,180,.65),
+    0 0 28px rgba(0,255,180,.35),
+    inset 0 0 15px rgba(0,255,180,.2);
+
+  animation:
+    serviceFloat 3s ease-in-out infinite,
+    serviceGlow 2.5s ease-in-out infinite;
+}
+
+
+/* ===== الأشعة ===== */
+
+#serviceIcon_new .service-rays{
+  position:absolute;
+  inset:-10px;
+
+  border-radius:50%;
+
+  border:
+    1px solid rgba(0,255,180,.25);
+
+  box-shadow:
+    0 0 20px rgba(0,255,180,.2);
+
+  pointer-events:none;
+}
+
+
+/* ===== الرمز الرئيسي ===== */
+
+#serviceIcon_new .service-crystal{
+  position:absolute;
+
+  font-size:42px;
+
+  color:#00ffc3;
+
+  text-shadow:
+    0 0 8px #00ffc3,
+    0 0 18px #00ffc3,
+    0 0 30px rgba(0,255,180,.8);
+
+  z-index:3;
+
+  pointer-events:none;
+}
+
+
+/* ===== اسم الخدمات ===== */
+
+#serviceIcon_new .service-label{
+  position:absolute;
+
+  top:100%;
+
+  margin-top:7px;
+
+  white-space:nowrap;
+
+  color:#00ffc3;
+
+  font-size:13px;
+
+  font-weight:bold;
+
+  text-shadow:
+    0 0 6px #00ffc3,
+    0 0 12px rgba(0,255,180,.7);
+}
+
+
+/* ===== الحركة ===== */
+
+@keyframes serviceFloat{
+
+  0%,100%{
+    transform:translateY(0);
+  }
+
+  50%{
+    transform:translateY(-7px);
+  }
+
+}
+
+
+@keyframes serviceGlow{
+
+  0%,100%{
+    box-shadow:
+      0 0 12px rgba(0,255,180,.65),
+      0 0 28px rgba(0,255,180,.35),
+      inset 0 0 15px rgba(0,255,180,.2);
+  }
+
+  50%{
+    box-shadow:
+      0 0 20px rgba(0,255,180,.9),
+      0 0 45px rgba(0,255,180,.55),
+      inset 0 0 22px rgba(0,255,180,.3);
+  }
+
+}
+
+
+/* ===== إخفاء الأيقونة ===== */
+
+#serviceIcon_new.isHidden{
+  display:none !important;
+}
+
+
+/* =====================================================
+   نافذة الخدمات
+===================================================== */
+
+#servicesComingSoon{
+
+  position:fixed;
+
+  inset:0;
+
+  z-index:100000;
+
+  display:none;
+
+  align-items:center;
+
+  justify-content:center;
+
+  padding:20px;
+
+  background:rgba(0,0,0,.72);
+
+  backdrop-filter:blur(6px);
+}
+
+
+#servicesComingSoon.show{
+
+  display:flex;
+
+}
+
+
+/* ===== صندوق الرسالة ===== */
+
+.services-message{
+
+  position:relative;
+
+  width:min(600px,92vw);
+
+  padding:32px 28px;
+
+  border-radius:22px;
+
+  text-align:center;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(0,60,50,.97),
+      rgba(0,25,22,.98)
+    );
+
+  border:1px solid rgba(0,255,195,.65);
+
+  box-shadow:
+    0 0 20px rgba(0,255,180,.35),
+    0 0 60px rgba(0,255,180,.18),
+    inset 0 0 25px rgba(0,255,180,.08);
+
+  animation:servicesPopup .35s ease;
+}
+
+
+/* ===== عنوان الرسالة ===== */
+
+.services-title{
+
+  margin-bottom:22px;
+
+  font-size:25px;
+
+  font-weight:bold;
+
+  color:#00ffc3;
+
+  text-shadow:
+    0 0 8px #00ffc3,
+    0 0 18px rgba(0,255,180,.7);
+}
+
+
+/* ===== النص العربي ===== */
+
+.services-ar{
+
+  direction:rtl;
+
+  font-size:18px;
+
+  line-height:2;
+
+  color:#ffffff;
+
+  margin-bottom:20px;
+
+}
+
+
+/* ===== النص الإنجليزي ===== */
+
+.services-en{
+
+  direction:ltr;
+
+  font-size:16px;
+
+  line-height:1.8;
+
+  color:#d7fff7;
+
+}
+
+
+/* ===== قريباً ===== */
+
+.services-soon{
+
+  margin-top:24px;
+
+  font-size:14px;
+
+  font-weight:bold;
+
+  color:#00ffc3;
+
+  text-shadow:
+    0 0 7px #00ffc3;
+}
+
+
+/* ===== زر الإغلاق ===== */
+
+#servicesClose{
+
+  position:absolute;
+
+  top:10px;
+
+  right:14px;
+
+  width:34px;
+
+  height:34px;
+
+  border:0;
+
+  border-radius:50%;
+
+  cursor:pointer;
+
+  font-size:26px;
+
+  line-height:30px;
+
+  color:#00ffc3;
+
+  background:rgba(0,255,180,.08);
+
+  box-shadow:
+    0 0 10px rgba(0,255,180,.25);
+}
+
+
+#servicesClose:hover{
+
+  background:rgba(0,255,180,.2);
+
+}
+
+
+/* ===== حركة ظهور النافذة ===== */
+
+@keyframes servicesPopup{
+
+  from{
+
+    opacity:0;
+
+    transform:scale(.85);
+
+  }
+
+  to{
+
+    opacity:1;
+
+    transform:scale(1);
+
+  }
+
+}
+
+
+/* ===== الجوال ===== */
+
+@media(max-width:600px){
+
+  #serviceIcon_new{
+
+    right:12px;
+
+    bottom:180px;
+
+    width:76px;
+
+    height:76px;
+
+  }
+
+
+  #serviceIcon_new .service-crystal{
+
+    font-size:36px;
+
+  }
+
+
+  #serviceIcon_new .service-label{
+
+    font-size:12px;
+
+  }
+
+
+  .services-message{
+
+    padding:28px 20px;
+
+  }
+
+
+  .services-title{
+
+    font-size:22px;
+
+  }
+
+
+  .services-ar{
+
+    font-size:16px;
+
+  }
+
+
+  .services-en{
+
+    font-size:14px;
+
+  }
+
+}
+
+</style>
+
+
+<script>
+
+(function(){
+
+  const serviceIcon =
+    document.getElementById("serviceIcon_new");
+
+  const servicesWindow =
+    document.getElementById("servicesComingSoon");
+
+  const servicesClose =
+    document.getElementById("servicesClose");
+
+
+  if(!serviceIcon || !servicesWindow) return;
+
+
+  /* يظهر 20 ثانية */
+
+  setTimeout(function(){
+
+    serviceIcon.classList.add("isHidden");
+
+  },20000);
+
+
+  /* بعد دقيقتين يظهر من جديد */
+
+  setInterval(function(){
+
+    serviceIcon.classList.remove("isHidden");
+
+    setTimeout(function(){
+
+      serviceIcon.classList.add("isHidden");
+
+    },20000);
+
+  },140000);
+
+
+  /* الضغط على أيقونة الخدمات */
+
+  serviceIcon.addEventListener("click",function(){
+
+    servicesWindow.classList.add("show");
+
+  });
+
+
+  /* لوحة المفاتيح */
+
+  serviceIcon.addEventListener("keydown",function(e){
+
+    if(e.key==="Enter" || e.key===" "){
+
+      e.preventDefault();
+
+      serviceIcon.click();
+
+    }
+
+  });
+
+
+  /* إغلاق النافذة */
+
+  if(servicesClose){
+
+    servicesClose.addEventListener("click",function(){
+
+      servicesWindow.classList.remove("show");
+
+    });
+
+  }
+
+
+  /* الإغلاق عند الضغط خارج الصندوق */
+
+  servicesWindow.addEventListener("click",function(e){
+
+    if(e.target === servicesWindow){
+
+      servicesWindow.classList.remove("show");
+
+    }
+
+  });
+
+
+  /* الإغلاق بزر ESC */
+
+  document.addEventListener("keydown",function(e){
+
+    if(e.key === "Escape"){
+
+      servicesWindow.classList.remove("show");
+
+    }
+
+  });
+
+
+})();
+
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
@@ -12540,3 +13096,66 @@ body.locked {
    
 </body>
 </html>
+<style>
+/* تحسين عرض الأيقونات والفيديو عند الوضع الأفقي (Landscape) */
+@media (orientation: landscape) and (max-width: 768px) {
+  .icon-container, .icon-container-lite {
+    top: 10% !important;       /* رفع الأيقونات للأعلى */
+    right: 5px !important;
+    transform: translateY(0) !important;
+  }
+  .controls, .controls-lite {
+    bottom: auto !important;
+    top: 15px !important;       /* نقل أزرار الفيديو للأعلى */
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    gap: 4px;
+  }
+  #pongContainer, #pongContainerLite {
+    margin: 20px auto !important; /* توسيط لعبة Pong */
+  }
+}
+</style>
+
+<script>
+// إعادة ضبط موضع العناصر عند تدوير الجهاز
+function adjustLayoutOnOrientation() {
+  if(window.matchMedia("(orientation: landscape)").matches) {
+    // الوضع الأفقي
+    document.querySelectorAll('.icon-container, .icon-container-lite').forEach(el=>{
+      el.style.top='10%';
+      el.style.transform='translateY(0)';
+    });
+    document.querySelectorAll('.controls, .controls-lite').forEach(el=>{
+      el.style.top='15px';
+      el.style.bottom='auto';
+      el.style.left='50%';
+      el.style.transform='translateX(-50%)';
+    });
+  } else {
+    // الوضع العمودي
+    document.querySelectorAll('.icon-container').forEach(el=>{
+      el.style.top='60%';
+      el.style.transform='translateY(-50%)';
+    });
+    document.querySelectorAll('.icon-container-lite').forEach(el=>{
+      el.style.top='55%';
+      el.style.transform='translateY(-50%)';
+    });
+    document.querySelectorAll('.controls').forEach(el=>{
+      el.style.bottom='10px';
+      el.style.top='auto';
+      el.style.transform='translateX(-50%)';
+    });
+    document.querySelectorAll('.controls-lite').forEach(el=>{
+      el.style.bottom='5px';
+      el.style.top='auto';
+      el.style.transform='translateX(-50%)';
+    });
+  }
+}
+
+// استدعاء عند تحميل الصفحة وعند تدوير الهاتف
+window.addEventListener('load', adjustLayoutOnOrientation);
+window.addEventListener('orientationchange', adjustLayoutOnOrientation);
+</script>
