@@ -6,7 +6,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>SAKAKER | أبو القمر زمرد</title>
 <style>
-body.locked > *:not(#loginOverlay){
+.locked > *:not(#loginOverlay){
     visibility:hidden !important;
 }
 
@@ -7152,7 +7152,10 @@ window.addEventListener('orientationchange', adjustLayoutOnOrientation);
   <div class="sakaker-icons-row" id="sakakerIconsSlot"></div>
   <div class="sakaker-fb-map-row" id="sakakerFbMapSlot"></div>
 
-
+  <button id="sakakerBirdSoundBtn" type="button" aria-label="صوت الطيور" title="صوت الطيور"></button>
+  <audio id="sakakerBirdAudio" preload="none" loop>
+    <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_8f0c4c0f0a.mp3" type="audio/mpeg">
+  </audio>
 </div>
 
 <footer id="sakakerFooter">
