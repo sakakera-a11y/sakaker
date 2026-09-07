@@ -7240,5 +7240,98 @@ function adjustLayoutOnOrientation() {
 window.addEventListener('load', adjustLayoutOnOrientation);
 window.addEventListener('orientationchange', adjustLayoutOnOrientation);
 </script>
-</div></body>
+</div>
+<style id="sakaker-layout-v3">
+#sakakerSequentialTop{
+  width:100%;max-width:1200px;margin:10px auto 18px;padding:8px 10px;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  box-sizing:border-box;position:relative;z-index:20;
+}
+#sakakerSequentialTop .sakaker-news-clock,
+#sakakerSequentialTop .sakaker-video-row,
+#sakakerSequentialTop .sakaker-icons-row,
+#sakakerSequentialTop .sakaker-fb-map-row{
+  width:100%;display:flex;align-items:center;justify-content:center;
+  gap:10px;flex-wrap:wrap;
+}
+#sakakerBirdSoundBtn{
+  width:48px;height:48px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.75);
+  background:radial-gradient(circle at 35% 30%,#7affdf,#087b68 60%,#023e36);
+  color:#fff;font-size:23px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 12px rgba(0,255,200,.65),0 0 28px rgba(0,255,200,.25);
+  transition:.25s;
+}
+#sakakerBirdSoundBtn:hover{transform:scale(1.1)}
+#sakakerBirdSoundBtn.active{
+  background:radial-gradient(circle at 35% 30%,#fff5a8,#b07a00 60%,#513600);
+  box-shadow:0 0 18px rgba(255,215,0,.9),0 0 42px rgba(255,215,0,.35);
+}
+#sakakerFooter{
+  width:100%;margin:35px 0 0;padding:22px 12px 28px;text-align:center;
+  box-sizing:border-box;color:#fff;
+  background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,20,18,.65));
+  border-top:1px solid rgba(0,255,200,.28);
+}
+#sakakerFooter .sakakerCopyright{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  flex-wrap:wrap;font-weight:900;font-size:15px;
+  text-shadow:0 0 8px rgba(0,255,210,.65);
+}
+#sakakerFooter .sakakerC{
+  width:32px;height:32px;border-radius:50%;display:inline-flex;
+  align-items:center;justify-content:center;border:1px solid rgba(255,215,0,.9);
+  color:#ffd700;background:rgba(0,0,0,.5);
+  box-shadow:0 0 12px rgba(255,215,0,.55);font-size:16px;font-weight:900;
+}
+@media(max-width:600px){
+  #sakakerSequentialTop{gap:8px;padding:5px 6px}
+  #sakakerSequentialTop .sakaker-news-clock,
+  #sakakerSequentialTop .sakaker-video-row,
+  #sakakerSequentialTop .sakaker-icons-row,
+  #sakakerSequentialTop .sakaker-fb-map-row{gap:7px}
+}
+</style>
+
+<div id="sakakerSequentialTop">
+  <div class="sakaker-news-clock">
+    <div id="sakakerNewsSlot"></div>
+    <div id="sakakerClockSlot"></div>
+  </div>
+  <div class="sakaker-video-row" id="sakakerVideoSlot"></div>
+  <div class="sakaker-icons-row" id="sakakerIconsSlot"></div>
+  <div class="sakaker-fb-map-row" id="sakakerFbMapSlot"></div>
+
+  <button id="sakakerBirdSoundBtn" type="button" aria-label="صوت الطيور" title="صوت الطيور">🐦</button>
+  <audio id="sakakerBirdAudio" preload="none" loop>
+    <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_8f0c4c0f0a.mp3" type="audio/mpeg">
+  </audio>
+</div>
+
+<footer id="sakakerFooter">
+  <div class="sakakerCopyright">
+    <span>sakaker - ابوالقمرزمرد</span>
+    <span class="sakakerC">©</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const btn=document.getElementById("sakakerBirdSoundBtn");
+  const audio=document.getElementById("sakakerBirdAudio");
+  if(!btn||!audio)return;
+  btn.addEventListener("click",async()=>{
+    try{
+      if(audio.paused){
+        await audio.play(); btn.textContent="🔊"; btn.classList.add("active");
+      }else{
+        audio.pause(); btn.textContent="🐦"; btn.classList.remove("active");
+      }
+    }catch(e){console.error(e);}
+  });
+})();
+</script>
+
+</body>
 </html>
