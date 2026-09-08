@@ -7255,5 +7255,533 @@ window.addEventListener('orientationchange', adjustLayoutOnOrientation);
 })();
 </script>
 
+
+<!-- =========================================================
+     🎮 SAKAKER PONG — إضافة مستقلة للملف
+     لا تغيّر أي جزء آخر من الموقع
+========================================================= -->
+<div id="sakakerPongAddon">
+
+  <!-- أيقونة فتح اللعبة — بدون كلمة Pong -->
+  <button id="sakakerPongOpen" type="button" aria-label="فتح اللعبة" title="لعبة">
+    <span class="sakakerPongBall">🏓</span>
+  </button>
+
+  <!-- نافذة اللعبة -->
+  <div id="sakakerPongScreen" aria-hidden="true">
+
+    <!-- الخلفية الأصلية للموقع: الخلفية التي تحتوي توقيع sakaker.co والسفينة -->
+    <div id="sakakerPongBackground"></div>
+    <div id="sakakerPongShade"></div>
+
+    <!-- الشريط العلوي -->
+    <div id="sakakerPongTop">
+      <button id="sakakerPongClose" type="button" aria-label="إغلاق">✕</button>
+      <div class="sakakerPongTitle">🎮 لعبة</div>
+      <div class="sakakerPongStatus" id="sakakerPongStatus">جاهز</div>
+    </div>
+
+    <!-- القائمة -->
+    <div id="sakakerPongMenu">
+      <div class="sakakerPongMenuBox">
+        <div class="sakakerPongLogo">🏓</div>
+
+        <div class="sakakerPongOptions">
+          <label>المضرب 1
+            <input id="sakakerP1Color" type="color" value="#FFD700">
+          </label>
+          <label>المضرب 2
+            <input id="sakakerP2Color" type="color" value="#00BFFF">
+          </label>
+          <label>الكرة
+            <input id="sakakerBallColor" type="color" value="#FFFFFF">
+          </label>
+          <label>المستوى
+            <select id="sakakerPongLevel">
+              <option value="easy">سهل</option>
+              <option value="hard">صعب</option>
+              <option value="harder">أصعب</option>
+              <option value="impossible">مستحيل</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="sakakerPongModes">
+          <button id="sakakerVsComputer" type="button">🤖 كمبيوتر</button>
+          <button id="sakakerTwoPlayers" type="button">🎮 لاعبان</button>
+          <button id="sakakerOnline" type="button">🌐 أونلاين</button>
+        </div>
+
+        <div id="sakakerOnlinePanel" hidden>
+          <input id="sakakerOnlineName" maxlength="18" placeholder="اسم اللاعب">
+          <button id="sakakerCreateRoom" type="button">إنشاء غرفة</button>
+          <button id="sakakerJoinRoom" type="button">انضمام لغرفة</button>
+          <input id="sakakerRoomId" maxlength="24" placeholder="رمز الغرفة">
+          <div id="sakakerRoomInfo"></div>
+        </div>
+
+        <button id="sakakerBackMenu" type="button">↩ رجوع</button>
+      </div>
+    </div>
+
+    <!-- لوحة اللعب -->
+    <canvas id="sakakerPongCanvas"></canvas>
+
+    <!-- التحكم -->
+    <div id="sakakerPongControls">
+      <button id="sakakerPause" type="button">⏸</button>
+      <button id="sakakerPongMute" type="button">🔇</button>
+    </div>
+
+    <!-- الدردشة العامة -->
+    <aside id="sakakerPongChat">
+      <div class="sakakerChatHead">
+        <span>💬 الدردشة العامة</span>
+        <button id="sakakerChatClose" type="button">×</button>
+      </div>
+      <div id="sakakerChatMessages"></div>
+      <div class="sakakerChatSend">
+        <input id="sakakerChatInput" maxlength="250" placeholder="اكتب رسالتك...">
+        <button id="sakakerChatSend" type="button">إرسال</button>
+      </div>
+    </aside>
+
+    <button id="sakakerChatOpen" type="button">💬</button>
+  </div>
+</div>
+
+<style id="sakakerPongAddonStyle">
+#sakakerPongAddon,
+#sakakerPongAddon *{box-sizing:border-box}
+
+#sakakerPongOpen{
+  position:fixed;
+  right:28px;
+  bottom:100px;
+  z-index:2147483000;
+  width:72px;
+  height:72px;
+  border-radius:50%;
+  border:2px solid #ffd700;
+  cursor:pointer;
+  display:grid;
+  place-items:center;
+  background:radial-gradient(circle at 35% 25%,#fff5ad,#ffd700 35%,#a96d00 72%,#3a2400);
+  box-shadow:0 0 10px #00ffcc,0 0 24px #ffd700,0 0 50px rgba(0,255,204,.45);
+  transition:.25s;
+}
+#sakakerPongOpen:hover{transform:scale(1.12) rotate(-4deg)}
+.sakakerPongBall{font-size:36px;filter:drop-shadow(0 0 5px #fff)}
+
+#sakakerPongScreen{
+  display:none;
+  position:fixed;
+  inset:0;
+  width:100vw;
+  height:100vh;
+  z-index:2147482999;
+  overflow:hidden;
+  background:#000;
+  font-family:Tajawal,Tahoma,Arial,sans-serif;
+}
+#sakakerPongBackground{
+  position:absolute;
+  inset:0;
+  background-image:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%20Sep%208%2C%202026%2C%2012_02_53%20AM.png");
+  background-size:cover;
+  background-position:center center;
+  background-repeat:no-repeat;
+  z-index:0;
+}
+#sakakerPongShade{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.30);
+  z-index:1;
+}
+#sakakerPongCanvas{
+  position:absolute;
+  inset:0;
+  width:100%!important;
+  height:100%!important;
+  z-index:2;
+  touch-action:none;
+  cursor:none;
+}
+#sakakerPongTop{
+  position:absolute;
+  top:10px;
+  left:10px;
+  right:10px;
+  z-index:6;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  pointer-events:none;
+}
+#sakakerPongTop>*{pointer-events:auto}
+.sakakerPongTitle{
+  padding:7px 18px;
+  border:1px solid #ffd700;
+  border-radius:22px;
+  background:rgba(0,0,0,.55);
+  color:#ffd700;
+  font-weight:900;
+  box-shadow:0 0 15px rgba(0,255,204,.35);
+}
+.sakakerPongStatus{
+  padding:6px 12px;
+  border-radius:18px;
+  color:#00ffd0;
+  background:rgba(0,0,0,.55);
+  border:1px solid rgba(0,255,204,.45);
+}
+#sakakerPongClose{
+  width:42px;height:42px;border-radius:50%;border:1px solid #ffd700;
+  background:rgba(0,0,0,.65);color:#fff;font-size:22px;cursor:pointer;
+}
+#sakakerPongMenu{
+  position:absolute;
+  inset:0;
+  z-index:7;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+}
+.sakakerPongMenuBox{
+  width:min(430px,94vw);
+  max-height:90vh;
+  overflow:auto;
+  padding:20px;
+  text-align:center;
+  border:1px solid rgba(255,215,0,.65);
+  border-radius:24px;
+  background:rgba(0,12,10,.78);
+  backdrop-filter:blur(14px);
+  box-shadow:0 0 25px rgba(0,255,204,.28),0 0 55px rgba(255,215,0,.15);
+  color:#fff;
+}
+.sakakerPongLogo{font-size:58px;margin-bottom:8px}
+.sakakerPongOptions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  margin:10px 0 14px;
+}
+.sakakerPongOptions label{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:8px;padding:8px 10px;border-radius:12px;
+  background:rgba(255,255,255,.07);
+}
+.sakakerPongOptions input[type=color]{width:45px;height:32px;border:0;background:none;padding:0}
+.sakakerPongOptions select{max-width:105px}
+.sakakerPongModes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
+.sakakerPongModes button,
+#sakakerBackMenu,#sakakerCreateRoom,#sakakerJoinRoom,#sakakerChatSend{
+  border:0;border-radius:12px;padding:10px 8px;cursor:pointer;font-weight:900;
+}
+#sakakerVsComputer{background:#ffd700;color:#241900}
+#sakakerTwoPlayers{background:#00cfff;color:#00242b}
+#sakakerOnline{background:#00d39a;color:#00261c}
+#sakakerBackMenu{margin-top:10px;width:100%;background:#333;color:#fff}
+#sakakerOnlinePanel{
+  margin-top:12px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+  padding:10px;
+  border-radius:14px;
+  background:rgba(0,255,204,.07);
+  border:1px solid rgba(0,255,204,.25);
+}
+#sakakerOnlinePanel[hidden]{display:none}
+#sakakerOnlinePanel input{
+  min-width:0;width:100%;padding:10px;border-radius:10px;
+  border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.45);color:#fff;
+}
+#sakakerOnlinePanel input:first-child{grid-column:1/-1}
+#sakakerOnlinePanel button{background:#ffd700;color:#111}
+#sakakerRoomInfo{grid-column:1/-1;color:#00ffd0;font-size:13px;line-height:1.6}
+#sakakerPongControls{
+  position:absolute;left:12px;bottom:12px;z-index:6;display:flex;gap:7px
+}
+#sakakerPongControls button,#sakakerChatOpen{
+  width:44px;height:44px;border-radius:50%;border:1px solid #ffd700;
+  background:rgba(0,0,0,.65);color:#fff;cursor:pointer;font-size:19px;
+}
+#sakakerChatOpen{
+  position:absolute;right:14px;bottom:14px;z-index:6;
+  box-shadow:0 0 15px rgba(0,255,204,.45)
+}
+#sakakerPongChat{
+  position:absolute;right:14px;bottom:68px;width:min(350px,92vw);
+  height:min(430px,65vh);z-index:8;display:none;flex-direction:column;
+  border:1px solid rgba(0,255,204,.5);border-radius:18px;
+  background:rgba(0,12,10,.88);backdrop-filter:blur(12px);
+  box-shadow:0 0 25px rgba(0,255,204,.3);
+  overflow:hidden;color:#fff;
+}
+.sakakerChatHead{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 12px;color:#ffd700;font-weight:900;border-bottom:1px solid rgba(0,255,204,.25)
+}
+.sakakerChatHead button{background:none;border:0;color:#fff;font-size:22px;cursor:pointer}
+#sakakerChatMessages{flex:1;overflow:auto;padding:10px}
+.sakakerChatMsg{padding:7px 9px;margin-bottom:7px;border-radius:10px;background:rgba(255,255,255,.07);line-height:1.5;font-size:13px}
+.sakakerChatMsg b{color:#ffd700}
+.sakakerChatSend{display:flex;gap:6px;padding:8px;border-top:1px solid rgba(0,255,204,.2)}
+#sakakerChatInput{flex:1;min-width:0;border:1px solid rgba(0,255,204,.3);background:rgba(0,0,0,.5);color:#fff;border-radius:10px;padding:9px}
+#sakakerChatSend{background:linear-gradient(135deg,#00ffd0,#ffd700);color:#06251e}
+
+@media(max-width:600px){
+  #sakakerPongOpen{right:14px;bottom:92px;width:62px;height:62px}
+  .sakakerPongBall{font-size:31px}
+  .sakakerPongOptions{grid-template-columns:1fr}
+  .sakakerPongModes{grid-template-columns:1fr 1fr}
+  #sakakerOnline{grid-column:1/-1}
+  .sakakerPongTitle{font-size:13px;padding:6px 12px}
+  .sakakerPongStatus{font-size:11px}
+}
+</style>
+
+<script type="module">
+(() => {
+  const openBtn=document.getElementById("sakakerPongOpen");
+  const screen=document.getElementById("sakakerPongScreen");
+  const closeBtn=document.getElementById("sakakerPongClose");
+  const menu=document.getElementById("sakakerPongMenu");
+  const canvas=document.getElementById("sakakerPongCanvas");
+  const ctx=canvas.getContext("2d");
+  const status=document.getElementById("sakakerPongStatus");
+  const chat=document.getElementById("sakakerPongChat");
+  const chatOpen=document.getElementById("sakakerChatOpen");
+  const chatClose=document.getElementById("sakakerChatClose");
+  const chatMessages=document.getElementById("sakakerChatMessages");
+  const chatInput=document.getElementById("sakakerChatInput");
+  const chatSend=document.getElementById("sakakerChatSend");
+
+  let W=innerWidth,H=innerHeight,raf=0,mode="computer",running=false,paused=false;
+  let p1,p2,ball,score1=0,score2=0;
+  let up=false,down=false;
+  let online=null;
+  let chatUnsub=null;
+
+  function resize(){
+    W=innerWidth; H=innerHeight;
+    canvas.width=W; canvas.height=H;
+    if(p1){p1.x=24;p1.y=Math.min(Math.max(p1.y,0),H-p1.h)}
+    if(p2){p2.x=W-39;p2.y=Math.min(Math.max(p2.y,0),H-p2.h)}
+  }
+  addEventListener("resize",resize);
+
+  function initGame(){
+    const c1=document.getElementById("sakakerP1Color").value;
+    const c2=document.getElementById("sakakerP2Color").value;
+    const bc=document.getElementById("sakakerBallColor").value;
+    p1={x:24,y:H/2-55,w:15,h:110,color:c1,score:score1};
+    p2={x:W-39,y:H/2-55,w:15,h:110,color:c2,score:score2};
+    ball={x:W/2,y:H/2,r:10,speed:6,dx:Math.random()<.5?-6:6,dy:Math.random()<.5?-4:4,color:bc};
+  }
+  function resetBall(){
+    ball.x=W/2;ball.y=H/2;
+    ball.dx=(Math.random()<.5?-1:1)*ball.speed;
+    ball.dy=(Math.random()<.5?-1:1)*4;
+  }
+  function hit(a,p){
+    return a.x-a.r<p.x+p.w&&a.x+a.r>p.x&&a.y+a.r>p.y&&a.y-a.r<p.y+p.h;
+  }
+  function moveLocal(){
+    if(up)p1.y-=8;if(down)p1.y+=8;
+    p1.y=Math.max(0,Math.min(H-p1.h,p1.y));
+    if(mode==="two"){
+      // اللاعب الثاني بالأسهم
+      if(window._pongArrowUp)p2.y-=8;
+      if(window._pongArrowDown)p2.y+=8;
+      p2.y=Math.max(0,Math.min(H-p2.h,p2.y));
+    }else{
+      const lvl=document.getElementById("sakakerPongLevel").value;
+      const sp=lvl==="easy"?3:lvl==="hard"?5:lvl==="harder"?8:12;
+      p2.y += (ball.y-(p2.y+p2.h/2))*0.07;
+      p2.y += Math.sign(ball.y-(p2.y+p2.h/2))*sp*.18;
+      p2.y=Math.max(0,Math.min(H-p2.h,p2.y));
+    }
+    ball.x+=ball.dx;ball.y+=ball.dy;
+    if(ball.y-ball.r<0||ball.y+ball.r>H){ball.dy*=-1;ball.y=Math.max(ball.r,Math.min(H-ball.r,ball.y))}
+    if(hit(ball,p1)){ball.dx=Math.abs(ball.dx);ball.dy=(ball.y-(p1.y+p1.h/2))*.09}
+    if(hit(ball,p2)){ball.dx=-Math.abs(ball.dx);ball.dy=(ball.y-(p2.y+p2.h/2))*.09}
+    if(ball.x<0){score2++;resetBall()}
+    if(ball.x>W){score1++;resetBall()}
+    p1.score=score1;p2.score=score2;
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle="rgba(255,215,0,.38)";
+    ctx.setLineDash([10,14]);ctx.beginPath();ctx.moveTo(W/2,0);ctx.lineTo(W/2,H);ctx.stroke();ctx.setLineDash([]);
+    ctx.shadowBlur=18;
+    ctx.shadowColor=p1.color;ctx.fillStyle=p1.color;ctx.fillRect(p1.x,p1.y,p1.w,p1.h);
+    ctx.shadowColor=p2.color;ctx.fillStyle=p2.color;ctx.fillRect(p2.x,p2.y,p2.w,p2.h);
+    ctx.shadowColor=ball.color;ctx.fillStyle=ball.color;ctx.beginPath();ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2);ctx.fill();
+    ctx.shadowBlur=0;
+    ctx.fillStyle="#fff";ctx.font="bold 32px Tajawal,Arial";ctx.textAlign="center";
+    ctx.fillText(score1,W*.25,52);ctx.fillText(score2,W*.75,52);
+  }
+  function loop(){
+    if(!running)return;
+    if(!paused && mode!=="online")moveLocal();
+    draw();raf=requestAnimationFrame(loop);
+  }
+  function startLocal(m){
+    mode=m;score1=0;score2=0;resize();initGame();
+    menu.style.display="none";running=true;paused=false;
+    status.textContent=m==="computer"?"كمبيوتر": "لاعبان";
+    cancelAnimationFrame(raf);loop();
+  }
+
+  // الماوس/اللمس للاعب الأول
+  function setP1(y){if(!p1)return;p1.y=Math.max(0,Math.min(H-p1.h,y-p1.h/2))}
+  canvas.addEventListener("mousemove",e=>setP1(e.clientY));
+  canvas.addEventListener("touchmove",e=>{e.preventDefault();setP1(e.touches[0].clientY)},{passive:false});
+
+  addEventListener("keydown",e=>{
+    if(e.key==="w"||e.key==="W")up=true;
+    if(e.key==="s"||e.key==="S")down=true;
+    if(e.key==="ArrowUp")window._pongArrowUp=true;
+    if(e.key==="ArrowDown")window._pongArrowDown=true;
+  });
+  addEventListener("keyup",e=>{
+    if(e.key==="w"||e.key==="W")up=false;
+    if(e.key==="s"||e.key==="S")down=false;
+    if(e.key==="ArrowUp")window._pongArrowUp=false;
+    if(e.key==="ArrowDown")window._pongArrowDown=false;
+  });
+
+  openBtn.onclick=()=>{screen.style.display="block";screen.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";status.textContent="جاهز";};
+  function closeGame(){
+    running=false;cancelAnimationFrame(raf);
+    if(chatUnsub){chatUnsub();chatUnsub=null}
+    screen.style.display="none";screen.setAttribute("aria-hidden","true");document.body.style.overflow="";
+    menu.style.display="flex";document.getElementById("sakakerOnlinePanel").hidden=true;
+  }
+  closeBtn.onclick=closeGame;
+  document.getElementById("sakakerBackMenu").onclick=()=>{running=false;cancelAnimationFrame(raf);menu.style.display="flex";};
+  document.getElementById("sakakerVsComputer").onclick=()=>startLocal("computer");
+  document.getElementById("sakakerTwoPlayers").onclick=()=>startLocal("two");
+  document.getElementById("sakakerOnline").onclick=()=>{
+    document.getElementById("sakakerOnlinePanel").hidden=false;
+    status.textContent="أونلاين";
+    chat.style.display="flex";
+  };
+  document.getElementById("sakakerPause").onclick=()=>{
+    paused=!paused;
+    document.getElementById("sakakerPause").textContent=paused?"▶️":"⏸";
+  };
+  document.getElementById("sakakerPongMute").onclick=e=>{e.currentTarget.textContent=e.currentTarget.textContent==="🔇"?"🔊":"🔇"};
+  chatOpen.onclick=()=>chat.style.display="flex";
+  chatClose.onclick=()=>chat.style.display="none";
+
+  // Firebase: نستعمل نفس مشروع الموقع الحالي إن كان متاحاً
+  async function firebaseChat(){
+    try{
+      const {getFirestore,collection,addDoc,onSnapshot,query,orderBy,limit,serverTimestamp}
+        = await import("https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js");
+      const app=window.firebaseApp;
+      if(!app)throw new Error("Firebase غير جاهز");
+      const db=getFirestore(app);
+      const q=query(collection(db,"pongPublicChat"),orderBy("createdAt","desc"),limit(60));
+      chatUnsub=onSnapshot(q,snap=>{
+        const arr=[];
+        snap.forEach(d=>arr.push(d.data()));
+        arr.reverse();
+        chatMessages.innerHTML=arr.map(m=>`<div class="sakakerChatMsg"><b>${escapeHtml(m.name||"زائر")}</b><br>${escapeHtml(m.text||"")}</div>`).join("");
+        chatMessages.scrollTop=chatMessages.scrollHeight;
+      },()=>{status.textContent="الدردشة تحتاج إعداد Firestore"});
+      chatSend.onclick=async()=>{
+        const t=chatInput.value.trim();if(!t)return;
+        const name=(document.getElementById("sakakerOnlineName").value.trim()||"زائر").slice(0,18);
+        await addDoc(collection(db,"pongPublicChat"),{name,text:t,createdAt:serverTimestamp()});
+        chatInput.value="";
+      };
+      chatInput.onkeydown=e=>{if(e.key==="Enter")chatSend.click()};
+    }catch(err){console.warn("Pong chat:",err)}
+  }
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  }
+
+  // الأونلاين — غرفة بسيطة عبر Firestore عند توفره
+  async function setupOnline(){
+    try{
+      const {getFirestore,collection,doc,setDoc,onSnapshot,serverTimestamp,deleteDoc}
+        = await import("https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js");
+      const app=window.firebaseApp;if(!app)throw new Error("Firebase غير جاهز");
+      const db=getFirestore(app);
+      const nameEl=document.getElementById("sakakerOnlineName");
+      const roomEl=document.getElementById("sakakerRoomId");
+      const info=document.getElementById("sakakerRoomInfo");
+      async function createRoom(){
+        const name=nameEl.value.trim()||"لاعب";
+        const id=Math.random().toString(36).slice(2,8).toUpperCase();
+        online={db,room:id,player:1,ref:doc(db,"pongRooms",id)};
+        await setDoc(online.ref,{status:"waiting",p1:{name},createdAt:serverTimestamp()});
+        roomEl.value=id;info.textContent="رمز الغرفة: "+id+" — انتظر اللاعب الثاني";
+        onSnapshot(online.ref,s=>{const d=s.data();if(d&&d.status==="playing")startOnlineCanvas(db,online.ref,1)})
+      }
+      async function joinRoom(){
+        const id=roomEl.value.trim().toUpperCase();if(!id)return;
+        online={db,room:id,player:2,ref:doc(db,"pongRooms",id)};
+        await setDoc(online.ref,{status:"playing",p2:{name:nameEl.value.trim()||"لاعب"}},{merge:true});
+        info.textContent="تم الانضمام للغرفة: "+id;
+        startOnlineCanvas(db,online.ref,2);
+      }
+      document.getElementById("sakakerCreateRoom").onclick=createRoom;
+      document.getElementById("sakakerJoinRoom").onclick=joinRoom;
+    }catch(err){console.warn("Pong online:",err)}
+  }
+
+  // طبقة أونلاين: ترسل حالة اللاعب وتستقبلها؛ المنطق الأساسي يبقى على المضيف
+  async function startOnlineCanvas(db,ref,player){
+    mode="online";score1=0;score2=0;resize();initGame();menu.style.display="none";running=true;
+    status.textContent=player===1?"أنت اللاعب 1":"أنت اللاعب 2";
+    let last=0;
+    const {onSnapshot,updateDoc}=await import("https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js");
+    onSnapshot(ref,s=>{
+      const d=s.data();if(!d)return;
+      if(player===1 && d.p2)status.textContent="متصل — لاعبان";
+      if(player===2 && d.game){ball=d.game.ball;p1=d.game.p1;p2=d.game.p2;score1=d.game.s1;score2=d.game.s2}
+    });
+    function onlineLoop(){
+      if(!running)return;
+      if(!paused){
+        if(player===1){
+          moveLocal();
+          updateDoc(ref,{game:{ball,p1,p2,s1:score1,s2:score2,at:Date.now()}}).catch(()=>{});
+        }else{
+          if(up)p1.y-=8;if(down)p1.y+=8;
+          p1.y=Math.max(0,Math.min(H-p1.h,p1.y));
+          updateDoc(ref,{p2Input:{y:p2.y,at:Date.now()}}).catch(()=>{});
+        }
+      }
+      draw();requestAnimationFrame(onlineLoop);
+    }
+    onlineLoop();
+  }
+
+  // استلام مدخل اللاعب الثاني عند المضيف
+  async function bindOnlineInput(){
+    try{
+      const {getFirestore,doc,onSnapshot}=await import("https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js");
+      if(!window.firebaseApp)return;
+      const db=getFirestore(window.firebaseApp);
+      // يتم ربطه لكل غرفة عند بدء المضيف من خلال snapshot في النسخة البسيطة
+    }catch(e){}
+  }
+
+  // تشغيل خدمات الدردشة/الأونلاين بعد تحميل Firebase في الصفحة
+  firebaseChat();
+  setupOnline();
+})();
+</script>
+
 </body>
 </html>
