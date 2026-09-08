@@ -8330,3 +8330,577 @@ birdBtn.addEventListener('click', async () => {
   }
 });
 </script>
+
+<!-- =========================================================
+     ✨ أيقونة الذهب والفضة المتوهجة
+     تظهر 20 ثانية وتختفي دقيقتين
+     الرابط: https://business.sakaker.co/
+========================================================= -->
+
+<div id="sakakerBusinessAd">
+
+  <button id="sakakerBusinessIcon"
+          aria-label="فتح موقع الأعمال">
+    <span class="sbIconCore">S</span>
+    <span class="sbShine"></span>
+    <span class="sbSpark spark1">✦</span>
+    <span class="sbSpark spark2">✧</span>
+    <span class="sbSpark spark3">✦</span>
+  </button>
+
+  <!-- النافذة -->
+  <div id="sakakerBusinessPopup">
+
+    <div class="sbPopupBox">
+
+      <button id="sbClose">×</button>
+
+      <div class="sbPopupIcon">
+        <span>✦</span>
+      </div>
+
+      <div class="sbPopupTitle">
+        Sakaker Business
+      </div>
+
+      <div class="sbPopupSub">
+        اكتشف عالم الأعمال والخدمات
+      </div>
+
+      <a href="https://business.sakaker.co/"
+         target="_blank"
+         rel="noopener noreferrer"
+         class="sbVisit">
+        <span>الدخول إلى الموقع</span>
+        <b>↗</b>
+      </a>
+
+    </div>
+
+  </div>
+
+</div>
+
+<style>
+
+/* =========================
+   الحاوية
+========================= */
+
+#sakakerBusinessAd{
+  position:fixed;
+  right:622px;
+  bottom:205px;
+  z-index:2147483646;
+  font-family:
+    Tajawal,
+    Tahoma,
+    Arial,
+    sans-serif;
+}
+
+/* =========================
+   الأيقونة
+========================= */
+
+#sakakerBusinessIcon{
+  position:relative;
+  width:70px;
+  height:70px;
+  border-radius:50%;
+  border:2px solid #fff;
+  cursor:pointer;
+
+  background:
+    radial-gradient(
+      circle at 30% 25%,
+      #ffffff 0%,
+      #f4f4f4 8%,
+      #d8d8d8 18%,
+      #ffffff 27%,
+      #d5d5d5 38%,
+      #ffd700 55%,
+      #b8860b 72%,
+      #fff1a8 82%,
+      #8c6a00 100%
+    );
+
+  box-shadow:
+    0 0 5px #fff,
+    0 0 12px #ffd700,
+    0 0 25px rgba(255,215,0,.9),
+    0 0 45px rgba(255,255,255,.55);
+
+  animation:
+    sbPulse 2s infinite,
+    sbAppear 20s linear;
+
+  overflow:visible;
+  padding:0;
+}
+
+/* حرف S داخل العملة */
+
+.sbIconCore{
+  position:absolute;
+  inset:7px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  border-radius:50%;
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size:34px;
+  font-weight:bold;
+
+  color:#fff;
+
+  text-shadow:
+    1px 1px 0 #8c6a00,
+    -1px -1px 0 #ffffff,
+    0 0 8px #fff,
+    0 0 15px #ffd700;
+
+  border:1px solid rgba(255,255,255,.8);
+
+  background:
+    linear-gradient(
+      145deg,
+      #777,
+      #f8f8f8 25%,
+      #bdbdbd 45%,
+      #fff 55%,
+      #b8860b 75%,
+      #fff0a0
+    );
+
+  box-shadow:
+    inset 0 0 12px rgba(255,255,255,.9),
+    inset 0 0 18px rgba(140,106,0,.6);
+}
+
+/* =========================
+   لمعان متحرك
+========================= */
+
+.sbShine{
+  position:absolute;
+  top:-20%;
+  left:-70%;
+  width:45%;
+  height:140%;
+
+  transform:rotate(25deg);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.95),
+      transparent
+    );
+
+  filter:blur(2px);
+
+  animation:sbShine 2.7s infinite;
+}
+
+/* =========================
+   الشرارات
+========================= */
+
+.sbSpark{
+  position:absolute;
+  color:#fff;
+  text-shadow:
+    0 0 5px #fff,
+    0 0 12px #ffd700,
+    0 0 20px #fff;
+
+  animation:sbSpark 1.5s infinite;
+}
+
+.spark1{
+  top:-13px;
+  right:5px;
+  font-size:18px;
+}
+
+.spark2{
+  bottom:-7px;
+  left:-8px;
+  font-size:14px;
+  animation-delay:.5s;
+}
+
+.spark3{
+  top:10px;
+  left:-14px;
+  font-size:12px;
+  animation-delay:1s;
+}
+
+/* =========================
+   النافذة
+========================= */
+
+#sakakerBusinessPopup{
+  display:none;
+
+  position:fixed;
+  inset:0;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,215,0,.13),
+      rgba(0,0,0,.82)
+    );
+
+  backdrop-filter:blur(8px);
+
+  align-items:center;
+  justify-content:center;
+
+  padding:20px;
+}
+
+/* =========================
+   صندوق النافذة
+========================= */
+
+.sbPopupBox{
+  position:relative;
+
+  width:min(420px,92vw);
+
+  padding:38px 28px 30px;
+
+  text-align:center;
+
+  border-radius:28px;
+
+  border:1px solid rgba(255,215,0,.75);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.13),
+      rgba(255,215,0,.08),
+      rgba(30,30,30,.96)
+    );
+
+  box-shadow:
+    0 0 20px rgba(255,215,0,.4),
+    0 0 60px rgba(255,255,255,.15),
+    inset 0 0 25px rgba(255,215,0,.08);
+
+  animation:sbPopup .45s ease;
+}
+
+/* زر الإغلاق */
+
+#sbClose{
+  position:absolute;
+  top:10px;
+  right:13px;
+
+  width:34px;
+  height:34px;
+
+  border-radius:50%;
+  border:1px solid #ffd700;
+
+  background:rgba(0,0,0,.55);
+
+  color:#fff;
+  font-size:25px;
+  line-height:28px;
+
+  cursor:pointer;
+
+  transition:.25s;
+}
+
+#sbClose:hover{
+  background:#ffd700;
+  color:#111;
+  transform:rotate(90deg);
+}
+
+/* أيقونة النافذة */
+
+.sbPopupIcon{
+  width:82px;
+  height:82px;
+
+  margin:auto;
+
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:40px;
+
+  color:#fff;
+
+  background:
+    radial-gradient(
+      circle,
+      #fff,
+      #d8d8d8 28%,
+      #ffd700 58%,
+      #9c7300 100%
+    );
+
+  box-shadow:
+    0 0 15px #fff,
+    0 0 30px #ffd700,
+    0 0 55px rgba(255,215,0,.7);
+}
+
+/* العنوان */
+
+.sbPopupTitle{
+  margin-top:18px;
+
+  font-size:27px;
+  font-weight:bold;
+
+  color:#fff;
+
+  text-shadow:
+    0 0 8px #fff,
+    0 0 18px #ffd700;
+}
+
+/* الوصف */
+
+.sbPopupSub{
+  margin-top:8px;
+
+  color:#ddd;
+  font-size:15px;
+}
+
+/* زر الدخول */
+
+.sbVisit{
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+
+  margin:25px auto 0;
+
+  width:min(300px,90%);
+
+  padding:14px 22px;
+
+  border-radius:40px;
+
+  text-decoration:none;
+
+  color:#111;
+
+  font-weight:bold;
+  font-size:16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff,
+      #ffd700 35%,
+      #f5f5f5 55%,
+      #c9a227 80%,
+      #fff
+    );
+
+  box-shadow:
+    0 0 10px rgba(255,255,255,.7),
+    0 0 25px rgba(255,215,0,.6);
+
+  transition:.3s;
+}
+
+.sbVisit:hover{
+  transform:scale(1.06);
+
+  box-shadow:
+    0 0 15px #fff,
+    0 0 40px #ffd700;
+}
+
+.sbVisit b{
+  font-size:22px;
+}
+
+/* =========================
+   الحركات
+========================= */
+
+@keyframes sbPulse{
+
+  0%,100%{
+    transform:scale(1);
+  }
+
+  50%{
+    transform:scale(1.08);
+  }
+
+}
+
+@keyframes sbShine{
+
+  0%{
+    left:-70%;
+  }
+
+  60%,100%{
+    left:140%;
+  }
+
+}
+
+@keyframes sbSpark{
+
+  0%,100%{
+    opacity:.2;
+    transform:scale(.6) rotate(0deg);
+  }
+
+  50%{
+    opacity:1;
+    transform:scale(1.5) rotate(180deg);
+  }
+
+}
+
+@keyframes sbPopup{
+
+  from{
+    opacity:0;
+    transform:scale(.75) translateY(20px);
+  }
+
+  to{
+    opacity:1;
+    transform:scale(1) translateY(0);
+  }
+
+}
+
+/* =========================
+   الجوال
+========================= */
+
+@media(max-width:600px){
+
+  #sakakerBusinessAd{
+    right:14px;
+    bottom:85px;
+  }
+
+  #sakakerBusinessIcon{
+    width:60px;
+    height:60px;
+  }
+
+  .sbIconCore{
+    font-size:28px;
+  }
+
+}
+
+/* =========================
+   إخفاء الأيقونة
+========================= */
+
+.sakakerBusinessHidden{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transform:scale(.5);
+}
+
+</style>
+
+<script>
+(function(){
+
+  const icon = document.getElementById("sakakerBusinessIcon");
+  const popup = document.getElementById("sakakerBusinessPopup");
+  const close = document.getElementById("sbClose");
+
+  if(!icon || !popup) return;
+
+  /* فتح النافذة */
+  icon.addEventListener("click", function(e){
+
+    e.stopPropagation();
+
+    popup.style.display = "flex";
+
+  });
+
+  /* إغلاق */
+  close.addEventListener("click", function(){
+
+    popup.style.display = "none";
+
+  });
+
+  /* الضغط خارج الصندوق */
+  popup.addEventListener("click", function(e){
+
+    if(e.target === popup){
+      popup.style.display = "none";
+    }
+
+  });
+
+  /* ESC */
+  document.addEventListener("keydown", function(e){
+
+    if(e.key === "Escape"){
+      popup.style.display = "none";
+    }
+
+  });
+
+  /*
+    تظهر 20 ثانية
+    ثم تختفي دقيقتين
+    ثم تعود
+  */
+
+  function showIcon(){
+
+    icon.classList.remove("sakakerBusinessHidden");
+
+    setTimeout(function(){
+
+      icon.classList.add("sakakerBusinessHidden");
+
+      setTimeout(function(){
+
+        showIcon();
+
+      },120000); // دقيقتان
+
+    },20000); // 20 ثانية
+
+  }
+
+  showIcon();
+
+})();
+</script>
