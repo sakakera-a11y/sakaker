@@ -10538,3 +10538,3713 @@ body.sakaker-pong-open #pongGame-container{
   </div>
 
 </footer>
+<!-- =========================================================
+     EMERALD MUSIC — SAKAKER
+     Emerald / Gold Music Studio
+     ========================================================= -->
+
+<div id="emeraldMusicHost">
+
+  <!-- زر Emerald Music -->
+  <div id="emOpenBtn" aria-label="Emerald Music" title="Emerald Music">
+
+    <div class="emJewelOuter">
+
+      <div class="emJewelRing"></div>
+
+      <div class="emJewelCore">
+
+        <div class="emMusicNote">♪</div>
+
+        <div class="emMusicNoteSmall">♫</div>
+
+      </div>
+
+      <div class="emJewelShine"></div>
+
+      <div class="emJewelSpark spark1">✦</div>
+      <div class="emJewelSpark spark2">✧</div>
+      <div class="emJewelSpark spark3">✦</div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<style>
+
+:root{
+  --em:#00ffd5;
+  --em2:#00bfa5;
+  --gold:#ffd700;
+  --dark:#02090b;
+}
+
+
+/* =========================================================
+   HOST
+   ========================================================= */
+
+#emeraldMusicHost{
+  position:fixed;
+  inset:0;
+  z-index:2147483647;
+  pointer-events:none;
+  font-family:"Tajawal",Arial,sans-serif;
+}
+
+#emeraldMusicHost *{
+  box-sizing:border-box;
+}
+
+
+/* =========================================================
+   أيقونة Emerald Music الجديدة
+   ========================================================= */
+
+#emeraldMusicHost #emOpenBtn{
+
+  pointer-events:auto;
+
+  position:
+
+  bottom:10px;
+  right:20px;
+
+  width:82px;
+  height:82px;
+
+  border-radius:50%;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  cursor:pointer;
+
+  background:
+    radial-gradient(
+      circle at 35% 25%,
+      rgba(255,255,255,.38),
+      rgba(0,255,213,.20) 22%,
+      rgba(0,80,75,.70) 55%,
+      rgba(0,0,0,.92) 82%
+    );
+
+  border:
+    2px solid
+    rgba(255,215,0,.95);
+
+  box-shadow:
+
+    0 0 8px
+    rgba(255,215,0,.95),
+
+    0 0 20px
+    rgba(0,255,213,.85),
+
+    0 0 42px
+    rgba(0,255,213,.55),
+
+    inset 0 0 18px
+    rgba(0,255,213,.55),
+
+    inset 0 0 35px
+    rgba(255,215,0,.12);
+
+  transition:
+    transform .3s ease,
+    box-shadow .3s ease;
+
+  animation:
+    emLuxuryGlow 3s ease-in-out infinite alternate;
+
+}
+
+
+/* الحلقة الخارجية */
+
+#emeraldMusicHost .emJewelOuter{
+
+  position:relative;
+
+  width:62px;
+  height:62px;
+
+  border-radius:50%;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  background:
+
+    conic-gradient(
+      from 0deg,
+      var(--gold),
+      var(--em),
+      #ffffff,
+      var(--gold),
+      var(--em),
+      var(--gold)
+    );
+
+  box-shadow:
+
+    0 0 8px
+    rgba(255,215,0,.95),
+
+    0 0 18px
+    rgba(0,255,213,.8);
+
+  animation:
+    emRingRotate 8s linear infinite;
+
+}
+
+
+/* الحلقة الداخلية */
+
+#emeraldMusicHost .emJewelRing{
+
+  position:absolute;
+
+  inset:4px;
+
+  border-radius:50%;
+
+  background:
+
+    radial-gradient(
+      circle,
+      #001817,
+      #003a37 58%,
+      #00100f 100%
+    );
+
+  box-shadow:
+
+    inset 0 0 12px
+    rgba(0,255,213,.9);
+
+}
+
+
+/* قلب الأيقونة */
+
+#emeraldMusicHost .emJewelCore{
+
+  position:relative;
+
+  z-index:4;
+
+  width:46px;
+  height:46px;
+
+  border-radius:50%;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  background:
+
+    radial-gradient(
+      circle at 35% 25%,
+      rgba(255,255,255,.30),
+      rgba(0,255,213,.22) 30%,
+      rgba(0,50,48,.95) 75%
+    );
+
+  border:
+
+    1px solid
+    rgba(0,255,213,.8);
+
+  box-shadow:
+
+    inset 0 0 12px
+    rgba(0,255,213,.65),
+
+    0 0 14px
+    rgba(0,255,213,.55);
+
+}
+
+
+/* النغمة الرئيسية */
+
+#emeraldMusicHost .emMusicNote{
+
+  position:absolute;
+
+  font-size:30px;
+
+  line-height:1;
+
+  color:#ffffff;
+
+  font-weight:900;
+
+  text-shadow:
+
+    0 0 4px #ffffff,
+
+    0 0 10px var(--em),
+
+    0 0 20px var(--em);
+
+  transform:
+    translate(-3px,-2px);
+
+  animation:
+    emNotePulse 2s ease-in-out infinite;
+
+}
+
+
+/* النغمة الصغيرة */
+
+#emeraldMusicHost .emMusicNoteSmall{
+
+  position:absolute;
+
+  font-size:18px;
+
+  color:var(--gold);
+
+  font-weight:900;
+
+  right:5px;
+  bottom:7px;
+
+  text-shadow:
+
+    0 0 6px
+    var(--gold),
+
+    0 0 12px
+    var(--gold);
+
+  animation:
+    emSmallNote 2.5s ease-in-out infinite;
+
+}
+
+
+/* لمعان متحرك */
+
+#emeraldMusicHost .emJewelShine{
+
+  position:absolute;
+
+  z-index:8;
+
+  top:-20%;
+
+  left:-55%;
+
+  width:35%;
+
+  height:140%;
+
+  background:
+
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.85),
+      transparent
+    );
+
+  transform:
+    rotate(25deg);
+
+  filter:
+    blur(1px);
+
+  pointer-events:none;
+
+  animation:
+    emShineMove 3.5s ease-in-out infinite;
+
+}
+
+
+/* النجوم */
+
+#emeraldMusicHost .emJewelSpark{
+
+  position:absolute;
+
+  z-index:10;
+
+  color:#fff;
+
+  font-size:12px;
+
+  text-shadow:
+
+    0 0 6px
+    #fff,
+
+    0 0 14px
+    var(--gold),
+
+    0 0 20px
+    var(--em);
+
+  pointer-events:none;
+
+}
+
+#emeraldMusicHost .spark1{
+
+  top:-5px;
+  right:5px;
+
+  animation:
+    emSpark 1.8s ease-in-out infinite;
+
+}
+
+#emeraldMusicHost .spark2{
+
+  bottom:1px;
+  left:-3px;
+
+  font-size:9px;
+
+  animation:
+    emSpark 2.4s ease-in-out infinite .4s;
+
+}
+
+#emeraldMusicHost .spark3{
+
+  top:20px;
+  left:-7px;
+
+  font-size:8px;
+
+  animation:
+    emSpark 2.1s ease-in-out infinite .8s;
+
+}
+
+
+/* دوران الحلقة */
+
+@keyframes emRingRotate{
+
+  from{
+    transform:rotate(0deg);
+  }
+
+  to{
+    transform:rotate(360deg);
+  }
+
+}
+
+
+/* توهج فاخر */
+
+@keyframes emLuxuryGlow{
+
+  from{
+
+    box-shadow:
+
+      0 0 8px
+      rgba(255,215,0,.75),
+
+      0 0 20px
+      rgba(0,255,213,.55),
+
+      0 0 35px
+      rgba(0,255,213,.35),
+
+      inset 0 0 15px
+      rgba(0,255,213,.35);
+
+  }
+
+  to{
+
+    box-shadow:
+
+      0 0 15px
+      rgba(255,215,0,1),
+
+      0 0 30px
+      rgba(0,255,213,.95),
+
+      0 0 55px
+      rgba(0,255,213,.65),
+
+      inset 0 0 25px
+      rgba(0,255,213,.65);
+
+  }
+
+}
+
+
+/* نبض النغمة */
+
+@keyframes emNotePulse{
+
+  0%,100%{
+
+    transform:
+      translate(-3px,-2px)
+      scale(1);
+
+  }
+
+  50%{
+
+    transform:
+      translate(-3px,-2px)
+      scale(1.12);
+
+  }
+
+}
+
+
+/* حركة النغمة الصغيرة */
+
+@keyframes emSmallNote{
+
+  0%,100%{
+    transform:translateY(0);
+    opacity:.7;
+  }
+
+  50%{
+    transform:translateY(-4px);
+    opacity:1;
+  }
+
+}
+
+
+/* لمعان */
+
+@keyframes emShineMove{
+
+  0%{
+
+    left:-60%;
+    opacity:0;
+
+  }
+
+  20%{
+
+    opacity:1;
+
+  }
+
+  55%{
+
+    left:120%;
+    opacity:1;
+
+  }
+
+  70%,100%{
+
+    left:140%;
+    opacity:0;
+
+  }
+
+}
+
+
+/* النجوم */
+
+@keyframes emSpark{
+
+  0%,100%{
+
+    opacity:.25;
+    transform:scale(.65);
+
+  }
+
+  50%{
+
+    opacity:1;
+    transform:scale(1.35);
+
+  }
+
+}
+
+
+/* Hover */
+
+#emeraldMusicHost #emOpenBtn:hover{
+
+  transform:
+    scale(1.12)
+    rotate(-3deg);
+
+  box-shadow:
+
+    0 0 15px
+    rgba(255,215,0,1),
+
+    0 0 35px
+    rgba(0,255,213,1),
+
+    0 0 65px
+    rgba(0,255,213,.8),
+
+    inset 0 0 25px
+    rgba(0,255,213,.7);
+
+}
+
+
+/* ضغط الأيقونة */
+
+#emeraldMusicHost #emOpenBtn:active{
+
+  transform:
+    scale(.96);
+
+}
+
+
+/* =========================================================
+   الجوال
+   ========================================================= */
+
+@media(max-width:720px){
+
+  #emeraldMusicHost #emOpenBtn{
+
+    width:66px;
+    height:66px;
+
+    right:12px;
+    bottom:110px;
+
+  }
+
+  #emeraldMusicHost .emJewelOuter{
+
+    width:51px;
+    height:51px;
+
+  }
+
+  #emeraldMusicHost .emJewelCore{
+
+    width:38px;
+    height:38px;
+
+  }
+
+  #emeraldMusicHost .emMusicNote{
+
+    font-size:25px;
+
+  }
+
+  #emeraldMusicHost .emMusicNoteSmall{
+
+    font-size:15px;
+
+  }
+
+}
+
+
+/* =========================================================
+   بقية كود Emerald Music الأصلي
+   ========================================================= */
+
+/* =========================================================
+   HOST
+   ========================================================= */
+#emeraldMusicHost{
+  position:fixed;
+  inset:0;
+  z-index:2147483647;
+  pointer-events:none;
+  font-family:"Tajawal",Arial,sans-serif;
+}
+
+#emeraldMusicHost *{
+  box-sizing:border-box;
+}
+
+/* =========================================================
+   زر فتح الموسيقى
+   ========================================================= */
+#emeraldMusicHost #emOpenBtn{
+  pointer-events:auto;
+  position:fixed;
+  bottom:30px;
+  right:520px;
+
+  width:78px;
+  height:78px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(circle at 35% 30%,
+      rgba(255,255,255,.20),
+      rgba(0,255,213,.08) 35%,
+      rgba(0,0,0,.55) 75%);
+
+  border:2px solid var(--gold);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:30px;
+  cursor:pointer;
+
+  box-shadow:
+    0 0 12px rgba(255,215,0,.75),
+    0 0 25px rgba(0,255,213,.55),
+    inset 0 0 15px rgba(0,255,213,.20);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+
+  animation:emButtonGlow 3s ease-in-out infinite alternate;
+}
+
+#emeraldMusicHost #emOpenBtn:hover{
+  transform:scale(1.08);
+  box-shadow:
+    0 0 20px rgba(255,215,0,.95),
+    0 0 40px rgba(0,255,213,.8);
+}
+
+@keyframes emButtonGlow{
+  from{
+    box-shadow:
+      0 0 10px rgba(255,215,0,.55),
+      0 0 22px rgba(0,255,213,.45);
+  }
+
+  to{
+    box-shadow:
+      0 0 22px rgba(255,215,0,.9),
+      0 0 38px rgba(0,255,213,.75);
+  }
+}
+
+/* =========================================================
+   الخلفية الرئيسية
+   ========================================================= */
+#emeraldMusicHost .emModal{
+  pointer-events:auto;
+
+  position:fixed;
+  inset:0;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  overflow:auto;
+
+  background:
+    radial-gradient(
+      circle at 15% 15%,
+      rgba(0,255,213,.20),
+      transparent 27%
+    ),
+
+    radial-gradient(
+      circle at 85% 12%,
+      rgba(255,215,0,.18),
+      transparent 25%
+    ),
+
+    radial-gradient(
+      circle at 50% 100%,
+      rgba(0,150,255,.14),
+      transparent 35%
+    ),
+
+    linear-gradient(
+      135deg,
+      #010708,
+      #02191a 30%,
+      #00100f 60%,
+      #090700
+    );
+
+  backdrop-filter:blur(10px);
+}
+
+/* طبقة ضوء متحركة */
+#emeraldMusicHost .emModal::before{
+  content:"";
+
+  position:absolute;
+
+  width:180%;
+  height:180%;
+
+  left:-40%;
+  top:-40%;
+
+  background:
+    conic-gradient(
+      from 0deg,
+      transparent,
+      rgba(0,255,213,.08),
+      transparent,
+      rgba(255,215,0,.07),
+      transparent
+    );
+
+  animation:
+    emBackgroundRotate 20s linear infinite;
+
+  pointer-events:none;
+}
+
+@keyframes emBackgroundRotate{
+  from{
+    transform:rotate(0deg);
+  }
+
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+/* =========================================================
+   الصندوق
+   ========================================================= */
+#emeraldMusicHost .emBox{
+  width:min(1200px,96vw);
+
+  max-height:94vh;
+
+  overflow:auto;
+
+  position:relative;
+  z-index:2;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(2,28,30,.97),
+      rgba(0,9,11,.98)
+    );
+
+  border:1px solid rgba(0,255,213,.65);
+
+  border-radius:22px;
+
+  padding:14px;
+
+  box-shadow:
+    0 0 25px rgba(0,255,213,.45),
+    0 0 70px rgba(255,215,0,.08),
+    inset 0 0 35px rgba(0,255,213,.04);
+
+  display:flex;
+  flex-direction:column;
+
+  gap:10px;
+
+  animation:
+    emBoxGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes emBoxGlow{
+  from{
+    box-shadow:
+      0 0 22px rgba(0,255,213,.4),
+      inset 0 0 25px rgba(0,255,213,.03);
+  }
+
+  to{
+    box-shadow:
+      0 0 38px rgba(0,255,213,.7),
+      0 0 70px rgba(255,215,0,.12),
+      inset 0 0 35px rgba(0,255,213,.06);
+  }
+}
+
+/* =========================================================
+   زر الإغلاق
+   ========================================================= */
+#emeraldMusicHost .emClose{
+  position:absolute;
+
+  top:10px;
+  right:14px;
+
+  font-size:22px;
+
+  cursor:pointer;
+
+  color:var(--em);
+
+  z-index:99999;
+
+  width:34px;
+  height:34px;
+
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:rgba(0,0,0,.45);
+
+  border:
+    1px solid
+    rgba(0,255,213,.35);
+
+  box-shadow:
+    0 0 12px
+    rgba(0,255,213,.55);
+}
+
+/* =========================================================
+   الشريط العلوي
+   الدفع → بزنس → كاميرا
+   ========================================================= */
+#emeraldMusicHost .emTopbar{
+  display:grid;
+
+  grid-template-columns:
+    minmax(190px,240px)
+    minmax(190px,1fr)
+    minmax(260px,360px);
+
+  align-items:center;
+
+  gap:12px;
+
+  direction:ltr;
+
+  padding:4px;
+}
+
+/* =========================================================
+   الدفع
+   ========================================================= */
+#emeraldMusicHost .emPayBox{
+  width:100%;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(0,0,0,.82),
+      rgba(3,34,35,.85)
+    );
+
+  border:
+    1px solid
+    rgba(255,215,0,.65);
+
+  border-radius:16px;
+
+  padding:9px;
+
+  font-size:11px;
+
+  box-shadow:
+    0 0 14px
+    rgba(255,215,0,.22),
+
+    inset 0 0 18px
+    rgba(255,215,0,.04);
+
+  text-align:center;
+
+  line-height:1.45;
+
+  color:#eaffff;
+}
+
+#emeraldMusicHost .emPayBox b{
+  color:var(--gold);
+}
+
+#emeraldMusicHost #emPaypalBox{
+  background:#fff;
+
+  border-radius:10px;
+
+  margin-top:7px;
+
+  padding:3px;
+
+  transform:scale(.86);
+
+  transform-origin:top center;
+}
+
+/* =========================================================
+   SAKAKER BUSINESS
+   ========================================================= */
+#emeraldMusicHost .emBusinessBox{
+  width:100%;
+
+  min-height:110px;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  text-decoration:none;
+
+  position:relative;
+
+  overflow:hidden;
+
+  border-radius:18px;
+
+  border:
+    1px solid
+    rgba(255,215,0,.7);
+
+  background:
+
+    radial-gradient(
+      circle at 50% 15%,
+      rgba(0,255,213,.20),
+      transparent 60%
+    ),
+
+    linear-gradient(
+      145deg,
+      rgba(7,38,38,.95),
+      rgba(14,8,0,.95)
+    );
+
+  box-shadow:
+    0 0 18px
+    rgba(0,255,213,.25),
+
+    0 0 25px
+    rgba(255,215,0,.12);
+
+  color:white;
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    border-color .25s ease;
+}
+
+#emeraldMusicHost .emBusinessBox::before{
+  content:"";
+
+  position:absolute;
+
+  top:0;
+  left:-120%;
+
+  width:70%;
+  height:100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.22),
+      transparent
+    );
+
+  transform:skewX(-25deg);
+
+  transition:left .7s ease;
+}
+
+#emeraldMusicHost .emBusinessBox:hover::before{
+  left:150%;
+}
+
+#emeraldMusicHost .emBusinessBox:hover{
+  transform:
+    translateY(-3px)
+    scale(1.02);
+
+  border-color:var(--gold);
+
+  box-shadow:
+    0 0 25px
+    rgba(0,255,213,.55),
+
+    0 0 35px
+    rgba(255,215,0,.25);
+}
+
+#emeraldMusicHost .emBusinessContent{
+  position:relative;
+  z-index:2;
+
+  text-align:center;
+
+  padding:8px;
+}
+
+#emeraldMusicHost .emBusinessIcon{
+  display:block;
+
+  font-size:30px;
+
+  margin-bottom:4px;
+
+  filter:
+    drop-shadow(
+      0 0 8px
+      rgba(255,215,0,.9)
+    );
+}
+
+#emeraldMusicHost .emBusinessTitle{
+  display:block;
+
+  color:var(--gold);
+
+  font-size:15px;
+
+  font-weight:900;
+
+  letter-spacing:.5px;
+}
+
+#emeraldMusicHost .emBusinessSub{
+  display:block;
+
+  margin-top:4px;
+
+  color:#bff;
+
+  font-size:10px;
+}
+
+#emeraldMusicHost .emBusinessArrow{
+  display:inline-block;
+
+  margin-top:6px;
+
+  color:var(--em);
+
+  font-size:12px;
+
+  font-weight:bold;
+}
+
+/* =========================================================
+   الكاميرا
+   ========================================================= */
+#emeraldMusicHost .emCamBox{
+  width:100%;
+
+  border-radius:16px;
+
+  overflow:hidden;
+
+  border:
+    1px solid
+    rgba(0,255,213,.55);
+
+  box-shadow:
+    0 0 20px
+    rgba(0,255,213,.38),
+
+    inset 0 0 15px
+    rgba(0,255,213,.08);
+
+  background:#000;
+}
+
+#emeraldMusicHost .emCamBox video{
+  width:100%;
+
+  aspect-ratio:16/9;
+
+  object-fit:cover;
+
+  display:block;
+
+  background:
+    radial-gradient(
+      circle,
+      #063b3b,
+      #000
+    );
+}
+
+/* =========================================================
+   الأزرار
+   ========================================================= */
+#emeraldMusicHost .emRow{
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:8px;
+
+  justify-content:center;
+
+  align-items:center;
+}
+
+#emeraldMusicHost .emBtn{
+  padding:6px 12px;
+
+  border-radius:999px;
+
+  background:#0b1b1f;
+
+  border:
+    1px solid
+    rgba(0,255,213,.4);
+
+  color:#eaffff;
+
+  cursor:pointer;
+
+  font-size:12px;
+
+  transition:
+    transform .15s,
+    background .15s,
+    box-shadow .15s;
+}
+
+#emeraldMusicHost .emBtn:hover{
+  transform:translateY(-1px);
+
+  box-shadow:
+    0 0 10px
+    rgba(0,255,213,.35);
+}
+
+#emeraldMusicHost .emBtn.emActive{
+  background:var(--em);
+
+  color:#000;
+
+  box-shadow:
+    0 0 12px
+    rgba(0,255,213,.55);
+}
+
+#emeraldMusicHost .emBtn.emWarn{
+  border-color:
+    rgba(255,170,0,.55);
+}
+
+#emeraldMusicHost .emBadge{
+  display:inline-flex;
+
+  align-items:center;
+
+  gap:6px;
+
+  padding:6px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,255,255,.06);
+
+  border:
+    1px solid
+    rgba(0,255,213,.35);
+
+  font-size:12px;
+
+  color:#dff;
+}
+
+#emeraldMusicHost .emHint{
+  font-size:11px;
+
+  opacity:.85;
+
+  text-align:center;
+
+  line-height:1.5;
+}
+
+/* =========================================================
+   لوحة المفاتيح
+   ========================================================= */
+#emeraldMusicHost .emKeysWrap{
+  border-radius:16px;
+
+  background:
+    radial-gradient(
+      circle at top,
+      #003b3b,
+      #000 75%
+    );
+
+  box-shadow:
+    0 0 24px
+    var(--em);
+
+  padding:12px;
+}
+
+#emeraldMusicHost .emKeysRow{
+  display:flex;
+
+  justify-content:center;
+
+  gap:4px;
+
+  overflow-x:auto;
+
+  scrollbar-width:thin;
+}
+
+#emeraldMusicHost .emKey{
+  width:calc(92vw / 12);
+
+  max-width:64px;
+  min-width:40px;
+
+  height:24vw;
+
+  max-height:130px;
+  min-height:90px;
+
+  border-radius:8px;
+
+  border:1px solid #555;
+
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:center;
+
+  justify-content:flex-end;
+
+  padding-bottom:6px;
+
+  cursor:pointer;
+
+  user-select:none;
+
+  touch-action:none;
+
+  transition:.1s;
+}
+
+#emeraldMusicHost .emWhite{
+  background:
+    linear-gradient(
+      #fff,
+      #cfcfcf
+    );
+
+  color:#000;
+}
+
+#emeraldMusicHost .emBlack{
+  background:
+    linear-gradient(
+      #222,
+      #000
+    );
+
+  color:#fff;
+}
+
+#emeraldMusicHost .emKey.emKeyActive{
+  background:
+    linear-gradient(
+      #eaffff,
+      #00ffd5
+    );
+
+  box-shadow:
+    0 0 24px
+    rgba(0,255,213,.95);
+
+  border-color:
+    rgba(0,255,213,.95);
+}
+
+#emeraldMusicHost .emKey small{
+  font-size:9px;
+
+  opacity:.95;
+}
+
+#emeraldMusicHost .emKey .n{
+  font-weight:800;
+
+  font-size:12px;
+
+  margin-bottom:2px;
+}
+
+/* =========================================================
+   نافذة النوتات
+   ========================================================= */
+#emeraldMusicHost .emNotesModal{
+  display:none;
+
+  position:fixed;
+
+  inset:0;
+
+  z-index:999999;
+
+  background:
+    rgba(0,0,0,.72);
+
+  align-items:center;
+
+  justify-content:center;
+}
+
+#emeraldMusicHost .emNotesBox{
+  width:min(520px,92vw);
+
+  max-height:80vh;
+
+  overflow:auto;
+
+  background:#04161b;
+
+  border:
+    1px solid
+    var(--em);
+
+  border-radius:16px;
+
+  padding:14px;
+
+  box-shadow:
+    0 0 26px
+    rgba(0,255,213,.6);
+
+  position:relative;
+}
+
+#emeraldMusicHost .emNotesClose{
+  position:absolute;
+
+  top:10px;
+  right:12px;
+
+  cursor:pointer;
+
+  color:var(--em);
+
+  font-size:18px;
+}
+
+#emeraldMusicHost .emNotesBox h3{
+  margin:0 0 10px;
+
+  text-align:center;
+
+  color:#dff;
+}
+
+#emeraldMusicHost .emNotesBox h4{
+  margin:12px 0 6px;
+
+  color:#bff;
+}
+
+#emeraldMusicHost .emNotesBox p{
+  margin:0 0 10px;
+
+  font-size:13px;
+
+  line-height:1.6;
+}
+
+#emeraldMusicHost .emCredit{
+  text-align:center;
+
+  margin:10px 0 2px;
+
+  font-size:11px;
+
+  opacity:.9;
+
+  color:#bff;
+
+  text-shadow:
+    0 0 10px
+    rgba(0,255,213,.65);
+}
+
+/* =========================================================
+   الجوال
+   ========================================================= */
+@media(max-width:720px){
+
+  #emeraldMusicHost #emOpenBtn{
+    width:62px;
+    height:62px;
+
+    right:12px;
+    bottom:110px;
+
+    font-size:24px;
+  }
+
+  #emeraldMusicHost .emModal{
+    align-items:flex-start;
+
+    padding:
+      max(8px, env(safe-area-inset-top))
+      5px
+      max(8px, env(safe-area-inset-bottom));
+  }
+
+  #emeraldMusicHost .emBox{
+    width:98vw;
+
+    max-height:96vh;
+
+    padding:9px;
+
+    border-radius:17px;
+  }
+
+  #emeraldMusicHost .emTopbar{
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:stretch;
+
+    gap:9px;
+  }
+
+  #emeraldMusicHost .emPayBox,
+  #emeraldMusicHost .emBusinessBox,
+  #emeraldMusicHost .emCamBox{
+    width:100%;
+  }
+
+  #emeraldMusicHost .emBusinessBox{
+    min-height:82px;
+  }
+
+  #emeraldMusicHost .emBusinessIcon{
+    font-size:25px;
+  }
+
+  #emeraldMusicHost .emBusinessTitle{
+    font-size:14px;
+  }
+
+  #emeraldMusicHost .emBusinessSub{
+    font-size:9px;
+  }
+
+  #emeraldMusicHost .emBtn{
+    font-size:11px;
+
+    padding:
+      6px 9px;
+  }
+
+  #emeraldMusicHost .emBadge{
+    font-size:11px;
+
+    padding:
+      5px 9px;
+  }
+
+  #emeraldMusicHost .emKey{
+    min-width:38px;
+
+    height:120px;
+  }
+}
+
+/* =========================================================
+   جوال صغير
+   ========================================================= */
+@media(max-width:380px){
+
+  #emeraldMusicHost .emBox{
+    width:98vw;
+
+    padding:7px;
+
+    border-radius:15px;
+  }
+
+  #emeraldMusicHost .emBusinessBox{
+    min-height:75px;
+  }
+
+  #emeraldMusicHost .emBusinessTitle{
+    font-size:13px;
+  }
+
+  #emeraldMusicHost .emBusinessSub{
+    font-size:8px;
+  }
+
+  #emeraldMusicHost .emKey{
+    min-width:34px;
+
+    height:105px;
+  }
+
+  #emeraldMusicHost .emKey small{
+    font-size:8px;
+  }
+
+  #emeraldMusicHost .emKey .n{
+    font-size:10px;
+  }
+}
+</style>
+
+<script>
+/* =========================================================
+   PAYPAL SDK
+   ========================================================= */
+
+(function(){
+
+  if(window.paypal) return;
+
+  var s=document.createElement("script");
+
+  s.src=
+    "https://www.paypal.com/sdk/js" +
+    "?client-id=BAAQAE5C8rFrqoJpWqxpYluOT09waMhuzhF4ug2QGvJm76YmqiCmzkP31wl8xZq9W5WkJSvAx6ZoujIBFw" +
+    "&components=hosted-buttons" +
+    "&disable-funding=venmo" +
+    "&currency=USD";
+
+  s.onload=function(){};
+
+  document.head.appendChild(s);
+
+})();
+
+
+/* =========================================================
+   HOST
+   ========================================================= */
+
+const emeraldHost =
+  document.getElementById("emeraldMusicHost");
+
+const emOpenBtn =
+  document.getElementById("emOpenBtn");
+
+
+/* =========================================================
+   الأصوات
+   ========================================================= */
+
+const base={
+
+  piano:
+  "https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_grand_piano-mp3/",
+
+  epiano:
+  "https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/electric_piano_1-mp3/",
+
+  oud:
+  "https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_guitar_nylon-mp3/",
+
+  buzuq:
+  "https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/acoustic_guitar_steel-mp3/",
+
+  guitar:
+  "https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/electric_guitar_clean-mp3/",
+
+  bass:
+  "https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/electric_bass_finger-mp3/",
+
+  qanun:
+  "https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/dulcimer-mp3/",
+
+  violin:
+  "https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/violin-mp3/",
+
+  strings:
+  "https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/string_ensemble_1-mp3/",
+
+  sax:
+  "https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/alto_sax-mp3/",
+
+  trumpet:
+  "https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/trumpet-mp3/",
+
+  nay:
+  "https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/flute-mp3/",
+
+  choir:
+  "https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/choir_aahs-mp3/",
+
+  drums:
+  "https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/standard_kit-mp3/"
+};
+
+
+const LABEL={
+
+  piano:"🎹 Piano",
+  epiano:"🎹 E-Piano",
+  oud:"🪕 Oud",
+  qanun:"🎼 Qanun",
+  buzuq:"🪕 Buzuq",
+  guitar:"🎸 Guitar",
+  bass:"🎸 Bass",
+  violin:"🎻 Violin",
+  strings:"🎻 Strings",
+  sax:"🎷 Sax",
+  trumpet:"🎺 Trumpet",
+  nay:"🎵 Nay",
+  choir:"🎤 Choir",
+  drums:"🥁 Drums"
+
+};
+
+
+/* =========================================================
+   الإعدادات
+   ========================================================= */
+
+let inst="piano";
+let mix="none";
+let vol=1;
+let echo=1;
+let octShift=0;
+
+const activeHold={};
+
+let keyElByNote={};
+
+
+/* =========================================================
+   النوتات
+   ========================================================= */
+
+const notes=[];
+
+const order=[
+  "D","E","F","G","A","B","C"
+];
+
+let o=2;
+
+while(notes.length<36){
+
+  for(const l of order){
+
+    if(notes.length<36){
+
+      notes.push(
+        l+o
+      );
+
+    }
+
+  }
+
+  o++;
+
+}
+
+
+/* =========================================================
+   مساعدات
+   ========================================================= */
+
+function clamp(n,min,max){
+
+  return Math.max(
+    min,
+    Math.min(max,n)
+  );
+
+}
+
+
+function isBlack(n){
+
+  return [
+    "E",
+    "G",
+    "B"
+  ].includes(n[0]);
+
+}
+
+
+function noteWithOctShift(note){
+
+  const letter=
+    note[0];
+
+  const baseOct=
+    parseInt(
+      note.slice(1),
+      10
+    );
+
+  const finalOct=
+    clamp(
+      baseOct+octShift,
+      0,
+      9
+    );
+
+  return letter+finalOct;
+
+}
+
+
+function highlightKey(note){
+
+  const el=
+    keyElByNote[note]||null;
+
+  if(!el) return;
+
+  el.classList.add(
+    "emKeyActive"
+  );
+
+  try{
+
+    el.scrollIntoView({
+      behavior:"smooth",
+      block:"nearest",
+      inline:"center"
+    });
+
+  }catch(_){}
+
+  setTimeout(()=>{
+
+    el.classList.remove(
+      "emKeyActive"
+    );
+
+  },160);
+
+}
+
+
+/* =========================================================
+   تشغيل الصوت
+   ========================================================= */
+
+function playOnce(
+  note,
+  instName,
+  volumeMul=1
+){
+
+  const nn=
+    noteWithOctShift(note);
+
+  const src=
+    (base[instName]||base.piano)+
+    nn+
+    ".mp3";
+
+  const a=
+    new Audio(src);
+
+  a.volume=
+    clamp(
+      (vol||1)*
+      (volumeMul||1),
+      0,
+      1
+    );
+
+  a.play().catch(()=>{});
+
+  return a;
+
+}
+
+
+function startHold(
+  note,
+  holdId,
+  alsoEl=null
+){
+
+  if(activeHold[holdId])
+    return;
+
+  const arr=[];
+
+  const nn=
+    noteWithOctShift(note);
+
+
+  const a1=
+    new Audio(
+      (base[inst]||base.piano)+
+      nn+
+      ".mp3"
+    );
+
+  a1.loop=true;
+
+  a1.volume=
+    clamp(vol,0,1);
+
+  a1.play().catch(()=>{});
+
+  arr.push(a1);
+
+
+  if(
+    mix!=="none" &&
+    mix!==inst
+  ){
+
+    const a2=
+      new Audio(
+        (base[mix]||base.piano)+
+        nn+
+        ".mp3"
+      );
+
+    a2.loop=true;
+
+    a2.volume=
+      clamp(vol,0,1);
+
+    a2.play().catch(()=>{});
+
+    arr.push(a2);
+
+  }
+
+
+  activeHold[holdId]=arr;
+
+  if(alsoEl)
+    alsoEl.classList.add(
+      "emKeyActive"
+    );
+
+}
+
+
+function stopHold(
+  id,
+  alsoEl=null
+){
+
+  if(!activeHold[id])
+    return;
+
+  activeHold[id].forEach(
+    a=>{
+      try{
+        a.pause();
+      }catch(_){}
+    }
+  );
+
+  delete activeHold[id];
+
+  if(alsoEl)
+    alsoEl.classList.remove(
+      "emKeyActive"
+    );
+
+}
+
+
+function shortPress(
+  note,
+  alsoEl=null
+){
+
+  playOnce(
+    note,
+    inst,
+    1
+  );
+
+  if(
+    mix!=="none" &&
+    mix!==inst
+  ){
+
+    playOnce(
+      note,
+      mix,
+      1
+    );
+
+  }
+
+
+  const e=
+    clamp(echo,0,2);
+
+  if(e>0){
+
+    const repeats=5;
+
+    const baseDelay=120;
+
+    for(
+      let i=1;
+      i<=repeats;
+      i++
+    ){
+
+      const v=
+        clamp(
+          (e/(i+.2))*.7,
+          0,
+          1
+        );
+
+      setTimeout(()=>{
+
+        playOnce(
+          note,
+          inst,
+          v
+        );
+
+        if(
+          mix!=="none" &&
+          mix!==inst
+        ){
+
+          playOnce(
+            note,
+            mix,
+            v
+          );
+
+        }
+
+      },baseDelay*i);
+
+    }
+
+  }
+
+
+  if(alsoEl){
+
+    alsoEl.classList.add(
+      "emKeyActive"
+    );
+
+    try{
+
+      alsoEl.scrollIntoView({
+        behavior:"smooth",
+        block:"nearest",
+        inline:"center"
+      });
+
+    }catch(_){}
+
+    setTimeout(()=>{
+
+      alsoEl.classList.remove(
+        "emKeyActive"
+      );
+
+    },160);
+
+  }else{
+
+    highlightKey(note);
+
+  }
+
+}
+
+
+/* =========================================================
+   المقطوعات
+   ========================================================= */
+
+const MELODIES={
+
+  scale:[
+    "D2","E2","F2","G2","A2","B2","C2",
+    "D3","E3","F3","G3","A3","B3","C3",
+    "D4","E4","F4","G4","A4","B4","C4",
+    "D5"
+  ],
+
+  hbd:[
+    "C4","C4","D4","C4","F4","E4",
+    "C4","C4","D4","C4","G4","F4",
+    "C4","C4","C5","A4","F4","E4","D4"
+  ],
+
+  fairuz:[
+    "E4","F4","G4","A4","G4","F4","E4",
+    "D4","E4","F4","G4","A4","G4","F4",
+    "E4","D4"
+  ],
+
+  beethoven9:[
+    "E4","E4","F4","G4",
+    "G4","F4","E4","D4",
+    "C4","C4","D4","E4",
+    "E4","D4","D4",
+
+    "E4","E4","F4","G4",
+    "G4","F4","E4","D4",
+    "C4","C4","D4","E4",
+    "D4","C4","C4"
+  ],
+
+  sabah:[
+    "G4","A4","B4","A4",
+    "G4","E4","D4","E4",
+    "G4","A4","G4","E4",
+    "D4"
+  ]
+
+};
+
+
+let timer=null;
+
+
+function stopMelody(){
+
+  if(timer){
+
+    clearInterval(timer);
+
+    timer=null;
+
+  }
+
+}
+
+
+function playMelody(
+  arr,
+  t=420
+){
+
+  stopMelody();
+
+  let i=0;
+
+  timer=setInterval(()=>{
+
+    if(i>=arr.length){
+
+      return stopMelody();
+
+    }
+
+    shortPress(
+      arr[i++]
+    );
+
+  },t);
+
+}
+
+
+/* =========================================================
+   الكاميرا والتسجيل
+   ========================================================= */
+
+let camStream=null;
+
+let mediaRecorder=null;
+
+let chunks=[];
+
+let camPaused=false;
+
+let camTrack=null;
+
+let micTrack=null;
+
+
+async function startCamRecording(
+  videoEl,
+  recBtn,
+  pauseBtn,
+  camToggleBtn,
+  micToggleBtn
+){
+
+  try{
+
+    camStream=
+      await navigator
+      .mediaDevices
+      .getUserMedia({
+        video:true,
+        audio:true
+      });
+
+
+    videoEl.srcObject=
+      camStream;
+
+
+    camTrack=
+      camStream
+      .getVideoTracks()[0]||null;
+
+
+    micTrack=
+      camStream
+      .getAudioTracks()[0]||null;
+
+
+    chunks=[];
+
+
+    mediaRecorder=
+      new MediaRecorder(
+        camStream
+      );
+
+
+    mediaRecorder.ondataavailable=
+      e=>{
+
+        if(
+          e.data &&
+          e.data.size
+        ){
+
+          chunks.push(
+            e.data
+          );
+
+        }
+
+      };
+
+
+    mediaRecorder.onstop=()=>{
+
+      const blob=
+        new Blob(
+          chunks,
+          {
+            type:
+              "video/webm"
+          }
+        );
+
+
+      const url=
+        URL.createObjectURL(
+          blob
+        );
+
+
+      const a=
+        document.createElement(
+          "a"
+        );
+
+      a.href=url;
+
+      a.download=
+        "emerald-performance.webm";
+
+      a.click();
+
+
+      setTimeout(
+        ()=>{
+          URL.revokeObjectURL(
+            url
+          );
+        },
+        4000
+      );
+
+    };
+
+
+    mediaRecorder.start();
+
+    camPaused=false;
+
+
+    recBtn.textContent=
+      "⏹ Stop";
+
+    pauseBtn.style.display=
+      "inline-block";
+
+    pauseBtn.textContent=
+      "⏸ Pause";
+
+    camToggleBtn.style.display=
+      "inline-block";
+
+    micToggleBtn.style.display=
+      "inline-block";
+
+
+    camToggleBtn.textContent=
+      "📷 Camera: ON";
+
+    micToggleBtn.textContent=
+      "🎙 Mic: ON";
+
+
+    camToggleBtn.classList
+      .remove("emWarn");
+
+    micToggleBtn.classList
+      .remove("emWarn");
+
+  }catch(e){
+
+    alert(
+      "تعذر تشغيل الكاميرا/المايك.\n"+
+      "تأكد من HTTPS ومنح الصلاحيات.\n\n"+
+      (e?.message||e)
+    );
+
+  }
+
+}
+
+
+function stopCamRecording(
+  recBtn,
+  pauseBtn,
+  camToggleBtn,
+  micToggleBtn
+){
+
+  try{
+
+    if(
+      mediaRecorder &&
+      mediaRecorder.state!=="inactive"
+    ){
+
+      mediaRecorder.stop();
+
+    }
+
+  }catch(_){}
+
+
+  try{
+
+    if(camStream){
+
+      camStream
+        .getTracks()
+        .forEach(
+          t=>t.stop()
+        );
+
+    }
+
+  }catch(_){}
+
+
+  mediaRecorder=null;
+
+  camStream=null;
+
+  camTrack=null;
+
+  micTrack=null;
+
+  camPaused=false;
+
+
+  recBtn.textContent=
+    "🎥 Record Video";
+
+  pauseBtn.style.display=
+    "none";
+
+  camToggleBtn.style.display=
+    "none";
+
+  micToggleBtn.style.display=
+    "none";
+
+}
+
+
+/* =========================================================
+   فتح لوحة Emerald Music
+   ========================================================= */
+
+emOpenBtn.onclick=()=>{
+
+  if(
+    document.getElementById(
+      "emPanel"
+    )
+  )
+    return;
+
+
+  const prevOverflow=
+    document.documentElement
+    .style.overflow;
+
+
+  document.documentElement
+    .style.overflow="hidden";
+
+
+  const p=
+    document.createElement(
+      "div"
+    );
+
+  p.id="emPanel";
+
+
+  p.innerHTML=`
+
+    <div class="emModal">
+
+      <div class="emBox">
+
+        <div class="emClose">
+          ✖
+        </div>
+
+
+        <!-- =================================================
+             الدفع → بزنس → الكاميرا
+             ================================================= -->
+
+        <div class="emTopbar">
+
+          <!-- 💰 الدفع -->
+
+          <div class="emPayBox">
+
+            💎
+            <b>
+              Emerald Music
+            </b>
+
+            <br>
+
+            <br><br>
+
+            <span
+              style="
+                font-size:10px;
+                color:#bff;
+              "
+            >
+             
+            </span>
+
+            <div id="emPaypalBox"></div>
+
+          </div>
+
+
+          <!-- 💼 SAKAKER BUSINESS -->
+
+          <a
+            class="emBusinessBox"
+            href="https://business.sakaker.co/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="SAKAKER BUSINESS"
+          >
+
+            <div
+              class="emBusinessContent"
+            >
+
+              <span
+                class="emBusinessIcon"
+              >
+                💼
+              </span>
+
+              <span
+                class="emBusinessTitle"
+              >
+                SAKAKER BUSINESS
+              </span>
+
+              <span
+                class="emBusinessSub"
+              >
+                خدمات وحلول سكاكر للأعمال
+                •
+                Sakaker Business Services
+              </span>
+
+              <span
+                class="emBusinessArrow"
+              >
+                اكتشف المزيد ↗
+              </span>
+
+            </div>
+
+          </a>
+
+
+          <!-- 📷 الكاميرا -->
+
+          <div class="emCamBox">
+
+            <video
+              id="emCam"
+              autoplay
+              muted
+              playsinline
+            ></video>
+
+          </div>
+
+        </div>
+
+
+        <!-- أزرار الكاميرا -->
+
+        <div class="emRow">
+
+          <button
+            class="emBtn"
+            id="emCamRec"
+          >
+            🎥 Record Video
+          </button>
+
+          <button
+            class="emBtn"
+            id="emCamPause"
+            style="display:none"
+          >
+            ⏸ Pause
+          </button>
+
+          <button
+            class="emBtn emWarn"
+            id="emCamToggle"
+            style="display:none"
+          >
+            📷 Camera: ON
+          </button>
+
+          <button
+            class="emBtn emWarn"
+            id="emMicToggle"
+            style="display:none"
+          >
+            🎙 Mic: ON
+          </button>
+
+        </div>
+
+
+        <!-- المقطوعات -->
+
+        <div class="emRow">
+
+          <button
+            class="emBtn"
+            id="emBeet"
+          >
+            🎼 Beethoven 9
+          </button>
+
+          <button
+            class="emBtn"
+            id="emSabah"
+          >
+            🎵 Sabah
+          </button>
+
+          <button
+            class="emBtn"
+            id="emScale"
+          >
+            🎹 Scale
+          </button>
+
+          <button
+            class="emBtn"
+            id="emHbd"
+          >
+            🎂 Birthday
+          </button>
+
+          <button
+            class="emBtn"
+            id="emFairuz"
+          >
+            🎵 Fairuz
+          </button>
+
+          <button
+            class="emBtn"
+            id="emStop"
+          >
+            ⏹ Stop
+          </button>
+
+          <button
+            class="emBtn"
+            id="emNotesBtn"
+          >
+            🎼 Notes
+          </button>
+
+        </div>
+
+
+        <!-- التحكم بالصوت -->
+
+        <div class="emRow">
+
+          <span class="emBadge">
+            🔊 Volume
+          </span>
+
+          <input
+            id="emV"
+            type="range"
+            min="0"
+            max="100"
+            value="100"
+            style="width:160px"
+          >
+
+
+          <span class="emBadge">
+            🎚 Echo
+          </span>
+
+          <input
+            id="emE"
+            type="range"
+            min="0"
+            max="200"
+            value="100"
+            style="width:160px"
+          >
+
+
+          <span class="emBadge">
+            🎹 Oct
+          </span>
+
+          <button
+            class="emBtn"
+            id="emOctDown"
+          >
+            -
+          </button>
+
+          <span
+            class="emBadge"
+            id="emOctVal"
+          >
+            0
+          </span>
+
+          <button
+            class="emBtn"
+            id="emOctUp"
+          >
+            +
+          </button>
+
+        </div>
+
+
+        <!-- التعليمات -->
+
+        <div class="emHint">
+
+          ✅ ضغطة قصيرة = نغمة واحدة
+          — ضغطة طويلة = استمرار الصوت (Sustain)
+
+          <br>
+
+          ⌨️ كيبورد:
+          1-0 ثم Q..P ثم A..L ثم Z..M
+
+          <br>
+
+          ضغط مستمر = استمرار
+
+        </div>
+
+
+        <!-- لوحة المفاتيح -->
+
+        <div class="emKeysWrap">
+
+          <div id="emKeys"></div>
+
+        </div>
+
+
+        <!-- الآلة الأساسية -->
+
+        <div class="emRow">
+
+          <span class="emBadge">
+            🎛 الآلة الأساسية
+          </span>
+
+          ${Object.keys(LABEL).map(k=>`
+
+            <button
+              class="emBtn ${k==="piano"?"emActive":""}"
+              data-em-i="${k}"
+            >
+              ${LABEL[k]}
+            </button>
+
+          `).join("")}
+
+        </div>
+
+
+        <!-- الدمج -->
+
+        <div class="emRow">
+
+          <span class="emBadge">
+            🔀 الدمج (Mix)
+          </span>
+
+          <button
+            class="emBtn emActive"
+            data-em-m="none"
+          >
+            ❌ Off
+          </button>
+
+          ${Object.keys(LABEL).map(k=>`
+
+            <button
+              class="emBtn"
+              data-em-m="${k}"
+            >
+              ${LABEL[k]}
+            </button>
+
+          `).join("")}
+
+        </div>
+
+
+        <!-- الحقوق -->
+
+        <div class="emCredit">
+
+          ✨ It works offline.
+          إعداد وتصميم وإنتاج
+          أبوالقمر زمرد
+          Preparation, design,
+          and production by
+          Abwalqmrzmrd
+          × Emerald Music ✨
+
+        </div>
+
+
+        <!-- النوتات -->
+
+        <div
+          id="emNotesModal"
+          class="emNotesModal"
+        >
+
+          <div class="emNotesBox">
+
+            <div
+              class="emNotesClose"
+            >
+              ✖
+            </div>
+
+            <h3>
+              🎼 نوتات المقطوعات
+            </h3>
+
+            <h4>
+              🎼 Beethoven 9
+              (Simplified)
+            </h4>
+
+            <p>
+              ${MELODIES.beethoven9.join(" ")}
+            </p>
+
+
+            <h4>
+              🎵 Sabah
+              (Simplified)
+            </h4>
+
+            <p>
+              ${MELODIES.sabah.join(" ")}
+            </p>
+
+
+            <h4>
+              🎹 Scale
+            </h4>
+
+            <p>
+              ${MELODIES.scale.join(" ")}
+            </p>
+
+
+            <h4>
+              🎂 Happy Birthday
+            </h4>
+
+            <p>
+              ${MELODIES.hbd.join(" ")}
+            </p>
+
+
+            <h4>
+              🎵 Fairuz
+              (Short)
+            </h4>
+
+            <p>
+              ${MELODIES.fairuz.join(" ")}
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  emeraldHost.appendChild(p);
+
+
+  /* =======================================================
+     PayPal
+     ======================================================= */
+
+  function renderPay(){
+
+    try{
+
+      if(
+        window.paypal &&
+        paypal.HostedButtons
+      ){
+
+        paypal
+          .HostedButtons({
+            hostedButtonId:
+              "S9YLL5P5H47P4"
+          })
+          .render(
+            "#emPaypalBox"
+          );
+
+      }
+
+    }catch(e){
+
+      console.log(
+        "PayPal error:",
+        e
+      );
+
+    }
+
+  }
+
+
+  setTimeout(
+    renderPay,
+    0
+  );
+
+  setTimeout(
+    renderPay,
+    900
+  );
+
+
+  /* =======================================================
+     العناصر
+     ======================================================= */
+
+  const closeBtn=
+    p.querySelector(
+      ".emClose"
+    );
+
+  const cam=
+    p.querySelector(
+      "#emCam"
+    );
+
+  const camRec=
+    p.querySelector(
+      "#emCamRec"
+    );
+
+  const camPause=
+    p.querySelector(
+      "#emCamPause"
+    );
+
+  const camToggle=
+    p.querySelector(
+      "#emCamToggle"
+    );
+
+  const micToggle=
+    p.querySelector(
+      "#emMicToggle"
+    );
+
+
+  const notesBtn=
+    p.querySelector(
+      "#emNotesBtn"
+    );
+
+  const notesModal=
+    p.querySelector(
+      "#emNotesModal"
+    );
+
+  const notesClose=
+    p.querySelector(
+      ".emNotesClose"
+    );
+
+
+  /* =======================================================
+     النوتات
+     ======================================================= */
+
+  notesBtn.onclick=()=>{
+
+    notesModal.style.display=
+      "flex";
+
+  };
+
+
+  notesClose.onclick=()=>{
+
+    notesModal.style.display=
+      "none";
+
+  };
+
+
+  notesModal.addEventListener(
+    "click",
+    e=>{
+
+      if(
+        e.target===
+        notesModal
+      ){
+
+        notesModal.style.display=
+          "none";
+
+      }
+
+    }
+  );
+
+
+  /* =======================================================
+     الإغلاق
+     ======================================================= */
+
+  const modalEl=
+    p.querySelector(
+      ".emModal"
+    );
+
+  const boxEl=
+    p.querySelector(
+      ".emBox"
+    );
+
+
+  const escHandler=e=>{
+
+    if(
+      e.key==="Escape"
+    ){
+
+      try{
+        closeBtn.click();
+      }catch(_){}
+
+    }
+
+  };
+
+
+  window.addEventListener(
+    "keydown",
+    escHandler
+  );
+
+
+  closeBtn.onclick=()=>{
+
+    try{
+
+      window.removeEventListener(
+        "keydown",
+        escHandler
+      );
+
+    }catch(_){}
+
+
+    stopMelody();
+
+    notesModal.style.display=
+      "none";
+
+
+    try{
+
+      if(mediaRecorder){
+
+        stopCamRecording(
+          camRec,
+          camPause,
+          camToggle,
+          micToggle
+        );
+
+      }
+
+    }catch(_){}
+
+
+    Object.keys(
+      activeHold
+    ).forEach(
+      id=>stopHold(id)
+    );
+
+
+    p.remove();
+
+
+    document.documentElement
+      .style.overflow=
+      prevOverflow;
+
+  };
+
+
+  if(
+    modalEl &&
+    boxEl
+  ){
+
+    modalEl.addEventListener(
+      "click",
+      e=>{
+
+        if(
+          e.target===
+          modalEl
+        ){
+
+          closeBtn.click();
+
+        }
+
+      }
+    );
+
+  }
+
+
+  /* =======================================================
+     المقطوعات
+     ======================================================= */
+
+  p.querySelector(
+    "#emBeet"
+  ).onclick=()=>{
+
+    playMelody(
+      MELODIES.beethoven9,
+      380
+    );
+
+  };
+
+
+  p.querySelector(
+    "#emSabah"
+  ).onclick=()=>{
+
+    playMelody(
+      MELODIES.sabah,
+      420
+    );
+
+  };
+
+
+  p.querySelector(
+    "#emScale"
+  ).onclick=()=>{
+
+    playMelody(
+      MELODIES.scale,
+      220
+    );
+
+  };
+
+
+  p.querySelector(
+    "#emHbd"
+  ).onclick=()=>{
+
+    playMelody(
+      MELODIES.hbd,
+      420
+    );
+
+  };
+
+
+  p.querySelector(
+    "#emFairuz"
+  ).onclick=()=>{
+
+    playMelody(
+      MELODIES.fairuz,
+      430
+    );
+
+  };
+
+
+  p.querySelector(
+    "#emStop"
+  ).onclick=()=>{
+
+    stopMelody();
+
+  };
+
+
+  /* =======================================================
+     الآلة
+     ======================================================= */
+
+  p.querySelectorAll(
+    "[data-em-i]"
+  ).forEach(
+    b=>{
+
+      b.onclick=()=>{
+
+        p.querySelectorAll(
+          "[data-em-i]"
+        ).forEach(
+          x=>
+            x.classList.remove(
+              "emActive"
+            )
+        );
+
+
+        b.classList.add(
+          "emActive"
+        );
+
+
+        inst=
+          b.dataset.emI;
+
+      };
+
+    }
+  );
+
+
+  /* =======================================================
+     الدمج
+     ======================================================= */
+
+  p.querySelectorAll(
+    "[data-em-m]"
+  ).forEach(
+    b=>{
+
+      b.onclick=()=>{
+
+        p.querySelectorAll(
+          "[data-em-m]"
+        ).forEach(
+          x=>
+            x.classList.remove(
+              "emActive"
+            )
+        );
+
+
+        b.classList.add(
+          "emActive"
+        );
+
+
+        mix=
+          b.dataset.emM;
+
+      };
+
+    }
+  );
+
+
+  /* =======================================================
+     الصوت
+     ======================================================= */
+
+  p.querySelector(
+    "#emV"
+  ).oninput=e=>{
+
+    vol=
+      e.target.value/100;
+
+  };
+
+
+  p.querySelector(
+    "#emE"
+  ).oninput=e=>{
+
+    echo=
+      e.target.value/100;
+
+  };
+
+
+  /* =======================================================
+     الأوكتاف
+     ======================================================= */
+
+  const octVal=
+    p.querySelector(
+      "#emOctVal"
+    );
+
+
+  function renderOct(){
+
+    octVal.textContent=
+      String(octShift);
+
+  }
+
+
+  p.querySelector(
+    "#emOctDown"
+  ).onclick=()=>{
+
+    octShift=
+      clamp(
+        octShift-1,
+        -2,
+        2
+      );
+
+    renderOct();
+
+  };
+
+
+  p.querySelector(
+    "#emOctUp"
+  ).onclick=()=>{
+
+    octShift=
+      clamp(
+        octShift+1,
+        -2,
+        2
+      );
+
+    renderOct();
+
+  };
+
+
+  renderOct();
+
+
+  /* =======================================================
+     التسجيل
+     ======================================================= */
+
+  camRec.onclick=async()=>{
+
+    if(!mediaRecorder){
+
+      await startCamRecording(
+        cam,
+        camRec,
+        camPause,
+        camToggle,
+        micToggle
+      );
+
+    }else{
+
+      stopCamRecording(
+        camRec,
+        camPause,
+        camToggle,
+        micToggle
+      );
+
+    }
+
+  };
+
+
+  camPause.onclick=()=>{
+
+    if(!mediaRecorder)
+      return;
+
+
+    if(!camPaused){
+
+      try{
+        mediaRecorder.pause();
+      }catch(_){}
+
+
+      camPause.textContent=
+        "▶ Resume";
+
+      camPaused=true;
+
+    }else{
+
+      try{
+        mediaRecorder.resume();
+      }catch(_){}
+
+
+      camPause.textContent=
+        "⏸ Pause";
+
+      camPaused=false;
+
+    }
+
+  };
+
+
+  camToggle.onclick=()=>{
+
+    if(!camTrack)
+      return;
+
+
+    camTrack.enabled=
+      !camTrack.enabled;
+
+
+    camToggle.textContent=
+      camTrack.enabled
+        ? "📷 Camera: ON"
+        : "📷 Camera: OFF";
+
+
+    camToggle.classList.toggle(
+      "emWarn",
+      !camTrack.enabled
+    );
+
+  };
+
+
+  micToggle.onclick=()=>{
+
+    if(!micTrack)
+      return;
+
+
+    micTrack.enabled=
+      !micTrack.enabled;
+
+
+    micToggle.textContent=
+      micTrack.enabled
+        ? "🎙 Mic: ON"
+        : "🎙 Mic: OFF";
+
+
+    micToggle.classList.toggle(
+      "emWarn",
+      !micTrack.enabled
+    );
+
+  };
+
+
+  /* =======================================================
+     مفاتيح البيانو
+     ======================================================= */
+
+  const keysWrap=
+    p.querySelector(
+      "#emKeys"
+    );
+
+
+  const r1=
+    document.createElement(
+      "div"
+    );
+
+  const r2=
+    document.createElement(
+      "div"
+    );
+
+
+  r1.className=
+    "emKeysRow";
+
+  r2.className=
+    "emKeysRow";
+
+
+  keyElByNote={};
+
+
+  notes.forEach(
+    (n,i)=>{
+
+      const d=
+        document.createElement(
+          "div"
+        );
+
+
+      d.className=
+        "emKey "+
+        (isBlack(n)
+          ? "emBlack"
+          : "emWhite");
+
+
+      d.innerHTML=`
+
+        <div class="n">
+          ${i+1}
+        </div>
+
+        <small>
+          ${n}
+        </small>
+
+      `;
+
+
+      const id=
+        "emKey-"+i;
+
+
+      keyElByNote[n]=d;
+
+
+      let downAt=0;
+
+      let didHold=false;
+
+
+      d.onpointerdown=
+        ev=>{
+
+          ev.preventDefault();
+
+          downAt=
+            Date.now();
+
+          didHold=false;
+
+
+          const localDownAt=
+            downAt;
+
+
+          setTimeout(
+            ()=>{
+
+              if(
+                downAt===
+                localDownAt
+              ){
+
+                didHold=true;
+
+                startHold(
+                  n,
+                  id,
+                  d
+                );
+
+              }
+
+            },
+            180
+          );
+
+        };
+
+
+      const endPointer=()=>{
+
+        if(
+          activeHold[id]
+        ){
+
+          stopHold(
+            id,
+            d
+          );
+
+        }
+
+        downAt=0;
+
+      };
+
+
+      d.onpointerup=
+        endPointer;
+
+      d.onpointerleave=
+        endPointer;
+
+      d.onpointercancel=
+        endPointer;
+
+
+      d.onclick=()=>{
+
+        if(didHold)
+          return;
+
+        shortPress(
+          n,
+          d
+        );
+
+      };
+
+
+      (
+        i<18
+          ? r1
+          : r2
+      ).appendChild(d);
+
+    }
+  );
+
+
+  keysWrap.append(
+    r1,
+    r2
+  );
+
+};
+
+
+/* =========================================================
+   كيبورد الكمبيوتر
+   ========================================================= */
+
+const KEY_BIND=[
+
+  "Digit1",
+  "Digit2",
+  "Digit3",
+  "Digit4",
+  "Digit5",
+  "Digit6",
+  "Digit7",
+  "Digit8",
+  "Digit9",
+  "Digit0",
+
+  "KeyQ",
+  "KeyW",
+  "KeyE",
+  "KeyR",
+  "KeyT",
+  "KeyY",
+  "KeyU",
+  "KeyI",
+  "KeyO",
+  "KeyP",
+
+  "KeyA",
+  "KeyS",
+  "KeyD",
+  "KeyF",
+  "KeyG",
+  "KeyH",
+  "KeyJ",
+  "KeyK",
+  "KeyL",
+
+  "KeyZ",
+  "KeyX",
+  "KeyC",
+  "KeyV",
+  "KeyB",
+  "KeyN",
+  "KeyM"
+
+];
+
+
+const KI={};
+
+KEY_BIND.forEach(
+  (k,i)=>{
+    KI[k]=i;
+  }
+);
+
+
+window.addEventListener(
+  "keydown",
+  e=>{
+
+    if(e.repeat)
+      return;
+
+
+    const idx=
+      KI[e.code];
+
+
+    if(
+      idx===undefined ||
+      !notes[idx]
+    )
+      return;
+
+
+    const note=
+      notes[idx];
+
+
+    startHold(
+      note,
+      "emKb-"+idx,
+      keyElByNote[note]||null
+    );
+
+  }
+);
+
+
+window.addEventListener(
+  "keyup",
+  e=>{
+
+    const idx=
+      KI[e.code];
+
+
+    if(
+      idx===undefined
+    )
+      return;
+
+
+    const note=
+      notes[idx];
+
+
+    stopHold(
+      "emKb-"+idx,
+      keyElByNote[note]||null
+    );
+
+  }
+);
+
+</script>
