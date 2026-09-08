@@ -623,8 +623,8 @@ body.locked > *:not(#loginOverlay){
 
   position:fixed;
 
-  right:518px;
-  bottom:10px;
+  right:118px;
+  bottom:50px;
 
   width:86px;
   height:86px;
@@ -3476,7 +3476,7 @@ footer strong{
 /* زر مكتبة الفيديو الزمردية */
 #emeraldLibraryButton {
   position: fixed;
-  right:250px;
+  right:1150px;
   top: 590px;
   z-index: 9500;
   cursor: pointer;
@@ -4001,200 +4001,1204 @@ body{
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <meta content="موقع أبو القمر زمرد - خواطر، قصص، ثقافة عامة، معلومات، ألغاز، اختبر معلوماتك ومنوعات." name="description"/>
+
 <title>أبو القمر زمرد | sakaker</title>
-<!-- ================================
-     الواجهة الرئيسية
-     بدون أي كتابات فوق الأخبار
-================================ -->
-<main>
-<section class="hero">
-<div class="logo">
-</div>
-</section>
-<!-- ================================
+
+
+<!-- =========================================================
+     ✨ تصميم النوافذ والأيقونات
+========================================================= -->
+
+<style>
+
+  /* =========================================================
+     الصفحة الرئيسية
+  ========================================================= */
+
+  main {
+    position: relative;
+    z-index: 1;
+  }
+
+
+  /* =========================================================
+     حذف الدائرة / الماسة القديمة نهائيًا
+  ========================================================= */
+
+  .hero,
+  .hero .logo,
+  .logo {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    visibility: hidden !important;
+  }
+
+
+  /* =========================================================
      البطاقات
-================================ -->
-<section aria-label="خدمات الموقع" class="cards">
-<!-- خواطر -->
-<div class="icon-card" onclick="openFolder(1)" role="button">
-<svg class="icon-svg" fill="none" viewbox="0 0 24 24">
-<path d="M3 7c0-1.1.9-2 2-2h4l2 2h8c1.1 0 2 .9 2 2v9c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V7Z" stroke-linejoin="round" stroke-width="1.4"></path>
-</svg>
-<div class="icon-label">
-      خواطر
-    </div>
-<div class="sub">
-      قصص وحكايات
-    </div>
-</div>
-<!-- الاختبار -->
-<div class="icon-card" onclick="startQuiz()" role="button">
-<svg class="icon-svg" fill="none" viewbox="0 0 24 24">
-<circle cx="12" cy="12" r="9" stroke-width="1.4"></circle>
-<path d="M8 12h8M8 16h5M8 8h8" stroke-linecap="round" stroke-width="1.4"></path>
-</svg>
-<div class="icon-label">
-      اختبر معلوماتك
-    </div>
-<div class="sub">
-      20 سؤالًا متنوعًا
-    </div>
-</div>
-<!-- الثقافة -->
-<div class="icon-card" onclick="openFolder(4)" role="button">
-<svg class="icon-svg" fill="none" viewbox="0 0 24 24">
-<circle cx="12" cy="12" r="9" stroke-width="1.4"></circle>
-<path d="M12 8v.01M10.8 11H12c.7 0 1.2.5 1.2 1.2V16" stroke-linecap="round" stroke-width="1.4"></path>
-</svg>
-<div class="icon-label">
-      ثقافة عامة
-    </div>
-<div class="sub">
-      معلومات وموضوعات متنوعة
-    </div>
-</div>
-<!-- مختارات -->
-<div class="icon-card" onclick="openFolder(2)" role="button">
-<svg class="icon-svg" fill="none" viewbox="0 0 24 24">
-<rect height="12" rx="2" stroke-width="1.4" width="18" x="3" y="6"></rect>
-<path d="m10 9 5 3-5 3V9Z" fill="none" stroke-width="1.4"></path>
-</svg>
-<div class="icon-label">
-      مختارات
-    </div>
-<div class="sub">
-      فيديو YouTube
-    </div>
-</div>
-<!-- معلومة اليوم -->
-<div class="icon-card feature" onclick="openTodayFact()" role="button">
-<svg class="icon-svg" fill="none" viewbox="0 0 24 24">
-<circle cx="12" cy="12" r="9" stroke-width="1.4"></circle>
-<path d="M12 8v4l3 3" stroke-linecap="round" stroke-width="1.4"></path>
-</svg>
-<div class="icon-label">
-      معلومة اليوم
-    </div>
-<div class="sub">
-      معلومة جديدة بحسب اليوم
-    </div>
-</div>
-<!-- الألغاز -->
-<div class="icon-card" onclick="openPuzzle()" role="button">
-<svg class="icon-svg" fill="none" viewbox="0 0 24 24">
-<path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z" stroke-width="1.2"></path>
-</svg>
-<div class="icon-label">
-      ألغاز
-    </div>
-<div class="sub">
-      30 لغزًا متنوعًا
-    </div>
-</div>
-<!-- تعريف الموقع -->
-<div class="icon-card" onclick="openFolder(5)" role="button">
-<svg class="icon-svg" fill="none" viewbox="0 0 24 24">
-<path d="M7 5h6l4 4v10H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" stroke-width="1.3"></path>
-<path d="M13 5v5h4" stroke-width="1.3"></path>
-</svg>
-<div class="icon-label">
-      تعريف بالموقع
-    </div>
-<div class="sub">
-      عن الموقع وفكرته
-    </div>
-</div>
-</section>
-</main>
-<!-- ================================
-     الفوتر
-================================ -->
-<footer>
+  ========================================================= */
 
- 
-</footer>
-<!-- ================================
-     نافذة المجلدات
-================================ -->
-<div class="modal" id="folderModal" onclick="if(event.target===this)closeFolder()">
-<div aria-modal="true" class="panel" role="dialog">
-<div class="panel-head">
-<div class="panel-title" id="folderTitle">
+  .cards {
+    position: relative;
+    z-index: 2;
+  }
 
-        مجلد
+  .icon-card {
+    cursor: pointer;
+    position: relative;
+    transition:
+      transform .3s ease,
+      filter .3s ease;
+  }
 
+  .icon-card:hover {
+    transform: translateY(-4px);
+    filter: brightness(1.2);
+  }
+
+
+  /* =========================================================
+     منع تمرير الصفحة الرئيسية أثناء فتح النافذة
+  ========================================================= */
+
+  body.modal-open {
+    overflow: hidden !important;
+    touch-action: none;
+  }
+
+
+  /* =========================================================
+     النوافذ
+     تغطي الصفحة بالكامل
+  ========================================================= */
+
+  .modal {
+    position: fixed !important;
+
+    inset: 0 !important;
+
+    width: 100vw !important;
+    height: 100vh !important;
+
+    min-height: 100dvh !important;
+
+    display: none;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 20px;
+
+    box-sizing: border-box;
+
+    z-index: 999999 !important;
+
+    /*
+       نفس خلفية الموقع بدون ظهور
+       محتوى الصفحة خلفها
+    */
+    background: rgba(0, 0, 0, 0.72);
+
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+
+    overflow: hidden;
+  }
+
+
+  /* =========================================================
+     النافذة المفتوحة
+  ========================================================= */
+
+  .modal.show,
+  .modal.active,
+  .modal[style*="display: flex"],
+  .modal[style*="display:flex"] {
+    display: flex !important;
+  }
+
+
+  /* =========================================================
+     لوحة المحتوى
+  ========================================================= */
+
+  .modal .panel {
+
+    position: relative;
+
+    width: min(950px, 94vw);
+
+    height: min(82vh, 850px);
+
+    max-height: 82vh;
+
+    box-sizing: border-box;
+
+    display: flex;
+
+    flex-direction: column;
+
+    overflow: hidden;
+
+    border-radius: 24px;
+
+    /*
+       بدون ظهور محتوى الصفحة خلف اللوحة
+    */
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(0, 35, 30, 0.97),
+        rgba(0, 20, 18, 0.98)
+      );
+
+    border: 1px solid rgba(0,255,195,0.38);
+
+    box-shadow:
+
+      0 0 15px rgba(0,255,195,0.20),
+
+      0 0 35px rgba(0,255,195,0.14),
+
+      0 0 70px rgba(255,210,70,0.08),
+
+      inset 0 0 25px rgba(0,255,195,0.05);
+
+    animation:
+      sakakerModalOpen .35s ease;
+  }
+
+
+  /* =========================================================
+     حركة فتح النافذة
+  ========================================================= */
+
+  @keyframes sakakerModalOpen {
+
+    from {
+      opacity: 0;
+      transform: scale(.94) translateY(15px);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+
+  }
+
+
+  /* =========================================================
+     رأس النافذة
+  ========================================================= */
+
+  .panel-head {
+
+    position: relative;
+
+    flex: 0 0 auto;
+
+    min-height: 65px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 10px 65px;
+
+    box-sizing: border-box;
+
+    border-bottom: 1px solid rgba(0,255,195,0.18);
+
+    background: transparent;
+  }
+
+
+  /* =========================================================
+     عنوان النافذة
+  ========================================================= */
+
+  .panel-title {
+
+    text-align: center;
+
+    font-size: 22px;
+
+    font-weight: 900;
+
+    background: linear-gradient(
+      90deg,
+      #00ffc3,
+      #ffffff,
+      #ffd45c,
+      #ffffff,
+      #00ffc3
+    );
+
+    background-size: 250% auto;
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+
+    text-shadow:
+      0 0 8px rgba(0,255,195,0.45),
+      0 0 15px rgba(255,215,80,0.20);
+
+    animation:
+      sakakerTitleShine 5s linear infinite;
+  }
+
+
+  @keyframes sakakerTitleShine {
+
+    0% {
+      background-position: 250% center;
+    }
+
+    100% {
+      background-position: -250% center;
+    }
+
+  }
+
+
+  /* =========================================================
+     زر الإغلاق
+     في منتصف النافذة أسفل المحتوى
+  ========================================================= */
+
+  .panel .close {
+
+    position: absolute !important;
+
+    left: 50% !important;
+
+    transform: translateX(-50%) !important;
+
+    bottom: -58px !important;
+
+    top: auto !important;
+
+    width: 48px;
+
+    height: 48px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(0,255,195,0.65);
+
+    background:
+      radial-gradient(
+        circle,
+        rgba(0,255,195,0.18),
+        rgba(0,20,18,0.75)
+      );
+
+    color: #ffffff;
+
+    font-size: 30px;
+
+    line-height: 42px;
+
+    font-weight: 300;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    z-index: 1000001;
+
+    box-shadow:
+
+      0 0 8px rgba(0,255,195,0.7),
+
+      0 0 18px rgba(0,255,195,0.35),
+
+      0 0 28px rgba(255,215,80,0.18);
+
+    transition:
+      transform .25s ease,
+      box-shadow .25s ease,
+      color .25s ease;
+  }
+
+
+  .panel .close:hover {
+
+    transform:
+      translateX(-50%)
+      scale(1.12) !important;
+
+    color: #ffd45c;
+
+    box-shadow:
+
+      0 0 10px rgba(0,255,195,0.9),
+
+      0 0 25px rgba(0,255,195,0.6),
+
+      0 0 40px rgba(255,215,80,0.35);
+  }
+
+
+  /* =========================================================
+     جسم النافذة
+  ========================================================= */
+
+  .panel-body {
+
+    flex: 1 1 auto;
+
+    min-height: 0;
+
+    overflow-y: auto;
+
+    overflow-x: hidden;
+
+    padding: 22px;
+
+    box-sizing: border-box;
+
+    text-align: right;
+
+    direction: rtl;
+
+    scrollbar-width: thin;
+
+    scrollbar-color:
+      rgba(0,255,195,0.5)
+      transparent;
+  }
+
+
+  /* =========================================================
+     شريط التمرير
+  ========================================================= */
+
+  .panel-body::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .panel-body::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .panel-body::-webkit-scrollbar-thumb {
+
+    background:
+      linear-gradient(
+        #00ffc3,
+        #ffd45c,
+        #cfcfcf
+      );
+
+    border-radius: 10px;
+  }
+
+
+  /* =========================================================
+     منع خروج المحتوى خارج النافذة
+  ========================================================= */
+
+  .panel-body img,
+  .panel-body video,
+  .panel-body iframe {
+
+    max-width: 100%;
+  }
+
+
+  /* =========================================================
+     صف الأزرار
+  ========================================================= */
+
+  .action-row {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-top: 20px;
+  }
+
+
+  /* =========================================================
+     أزرار المحتوى
+  ========================================================= */
+
+  .item-btn {
+
+    border: 1px solid rgba(0,255,195,0.35);
+
+    border-radius: 12px;
+
+    padding: 10px 16px;
+
+    cursor: pointer;
+
+    color: #ffffff;
+
+    background: rgba(0,40,34,0.65);
+
+    box-shadow:
+      0 0 8px rgba(0,255,195,0.12);
+
+    transition:
+      transform .2s ease,
+      filter .2s ease,
+      box-shadow .2s ease;
+  }
+
+
+  .item-btn:hover {
+
+    transform: translateY(-2px);
+
+    filter: brightness(1.2);
+
+    box-shadow:
+      0 0 15px rgba(0,255,195,0.35);
+  }
+
+
+  /* =========================================================
+     الجوال
+  ========================================================= */
+
+  @media (max-width: 600px) {
+
+    .modal {
+
+      padding: 10px;
+
+    }
+
+    .modal .panel {
+
+      width: 96vw;
+
+      height: 78vh;
+
+      max-height: 78vh;
+
+      border-radius: 20px;
+
+    }
+
+    .panel-head {
+
+      min-height: 58px;
+
+      padding: 8px 45px;
+
+    }
+
+    .panel-title {
+
+      font-size: 18px;
+
+    }
+
+    .panel-body {
+
+      padding: 15px;
+
+    }
+
+    .panel .close {
+
+      width: 44px;
+
+      height: 44px;
+
+      font-size: 27px;
+
+      bottom: -54px !important;
+
+    }
+
+  }
+
+</style>
+
+
+<!-- =========================================================
+     ✨ الواجهة الرئيسية
+     لا يوجد Hero ولا دائرة ولا ماسة
+========================================================= -->
+
+<main>
+
+  <section
+    aria-label="خدمات الموقع"
+    class="cards"
+  >
+
+
+    <!-- =====================================================
+         01 - خواطر
+    ====================================================== -->
+
+    <div
+      class="icon-card"
+      onclick="openFolder(1)"
+      role="button"
+      tabindex="0"
+    >
+
+      <svg
+        class="icon-svg"
+        fill="none"
+        viewbox="0 0 24 24"
+      >
+
+        <path
+          d="M3 7c0-1.1.9-2 2-2h4l2 2h8c1.1 0 2 .9 2 2v9c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V7Z"
+          stroke-linejoin="round"
+          stroke-width="1.4"
+        ></path>
+
+      </svg>
+
+      <div class="icon-label">
+        خواطر
       </div>
-<button aria-label="إغلاق" class="close" onclick="closeFolder()">
 
-        ×
+      <div class="sub">
+        قصص وحكايات
+      </div>
 
-      </button>
-</div>
-<div class="panel-body" id="folderBody">
-</div>
-</div>
-</div>
-<!-- ================================
-     نافذة الاختبار
-================================ -->
-<div class="modal" id="quizModal" onclick="if(event.target===this)closeQuiz()">
-<div aria-modal="true" class="panel" role="dialog">
-<div class="panel-head">
-<div class="panel-title">
+    </div>
+
+
+    <!-- =====================================================
+         02 - اختبر معلوماتك
+    ====================================================== -->
+
+    <div
+      class="icon-card"
+      onclick="startQuiz()"
+      role="button"
+      tabindex="0"
+    >
+
+      <svg
+        class="icon-svg"
+        fill="none"
+        viewbox="0 0 24 24"
+      >
+
+        <circle
+          cx="12"
+          cy="12"
+          r="9"
+          stroke-width="1.4"
+        ></circle>
+
+        <path
+          d="M8 12h8M8 16h5M8 8h8"
+          stroke-linecap="round"
+          stroke-width="1.4"
+        ></path>
+
+      </svg>
+
+      <div class="icon-label">
         اختبر معلوماتك
       </div>
-<button aria-label="إغلاق" class="close" onclick="closeQuiz()">
 
-        ×
+      <div class="sub">
+        20 سؤالًا متنوعًا
+      </div>
 
-      </button>
+    </div>
+
+
+    <!-- =====================================================
+         03 - الثقافة
+    ====================================================== -->
+
+    <div
+      class="icon-card"
+      onclick="openFolder(4)"
+      role="button"
+      tabindex="0"
+    >
+
+      <svg
+        class="icon-svg"
+        fill="none"
+        viewbox="0 0 24 24"
+      >
+
+        <circle
+          cx="12"
+          cy="12"
+          r="9"
+          stroke-width="1.4"
+        ></circle>
+
+        <path
+          d="M12 8v.01M10.8 11H12c.7 0 1.2.5 1.2 1.2V16"
+          stroke-linecap="round"
+          stroke-width="1.4"
+        ></path>
+
+      </svg>
+
+      <div class="icon-label">
+        ثقافة عامة
+      </div>
+
+      <div class="sub">
+        معلومات وموضوعات متنوعة
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         04 - مختارات
+    ====================================================== -->
+
+    <div
+      class="icon-card"
+      onclick="openFolder(2)"
+      role="button"
+      tabindex="0"
+    >
+
+      <svg
+        class="icon-svg"
+        fill="none"
+        viewbox="0 0 24 24"
+      >
+
+        <rect
+          height="12"
+          rx="2"
+          stroke-width="1.4"
+          width="18"
+          x="3"
+          y="6"
+        ></rect>
+
+        <path
+          d="m10 9 5 3-5 3V9Z"
+          fill="none"
+          stroke-width="1.4"
+        ></path>
+
+      </svg>
+
+      <div class="icon-label">
+        مختارات
+      </div>
+
+      <div class="sub">
+        فيديو YouTube
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         05 - معلومة اليوم
+    ====================================================== -->
+
+    <div
+      class="icon-card feature"
+      onclick="openTodayFact()"
+      role="button"
+      tabindex="0"
+    >
+
+      <svg
+        class="icon-svg"
+        fill="none"
+        viewbox="0 0 24 24"
+      >
+
+        <circle
+          cx="12"
+          cy="12"
+          r="9"
+          stroke-width="1.4"
+        ></circle>
+
+        <path
+          d="M12 8v4l3 3"
+          stroke-linecap="round"
+          stroke-width="1.4"
+        ></path>
+
+      </svg>
+
+      <div class="icon-label">
+        معلومة اليوم
+      </div>
+
+      <div class="sub">
+        معلومة جديدة بحسب اليوم
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         06 - الألغاز
+    ====================================================== -->
+
+    <div
+      class="icon-card"
+      onclick="openPuzzle()"
+      role="button"
+      tabindex="0"
+    >
+
+      <svg
+        class="icon-svg"
+        fill="none"
+        viewbox="0 0 24 24"
+      >
+
+        <path
+          d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"
+          stroke-width="1.2"
+        ></path>
+
+      </svg>
+
+      <div class="icon-label">
+        ألغاز
+      </div>
+
+      <div class="sub">
+        30 لغزًا متنوعًا
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         07 - تعريف الموقع
+    ====================================================== -->
+
+    <div
+      class="icon-card"
+      onclick="openFolder(5)"
+      role="button"
+      tabindex="0"
+    >
+
+      <svg
+        class="icon-svg"
+        fill="none"
+        viewbox="0 0 24 24"
+      >
+
+        <path
+          d="M7 5h6l4 4v10H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"
+          stroke-width="1.3"
+        ></path>
+
+        <path
+          d="M13 5v5h4"
+          stroke-width="1.3"
+        ></path>
+
+      </svg>
+
+      <div class="icon-label">
+        تعريف بالموقع
+      </div>
+
+      <div class="sub">
+        عن الموقع وفكرته
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<!-- =========================================================
+     ✨ الفوتر
+========================================================= -->
+
+<footer></footer>
+
+
+<!-- =========================================================
+     ✨ نافذة المجلدات
+========================================================= -->
+
+<div
+  class="modal"
+  id="folderModal"
+  onclick="if(event.target===this)closeFolder()"
+>
+
+  <div
+    aria-modal="true"
+    class="panel"
+    role="dialog"
+  >
+
+    <div class="panel-head">
+
+      <div
+        class="panel-title"
+        id="folderTitle"
+      >
+        مجلد
+      </div>
+
+    </div>
+
+    <div
+      class="panel-body"
+      id="folderBody"
+    ></div>
+
+    <!-- زر الإغلاق في المنتصف -->
+    <button
+      aria-label="إغلاق"
+      class="close"
+      onclick="closeFolder()"
+    >
+      ×
+    </button>
+
+  </div>
+
 </div>
-<div class="panel-body" id="quizBody">
+
+
+<!-- =========================================================
+     ✨ نافذة الاختبار
+========================================================= -->
+
+<div
+  class="modal"
+  id="quizModal"
+  onclick="if(event.target===this)closeQuiz()"
+>
+
+  <div
+    aria-modal="true"
+    class="panel"
+    role="dialog"
+  >
+
+    <div class="panel-head">
+
+      <div class="panel-title">
+        اختبر معلوماتك
+      </div>
+
+    </div>
+
+    <div
+      class="panel-body"
+      id="quizBody"
+    ></div>
+
+    <!-- زر الإغلاق في المنتصف -->
+    <button
+      aria-label="إغلاق"
+      class="close"
+      onclick="closeQuiz()"
+    >
+      ×
+    </button>
+
+  </div>
+
 </div>
-</div>
-</div>
-<!-- ================================
-     نافذة الألغاز
-================================ -->
-<div class="modal" id="puzzleModal" onclick="if(event.target===this)closePuzzle()">
-<div aria-modal="true" class="panel" role="dialog">
-<div class="panel-head">
-<div class="panel-title">
+
+
+<!-- =========================================================
+     ✨ نافذة الألغاز
+========================================================= -->
+
+<div
+  class="modal"
+  id="puzzleModal"
+  onclick="if(event.target===this)closePuzzle()"
+>
+
+  <div
+    aria-modal="true"
+    class="panel"
+    role="dialog"
+  >
+
+    <div class="panel-head">
+
+      <div class="panel-title">
         ألغاز ومسابقات
       </div>
-<button aria-label="إغلاق" class="close" onclick="closePuzzle()">
 
-        ×
+    </div>
 
-      </button>
-</div>
-<div class="panel-body">
-<div id="riddleNumber"></div>
-<h3>
+
+    <div class="panel-body">
+
+      <div id="riddleNumber"></div>
+
+      <h3>
         🔍 حاول التفكير قبل كشف الحل
       </h3>
-<p id="puzzleQuestion"></p>
-<p class="muted" id="puzzleHint" style="display:none">
-</p>
-<div class="answer-box" id="puzzleAnswer" style="display:none">
-</div>
-<div class="action-row">
-<button class="item-btn" onclick="revealHint()">
+
+      <p id="puzzleQuestion"></p>
+
+      <p
+        class="muted"
+        id="puzzleHint"
+        style="display:none"
+      ></p>
+
+      <div
+        class="answer-box"
+        id="puzzleAnswer"
+        style="display:none"
+      ></div>
+
+
+      <div class="action-row">
+
+        <button
+          class="item-btn"
+          onclick="revealHint()"
+        >
           💡 إظهار تلميح
         </button>
-<button class="item-btn" onclick="revealAnswer()">
+
+        <button
+          class="item-btn"
+          onclick="revealAnswer()"
+        >
           ✅ كشف الحل
         </button>
-<button class="item-btn" onclick="nextRiddle()">
+
+        <button
+          class="item-btn"
+          onclick="nextRiddle()"
+        >
           🔁 لغز آخر
         </button>
-<button class="item-btn" onclick="shareRiddle()">
+
+        <button
+          class="item-btn"
+          onclick="shareRiddle()"
+        >
           📤 مشاركة اللغز
         </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- زر الإغلاق في المنتصف -->
+    <button
+      aria-label="إغلاق"
+      class="close"
+      onclick="closePuzzle()"
+    >
+      ×
+    </button>
+
+  </div>
+
 </div>
-</div>
-</div>
-</div>
+
+
+<!-- =========================================================
+     ✨ التحكم في فتح وإغلاق النوافذ
+     لا يتعارض مع الدوال الموجودة لديك
+========================================================= -->
+
+<script>
+
+(function () {
+
+  /* =========================================================
+     إضافة وإزالة حالة النافذة
+  ========================================================= */
+
+  function updateModalState() {
+
+    const anyOpen =
+      document.querySelector(
+        '.modal.show, .modal.active, .modal[style*="display: flex"], .modal[style*="display:flex"]'
+      );
+
+    document.body.classList.toggle(
+      'modal-open',
+      !!anyOpen
+    );
+
+  }
+
+
+  /* =========================================================
+     مراقبة النوافذ
+  ========================================================= */
+
+  const observer = new MutationObserver(function () {
+
+    updateModalState();
+
+  });
+
+
+  document.querySelectorAll('.modal').forEach(function (modal) {
+
+    observer.observe(
+      modal,
+      {
+        attributes: true,
+        attributeFilter: ['style', 'class']
+      }
+    );
+
+  });
+
+
+  /* =========================================================
+     عند تحميل الصفحة
+  ========================================================= */
+
+  updateModalState();
+
+
+  /* =========================================================
+     زر ESC لإغلاق النافذة المفتوحة
+  ========================================================= */
+
+  document.addEventListener(
+    'keydown',
+    function (event) {
+
+      if (event.key !== 'Escape') {
+        return;
+      }
+
+      const folder =
+        document.getElementById('folderModal');
+
+      const quiz =
+        document.getElementById('quizModal');
+
+      const puzzle =
+        document.getElementById('puzzleModal');
+
+
+      if (
+        folder &&
+        (
+          folder.classList.contains('show') ||
+          folder.classList.contains('active') ||
+          folder.style.display === 'flex'
+        )
+      ) {
+
+        if (typeof closeFolder === 'function') {
+          closeFolder();
+        }
+
+        return;
+      }
+
+
+      if (
+        quiz &&
+        (
+          quiz.classList.contains('show') ||
+          quiz.classList.contains('active') ||
+          quiz.style.display === 'flex'
+        )
+      ) {
+
+        if (typeof closeQuiz === 'function') {
+          closeQuiz();
+        }
+
+        return;
+      }
+
+
+      if (
+        puzzle &&
+        (
+          puzzle.classList.contains('show') ||
+          puzzle.classList.contains('active') ||
+          puzzle.style.display === 'flex'
+        )
+      ) {
+
+        if (typeof closePuzzle === 'function') {
+          closePuzzle();
+        }
+
+      }
+
+    }
+  );
+
+
+  /* =========================================================
+     تشغيل الأيقونات بلوحة المفاتيح
+  ========================================================= */
+
+  document.querySelectorAll('.icon-card').forEach(function (card) {
+
+    card.addEventListener(
+      'keydown',
+      function (event) {
+
+        if (
+          event.key === 'Enter' ||
+          event.key === ' '
+        ) {
+
+          event.preventDefault();
+
+          card.click();
+
+        }
+
+      }
+    );
+
+  });
+
+})();
+
+</script>
 <!-- =========================================================
      👥 عداد المتواجدين الآن - SAKAKER
 ========================================================= -->
@@ -4305,7 +5309,7 @@ body{
   z-index: 9999;
   position: fixed;
   bottom : 20px;
-  right: 30px;
+  right: 930px;
   padding: 2px 2px;
   border: none;
   border-radius: 24px;
@@ -8985,3 +9989,552 @@ body.sakaker-pong-open #pongGame-container{
 }
 
 </style>
+<!-- =========================================================
+     ✨ شهادة وحقوق موقع سكاكر
+     ✨ ثابتة أسفل الصفحة
+     ✨ زمردي + ذهبي + فضي
+     ✨ بدون خلفية
+========================================================= -->
+
+<style>
+
+  /* =========================================================
+     ✨ الحاوية الرئيسية
+  ========================================================= */
+
+  .sakaker-copyright {
+    width: 100%;
+    box-sizing: border-box;
+
+    position: fixed;
+    bottom: 5px;
+    left: 500px;
+
+    z-index: 99999;
+
+    padding: 12px 10px;
+
+    text-align: center;
+    direction: rtl;
+
+    /* بدون خلفية */
+    background: transparent;
+
+    border: none;
+    box-shadow: none;
+
+    pointer-events: none;
+  }
+
+
+  /* =========================================================
+     ✨ محتوى الشهادة
+  ========================================================= */
+
+  .sakaker-copyright-inner {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 7px;
+
+    padding: 5px 10px;
+
+    /* بدون صندوق */
+    background: transparent;
+
+    border: none;
+
+    box-shadow: none;
+
+    pointer-events: auto;
+
+    font-family:
+      "Segoe UI",
+      Tahoma,
+      Arial,
+      sans-serif;
+  }
+
+
+  /* =========================================================
+     © رمز الحقوق
+  ========================================================= */
+
+  .sakaker-copyright-symbol {
+
+    font-size: 19px;
+
+    font-weight: 900;
+
+    background: linear-gradient(
+      135deg,
+      #00ffc3 0%,
+      #d9d9d9 35%,
+      #ffffff 50%,
+      #ffd45c 70%,
+      #00ffc3 100%
+    );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+
+    text-shadow:
+      0 0 5px rgba(0,255,195,0.9),
+      0 0 10px rgba(255,215,90,0.5),
+      0 0 16px rgba(255,255,255,0.3);
+
+    animation:
+      sakakerShine 4s ease-in-out infinite;
+  }
+
+
+  /* =========================================================
+     📅 السنة
+  ========================================================= */
+
+  .sakaker-year {
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    background: linear-gradient(
+      90deg,
+      #aeb8b8,
+      #ffffff,
+      #d9d9d9,
+      #ffd45c,
+      #ffffff,
+      #aeb8b8
+    );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+
+    background-size: 250% auto;
+
+    text-shadow:
+      0 0 5px rgba(255,255,255,0.55),
+      0 0 9px rgba(255,215,90,0.4);
+
+    animation:
+      sakakerGoldSilver 5s linear infinite;
+  }
+
+
+  /* =========================================================
+     💎 أبو القمر زمرد
+  ========================================================= */
+
+  .sakaker-name {
+
+    font-size: 19px;
+
+    font-weight: 900;
+
+    letter-spacing: 0.3px;
+
+    background: linear-gradient(
+      110deg,
+
+      #00ffc3 0%,
+
+      #6dffda 16%,
+
+      #ffffff 32%,
+
+      #d9d9d9 43%,
+
+      #ffd45c 55%,
+
+      #fff0a3 67%,
+
+      #00ffc3 82%,
+
+      #7ffff0 100%
+    );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+
+    background-size: 300% auto;
+
+    text-shadow:
+
+      0 0 5px rgba(0,255,195,0.9),
+
+      0 0 10px rgba(0,255,195,0.65),
+
+      0 0 16px rgba(255,215,80,0.55),
+
+      0 0 24px rgba(0,255,195,0.25);
+
+    animation:
+      sakakerGoldEmerald 5s linear infinite,
+      sakakerGlow 2.8s ease-in-out infinite;
+  }
+
+
+  /* =========================================================
+     ➖ الفاصل
+  ========================================================= */
+
+  .sakaker-dash {
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+    background: linear-gradient(
+      90deg,
+      #00ffc3,
+      #ffffff,
+      #d9d9d9,
+      #ffd45c,
+      #00ffc3
+    );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+
+    background-size: 250% auto;
+
+    text-shadow:
+      0 0 6px rgba(0,255,195,0.8),
+      0 0 10px rgba(255,215,80,0.55);
+
+    animation:
+      sakakerGoldEmerald 4s linear infinite;
+  }
+
+
+  /* =========================================================
+     🟢 النقطة المضيئة
+  ========================================================= */
+
+  .sakaker-site-dot {
+
+    display: inline-block;
+
+    width: 7px;
+    height: 7px;
+
+    margin: 0 2px;
+
+    border-radius: 50%;
+
+    background: #00ffc3;
+
+    box-shadow:
+
+      0 0 4px #00ffc3,
+
+      0 0 9px #00ffc3,
+
+      0 0 15px rgba(0,255,195,0.9),
+
+      0 0 22px rgba(255,215,80,0.8);
+
+    animation:
+      sakakerDot 2s ease-in-out infinite;
+  }
+
+
+  /* =========================================================
+     ✨ sakaker
+  ========================================================= */
+
+  .sakaker-site {
+
+    font-size: 17px;
+
+    font-weight: 900;
+
+    letter-spacing: 1px;
+
+    background: linear-gradient(
+      90deg,
+
+      #c8c8c8 0%,
+
+      #ffffff 15%,
+
+      #00ffc3 32%,
+
+      #bffff0 46%,
+
+      #ffd45c 62%,
+
+      #fff0a0 72%,
+
+      #00ffc3 86%,
+
+      #ffffff 100%
+    );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+
+    background-size: 300% auto;
+
+    text-shadow:
+
+      0 0 5px rgba(255,255,255,0.7),
+
+      0 0 10px rgba(0,255,195,0.65),
+
+      0 0 16px rgba(255,215,80,0.45);
+
+    animation:
+      sakakerGoldEmerald 5s linear infinite;
+  }
+
+
+  /* =========================================================
+     ✨ حركة لمعان الذهب والزمرد والفضة
+  ========================================================= */
+
+  @keyframes sakakerGoldEmerald {
+
+    0% {
+      background-position: 300% center;
+    }
+
+    50% {
+      background-position: 0% center;
+    }
+
+    100% {
+      background-position: -300% center;
+    }
+
+  }
+
+
+  /* =========================================================
+     ✨ لمعان الفضة والذهب
+  ========================================================= */
+
+  @keyframes sakakerGoldSilver {
+
+    0% {
+      background-position: 250% center;
+    }
+
+    50% {
+      background-position: 0% center;
+    }
+
+    100% {
+      background-position: -250% center;
+    }
+
+  }
+
+
+  /* =========================================================
+     ✨ نبض الإضاءة
+  ========================================================= */
+
+  @keyframes sakakerGlow {
+
+    0%,
+    100% {
+
+      filter: brightness(1);
+
+    }
+
+    50% {
+
+      filter: brightness(1.45);
+
+    }
+
+  }
+
+
+  /* =========================================================
+     © حركة بسيطة
+  ========================================================= */
+
+  @keyframes sakakerShine {
+
+    0%,
+    100% {
+
+      filter: brightness(1);
+
+      transform: scale(1);
+
+    }
+
+    50% {
+
+      filter: brightness(1.5);
+
+      transform: scale(1.08);
+
+    }
+
+  }
+
+
+  /* =========================================================
+     🟢 نبض النقطة
+  ========================================================= */
+
+  @keyframes sakakerDot {
+
+    0%,
+    100% {
+
+      opacity: 0.65;
+
+      transform: scale(0.75);
+
+      box-shadow:
+
+        0 0 4px #00ffc3,
+
+        0 0 9px #00ffc3,
+
+        0 0 14px rgba(0,255,195,0.5);
+
+    }
+
+    50% {
+
+      opacity: 1;
+
+      transform: scale(1.35);
+
+      box-shadow:
+
+        0 0 5px #00ffc3,
+
+        0 0 12px #00ffc3,
+
+        0 0 20px #ffd45c,
+
+        0 0 30px rgba(0,255,195,0.85);
+
+    }
+
+  }
+
+
+  /* =========================================================
+     📱 تصميم الجوال
+  ========================================================= */
+
+  @media (max-width: 600px) {
+
+    .sakaker-copyright {
+
+      padding: 9px 5px;
+
+    }
+
+    .sakaker-copyright-inner {
+
+      gap: 5px;
+
+      padding: 4px;
+
+    }
+
+    .sakaker-name {
+
+      font-size: 16px;
+
+    }
+
+    .sakaker-year {
+
+      font-size: 13px;
+
+    }
+
+    .sakaker-site {
+
+      font-size: 15px;
+
+      letter-spacing: 0.7px;
+
+    }
+
+    .sakaker-copyright-symbol {
+
+      font-size: 17px;
+
+    }
+
+    .sakaker-dash {
+
+      font-size: 15px;
+
+    }
+
+    .sakaker-site-dot {
+
+      width: 6px;
+
+      height: 6px;
+
+    }
+
+  }
+
+</style>
+
+
+<!-- =========================================================
+     ✨ شهادة وحقوق الموقع
+========================================================= -->
+
+<footer
+  class="sakaker-copyright"
+  aria-label="حقوق موقع سكاكر">
+
+  <div class="sakaker-copyright-inner">
+
+    <span class="sakaker-copyright-symbol">
+      ©
+    </span>
+
+    <span class="sakaker-year">
+      2026
+    </span>
+
+    <span class="sakaker-name">
+      أبو القمر زمرد
+    </span>
+
+    <span class="sakaker-dash">
+      —
+    </span>
+
+    <span class="sakaker-site-dot"></span>
+
+    <span class="sakaker-site">
+      sakaker
+    </span>
+
+  </div>
+
+</footer>
