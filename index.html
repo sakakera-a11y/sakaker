@@ -3870,7 +3870,89 @@ body{
   background:#ff2222 !important;
   transform:scale(1.08);
 }
-</style></head>
+</style>
+<style id="sakaker-login-final-update">
+/* ===== تحديث شاشة الدخول: شفافة + نصف الحجم تقريباً + الخلفية كاملة ===== */
+#loginOverlay{
+  background-image:url("https://d.top4top.io/p_3858dvoq11.png") !important;
+  background-size:cover !important;
+  background-position:center center !important;
+  background-repeat:no-repeat !important;
+  background-attachment:fixed !important;
+  padding:15px !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+}
+#loginBox{
+  width:min(360px,46vw) !important;
+  max-width:360px !important;
+  padding:18px 16px 14px !important;
+  border-radius:18px !important;
+  background:rgba(0,0,0,.22) !important;
+  border:1px solid rgba(0,255,204,.45) !important;
+  box-shadow:0 0 14px rgba(0,255,204,.16), inset 0 0 20px rgba(0,255,204,.025) !important;
+  backdrop-filter:blur(5px) !important;
+  -webkit-backdrop-filter:blur(5px) !important;
+}
+#loginTitle{
+  font-size:20px !important;
+  margin:10px 0 14px !important;
+}
+.loginInput{
+  height:38px !important;
+  margin:5px 0 !important;
+  padding:0 11px !important;
+  border-radius:10px !important;
+  background:rgba(255,255,255,.08) !important;
+  font-size:13px !important;
+}
+.loginAction{
+  height:38px !important;
+  margin-top:6px !important;
+  border-radius:10px !important;
+  font-size:13px !important;
+}
+#loginLanguageButton{
+  top:9px !important;
+  left:9px !important;
+  min-width:65px !important;
+  padding:5px 8px !important;
+  font-size:11px !important;
+}
+#loginError{
+  min-height:16px !important;
+  margin:6px 0 2px !important;
+  font-size:11px !important;
+}
+#loginCopyright{
+  margin-top:11px !important;
+  padding-top:9px !important;
+  font-size:10px !important;
+  line-height:1.55 !important;
+}
+@media(max-width:600px){
+  #loginOverlay{
+    padding:10px !important;
+    background-size:cover !important;
+    background-position:center center !important;
+  }
+  #loginBox{
+    width:min(82vw,320px) !important;
+    max-width:320px !important;
+    padding:17px 13px 12px !important;
+  }
+}
+@media(max-width:380px){
+  #loginBox{
+    width:min(86vw,290px) !important;
+    padding:15px 11px 10px !important;
+  }
+  #loginTitle{font-size:18px !important;margin:9px 0 11px !important;}
+  .loginInput,.loginAction{height:35px !important;font-size:12px !important;}
+}
+</style>
+
+</head>
 <body>
 <!-- =========================================================
      🔒 SAKAKER LOGIN SYSTEM
