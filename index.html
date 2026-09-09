@@ -5281,8 +5281,89 @@ body{
 
 </script>
 <!-- =========================================================
-     👥 عداد المتواجدين الآن - SAKAKER
+     👥 عداد الزوار والمتواجدين - SAKAKER
 ========================================================= -->
+<div id="sakakerVisitorCounter" aria-label="عداد زوار موقع ساككر">
+  <div class="svc-item">
+    <span class="svc-icon">🟢</span>
+    <span class="svc-label" data-ar="المتواجدون الآن" data-en="Online Now">المتواجدون الآن</span>
+    <strong id="svcOnline">0</strong>
+  </div>
+  <div class="svc-sep"></div>
+  <div class="svc-item">
+    <span class="svc-icon">👁️</span>
+    <span class="svc-label" data-ar="إجمالي الزيارات" data-en="Total Visits">إجمالي الزيارات</span>
+    <strong id="svcTotal">0</strong>
+  </div>
+  <div class="svc-sep"></div>
+  <div class="svc-item">
+    <span class="svc-icon">📅</span>
+    <span class="svc-label" data-ar="زيارات اليوم" data-en="Today's Visits">زيارات اليوم</span>
+    <strong id="svcToday">0</strong>
+  </div>
+</div>
+
+<style>
+#sakakerVisitorCounter{
+  position:fixed;
+  left:16%;
+  bottom:2px;
+  transform:translateX(-50%);
+  z-index:9998;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  padding:8px 16px;
+  border:1px solid rgba(255,215,0,.55);
+  border-radius:24px;
+  background:linear-gradient(135deg,rgba(0,25,22,.90),rgba(2,9,11,.88));
+  box-shadow:0 0 10px rgba(0,255,204,.30),0 0 28px rgba(255,215,0,.12),inset 0 0 18px rgba(0,255,204,.05);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  color:#fff;
+  font-family:"Tajawal",Tahoma,Arial,sans-serif;
+  direction:rtl;
+  user-select:none;
+}
+#sakakerVisitorCounter .svc-item{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  white-space:nowrap;
+}
+#sakakerVisitorCounter .svc-icon{font-size:13px;filter:drop-shadow(0 0 5px rgba(0,255,204,.65))}
+#sakakerVisitorCounter .svc-label{font-size:11px;color:rgba(255,255,255,.78)}
+#sakakerVisitorCounter strong{
+  min-width:20px;
+  color:#ffd700;
+  font-size:14px;
+  text-shadow:0 0 7px rgba(255,215,0,.75);
+}
+#sakakerVisitorCounter .svc-sep{
+  width:1px;height:20px;background:linear-gradient(transparent,rgba(0,255,204,.8),transparent);
+}
+@media(max-width:600px){
+  #sakakerVisitorCounter{
+    bottom:8px;
+    width:max-content;
+    max-width:calc(100vw - 16px);
+    gap:7px;
+    padding:6px 8px;
+    border-radius:18px;
+  }
+  #sakakerVisitorCounter .svc-label{font-size:8px}
+  #sakakerVisitorCounter strong{font-size:11px}
+  #sakakerVisitorCounter .svc-icon{font-size:10px}
+  #sakakerVisitorCounter .svc-sep{height:16px}
+}
+@media(max-width:360px){
+  #sakakerVisitorCounter{gap:4px;padding:5px 6px}
+  #sakakerVisitorCounter .svc-label{font-size:7px}
+  #sakakerVisitorCounter strong{font-size:10px}
+}
+</style>
+
 
 <!-- =========================================================
      ⭐ دائرة فيديو واحدة مميزة
@@ -5789,7 +5870,15 @@ import {
 }
 from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
-import { getFirestore }
+import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc,
+    updateDoc,
+    increment,
+    serverTimestamp
+}
 from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 import { getDatabase }
@@ -6349,6 +6438,198 @@ document.getElementById(
    ✅ جاهز
 ========================================================= */
 
+/* =========================================================
+   👥 SAKAKER Visitor Counter
+   Firestore = total/today visits
+   Realtime Database = live online presence
+========================================================= */
+(() => {
+  const onlineEl = document.getElementById("svcOnline");
+  const totalEl = document.getElementById("svcTotal");
+  const todayEl = document.getElementById("svcToday");
+  if (!onlineEl || !totalEl || !todayEl) return;
+
+  const pad = n => String(n).padStart(2, "0");
+  const todayKey = (() => {
+    const d = new Date();
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+  })();
+
+  const formatNumber = n => Number(n || 0).toLocaleString(
+    document.documentElement.lang === "en" ? "en-US" : "ar-SA"
+  );
+
+  function updateCounterLanguage(){
+    const isEn = document.documentElement.lang === "en";
+    document.querySelectorAll("#sakakerVisitorCounter .svc-label").forEach(el => {
+      el.textContent = isEn ? el.dataset.en : el.dataset.ar;
+    });
+    [onlineEl,totalEl,todayEl].forEach(el => {
+      const raw = el.dataset.value || "0";
+      el.textContent = formatNumber(raw);
+    });
+  }
+
+  window.updateVisitorCounterLanguage = updateCounterLanguage;
+
+  async function registerVisit(user){
+    try{
+      /* لا نكرر الزيارة في نفس جلسة المتصفح */
+      if(sessionStorage.getItem("sakakerVisitRegistered") === "1") return;
+
+      const totalRef = doc(db, "siteStats", "visits");
+      const todayRef = doc(db, "siteStats", "daily_" + todayKey);
+
+      const totalSnap = await getDoc(totalRef);
+      if(totalSnap.exists()){
+        await updateDoc(totalRef, {
+          count: increment(1),
+          updatedAt: serverTimestamp()
+        });
+      }else{
+        await setDoc(totalRef, {
+          count: 1,
+          updatedAt: serverTimestamp()
+        });
+      }
+
+      const todaySnap = await getDoc(todayRef);
+      if(todaySnap.exists()){
+        await updateDoc(todayRef, {
+          count: increment(1),
+          updatedAt: serverTimestamp()
+        });
+      }else{
+        await setDoc(todayRef, {
+          count: 1,
+          date: todayKey,
+          updatedAt: serverTimestamp()
+        });
+      }
+
+      sessionStorage.setItem("sakakerVisitRegistered","1");
+      loadVisitTotals();
+    }catch(err){
+      console.warn("SAKAKER visit counter:", err);
+    }
+  }
+
+  async function loadVisitTotals(){
+    try{
+      const [totalSnap,todaySnap] = await Promise.all([
+        getDoc(doc(db,"siteStats","visits")),
+        getDoc(doc(db,"siteStats","daily_" + todayKey))
+      ]);
+      const total = totalSnap.exists() ? Number(totalSnap.data().count || 0) : 0;
+      const today = todaySnap.exists() ? Number(todaySnap.data().count || 0) : 0;
+      totalEl.dataset.value = String(total);
+      todayEl.dataset.value = String(today);
+      updateCounterLanguage();
+    }catch(err){
+      console.warn("SAKAKER totals:", err);
+    }
+  }
+
+  function startPresence(user){
+    try{
+      const uid = user?.uid || ("guest_" + crypto.randomUUID());
+      const presenceRef = window.firebaseRTDB
+        ? window.firebaseRTDB.ref("presence/" + uid)
+        : null;
+
+      /* Firebase v12 modular RTDB: use dynamic import so the existing
+         site Firebase initialization remains unchanged. */
+      if(!presenceRef){
+        import("https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js")
+          .then(({ref,set,onDisconnect,onValue}) => {
+            const r = ref(window.firebaseRTDB, "presence/" + uid);
+            return Promise.all([
+              onDisconnect(r).remove(),
+              set(r, {online:true, lastSeen:Date.now()})
+            ]).then(() => {
+              onValue(ref(window.firebaseRTDB,"presence"), snap => {
+                const count = snap.exists() ? Object.keys(snap.val()).length : 0;
+                onlineEl.dataset.value = String(count);
+                updateCounterLanguage();
+              });
+            });
+          })
+          .catch(err => console.warn("SAKAKER presence:", err));
+      }
+    }catch(err){
+      console.warn("SAKAKER presence:", err);
+    }
+  }
+
+  /* The already-created RTDB instance is modular; set presence using imports. */
+  async function startLivePresence(user){
+    try{
+      if (typeof window.sakakerPresenceStop === "function") {
+        await window.sakakerPresenceStop();
+      }
+      const {ref,set,onDisconnect,onValue} =
+        await import("https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js");
+
+      const uid = user?.uid || ("guest_" + Math.random().toString(36).slice(2));
+      const sessionId = uid + "_" + Math.random().toString(36).slice(2,10);
+      const myRef = ref(rtdb, "sakakerPresence/" + sessionId);
+      const allRef = ref(rtdb, "sakakerPresence");
+
+      await onDisconnect(myRef).remove();
+      await set(myRef, {
+        online:true,
+        uid:uid,
+        lastSeen:Date.now()
+      });
+
+      onValue(allRef, snap => {
+        const data = snap.val() || {};
+        const count = Object.keys(data).length;
+        onlineEl.dataset.value = String(count);
+        updateCounterLanguage();
+      });
+
+      const heartbeat = setInterval(() => {
+        set(myRef, {
+          online:true,
+          uid:uid,
+          lastSeen:Date.now()
+        }).catch(()=>{});
+      }, 25000);
+
+      window.sakakerPresenceRef = myRef;
+      window.sakakerPresenceStop = async () => {
+        clearInterval(heartbeat);
+        try { await set(myRef, null); } catch(e) {}
+        window.sakakerPresenceRef = null;
+      };
+
+      window.addEventListener("beforeunload", () => {
+        clearInterval(heartbeat);
+      }, {once:true});
+    }catch(err){
+      console.warn("SAKAKER live presence:", err);
+    }
+  }
+
+  /* عداد الزيارات يبدأ بعد نجاح تسجيل الدخول لأن الموقع مقفول قبل ذلك */
+  if(window.firebaseAuth){
+    onAuthStateChanged(auth, user => {
+      if(user){
+        registerVisit(user);
+        loadVisitTotals();
+        startLivePresence(user);
+      }else if(typeof window.sakakerPresenceStop === "function"){
+        window.sakakerPresenceStop();
+      }
+    });
+  }else{
+    loadVisitTotals();
+  }
+
+  loadVisitTotals();
+  updateCounterLanguage();
+})();
 console.log(
     "SAKAKER Login System Ready"
 );
@@ -8134,6 +8415,8 @@ function applySiteLanguage() {
   loadWeather();
   loadNews();
   translatePongUI();
+  if (typeof window.updateVisitorCounterLanguage === "function")
+    window.updateVisitorCounterLanguage();
 }
 
 /* =================== تبديل اللغة =================== */
