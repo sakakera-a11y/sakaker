@@ -3766,9 +3766,7 @@ body.locked {
 /* =========================================================
    تحديث الخلفية الرئيسية للموقع
 ========================================================= */
-html, body{
-  min-height:100%;
-}
+
 body{
   background-image:
     linear-gradient(rgba(0,0,0,.20), rgba(0,0,0,.38)),
@@ -4041,12 +4039,36 @@ body{
 <!-- =====================================================
      🎬 نافذة الفيديو
      ===================================================== -->
+     
 <div id="facebookVideoPopup">
 <div class="fbVideoBox">
 <!-- زر الإغلاق -->
 <button aria-label="إغلاق" id="facebookVideoClose">
       ✕
     </button>
+    <!-- =================================================
+     📌 منشور فيسبوك إضافي
+     ================================================= -->
+<div class="fbPostSection">
+
+  <div class="fbPostTitle">
+    📌 منشور فيسبوك
+  </div>
+
+  <div class="fbPostFrame">
+    <iframe
+      src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FAbwAlqmrZmrd%2Fposts%2Fpfbid0i17uDRMnqqhTpS4uZxmApmEj24LQXzaM5EeRat581PUZhqcqj3SayNTMkqsY1pQWl&show_text=true&width=500"
+      width="500"
+      height="333"
+      style="border:none;overflow:hidden"
+      scrolling="no"
+      frameborder="0"
+      allowfullscreen="true"
+      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
+    </iframe>
+  </div>
+
+</div>
 <!-- العنوان -->
 <div class="fbVideoTitle">
 <span>▶</span>
@@ -11561,7 +11583,7 @@ body.sakaker-pong-open #pongGame-container{
   pointer-events:auto;
   position:fixed;
   bottom:70px;
-  right:520px;
+  right:20px;
 
   width:78px;
   height:78px;
