@@ -5308,8 +5308,8 @@ body{
 <button id="pongGame-btn" style="
   z-index: 9999;
   position: fixed;
-  bottom : 20px;
-  right: 930px;
+  bottom : 120px;
+  right: 1230px;
   padding: 2px 2px;
   border: none;
   border-radius: 24px;
@@ -11196,7 +11196,7 @@ body.sakaker-pong-open #pongGame-container{
 #emeraldMusicHost #emOpenBtn{
   pointer-events:auto;
   position:fixed;
-  bottom:30px;
+  bottom:70px;
   right:520px;
 
   width:78px;
@@ -14247,4 +14247,504 @@ window.addEventListener(
   }
 );
 
+</script>
+<!-- =========================================================
+     ✨ حكم وأمثال أبو القمر زمرد
+     50 حكمة ومثل | عربي 10 ثوانٍ | إنجليزي 10 ثوانٍ
+     اختفاء 60 ثانية | أسفل الصفحة بالوسط
+========================================================= -->
+
+<div id="sakakerWisdomBox">
+  <div id="sakakerWisdomText"></div>
+</div>
+
+<style>
+/* ===============================
+   صندوق الحكم والأمثال
+================================ */
+
+#sakakerWisdomBox {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+
+  width: min(92vw, 850px);
+  min-height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 999999;
+
+  pointer-events: none;
+
+  opacity: 0;
+  visibility: hidden;
+
+  transition:
+    opacity 1s ease,
+    transform 1s ease,
+    visibility 1s ease;
+}
+
+/* ظهور الحكمة */
+
+#sakakerWisdomBox.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* النص */
+
+#sakakerWisdomText {
+  text-align: center;
+
+  padding: 10px 24px;
+
+  font-family:
+    Tajawal,
+    Tahoma,
+    Arial,
+    sans-serif;
+
+  font-size: clamp(16px, 2.2vw, 25px);
+
+  font-weight: 700;
+
+  line-height: 1.5;
+
+  letter-spacing: .3px;
+
+  border-radius: 30px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0,0,0,.20),
+      rgba(0,0,0,.55),
+      rgba(0,0,0,.20)
+    );
+
+  backdrop-filter: blur(5px);
+
+  border: 1px solid currentColor;
+
+  box-shadow:
+    0 0 8px currentColor,
+    0 0 20px currentColor,
+    0 0 40px currentColor,
+    inset 0 0 15px rgba(255,255,255,.08);
+
+  text-shadow:
+    0 0 5px currentColor,
+    0 0 12px currentColor,
+    0 0 25px currentColor;
+
+  animation:
+    sakakerGlow 2s ease-in-out infinite alternate;
+}
+
+/* حركة الإضاءة */
+
+@keyframes sakakerGlow {
+  from {
+    filter: brightness(.9);
+    text-shadow:
+      0 0 5px currentColor,
+      0 0 10px currentColor,
+      0 0 18px currentColor;
+  }
+
+  to {
+    filter: brightness(1.35);
+    text-shadow:
+      0 0 8px currentColor,
+      0 0 18px currentColor,
+      0 0 35px currentColor;
+  }
+}
+
+/* الجوال */
+
+@media (max-width: 600px) {
+
+  #sakakerWisdomBox {
+    bottom: 12px;
+    width: 94vw;
+  }
+
+  #sakakerWisdomText {
+    font-size: 15px;
+    padding: 8px 16px;
+    border-radius: 22px;
+  }
+}
+</style>
+
+<script>
+(function () {
+
+  /* =====================================================
+     📜 50 حكمة ومثل
+  ===================================================== */
+
+  const wisdoms = [
+
+    {
+      ar: "من جدّ وجد، ومن زرع حصد.",
+      en: "He who strives succeeds, and he who sows shall reap."
+    },
+
+    {
+      ar: "العلم نور والجهل ظلام.",
+      en: "Knowledge is light, and ignorance is darkness."
+    },
+
+    {
+      ar: "الصبر مفتاح الفرج.",
+      en: "Patience is the key to relief."
+    },
+
+    {
+      ar: "لا تؤجل عمل اليوم إلى الغد.",
+      en: "Do not put off until tomorrow what you can do today."
+    },
+
+    {
+      ar: "من طلب العلا سهر الليالي.",
+      en: "Whoever seeks greatness must work through the nights."
+    },
+
+    {
+      ar: "خير الكلام ما قل ودل.",
+      en: "The best words are few and meaningful."
+    },
+
+    {
+      ar: "درهم وقاية خير من قنطار علاج.",
+      en: "An ounce of prevention is worth a pound of cure."
+    },
+
+    {
+      ar: "العقل زينة.",
+      en: "Wisdom is the finest adornment."
+    },
+
+    {
+      ar: "إذا أردت شيئًا فابدأ بخطوة.",
+      en: "If you want something, start with one step."
+    },
+
+    {
+      ar: "الأفعال أبلغ من الأقوال.",
+      en: "Actions speak louder than words."
+    },
+
+    {
+      ar: "من سار على الدرب وصل.",
+      en: "Whoever stays on the path will eventually arrive."
+    },
+
+    {
+      ar: "الوقت كالسيف إن لم تقطعه قطعك.",
+      en: "Time is like a sword; if you do not use it, it will work against you."
+    },
+
+    {
+      ar: "لا شيء مستحيل مع الإرادة.",
+      en: "Nothing is impossible with determination."
+    },
+
+    {
+      ar: "الاتحاد قوة.",
+      en: "Unity is strength."
+    },
+
+    {
+      ar: "التواضع يرفع صاحبه.",
+      en: "Humility raises a person."
+    },
+
+    {
+      ar: "الكلمة الطيبة صدقة.",
+      en: "A kind word is charity."
+    },
+
+    {
+      ar: "ابتسم، فالحياة أجمل بابتسامتك.",
+      en: "Smile, for life is more beautiful with your smile."
+    },
+
+    {
+      ar: "لا تحكم على الكتاب من غلافه.",
+      en: "Do not judge a book by its cover."
+    },
+
+    {
+      ar: "النجاح رحلة وليس محطة.",
+      en: "Success is a journey, not a destination."
+    },
+
+    {
+      ar: "من لا يتعلم من الماضي يكرر أخطاءه.",
+      en: "Those who do not learn from the past repeat their mistakes."
+    },
+
+    {
+      ar: "كل بداية صعبة.",
+      en: "Every beginning is difficult."
+    },
+
+    {
+      ar: "الأمل لا يموت.",
+      en: "Hope never dies."
+    },
+
+    {
+      ar: "لا تجعل الخوف يمنعك من المحاولة.",
+      en: "Do not let fear stop you from trying."
+    },
+
+    {
+      ar: "النجاح يحتاج إلى صبر وعمل.",
+      en: "Success requires patience and hard work."
+    },
+
+    {
+      ar: "من عرف قدر نفسه لم يضره كلام الناس.",
+      en: "Those who know their worth are not harmed by people's opinions."
+    },
+
+    {
+      ar: "العبرة بالخواتيم.",
+      en: "What matters is how things end."
+    },
+
+    {
+      ar: "رب ضارة نافعة.",
+      en: "Sometimes what seems harmful turns out to be beneficial."
+    },
+
+    {
+      ar: "لكل مجتهد نصيب.",
+      en: "Everyone who works hard gets their share."
+    },
+
+    {
+      ar: "لا تعطي وعدًا لا تستطيع الوفاء به.",
+      en: "Do not make a promise you cannot keep."
+    },
+
+    {
+      ar: "الحياة مدرسة، وتجاربها دروس.",
+      en: "Life is a school, and its experiences are lessons."
+    },
+
+    {
+      ar: "من تواضع لله رفعه.",
+      en: "Whoever humbles himself is elevated."
+    },
+
+    {
+      ar: "الصديق وقت الضيق.",
+      en: "A true friend is known in difficult times."
+    },
+
+    {
+      ar: "الابتسامة لغة لا تحتاج إلى ترجمة.",
+      en: "A smile is a language that needs no translation."
+    },
+
+    {
+      ar: "لا تخشى البطء، ولكن احذر التوقف.",
+      en: "Do not fear going slowly; beware of stopping."
+    },
+
+    {
+      ar: "الأمل يصنع من المستحيل ممكنًا.",
+      en: "Hope can turn the impossible into the possible."
+    },
+
+    {
+      ar: "ما ضاع حق وراءه مطالب.",
+      en: "A right pursued is rarely lost."
+    },
+
+    {
+      ar: "إذا أردت أن ترى التغيير، كن أنت التغيير.",
+      en: "If you want to see change, be the change."
+    },
+
+    {
+      ar: "القناعة كنز لا يفنى.",
+      en: "Contentment is a treasure that never runs out."
+    },
+
+    {
+      ar: "لا تندم على فرصة ضاعت، اصنع فرصة جديدة.",
+      en: "Do not regret a lost opportunity; create a new one."
+    },
+
+    {
+      ar: "العطاء لا ينقص المال ولا ينقص القلب.",
+      en: "Giving does not diminish wealth or the heart."
+    },
+
+    {
+      ar: "القلوب الطيبة تترك أثرًا لا ينسى.",
+      en: "Kind hearts leave unforgettable marks."
+    },
+
+    {
+      ar: "اجعل أخلاقك عنوانك.",
+      en: "Let your character be your identity."
+    },
+
+    {
+      ar: "لا تقارن بدايتك بنهاية غيرك.",
+      en: "Do not compare your beginning with someone else's ending."
+    },
+
+    {
+      ar: "كل يوم فرصة جديدة.",
+      en: "Every day is a new opportunity."
+    },
+
+    {
+      ar: "كن سببًا في سعادة من حولك.",
+      en: "Be a reason for the happiness of those around you."
+    },
+
+    {
+      ar: "إذا ضاقت بك الدنيا، تذكر أن الفرج قريب.",
+      en: "When life feels difficult, remember that relief is near."
+    },
+
+    {
+      ar: "القوة الحقيقية أن تملك نفسك عند الغضب.",
+      en: "True strength is controlling yourself when angry."
+    },
+
+    {
+      ar: "الطريق الطويل يبدأ بخطوة.",
+      en: "A long journey begins with a single step."
+    },
+
+    {
+      ar: "اصنع من أحلامك أهدافًا، ومن أهدافك إنجازات.",
+      en: "Turn your dreams into goals and your goals into achievements."
+    }
+
+  ];
+
+
+  /* =====================================================
+     🎨 ألوان مضيئة متغيرة
+  ===================================================== */
+
+  const glowColors = [
+
+    "#00ffff",
+    "#00ff88",
+    "#7fff00",
+    "#ffd700",
+    "#ffae00",
+    "#ff6600",
+    "#ff3366",
+    "#ff00ff",
+    "#cc66ff",
+    "#6699ff",
+    "#00bfff",
+    "#39ff14",
+    "#ffff00",
+    "#ff1493",
+    "#00ffcc",
+    "#ffffff"
+
+  ];
+
+
+  const box =
+    document.getElementById("sakakerWisdomBox");
+
+  const text =
+    document.getElementById("sakakerWisdomText");
+
+
+  let current = 0;
+
+
+  /* =====================================================
+     عرض الحكمة
+  ===================================================== */
+
+  function showWisdom() {
+
+    const item = wisdoms[current];
+
+    const color =
+      glowColors[current % glowColors.length];
+
+
+    /* اللون */
+
+    text.style.color = color;
+
+
+    /* العربية */
+
+    text.setAttribute("dir", "rtl");
+
+    text.textContent = item.ar;
+
+    box.classList.add("show");
+
+
+    /* بعد 10 ثوانٍ → الإنجليزية */
+
+    setTimeout(function () {
+
+      text.setAttribute("dir", "ltr");
+
+      text.textContent = item.en;
+
+    }, 10000);
+
+
+    /* بعد 20 ثانية → اختفاء */
+
+    setTimeout(function () {
+
+      box.classList.remove("show");
+
+    }, 20000);
+
+
+    /* بعد 80 ثانية → الحكمة التالية */
+
+    setTimeout(function () {
+
+      current++;
+
+      if (current >= wisdoms.length) {
+        current = 0;
+      }
+
+      showWisdom();
+
+    }, 80000);
+
+  }
+
+
+  /* =====================================================
+     البداية
+  ===================================================== */
+
+  showWisdom();
+
+})();
 </script>
