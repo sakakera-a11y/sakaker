@@ -6140,6 +6140,314 @@ pongBtn.addEventListener('mouseleave', () => {
 })();
 </script>
 
+
+<!-- =========================================================
+     SAKAKER — التحسينات النهائية المطلوبة
+     1) زر اللغة في الجهة المقابلة
+     2) PONG فوق مكتبة الفيديو بقليل
+     3) الأيقونات الرئيسية أصغر وبحجم ثابت غير ديناميكي
+     4) أسطول سفن زخرفي في الخلفية
+     5) قناع خفيف لإخفاء توقيع sakaker.co المدمج أسفل الخلفية
+========================================================= -->
+<style id="sakaker-final-polish">
+/* زر تبديل اللغة — الجهة المقابلة */
+#siteLangToggle{
+  left:18px !important;
+  right:auto !important;
+  top:12px !important;
+  width:72px !important;
+  min-width:72px !important;
+  max-width:72px !important;
+  height:34px !important;
+  padding:0 !important;
+  border-radius:18px !important;
+  z-index:2147483647 !important;
+}
+
+/* الأيقونات الرئيسية — حجم ثابت وصغير */
+.cards{
+  gap:9px !important;
+  padding:8px !important;
+}
+.icon-card{
+  width:72px !important;
+  height:72px !important;
+  min-width:72px !important;
+  max-width:72px !important;
+  min-height:72px !important;
+  max-height:72px !important;
+  border-radius:50% !important;
+  padding:5px !important;
+}
+.icon-card .icon-svg{
+  width:22px !important;
+  height:22px !important;
+  margin-bottom:2px !important;
+}
+.icon-card .icon-label{
+  font-size:9px !important;
+  line-height:1.1 !important;
+  max-width:62px !important;
+}
+.icon-card .sub{
+  font-size:6px !important;
+  line-height:1.1 !important;
+  max-width:60px !important;
+  margin-top:1px !important;
+}
+
+/* مكتبة الفيديو — تثبيت مكان صغير في الجهة اليسرى */
+#emeraldLibraryButton{
+  left:12px !important;
+  right:auto !important;
+  top:auto !important;
+  bottom:360px !important;
+  width:112px !important;
+  min-width:112px !important;
+  max-width:112px !important;
+  min-height:48px !important;
+  padding:5px 4px !important;
+  border-radius:14px !important;
+  font-size:10px !important;
+  line-height:1.35 !important;
+  z-index:9500 !important;
+}
+
+/* PONG فوق مكتبة الفيديو بقليل */
+#sakakerPongDock{
+  position:fixed !important;
+  left:12px !important;
+  right:auto !important;
+  top:auto !important;
+  bottom:416px !important;
+  width:62px !important;
+  height:62px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  transform:none !important;
+  z-index:2147483601 !important;
+  pointer-events:none !important;
+}
+#sakakerPongDock #pongGame-btn{
+  position:relative !important;
+  left:auto !important;
+  right:auto !important;
+  top:auto !important;
+  bottom:auto !important;
+  width:58px !important;
+  height:58px !important;
+  min-width:58px !important;
+  min-height:58px !important;
+  max-width:58px !important;
+  max-height:58px !important;
+  margin:0 !important;
+  transform:none !important;
+  pointer-events:auto !important;
+}
+#sakakerPongDock .pong-ball-glow{font-size:21px !important;}
+#sakakerPongDock .pong-label{font-size:8px !important;margin-top:2px !important;}
+#sakakerPongDock .pong-orbit-1{inset:-4px !important;}
+#sakakerPongDock .pong-orbit-2{inset:-8px !important;}
+
+/* أسطول السفن — طبقة خلفية زخرفية لا تغيّر فكرة الموقع */
+#sakakerFleet{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:34px;
+  height:120px;
+  z-index:1;
+  pointer-events:none;
+  overflow:hidden;
+  opacity:.62;
+}
+#sakakerFleet .fleet-sea{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  height:38px;
+  background:
+    radial-gradient(ellipse at 12% 60%,rgba(0,255,210,.16),transparent 28%),
+    radial-gradient(ellipse at 48% 50%,rgba(0,210,255,.12),transparent 30%),
+    radial-gradient(ellipse at 82% 55%,rgba(0,255,190,.14),transparent 30%);
+  filter:blur(2px);
+}
+#sakakerFleet .fleet-ship{
+  position:absolute;
+  bottom:25px;
+  width:68px;
+  height:32px;
+  opacity:.62;
+  filter:drop-shadow(0 0 6px rgba(0,255,210,.55));
+}
+#sakakerFleet .fleet-ship::before{
+  content:"";
+  position:absolute;
+  left:5px;
+  bottom:0;
+  width:58px;
+  height:13px;
+  border-radius:0 0 28px 28px;
+  background:linear-gradient(180deg,#d7d7d7,#6e7777 55%,#162927);
+  border:1px solid rgba(255,215,100,.55);
+}
+#sakakerFleet .fleet-ship::after{
+  content:"";
+  position:absolute;
+  left:29px;
+  bottom:12px;
+  width:2px;
+  height:25px;
+  background:#d7c27b;
+  box-shadow:0 0 5px #00ffd0;
+}
+#sakakerFleet .fleet-sail{
+  position:absolute;
+  left:31px;
+  bottom:20px;
+  width:0;
+  height:0;
+  border-left:16px solid transparent;
+  border-right:2px solid transparent;
+  border-bottom:20px solid rgba(225,245,240,.78);
+  filter:drop-shadow(0 0 5px rgba(0,255,210,.45));
+}
+#sakakerFleet .s1{left:5%;transform:scale(.70);}
+#sakakerFleet .s2{left:19%;bottom:34px;transform:scale(.48);opacity:.42;}
+#sakakerFleet .s3{left:33%;transform:scale(.90);}
+#sakakerFleet .s4{left:52%;bottom:37px;transform:scale(.55);opacity:.45;}
+#sakakerFleet .s5{left:66%;transform:scale(.78);}
+#sakakerFleet .s6{left:81%;bottom:31px;transform:scale(.58);opacity:.48;}
+#sakakerFleet .s7{left:92%;transform:scale(.72);}
+
+/* قناع صغير في أسفل المنتصف لإخفاء توقيع الخلفية المدمج */
+#sakakerWatermarkMask{
+  position:fixed;
+  left:50%;
+  bottom:0;
+  transform:translateX(-50%);
+  width:300px;
+  height:34px;
+  z-index:2;
+  pointer-events:none;
+  background:linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(2,12,12,.34) 35%,
+    rgba(2,12,12,.88) 100%
+  );
+  filter:blur(.2px);
+}
+
+/* شاشة الدخول تبقى فوق كل شيء */
+#loginOverlay{z-index:2147483646 !important;}
+
+@media(max-width:600px){
+  #siteLangToggle{
+    left:8px !important;
+    right:auto !important;
+    top:8px !important;
+    width:62px !important;
+    min-width:62px !important;
+    max-width:62px !important;
+    height:30px !important;
+    font-size:12px !important;
+  }
+
+  .cards{
+    gap:7px !important;
+    padding:6px 3px !important;
+  }
+  .icon-card{
+    width:62px !important;
+    height:62px !important;
+    min-width:62px !important;
+    max-width:62px !important;
+    min-height:62px !important;
+    max-height:62px !important;
+  }
+  .icon-card .icon-svg{
+    width:19px !important;
+    height:19px !important;
+  }
+  .icon-card .icon-label{
+    font-size:8px !important;
+    max-width:54px !important;
+  }
+  .icon-card .sub{
+    font-size:5px !important;
+    max-width:52px !important;
+  }
+
+  #emeraldLibraryButton{
+    left:8px !important;
+    bottom:360px !important;
+    width:96px !important;
+    min-width:96px !important;
+    max-width:96px !important;
+    min-height:42px !important;
+    font-size:8px !important;
+    padding:4px 3px !important;
+  }
+
+  #sakakerPongDock{
+    left:9px !important;
+    bottom:408px !important;
+    width:54px !important;
+    height:54px !important;
+  }
+  #sakakerPongDock #pongGame-btn{
+    width:50px !important;
+    height:50px !important;
+    min-width:50px !important;
+    min-height:50px !important;
+    max-width:50px !important;
+    max-height:50px !important;
+  }
+  #sakakerPongDock .pong-ball-glow{font-size:18px !important;}
+  #sakakerPongDock .pong-label{font-size:7px !important;}
+
+  #sakakerFleet{
+    bottom:76px;
+    height:95px;
+    opacity:.55;
+  }
+  #sakakerFleet .fleet-ship{width:54px;height:27px;}
+  #sakakerFleet .fleet-ship::before{width:46px;height:11px;}
+  #sakakerFleet .fleet-ship::after{left:24px;height:20px;}
+  #sakakerFleet .fleet-sail{left:26px;bottom:18px;border-left-width:12px;border-bottom-width:16px;}
+  #sakakerWatermarkMask{width:240px;height:28px;}
+}
+
+@media(max-width:390px){
+  .icon-card{
+    width:58px !important;
+    height:58px !important;
+    min-width:58px !important;
+    max-width:58px !important;
+    min-height:58px !important;
+    max-height:58px !important;
+  }
+  #emeraldLibraryButton{bottom:330px !important;}
+  #sakakerPongDock{bottom:378px !important;}
+}
+</style>
+
+<!-- أسطول السفن الخلفي -->
+<div id="sakakerFleet" aria-hidden="true">
+  <div class="fleet-sea"></div>
+  <div class="fleet-ship s1"><span class="fleet-sail"></span></div>
+  <div class="fleet-ship s2"><span class="fleet-sail"></span></div>
+  <div class="fleet-ship s3"><span class="fleet-sail"></span></div>
+  <div class="fleet-ship s4"><span class="fleet-sail"></span></div>
+  <div class="fleet-ship s5"><span class="fleet-sail"></span></div>
+  <div class="fleet-ship s6"><span class="fleet-sail"></span></div>
+  <div class="fleet-ship s7"><span class="fleet-sail"></span></div>
+</div>
+<div id="sakakerWatermarkMask" aria-hidden="true"></div>
+
 </body>
 </html>
 
@@ -15416,7 +15724,315 @@ window.addEventListener(
 </script>
 <!-- =========================================================
      SAKAKER — تحسين الأيقونات والنوافذ
-     يوضع هذا الكود بالكامل قبل </body>
+     يوضع هذا الكود بالكامل قبل 
+<!-- =========================================================
+     SAKAKER — التحسينات النهائية المطلوبة
+     1) زر اللغة في الجهة المقابلة
+     2) PONG فوق مكتبة الفيديو بقليل
+     3) الأيقونات الرئيسية أصغر وبحجم ثابت غير ديناميكي
+     4) أسطول سفن زخرفي في الخلفية
+     5) قناع خفيف لإخفاء توقيع sakaker.co المدمج أسفل الخلفية
+========================================================= -->
+<style id="sakaker-final-polish">
+/* زر تبديل اللغة — الجهة المقابلة */
+#siteLangToggle{
+  left:18px !important;
+  right:auto !important;
+  top:12px !important;
+  width:72px !important;
+  min-width:72px !important;
+  max-width:72px !important;
+  height:34px !important;
+  padding:0 !important;
+  border-radius:18px !important;
+  z-index:2147483647 !important;
+}
+
+/* الأيقونات الرئيسية — حجم ثابت وصغير */
+.cards{
+  gap:9px !important;
+  padding:8px !important;
+}
+.icon-card{
+  width:72px !important;
+  height:72px !important;
+  min-width:72px !important;
+  max-width:72px !important;
+  min-height:72px !important;
+  max-height:72px !important;
+  border-radius:50% !important;
+  padding:5px !important;
+}
+.icon-card .icon-svg{
+  width:22px !important;
+  height:22px !important;
+  margin-bottom:2px !important;
+}
+.icon-card .icon-label{
+  font-size:9px !important;
+  line-height:1.1 !important;
+  max-width:62px !important;
+}
+.icon-card .sub{
+  font-size:6px !important;
+  line-height:1.1 !important;
+  max-width:60px !important;
+  margin-top:1px !important;
+}
+
+/* مكتبة الفيديو — تثبيت مكان صغير في الجهة اليسرى */
+#emeraldLibraryButton{
+  left:12px !important;
+  right:auto !important;
+  top:auto !important;
+  bottom:360px !important;
+  width:112px !important;
+  min-width:112px !important;
+  max-width:112px !important;
+  min-height:48px !important;
+  padding:5px 4px !important;
+  border-radius:14px !important;
+  font-size:10px !important;
+  line-height:1.35 !important;
+  z-index:9500 !important;
+}
+
+/* PONG فوق مكتبة الفيديو بقليل */
+#sakakerPongDock{
+  position:fixed !important;
+  left:12px !important;
+  right:auto !important;
+  top:auto !important;
+  bottom:416px !important;
+  width:62px !important;
+  height:62px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  transform:none !important;
+  z-index:2147483601 !important;
+  pointer-events:none !important;
+}
+#sakakerPongDock #pongGame-btn{
+  position:relative !important;
+  left:auto !important;
+  right:auto !important;
+  top:auto !important;
+  bottom:auto !important;
+  width:58px !important;
+  height:58px !important;
+  min-width:58px !important;
+  min-height:58px !important;
+  max-width:58px !important;
+  max-height:58px !important;
+  margin:0 !important;
+  transform:none !important;
+  pointer-events:auto !important;
+}
+#sakakerPongDock .pong-ball-glow{font-size:21px !important;}
+#sakakerPongDock .pong-label{font-size:8px !important;margin-top:2px !important;}
+#sakakerPongDock .pong-orbit-1{inset:-4px !important;}
+#sakakerPongDock .pong-orbit-2{inset:-8px !important;}
+
+/* أسطول السفن — طبقة خلفية زخرفية لا تغيّر فكرة الموقع */
+#sakakerFleet{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:34px;
+  height:120px;
+  z-index:1;
+  pointer-events:none;
+  overflow:hidden;
+  opacity:.62;
+}
+#sakakerFleet .fleet-sea{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  height:38px;
+  background:
+    radial-gradient(ellipse at 12% 60%,rgba(0,255,210,.16),transparent 28%),
+    radial-gradient(ellipse at 48% 50%,rgba(0,210,255,.12),transparent 30%),
+    radial-gradient(ellipse at 82% 55%,rgba(0,255,190,.14),transparent 30%);
+  filter:blur(2px);
+}
+#sakakerFleet .fleet-ship{
+  position:absolute;
+  bottom:25px;
+  width:68px;
+  height:32px;
+  opacity:.62;
+  filter:drop-shadow(0 0 6px rgba(0,255,210,.55));
+}
+#sakakerFleet .fleet-ship::before{
+  content:"";
+  position:absolute;
+  left:5px;
+  bottom:0;
+  width:58px;
+  height:13px;
+  border-radius:0 0 28px 28px;
+  background:linear-gradient(180deg,#d7d7d7,#6e7777 55%,#162927);
+  border:1px solid rgba(255,215,100,.55);
+}
+#sakakerFleet .fleet-ship::after{
+  content:"";
+  position:absolute;
+  left:29px;
+  bottom:12px;
+  width:2px;
+  height:25px;
+  background:#d7c27b;
+  box-shadow:0 0 5px #00ffd0;
+}
+#sakakerFleet .fleet-sail{
+  position:absolute;
+  left:31px;
+  bottom:20px;
+  width:0;
+  height:0;
+  border-left:16px solid transparent;
+  border-right:2px solid transparent;
+  border-bottom:20px solid rgba(225,245,240,.78);
+  filter:drop-shadow(0 0 5px rgba(0,255,210,.45));
+}
+#sakakerFleet .s1{left:5%;transform:scale(.70);}
+#sakakerFleet .s2{left:19%;bottom:34px;transform:scale(.48);opacity:.42;}
+#sakakerFleet .s3{left:33%;transform:scale(.90);}
+#sakakerFleet .s4{left:52%;bottom:37px;transform:scale(.55);opacity:.45;}
+#sakakerFleet .s5{left:66%;transform:scale(.78);}
+#sakakerFleet .s6{left:81%;bottom:31px;transform:scale(.58);opacity:.48;}
+#sakakerFleet .s7{left:92%;transform:scale(.72);}
+
+/* قناع صغير في أسفل المنتصف لإخفاء توقيع الخلفية المدمج */
+#sakakerWatermarkMask{
+  position:fixed;
+  left:50%;
+  bottom:0;
+  transform:translateX(-50%);
+  width:300px;
+  height:34px;
+  z-index:2;
+  pointer-events:none;
+  background:linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(2,12,12,.34) 35%,
+    rgba(2,12,12,.88) 100%
+  );
+  filter:blur(.2px);
+}
+
+/* شاشة الدخول تبقى فوق كل شيء */
+#loginOverlay{z-index:2147483646 !important;}
+
+@media(max-width:600px){
+  #siteLangToggle{
+    left:8px !important;
+    right:auto !important;
+    top:8px !important;
+    width:62px !important;
+    min-width:62px !important;
+    max-width:62px !important;
+    height:30px !important;
+    font-size:12px !important;
+  }
+
+  .cards{
+    gap:7px !important;
+    padding:6px 3px !important;
+  }
+  .icon-card{
+    width:62px !important;
+    height:62px !important;
+    min-width:62px !important;
+    max-width:62px !important;
+    min-height:62px !important;
+    max-height:62px !important;
+  }
+  .icon-card .icon-svg{
+    width:19px !important;
+    height:19px !important;
+  }
+  .icon-card .icon-label{
+    font-size:8px !important;
+    max-width:54px !important;
+  }
+  .icon-card .sub{
+    font-size:5px !important;
+    max-width:52px !important;
+  }
+
+  #emeraldLibraryButton{
+    left:8px !important;
+    bottom:360px !important;
+    width:96px !important;
+    min-width:96px !important;
+    max-width:96px !important;
+    min-height:42px !important;
+    font-size:8px !important;
+    padding:4px 3px !important;
+  }
+
+  #sakakerPongDock{
+    left:9px !important;
+    bottom:408px !important;
+    width:54px !important;
+    height:54px !important;
+  }
+  #sakakerPongDock #pongGame-btn{
+    width:50px !important;
+    height:50px !important;
+    min-width:50px !important;
+    min-height:50px !important;
+    max-width:50px !important;
+    max-height:50px !important;
+  }
+  #sakakerPongDock .pong-ball-glow{font-size:18px !important;}
+  #sakakerPongDock .pong-label{font-size:7px !important;}
+
+  #sakakerFleet{
+    bottom:76px;
+    height:95px;
+    opacity:.55;
+  }
+  #sakakerFleet .fleet-ship{width:54px;height:27px;}
+  #sakakerFleet .fleet-ship::before{width:46px;height:11px;}
+  #sakakerFleet .fleet-ship::after{left:24px;height:20px;}
+  #sakakerFleet .fleet-sail{left:26px;bottom:18px;border-left-width:12px;border-bottom-width:16px;}
+  #sakakerWatermarkMask{width:240px;height:28px;}
+}
+
+@media(max-width:390px){
+  .icon-card{
+    width:58px !important;
+    height:58px !important;
+    min-width:58px !important;
+    max-width:58px !important;
+    min-height:58px !important;
+    max-height:58px !important;
+  }
+  #emeraldLibraryButton{bottom:330px !important;}
+  #sakakerPongDock{bottom:378px !important;}
+}
+</style>
+
+<!-- أسطول السفن الخلفي -->
+<div id="sakakerFleet" aria-hidden="true">
+  <div class="fleet-sea"></div>
+  <div class="fleet-ship s1"><span class="fleet-sail"></span></div>
+  <div class="fleet-ship s2"><span class="fleet-sail"></span></div>
+  <div class="fleet-ship s3"><span class="fleet-sail"></span></div>
+  <div class="fleet-ship s4"><span class="fleet-sail"></span></div>
+  <div class="fleet-ship s5"><span class="fleet-sail"></span></div>
+  <div class="fleet-ship s6"><span class="fleet-sail"></span></div>
+  <div class="fleet-ship s7"><span class="fleet-sail"></span></div>
+</div>
+<div id="sakakerWatermarkMask" aria-hidden="true"></div>
+
+</body>
 ========================================================= -->
 
 <style>
@@ -16035,6 +16651,314 @@ window.addEventListener(
   #sakakerVisitorCounter strong{font-size:10px !important;}
 }
 </style>
+
+
+<!-- =========================================================
+     SAKAKER — التحسينات النهائية المطلوبة
+     1) زر اللغة في الجهة المقابلة
+     2) PONG فوق مكتبة الفيديو بقليل
+     3) الأيقونات الرئيسية أصغر وبحجم ثابت غير ديناميكي
+     4) أسطول سفن زخرفي في الخلفية
+     5) قناع خفيف لإخفاء توقيع sakaker.co المدمج أسفل الخلفية
+========================================================= -->
+<style id="sakaker-final-polish">
+/* زر تبديل اللغة — الجهة المقابلة */
+#siteLangToggle{
+  left:18px !important;
+  right:auto !important;
+  top:12px !important;
+  width:72px !important;
+  min-width:72px !important;
+  max-width:72px !important;
+  height:34px !important;
+  padding:0 !important;
+  border-radius:18px !important;
+  z-index:2147483647 !important;
+}
+
+/* الأيقونات الرئيسية — حجم ثابت وصغير */
+.cards{
+  gap:9px !important;
+  padding:8px !important;
+}
+.icon-card{
+  width:72px !important;
+  height:72px !important;
+  min-width:72px !important;
+  max-width:72px !important;
+  min-height:72px !important;
+  max-height:72px !important;
+  border-radius:50% !important;
+  padding:5px !important;
+}
+.icon-card .icon-svg{
+  width:22px !important;
+  height:22px !important;
+  margin-bottom:2px !important;
+}
+.icon-card .icon-label{
+  font-size:9px !important;
+  line-height:1.1 !important;
+  max-width:62px !important;
+}
+.icon-card .sub{
+  font-size:6px !important;
+  line-height:1.1 !important;
+  max-width:60px !important;
+  margin-top:1px !important;
+}
+
+/* مكتبة الفيديو — تثبيت مكان صغير في الجهة اليسرى */
+#emeraldLibraryButton{
+  left:12px !important;
+  right:auto !important;
+  top:auto !important;
+  bottom:360px !important;
+  width:112px !important;
+  min-width:112px !important;
+  max-width:112px !important;
+  min-height:48px !important;
+  padding:5px 4px !important;
+  border-radius:14px !important;
+  font-size:10px !important;
+  line-height:1.35 !important;
+  z-index:9500 !important;
+}
+
+/* PONG فوق مكتبة الفيديو بقليل */
+#sakakerPongDock{
+  position:fixed !important;
+  left:12px !important;
+  right:auto !important;
+  top:auto !important;
+  bottom:416px !important;
+  width:62px !important;
+  height:62px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  transform:none !important;
+  z-index:2147483601 !important;
+  pointer-events:none !important;
+}
+#sakakerPongDock #pongGame-btn{
+  position:relative !important;
+  left:auto !important;
+  right:auto !important;
+  top:auto !important;
+  bottom:auto !important;
+  width:58px !important;
+  height:58px !important;
+  min-width:58px !important;
+  min-height:58px !important;
+  max-width:58px !important;
+  max-height:58px !important;
+  margin:0 !important;
+  transform:none !important;
+  pointer-events:auto !important;
+}
+#sakakerPongDock .pong-ball-glow{font-size:21px !important;}
+#sakakerPongDock .pong-label{font-size:8px !important;margin-top:2px !important;}
+#sakakerPongDock .pong-orbit-1{inset:-4px !important;}
+#sakakerPongDock .pong-orbit-2{inset:-8px !important;}
+
+/* أسطول السفن — طبقة خلفية زخرفية لا تغيّر فكرة الموقع */
+#sakakerFleet{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:34px;
+  height:120px;
+  z-index:1;
+  pointer-events:none;
+  overflow:hidden;
+  opacity:.62;
+}
+#sakakerFleet .fleet-sea{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  height:38px;
+  background:
+    radial-gradient(ellipse at 12% 60%,rgba(0,255,210,.16),transparent 28%),
+    radial-gradient(ellipse at 48% 50%,rgba(0,210,255,.12),transparent 30%),
+    radial-gradient(ellipse at 82% 55%,rgba(0,255,190,.14),transparent 30%);
+  filter:blur(2px);
+}
+#sakakerFleet .fleet-ship{
+  position:absolute;
+  bottom:25px;
+  width:68px;
+  height:32px;
+  opacity:.62;
+  filter:drop-shadow(0 0 6px rgba(0,255,210,.55));
+}
+#sakakerFleet .fleet-ship::before{
+  content:"";
+  position:absolute;
+  left:5px;
+  bottom:0;
+  width:58px;
+  height:13px;
+  border-radius:0 0 28px 28px;
+  background:linear-gradient(180deg,#d7d7d7,#6e7777 55%,#162927);
+  border:1px solid rgba(255,215,100,.55);
+}
+#sakakerFleet .fleet-ship::after{
+  content:"";
+  position:absolute;
+  left:29px;
+  bottom:12px;
+  width:2px;
+  height:25px;
+  background:#d7c27b;
+  box-shadow:0 0 5px #00ffd0;
+}
+#sakakerFleet .fleet-sail{
+  position:absolute;
+  left:31px;
+  bottom:20px;
+  width:0;
+  height:0;
+  border-left:16px solid transparent;
+  border-right:2px solid transparent;
+  border-bottom:20px solid rgba(225,245,240,.78);
+  filter:drop-shadow(0 0 5px rgba(0,255,210,.45));
+}
+#sakakerFleet .s1{left:5%;transform:scale(.70);}
+#sakakerFleet .s2{left:19%;bottom:34px;transform:scale(.48);opacity:.42;}
+#sakakerFleet .s3{left:33%;transform:scale(.90);}
+#sakakerFleet .s4{left:52%;bottom:37px;transform:scale(.55);opacity:.45;}
+#sakakerFleet .s5{left:66%;transform:scale(.78);}
+#sakakerFleet .s6{left:81%;bottom:31px;transform:scale(.58);opacity:.48;}
+#sakakerFleet .s7{left:92%;transform:scale(.72);}
+
+/* قناع صغير في أسفل المنتصف لإخفاء توقيع الخلفية المدمج */
+#sakakerWatermarkMask{
+  position:fixed;
+  left:50%;
+  bottom:0;
+  transform:translateX(-50%);
+  width:300px;
+  height:34px;
+  z-index:2;
+  pointer-events:none;
+  background:linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(2,12,12,.34) 35%,
+    rgba(2,12,12,.88) 100%
+  );
+  filter:blur(.2px);
+}
+
+/* شاشة الدخول تبقى فوق كل شيء */
+#loginOverlay{z-index:2147483646 !important;}
+
+@media(max-width:600px){
+  #siteLangToggle{
+    left:8px !important;
+    right:auto !important;
+    top:8px !important;
+    width:62px !important;
+    min-width:62px !important;
+    max-width:62px !important;
+    height:30px !important;
+    font-size:12px !important;
+  }
+
+  .cards{
+    gap:7px !important;
+    padding:6px 3px !important;
+  }
+  .icon-card{
+    width:62px !important;
+    height:62px !important;
+    min-width:62px !important;
+    max-width:62px !important;
+    min-height:62px !important;
+    max-height:62px !important;
+  }
+  .icon-card .icon-svg{
+    width:19px !important;
+    height:19px !important;
+  }
+  .icon-card .icon-label{
+    font-size:8px !important;
+    max-width:54px !important;
+  }
+  .icon-card .sub{
+    font-size:5px !important;
+    max-width:52px !important;
+  }
+
+  #emeraldLibraryButton{
+    left:8px !important;
+    bottom:360px !important;
+    width:96px !important;
+    min-width:96px !important;
+    max-width:96px !important;
+    min-height:42px !important;
+    font-size:8px !important;
+    padding:4px 3px !important;
+  }
+
+  #sakakerPongDock{
+    left:9px !important;
+    bottom:408px !important;
+    width:54px !important;
+    height:54px !important;
+  }
+  #sakakerPongDock #pongGame-btn{
+    width:50px !important;
+    height:50px !important;
+    min-width:50px !important;
+    min-height:50px !important;
+    max-width:50px !important;
+    max-height:50px !important;
+  }
+  #sakakerPongDock .pong-ball-glow{font-size:18px !important;}
+  #sakakerPongDock .pong-label{font-size:7px !important;}
+
+  #sakakerFleet{
+    bottom:76px;
+    height:95px;
+    opacity:.55;
+  }
+  #sakakerFleet .fleet-ship{width:54px;height:27px;}
+  #sakakerFleet .fleet-ship::before{width:46px;height:11px;}
+  #sakakerFleet .fleet-ship::after{left:24px;height:20px;}
+  #sakakerFleet .fleet-sail{left:26px;bottom:18px;border-left-width:12px;border-bottom-width:16px;}
+  #sakakerWatermarkMask{width:240px;height:28px;}
+}
+
+@media(max-width:390px){
+  .icon-card{
+    width:58px !important;
+    height:58px !important;
+    min-width:58px !important;
+    max-width:58px !important;
+    min-height:58px !important;
+    max-height:58px !important;
+  }
+  #emeraldLibraryButton{bottom:330px !important;}
+  #sakakerPongDock{bottom:378px !important;}
+}
+</style>
+
+<!-- أسطول السفن الخلفي -->
+<div id="sakakerFleet" aria-hidden="true">
+  <div class="fleet-sea"></div>
+  <div class="fleet-ship s1"><span class="fleet-sail"></span></div>
+  <div class="fleet-ship s2"><span class="fleet-sail"></span></div>
+  <div class="fleet-ship s3"><span class="fleet-sail"></span></div>
+  <div class="fleet-ship s4"><span class="fleet-sail"></span></div>
+  <div class="fleet-ship s5"><span class="fleet-sail"></span></div>
+  <div class="fleet-ship s6"><span class="fleet-sail"></span></div>
+  <div class="fleet-ship s7"><span class="fleet-sail"></span></div>
+</div>
+<div id="sakakerWatermarkMask" aria-hidden="true"></div>
 
 </body>
 </html>
