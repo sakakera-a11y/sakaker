@@ -4072,279 +4072,335 @@ body:not(.locked) #bird-sound-btn{display:none !important;}
 </style>
 
 <!-- =========================================================
-     📱 SAKAKER — نظام الأيقونات المتجاوب الموحد
-     - عند تصغير الشاشة أو تدويرها تتجمع الأيقونات تلقائياً
-     - ترتيب عمودي مستقل عن أماكنها الأصلية
-     - PONG فوق مكتبة الفيديو
-     - شريط الأخبار خفيف بلا خلفية أو أيقونة
+     SAKAKER UNIFIED UI V2
+     PONG opposite side + full AR/EN UI translation + language
+     switch + fiery clock
 ========================================================= -->
-<style id="sakaker-responsive-icon-system">
-  /* شريط الأخبار: نص واضح ومتناسق، بلا صندوق أو أيقونة */
-  .news-ticker{
-    background:transparent !important;
-    border:0 !important;
-    box-shadow:none !important;
-    backdrop-filter:none !important;
-    -webkit-backdrop-filter:none !important;
-    color:#fff !important;
-    font-family:"Tajawal","Cairo","Tahoma",Arial,sans-serif !important;
+<style id="sakaker-ui-v2">
+/* Language switch: prominent, independent from the clock */
+#siteLangToggle{
+  position:fixed !important;
+  top:12px !important;
+  right:18px !important;
+  left:auto !important;
+  z-index:2147483647 !important;
+  min-width:76px !important;
+  height:38px !important;
+  padding:5px 14px !important;
+  border:1px solid rgba(255,215,80,.85) !important;
+  border-radius:22px !important;
+  background:linear-gradient(135deg,rgba(20,20,20,.88),rgba(80,35,0,.82)) !important;
+  color:#fff !important;
+  font-family:Tajawal,Cairo,Arial,sans-serif !important;
+  font-size:15px !important;
+  font-weight:900 !important;
+  letter-spacing:.5px !important;
+  box-shadow:0 0 8px #ff8a00,0 0 18px rgba(255,55,0,.75),inset 0 0 10px rgba(255,210,70,.25) !important;
+  cursor:pointer !important;
+  text-shadow:0 0 7px #fff,0 0 12px #ff5a00 !important;
+}
+
+/* Clock: fiery luminous text, separated visually from language button */
+.news-ticker .clock-box,
+#clock,#date,#weather,#locationName{
+  color:#ff6a00 !important;
+  text-shadow:
+    0 0 3px #fff,
+    0 0 7px #ffb000,
+    0 0 14px #ff3c00,
+    0 0 24px rgba(255,40,0,.95) !important;
+}
+.news-ticker .clock-box{
+  border:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  font-weight:900 !important;
+}
+#clock{font-weight:1000 !important;}
+
+/* News: clean transparent strip and highly readable typography */
+.news-ticker,
+.news-ticker .ticker-wrapper{
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+  backdrop-filter:none !important;
+}
+.news-ticker .ticker-wrapper{
+  font-family:Tajawal,Cairo,Arial,sans-serif !important;
+  font-weight:800 !important;
+  font-size:clamp(14px,1.3vw,19px) !important;
+  line-height:1.65 !important;
+  text-shadow:0 0 4px #000,0 0 10px rgba(0,255,255,.7) !important;
+}
+
+/* Compact screens: one unified vertical dock.
+   PONG is intentionally on the opposite side from the video library. */
+#sakakerResponsiveDock{
+  position:fixed !important;
+  top:50% !important;
+  right:10px !important;
+  left:auto !important;
+  bottom:auto !important;
+  transform:translateY(-50%) !important;
+  z-index:2147483600 !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:clamp(5px,1.2vh,11px) !important;
+  width:clamp(58px,13vw,88px) !important;
+  max-height:calc(100dvh - 24px) !important;
+  pointer-events:none !important;
+}
+#sakakerResponsiveDock > *{
+  position:relative !important;
+  inset:auto !important;
+  top:auto !important; right:auto !important; bottom:auto !important; left:auto !important;
+  float:none !important;
+  flex:0 0 auto !important;
+  margin:0 !important;
+  pointer-events:auto !important;
+  transform:none !important;
+}
+
+/* Video library stays on the right dock; PONG is moved to the LEFT dock. */
+#sakakerPongDock{
+  position:fixed !important;
+  top:50% !important;
+  left:10px !important;
+  right:auto !important;
+  bottom:auto !important;
+  transform:translateY(-50%) !important;
+  z-index:2147483601 !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:8px !important;
+  width:clamp(58px,13vw,88px) !important;
+  max-height:calc(100dvh - 24px) !important;
+  pointer-events:none !important;
+}
+#sakakerPongDock #pongGame-btn{
+  position:relative !important;
+  inset:auto !important;
+  margin:0 !important;
+  pointer-events:auto !important;
+  transform:none !important;
+  width:clamp(54px,12vw,78px) !important;
+  height:clamp(54px,12vw,78px) !important;
+}
+
+/* Make the PONG label language-aware */
+#pongGame-btn .pong-label{
+  font-family:Tajawal,Cairo,Arial,sans-serif !important;
+  font-weight:900 !important;
+}
+
+/* Any known bilingual text nodes/classes can be switched by the JS dictionary below. */
+html[lang="en"] body{direction:ltr;}
+html[lang="ar"] body{direction:rtl;}
+
+@media (max-width:480px){
+  #siteLangToggle{top:8px !important;right:8px !important;min-width:68px !important;height:34px !important;font-size:13px !important;}
+  #sakakerResponsiveDock{right:5px !important;width:58px !important;gap:4px !important;}
+  #sakakerPongDock{left:5px !important;width:58px !important;gap:4px !important;}
+  #sakakerPongDock #pongGame-btn{width:52px !important;height:52px !important;}
+}
+@media (orientation:landscape) and (max-width:900px){
+  #sakakerResponsiveDock,#sakakerPongDock{
+    gap:3px !important;
+    max-height:calc(100dvh - 12px) !important;
   }
-  .news-ticker .ticker-wrapper{
-    background:transparent !important;
-    border:0 !important;
-    box-shadow:none !important;
-    text-shadow:0 1px 3px rgba(0,0,0,.95),0 0 8px rgba(0,255,210,.35) !important;
-    font-weight:800 !important;
-    font-size:clamp(13px,1.25vw,18px) !important;
-    line-height:1.6 !important;
-  }
-  .news-ticker .clock-box{
-    background:transparent !important;
-    border:0 !important;
-    box-shadow:none !important;
-    font-family:"Tajawal","Cairo","Tahoma",Arial,sans-serif !important;
-  }
-
-  /* الحاوية التي ستجمع الأيقونات */
-  #sakakerResponsiveDock{
-    display:none;
-  }
-
-  @media (max-width:900px){
-    body:not(.locked){
-      overflow-x:hidden !important;
-    }
-
-    #sakakerResponsiveDock{
-      position:fixed;
-      inset:auto 8px 12px auto;
-      width:clamp(58px,12vw,78px);
-      max-height:calc(100dvh - 24px);
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:flex-end;
-      gap:clamp(7px,1.5vw,12px);
-      z-index:2147483000;
-      pointer-events:none;
-      overflow:visible;
-    }
-
-    #sakakerResponsiveDock > *{
-      position:relative !important;
-      inset:auto !important;
-      top:auto !important;
-      right:auto !important;
-      bottom:auto !important;
-      left:auto !important;
-      margin:0 !important;
-      flex:0 0 auto !important;
-      transform:none !important;
-      pointer-events:auto !important;
-      max-width:100% !important;
-    }
-
-    /* ترتيب ثابت داخل النظام الموحد */
-    #sakakerResponsiveDock .dock-pong{order:10 !important;}
-    #sakakerResponsiveDock .dock-video-library{order:20 !important;}
-    #sakakerResponsiveDock .dock-facebook-video{order:30 !important;}
-    #sakakerResponsiveDock .dock-live{order:40 !important;}
-    #sakakerResponsiveDock .dock-business{order:50 !important;}
-    #sakakerResponsiveDock .dock-music{order:60 !important;}
-    #sakakerResponsiveDock .dock-ship{order:70 !important;}
-    #sakakerResponsiveDock .dock-map{order:80 !important;}
-    #sakakerResponsiveDock .dock-counter{order:90 !important;}
-
-    /* توحيد الحجم بدون تغيير شكل الأيقونة الداخلي */
-    #sakakerResponsiveDock #pongGame-btn{
-      width:clamp(56px,11vw,72px) !important;
-      height:clamp(56px,11vw,72px) !important;
-    }
-
-    #sakakerResponsiveDock #facebookVideoIcon{
-      width:clamp(52px,10vw,68px) !important;
-      height:clamp(52px,10vw,68px) !important;
-    }
-
-    #sakakerResponsiveDock #emeraldLibraryButton{
-      width:clamp(62px,12vw,76px) !important;
-      min-width:0 !important;
-      min-height:clamp(56px,11vw,72px) !important;
-      height:auto !important;
-      padding:7px 4px !important;
-      font-size:clamp(8px,1.8vw,11px) !important;
-      line-height:1.25 !important;
-      text-align:center !important;
-    }
-
-    #sakakerResponsiveDock #liveFlasher,
-    #sakakerResponsiveDock #sakakerBusinessIcon,
-    #sakakerResponsiveDock #emOpenBtn,
-    #sakakerResponsiveDock #shipIcon_new,
-    #sakakerResponsiveDock .launcher{
-      width:clamp(52px,10vw,68px) !important;
-      height:clamp(52px,10vw,68px) !important;
-      max-width:68px !important;
-      max-height:68px !important;
-    }
-
-    #sakakerResponsiveDock #sakakerBusinessAd,
-    #sakakerResponsiveDock #emeraldMusicHost{
-      width:auto !important;
-      height:auto !important;
-      display:flex !important;
-      align-items:center !important;
-      justify-content:center !important;
-    }
-
-    #sakakerResponsiveDock #sakakerVisitorCounter{
-      width:auto !important;
-      max-width:calc(100vw - 100px) !important;
-      min-height:0 !important;
-      padding:5px 7px !important;
-      font-size:9px !important;
-      white-space:nowrap !important;
-    }
-
-    /* عند العرض الضيق جداً: تصغير تدريجي وليس تغيير الترتيب */
-    @media (max-width:480px){
-      #sakakerResponsiveDock{
-        inset:auto 5px 7px auto;
-        width:58px;
-        gap:5px;
-      }
-      #sakakerResponsiveDock #pongGame-btn{
-        width:56px !important;
-        height:56px !important;
-      }
-      #sakakerResponsiveDock #facebookVideoIcon,
-      #sakakerResponsiveDock #liveFlasher,
-      #sakakerResponsiveDock #sakakerBusinessIcon,
-      #sakakerResponsiveDock #emOpenBtn,
-      #sakakerResponsiveDock #shipIcon_new,
-      #sakakerResponsiveDock .launcher{
-        width:52px !important;
-        height:52px !important;
-      }
-      #sakakerResponsiveDock #emeraldLibraryButton{
-        width:56px !important;
-        min-height:52px !important;
-        font-size:8px !important;
-      }
-    }
-
-    /* الوضع الأفقي: نفس العمود، مع استغلال الارتفاع المتاح */
-    @media (orientation:landscape){
-      #sakakerResponsiveDock{
-        inset:auto 6px 7px auto;
-        max-height:calc(100dvh - 14px);
-        gap:5px;
-      }
-      #sakakerResponsiveDock > *{
-        transform:scale(.82) !important;
-        transform-origin:center center !important;
-        margin-top:-4px !important;
-        margin-bottom:-4px !important;
-      }
-    }
-  }
+  #sakakerPongDock #pongGame-btn{width:48px !important;height:48px !important;}
+}
 </style>
 
-<script>
+<script id="sakaker-ui-v2-script">
 (function(){
-  function setupResponsiveDock(){
-    let dock = document.getElementById('sakakerResponsiveDock');
+  'use strict';
+
+  /* ---------- Unified PONG side ---------- */
+  function setupPongOppositeSide(){
+    var pong=document.getElementById('pongGame-btn');
+    if(!pong) return;
+    var dock=document.getElementById('sakakerPongDock');
     if(!dock){
-      dock = document.createElement('div');
-      dock.id = 'sakakerResponsiveDock';
-      dock.setAttribute('aria-label','نظام الأيقونات المتجاوب');
+      dock=document.createElement('div');
+      dock.id='sakakerPongDock';
+      dock.setAttribute('aria-label','PONG');
       document.body.appendChild(dock);
     }
+    if(pong.parentElement!==dock) dock.appendChild(pong);
+  }
 
-    const specs = [
-      ['pongGame-btn','dock-pong'],
-      ['emeraldLibraryButton','dock-video-library'],
-      ['facebookVideoIcon','dock-facebook-video'],
-      ['liveFlasher','dock-live'],
-      ['sakakerBusinessAd','dock-business'],
-      ['emeraldMusicHost','dock-music'],
-      ['shipIcon_new','dock-ship'],
-    ];
+  /* ---------- Complete visible UI language dictionary ---------- */
+  var dict = {
+    ar:{
+      siteLangToggle:'EN',
+      'facebookVideoIcon':'فيديو',
+      'emeraldLibraryButton':'🎥 مكتبة الفيديو الزمردية<br>Emerald Video Library',
+      'pongGame-btn':'لعبة بونج',
+      'liveFlasher':'بث مباشر',
+      'sakakerBusinessAd':'أعمال شخصية وعامة',
+      'sakakerBusinessIcon':'أعمال',
+      'emOpenBtn':'الآلات الموسيقية',
+      'shipIcon_new':'السفينة',
+      'sakakerVisitorCounter':'الزوار',
+      'newsContent':'أخبار الموقع',
+      'newsContentClone':'أخبار الموقع'
+    },
+    en:{
+      siteLangToggle:'عربي',
+      'facebookVideoIcon':'Video',
+      'emeraldLibraryButton':'🎥 Emerald Video Library',
+      'pongGame-btn':'PONG Game',
+      'liveFlasher':'Live Broadcast',
+      'sakakerBusinessAd':'Personal & Public Business',
+      'sakakerBusinessIcon':'Business',
+      'emOpenBtn':'Musical Instruments',
+      'shipIcon_new':'Ship',
+      'sakakerVisitorCounter':'Visitors',
+      'newsContent':'Site News',
+      'newsContentClone':'Site News'
+    }
+  };
 
-    const moveIntoDock = () => {
-      const compact = window.innerWidth <= 900;
-      specs.forEach(([id, cls]) => {
-        const el = document.getElementById(id);
-        if(!el) return;
-        if(compact){
-          if(!el.classList.contains(cls)) el.classList.add(cls);
-          if(el.parentElement !== dock) dock.appendChild(el);
-        }
-      });
+  function setNodeText(id, lang){
+    var el=document.getElementById(id);
+    if(!el) return;
+    var value=dict[lang][id];
+    if(value==null) return;
 
-      const map = document.querySelector('.launcher');
-      if(map){
-        if(compact){
-          map.classList.add('dock-map');
-          if(map.parentElement !== dock) dock.appendChild(map);
-        }
+    /* Preserve specialized inner markup for selected buttons. */
+    if(id==='emeraldLibraryButton'){
+      el.innerHTML=value;
+    }else{
+      /* Only replace simple textual labels; preserve child graphics where possible. */
+      if(id==='facebookVideoIcon'){
+        var t=el.querySelector('.fbIconText');
+        if(t) t.textContent=(lang==='ar'?'فيديو':'Video');
+      }else if(id==='pongGame-btn'){
+        var t2=el.querySelector('.pong-label');
+        if(t2) t2.textContent='PONG';
+        el.setAttribute('aria-label',value);
+        el.setAttribute('title',value);
+      }else if(id==='emOpenBtn'){
+        /* Preserve icon/graphics and change only the accessible label when possible. */
+        el.setAttribute('aria-label',value);
+        el.setAttribute('title',value);
+        var txt=el.querySelector('.emOpenText,.em-label,.label');
+        if(txt) txt.textContent=value;
+      }else if(id==='sakakerBusinessIcon'){
+        el.setAttribute('aria-label',value);
+        el.setAttribute('title',value);
+      }else if(id==='shipIcon_new'){
+        el.setAttribute('aria-label',value);
+        el.setAttribute('title',value);
+      }else if(id==='sakakerVisitorCounter'){
+        var label=el.querySelector('.counter-label,.visitor-label');
+        if(label) label.textContent=value;
       }
+    }
+  }
 
-      const counter = document.getElementById('sakakerVisitorCounter');
-      if(counter){
-        if(compact){
-          counter.classList.add('dock-counter');
-          if(counter.parentElement !== dock) dock.appendChild(counter);
-        }
-      }
+  function translateCommonAttributes(lang){
+    document.documentElement.lang=lang;
+    document.documentElement.dir=(lang==='ar'?'rtl':'ltr');
 
-      /* في سطح المكتب نعيد العناصر لموضعها الأصلي قدر الإمكان.
-         لا نعيد إنشاء العناصر ولا نلمس مستمعات الأحداث. */
-      if(!compact){
-        if(dock.children.length){
-          [...dock.children].forEach(el => {
-            if(el.dataset.sakakerOriginalParent){
-              const parent = document.querySelector(el.dataset.sakakerOriginalParent);
-              if(parent) parent.appendChild(el);
-            }
-          });
-        }
-      }
+    var common={
+      'facebookVideoIcon':dict[lang].facebookVideoIcon,
+      'pongGame-btn':dict[lang]['pongGame-btn'],
+      'liveFlasher':dict[lang].liveFlasher,
+      'sakakerBusinessAd':dict[lang].sakakerBusinessAd,
+      'emOpenBtn':dict[lang].emOpenBtn,
+      'shipIcon_new':dict[lang].shipIcon_new
     };
-
-    // حفظ الوالد الأصلي مرة واحدة، قبل النقل.
-    specs.forEach(([id]) => {
-      const el = document.getElementById(id);
-      if(el && !el.dataset.sakakerOriginalParent){
-        const p = el.parentElement;
-        if(p && p.id){
-          el.dataset.sakakerOriginalParent = '#' + CSS.escape(p.id);
-        }
+    Object.keys(common).forEach(function(id){
+      var el=document.getElementById(id);
+      if(el){
+        el.setAttribute('aria-label',common[id]);
+        el.setAttribute('title',common[id]);
       }
     });
 
-    const map = document.querySelector('.launcher');
-    if(map && !map.dataset.sakakerOriginalParent){
-      const p = map.parentElement;
-      if(p && p.id) map.dataset.sakakerOriginalParent = '#' + CSS.escape(p.id);
-    }
-
-    const counter = document.getElementById('sakakerVisitorCounter');
-    if(counter && !counter.dataset.sakakerOriginalParent){
-      const p = counter.parentElement;
-      if(p && p.id) counter.dataset.sakakerOriginalParent = '#' + CSS.escape(p.id);
-    }
-
-    moveIntoDock();
-    window.addEventListener('resize', moveIntoDock, {passive:true});
-    window.addEventListener('orientationchange', () => setTimeout(moveIntoDock,120), {passive:true});
+    setNodeText('facebookVideoIcon',lang);
+    setNodeText('emeraldLibraryButton',lang);
+    setNodeText('pongGame-btn',lang);
+    setNodeText('liveFlasher',lang);
+    setNodeText('sakakerBusinessAd',lang);
+    setNodeText('sakakerBusinessIcon',lang);
+    setNodeText('emOpenBtn',lang);
+    setNodeText('shipIcon_new',lang);
+    setNodeText('sakakerVisitorCounter',lang);
   }
 
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', setupResponsiveDock, {once:true});
-  }else{
-    setupResponsiveDock();
+  /* Translate existing text using data-ar / data-en when supplied,
+     otherwise translate a curated set of common site labels. */
+  function translateMarkedText(lang){
+    document.querySelectorAll('[data-ar][data-en]').forEach(function(el){
+      el.textContent=(lang==='ar'?el.getAttribute('data-ar'):el.getAttribute('data-en'));
+    });
+    document.querySelectorAll('[data-title-ar][data-title-en]').forEach(function(el){
+      el.title=(lang==='ar'?el.getAttribute('data-title-ar'):el.getAttribute('data-title-en'));
+    });
+    document.querySelectorAll('[data-aria-ar][data-aria-en]').forEach(function(el){
+      el.setAttribute('aria-label',(lang==='ar'?el.getAttribute('data-aria-ar'):el.getAttribute('data-aria-en')));
+    });
   }
+
+  function applyLanguage(lang){
+    lang=(lang==='en'?'en':'ar');
+    localStorage.setItem('sakakerLanguage',lang);
+    translateMarkedText(lang);
+    translateCommonAttributes(lang);
+
+    var btn=document.getElementById('siteLangToggle');
+    if(btn){
+      btn.textContent=dict[lang].siteLangToggle;
+      btn.setAttribute('aria-label',lang==='ar'?'تبديل اللغة إلى الإنجليزية':'Switch language to Arabic');
+      btn.title=lang==='ar'?'تبديل اللغة إلى الإنجليزية':'Switch language to Arabic';
+    }
+
+    /* Translate a few existing semantic labels if present. */
+    var replacements={
+      'clock':lang==='ar'?'الساعة':'Clock',
+      'date':lang==='ar'?'التاريخ':'Date',
+      'weather':lang==='ar'?'الطقس':'Weather',
+      'locationName':lang==='ar'?'الموقع':'Location'
+    };
+    /* Do not overwrite live clock/weather values; only their title/aria. */
+    Object.keys(replacements).forEach(function(id){
+      var el=document.getElementById(id);
+      if(el) el.setAttribute('aria-label',replacements[id]);
+    });
+  }
+
+  function init(){
+    setupPongOppositeSide();
+
+    var btn=document.getElementById('siteLangToggle');
+    if(btn){
+      btn.addEventListener('click',function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        var current=localStorage.getItem('sakakerLanguage') ||
+          (document.documentElement.lang==='en'?'en':'ar');
+        applyLanguage(current==='ar'?'en':'ar');
+      },true);
+    }
+
+    var saved=localStorage.getItem('sakakerLanguage') || 'ar';
+    applyLanguage(saved);
+
+    /* Re-apply after dynamically created widgets finish rendering. */
+    setTimeout(function(){setupPongOppositeSide();applyLanguage(saved);},500);
+    setTimeout(function(){setupPongOppositeSide();},1500);
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init);
+  else init();
 })();
 </script>
 
@@ -6083,14 +6139,6 @@ pongBtn.addEventListener('mouseleave', () => {
   window.pongGame=pongGame;
 })();
 </script>
-
-
-<style id="sakaker-pong-over-library-final">
-@media (max-width:900px){
-  #sakakerResponsiveDock #pongGame-btn{order:10 !important;}
-  #sakakerResponsiveDock #emeraldLibraryButton{order:20 !important;}
-}
-</style>
 
 </body>
 </html>
