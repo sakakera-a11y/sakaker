@@ -2972,7 +2972,7 @@ footer strong{
   overflow: hidden;
   white-space: nowrap;
   position: fixed;
-  top: 20px;
+  top: 50px;
   right: 340px;
   font-size: 6px;
   z-index: 9999;
@@ -8309,148 +8309,6 @@ async function loadNews() {
   });
 }
 
-/* =================== ترجمة واجهة Pong =================== */
-function translatePongUI() {
-  const setText = (id, ar, en) => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = T(ar, en);
-  };
-
-  const setPlaceholder = (id, ar, en) => {
-    const el = document.getElementById(id);
-    if (el) el.placeholder = T(ar, en);
-  };
-
-  setText("pongGame-iconLabel", "بونج", "Pong");
-  setText("pongOnline-computer", "🤖 كمبيوتر", "🤖 Computer");
-  setText("pongOnline-player", "🎮 لاعبان", "🎮 Two Players");
-  setText("pongOnline-online", "🌐 أونلاين", "🌐 Online");
-  setText("pongGame-back", "🔙 رجوع", "🔙 Back");
-  setText("pongOnline-accept", "قبول ✓", "Accept ✓");
-  setText("pongOnline-reject", "رفض ✕", "Reject ✕");
-
-  setPlaceholder("pongOnline-name", "اكتب اسمك المستعار", "Enter your nickname");
-
-  const panelTitle = document.querySelector("#pongOnline-roomPanel h3");
-  if (panelTitle)
-    panelTitle.textContent = T("🌐 تحدي اللاعبين", "🌐 Player Challenges");
-
-  const onlineHeader =
-    document.querySelector("#pongOnline-roomPanel > div:first-child span:first-child");
-  if (onlineHeader)
-    onlineHeader.textContent = T("👥 المتواجدون", "👥 Online Players");
-
-  const emptyText = document.getElementById("pongOnline-emptyText");
-  if (emptyText)
-    emptyText.textContent = T("لا يوجد لاعبون حاليًا", "No players online");
-
-  const usersBox = document.getElementById("pongOnline-users");
-  if (usersBox && (!usersBox.children.length || usersBox.dataset.empty === "1")) {
-    usersBox.textContent = T("لا يوجد لاعبون حاليًا", "No players online");
-  }
-
-  const labels = document.querySelectorAll("#pongGame-settings label");
-  if (labels.length >= 4) {
-    labels[0].childNodes[0].textContent = T("🎨 المضرب 1:", "🎨 Paddle 1:");
-    labels[1].childNodes[0].textContent = T("🎨 المضرب 2:", "🎨 Paddle 2:");
-    labels[2].childNodes[0].textContent = T("⚪ الكرة:", "⚪ Ball:");
-    labels[3].childNodes[0].textContent = T("🎯 المستوى:", "🎯 Level:");
-  }
-
-  const level = document.getElementById("pongGame-level");
-  if (level) {
-    const opts = level.options;
-    if (opts.length >= 4) {
-      opts[0].textContent = T("سهل", "Easy");
-      opts[1].textContent = T("صعب", "Hard");
-      opts[2].textContent = T("أصعب", "Harder");
-      opts[3].textContent = T("مستحيل", "Impossible");
-    }
-  }
-
-  const statusButton = document.getElementById("pongOnline-myStatus");
-  if (statusButton) {
-    const currentStatus = window.pongMyStatus || "available";
-    statusButton.textContent =
-      currentStatus === "available"
-        ? T("🟢 متاح للعب", "🟢 Available")
-        : T("🔴 لا أريد اللعب", "🔴 Not available");
-  }
-
-  const status = document.getElementById("pongOnline-status");
-  if (status && status.dataset.i18nKey) {
-    const values = {
-      connected: ["🟢 تم الاتصال", "🟢 Connected"],
-      connecting: ["جاري الاتصال بـ Firebase...", "Connecting to Firebase..."],
-      connectionFailed: ["🔴 تعذر الاتصال", "🔴 Connection failed"],
-      wait: ["انتظر حتى يتم الاتصال", "Wait until connected"],
-      nicknameFirst: ["اكتب اسمًا مستعارًا أولًا", "Enter a nickname first"],
-      nicknameLong: ["الاسم طويل جدًا", "Nickname is too long"],
-      registerFailed: ["تعذر تسجيل الاسم", "Could not register nickname"],
-      noPlayers: ["لا يوجد لاعبون حاليًا", "No players online"],
-      loadPlayersFailed: ["تعذر تحميل المتواجدين", "Could not load online players"]
-    };
-    if (values[status.dataset.i18nKey])
-      status.textContent = T(...values[status.dataset.i18nKey]);
-  }
-
-  const rooms = document.getElementById("pongOnline-rooms");
-  if (rooms && (!rooms.children.length || rooms.dataset.static === "1")) {
-    rooms.textContent = T(
-      "اضغط على لاعب 🟢 لإرسال تحدٍ",
-      "Tap a 🟢 player to send a challenge"
-    );
-  }
-
-  const challengeText = document.getElementById("pongOnline-challengeText");
-  if (challengeText && window.pongIncomingChallenge) {
-    challengeText.textContent = T(
-      "🎮 " + window.pongIncomingChallenge.fromName + " يريد اللعب معك",
-      "🎮 " + window.pongIncomingChallenge.fromName + " wants to play with you"
-    );
-  }
-
-  const gameInfo = document.getElementById("pongOnline-gameInfo");
-  if (gameInfo && window.pongCurrentPlayer) {
-    gameInfo.textContent =
-      window.pongCurrentPlayer === "host"
-        ? T("🌐 أنت اللاعب 1", "🌐 You are Player 1")
-        : T("🌐 أنت اللاعب 2", "🌐 You are Player 2");
-  }
-
-  document.querySelectorAll("#pongOnline-users > div").forEach(item => {
-    const statusLabel = item.querySelector("span:last-child");
-    if (statusLabel) {
-      const txt = statusLabel.textContent.trim();
-      if (["متاح", "Available"].includes(txt))
-        statusLabel.textContent = T("متاح", "Available");
-      else if (["يلعب الآن", "Playing now"].includes(txt))
-        statusLabel.textContent = T("يلعب الآن", "Playing now");
-      else if (["لا يريد اللعب", "Not available"].includes(txt))
-        statusLabel.textContent = T("لا يريد اللعب", "Not available");
-    }
-
-    if (item.title === "اضغط لإرسال طلب لعب" ||
-        item.title === "Tap to send a challenge") {
-      item.title = T(
-        "اضغط لإرسال طلب لعب",
-        "Tap to send a challenge"
-      );
-    }
-  });
-
-  const playBtn = document.getElementById("pongGame-play");
-  if (playBtn)
-    playBtn.title = T("إيقاف / تشغيل", "Pause / Play");
-
-  const muteBtn = document.getElementById("pongGame-mute");
-  if (muteBtn)
-    muteBtn.title = T("كتم / تشغيل الصوت", "Mute / Unmute");
-
-  const backBtn = document.getElementById("pongGame-back");
-  if (backBtn)
-    backBtn.title = T("رجوع", "Back");
-}
 
 /* =================== تطبيق اللغة =================== */
 function applySiteLanguage() {
@@ -9739,8 +9597,8 @@ document.getElementById("closeShip_new").onclick = () => {
 <!-- 🐦 أيقونة صوت الطيور بتوهج زمردي -->
 <div id="bird-sound-btn" title="تشغيل/إيقاف صوت الطيور" style="
   position: fixed;
-  top: 20px;
-  right: 202px;
+  top: 40px;
+  right: 802px;
   width: 75px;
   height: 75px;
   background:
