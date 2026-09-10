@@ -4070,6 +4070,284 @@ body:not(.locked) #bird-sound-btn{display:none !important;}
   #sakakerVisitorCounter{max-width:calc(100vw - 120px) !important;}
 }
 </style>
+
+<!-- =========================================================
+     📱 SAKAKER — نظام الأيقونات المتجاوب الموحد
+     - عند تصغير الشاشة أو تدويرها تتجمع الأيقونات تلقائياً
+     - ترتيب عمودي مستقل عن أماكنها الأصلية
+     - PONG فوق مكتبة الفيديو
+     - شريط الأخبار خفيف بلا خلفية أو أيقونة
+========================================================= -->
+<style id="sakaker-responsive-icon-system">
+  /* شريط الأخبار: نص واضح ومتناسق، بلا صندوق أو أيقونة */
+  .news-ticker{
+    background:transparent !important;
+    border:0 !important;
+    box-shadow:none !important;
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
+    color:#fff !important;
+    font-family:"Tajawal","Cairo","Tahoma",Arial,sans-serif !important;
+  }
+  .news-ticker .ticker-wrapper{
+    background:transparent !important;
+    border:0 !important;
+    box-shadow:none !important;
+    text-shadow:0 1px 3px rgba(0,0,0,.95),0 0 8px rgba(0,255,210,.35) !important;
+    font-weight:800 !important;
+    font-size:clamp(13px,1.25vw,18px) !important;
+    line-height:1.6 !important;
+  }
+  .news-ticker .clock-box{
+    background:transparent !important;
+    border:0 !important;
+    box-shadow:none !important;
+    font-family:"Tajawal","Cairo","Tahoma",Arial,sans-serif !important;
+  }
+
+  /* الحاوية التي ستجمع الأيقونات */
+  #sakakerResponsiveDock{
+    display:none;
+  }
+
+  @media (max-width:900px){
+    body:not(.locked){
+      overflow-x:hidden !important;
+    }
+
+    #sakakerResponsiveDock{
+      position:fixed;
+      inset:auto 8px 12px auto;
+      width:clamp(58px,12vw,78px);
+      max-height:calc(100dvh - 24px);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-end;
+      gap:clamp(7px,1.5vw,12px);
+      z-index:2147483000;
+      pointer-events:none;
+      overflow:visible;
+    }
+
+    #sakakerResponsiveDock > *{
+      position:relative !important;
+      inset:auto !important;
+      top:auto !important;
+      right:auto !important;
+      bottom:auto !important;
+      left:auto !important;
+      margin:0 !important;
+      flex:0 0 auto !important;
+      transform:none !important;
+      pointer-events:auto !important;
+      max-width:100% !important;
+    }
+
+    /* ترتيب ثابت داخل النظام الموحد */
+    #sakakerResponsiveDock .dock-pong{order:10 !important;}
+    #sakakerResponsiveDock .dock-video-library{order:20 !important;}
+    #sakakerResponsiveDock .dock-facebook-video{order:30 !important;}
+    #sakakerResponsiveDock .dock-live{order:40 !important;}
+    #sakakerResponsiveDock .dock-business{order:50 !important;}
+    #sakakerResponsiveDock .dock-music{order:60 !important;}
+    #sakakerResponsiveDock .dock-ship{order:70 !important;}
+    #sakakerResponsiveDock .dock-map{order:80 !important;}
+    #sakakerResponsiveDock .dock-counter{order:90 !important;}
+
+    /* توحيد الحجم بدون تغيير شكل الأيقونة الداخلي */
+    #sakakerResponsiveDock #pongGame-btn{
+      width:clamp(56px,11vw,72px) !important;
+      height:clamp(56px,11vw,72px) !important;
+    }
+
+    #sakakerResponsiveDock #facebookVideoIcon{
+      width:clamp(52px,10vw,68px) !important;
+      height:clamp(52px,10vw,68px) !important;
+    }
+
+    #sakakerResponsiveDock #emeraldLibraryButton{
+      width:clamp(62px,12vw,76px) !important;
+      min-width:0 !important;
+      min-height:clamp(56px,11vw,72px) !important;
+      height:auto !important;
+      padding:7px 4px !important;
+      font-size:clamp(8px,1.8vw,11px) !important;
+      line-height:1.25 !important;
+      text-align:center !important;
+    }
+
+    #sakakerResponsiveDock #liveFlasher,
+    #sakakerResponsiveDock #sakakerBusinessIcon,
+    #sakakerResponsiveDock #emOpenBtn,
+    #sakakerResponsiveDock #shipIcon_new,
+    #sakakerResponsiveDock .launcher{
+      width:clamp(52px,10vw,68px) !important;
+      height:clamp(52px,10vw,68px) !important;
+      max-width:68px !important;
+      max-height:68px !important;
+    }
+
+    #sakakerResponsiveDock #sakakerBusinessAd,
+    #sakakerResponsiveDock #emeraldMusicHost{
+      width:auto !important;
+      height:auto !important;
+      display:flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+    }
+
+    #sakakerResponsiveDock #sakakerVisitorCounter{
+      width:auto !important;
+      max-width:calc(100vw - 100px) !important;
+      min-height:0 !important;
+      padding:5px 7px !important;
+      font-size:9px !important;
+      white-space:nowrap !important;
+    }
+
+    /* عند العرض الضيق جداً: تصغير تدريجي وليس تغيير الترتيب */
+    @media (max-width:480px){
+      #sakakerResponsiveDock{
+        inset:auto 5px 7px auto;
+        width:58px;
+        gap:5px;
+      }
+      #sakakerResponsiveDock #pongGame-btn{
+        width:56px !important;
+        height:56px !important;
+      }
+      #sakakerResponsiveDock #facebookVideoIcon,
+      #sakakerResponsiveDock #liveFlasher,
+      #sakakerResponsiveDock #sakakerBusinessIcon,
+      #sakakerResponsiveDock #emOpenBtn,
+      #sakakerResponsiveDock #shipIcon_new,
+      #sakakerResponsiveDock .launcher{
+        width:52px !important;
+        height:52px !important;
+      }
+      #sakakerResponsiveDock #emeraldLibraryButton{
+        width:56px !important;
+        min-height:52px !important;
+        font-size:8px !important;
+      }
+    }
+
+    /* الوضع الأفقي: نفس العمود، مع استغلال الارتفاع المتاح */
+    @media (orientation:landscape){
+      #sakakerResponsiveDock{
+        inset:auto 6px 7px auto;
+        max-height:calc(100dvh - 14px);
+        gap:5px;
+      }
+      #sakakerResponsiveDock > *{
+        transform:scale(.82) !important;
+        transform-origin:center center !important;
+        margin-top:-4px !important;
+        margin-bottom:-4px !important;
+      }
+    }
+  }
+</style>
+
+<script>
+(function(){
+  function setupResponsiveDock(){
+    let dock = document.getElementById('sakakerResponsiveDock');
+    if(!dock){
+      dock = document.createElement('div');
+      dock.id = 'sakakerResponsiveDock';
+      dock.setAttribute('aria-label','نظام الأيقونات المتجاوب');
+      document.body.appendChild(dock);
+    }
+
+    const specs = [
+      ['pongGame-btn','dock-pong'],
+      ['emeraldLibraryButton','dock-video-library'],
+      ['facebookVideoIcon','dock-facebook-video'],
+      ['liveFlasher','dock-live'],
+      ['sakakerBusinessAd','dock-business'],
+      ['emeraldMusicHost','dock-music'],
+      ['shipIcon_new','dock-ship'],
+    ];
+
+    const moveIntoDock = () => {
+      const compact = window.innerWidth <= 900;
+      specs.forEach(([id, cls]) => {
+        const el = document.getElementById(id);
+        if(!el) return;
+        if(compact){
+          if(!el.classList.contains(cls)) el.classList.add(cls);
+          if(el.parentElement !== dock) dock.appendChild(el);
+        }
+      });
+
+      const map = document.querySelector('.launcher');
+      if(map){
+        if(compact){
+          map.classList.add('dock-map');
+          if(map.parentElement !== dock) dock.appendChild(map);
+        }
+      }
+
+      const counter = document.getElementById('sakakerVisitorCounter');
+      if(counter){
+        if(compact){
+          counter.classList.add('dock-counter');
+          if(counter.parentElement !== dock) dock.appendChild(counter);
+        }
+      }
+
+      /* في سطح المكتب نعيد العناصر لموضعها الأصلي قدر الإمكان.
+         لا نعيد إنشاء العناصر ولا نلمس مستمعات الأحداث. */
+      if(!compact){
+        if(dock.children.length){
+          [...dock.children].forEach(el => {
+            if(el.dataset.sakakerOriginalParent){
+              const parent = document.querySelector(el.dataset.sakakerOriginalParent);
+              if(parent) parent.appendChild(el);
+            }
+          });
+        }
+      }
+    };
+
+    // حفظ الوالد الأصلي مرة واحدة، قبل النقل.
+    specs.forEach(([id]) => {
+      const el = document.getElementById(id);
+      if(el && !el.dataset.sakakerOriginalParent){
+        const p = el.parentElement;
+        if(p && p.id){
+          el.dataset.sakakerOriginalParent = '#' + CSS.escape(p.id);
+        }
+      }
+    });
+
+    const map = document.querySelector('.launcher');
+    if(map && !map.dataset.sakakerOriginalParent){
+      const p = map.parentElement;
+      if(p && p.id) map.dataset.sakakerOriginalParent = '#' + CSS.escape(p.id);
+    }
+
+    const counter = document.getElementById('sakakerVisitorCounter');
+    if(counter && !counter.dataset.sakakerOriginalParent){
+      const p = counter.parentElement;
+      if(p && p.id) counter.dataset.sakakerOriginalParent = '#' + CSS.escape(p.id);
+    }
+
+    moveIntoDock();
+    window.addEventListener('resize', moveIntoDock, {passive:true});
+    window.addEventListener('orientationchange', () => setTimeout(moveIntoDock,120), {passive:true});
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', setupResponsiveDock, {once:true});
+  }else{
+    setupResponsiveDock();
+  }
+})();
+</script>
+
 </head>
 <body>
 <!-- =========================================================
@@ -5805,6 +6083,14 @@ pongBtn.addEventListener('mouseleave', () => {
   window.pongGame=pongGame;
 })();
 </script>
+
+
+<style id="sakaker-pong-over-library-final">
+@media (max-width:900px){
+  #sakakerResponsiveDock #pongGame-btn{order:10 !important;}
+  #sakakerResponsiveDock #emeraldLibraryButton{order:20 !important;}
+}
+</style>
 
 </body>
 </html>
