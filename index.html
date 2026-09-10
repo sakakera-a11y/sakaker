@@ -3476,7 +3476,7 @@ footer strong{
 #emeraldLibraryButton {
   position: fixed;
   right:1150px;
-  top: 290px;
+  top: 590px;
   z-index: 9500;
   cursor: pointer;
   padding: 2px 2px;
@@ -6148,7 +6148,7 @@ pongBtn.addEventListener('mouseleave', () => {
      3) الأيقونات الرئيسية أصغر وبحجم ثابت غير ديناميكي
      4) أسطول سفن زخرفي في الخلفية
      5) قناع خفيف لإخفاء توقيع sakaker.co المدمج أسفل الخلفية
-
+========================================================= -->
 <style id="sakaker-final-polish">
 /* زر تبديل اللغة — الجهة المقابلة */
 #siteLangToggle{
@@ -9468,6 +9468,7 @@ window.addEventListener('orientationchange', adjustLayoutOnOrientation);
 })();
 </script>
 
+<!-- ================= أيقونة القصة + النافذة المعدلة ================= -->
 <style>
 /* أيقونة القصة */
 #shipIcon_new {
@@ -9618,7 +9619,7 @@ font-weight:bold;
 ">
     <!-- =========================================================
 🌙 الذكرى السنوية لبناء موقع أبو القمر زمرد
-
+========================================================= -->
 
 <div style="
 margin:20px;
@@ -16959,5 +16960,62 @@ window.addEventListener(
 </div>
 <div id="sakakerWatermarkMask" aria-hidden="true"></div>
 
+
+<style id="sakaker-final-position-fix">
+/* إزالة أي علامات/شرطات نصية غير مرغوبة في منتصف الصفحة */
+body > #sakakerFleet, #sakakerFleet, #sakakerWatermarkMask { pointer-events:none !important; }
+#sakakerFleet { z-index:0 !important; }
+
+/* تثبيت الأزرار أسفل الصفحة فوق عداد الزوار */
+#emeraldLibraryButton {
+  position:fixed !important;
+  left:12px !important; right:auto !important;
+  top:auto !important;
+  bottom:115px !important;
+  width:92px !important; height:92px !important;
+  min-width:92px !important; max-width:92px !important;
+  min-height:92px !important; max-height:92px !important;
+  z-index:2147483000 !important;
+}
+#sakakerPongDock {
+  position:fixed !important;
+  left:12px !important; right:auto !important;
+  top:auto !important;
+  bottom:215px !important;
+  width:68px !important; height:68px !important;
+  z-index:2147483001 !important;
+}
+#sakakerPongDock #pongGame-btn, #pongGame-btn {
+  width:62px !important; height:62px !important;
+  min-width:62px !important; max-width:62px !important;
+  min-height:62px !important; max-height:62px !important;
+}
+
+/* إخفاء أي عنصر نصي شارد ناتج عن زخارف/شرطات فقط */
+.sakaker-stray-dashes, .stray-dashes, .random-dashes { display:none !important; }
+
+@media (max-width:700px){
+  #emeraldLibraryButton { left:8px !important; bottom:92px !important; width:76px !important; height:76px !important; min-width:76px !important; max-width:76px !important; min-height:76px !important; max-height:76px !important; }
+  #sakakerPongDock { left:8px !important; bottom:175px !important; width:58px !important; height:58px !important; }
+  #sakakerPongDock #pongGame-btn, #pongGame-btn { width:52px !important; height:52px !important; min-width:52px !important; max-width:52px !important; min-height:52px !important; max-height:52px !important; }
+}
+</style>
+<script>
+(function(){
+  // إخفاء عناصر نصية تتكون فقط من شرطات/علامات متكررة إذا ظهرت في منتصف الصفحة.
+  const re=/^[\s\-–—_•·|/\\~*]+$/;
+  function clean(){
+    document.querySelectorAll('body *').forEach(el=>{
+      if(el.id==='sakakerFleet'||el.id==='sakakerWatermarkMask'||el.id==='emeraldLibraryButton'||el.id==='sakakerPongDock') return;
+      if(el.children.length===0){
+        const t=(el.textContent||'').trim();
+        if(t && t.length<=80 && re.test(t)) el.style.display='none';
+      }
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',clean); else clean();
+  setTimeout(clean,1000);
+})();
+</script>
 </body>
 </html>
