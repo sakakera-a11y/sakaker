@@ -31,17 +31,36 @@ body.locked > *:not(#loginOverlay){
     direction:rtl;
 
     /* 🖼️ خلفية صفحة الدخول فقط */
+  #loginOverlay{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:999999;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    overflow-y:auto;
+    overflow-x:hidden;
+
+    direction:rtl;
+
+    /* 🖼️ خلفية صفحة الدخول فقط */
     background-image:
         linear-gradient(
             rgba(0,0,0,.30),
             rgba(0,0,0,.55)
         ),
-       url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B5%D9%88%D8%B1%D8%A9.png");
+        url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%20Sep%2010%2C%202026%2C%2011_47_03%20AM.png");
+
     background-size:cover;
-    background-position:center
+    background-position:center;
     background-repeat:no-repeat;
 
     backdrop-filter:blur(2px);
+}
 
     box-sizing:border-box;
     padding:30px 15px;
@@ -1734,7 +1753,7 @@ footer strong{
   justify-content:space-between;
 
   padding:15px 18px;
-
+background-size:contain;
   border-bottom:1px solid var(--border);
 
   background:
@@ -2133,39 +2152,7 @@ footer strong{
 }
 </style>
 
-<style>
-/* تهيئة الصفحة وجعل الخلفية تمتد بالكامل */
-        body {
-            margin: 0;
-            padding: 0;
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: white;
-            
-            /* كود الخلفية مع رابط الصورة المرسلة */
-            background: url("https://d.top4top.io/p_3858dvoq11.png") center/cover no-repeat;
-            background-attachment: fixed; /* لتثبيت الخلفية عند التمرير */
-        }
 
-
-        h1 {
-            margin: 0 0 15px 0;
-            font-size: 2.2rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-        }
-
-        p {
-            margin: 0;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            opacity: 0.95;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
-        }
-</style>
 <style>
 /* =========================================================
    الحاوية
@@ -3771,7 +3758,7 @@ body{
   background-image:
     linear-gradient(rgba(0,0,0,.20), rgba(0,0,0,.38)),
     url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B5%D9%88%D8%B1%D8%A9.png"); !important;
-  background-size:cover !important;
+  background-size:contain;
   background-position:center center !important;
   background-repeat:no-repeat !important;
   background-attachment:fixed !important;
@@ -3873,7 +3860,7 @@ body{
 /* ===== تحديث شاشة الدخول: شفافة + نصف الحجم تقريباً + الخلفية كاملة ===== */
 #loginOverlay{
   background-image:url("https://d.top4top.io/p_3858dvoq11.png") !important;
-  background-size:cover !important;
+  background-size:contain;
   background-position:center center !important;
   background-repeat:no-repeat !important;
   background-attachment:fixed !important;
