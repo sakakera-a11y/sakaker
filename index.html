@@ -17019,5 +17019,275 @@ body > #sakakerFleet, #sakakerFleet, #sakakerWatermarkMask { pointer-events:none
   setTimeout(clean,1000);
 })();
 </script>
+
+
+<!-- =========================================================
+     SAKAKER — الخلفية الجديدة الاحترافية + تحسين الأيقونات
+     الخلفية: ChatGPT Image Sep 11, 2026, 10_02_56 PM.png
+     ========================================================= -->
+<style id="sakaker-cinematic-background-final">
+:root{
+  --sak-bg:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%20Sep%2011%2C%202026%2C%2010_02_56%20PM.png");
+}
+
+/* الخلفية الرئيسية للموقع */
+html,body{
+  min-height:100%;
+  background:#021313 !important;
+}
+
+body{
+  position:relative !important;
+  background-image:
+    linear-gradient(180deg,
+      rgba(0,8,12,.16) 0%,
+      rgba(0,15,18,.28) 42%,
+      rgba(0,5,8,.58) 100%),
+    var(--sak-bg) !important;
+  background-size:100% 100% !important;
+  background-position:center center !important;
+  background-repeat:no-repeat !important;
+  background-attachment:fixed !important;
+}
+
+/* طبقة سينمائية ثابتة: تحافظ على الصورة واضحة وتزيد عمق الألوان */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 72% 25%,rgba(0,255,205,.10),transparent 28%),
+    radial-gradient(circle at 18% 18%,rgba(0,170,255,.08),transparent 30%),
+    linear-gradient(180deg,rgba(0,10,14,.03),rgba(0,0,0,.32));
+}
+
+/* صفحة الدخول تستخدم نفس الخلفية */
+#loginOverlay{
+  background-image:
+    linear-gradient(180deg,
+      rgba(0,8,12,.20) 0%,
+      rgba(0,8,12,.34) 45%,
+      rgba(0,0,0,.64) 100%),
+    var(--sak-bg) !important;
+  background-size:100% 100% !important;
+  background-position:center center !important;
+  background-repeat:no-repeat !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+/* صندوق الدخول: زجاج زمردي فاخر */
+#loginBox{
+  background:linear-gradient(145deg,
+    rgba(0,20,23,.62),
+    rgba(0,8,12,.42)) !important;
+  border:1px solid rgba(0,255,205,.58) !important;
+  box-shadow:
+    0 0 18px rgba(0,255,205,.18),
+    0 18px 60px rgba(0,0,0,.58),
+    inset 0 0 22px rgba(0,255,205,.05) !important;
+  backdrop-filter:blur(9px) saturate(125%) !important;
+  -webkit-backdrop-filter:blur(9px) saturate(125%) !important;
+}
+
+/* =========================================================
+   ✨ قنوات مباشرة — أيقونة مميزة وجذابة
+   ========================================================= */
+#liveFlasher{
+  position:fixed !important;
+  width:72px !important;
+  height:72px !important;
+  border-radius:50% !important;
+  top:auto !important;
+  right:18px !important;
+  bottom:220px !important;
+  transform:none !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  flex-direction:column !important;
+  gap:2px !important;
+  overflow:visible !important;
+  color:#fff !important;
+  font-family:Tajawal,Cairo,Arial,sans-serif !important;
+  font-weight:900 !important;
+  font-size:9px !important;
+  line-height:1.15 !important;
+  text-align:center !important;
+  cursor:pointer !important;
+  z-index:2147483640 !important;
+  background:
+    radial-gradient(circle at 32% 25%,
+      #ffffff 0%,
+      #bfffe9 5%,
+      #00f5c8 19%,
+      #009d85 42%,
+      #043f3b 70%,
+      #021b1b 100%) !important;
+  border:2px solid rgba(210,255,244,.92) !important;
+  box-shadow:
+    0 0 7px rgba(0,255,210,.95),
+    0 0 20px rgba(0,255,190,.75),
+    0 0 42px rgba(0,180,150,.42),
+    inset 0 0 14px rgba(255,255,255,.30) !important;
+  animation:sakLivePulse 2.2s ease-in-out infinite !important;
+}
+#liveFlasher::before{
+  content:"";
+  position:absolute;
+  inset:-7px;
+  border-radius:50%;
+  border:1px solid rgba(0,255,210,.58);
+  box-shadow:0 0 16px rgba(0,255,210,.48);
+  animation:sakLiveRing 2.2s ease-out infinite;
+}
+#liveFlasher::after{
+  content:"●";
+  position:absolute;
+  top:7px;
+  right:9px;
+  color:#ff3d4f;
+  font-size:9px;
+  text-shadow:0 0 7px #ff3048,0 0 13px rgba(255,50,70,.9);
+  animation:sakLiveDot 1s ease-in-out infinite;
+}
+#liveFlasher span{
+  position:relative;
+  z-index:2;
+  text-shadow:
+    0 0 4px #fff,
+    0 0 9px rgba(0,255,220,.95);
+}
+#liveFlasher span::before{
+  content:"◉";
+  display:block;
+  margin-bottom:1px;
+  font-size:20px;
+  line-height:18px;
+  color:#eaffff;
+  text-shadow:0 0 6px #00ffe0,0 0 15px #00a98e;
+}
+#liveFlasher:hover{
+  transform:scale(1.09) !important;
+  filter:brightness(1.14) saturate(1.15);
+}
+@keyframes sakLivePulse{
+  0%,100%{filter:brightness(1);box-shadow:0 0 7px rgba(0,255,210,.95),0 0 20px rgba(0,255,190,.70),0 0 42px rgba(0,180,150,.38),inset 0 0 14px rgba(255,255,255,.28)}
+  50%{filter:brightness(1.16);box-shadow:0 0 10px rgba(0,255,220,1),0 0 28px rgba(0,255,190,.9),0 0 55px rgba(0,200,170,.52),inset 0 0 18px rgba(255,255,255,.38)}
+}
+@keyframes sakLiveRing{
+  0%{transform:scale(.88);opacity:.8}
+  70%{transform:scale(1.20);opacity:0}
+  100%{transform:scale(1.20);opacity:0}
+}
+@keyframes sakLiveDot{
+  0%,100%{opacity:.45;transform:scale(.8)}
+  50%{opacity:1;transform:scale(1.25)}
+}
+
+/* نافذة القنوات المباشرة — طابع زمردي زجاجي */
+#livePopup{
+  background:linear-gradient(145deg,rgba(1,28,30,.94),rgba(0,8,13,.96)) !important;
+  color:#fff !important;
+  border:1px solid rgba(0,255,210,.55) !important;
+  box-shadow:0 0 20px rgba(0,255,205,.35),0 22px 70px rgba(0,0,0,.75) !important;
+  backdrop-filter:blur(12px) saturate(130%) !important;
+  -webkit-backdrop-filter:blur(12px) saturate(130%) !important;
+}
+#closePopup{
+  background:linear-gradient(135deg,#b80028,#ff405d) !important;
+  border:1px solid rgba(255,255,255,.75) !important;
+  box-shadow:0 0 12px rgba(255,30,70,.5) !important;
+}
+
+/* =========================================================
+   🎥 مكتبة الفيديو — أصغر وأنظف ومناسبة بجانب الأيقونات
+   ========================================================= */
+#emeraldLibraryButton{
+  left:14px !important;
+  right:auto !important;
+  top:auto !important;
+  bottom:220px !important;
+  width:82px !important;
+  min-width:82px !important;
+  max-width:82px !important;
+  height:42px !important;
+  min-height:42px !important;
+  max-height:42px !important;
+  padding:3px 4px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border-radius:13px !important;
+  border:1px solid rgba(0,255,220,.62) !important;
+  background:linear-gradient(135deg,rgba(0,85,75,.72),rgba(0,25,28,.78)) !important;
+  color:#dffff8 !important;
+  font-family:Tajawal,Cairo,Arial,sans-serif !important;
+  font-size:8px !important;
+  font-weight:900 !important;
+  line-height:1.12 !important;
+  text-align:center !important;
+  box-shadow:
+    0 0 7px rgba(0,255,210,.55),
+    0 0 18px rgba(0,190,160,.24),
+    inset 0 0 10px rgba(255,255,255,.06) !important;
+  text-shadow:0 0 5px rgba(0,255,220,.75) !important;
+  z-index:2147483639 !important;
+}
+#emeraldLibraryButton:hover{
+  transform:translateY(-2px) scale(1.04) !important;
+  filter:brightness(1.12) !important;
+}
+
+/* نص المكتبة في العربية/الإنجليزية يبقى واضحاً مع صغر الحجم */
+#emeraldLibraryButton br{display:block !important;}
+</style>
+
+<style id="sakaker-cinematic-mobile-final">
+@media (max-width:700px){
+  #liveFlasher{
+    right:8px !important;
+    bottom:210px !important;
+    width:62px !important;
+    height:62px !important;
+    font-size:8px !important;
+  }
+  #liveFlasher span::before{font-size:17px !important;}
+  #emeraldLibraryButton{
+    left:8px !important;
+    bottom:210px !important;
+    width:76px !important;
+    min-width:76px !important;
+    max-width:76px !important;
+    height:38px !important;
+    min-height:38px !important;
+    max-height:38px !important;
+    font-size:7px !important;
+    border-radius:11px !important;
+  }
+}
+@media (max-width:380px){
+  #liveFlasher{
+    right:7px !important;
+    bottom:198px !important;
+    width:58px !important;
+    height:58px !important;
+  }
+  #emeraldLibraryButton{
+    left:7px !important;
+    bottom:198px !important;
+    width:70px !important;
+    min-width:70px !important;
+    max-width:70px !important;
+    height:36px !important;
+    min-height:36px !important;
+    max-height:36px !important;
+    font-size:6.5px !important;
+  }
+}
+</style>
+
 </body>
 </html>
