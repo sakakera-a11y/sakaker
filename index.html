@@ -19726,3 +19726,318 @@ html body #logoutButton{
   setTimeout(enforceTransparentTop, 1500);
 })();
 </script>
+
+
+<!-- SAKAKER LOGOUT PURPLE + EMERALD VIDEO CLOSE FIX -->
+<style id="sakaker-logout-emerald-close-final">
+
+/* =========================================================
+   زر الخروج — بلا خلفية، واللون بنفسجي
+   مع إظهار خلفية الموقع خلف منطقة المستخدم
+========================================================= */
+html body #userProfile{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  border:0 !important;
+  box-shadow:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+html body #logoutButton{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+
+  border:0 !important;
+  outline:0 !important;
+
+  box-shadow:none !important;
+  -webkit-box-shadow:none !important;
+
+  color:#c084fc !important;
+
+  text-shadow:
+    0 0 5px rgba(0,0,0,.95),
+    0 0 8px rgba(192,132,252,.85),
+    0 0 16px rgba(147,51,234,.58) !important;
+
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+
+  pointer-events:auto !important;
+}
+
+html body #logoutButton:hover,
+html body #logoutButton:active{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  border:0 !important;
+  box-shadow:none !important;
+
+  color:#e9d5ff !important;
+  transform:scale(1.07) !important;
+}
+
+html body #logoutText{
+  color:#c084fc !important;
+  font-weight:900 !important;
+  text-shadow:
+    0 0 5px rgba(0,0,0,.95),
+    0 0 9px rgba(192,132,252,.90),
+    0 0 18px rgba(147,51,234,.62) !important;
+}
+
+/* الاسم يبقى مقروءاً فوق الخلفية */
+html body #userName{
+  text-shadow:
+    0 1px 3px rgba(0,0,0,1),
+    0 0 7px rgba(0,255,213,.55) !important;
+}
+
+
+/* =========================================================
+   فيديو مكتبة الفيديو الزمردية
+   النافذة وزر الإغلاق فوق جميع محتوى الموقع
+========================================================= */
+html body #emeraldModal{
+  position:fixed !important;
+  inset:0 !important;
+
+  top:0 !important;
+  left:0 !important;
+  right:0 !important;
+  bottom:0 !important;
+
+  width:100vw !important;
+  height:100dvh !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  padding:54px 12px 14px !important;
+  box-sizing:border-box !important;
+
+  background:rgba(0,5,10,.82) !important;
+
+  backdrop-filter:blur(10px) saturate(125%) !important;
+  -webkit-backdrop-filter:blur(10px) saturate(125%) !important;
+
+  z-index:2147483646 !important;
+  isolation:isolate !important;
+
+  overflow:hidden !important;
+}
+
+/* الفيديو نفسه يكون أسفل زر الإغلاق */
+html body #emeraldModal iframe{
+  position:relative !important;
+  z-index:1 !important;
+
+  width:min(1100px,94vw) !important;
+  height:min(76dvh,700px) !important;
+
+  border:1px solid rgba(0,255,213,.62) !important;
+  border-radius:18px !important;
+
+  box-shadow:
+    0 0 22px rgba(0,255,213,.48),
+    0 0 70px rgba(0,180,255,.20) !important;
+}
+
+/* زر إغلاق مكتبة الفيديو — فوق الجميع دائماً */
+html body #emeraldModalClose{
+  position:fixed !important;
+
+  top:max(10px, env(safe-area-inset-top)) !important;
+  right:max(10px, env(safe-area-inset-right)) !important;
+  left:auto !important;
+  bottom:auto !important;
+
+  width:auto !important;
+  min-width:86px !important;
+  height:40px !important;
+
+  padding:0 14px !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(108,34,180,.94),
+      rgba(65,18,110,.96)
+    ) !important;
+
+  color:#fff !important;
+
+  border:1px solid rgba(233,213,255,.88) !important;
+  border-radius:20px !important;
+
+  box-shadow:
+    0 0 12px rgba(192,132,252,.95),
+    0 0 28px rgba(126,34,206,.64) !important;
+
+  font-family:Tajawal,Cairo,Arial,sans-serif !important;
+  font-size:13px !important;
+  font-weight:900 !important;
+
+  cursor:pointer !important;
+  pointer-events:auto !important;
+
+  z-index:2147483647 !important;
+}
+
+html body #emeraldModalClose:hover{
+  transform:scale(1.06) !important;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(147,51,234,.98),
+      rgba(88,28,135,.98)
+    ) !important;
+}
+
+/* عند فتح فيديو المكتبة نخفي العناصر العائمة العليا
+   حتى لا تغطي زر الإغلاق بأي حال */
+body.sakaker-emerald-video-open #userProfile,
+body.sakaker-emerald-video-open #siteLangToggle,
+body.sakaker-emerald-video-open .news-ticker,
+body.sakaker-emerald-video-open #facebookVideoIcon,
+body.sakaker-emerald-video-open #liveFlasher,
+body.sakaker-emerald-video-open #sakakerPongDock,
+body.sakaker-emerald-video-open #pongGame-btn,
+body.sakaker-emerald-video-open #sakakerBusinessAd,
+body.sakaker-emerald-video-open #emeraldLibraryButton,
+body.sakaker-emerald-video-open #emeraldMusicHost #emOpenBtn,
+body.sakaker-emerald-video-open #shipIcon_new,
+body.sakaker-emerald-video-open .video-top-container-fixed,
+body.sakaker-emerald-video-open .launcher,
+body.sakaker-emerald-video-open #sakakerVisitorCounter,
+body.sakaker-emerald-video-open #sakakerWisdomBox{
+  visibility:hidden !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+
+/* لكن المودال نفسه وزر الإغلاق يظلان ظاهرين */
+body.sakaker-emerald-video-open #emeraldModal,
+body.sakaker-emerald-video-open #emeraldModal *{
+  visibility:visible !important;
+}
+
+@media(max-width:700px){
+  html body #emeraldModal{
+    padding:
+      max(54px, env(safe-area-inset-top))
+      7px
+      max(10px, env(safe-area-inset-bottom))
+      7px !important;
+  }
+
+  html body #emeraldModal iframe{
+    width:calc(100vw - 14px) !important;
+    height:72dvh !important;
+    border-radius:14px !important;
+  }
+
+  html body #emeraldModalClose{
+    top:max(8px, env(safe-area-inset-top)) !important;
+    right:max(8px, env(safe-area-inset-right)) !important;
+    min-width:76px !important;
+    height:38px !important;
+    padding:0 11px !important;
+    font-size:12px !important;
+  }
+}
+
+</style>
+
+<script id="sakaker-logout-emerald-close-js">
+(function(){
+
+  function isEnglish(){
+    return (
+      document.documentElement.lang === "en" ||
+      document.documentElement.dir === "ltr" ||
+      localStorage.getItem("sakakerLang") === "en"
+    );
+  }
+
+  function syncEmeraldVideo(){
+    const modal = document.getElementById("emeraldModal");
+    const closeBtn = document.getElementById("emeraldModalClose");
+
+    if(modal){
+      document.body.classList.add("sakaker-emerald-video-open");
+
+      modal.style.setProperty("z-index","2147483646","important");
+
+      if(closeBtn){
+        closeBtn.style.setProperty("z-index","2147483647","important");
+        closeBtn.style.setProperty("pointer-events","auto","important");
+        closeBtn.textContent = isEnglish() ? "Close ✕" : "إغلاق ✕";
+        closeBtn.setAttribute(
+          "aria-label",
+          isEnglish() ? "Close video" : "إغلاق الفيديو"
+        );
+      }
+    }else{
+      document.body.classList.remove("sakaker-emerald-video-open");
+    }
+  }
+
+  function closeEmeraldVideoSafely(){
+    const modal = document.getElementById("emeraldModal");
+    if(modal){
+      const frame = modal.querySelector("iframe");
+      if(frame) frame.src = "";
+      modal.remove();
+    }
+    document.body.classList.remove("sakaker-emerald-video-open");
+  }
+
+  /* مراقبة إنشاء المودال الديناميكي */
+  new MutationObserver(syncEmeraldVideo).observe(
+    document.body,
+    {childList:true, subtree:true}
+  );
+
+  /* ضمان الإغلاق حتى لو تعارض onclick القديم */
+  document.addEventListener("click", function(e){
+    const btn = e.target.closest("#emeraldModalClose");
+    if(btn){
+      e.preventDefault();
+      e.stopPropagation();
+      closeEmeraldVideoSafely();
+    }
+  }, true);
+
+  /* ESC يغلق الفيديو أيضاً */
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape" && document.getElementById("emeraldModal")){
+      closeEmeraldVideoSafely();
+    }
+  });
+
+  /* تحديث لغة زر الإغلاق بعد تبديل اللغة */
+  document.addEventListener("click", function(e){
+    if(e.target.closest("#siteLangToggle")){
+      setTimeout(syncEmeraldVideo, 20);
+      setTimeout(syncEmeraldVideo, 200);
+    }
+  }, true);
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", syncEmeraldVideo);
+  }else{
+    syncEmeraldVideo();
+  }
+
+})();
+</script>
