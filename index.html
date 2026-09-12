@@ -4263,8 +4263,8 @@ html[lang="ar"] body{direction:rtl;}
       'emOpenBtn':'الآلات الموسيقية',
       'shipIcon_new':'السفينة',
       'sakakerVisitorCounter':'الزوار',
-      'newsContent':'أخبار الموقع',
-      'newsContentClone':'أخبار الموقع'
+      'newsContent':'أخبار عالمية',
+      'newsContentClone':'أخبار عالمية'
     },
     en:{
       siteLangToggle:'عربي',
@@ -4277,8 +4277,8 @@ html[lang="ar"] body{direction:rtl;}
       'emOpenBtn':'Musical Instruments',
       'shipIcon_new':'Ship',
       'sakakerVisitorCounter':'Visitors',
-      'newsContent':'Site News',
-      'newsContentClone':'Site News'
+      'newsContent':'World News',
+      'newsContentClone':'World News'
     }
   };
 
@@ -19023,7 +19023,7 @@ html body #siteLangToggle{
     }
 
     const lang = document.documentElement.lang === "en" ? "en" : "ar";
-    label.textContent = lang === "ar" ? "✦ أخبار الموقع" : "✦ SITE NEWS";
+    label.textContent = lang === "ar" ? "✦ أخبار عالمية" : "✦ WORLD NEWS";
   }
 
   function syncLoginDirection(){
@@ -19071,5 +19071,148 @@ html body #siteLangToggle{
 
   setTimeout(refreshLuxuryUI, 500);
   setTimeout(refreshLuxuryUI, 1800);
+})();
+</script>
+
+
+<!-- SAKAKER WORLD NEWS + LOGOUT CLEARANCE -->
+<style id="sakaker-world-news-position-final">
+
+/* =========================================================
+   إبقاء بيانات المستخدم وزر الخروج فوق كل عناصر الرأس
+========================================================= */
+html body #userProfile{
+  z-index:2147483400 !important;
+  pointer-events:auto !important;
+}
+
+html body #logoutButton{
+  position:relative !important;
+  z-index:2147483500 !important;
+  pointer-events:auto !important;
+}
+
+/* =========================================================
+   نقل شريط الساعة + الأخبار أسفل منطقة المستخدم
+   حتى لا يغطي زر الخروج
+========================================================= */
+html body .news-ticker{
+  top:76px !important;
+  z-index:2147481800 !important;
+  width:min(1020px,84vw) !important;
+}
+
+/* زر اللغة يبقى في الزاوية ولا يتداخل مع المستخدم */
+html body #siteLangToggle{
+  z-index:2147482200 !important;
+}
+
+/* عنوان الأخبار العالمية */
+html body .sakaker-news-label{
+  min-width:82px !important;
+  justify-content:center !important;
+}
+
+/* =========================================================
+   الجوال: بيانات المستخدم أولاً ثم الأخبار تحتها
+========================================================= */
+@media(max-width:700px){
+
+  html body #userProfile{
+    top:8px !important;
+    right:8px !important;
+    z-index:2147483400 !important;
+  }
+
+  html body #logoutButton{
+    z-index:2147483500 !important;
+  }
+
+  html body .news-ticker{
+    top:66px !important;
+    left:50% !important;
+    right:auto !important;
+    transform:translateX(-50%) !important;
+    width:calc(100vw - 16px) !important;
+    min-height:80px !important;
+    z-index:2147481800 !important;
+  }
+
+  /* زر اللغة يكون داخل مساحة مستقلة أعلى اليسار */
+  html body #siteLangToggle{
+    top:9px !important;
+    left:8px !important;
+    right:auto !important;
+    z-index:2147482200 !important;
+  }
+}
+
+@media(max-width:390px){
+  html body .news-ticker{
+    top:62px !important;
+    width:calc(100vw - 12px) !important;
+  }
+}
+
+</style>
+
+<script id="sakaker-world-news-position-js">
+(function(){
+
+  function setWorldNewsLabel(){
+    const label = document.querySelector(".sakaker-news-label");
+    if(!label) return;
+
+    const isEn =
+      document.documentElement.lang === "en" ||
+      document.documentElement.dir === "ltr" ||
+      localStorage.getItem("sakakerLang") === "en";
+
+    label.textContent = isEn ? "✦ WORLD NEWS" : "✦ أخبار عالمية";
+  }
+
+  function protectLogout(){
+    const profile = document.getElementById("userProfile");
+    const logout = document.getElementById("logoutButton");
+
+    if(profile){
+      profile.style.setProperty("z-index","2147483400","important");
+      profile.style.setProperty("pointer-events","auto","important");
+    }
+
+    if(logout){
+      logout.style.setProperty("z-index","2147483500","important");
+      logout.style.setProperty("pointer-events","auto","important");
+    }
+  }
+
+  function refresh(){
+    setWorldNewsLabel();
+    protectLogout();
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", refresh);
+  }else{
+    refresh();
+  }
+
+  document.addEventListener("click", function(e){
+    if(
+      e.target.closest("#siteLangToggle") ||
+      e.target.closest("#loginLanguageButton")
+    ){
+      setTimeout(refresh, 20);
+      setTimeout(refresh, 250);
+    }
+  }, true);
+
+  new MutationObserver(refresh).observe(
+    document.documentElement,
+    {attributes:true, attributeFilter:["lang","dir"]}
+  );
+
+  setTimeout(refresh, 500);
+  setTimeout(refresh, 1500);
 })();
 </script>
