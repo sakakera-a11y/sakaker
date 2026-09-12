@@ -20123,3 +20123,257 @@ body.locked #sakakerInfoPanel{
   setTimeout(buildCornerInfoPanel,1400);
 })();
 </script>
+
+
+<!-- SAKAKER COMPACT INFO + CLEAN LOGOUT FINAL -->
+<style id="sakaker-compact-info-clean-logout-final">
+
+/* =========================================================
+   مربع المعلومات — أصغر بحوالي النصف وشفاف بالكامل
+========================================================= */
+html body #sakakerInfoPanel{
+  width:132px !important;
+  min-width:132px !important;
+  max-width:132px !important;
+
+  min-height:0 !important;
+
+  padding:5px 6px !important;
+  gap:2px !important;
+
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+
+  border:0 !important;
+  border-radius:0 !important;
+
+  box-shadow:none !important;
+
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+
+  overflow:visible !important;
+}
+
+/* إزالة أيقونة الجوهرة نهائياً */
+html body #sakakerInfoPanel .sakaker-info-gem{
+  display:none !important;
+}
+
+/* رأس المربع أصغر */
+html body #sakakerInfoPanel .sakaker-info-head{
+  min-height:22px !important;
+  height:22px !important;
+
+  padding:0 !important;
+  margin:0 0 2px 0 !important;
+
+  border:0 !important;
+
+  justify-content:flex-start !important;
+}
+
+/* زر اللغة داخل المربع بشكل صغير وشفاف */
+html body #sakakerInfoPanel #siteLangToggle{
+  width:auto !important;
+  min-width:42px !important;
+  max-width:52px !important;
+
+  height:22px !important;
+
+  padding:0 6px !important;
+  margin:0 !important;
+
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+
+  border:1px solid rgba(255,255,255,.26) !important;
+  border-radius:11px !important;
+
+  box-shadow:none !important;
+
+  color:#fff !important;
+
+  font-size:8px !important;
+  font-weight:900 !important;
+
+  text-shadow:
+    0 1px 3px rgba(0,0,0,1),
+    0 0 5px rgba(0,255,213,.45) !important;
+}
+
+/* صفوف مضغوطة */
+html body #sakakerInfoPanel .sakaker-info-row{
+  grid-template-columns:14px minmax(0,1fr) !important;
+  gap:3px !important;
+
+  min-height:15px !important;
+  padding:0 !important;
+}
+
+/* الأيقونات الصغيرة داخل الصفوف */
+html body #sakakerInfoPanel .sakaker-info-row-icon{
+  width:14px !important;
+  font-size:8px !important;
+
+  text-shadow:
+    0 1px 2px rgba(0,0,0,1),
+    0 0 4px rgba(0,255,213,.55) !important;
+}
+
+/* القيم أصغر مع بقاء الوضوح */
+html body #sakakerInfoPanel #clock{
+  font-size:10px !important;
+  line-height:1.15 !important;
+}
+
+html body #sakakerInfoPanel #date{
+  font-size:6.5px !important;
+  line-height:1.2 !important;
+}
+
+html body #sakakerInfoPanel #weather{
+  font-size:6.5px !important;
+  line-height:1.2 !important;
+}
+
+html body #sakakerInfoPanel #locationName{
+  font-size:6px !important;
+  line-height:1.15 !important;
+  -webkit-line-clamp:1 !important;
+}
+
+/* =========================================================
+   زر الخروج — بدون خلفية وبدون لون خاص
+========================================================= */
+html body #userProfile{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+
+  border:0 !important;
+
+  box-shadow:none !important;
+
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+html body #logoutButton,
+html body #logoutButton:hover,
+html body #logoutButton:active,
+html body #logoutButton:focus{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+
+  border:0 !important;
+  outline:0 !important;
+
+  box-shadow:none !important;
+  -webkit-box-shadow:none !important;
+
+  color:inherit !important;
+
+  text-shadow:none !important;
+
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+/* إزالة أي لون مخصص عن كلمة خروج */
+html body #logoutText{
+  color:inherit !important;
+  text-shadow:none !important;
+}
+
+/* الجوال: أصغر قليلاً */
+@media(max-width:700px){
+  html body #sakakerInfoPanel{
+    width:122px !important;
+    min-width:122px !important;
+    max-width:122px !important;
+
+    top:5px !important;
+    left:5px !important;
+
+    padding:4px 5px !important;
+    gap:1px !important;
+  }
+
+  html body #sakakerInfoPanel .sakaker-info-head{
+    height:20px !important;
+    min-height:20px !important;
+  }
+
+  html body #sakakerInfoPanel #siteLangToggle{
+    min-width:38px !important;
+    max-width:46px !important;
+    height:20px !important;
+    padding:0 5px !important;
+    font-size:7px !important;
+  }
+
+  html body #sakakerInfoPanel .sakaker-info-row{
+    grid-template-columns:12px minmax(0,1fr) !important;
+    min-height:14px !important;
+    gap:2px !important;
+  }
+
+  html body #sakakerInfoPanel .sakaker-info-row-icon{
+    width:12px !important;
+    font-size:7px !important;
+  }
+
+  html body #sakakerInfoPanel #clock{font-size:9px !important;}
+  html body #sakakerInfoPanel #date,
+  html body #sakakerInfoPanel #weather{font-size:6px !important;}
+  html body #sakakerInfoPanel #locationName{font-size:5.5px !important;}
+}
+
+</style>
+
+<script id="sakaker-compact-info-clean-logout-js">
+(function(){
+  function clean(){
+    /* إزالة الجوهرة من DOM بالكامل */
+    document.querySelectorAll('#sakakerInfoPanel .sakaker-info-gem').forEach(el => el.remove());
+
+    /* إزالة أي تنسيقات inline قديمة قد تعيد لون/خلفية زر الخروج */
+    const logout = document.getElementById('logoutButton');
+    const logoutText = document.getElementById('logoutText');
+    const profile = document.getElementById('userProfile');
+
+    if(profile){
+      profile.style.setProperty('background','transparent','important');
+      profile.style.setProperty('border','0','important');
+      profile.style.setProperty('box-shadow','none','important');
+      profile.style.setProperty('backdrop-filter','none','important');
+    }
+
+    if(logout){
+      logout.style.setProperty('background','transparent','important');
+      logout.style.setProperty('border','0','important');
+      logout.style.setProperty('box-shadow','none','important');
+      logout.style.setProperty('color','inherit','important');
+      logout.style.setProperty('text-shadow','none','important');
+    }
+
+    if(logoutText){
+      logoutText.style.setProperty('color','inherit','important');
+      logoutText.style.setProperty('text-shadow','none','important');
+    }
+  }
+
+  clean();
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', clean);
+  }
+
+  setTimeout(clean,300);
+  setTimeout(clean,1200);
+})();
+</script>
