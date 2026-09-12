@@ -20525,3 +20525,125 @@ html body .cards .sakaker-site-news-card{
 }
 
 </style>
+
+
+<!-- SAKAKER ICON ORDER QUIZ ABOUT THOUGHTS -->
+<style id="sakaker-icon-order-final">
+
+/* كل أيقونة تشغل خانة واحدة فقط */
+html body .cards .icon-card{
+  grid-column:auto !important;
+  grid-row:auto !important;
+}
+
+/* =========================================================
+   العمود الأيمن:
+   اختبر معلوماتك
+   تعريف بالموقع
+   خواطر
+   أخبار الموقع
+========================================================= */
+html body .cards .sak-order-quiz{
+  grid-column:1 !important;
+  grid-row:1 !important;
+}
+
+html body .cards .sak-order-about{
+  grid-column:1 !important;
+  grid-row:2 !important;
+}
+
+html body .cards .sak-order-thoughts{
+  grid-column:1 !important;
+  grid-row:3 !important;
+}
+
+html body .cards .sakaker-site-news-card{
+  grid-column:1 !important;
+  grid-row:4 !important;
+}
+
+/* =========================================================
+   العمود المقابل:
+   ثقافة عامة
+   مختارات
+   معلومة اليوم
+   ألغاز
+========================================================= */
+html body .cards .sak-order-culture{
+  grid-column:2 !important;
+  grid-row:1 !important;
+}
+
+html body .cards .sak-order-picks{
+  grid-column:2 !important;
+  grid-row:2 !important;
+}
+
+html body .cards .sak-order-fact{
+  grid-column:2 !important;
+  grid-row:3 !important;
+}
+
+html body .cards .sak-order-riddles{
+  grid-column:2 !important;
+  grid-row:4 !important;
+}
+
+</style>
+
+<script id="sakaker-icon-order-js">
+(function(){
+  function arrangeIcons(){
+    const cards = document.querySelector('.cards');
+    if(!cards) return;
+
+    const items = Array.from(cards.querySelectorAll(':scope > .icon-card'));
+
+    items.forEach(card => {
+      card.classList.remove(
+        'sak-order-quiz',
+        'sak-order-about',
+        'sak-order-thoughts',
+        'sak-order-culture',
+        'sak-order-picks',
+        'sak-order-fact',
+        'sak-order-riddles'
+      );
+
+      const text = (card.textContent || '').replace(/\s+/g,' ').trim();
+
+      if(text.includes('اختبر معلوماتك') || text.includes('Test Your Knowledge')){
+        card.classList.add('sak-order-quiz');
+      }
+      else if(text.includes('تعريف بالموقع') || text.includes('About')){
+        card.classList.add('sak-order-about');
+      }
+      else if(text.includes('خواطر') || text.includes('Thoughts')){
+        card.classList.add('sak-order-thoughts');
+      }
+      else if(text.includes('ثقافة عامة') || text.includes('General Culture')){
+        card.classList.add('sak-order-culture');
+      }
+      else if(text.includes('مختارات') || text.includes('Selections')){
+        card.classList.add('sak-order-picks');
+      }
+      else if(text.includes('معلومة اليوم') || text.includes('Fact of the Day')){
+        card.classList.add('sak-order-fact');
+      }
+      else if(text.includes('ألغاز') || text.includes('Riddles')){
+        card.classList.add('sak-order-riddles');
+      }
+    });
+  }
+
+  arrangeIcons();
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', arrangeIcons);
+  }
+
+  setTimeout(arrangeIcons,400);
+  setTimeout(arrangeIcons,1400);
+})();
+</script>
