@@ -20409,3 +20409,119 @@ html body #logoutText{
   setTimeout(removeOldInfo,1600);
 })();
 </script>
+
+
+<!-- SAKAKER TWO COLUMN BOTTOM ICONS FINAL -->
+<style id="sakaker-two-column-bottom-icons-final">
+
+/* =========================================================
+   ترتيب جميع الأيقونات + أخبار الموقع
+   صف عمودي من عمودين: أيقونتان في كل صف
+   ويبقى التجمع كله أسفل يمين الصفحة
+========================================================= */
+
+html body .cards{
+  position:fixed !important;
+
+  right:12px !important;
+  left:auto !important;
+  top:auto !important;
+  bottom:12px !important;
+
+  width:auto !important;
+  max-width:none !important;
+  min-width:0 !important;
+
+  margin:0 !important;
+  padding:0 !important;
+
+  display:grid !important;
+
+  /* أيقونتان في كل صف */
+  grid-template-columns:repeat(2,82px) !important;
+  grid-auto-rows:82px !important;
+
+  gap:8px !important;
+
+  justify-content:end !important;
+  align-content:end !important;
+  align-items:end !important;
+
+  z-index:900000 !important;
+
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+}
+
+/* ضمان بقاء كل الأيقونات بنفس الحجم والترتيب */
+html body .cards .icon-card{
+  width:82px !important;
+  height:82px !important;
+  min-width:82px !important;
+  max-width:82px !important;
+  min-height:82px !important;
+  max-height:82px !important;
+
+  margin:0 !important;
+}
+
+/* أخبار الموقع تدخل في نفس الشبكة تماماً */
+html body .cards .sakaker-site-news-card{
+  position:relative !important;
+  right:auto !important;
+  left:auto !important;
+  top:auto !important;
+  bottom:auto !important;
+
+  grid-column:auto !important;
+  grid-row:auto !important;
+}
+
+/* الجوال: عمودان أيضاً، لكن بحجم أصغر */
+@media(max-width:700px){
+
+  html body .cards{
+    right:7px !important;
+    bottom:8px !important;
+
+    grid-template-columns:repeat(2,64px) !important;
+    grid-auto-rows:64px !important;
+
+    gap:6px !important;
+  }
+
+  html body .cards .icon-card{
+    width:64px !important;
+    height:64px !important;
+    min-width:64px !important;
+    max-width:64px !important;
+    min-height:64px !important;
+    max-height:64px !important;
+  }
+}
+
+/* الشاشات الصغيرة جداً */
+@media(max-width:390px){
+
+  html body .cards{
+    right:5px !important;
+    bottom:6px !important;
+
+    grid-template-columns:repeat(2,58px) !important;
+    grid-auto-rows:58px !important;
+
+    gap:5px !important;
+  }
+
+  html body .cards .icon-card{
+    width:58px !important;
+    height:58px !important;
+    min-width:58px !important;
+    max-width:58px !important;
+    min-height:58px !important;
+    max-height:58px !important;
+  }
+}
+
+</style>
