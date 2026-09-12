@@ -6449,18 +6449,6 @@ pongBtn.addEventListener('mouseleave', () => {
   #sakakerPongDock{bottom:378px !important;}
 }
 </style>
-
-<!-- أسطول السفن الخلفي -->
-<div id="sakakerFleet" aria-hidden="true">
-  <div class="fleet-sea"></div>
-  <div class="fleet-ship s1"><span class="fleet-sail"></span></div>
-  <div class="fleet-ship s2"><span class="fleet-sail"></span></div>
-  <div class="fleet-ship s3"><span class="fleet-sail"></span></div>
-  <div class="fleet-ship s4"><span class="fleet-sail"></span></div>
-  <div class="fleet-ship s5"><span class="fleet-sail"></span></div>
-  <div class="fleet-ship s6"><span class="fleet-sail"></span></div>
-  <div class="fleet-ship s7"><span class="fleet-sail"></span></div>
-</div>
 <div id="sakakerWatermarkMask" aria-hidden="true"></div>
 
 
@@ -6581,605 +6569,6 @@ body{
 }
 </style>
 
-
-<!-- =========================================================
-     SAKAKER — MOBILE / POPUP / BACKGROUND REFINEMENT
-     2026-09-12
-========================================================= -->
-<style id="sakaker-sep12-refinement-v3">
-
-/* =========================================================
-   1) خلفية الموقع الرئيسية — الصورة الجديدة كاملة بلا اقتصاص
-      مع طبقات إضاءة خفيفة لزيادة العمق والجاذبية
-========================================================= */
-html {
-  min-height:100%;
-  background:
-    radial-gradient(circle at 70% 16%, rgba(255,215,0,.12), transparent 27%),
-    radial-gradient(circle at 16% 22%, rgba(0,255,213,.10), transparent 28%),
-    #020b12 !important;
-}
-
-body {
-  min-height:100vh !important;
-  background-color:#020b12 !important;
-  background-image:
-    radial-gradient(circle at 72% 17%, rgba(255,230,140,.10), transparent 23%),
-    radial-gradient(circle at 18% 28%, rgba(0,255,220,.08), transparent 28%),
-    linear-gradient(180deg,
-      rgba(0,7,13,.06) 0%,
-      rgba(0,10,16,.13) 48%,
-      rgba(0,3,8,.30) 100%),
-    url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%2012%20%D8%B3%D8%A8%D8%AA%D9%85%D8%A8%D8%B1%202026%D8%8C%2008_04_27%20%D8%B5.png") !important;
-  background-repeat:no-repeat !important;
-  background-position:center top !important;
-  background-size:contain !important;
-  background-attachment:fixed !important;
-}
-
-/* =========================================================
-   2) صفحة الدخول — إرجاع الخلفية السابقة فقط
-========================================================= */
-#loginOverlay {
-  background-image:
-    linear-gradient(
-      rgba(0,0,0,.30),
-      rgba(0,0,0,.55)
-    ),
-    url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%A3%D8%A8%D9%88%D8%A7%D9%84%D9%82%D9%85%D8%B1%20%D8%B2%D9%85%D8%B1%D8%AF%20%D9%81%D9%8A%20%D8%A7%D9%84%D9%84%D9%8A%D9%84.png") !important;
-  background-size:cover !important;
-  background-position:center !important;
-  background-repeat:no-repeat !important;
-  background-attachment:scroll !important;
-  backdrop-filter:blur(2px) !important;
-  -webkit-backdrop-filter:blur(2px) !important;
-}
-
-/* =========================================================
-   3) نافذة السفينة — أعلى من جميع المحتويات عند فتحها
-========================================================= */
-#shipPopup_new {
-  position:fixed !important;
-  top:50% !important;
-  left:50% !important;
-  transform:translate3d(-50%,-50%,0) !important;
-  z-index:2147483647 !important;
-  isolation:isolate !important;
-  width:min(900px,94vw) !important;
-  max-height:88dvh !important;
-  overflow:auto !important;
-  padding:38px 24px 24px !important;
-  background:
-    radial-gradient(circle at 50% -10%, rgba(0,255,213,.22), transparent 38%),
-    radial-gradient(circle at 90% 15%, rgba(255,215,0,.10), transparent 30%),
-    linear-gradient(145deg, rgba(2,25,30,.985), rgba(3,8,20,.988)) !important;
-  border:1px solid rgba(0,255,213,.92) !important;
-  border-radius:24px !important;
-  box-shadow:
-    0 0 0 120vmax rgba(0,0,0,.76),
-    0 0 20px rgba(0,255,213,.92),
-    0 0 58px rgba(0,255,213,.46),
-    0 0 105px rgba(255,215,0,.22) !important;
-  backdrop-filter:blur(18px) saturate(135%) !important;
-  -webkit-backdrop-filter:blur(18px) saturate(135%) !important;
-}
-
-body.sakaker-ship-open #shipPopup_new {
-  z-index:2147483647 !important;
-}
-body.sakaker-ship-open #emeraldMusicHost {
-  z-index:2147482500 !important;
-}
-
-#shipPopup_new::before {
-  content:"";
-  position:absolute;
-  inset:7px;
-  border-radius:18px;
-  border:1px solid rgba(255,215,0,.48);
-  pointer-events:none;
-  z-index:0;
-  box-shadow:inset 0 0 25px rgba(0,255,213,.08);
-  animation:sakakerPopupBorderV3 4s linear infinite;
-}
-@keyframes sakakerPopupBorderV3 {
-  0%   { filter:hue-rotate(0deg) brightness(1); }
-  50%  { filter:hue-rotate(160deg) brightness(1.25); }
-  100% { filter:hue-rotate(360deg) brightness(1); }
-}
-
-#closeShip_new {
-  z-index:2147483647 !important;
-  top:9px !important;
-  right:9px !important;
-  width:38px !important;
-  height:38px !important;
-}
-
-/* اسم أبو القمر زمرد فوق أيقونة السفينة يظل مضيئاً ومتغير اللون */
-#shipIcon_new::after {
-  display:block !important;
-  background:linear-gradient(90deg,#fff3a0,#00ffd5,#7bdfff,#ffd700,#ff9eea,#fff3a0) !important;
-  background-size:350% 100% !important;
-  -webkit-background-clip:text !important;
-  background-clip:text !important;
-  color:transparent !important;
-  text-shadow:
-    0 0 4px rgba(255,255,255,.85),
-    0 0 10px rgba(0,255,213,.88),
-    0 0 18px rgba(255,215,0,.58) !important;
-  animation:sakakerShipNameGlowV3 4.6s linear infinite !important;
-}
-@keyframes sakakerShipNameGlowV3 {
-  0%   { background-position:0% 50%; filter:brightness(1); }
-  50%  { background-position:175% 50%; filter:brightness(1.35); }
-  100% { background-position:350% 50%; filter:brightness(1); }
-}
-
-/* =========================================================
-   4) Emerald Music / البيانو — أيقونة جوهرة أجمل
-========================================================= */
-#emeraldMusicHost {
-  z-index:2147483500 !important;
-}
-
-#emeraldMusicHost #emOpenBtn {
-  border-radius:30% !important;
-  clip-path:polygon(
-    50% 0%, 75% 8%, 94% 28%, 100% 50%,
-    94% 72%, 75% 92%, 50% 100%, 25% 92%,
-    6% 72%, 0% 50%, 6% 28%, 25% 8%
-  ) !important;
-  background:
-    linear-gradient(135deg, rgba(255,255,255,.38), transparent 23%),
-    conic-gradient(
-      from 30deg,
-      #003f3b,
-      #00d9b3,
-      #d8fff8,
-      #d6a900,
-      #00ffd5,
-      #053f51,
-      #003f3b
-    ) !important;
-  border:1px solid rgba(255,235,145,.95) !important;
-  box-shadow:
-    inset 0 0 18px rgba(255,255,255,.28),
-    inset 0 -10px 22px rgba(0,30,35,.48),
-    0 0 10px rgba(255,215,0,.9),
-    0 0 26px rgba(0,255,213,.88),
-    0 0 54px rgba(0,255,213,.42) !important;
-  filter:
-    drop-shadow(0 0 8px rgba(0,255,213,.88))
-    drop-shadow(0 0 16px rgba(255,215,0,.55)) !important;
-  animation:emJewelLuxuryV3 2.8s ease-in-out infinite alternate !important;
-}
-
-#emeraldMusicHost #emOpenBtn::before {
-  content:"";
-  position:absolute;
-  inset:5px;
-  clip-path:inherit;
-  border:1px solid rgba(255,255,255,.58);
-  background:
-    radial-gradient(circle at 34% 26%, rgba(255,255,255,.42), transparent 24%),
-    linear-gradient(145deg, rgba(0,255,213,.10), rgba(0,0,0,.08));
-  pointer-events:none;
-}
-
-@keyframes emJewelLuxuryV3 {
-  from {
-    transform:translateY(0) rotate(-1deg);
-    filter:drop-shadow(0 0 7px rgba(0,255,213,.72)) drop-shadow(0 0 13px rgba(255,215,0,.45));
-  }
-  to {
-    transform:translateY(-4px) rotate(1deg);
-    filter:drop-shadow(0 0 13px rgba(0,255,213,1)) drop-shadow(0 0 24px rgba(255,215,0,.75));
-  }
-}
-
-/* نافذة البيانو فوق الجميع */
-body.sakaker-music-open #emeraldMusicHost,
-body.sakaker-music-open #emPanel,
-#emeraldMusicHost #emPanel {
-  z-index:2147483647 !important;
-}
-
-#emeraldMusicHost #emPanel {
-  position:fixed !important;
-  inset:0 !important;
-  pointer-events:auto !important;
-}
-
-#emeraldMusicHost .emModal {
-  position:fixed !important;
-  inset:0 !important;
-  z-index:2147483647 !important;
-  background:
-    radial-gradient(circle at 18% 18%, rgba(0,255,213,.22), transparent 28%),
-    radial-gradient(circle at 82% 16%, rgba(255,215,0,.18), transparent 28%),
-    radial-gradient(circle at 50% 100%, rgba(0,110,255,.16), transparent 38%),
-    linear-gradient(145deg, rgba(0,8,13,.96), rgba(0,28,29,.95) 44%, rgba(8,5,15,.97)) !important;
-  backdrop-filter:blur(13px) saturate(135%) !important;
-  -webkit-backdrop-filter:blur(13px) saturate(135%) !important;
-}
-
-#emeraldMusicHost .emBox {
-  z-index:2147483647 !important;
-  background:
-    linear-gradient(145deg, rgba(3,35,35,.94), rgba(0,9,14,.97)) !important;
-  border:1px solid rgba(0,255,213,.78) !important;
-  box-shadow:
-    0 0 0 1px rgba(255,215,0,.16),
-    0 0 30px rgba(0,255,213,.50),
-    0 0 85px rgba(255,215,0,.11),
-    inset 0 0 45px rgba(0,255,213,.055) !important;
-}
-
-/* =========================================================
-   5) شريط الحكم والأمثال — فوق العداد في الجوال
-========================================================= */
-#sakakerWisdomBox {
-  bottom:48px !important;
-  z-index:2147483300 !important;
-}
-
-@media (max-width:700px) {
-  #sakakerWisdomBox {
-    bottom:58px !important;
-    width:calc(100vw - 18px) !important;
-  }
-  #sakakerWisdomText {
-    font-size:13px !important;
-    padding:7px 12px !important;
-    border-radius:18px !important;
-    line-height:1.35 !important;
-  }
-}
-
-/* =========================================================
-   6) الجوال — ترتيب الأيقونات العائمة في عمود واحد بلا تداخل
-========================================================= */
-@media (max-width:700px) {
-
-  /* عمود واحد جهة اليمين */
-  #sakakerPongDock {
-    left:auto !important;
-    right:8px !important;
-    top:auto !important;
-    bottom:82px !important;
-    width:54px !important;
-    height:54px !important;
-    z-index:2147483001 !important;
-  }
-  #sakakerPongDock #pongGame-btn,
-  #pongGame-btn {
-    width:50px !important;
-    height:50px !important;
-    min-width:50px !important;
-    max-width:50px !important;
-    min-height:50px !important;
-    max-height:50px !important;
-  }
-
-  #emeraldLibraryButton {
-    left:auto !important;
-    right:8px !important;
-    top:auto !important;
-    bottom:143px !important;
-    width:62px !important;
-    min-width:62px !important;
-    max-width:62px !important;
-    height:38px !important;
-    min-height:38px !important;
-    max-height:38px !important;
-    font-size:6.8px !important;
-    z-index:2147483002 !important;
-  }
-
-  #emeraldMusicHost #emOpenBtn {
-    left:auto !important;
-    right:8px !important;
-    top:auto !important;
-    bottom:195px !important;
-    width:54px !important;
-    height:54px !important;
-    z-index:2147483003 !important;
-  }
-
-  #sakakerBusinessAd {
-    left:auto !important;
-    right:8px !important;
-    top:auto !important;
-    bottom:256px !important;
-    z-index:2147483004 !important;
-  }
-  #sakakerBusinessIcon {
-    width:54px !important;
-    height:54px !important;
-  }
-
-  #liveFlasher {
-    left:auto !important;
-    right:8px !important;
-    top:auto !important;
-    bottom:317px !important;
-    width:54px !important;
-    height:54px !important;
-    transform:none !important;
-    z-index:2147483005 !important;
-  }
-
-  #facebookVideoIcon {
-    left:auto !important;
-    right:8px !important;
-    top:auto !important;
-    bottom:378px !important;
-    width:54px !important;
-    height:54px !important;
-    z-index:2147483006 !important;
-  }
-
-  #shipIcon_new {
-    left:auto !important;
-    right:8px !important;
-    top:auto !important;
-    bottom:442px !important;
-    width:56px !important;
-    height:56px !important;
-    z-index:2147483007 !important;
-  }
-
-  #shipIcon_new::after {
-    display:block !important;
-    font-size:8.5px !important;
-    bottom:-9px !important;
-    letter-spacing:0 !important;
-  }
-
-  /* منع أي تمدد يسبب تراكباً أفقياً */
-  #facebookVideoIcon,
-  #liveFlasher,
-  #sakakerBusinessAd,
-  #emeraldLibraryButton,
-  #sakakerPongDock,
-  #shipIcon_new,
-  #emeraldMusicHost #emOpenBtn {
-    margin:0 !important;
-    transform-origin:center !important;
-  }
-
-  /* النوافذ المنبثقة تلائم الهاتف */
-  #shipPopup_new {
-    width:calc(100vw - 16px) !important;
-    max-width:calc(100vw - 16px) !important;
-    max-height:90dvh !important;
-    padding:38px 10px 14px !important;
-    border-radius:18px !important;
-  }
-
-  #emeraldMusicHost .emBox {
-    width:calc(100vw - 10px) !important;
-    max-height:96dvh !important;
-    border-radius:16px !important;
-    padding:8px !important;
-  }
-
-  /* الخلفية الرئيسية على الجوال كاملة دون قص */
-  body {
-    background-attachment:scroll !important;
-    background-size:contain !important;
-    background-position:center top !important;
-  }
-
-  /* صندوق الدخول أصغر وأهدأ على الجوال */
-  body.locked #loginBox,
-  #loginBox {
-    width:min(86vw,320px) !important;
-    max-width:320px !important;
-    max-height:calc(100dvh - 28px) !important;
-    padding:22px 15px 16px !important;
-    border-radius:19px !important;
-  }
-
-  #loginTitle {
-    margin:15px 0 16px !important;
-    font-size:20px !important;
-  }
-
-  #loginLanguageButton {
-    top:9px !important;
-    left:9px !important;
-    min-width:70px !important;
-    padding:6px 8px !important;
-    font-size:11px !important;
-  }
-
-  .loginInput,
-  .loginAction {
-    height:43px !important;
-    margin-top:7px !important;
-    margin-bottom:7px !important;
-    font-size:13px !important;
-  }
-
-  #loginCopyright {
-    margin-top:12px !important;
-    padding-top:10px !important;
-    font-size:10px !important;
-    line-height:1.55 !important;
-  }
-
-  /* أيقونة الصوت في صفحة الدخول أصغر لتلائم الهاتف */
-  body.locked #bird-sound-btn,
-  #bird-sound-btn {
-    width:48px !important;
-    height:48px !important;
-    right:10px !important;
-    bottom:max(12px, env(safe-area-inset-bottom)) !important;
-    top:auto !important;
-    font-size:23px !important;
-  }
-}
-
-@media (max-width:390px) {
-  #sakakerPongDock { bottom:76px !important; width:50px !important; height:50px !important; }
-  #sakakerPongDock #pongGame-btn,
-  #pongGame-btn {
-    width:46px !important;
-    height:46px !important;
-    min-width:46px !important;
-    max-width:46px !important;
-    min-height:46px !important;
-    max-height:46px !important;
-  }
-
-  #emeraldLibraryButton {
-    bottom:132px !important;
-    width:58px !important;
-    min-width:58px !important;
-    max-width:58px !important;
-    height:34px !important;
-    min-height:34px !important;
-    max-height:34px !important;
-    font-size:6px !important;
-  }
-
-  #emeraldMusicHost #emOpenBtn {
-    bottom:178px !important;
-    width:50px !important;
-    height:50px !important;
-  }
-
-  #sakakerBusinessAd { bottom:234px !important; }
-  #sakakerBusinessIcon { width:50px !important; height:50px !important; }
-
-  #liveFlasher {
-    bottom:290px !important;
-    width:50px !important;
-    height:50px !important;
-  }
-
-  #facebookVideoIcon {
-    bottom:346px !important;
-    width:50px !important;
-    height:50px !important;
-  }
-
-  #shipIcon_new {
-    bottom:405px !important;
-    width:52px !important;
-    height:52px !important;
-  }
-
-  #shipIcon_new::after {
-    font-size:8px !important;
-    bottom:-8px !important;
-  }
-
-  #sakakerWisdomBox {
-    bottom:54px !important;
-  }
-
-  body.locked #loginBox,
-  #loginBox {
-    width:min(88vw,300px) !important;
-    max-width:300px !important;
-    padding:20px 13px 14px !important;
-  }
-
-  #loginTitle { font-size:18px !important; }
-  .loginInput,.loginAction { height:41px !important; font-size:12px !important; }
-  body.locked #bird-sound-btn,#bird-sound-btn {
-    width:44px !important;
-    height:44px !important;
-    font-size:21px !important;
-  }
-}
-
-</style>
-
-<script id="sakaker-popup-layer-manager-v3">
-(function(){
-  function initSakakerLayers(){
-    const body = document.body;
-    const shipIcon = document.getElementById("shipIcon_new");
-    const shipPopup = document.getElementById("shipPopup_new");
-    const shipClose = document.getElementById("closeShip_new");
-    const musicHost = document.getElementById("emeraldMusicHost");
-    const musicBtn = document.getElementById("emOpenBtn");
-
-    function setShipOn(){
-      body.classList.add("sakaker-ship-open");
-      body.classList.remove("sakaker-music-open");
-      if(shipPopup){
-        shipPopup.style.zIndex = "2147483647";
-      }
-    }
-
-    function setShipOff(){
-      body.classList.remove("sakaker-ship-open");
-    }
-
-    function setMusicOn(){
-      body.classList.add("sakaker-music-open");
-      body.classList.remove("sakaker-ship-open");
-
-      /* إذا كانت نافذة السفينة مفتوحة، أغلقها حتى لا تتراكب نافذتان */
-      if(shipPopup && getComputedStyle(shipPopup).display !== "none"){
-        shipPopup.style.display = "none";
-      }
-    }
-
-    function setMusicOff(){
-      body.classList.remove("sakaker-music-open");
-    }
-
-    if(shipIcon){
-      shipIcon.addEventListener("click", function(){
-        setTimeout(setShipOn, 0);
-      });
-    }
-
-    if(shipClose){
-      shipClose.addEventListener("click", function(){
-        setTimeout(setShipOff, 0);
-      });
-    }
-
-    if(musicBtn){
-      musicBtn.addEventListener("click", function(){
-        setTimeout(setMusicOn, 0);
-      });
-    }
-
-    if(musicHost){
-      const observer = new MutationObserver(function(){
-        const panel = document.getElementById("emPanel");
-        if(panel){
-          body.classList.add("sakaker-music-open");
-        } else {
-          setMusicOff();
-        }
-      });
-      observer.observe(musicHost, {childList:true, subtree:true});
-    }
-
-    document.addEventListener("keydown", function(e){
-      if(e.key === "Escape"){
-        if(!document.getElementById("emPanel")) setMusicOff();
-        if(shipPopup && getComputedStyle(shipPopup).display === "none") setShipOff();
-      }
-    });
-  }
-
-  if(document.readyState === "loading"){
-    document.addEventListener("DOMContentLoaded", initSakakerLayers);
-  } else {
-    initSakakerLayers();
-  }
-})();
-</script>
 
 </body>
 </html>
@@ -16752,17 +16141,6 @@ window.addEventListener(
 }
 </style>
 
-<!-- أسطول السفن الخلفي -->
-<div id="sakakerFleet" aria-hidden="true">
-  <div class="fleet-sea"></div>
-  <div class="fleet-ship s1"><span class="fleet-sail"></span></div>
-  <div class="fleet-ship s2"><span class="fleet-sail"></span></div>
-  <div class="fleet-ship s3"><span class="fleet-sail"></span></div>
-  <div class="fleet-ship s4"><span class="fleet-sail"></span></div>
-  <div class="fleet-ship s5"><span class="fleet-sail"></span></div>
-  <div class="fleet-ship s6"><span class="fleet-sail"></span></div>
-  <div class="fleet-ship s7"><span class="fleet-sail"></span></div>
-</div>
 <div id="sakakerWatermarkMask" aria-hidden="true"></div>
 
 
@@ -17797,17 +17175,6 @@ body{
 }
 </style>
 
-<!-- أسطول السفن الخلفي -->
-<div id="sakakerFleet" aria-hidden="true">
-  <div class="fleet-sea"></div>
-  <div class="fleet-ship s1"><span class="fleet-sail"></span></div>
-  <div class="fleet-ship s2"><span class="fleet-sail"></span></div>
-  <div class="fleet-ship s3"><span class="fleet-sail"></span></div>
-  <div class="fleet-ship s4"><span class="fleet-sail"></span></div>
-  <div class="fleet-ship s5"><span class="fleet-sail"></span></div>
-  <div class="fleet-ship s6"><span class="fleet-sail"></span></div>
-  <div class="fleet-ship s7"><span class="fleet-sail"></span></div>
-</div>
 <div id="sakakerWatermarkMask" aria-hidden="true"></div>
 
 
@@ -18256,4 +17623,298 @@ body{
 </style>
 
 </body>
+
+<!-- =========================================================
+     SAKAKER — FINAL CONFLICT FIX
+     Login background + modal layering + remove fleet
+========================================================= -->
+<style id="sakaker-absolute-final-fix">
+
+/* ---------------------------------------------------------
+   إزالة أسطول السفن نهائياً حتى لو بقي أي كود CSS قديم
+--------------------------------------------------------- */
+#sakakerFleet,
+#sakakerFleet *,
+.fleet-ship,
+.fleet-sail,
+.fleet-sea {
+  display:none !important;
+  visibility:hidden !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+
+/* ---------------------------------------------------------
+   صفحة الدخول: الخلفية السابقة فقط
+   هذا الكود في نهاية الملف حتى يتغلب على جميع التكرارات القديمة
+--------------------------------------------------------- */
+html body #loginOverlay,
+body.locked #loginOverlay {
+  background-color:#02090b !important;
+  background-image:
+    linear-gradient(rgba(0,0,0,.30), rgba(0,0,0,.55)),
+    url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%A3%D8%A8%D9%88%D8%A7%D9%84%D9%82%D9%85%D8%B1%20%D8%B2%D9%85%D8%B1%D8%AF%20%D9%81%D9%8A%20%D8%A7%D9%84%D9%84%D9%8A%D9%84.png") !important;
+  background-size:cover !important;
+  background-position:center center !important;
+  background-repeat:no-repeat !important;
+  background-attachment:scroll !important;
+  backdrop-filter:blur(2px) !important;
+  -webkit-backdrop-filter:blur(2px) !important;
+}
+
+/* ---------------------------------------------------------
+   نافذة السفينة: فوق كل شيء
+--------------------------------------------------------- */
+html body #shipPopup_new {
+  position:fixed !important;
+  top:50% !important;
+  left:50% !important;
+  right:auto !important;
+  bottom:auto !important;
+  transform:translate(-50%,-50%) !important;
+  z-index:2147483647 !important;
+  isolation:isolate !important;
+  width:min(900px,94vw) !important;
+  max-height:90dvh !important;
+  overflow:auto !important;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(0,255,213,.22),transparent 38%),
+    radial-gradient(circle at 88% 12%,rgba(255,215,0,.12),transparent 28%),
+    linear-gradient(145deg,rgba(1,28,31,.992),rgba(4,7,20,.995)) !important;
+  border:1px solid rgba(0,255,213,.95) !important;
+  border-radius:22px !important;
+  box-shadow:
+    0 0 0 120vmax rgba(0,0,0,.84),
+    0 0 22px rgba(0,255,213,.95),
+    0 0 65px rgba(0,255,213,.48),
+    0 0 110px rgba(255,215,0,.20) !important;
+  backdrop-filter:blur(18px) saturate(140%) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(140%) !important;
+}
+
+html body #shipPopup_new #closeShip_new {
+  z-index:2147483647 !important;
+}
+
+/* ---------------------------------------------------------
+   البيانو / Emerald Music: النافذة فوق كل شيء
+--------------------------------------------------------- */
+html body #emeraldMusicHost #emPanel {
+  position:fixed !important;
+  inset:0 !important;
+  z-index:2147483647 !important;
+  isolation:isolate !important;
+  pointer-events:auto !important;
+}
+
+html body #emeraldMusicHost #emPanel > .emModal,
+html body #emeraldMusicHost .emModal {
+  position:fixed !important;
+  inset:0 !important;
+  z-index:2147483647 !important;
+  pointer-events:auto !important;
+  background:
+    radial-gradient(circle at 16% 15%,rgba(0,255,213,.25),transparent 28%),
+    radial-gradient(circle at 84% 14%,rgba(255,215,0,.20),transparent 28%),
+    radial-gradient(circle at 50% 110%,rgba(0,120,255,.19),transparent 42%),
+    linear-gradient(145deg,rgba(0,7,12,.985),rgba(0,29,30,.98) 45%,rgba(8,5,16,.99)) !important;
+  backdrop-filter:blur(15px) saturate(145%) !important;
+  -webkit-backdrop-filter:blur(15px) saturate(145%) !important;
+}
+
+html body #emeraldMusicHost .emBox {
+  position:relative !important;
+  z-index:2147483647 !important;
+  border:1px solid rgba(0,255,213,.88) !important;
+  box-shadow:
+    0 0 0 1px rgba(255,215,0,.18),
+    0 0 34px rgba(0,255,213,.60),
+    0 0 95px rgba(255,215,0,.13),
+    inset 0 0 50px rgba(0,255,213,.06) !important;
+}
+
+/* ---------------------------------------------------------
+   عند فتح السفينة أو البيانو:
+   نخفي الأيقونات العائمة نفسها حتى لا تظهر فوق النافذة
+--------------------------------------------------------- */
+body.sakaker-ship-open #facebookVideoIcon,
+body.sakaker-ship-open #liveFlasher,
+body.sakaker-ship-open #sakakerPongDock,
+body.sakaker-ship-open #pongGame-btn,
+body.sakaker-ship-open #sakakerBusinessAd,
+body.sakaker-ship-open #emeraldLibraryButton,
+body.sakaker-ship-open #emeraldMusicHost #emOpenBtn,
+body.sakaker-ship-open #shipIcon_new,
+body.sakaker-ship-open #siteLangToggle,
+body.sakaker-ship-open .video-top-container-fixed,
+body.sakaker-ship-open .launcher,
+body.sakaker-ship-open #bird-sound-btn,
+body.sakaker-ship-open #sakakerVisitorCounter,
+body.sakaker-ship-open #sakakerWisdomBox,
+body.sakaker-ship-open #userProfile,
+
+body.sakaker-music-open #facebookVideoIcon,
+body.sakaker-music-open #liveFlasher,
+body.sakaker-music-open #sakakerPongDock,
+body.sakaker-music-open #pongGame-btn,
+body.sakaker-music-open #sakakerBusinessAd,
+body.sakaker-music-open #emeraldLibraryButton,
+body.sakaker-music-open #emeraldMusicHost #emOpenBtn,
+body.sakaker-music-open #shipIcon_new,
+body.sakaker-music-open #siteLangToggle,
+body.sakaker-music-open .video-top-container-fixed,
+body.sakaker-music-open .launcher,
+body.sakaker-music-open #bird-sound-btn,
+body.sakaker-music-open #sakakerVisitorCounter,
+body.sakaker-music-open #sakakerWisdomBox,
+body.sakaker-music-open #userProfile {
+  visibility:hidden !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+
+/* لا نخفي نافذة البيانو نفسها */
+body.sakaker-music-open #emeraldMusicHost #emPanel,
+body.sakaker-music-open #emeraldMusicHost #emPanel *,
+body.sakaker-music-open #emeraldMusicHost .emModal,
+body.sakaker-music-open #emeraldMusicHost .emModal * {
+  visibility:visible !important;
+  opacity:1;
+}
+
+/* لا نخفي نافذة السفينة نفسها */
+body.sakaker-ship-open #shipPopup_new,
+body.sakaker-ship-open #shipPopup_new * {
+  visibility:visible !important;
+}
+
+/* الجوال */
+@media(max-width:700px) {
+  html body #shipPopup_new {
+    width:calc(100vw - 14px) !important;
+    max-width:calc(100vw - 14px) !important;
+    max-height:92dvh !important;
+    padding:38px 10px 14px !important;
+  }
+
+  html body #emeraldMusicHost .emBox {
+    width:calc(100vw - 10px) !important;
+    max-height:96dvh !important;
+    padding:8px !important;
+  }
+}
+
+</style>
+
+<script id="sakaker-absolute-final-layer-manager">
+(function(){
+  const OLD_BG = "https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%A3%D8%A8%D9%88%D8%A7%D9%84%D9%82%D9%85%D8%B1%20%D8%B2%D9%85%D8%B1%D8%AF%20%D9%81%D9%8A%20%D8%A7%D9%84%D9%84%D9%8A%D9%84.png";
+
+  function forceLoginBackground(){
+    const overlay = document.getElementById("loginOverlay");
+    if(!overlay) return;
+
+    overlay.style.setProperty(
+      "background-image",
+      'linear-gradient(rgba(0,0,0,.30),rgba(0,0,0,.55)), url("' + OLD_BG + '")',
+      "important"
+    );
+    overlay.style.setProperty("background-size","cover","important");
+    overlay.style.setProperty("background-position","center center","important");
+    overlay.style.setProperty("background-repeat","no-repeat","important");
+    overlay.style.setProperty("background-attachment","scroll","important");
+  }
+
+  function syncModalState(){
+    const body = document.body;
+    if(!body) return;
+
+    const ship = document.getElementById("shipPopup_new");
+    const music = document.getElementById("emPanel");
+
+    let shipOpen = false;
+    if(ship){
+      const cs = getComputedStyle(ship);
+      shipOpen = cs.display !== "none" && cs.visibility !== "hidden";
+    }
+
+    const musicOpen = !!music;
+
+    body.classList.toggle("sakaker-ship-open", shipOpen && !musicOpen);
+    body.classList.toggle("sakaker-music-open", musicOpen);
+  }
+
+  function removeFleet(){
+    document.querySelectorAll("#sakakerFleet").forEach(function(el){
+      el.remove();
+    });
+  }
+
+  function init(){
+    forceLoginBackground();
+    removeFleet();
+    syncModalState();
+
+    /* مراقبة أي كود قديم يحاول تغيير الخلفية أو إعادة الأسطول */
+    const login = document.getElementById("loginOverlay");
+    if(login){
+      new MutationObserver(function(){
+        forceLoginBackground();
+      }).observe(login, {attributes:true, attributeFilter:["style","class"]});
+    }
+
+    const ship = document.getElementById("shipPopup_new");
+    if(ship){
+      new MutationObserver(syncModalState).observe(
+        ship,
+        {attributes:true, attributeFilter:["style","class"]}
+      );
+    }
+
+    new MutationObserver(function(){
+      removeFleet();
+      syncModalState();
+    }).observe(document.body, {childList:true, subtree:true});
+
+    document.addEventListener("click", function(e){
+      if(e.target.closest("#shipIcon_new")){
+        setTimeout(syncModalState, 0);
+      }
+      if(e.target.closest("#closeShip_new")){
+        setTimeout(syncModalState, 0);
+      }
+      if(e.target.closest("#emOpenBtn")){
+        setTimeout(syncModalState, 0);
+        setTimeout(syncModalState, 50);
+      }
+      if(e.target.closest(".emClose")){
+        setTimeout(syncModalState, 0);
+        setTimeout(syncModalState, 50);
+      }
+    }, true);
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+
+
+<script id="sakaker-remove-fleet-final">
+(function(){
+  function removeFleetNow(){
+    document.querySelectorAll('#sakakerFleet').forEach(function(el){ el.remove(); });
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', removeFleetNow);
+  }else{
+    removeFleetNow();
+  }
+  new MutationObserver(removeFleetNow).observe(document.documentElement,{childList:true,subtree:true});
+})();
+</script>
+
 </html>
