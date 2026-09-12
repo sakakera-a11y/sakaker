@@ -7143,9 +7143,19 @@ function applySignedInUser(user){
 
     if(overlay){
         overlay.style.display = "none";
+        overlay.setAttribute("aria-hidden", "true");
     }
 
     document.body.classList.remove("locked");
+
+    /* تأكيد فتح الموقع في الإطار التالي بعد نجاح Firebase */
+    requestAnimationFrame(() => {
+        document.body.classList.remove("locked");
+        if(overlay){
+            overlay.style.display = "none";
+            overlay.setAttribute("aria-hidden", "true");
+        }
+    });
 
     const profile = document.getElementById("userProfile");
     const userName = document.getElementById("userName");
@@ -7177,6 +7187,7 @@ function applySignedOutState(){
 
     if(overlay){
         overlay.style.display = "flex";
+        overlay.setAttribute("aria-hidden", "false");
     }
 
     document.body.classList.add("locked");
@@ -17949,13 +17960,9 @@ body.sakaker-ship-open #shipPopup_new * {
     removeFleet();
     syncModalState();
 
-    /* مراقبة أي كود قديم يحاول تغيير الخلفية أو إعادة الأسطول */
-    const login = document.getElementById("loginOverlay");
-    if(login){
-      new MutationObserver(function(){
-        forceLoginBackground();
-      }).observe(login, {attributes:true, attributeFilter:["style","class"]});
-    }
+    /* إصلاح تسجيل الدخول:
+       أزيل مراقب loginOverlay السابق لأنه كان يراقب style ثم يغيّر style
+       من داخل نفس MutationObserver، فيدخل في حلقة بعد إخفاء شاشة الدخول. */
 
     const ship = document.getElementById("shipPopup_new");
     if(ship){
@@ -20126,5 +20133,52 @@ body.sakaker-emerald-video-open #emeraldModal *{
     syncEmeraldVideo();
   }
 
+})();
+</script>
+
+
+<script id="sakaker-login-hang-watchdog-v2">
+(function(){
+  function install(){
+    const btn = document.getElementById("googleButton");
+    const error = document.getElementById("loginError");
+    if(!btn || btn.dataset.hangWatchdogV2 === "1") return;
+
+    btn.dataset.hangWatchdogV2 = "1";
+
+    btn.addEventListener("click", function(){
+      const started = Date.now();
+
+      setTimeout(function(){
+        if(window.firebaseAuth && window.firebaseAuth.currentUser) return;
+
+        if(btn.disabled && Date.now() - started >= 44000){
+          btn.disabled = false;
+          btn.style.opacity = "1";
+          btn.style.cursor = "pointer";
+
+          const en =
+            document.documentElement.lang === "en" ||
+            localStorage.getItem("sakakerLoginLanguage") === "en";
+
+          btn.textContent = en
+            ? "🔵 Sign in with Google"
+            : "🔵 الدخول بواسطة Google";
+
+          if(error && !error.textContent.trim()){
+            error.textContent = en
+              ? "Google sign-in did not finish. Please try again."
+              : "لم تكتمل عملية تسجيل Google. حاول مرة أخرى.";
+          }
+        }
+      }, 45000);
+    }, true);
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", install);
+  }else{
+    install();
+  }
 })();
 </script>
