@@ -19402,3 +19402,327 @@ html body #weather{
   setTimeout(enforceTopLayout, 1600);
 })();
 </script>
+
+
+<!-- SAKAKER CENTER LANG + TRANSPARENT TOP STRIP -->
+<style id="sakaker-center-lang-transparent-strip-final">
+
+/* =========================================================
+   زر اللغة — في منتصف أعلى الصفحة
+========================================================= */
+html body #siteLangToggle{
+  position:fixed !important;
+  top:6px !important;
+  left:50% !important;
+  right:auto !important;
+  transform:translateX(-50%) !important;
+
+  width:64px !important;
+  min-width:64px !important;
+  height:32px !important;
+
+  z-index:2147483600 !important;
+}
+
+/* =========================================================
+   شريط الساعة + الأخبار
+   يبدأ من أقصى اليسار وأعلى الصفحة
+   بدون أي خلفية أو إطار أو ظل
+========================================================= */
+html body .news-ticker{
+  position:fixed !important;
+
+  top:0 !important;
+  left:0 !important;
+  right:175px !important;
+
+  width:auto !important;
+  max-width:none !important;
+  min-width:0 !important;
+  min-height:44px !important;
+
+  transform:none !important;
+
+  padding:3px 8px !important;
+  margin:0 !important;
+
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+
+  border:0 !important;
+  border-radius:0 !important;
+
+  box-shadow:none !important;
+
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+
+  display:grid !important;
+  grid-template-columns:minmax(260px,auto) 1fr !important;
+  align-items:center !important;
+  gap:8px !important;
+
+  z-index:2147482100 !important;
+}
+
+/* إزالة خط الزينة القديم أعلى الشريط */
+html body .news-ticker::before,
+html body .news-ticker::after{
+  display:none !important;
+  content:none !important;
+}
+
+/* صندوق الساعة شفاف بالكامل */
+html body .news-ticker .clock-box{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+
+  border:0 !important;
+  box-shadow:none !important;
+
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+
+  padding:0 !important;
+  margin:0 !important;
+}
+
+/* منطقة الأخبار شفافة بالكامل */
+html body .news-ticker .ticker-wrapper{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+
+  border:0 !important;
+  box-shadow:none !important;
+
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+
+  height:34px !important;
+  padding:0 4px !important;
+}
+
+/* عنوان الأخبار بدون خلفية أيضًا */
+html body .sakaker-news-label{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+
+  border:0 !important;
+  box-shadow:none !important;
+
+  color:#ffe98c !important;
+  text-shadow:
+    0 0 5px rgba(0,0,0,.95),
+    0 0 8px rgba(255,215,70,.65) !important;
+}
+
+/* وضوح الساعة والنص فوق صورة الخلفية */
+html body #clock{
+  color:#fff3a3 !important;
+  font-size:16px !important;
+  font-weight:1000 !important;
+  text-shadow:
+    0 1px 3px rgba(0,0,0,1),
+    0 0 8px rgba(255,215,70,.72) !important;
+}
+
+html body #date,
+html body #weather,
+html body #locationName{
+  text-shadow:
+    0 1px 3px rgba(0,0,0,1),
+    0 0 7px rgba(0,255,213,.60) !important;
+}
+
+html body #newsContent,
+html body #newsContentClone{
+  text-shadow:
+    0 1px 3px rgba(0,0,0,1),
+    0 0 7px rgba(0,255,213,.48) !important;
+}
+
+/* =========================================================
+   زر الخروج يبقى فوق الجميع في اليمين
+   والشريط يتوقف قبله فلا يغطيه
+========================================================= */
+html body #userProfile{
+  position:fixed !important;
+  top:6px !important;
+  right:8px !important;
+  left:auto !important;
+
+  z-index:2147483700 !important;
+  pointer-events:auto !important;
+}
+
+html body #logoutButton{
+  position:relative !important;
+  z-index:2147483800 !important;
+  pointer-events:auto !important;
+}
+
+/* =========================================================
+   الجوال
+   يبقى زر اللغة في الوسط
+   الساعة يسار والخروج يمين
+   الشريط شفاف
+========================================================= */
+@media(max-width:700px){
+
+  html body #siteLangToggle{
+    top:5px !important;
+    left:50% !important;
+    right:auto !important;
+    transform:translateX(-50%) !important;
+
+    width:56px !important;
+    min-width:56px !important;
+    height:28px !important;
+
+    font-size:10px !important;
+  }
+
+  html body #userProfile{
+    top:5px !important;
+    right:5px !important;
+  }
+
+  html body .news-ticker{
+    top:0 !important;
+    left:0 !important;
+    right:62px !important;
+
+    width:auto !important;
+    min-height:40px !important;
+
+    padding:2px 5px !important;
+
+    grid-template-columns:minmax(150px,42vw) 1fr !important;
+    grid-template-rows:auto !important;
+    gap:4px !important;
+
+    background:transparent !important;
+    border:0 !important;
+    box-shadow:none !important;
+  }
+
+  html body .news-ticker .clock-box{
+    grid-template-columns:auto auto !important;
+    grid-template-areas:
+      "clock date"
+      "weather location" !important;
+    gap:2px 4px !important;
+    text-align:left !important;
+  }
+
+  html body #clock{
+    font-size:12px !important;
+  }
+
+  html body #date,
+  html body #weather{
+    font-size:7px !important;
+  }
+
+  html body #locationName{
+    font-size:6px !important;
+  }
+
+  html body .news-ticker .ticker-wrapper{
+    height:28px !important;
+  }
+
+  html body .sakaker-news-label{
+    font-size:7px !important;
+    margin-inline-end:4px !important;
+    padding:0 !important;
+  }
+
+  html body #newsContent,
+  html body #newsContentClone{
+    font-size:8px !important;
+    padding-inline:12px !important;
+  }
+}
+
+@media(max-width:390px){
+  html body .news-ticker{
+    right:56px !important;
+    grid-template-columns:minmax(138px,44vw) 1fr !important;
+  }
+
+  html body #clock{
+    font-size:11px !important;
+  }
+}
+
+</style>
+
+<script id="sakaker-center-lang-transparent-strip-js">
+(function(){
+
+  function enforceTransparentTop(){
+    const lang = document.getElementById("siteLangToggle");
+    const ticker = document.querySelector(".news-ticker");
+    const profile = document.getElementById("userProfile");
+    const logout = document.getElementById("logoutButton");
+
+    if(lang){
+      lang.style.setProperty("top","6px","important");
+      lang.style.setProperty("left","50%","important");
+      lang.style.setProperty("right","auto","important");
+      lang.style.setProperty("transform","translateX(-50%)","important");
+    }
+
+    if(ticker){
+      ticker.style.setProperty("top","0","important");
+      ticker.style.setProperty("left","0","important");
+      ticker.style.setProperty(
+        "right",
+        window.innerWidth <= 700 ? "62px" : "175px",
+        "important"
+      );
+      ticker.style.setProperty("width","auto","important");
+      ticker.style.setProperty("transform","none","important");
+      ticker.style.setProperty("background","transparent","important");
+      ticker.style.setProperty("border","0","important");
+      ticker.style.setProperty("box-shadow","none","important");
+      ticker.style.setProperty("backdrop-filter","none","important");
+    }
+
+    if(profile){
+      profile.style.setProperty("top","6px","important");
+      profile.style.setProperty("right","8px","important");
+      profile.style.setProperty("z-index","2147483700","important");
+      profile.style.setProperty("pointer-events","auto","important");
+    }
+
+    if(logout){
+      logout.style.setProperty("z-index","2147483800","important");
+      logout.style.setProperty("pointer-events","auto","important");
+    }
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", enforceTransparentTop);
+  }else{
+    enforceTransparentTop();
+  }
+
+  window.addEventListener("resize", enforceTransparentTop);
+
+  document.addEventListener("click", function(e){
+    if(e.target.closest("#siteLangToggle")){
+      setTimeout(enforceTransparentTop, 10);
+      setTimeout(enforceTransparentTop, 200);
+    }
+  }, true);
+
+  setTimeout(enforceTransparentTop, 400);
+  setTimeout(enforceTransparentTop, 1500);
+})();
+</script>
