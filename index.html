@@ -4437,17 +4437,24 @@ html[lang="ar"] body{direction:rtl;}
   right: 18px;
   width: 75px;
   height: 75px;
-  background: radial-gradient(circle at 35% 30%, #ffffff, #18a77b 42%, #06483b 100%);
-  border-radius: 50%;
+  
+  
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 34px;
   color: white;
   cursor: pointer;
-  box-shadow:
-  z-index: 1000001;
+  
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
 ">
   🐦
 </div>
@@ -18367,3 +18374,145 @@ html body.locked #bird-sound-btn:active {
 </script>
 
 </html>
+
+
+<!-- SAKAKER TRUE FINAL VISUAL FIX -->
+<style id="sakaker-true-final-visual-fix">
+
+/* =========================================================
+   خلفية الموقع — تغطي الشاشة كاملة دائمًا
+========================================================= */
+html {
+  min-width:100% !important;
+  min-height:100% !important;
+  background:#02090b !important;
+}
+
+html body {
+  margin:0 !important;
+  width:100% !important;
+  min-width:100% !important;
+  min-height:100vh !important;
+
+  background-color:#02090b !important;
+  background-image:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B5%D9%88%D8%B1%D8%A9.png") !important;
+  background-repeat:no-repeat !important;
+  background-position:center center !important;
+  background-size:cover !important;
+  background-attachment:fixed !important;
+}
+
+/* منع أي طبقة قديمة من تغطية الخلفية الرئيسية */
+html body::before {
+  background:none !important;
+  background-image:none !important;
+}
+
+/* =========================================================
+   أيقونة صفحة الدخول — بدون أي خلفية نهائيًا
+========================================================= */
+html body #loginOverlay #bird-sound-btn,
+html body.locked #loginOverlay #bird-sound-btn,
+html body #bird-sound-btn {
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+
+  border:0 !important;
+  border-radius:0 !important;
+  outline:0 !important;
+
+  box-shadow:none !important;
+  -webkit-box-shadow:none !important;
+
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+
+  /* لا يبقى إلا رمز الطائر/الصوت نفسه */
+  filter:drop-shadow(0 0 7px rgba(0,255,213,.80)) !important;
+}
+
+/* عند المرور والضغط تبقى بدون خلفية */
+html body #bird-sound-btn:hover,
+html body #bird-sound-btn:active,
+html body.locked #bird-sound-btn:hover,
+html body.locked #bird-sound-btn:active {
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  border:0 !important;
+  box-shadow:none !important;
+}
+
+/* الجوال */
+@media(max-width:700px) {
+  html body {
+    width:100% !important;
+    min-height:100dvh !important;
+
+    background-image:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B5%D9%88%D8%B1%D8%A9.png") !important;
+    background-size:cover !important;
+    background-position:center center !important;
+    background-repeat:no-repeat !important;
+    background-attachment:fixed !important;
+  }
+
+  html body.locked #bird-sound-btn,
+  html body #loginOverlay #bird-sound-btn {
+    width:46px !important;
+    height:46px !important;
+    font-size:24px !important;
+    background:transparent !important;
+    border:0 !important;
+    border-radius:0 !important;
+    box-shadow:none !important;
+  }
+}
+
+</style>
+
+<script id="sakaker-true-final-visual-js">
+(function(){
+  const SITE_BG = "https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B5%D9%88%D8%B1%D8%A9.png";
+
+  function forceFinalVisuals(){
+    const body = document.body;
+    const bird = document.getElementById("bird-sound-btn");
+
+    if(body){
+      body.style.setProperty("background-color","#02090b","important");
+      body.style.setProperty("background-image",'url("' + SITE_BG + '")',"important");
+      body.style.setProperty("background-repeat","no-repeat","important");
+      body.style.setProperty("background-position","center center","important");
+      body.style.setProperty("background-size","cover","important");
+      body.style.setProperty("background-attachment","fixed","important");
+      body.style.setProperty("min-height","100vh","important");
+    }
+
+    if(bird){
+      bird.style.setProperty("background","transparent","important");
+      bird.style.setProperty("background-color","transparent","important");
+      bird.style.setProperty("background-image","none","important");
+      bird.style.setProperty("border","0","important");
+      bird.style.setProperty("border-radius","0","important");
+      bird.style.setProperty("outline","0","important");
+      bird.style.setProperty("box-shadow","none","important");
+      bird.style.setProperty("backdrop-filter","none","important");
+    }
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", forceFinalVisuals);
+  } else {
+    forceFinalVisuals();
+  }
+
+  /* إعادة التطبيق بعد تشغيل الأكواد القديمة التي تستخدم setTimeout */
+  setTimeout(forceFinalVisuals, 100);
+  setTimeout(forceFinalVisuals, 800);
+  setTimeout(forceFinalVisuals, 2000);
+  setTimeout(forceFinalVisuals, 5000);
+
+  window.addEventListener("resize", forceFinalVisuals);
+})();
+</script>
