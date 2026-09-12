@@ -9233,7 +9233,7 @@ function updateClock() {
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
-    hour12: false
+    hour12: true
   }).format(now);
 
   date.textContent = new Intl.DateTimeFormat(locale, {
@@ -18514,5 +18514,562 @@ html body.locked #bird-sound-btn:active {
   setTimeout(forceFinalVisuals, 5000);
 
   window.addEventListener("resize", forceFinalVisuals);
+})();
+</script>
+
+
+<!-- SAKAKER GLASS LOGIN + BILINGUAL NEWS CLOCK -->
+<style id="sakaker-glass-news-final">
+
+/* =========================================================
+   1) نافذة تسجيل الدخول — شفافة فعلاً لإظهار الخلفية
+========================================================= */
+html body #loginBox,
+html body.locked #loginBox{
+  width:min(350px,88vw) !important;
+  max-width:350px !important;
+  padding:20px 17px 15px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(0,18,22,.10),
+      rgba(0,0,0,.06)
+    ) !important;
+
+  border:1px solid rgba(135,255,235,.48) !important;
+  border-radius:22px !important;
+
+  box-shadow:
+    0 0 0 1px rgba(255,215,90,.08),
+    0 0 18px rgba(0,255,213,.19),
+    0 0 42px rgba(0,190,255,.08),
+    inset 0 0 18px rgba(255,255,255,.025) !important;
+
+  backdrop-filter:blur(1.2px) saturate(112%) !important;
+  -webkit-backdrop-filter:blur(1.2px) saturate(112%) !important;
+}
+
+/* لمعان رفيع حول الصندوق بدون حجب الخلفية */
+html body #loginBox::before{
+  content:"";
+  position:absolute;
+  inset:5px;
+  border-radius:17px;
+  border:1px solid rgba(255,215,100,.17);
+  pointer-events:none;
+  box-shadow:inset 0 0 16px rgba(0,255,213,.035);
+}
+
+/* عنوان الدخول */
+html body #loginTitle{
+  color:#effffc !important;
+  font-size:20px !important;
+  font-weight:900 !important;
+  text-shadow:
+    0 0 4px rgba(255,255,255,.82),
+    0 0 10px rgba(0,255,213,.70),
+    0 0 19px rgba(255,215,80,.30) !important;
+}
+
+/* الحقول شفافة وواضحة */
+html body .loginInput{
+  height:42px !important;
+  background:rgba(0,12,18,.20) !important;
+  border:1px solid rgba(210,255,248,.28) !important;
+  color:#fff !important;
+  box-shadow:
+    inset 0 0 13px rgba(0,0,0,.13),
+    0 0 7px rgba(0,255,213,.045) !important;
+  backdrop-filter:blur(1px) !important;
+  -webkit-backdrop-filter:blur(1px) !important;
+}
+
+html body .loginInput::placeholder{
+  color:rgba(255,255,255,.86) !important;
+  text-shadow:0 1px 3px rgba(0,0,0,.9);
+}
+
+html body .loginInput:focus{
+  background:rgba(0,35,38,.22) !important;
+  border-color:rgba(0,255,213,.82) !important;
+  box-shadow:
+    0 0 0 2px rgba(0,255,213,.08),
+    0 0 16px rgba(0,255,213,.19) !important;
+}
+
+/* أزرار الدخول زجاجية شبه شفافة */
+html body .loginAction{
+  height:40px !important;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,65,68,.34),
+      rgba(2,15,23,.22)
+    ) !important;
+  border:1px solid rgba(0,255,213,.31) !important;
+  color:#f4fffd !important;
+  box-shadow:
+    0 0 9px rgba(0,255,213,.09),
+    inset 0 0 10px rgba(255,255,255,.025) !important;
+  text-shadow:0 1px 4px rgba(0,0,0,.85);
+}
+
+html body .loginAction:hover{
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,128,118,.44),
+      rgba(0,35,45,.30)
+    ) !important;
+  border-color:rgba(255,220,95,.58) !important;
+  box-shadow:
+    0 0 13px rgba(0,255,213,.24),
+    0 0 22px rgba(255,215,60,.10) !important;
+}
+
+/* زر لغة الدخول */
+html body #loginLanguageButton{
+  background:rgba(0,15,19,.19) !important;
+  border:1px solid rgba(255,225,105,.55) !important;
+  color:#fff4b0 !important;
+  box-shadow:0 0 10px rgba(255,215,80,.12) !important;
+  backdrop-filter:blur(1px) !important;
+}
+
+/* الحقوق أخف حتى لا تحجب الخلفية */
+html body #loginCopyright{
+  color:rgba(255,255,255,.82) !important;
+  border-top-color:rgba(255,255,255,.10) !important;
+}
+
+/* =========================================================
+   2) شريط الأخبار + الساعة — تصميم بحري/زمردي متناسق
+========================================================= */
+html body .news-ticker{
+  position:fixed !important;
+  top:12px !important;
+  left:50% !important;
+  right:auto !important;
+  transform:translateX(-50%) !important;
+
+  width:min(1020px,78vw) !important;
+  min-height:72px !important;
+  padding:7px 10px !important;
+
+  display:grid !important;
+  grid-template-columns:minmax(285px,auto) 1fr !important;
+  align-items:center !important;
+  gap:10px !important;
+
+  overflow:hidden !important;
+  white-space:normal !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,20,27,.56),
+      rgba(0,48,50,.42) 48%,
+      rgba(15,8,22,.52)
+    ) !important;
+
+  border:1px solid rgba(100,255,225,.39) !important;
+  border-radius:22px !important;
+
+  box-shadow:
+    0 0 0 1px rgba(255,215,90,.08),
+    0 0 15px rgba(0,255,213,.18),
+    0 0 32px rgba(0,140,255,.07),
+    inset 0 0 24px rgba(0,255,213,.035) !important;
+
+  backdrop-filter:blur(8px) saturate(130%) !important;
+  -webkit-backdrop-filter:blur(8px) saturate(130%) !important;
+
+  z-index:2147482000 !important;
+}
+
+/* خط ضوء متحرك رفيع */
+html body .news-ticker::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-35%;
+  width:30%;
+  height:1px;
+  background:linear-gradient(90deg,transparent,#00ffd5,#ffe071,transparent);
+  box-shadow:0 0 9px #00ffd5;
+  animation:sakakerNewsShine 7s linear infinite;
+  pointer-events:none;
+}
+
+@keyframes sakakerNewsShine{
+  from{left:-35%;}
+  to{left:110%;}
+}
+
+/* صندوق الساعة أصبح صفاً من بطاقات صغيرة */
+html body .news-ticker .clock-box{
+  margin:0 !important;
+  padding:0 !important;
+  display:grid !important;
+  grid-template-columns:auto auto !important;
+  grid-template-areas:
+    "clock date"
+    "weather location" !important;
+  gap:5px 7px !important;
+  align-items:center !important;
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+  line-height:1.2 !important;
+  min-width:0 !important;
+}
+
+html body #clock{
+  grid-area:clock;
+  font-size:18px !important;
+  font-weight:1000 !important;
+  color:#fff4ae !important;
+  letter-spacing:.6px !important;
+  text-shadow:
+    0 0 4px rgba(255,255,255,.8),
+    0 0 10px rgba(255,215,65,.68) !important;
+}
+
+html body #clock::before{
+  content:"◷ ";
+  color:#00ffd5;
+}
+
+html body #date{
+  grid-area:date;
+  font-size:10px !important;
+  font-weight:800 !important;
+  color:#d8fffa !important;
+  text-shadow:0 0 7px rgba(0,255,213,.38) !important;
+}
+
+html body #date::before{
+  content:"◈ ";
+  color:#ffd95c;
+}
+
+html body #weather{
+  grid-area:weather;
+  font-size:10px !important;
+  font-weight:800 !important;
+  color:#bfefff !important;
+  text-shadow:0 0 7px rgba(80,205,255,.38) !important;
+}
+
+html body #locationName{
+  grid-area:location;
+  display:block !important;
+  margin:0 !important;
+  font-size:9px !important;
+  font-weight:800 !important;
+  color:#9fffe9 !important;
+  opacity:.92 !important;
+  text-shadow:0 0 6px rgba(0,255,213,.30) !important;
+}
+
+/* منطقة الأخبار */
+html body .news-ticker .ticker-wrapper{
+  position:relative !important;
+  width:100% !important;
+  height:44px !important;
+  display:flex !important;
+  align-items:center !important;
+  overflow:hidden !important;
+  white-space:nowrap !important;
+
+  padding:0 9px !important;
+  border-radius:15px !important;
+  border:1px solid rgba(255,255,255,.08) !important;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0,0,0,.10),
+      rgba(0,20,25,.27),
+      rgba(0,0,0,.10)
+    ) !important;
+
+  box-shadow:inset 0 0 16px rgba(0,0,0,.15) !important;
+}
+
+html body .sakaker-news-label{
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  height:25px;
+  margin-inline-end:10px;
+  padding:0 9px;
+
+  border-radius:13px;
+  border:1px solid rgba(255,220,90,.43);
+  background:rgba(255,215,70,.07);
+
+  color:#ffe88b;
+  font-family:Tajawal,Cairo,Arial,sans-serif;
+  font-size:9px;
+  font-weight:1000;
+  letter-spacing:.3px;
+
+  text-shadow:0 0 7px rgba(255,215,60,.55);
+  box-shadow:0 0 8px rgba(255,215,60,.07);
+}
+
+/* النص الإخباري */
+html body #newsContent,
+html body #newsContentClone{
+  display:inline-block !important;
+  flex:0 0 auto !important;
+  min-width:max-content !important;
+  padding-inline:24px !important;
+
+  color:#efffff !important;
+  font-family:Tajawal,Cairo,Arial,sans-serif !important;
+  font-size:12px !important;
+  font-weight:800 !important;
+  line-height:1.4 !important;
+
+  text-shadow:
+    0 1px 3px rgba(0,0,0,.95),
+    0 0 7px rgba(0,255,213,.32) !important;
+
+  animation-duration:105s !important;
+  animation-timing-function:linear !important;
+  animation-iteration-count:infinite !important;
+}
+
+/* حركة بحسب اتجاه اللغة */
+html[dir="rtl"] body #newsContent,
+html[dir="rtl"] body #newsContentClone{
+  direction:rtl !important;
+  animation-name:sakTickerRTL !important;
+}
+
+html[dir="ltr"] body #newsContent,
+html[dir="ltr"] body #newsContentClone{
+  direction:ltr !important;
+  animation-name:sakTickerLTR !important;
+}
+
+html body #newsContentClone{
+  animation-delay:-52.5s !important;
+}
+
+@keyframes sakTickerRTL{
+  from{transform:translateX(-15%);}
+  to{transform:translateX(115%);}
+}
+
+@keyframes sakTickerLTR{
+  from{transform:translateX(15%);}
+  to{transform:translateX(-115%);}
+}
+
+html body .ticker-wrapper:hover #newsContent,
+html body .ticker-wrapper:hover #newsContentClone{
+  animation-play-state:paused !important;
+}
+
+/* زر اللغة الرئيسي بنفس الطابع */
+html body #siteLangToggle{
+  top:16px !important;
+  left:16px !important;
+  right:auto !important;
+
+  width:64px !important;
+  min-width:64px !important;
+  height:34px !important;
+  padding:0 !important;
+
+  border:1px solid rgba(255,220,85,.64) !important;
+  border-radius:18px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(0,35,39,.68),
+      rgba(4,10,18,.70)
+    ) !important;
+
+  color:#fff2a2 !important;
+  font-size:12px !important;
+  font-weight:1000 !important;
+
+  box-shadow:
+    0 0 9px rgba(255,215,65,.24),
+    0 0 18px rgba(0,255,213,.09) !important;
+
+  text-shadow:
+    0 0 5px rgba(255,255,255,.72),
+    0 0 9px rgba(255,215,60,.48) !important;
+
+  backdrop-filter:blur(7px) !important;
+  -webkit-backdrop-filter:blur(7px) !important;
+}
+
+/* =========================================================
+   3) تحسين الجوال
+========================================================= */
+@media(max-width:700px){
+
+  html body #loginBox,
+  html body.locked #loginBox{
+    width:min(88vw,310px) !important;
+    padding:17px 13px 12px !important;
+    background:rgba(0,10,14,.075) !important;
+    backdrop-filter:blur(.7px) !important;
+    -webkit-backdrop-filter:blur(.7px) !important;
+  }
+
+  html body .news-ticker{
+    top:7px !important;
+    width:calc(100vw - 82px) !important;
+    min-height:82px !important;
+    padding:5px 6px !important;
+
+    grid-template-columns:1fr !important;
+    grid-template-rows:auto auto !important;
+    gap:4px !important;
+
+    border-radius:16px !important;
+  }
+
+  html body .news-ticker .clock-box{
+    grid-template-columns:1fr 1fr 1fr !important;
+    grid-template-areas:
+      "clock date weather"
+      "location location location" !important;
+    gap:3px 5px !important;
+    text-align:center !important;
+  }
+
+  html body #clock{
+    font-size:14px !important;
+  }
+
+  html body #date,
+  html body #weather{
+    font-size:8px !important;
+  }
+
+  html body #locationName{
+    font-size:7px !important;
+    text-align:center !important;
+    max-height:12px !important;
+    overflow:hidden !important;
+  }
+
+  html body .news-ticker .ticker-wrapper{
+    height:30px !important;
+    border-radius:11px !important;
+    padding:0 5px !important;
+  }
+
+  html body .sakaker-news-label{
+    height:20px !important;
+    padding:0 6px !important;
+    margin-inline-end:5px !important;
+    font-size:7px !important;
+  }
+
+  html body #newsContent,
+  html body #newsContentClone{
+    font-size:9px !important;
+    padding-inline:16px !important;
+  }
+
+  html body #siteLangToggle{
+    top:9px !important;
+    left:8px !important;
+    width:58px !important;
+    min-width:58px !important;
+    height:30px !important;
+    font-size:10px !important;
+  }
+}
+
+@media(max-width:390px){
+  html body .news-ticker{
+    width:calc(100vw - 72px) !important;
+  }
+
+  html body #clock{font-size:12px !important;}
+  html body #date,
+  html body #weather{font-size:7px !important;}
+  html body #newsContent,
+  html body #newsContentClone{font-size:8px !important;}
+}
+
+</style>
+
+<script id="sakaker-glass-news-js">
+(function(){
+
+  function ensureNewsLabel(){
+    const wrapper = document.querySelector(".news-ticker .ticker-wrapper");
+    if(!wrapper) return;
+
+    let label = wrapper.querySelector(".sakaker-news-label");
+    if(!label){
+      label = document.createElement("span");
+      label.className = "sakaker-news-label";
+      wrapper.prepend(label);
+    }
+
+    const lang = document.documentElement.lang === "en" ? "en" : "ar";
+    label.textContent = lang === "ar" ? "✦ أخبار الموقع" : "✦ SITE NEWS";
+  }
+
+  function syncLoginDirection(){
+    const lang =
+      (document.documentElement.lang === "en" ||
+       localStorage.getItem("sakakerLang") === "en") ? "en" : "ar";
+
+    const box = document.getElementById("loginBox");
+    if(box){
+      box.style.setProperty(
+        "direction",
+        lang === "ar" ? "rtl" : "ltr",
+        "important"
+      );
+    }
+  }
+
+  function refreshLuxuryUI(){
+    ensureNewsLabel();
+    syncLoginDirection();
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", refreshLuxuryUI);
+  }else{
+    refreshLuxuryUI();
+  }
+
+  /* بعد تبديل لغة الموقع أو لغة صفحة الدخول */
+  document.addEventListener("click", function(e){
+    if(
+      e.target.closest("#siteLangToggle") ||
+      e.target.closest("#loginLanguageButton")
+    ){
+      setTimeout(refreshLuxuryUI, 20);
+      setTimeout(refreshLuxuryUI, 250);
+    }
+  }, true);
+
+  /* راقب تغير lang/dir حتى يتحدث العنوان فوراً */
+  new MutationObserver(refreshLuxuryUI).observe(
+    document.documentElement,
+    {attributes:true, attributeFilter:["lang","dir"]}
+  );
+
+  setTimeout(refreshLuxuryUI, 500);
+  setTimeout(refreshLuxuryUI, 1800);
 })();
 </script>
