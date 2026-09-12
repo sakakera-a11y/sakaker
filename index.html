@@ -3906,7 +3906,6 @@ padding: 30px 15px;
 <style id="sakaker-login-final-update">
 /* ===== تحديث شاشة الدخول: شفافة + نصف الحجم تقريباً + الخلفية كاملة ===== */
 #loginOverlay{
- #loginOverlay{
     position:fixed;
     inset:0;
     width:100%;
@@ -3938,6 +3937,7 @@ backdrop-filter: blur(2px);
 
 box-sizing: border-box;
 padding: 30px 15px;
+}
 #loginBox{
   width:min(360px,46vw) !important;
   max-width:360px !important;
@@ -6786,7 +6786,7 @@ document.body.classList.add("locked");
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
 
-import { getAnalytics }
+import { getAnalytics, isSupported as isAnalyticsSupported }
 from "https://www.gstatic.com/firebasejs/12.16.0/firebase-analytics.js";
 
 import {
@@ -6863,8 +6863,15 @@ const app =
 window.firebaseApp = app;
 window.sakakerFirebaseConfig = firebaseConfig;
 
-const analytics =
-    getAnalytics(app);
+let analytics = null;
+try{
+    if(await isAnalyticsSupported()){
+        analytics = getAnalytics(app);
+    }
+}
+catch(e){
+    console.warn("SAKAKER Analytics unavailable; login will continue:", e);
+}
 
 const auth =
     getAuth(app);
@@ -6899,10 +6906,16 @@ window.firebaseStorage =
    💾 حفظ تسجيل الدخول
 ========================================================= */
 
-await setPersistence(
-    auth,
-    browserLocalPersistence
-);
+try{
+    await setPersistence(
+        auth,
+        browserLocalPersistence
+    );
+}
+catch(e){
+    /* لا نوقف تسجيل الدخول إذا منع المتصفح التخزين المحلي */
+    console.warn("SAKAKER persistence unavailable; continuing with default persistence:", e);
+}
 
 
 /* =========================================================
@@ -7115,6 +7128,115 @@ const error =
         "loginError"
     );
 
+const googleButton =
+    document.getElementById(
+        "googleButton"
+    );
+
+/* =========================================================
+   ✅ تطبيق حالة المستخدم مباشرة وبأمان
+   يمنع بقاء شاشة الدخول بعد نجاح Google
+========================================================= */
+function applySignedInUser(user){
+
+    if(!user) return;
+
+    if(overlay){
+        overlay.style.display = "none";
+    }
+
+    document.body.classList.remove("locked");
+
+    const profile = document.getElementById("userProfile");
+    const userName = document.getElementById("userName");
+    const userPhoto = document.getElementById("userPhoto");
+
+    if(profile){
+        profile.style.display = "flex";
+    }
+
+    if(userName){
+        userName.textContent =
+            user.displayName ||
+            user.email ||
+            (currentLang === "en" ? "User" : "المستخدم");
+    }
+
+    if(userPhoto){
+        userPhoto.src =
+            user.photoURL ||
+            "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+    }
+
+    if(error){
+        error.textContent = "";
+    }
+}
+
+function applySignedOutState(){
+
+    if(overlay){
+        overlay.style.display = "flex";
+    }
+
+    document.body.classList.add("locked");
+
+    const profile = document.getElementById("userProfile");
+    if(profile){
+        profile.style.display = "none";
+    }
+}
+
+function setGoogleButtonBusy(busy){
+
+    if(!googleButton) return;
+
+    googleButton.disabled = busy;
+    googleButton.style.opacity = busy ? ".72" : "1";
+    googleButton.style.cursor = busy ? "wait" : "pointer";
+
+    if(busy){
+        googleButton.textContent =
+            currentLang === "en"
+            ? "⏳ Signing in with Google..."
+            : "⏳ جاري الدخول بواسطة Google...";
+    }
+    else{
+        googleButton.textContent = translations[currentLang].google;
+    }
+}
+
+function firebaseLoginMessage(e){
+
+    const code = e?.code || "auth/unknown";
+
+    const ar = {
+        "auth/popup-blocked":"❌ المتصفح منع نافذة Google. اسمح بالنوافذ المنبثقة لهذا الموقع ثم حاول مرة أخرى.",
+        "auth/popup-closed-by-user":"تم إغلاق نافذة Google قبل اكتمال تسجيل الدخول.",
+        "auth/cancelled-popup-request":"تم إلغاء محاولة سابقة. اضغط دخول Google مرة واحدة وحاول مجددًا.",
+        "auth/unauthorized-domain":"❌ النطاق sakaker.co غير مصرح به في Firebase Authentication.",
+        "auth/operation-not-allowed":"❌ تسجيل Google غير مفعّل في Firebase Authentication.",
+        "auth/network-request-failed":"❌ تعذر الاتصال بخدمة تسجيل الدخول. تحقق من الإنترنت ثم حاول مرة أخرى.",
+        "auth/too-many-requests":"❌ محاولات كثيرة مؤقتًا. حاول مرة أخرى لاحقًا."
+    };
+
+    const en = {
+        "auth/popup-blocked":"❌ The browser blocked the Google popup. Allow popups for this site and try again.",
+        "auth/popup-closed-by-user":"The Google window was closed before sign-in completed.",
+        "auth/cancelled-popup-request":"A previous popup request was cancelled. Click Google sign-in once and try again.",
+        "auth/unauthorized-domain":"❌ sakaker.co is not authorized in Firebase Authentication.",
+        "auth/operation-not-allowed":"❌ Google sign-in is not enabled in Firebase Authentication.",
+        "auth/network-request-failed":"❌ Could not reach the sign-in service. Check your connection and try again.",
+        "auth/too-many-requests":"❌ Too many attempts. Please try again later."
+    };
+
+    const table = currentLang === "en" ? en : ar;
+    return table[code] ||
+        (currentLang === "en"
+            ? `❌ Google sign-in failed (${code})`
+            : `❌ فشل تسجيل الدخول بواسطة Google (${code})`);
+}
+
 
 /* =========================================================
    🔑 دخول بالبريد وكلمة المرور
@@ -7232,40 +7354,55 @@ document.getElementById(
 
 
 /* =========================================================
-   🔵 Google Login
+   🔵 Google Login — ثابت للحاسوب والجوال
 ========================================================= */
 
-document.getElementById(
-    "googleButton"
-).onclick = async () => {
+if(googleButton){
 
-    error.textContent = "";
+    googleButton.onclick = async () => {
 
-    const provider =
-        new GoogleAuthProvider();
+        if(error){
+            error.textContent = "";
+        }
 
+        setGoogleButtonBusy(true);
 
-    try{
+        const provider = new GoogleAuthProvider();
 
-        await signInWithPopup(
-            auth,
-            provider
-        );
+        /* إجبار Google على إظهار اختيار الحساب بوضوح */
+        provider.setCustomParameters({
+            prompt: "select_account"
+        });
 
-    }
+        try{
 
-    catch(e){
+            auth.useDeviceLanguage();
 
-        console.error(e);
+            const result = await signInWithPopup(
+                auth,
+                provider
+            );
 
-        error.textContent =
-            currentLang === "en"
-            ? "❌ Google sign-in failed"
-            : "❌ فشل تسجيل الدخول بواسطة Google";
+            /* لا ننتظر onAuthStateChanged فقط؛ نفتح الموقع فور نجاح Google */
+            if(result?.user){
+                applySignedInUser(result.user);
+            }
+        }
 
-    }
+        catch(e){
 
-};
+            console.error("SAKAKER Google Login:", e);
+
+            if(error){
+                error.textContent = firebaseLoginMessage(e);
+            }
+        }
+
+        finally{
+            setGoogleButtonBusy(false);
+        }
+    };
+}
 
 
 /* =========================================================
@@ -7277,68 +7414,18 @@ onAuthStateChanged(
     (user) => {
 
         if(user){
-
-            /* إخفاء صفحة الدخول */
-            overlay.style.display =
-                "none";
-
-
-            /* فتح الموقع */
-            document.body.classList.remove(
-                "locked"
-            );
-
-
-            /* إظهار بيانات المستخدم */
-            document.getElementById(
-                "userProfile"
-            ).style.display =
-                "flex";
-
-
-            /* الاسم */
-            document.getElementById(
-                "userName"
-            ).textContent =
-                user.displayName ||
-                user.email ||
-                (
-                    currentLang === "en"
-                    ? "User"
-                    : "المستخدم"
-                );
-
-
-            /* الصورة */
-            document.getElementById(
-                "userPhoto"
-            ).src =
-                user.photoURL ||
-                "https://cdn-icons-png.flaticon.com/512/149/149071.png";
-
+            applySignedInUser(user);
         }
-
         else{
-
-            /* إظهار صفحة الدخول */
-            overlay.style.display =
-                "flex";
-
-
-            /* قفل الموقع */
-            document.body.classList.add(
-                "locked"
-            );
-
-
-            /* إخفاء بيانات المستخدم */
-            document.getElementById(
-                "userProfile"
-            ).style.display =
-                "none";
-
+            applySignedOutState();
         }
-
+    },
+    (e) => {
+        console.error("SAKAKER auth state error:", e);
+        applySignedOutState();
+        if(error){
+            error.textContent = firebaseLoginMessage(e);
+        }
     }
 );
 
