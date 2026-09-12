@@ -19216,3 +19216,189 @@ html body .sakaker-news-label{
   setTimeout(refresh, 1500);
 })();
 </script>
+
+
+<!-- SAKAKER TOP CORNER NEWS BAR FIX -->
+<style id="sakaker-top-corner-news-final">
+
+/* =========================================================
+   توزيع أعلى الصفحة:
+   زر اللغة = الزاوية اليسرى
+   بيانات المستخدم/الخروج = الزاوية اليمنى
+   شريط الساعة والأخبار = بينهما بمحاذاة أعلى الصفحة
+========================================================= */
+
+html body #siteLangToggle{
+  position:fixed !important;
+  top:8px !important;
+  left:8px !important;
+  right:auto !important;
+  z-index:2147483400 !important;
+}
+
+html body #userProfile{
+  position:fixed !important;
+  top:8px !important;
+  right:8px !important;
+  left:auto !important;
+  z-index:2147483500 !important;
+}
+
+/* الشريط بمحاذاة الحافة العليا بدون تغطية زر اللغة أو الخروج */
+html body .news-ticker{
+  position:fixed !important;
+
+  top:8px !important;
+  left:84px !important;
+  right:190px !important;
+
+  width:auto !important;
+  max-width:none !important;
+  min-width:0 !important;
+
+  transform:none !important;
+
+  min-height:58px !important;
+  padding:5px 9px !important;
+
+  grid-template-columns:minmax(245px,auto) 1fr !important;
+  gap:8px !important;
+
+  border-radius:17px !important;
+
+  z-index:2147482200 !important;
+}
+
+/* الساعة أصغر قليلاً حتى تبقى واضحة */
+html body #clock{
+  font-size:16px !important;
+}
+
+html body #date,
+html body #weather{
+  font-size:9px !important;
+}
+
+/* =========================================================
+   الجوال
+   يبقى زر اللغة في اليسار والخروج في اليمين
+   والشريط بينهما قدر الإمكان، ثم ينزل قليلاً إذا ضاقت الشاشة
+========================================================= */
+@media(max-width:700px){
+
+  html body #siteLangToggle{
+    top:7px !important;
+    left:7px !important;
+    width:56px !important;
+    min-width:56px !important;
+    height:29px !important;
+  }
+
+  html body #userProfile{
+    top:7px !important;
+    right:7px !important;
+  }
+
+  html body .news-ticker{
+    top:44px !important;
+
+    left:7px !important;
+    right:7px !important;
+
+    width:auto !important;
+    max-width:none !important;
+
+    min-height:72px !important;
+    padding:5px 6px !important;
+
+    grid-template-columns:1fr !important;
+    grid-template-rows:auto auto !important;
+
+    transform:none !important;
+    border-radius:14px !important;
+  }
+
+  html body .news-ticker .clock-box{
+    grid-template-columns:1fr 1fr 1fr !important;
+    grid-template-areas:
+      "clock date weather"
+      "location location location" !important;
+  }
+
+  html body #clock{
+    font-size:13px !important;
+  }
+
+  html body #date,
+  html body #weather{
+    font-size:8px !important;
+  }
+
+  html body #locationName{
+    font-size:7px !important;
+  }
+}
+
+@media(max-width:390px){
+  html body .news-ticker{
+    top:43px !important;
+    left:5px !important;
+    right:5px !important;
+    min-height:70px !important;
+  }
+
+  html body #clock{
+    font-size:12px !important;
+  }
+}
+
+</style>
+
+<script id="sakaker-top-corner-news-js">
+(function(){
+
+  function enforceTopLayout(){
+    const ticker = document.querySelector(".news-ticker");
+    const langBtn = document.getElementById("siteLangToggle");
+    const profile = document.getElementById("userProfile");
+
+    if(langBtn){
+      langBtn.style.setProperty("top","8px","important");
+      langBtn.style.setProperty("left","8px","important");
+      langBtn.style.setProperty("right","auto","important");
+    }
+
+    if(profile){
+      profile.style.setProperty("top","8px","important");
+      profile.style.setProperty("right","8px","important");
+      profile.style.setProperty("left","auto","important");
+    }
+
+    if(ticker && window.innerWidth > 700){
+      ticker.style.setProperty("top","8px","important");
+      ticker.style.setProperty("left","84px","important");
+      ticker.style.setProperty("right","190px","important");
+      ticker.style.setProperty("width","auto","important");
+      ticker.style.setProperty("transform","none","important");
+    }
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", enforceTopLayout);
+  }else{
+    enforceTopLayout();
+  }
+
+  window.addEventListener("resize", enforceTopLayout);
+
+  document.addEventListener("click", function(e){
+    if(e.target.closest("#siteLangToggle")){
+      setTimeout(enforceTopLayout, 10);
+      setTimeout(enforceTopLayout, 200);
+    }
+  }, true);
+
+  setTimeout(enforceTopLayout, 500);
+  setTimeout(enforceTopLayout, 1600);
+})();
+</script>
