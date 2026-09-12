@@ -17836,22 +17836,7 @@ body.sakaker-ship-open #shipPopup_new * {
 
 <script id="sakaker-absolute-final-layer-manager">
 (function(){
-  const OLD_BG = "https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%20Sep%2011%2C%202026%2C%2010_02_56%20PM.png";
-
-  function forceLoginBackground(){
-    const overlay = document.getElementById("loginOverlay");
-    if(!overlay) return;
-
-    overlay.style.setProperty(
-      "background-image",
-      'linear-gradient(rgba(0,0,0,.30),rgba(0,0,0,.55)), url("' + OLD_BG + '")',
-      "important"
-    );
-    overlay.style.setProperty("background-size","cover","important");
-    overlay.style.setProperty("background-position","center center","important");
-    overlay.style.setProperty("background-repeat","no-repeat","important");
-    overlay.style.setProperty("background-attachment","scroll","important");
-  }
+  'use strict';
 
   function syncModalState(){
     const body = document.body;
@@ -17861,69 +17846,95 @@ body.sakaker-ship-open #shipPopup_new * {
     const music = document.getElementById("emPanel");
 
     let shipOpen = false;
+
     if(ship){
       const cs = getComputedStyle(ship);
-      shipOpen = cs.display !== "none" && cs.visibility !== "hidden";
+      shipOpen =
+        cs.display !== "none" &&
+        cs.visibility !== "hidden";
     }
 
     const musicOpen = !!music;
 
-    body.classList.toggle("sakaker-ship-open", shipOpen && !musicOpen);
-    body.classList.toggle("sakaker-music-open", musicOpen);
+    body.classList.toggle(
+      "sakaker-ship-open",
+      shipOpen && !musicOpen
+    );
+
+    body.classList.toggle(
+      "sakaker-music-open",
+      musicOpen
+    );
   }
 
   function removeFleet(){
-    document.querySelectorAll("#sakakerFleet").forEach(function(el){
-      el.remove();
-    });
+    document
+      .querySelectorAll("#sakakerFleet")
+      .forEach(function(el){
+        el.remove();
+      });
   }
 
   function init(){
-    forceLoginBackground();
     removeFleet();
     syncModalState();
 
-    /* مراقبة أي كود قديم يحاول تغيير الخلفية أو إعادة الأسطول */
-    const login = document.getElementById("loginOverlay");
-    if(login){
-      new MutationObserver(function(){
-        forceLoginBackground();
-      }).observe(login, {attributes:true, attributeFilter:["style","class"]});
-    }
+    const ship =
+      document.getElementById("shipPopup_new");
 
-    const ship = document.getElementById("shipPopup_new");
     if(ship){
-      new MutationObserver(syncModalState).observe(
+      new MutationObserver(
+        syncModalState
+      ).observe(
         ship,
-        {attributes:true, attributeFilter:["style","class"]}
+        {
+          attributes:true,
+          attributeFilter:["style","class"]
+        }
       );
     }
 
     new MutationObserver(function(){
       removeFleet();
       syncModalState();
-    }).observe(document.body, {childList:true, subtree:true});
+    }).observe(
+      document.body,
+      {
+        childList:true,
+        subtree:true
+      }
+    );
 
-    document.addEventListener("click", function(e){
-      if(e.target.closest("#shipIcon_new")){
-        setTimeout(syncModalState, 0);
-      }
-      if(e.target.closest("#closeShip_new")){
-        setTimeout(syncModalState, 0);
-      }
-      if(e.target.closest("#emOpenBtn")){
-        setTimeout(syncModalState, 0);
-        setTimeout(syncModalState, 50);
-      }
-      if(e.target.closest(".emClose")){
-        setTimeout(syncModalState, 0);
-        setTimeout(syncModalState, 50);
-      }
-    }, true);
+    document.addEventListener(
+      "click",
+      function(e){
+        if(e.target.closest("#shipIcon_new")){
+          setTimeout(syncModalState,0);
+        }
+
+        if(e.target.closest("#closeShip_new")){
+          setTimeout(syncModalState,0);
+        }
+
+        if(e.target.closest("#emOpenBtn")){
+          setTimeout(syncModalState,0);
+          setTimeout(syncModalState,50);
+        }
+
+        if(e.target.closest(".emClose")){
+          setTimeout(syncModalState,0);
+          setTimeout(syncModalState,50);
+        }
+      },
+      true
+    );
   }
 
   if(document.readyState === "loading"){
-    document.addEventListener("DOMContentLoaded", init);
+    document.addEventListener(
+      "DOMContentLoaded",
+      init
+    );
   } else {
     init();
   }
@@ -18169,120 +18180,6 @@ html body #emeraldMusicHost #emOpenBtn {
 }
 
 </style>
-
-<script id="sakaker-background-master-js">
-(function(){
-  const LOGIN_BG = "https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%20Sep%2011%2C%202026%2C%2010_02_56%20PM.png";
-  const SITE_BG  = "https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%2012%20%D8%B3%D8%A8%D8%AA%D9%85%D8%A8%D8%B1%202026%D8%8C%2007_19_34%20%D9%85.png.crdownload";
-
-  function applyBackgrounds(){
-    const body = document.body;
-    const overlay = document.getElementById("loginOverlay");
-
-    if(body){
-      body.style.setProperty("background-color","#02090b","important");
-      body.style.setProperty("background-image",'url("' + SITE_BG + '")',"important");
-      body.style.setProperty("background-repeat","no-repeat","important");
-      body.style.setProperty("background-position","center top","important");
-      body.style.setProperty("background-size","contain","important");
-      body.style.setProperty(
-        "background-attachment",
-        window.innerWidth <= 700 ? "scroll" : "fixed",
-        "important"
-      );
-    }
-
-    if(overlay){
-      overlay.style.setProperty("background-color","#02090b","important");
-      overlay.style.setProperty("background-image",'url("' + LOGIN_BG + '")',"important");
-      overlay.style.setProperty("background-repeat","no-repeat","important");
-      overlay.style.setProperty("background-position","center center","important");
-      overlay.style.setProperty("background-size","cover","important");
-      overlay.style.setProperty("background-attachment","scroll","important");
-    }
-  }
-
-  function applyIconStack(){
-    const pongDock = document.getElementById("sakakerPongDock");
-    const pong = document.getElementById("pongGame-btn");
-    const live = document.getElementById("liveFlasher");
-    const fb = document.getElementById("facebookVideoIcon");
-    const music = document.getElementById("emOpenBtn");
-
-    const mobile = window.innerWidth <= 700;
-    const tiny = window.innerWidth <= 390;
-
-    const x = mobile ? "8px" : "14px";
-
-    const positions = tiny
-      ? {pong:"300px", live:"242px", fb:"184px", music:"126px", size:"48px"}
-      : mobile
-        ? {pong:"316px", live:"252px", fb:"188px", music:"124px", size:"52px"}
-        : {pong:"305px", live:"232px", fb:"159px", music:"86px", size:"62px"};
-
-    if(pongDock){
-      pongDock.style.setProperty("left", x, "important");
-      pongDock.style.setProperty("right","auto","important");
-      pongDock.style.setProperty("top","auto","important");
-      pongDock.style.setProperty("bottom",positions.pong,"important");
-      pongDock.style.setProperty("transform","none","important");
-    }
-
-    if(pong){
-      pong.style.setProperty("width",positions.size,"important");
-      pong.style.setProperty("height",positions.size,"important");
-    }
-
-    if(live){
-      live.style.setProperty("left",x,"important");
-      live.style.setProperty("right","auto","important");
-      live.style.setProperty("top","auto","important");
-      live.style.setProperty("bottom",positions.live,"important");
-      live.style.setProperty("transform","none","important");
-      live.style.setProperty("width",positions.size,"important");
-      live.style.setProperty("height",positions.size,"important");
-    }
-
-    if(fb){
-      fb.style.setProperty("left",x,"important");
-      fb.style.setProperty("right","auto","important");
-      fb.style.setProperty("top","auto","important");
-      fb.style.setProperty("bottom",positions.fb,"important");
-      fb.style.setProperty("width",positions.size,"important");
-      fb.style.setProperty("height",positions.size,"important");
-    }
-
-    if(music){
-      music.style.setProperty("left",x,"important");
-      music.style.setProperty("right","auto","important");
-      music.style.setProperty("top","auto","important");
-      music.style.setProperty("bottom",positions.music,"important");
-      music.style.setProperty("width",positions.size,"important");
-      music.style.setProperty("height",positions.size,"important");
-    }
-  }
-
-  function applyAll(){
-    applyBackgrounds();
-    applyIconStack();
-  }
-
-  if(document.readyState === "loading"){
-    document.addEventListener("DOMContentLoaded", applyAll);
-  } else {
-    applyAll();
-  }
-
-  window.addEventListener("resize", applyAll);
-
-  /* إعادة التطبيق بعد تحميل المكونات الديناميكية */
-  setTimeout(applyAll, 250);
-  setTimeout(applyAll, 1000);
-  setTimeout(applyAll, 2500);
-})();
-</script>
-
-
 <!-- SAKAKER FULL BACKGROUND + TRANSPARENT LOGIN ICON -->
 <style id="sakaker-full-bg-login-icon-final">
 
@@ -18351,49 +18248,6 @@ html body.locked #bird-sound-btn:active {
 }
 
 </style>
-
-<script id="sakaker-full-bg-login-icon-js">
-(function(){
-  const siteBg = "https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%2012%20%D8%B3%D8%A8%D8%AA%D9%85%D8%A8%D8%B1%202026%D8%8C%2007_19_34%20%D9%85.png.crdownload";
-
-  function applyFinalVisuals(){
-    const body = document.body;
-    const bird = document.getElementById("bird-sound-btn");
-
-    if(body){
-      body.style.setProperty("background-image", 'url("' + siteBg + '")', "important");
-      body.style.setProperty("background-size", "cover", "important");
-      body.style.setProperty("background-position", "center center", "important");
-      body.style.setProperty("background-repeat", "no-repeat", "important");
-      body.style.setProperty(
-        "background-attachment",
-        window.innerWidth <= 700 ? "scroll" : "fixed",
-        "important"
-      );
-    }
-
-    if(bird){
-      bird.style.setProperty("background", "transparent", "important");
-      bird.style.setProperty("background-color", "transparent", "important");
-      bird.style.setProperty("background-image", "none", "important");
-      bird.style.setProperty("border", "none", "important");
-      bird.style.setProperty("box-shadow", "none", "important");
-      bird.style.setProperty("outline", "none", "important");
-    }
-  }
-
-  if(document.readyState === "loading"){
-    document.addEventListener("DOMContentLoaded", applyFinalVisuals);
-  } else {
-    applyFinalVisuals();
-  }
-
-  window.addEventListener("resize", applyFinalVisuals);
-  setTimeout(applyFinalVisuals, 300);
-  setTimeout(applyFinalVisuals, 1200);
-})();
-</script>
-
 </html>
 
 
@@ -18491,54 +18345,6 @@ html body.locked #bird-sound-btn:active {
 }
 
 </style>
-
-<script id="sakaker-true-final-visual-js">
-(function(){
-  const SITE_BG = "https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%2012%20%D8%B3%D8%A8%D8%AA%D9%85%D8%A8%D8%B1%202026%D8%8C%2007_19_34%20%D9%85.png.crdownload";
-
-  function forceFinalVisuals(){
-    const body = document.body;
-    const bird = document.getElementById("bird-sound-btn");
-
-    if(body){
-      body.style.setProperty("background-color","#02090b","important");
-      body.style.setProperty("background-image",'url("' + SITE_BG + '")',"important");
-      body.style.setProperty("background-repeat","no-repeat","important");
-      body.style.setProperty("background-position","center center","important");
-      body.style.setProperty("background-size","cover","important");
-      body.style.setProperty("background-attachment","fixed","important");
-      body.style.setProperty("min-height","100vh","important");
-    }
-
-    if(bird){
-      bird.style.setProperty("background","transparent","important");
-      bird.style.setProperty("background-color","transparent","important");
-      bird.style.setProperty("background-image","none","important");
-      bird.style.setProperty("border","0","important");
-      bird.style.setProperty("border-radius","0","important");
-      bird.style.setProperty("outline","0","important");
-      bird.style.setProperty("box-shadow","none","important");
-      bird.style.setProperty("backdrop-filter","none","important");
-    }
-  }
-
-  if(document.readyState === "loading"){
-    document.addEventListener("DOMContentLoaded", forceFinalVisuals);
-  } else {
-    forceFinalVisuals();
-  }
-
-  /* إعادة التطبيق بعد تشغيل الأكواد القديمة التي تستخدم setTimeout */
-  setTimeout(forceFinalVisuals, 100);
-  setTimeout(forceFinalVisuals, 800);
-  setTimeout(forceFinalVisuals, 2000);
-  setTimeout(forceFinalVisuals, 5000);
-
-  window.addEventListener("resize", forceFinalVisuals);
-})();
-</script>
-
-
 <!-- SAKAKER GLASS LOGIN + BILINGUAL NEWS CLOCK -->
 <style id="sakaker-glass-news-final">
 
@@ -20650,64 +20456,48 @@ html body .cards .sak-order-riddles{
 
 
 <!-- SAKAKER NEW SITE BACKGROUND FINAL -->
-<style id="sakaker-new-site-background-final">
-html body{
-  background-image:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%2012%20%D8%B3%D8%A8%D8%AA%D9%85%D8%A8%D8%B1%202026%D8%8C%2007_19_34%20%D9%85.png.crdownload") !important;
-}
-</style>
-
-<script id="sakaker-new-site-background-js">
-(function(){
-  const NEW_SITE_BG = "https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%2012%20%D8%B3%D8%A8%D8%AA%D9%85%D8%A8%D8%B1%202026%D8%8C%2007_19_34%20%D9%85.png.crdownload";
-
-  function applyNewSiteBackground(){
-    if(!document.body) return;
-    document.body.style.setProperty(
-      "background-image",
-      'url("' + NEW_SITE_BG + '")',
-      "important"
-    );
-  }
-
-  applyNewSiteBackground();
-
-  if(document.readyState === "loading"){
-    document.addEventListener("DOMContentLoaded", applyNewSiteBackground);
-  }
-
-  window.addEventListener("resize", applyNewSiteBackground);
-  setTimeout(applyNewSiteBackground, 400);
-  setTimeout(applyNewSiteBackground, 1600);
-})();
-</script>
-
-
 <!-- SAKAKER FULL IMAGE BACKGROUND SITE + LOGIN -->
-<style id="sakaker-full-image-background-final">
+
+
+<!-- SAKAKER SINGLE BACKGROUND SOURCE FINAL -->
+<style id="sakaker-single-background-source-final">
 
 /* =========================================================
-   الخلفية الرئيسية — إظهار كامل الصورة بدون أي اقتصاص
+   مصدر خلفية واحد فقط
+   نفس الصورة للموقع ولصفحة تسجيل الدخول
 ========================================================= */
+
 html{
+  min-width:100% !important;
   min-height:100% !important;
   background:#02090b !important;
 }
 
 html body{
+  margin:0 !important;
+  min-width:100% !important;
   min-height:100vh !important;
 
   background-color:#02090b !important;
   background-image:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%2012%20%D8%B3%D8%A8%D8%AA%D9%85%D8%A8%D8%B1%202026%D8%8C%2007_19_34%20%D9%85.png.crdownload") !important;
 
-  /* كامل الصورة للصفحة بدون قص */
+  /*
+    عرض كامل الصورة بدون اقتصاص.
+    100% 100% يمنع القص ويجعل الصورة تملأ مساحة الصفحة.
+  */
   background-size:100% 100% !important;
   background-position:center center !important;
   background-repeat:no-repeat !important;
   background-attachment:fixed !important;
 }
 
+/* منع أي طبقة قديمة من وضع صورة أو تدرج فوق الخلفية */
+html body::before{
+  background-image:none !important;
+}
+
 /* =========================================================
-   صفحة الدخول — نفس الخلفية وبكامل الصورة أيضاً
+   صفحة الدخول — نفس الصورة تماماً
 ========================================================= */
 html body #loginOverlay,
 html body.locked #loginOverlay{
@@ -20715,8 +20505,8 @@ html body.locked #loginOverlay{
 
   background-image:
     linear-gradient(
-      rgba(0,0,0,.10),
-      rgba(0,0,0,.18)
+      rgba(0,0,0,.08),
+      rgba(0,0,0,.12)
     ),
     url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%2012%20%D8%B3%D8%A8%D8%AA%D9%85%D8%A8%D8%B1%202026%D8%8C%2007_19_34%20%D9%85.png.crdownload") !important;
 
@@ -20729,11 +20519,12 @@ html body.locked #loginOverlay{
   -webkit-backdrop-filter:none !important;
 }
 
-/* الجوال: تبقى الصورة كاملة بدون اقتصاص */
+/* الجوال: نفس المبدأ بدون قص */
 @media(max-width:700px){
   html body{
     background-size:100% 100% !important;
     background-position:center center !important;
+    background-repeat:no-repeat !important;
     background-attachment:scroll !important;
   }
 
@@ -20741,79 +20532,123 @@ html body.locked #loginOverlay{
   html body.locked #loginOverlay{
     background-size:100% 100% !important;
     background-position:center center !important;
+    background-repeat:no-repeat !important;
   }
 }
 
 </style>
 
-<script id="sakaker-full-image-background-js">
+<script id="sakaker-single-background-source-js">
 (function(){
+  'use strict';
+
   const BG = "https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%2012%20%D8%B3%D8%A8%D8%AA%D9%85%D8%A8%D8%B1%202026%D8%8C%2007_19_34%20%D9%85.png.crdownload";
 
-  function forceFullBackground(){
-    if(document.body){
-      document.body.style.setProperty(
+  function applySingleBackground(){
+    const body = document.body;
+    const login =
+      document.getElementById("loginOverlay");
+
+    if(body){
+      body.style.setProperty(
+        "background-color",
+        "#02090b",
+        "important"
+      );
+
+      body.style.setProperty(
         "background-image",
         'url("' + BG + '")',
         "important"
       );
-      document.body.style.setProperty(
+
+      body.style.setProperty(
         "background-size",
         "100% 100%",
         "important"
       );
-      document.body.style.setProperty(
+
+      body.style.setProperty(
         "background-position",
         "center center",
         "important"
       );
-      document.body.style.setProperty(
+
+      body.style.setProperty(
         "background-repeat",
         "no-repeat",
         "important"
       );
-      document.body.style.setProperty(
+
+      body.style.setProperty(
         "background-attachment",
-        window.innerWidth <= 700 ? "scroll" : "fixed",
+        window.innerWidth <= 700
+          ? "scroll"
+          : "fixed",
         "important"
       );
     }
 
-    const login = document.getElementById("loginOverlay");
     if(login){
       login.style.setProperty(
-        "background-image",
-        'linear-gradient(rgba(0,0,0,.10),rgba(0,0,0,.18)), url("' + BG + '")',
+        "background-color",
+        "#02090b",
         "important"
       );
+
+      login.style.setProperty(
+        "background-image",
+        'linear-gradient(rgba(0,0,0,.08),rgba(0,0,0,.12)), url("' + BG + '")',
+        "important"
+      );
+
       login.style.setProperty(
         "background-size",
         "100% 100%",
         "important"
       );
+
       login.style.setProperty(
         "background-position",
         "center center",
         "important"
       );
+
       login.style.setProperty(
         "background-repeat",
         "no-repeat",
         "important"
       );
+
+      login.style.setProperty(
+        "background-attachment",
+        "scroll",
+        "important"
+      );
     }
   }
 
-  forceFullBackground();
+  applySingleBackground();
 
   if(document.readyState === "loading"){
-    document.addEventListener("DOMContentLoaded", forceFullBackground);
+    document.addEventListener(
+      "DOMContentLoaded",
+      applySingleBackground
+    );
   }
 
-  window.addEventListener("resize", forceFullBackground);
+  window.addEventListener(
+    "resize",
+    applySingleBackground
+  );
 
-  /* التغلب على أي كود قديم متأخر يعيد إعدادات الخلفية السابقة */
-  setTimeout(forceFullBackground, 400);
-  setTimeout(forceFullBackground, 1600);
+  /*
+    نعيد مرة واحدة بعد اكتمال أكواد الصفحة القديمة،
+    لكن لا نراقب style حتى لا يحدث تكرار أو تعليق.
+  */
+  setTimeout(
+    applySingleBackground,
+    1800
+  );
 })();
 </script>
