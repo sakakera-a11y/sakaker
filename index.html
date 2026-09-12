@@ -18254,4 +18254,116 @@ html body #emeraldMusicHost #emOpenBtn {
 })();
 </script>
 
+
+<!-- SAKAKER FULL BACKGROUND + TRANSPARENT LOGIN ICON -->
+<style id="sakaker-full-bg-login-icon-final">
+
+/* =========================================================
+   1) خلفية الموقع تغطي كامل الصفحة
+========================================================= */
+html,
+html body {
+  min-width:100%;
+  min-height:100%;
+}
+
+html body {
+  min-height:100vh !important;
+  background-color:#02090b !important;
+  background-image:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B5%D9%88%D8%B1%D8%A9.png") !important;
+  background-repeat:no-repeat !important;
+  background-position:center center !important;
+  background-size:cover !important;
+  background-attachment:fixed !important;
+}
+
+/* الجوال أيضًا تغطية كاملة */
+@media(max-width:700px) {
+  html body {
+    min-height:100dvh !important;
+    background-image:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B5%D9%88%D8%B1%D8%A9.png") !important;
+    background-repeat:no-repeat !important;
+    background-position:center center !important;
+    background-size:cover !important;
+    background-attachment:scroll !important;
+  }
+}
+
+/* =========================================================
+   2) أيقونة صفحة الدخول بدون أي خلفية
+========================================================= */
+html body #bird-sound-btn,
+html body.locked #bird-sound-btn {
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  border:none !important;
+  outline:none !important;
+  box-shadow:none !important;
+  -webkit-box-shadow:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+
+  /* الإبقاء على الإيموجي واضحًا فقط */
+  filter:
+    drop-shadow(0 0 4px rgba(255,255,255,.85))
+    drop-shadow(0 0 9px rgba(0,255,213,.75)) !important;
+}
+
+/* لا دائرة ولا طبقة خلفية عند التحويم أو الضغط */
+html body #bird-sound-btn:hover,
+html body #bird-sound-btn:active,
+html body.locked #bird-sound-btn:hover,
+html body.locked #bird-sound-btn:active {
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  border:none !important;
+  box-shadow:none !important;
+}
+
+</style>
+
+<script id="sakaker-full-bg-login-icon-js">
+(function(){
+  const siteBg = "https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B5%D9%88%D8%B1%D8%A9.png";
+
+  function applyFinalVisuals(){
+    const body = document.body;
+    const bird = document.getElementById("bird-sound-btn");
+
+    if(body){
+      body.style.setProperty("background-image", 'url("' + siteBg + '")', "important");
+      body.style.setProperty("background-size", "cover", "important");
+      body.style.setProperty("background-position", "center center", "important");
+      body.style.setProperty("background-repeat", "no-repeat", "important");
+      body.style.setProperty(
+        "background-attachment",
+        window.innerWidth <= 700 ? "scroll" : "fixed",
+        "important"
+      );
+    }
+
+    if(bird){
+      bird.style.setProperty("background", "transparent", "important");
+      bird.style.setProperty("background-color", "transparent", "important");
+      bird.style.setProperty("background-image", "none", "important");
+      bird.style.setProperty("border", "none", "important");
+      bird.style.setProperty("box-shadow", "none", "important");
+      bird.style.setProperty("outline", "none", "important");
+    }
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", applyFinalVisuals);
+  } else {
+    applyFinalVisuals();
+  }
+
+  window.addEventListener("resize", applyFinalVisuals);
+  setTimeout(applyFinalVisuals, 300);
+  setTimeout(applyFinalVisuals, 1200);
+})();
+</script>
+
 </html>
