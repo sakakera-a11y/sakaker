@@ -23032,3 +23032,910 @@ html body #sakakerWisdomBox{
   });
 })();
 </script>
+
+
+<!-- SAKAKER VIDEO CLEAN + TOPMOST POPUPS FINAL -->
+<style id="sakaker-video-clean-topmost-popups-final">
+
+/* =========================================================
+   1) إزالة طبقة "الكروم" من دائرة الفيديو
+   الإبقاء فقط على إطار وإضاءة ناعمة بدون طبقة فوق الفيديو
+========================================================= */
+html body .video-top-container-fixed .video-circle::before,
+html body .video-top-container-fixed .video-circle::after{
+  content:none !important;
+  display:none !important;
+  background:none !important;
+  filter:none !important;
+  animation:none !important;
+}
+
+html body .video-top-container-fixed .video-circle{
+  background:#05070c !important;
+
+  border:1.5px solid rgba(255,255,255,.88) !important;
+
+  box-shadow:
+    0 0 8px rgba(255,255,255,.48),
+    0 0 18px rgba(210,185,245,.36),
+    0 0 30px rgba(95,220,255,.18),
+    inset 0 0 7px rgba(255,255,255,.08) !important;
+
+  filter:none !important;
+}
+
+/* الفيديو نفسه واضح بلا أي طبقة تغطيه */
+html body .video-top-container-fixed .video-circle .miniVideo,
+html body .video-top-container-fixed .video-circle iframe{
+  position:absolute !important;
+  inset:0 !important;
+
+  width:100% !important;
+  height:100% !important;
+
+  top:0 !important;
+  left:0 !important;
+
+  opacity:1 !important;
+  filter:none !important;
+
+  transform:none !important;
+
+  object-fit:cover !important;
+
+  z-index:1 !important;
+}
+
+/* إبقاء رمز التشغيل واضحاً فقط */
+html body .video-top-container-fixed .video-play-icon{
+  z-index:3 !important;
+
+  background:rgba(0,0,0,.32) !important;
+
+  border:1px solid rgba(255,255,255,.72) !important;
+
+  box-shadow:
+    0 0 8px rgba(255,255,255,.38),
+    0 0 15px rgba(210,185,245,.24) !important;
+
+  filter:none !important;
+}
+
+
+/* =========================================================
+   2) عند فتح النوافذ: لا يظهر أي محتوى فوقها
+========================================================= */
+body.sakaker-fb-popup-open > *:not(#facebookVideoPopup),
+body.sakaker-live-popup-open > *:not(#livePopup),
+body.sakaker-live-video-open > *:not(#videoOverlay){
+  visibility:hidden !important;
+  pointer-events:none !important;
+}
+
+/* العنصر المفتوح نفسه يبقى مرئياً */
+body.sakaker-fb-popup-open #facebookVideoPopup,
+body.sakaker-live-popup-open #livePopup,
+body.sakaker-live-video-open #videoOverlay{
+  visibility:visible !important;
+  pointer-events:auto !important;
+}
+
+
+/* =========================================================
+   3) نافذة فيسبوك — فوق كل المحتوى وبشكل جمالي
+========================================================= */
+html body #facebookVideoPopup{
+  position:fixed !important;
+  inset:0 !important;
+
+  width:100vw !important;
+  height:100dvh !important;
+
+  max-width:none !important;
+  max-height:none !important;
+
+  padding:
+    max(10px,env(safe-area-inset-top))
+    max(10px,env(safe-area-inset-right))
+    max(10px,env(safe-area-inset-bottom))
+    max(10px,env(safe-area-inset-left)) !important;
+
+  box-sizing:border-box !important;
+
+  align-items:center !important;
+  justify-content:center !important;
+
+  overflow:hidden !important;
+
+  background:
+    radial-gradient(circle at 50% 18%,rgba(219,194,248,.11),transparent 36%),
+    rgba(2,3,7,.90) !important;
+
+  backdrop-filter:blur(12px) saturate(115%) !important;
+  -webkit-backdrop-filter:blur(12px) saturate(115%) !important;
+
+  z-index:2147483647 !important;
+}
+
+/* الصندوق الداخلي */
+html body #facebookVideoPopup .fbVideoBox{
+  position:relative !important;
+
+  width:min(720px,95vw) !important;
+  max-width:95vw !important;
+
+  height:auto !important;
+  max-height:92dvh !important;
+
+  margin:0 !important;
+  padding:14px !important;
+
+  box-sizing:border-box !important;
+
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+
+  border:1px solid rgba(246,236,255,.72) !important;
+  border-radius:24px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(24,17,34,.93),
+      rgba(7,9,15,.95)
+    ) !important;
+
+  box-shadow:
+    0 0 14px rgba(255,255,255,.22),
+    0 0 34px rgba(204,174,240,.20),
+    0 24px 70px rgba(0,0,0,.72),
+    inset 0 0 20px rgba(255,255,255,.04) !important;
+
+  backdrop-filter:blur(14px) !important;
+  -webkit-backdrop-filter:blur(14px) !important;
+
+  overscroll-behavior:contain !important;
+  scrollbar-width:thin !important;
+}
+
+/* زر الإغلاق يبقى دائماً في الأعلى */
+html body #facebookVideoPopup #facebookVideoClose{
+  position:sticky !important;
+
+  top:0 !important;
+  right:auto !important;
+  left:auto !important;
+
+  float:right !important;
+
+  width:38px !important;
+  height:38px !important;
+
+  margin:0 0 -38px auto !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  border:1px solid rgba(255,255,255,.72) !important;
+  border-radius:50% !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(140,24,55,.94),
+      rgba(62,8,25,.96)
+    ) !important;
+
+  color:#fff !important;
+
+  font-size:18px !important;
+
+  box-shadow:
+    0 0 10px rgba(255,90,125,.45),
+    0 0 20px rgba(255,255,255,.10) !important;
+
+  z-index:2147483647 !important;
+}
+
+/* العنوان */
+html body #facebookVideoPopup .fbVideoTitle{
+  clear:both !important;
+
+  margin:0 0 10px !important;
+  padding:4px 44px 2px !important;
+
+  color:#fff !important;
+
+  font-size:16px !important;
+  font-weight:900 !important;
+
+  text-align:center !important;
+
+  text-shadow:
+    0 1px 3px rgba(0,0,0,.95),
+    0 0 8px rgba(218,191,248,.42) !important;
+}
+
+/* منشور فيسبوك */
+html body #facebookVideoPopup .fbPostSection{
+  width:100% !important;
+  box-sizing:border-box !important;
+
+  margin:0 0 10px !important;
+  padding:9px !important;
+
+  border-radius:16px !important;
+
+  background:rgba(255,255,255,.035) !important;
+  border:1px solid rgba(255,255,255,.09) !important;
+}
+
+html body #facebookVideoPopup .fbPostFrame{
+  width:100% !important;
+
+  display:flex !important;
+  justify-content:center !important;
+
+  overflow:hidden !important;
+
+  border-radius:12px !important;
+}
+
+html body #facebookVideoPopup .fbPostFrame iframe{
+  display:block !important;
+
+  width:100% !important;
+  max-width:500px !important;
+
+  height:333px !important;
+  max-height:42dvh !important;
+
+  border:0 !important;
+}
+
+/* الفيديو */
+html body #facebookVideoPopup .fbVideoFrame{
+  width:100% !important;
+
+  display:flex !important;
+  justify-content:center !important;
+
+  overflow:hidden !important;
+
+  border-radius:15px !important;
+
+  background:#000 !important;
+
+  box-shadow:
+    0 0 14px rgba(0,0,0,.72),
+    0 0 22px rgba(217,190,246,.10) !important;
+}
+
+html body #facebookVideoPopup .fbVideoFrame iframe{
+  display:block !important;
+
+  width:100% !important;
+  max-width:100% !important;
+
+  height:52dvh !important;
+  min-height:280px !important;
+  max-height:520px !important;
+
+  border:0 !important;
+}
+
+/* التعليقات */
+html body #facebookVideoPopup .fbComments{
+  width:100% !important;
+  box-sizing:border-box !important;
+
+  margin:10px 0 0 !important;
+  padding:10px !important;
+
+  border-radius:15px !important;
+
+  background:rgba(255,255,255,.03) !important;
+  border:1px solid rgba(255,255,255,.08) !important;
+}
+
+html body #facebookVideoPopup #fbCommentsList{
+  max-height:145px !important;
+}
+
+
+/* =========================================================
+   4) نافذة القنوات المباشرة — شاشة كاملة فوق كل المحتوى
+========================================================= */
+html body #livePopup{
+  position:fixed !important;
+  inset:0 !important;
+
+  top:0 !important;
+  left:0 !important;
+  right:0 !important;
+  bottom:0 !important;
+
+  transform:none !important;
+
+  width:100vw !important;
+  max-width:none !important;
+  height:100dvh !important;
+  max-height:none !important;
+
+  margin:0 !important;
+
+  padding:
+    max(16px,env(safe-area-inset-top))
+    max(12px,env(safe-area-inset-right))
+    max(16px,env(safe-area-inset-bottom))
+    max(12px,env(safe-area-inset-left)) !important;
+
+  box-sizing:border-box !important;
+
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  background:
+    radial-gradient(circle at 50% 12%,rgba(211,187,245,.10),transparent 34%),
+    rgba(2,3,7,.93) !important;
+
+  border:0 !important;
+  border-radius:0 !important;
+
+  box-shadow:none !important;
+
+  backdrop-filter:blur(12px) saturate(110%) !important;
+  -webkit-backdrop-filter:blur(12px) saturate(110%) !important;
+
+  color:#fff !important;
+
+  overflow:hidden !important;
+
+  z-index:2147483647 !important;
+}
+
+/* زر إغلاق القنوات */
+html body #livePopup #closePopup{
+  position:fixed !important;
+
+  top:max(12px,env(safe-area-inset-top)) !important;
+  right:max(12px,env(safe-area-inset-right)) !important;
+
+  width:40px !important;
+  height:40px !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  border:1px solid rgba(255,255,255,.72) !important;
+  border-radius:50% !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(135,20,50,.96),
+      rgba(55,6,22,.97)
+    ) !important;
+
+  color:#fff !important;
+
+  box-shadow:
+    0 0 10px rgba(255,80,115,.44),
+    0 0 18px rgba(255,255,255,.10) !important;
+
+  z-index:2147483647 !important;
+}
+
+/* معرض القنوات */
+html body #livePopup #liveVideosContainer{
+  width:min(900px,94vw) !important;
+  max-width:94vw !important;
+
+  max-height:82dvh !important;
+
+  margin:0 !important;
+  padding:18px !important;
+
+  box-sizing:border-box !important;
+
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+
+  gap:12px !important;
+
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+
+  border:1px solid rgba(245,236,255,.50) !important;
+  border-radius:24px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(23,16,33,.90),
+      rgba(6,8,14,.94)
+    ) !important;
+
+  box-shadow:
+    0 0 14px rgba(255,255,255,.15),
+    0 0 30px rgba(205,177,239,.15),
+    0 24px 70px rgba(0,0,0,.72),
+    inset 0 0 18px rgba(255,255,255,.035) !important;
+
+  backdrop-filter:blur(12px) !important;
+  -webkit-backdrop-filter:blur(12px) !important;
+
+  overscroll-behavior:contain !important;
+  scrollbar-width:thin !important;
+}
+
+html body #livePopup .live-video{
+  width:100% !important;
+  height:auto !important;
+
+  aspect-ratio:16/9 !important;
+
+  margin:0 !important;
+
+  border:1px solid rgba(255,255,255,.24) !important;
+  border-radius:14px !important;
+
+  background:#000 !important;
+
+  box-shadow:
+    0 0 10px rgba(0,0,0,.70),
+    0 0 15px rgba(214,189,246,.08) !important;
+
+  overflow:hidden !important;
+}
+
+html body #livePopup .live-video:hover{
+  transform:translateY(-2px) scale(1.02) !important;
+
+  box-shadow:
+    0 0 14px rgba(255,255,255,.14),
+    0 0 24px rgba(210,184,243,.15) !important;
+}
+
+html body #livePopup .live-video iframe{
+  width:100% !important;
+  height:100% !important;
+
+  border:0 !important;
+}
+
+
+/* =========================================================
+   5) فيديو القناة المفتوح — فوق كل شيء بلا استثناء
+========================================================= */
+html body #videoOverlay{
+  position:fixed !important;
+  inset:0 !important;
+
+  width:100vw !important;
+  height:100dvh !important;
+
+  padding:
+    max(14px,env(safe-area-inset-top))
+    max(10px,env(safe-area-inset-right))
+    max(14px,env(safe-area-inset-bottom))
+    max(10px,env(safe-area-inset-left)) !important;
+
+  box-sizing:border-box !important;
+
+  align-items:center !important;
+  justify-content:center !important;
+
+  background:rgba(1,2,5,.96) !important;
+
+  backdrop-filter:blur(12px) !important;
+  -webkit-backdrop-filter:blur(12px) !important;
+
+  overflow:hidden !important;
+
+  z-index:2147483647 !important;
+}
+
+html body #videoOverlay #videoBox{
+  position:relative !important;
+
+  width:min(960px,95vw) !important;
+  max-width:95vw !important;
+
+  aspect-ratio:16/9 !important;
+
+  margin:0 !important;
+
+  border:1px solid rgba(255,255,255,.58) !important;
+  border-radius:22px !important;
+
+  background:#000 !important;
+
+  box-shadow:
+    0 0 15px rgba(255,255,255,.17),
+    0 0 34px rgba(205,180,240,.17),
+    0 25px 80px rgba(0,0,0,.80) !important;
+
+  overflow:hidden !important;
+}
+
+html body #videoOverlay #videoBox iframe{
+  width:100% !important;
+  height:100% !important;
+
+  border:0 !important;
+}
+
+html body #videoOverlay #closeVideo{
+  position:absolute !important;
+
+  top:10px !important;
+  right:10px !important;
+
+  width:38px !important;
+  height:38px !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  border:1px solid rgba(255,255,255,.75) !important;
+  border-radius:50% !important;
+
+  background:rgba(105,12,37,.94) !important;
+
+  color:#fff !important;
+
+  font-size:17px !important;
+
+  box-shadow:0 0 12px rgba(255,80,115,.48) !important;
+
+  z-index:2147483647 !important;
+}
+
+
+/* =========================================================
+   الجوال
+========================================================= */
+@media(max-width:700px){
+
+  /* فيسبوك */
+  html body #facebookVideoPopup{
+    padding:
+      max(5px,env(safe-area-inset-top))
+      5px
+      max(5px,env(safe-area-inset-bottom))
+      5px !important;
+  }
+
+  html body #facebookVideoPopup .fbVideoBox{
+    width:calc(100vw - 10px) !important;
+    max-width:calc(100vw - 10px) !important;
+
+    max-height:calc(100dvh - 10px) !important;
+
+    padding:9px !important;
+
+    border-radius:17px !important;
+  }
+
+  html body #facebookVideoPopup #facebookVideoClose{
+    width:36px !important;
+    height:36px !important;
+
+    margin-bottom:-36px !important;
+  }
+
+  html body #facebookVideoPopup .fbVideoTitle{
+    padding:3px 39px 1px !important;
+
+    font-size:13px !important;
+  }
+
+  html body #facebookVideoPopup .fbPostSection{
+    padding:6px !important;
+  }
+
+  html body #facebookVideoPopup .fbPostFrame iframe{
+    width:100% !important;
+    height:31dvh !important;
+    min-height:190px !important;
+    max-height:300px !important;
+  }
+
+  html body #facebookVideoPopup .fbVideoFrame iframe{
+    width:100% !important;
+
+    height:42dvh !important;
+    min-height:240px !important;
+    max-height:400px !important;
+  }
+
+  html body #facebookVideoPopup .fbComments{
+    padding:7px !important;
+  }
+
+  html body #facebookVideoPopup #fbCommentsList{
+    max-height:105px !important;
+  }
+
+  /* القنوات */
+  html body #livePopup{
+    padding:
+      max(8px,env(safe-area-inset-top))
+      6px
+      max(8px,env(safe-area-inset-bottom))
+      6px !important;
+  }
+
+  html body #livePopup #closePopup{
+    top:max(7px,env(safe-area-inset-top)) !important;
+    right:max(7px,env(safe-area-inset-right)) !important;
+
+    width:36px !important;
+    height:36px !important;
+  }
+
+  html body #livePopup #liveVideosContainer{
+    width:calc(100vw - 12px) !important;
+    max-width:calc(100vw - 12px) !important;
+
+    max-height:calc(100dvh - 16px) !important;
+
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+
+    gap:8px !important;
+
+    padding:44px 8px 10px !important;
+
+    border-radius:18px !important;
+  }
+
+  html body #livePopup .live-video{
+    border-radius:11px !important;
+  }
+
+  /* فيديو القناة */
+  html body #videoOverlay{
+    padding:
+      max(7px,env(safe-area-inset-top))
+      6px
+      max(7px,env(safe-area-inset-bottom))
+      6px !important;
+  }
+
+  html body #videoOverlay #videoBox{
+    width:calc(100vw - 12px) !important;
+    max-width:calc(100vw - 12px) !important;
+
+    border-radius:16px !important;
+  }
+
+  html body #videoOverlay #closeVideo{
+    width:36px !important;
+    height:36px !important;
+
+    top:7px !important;
+    right:7px !important;
+  }
+}
+
+@media(max-width:390px){
+
+  html body #livePopup #liveVideosContainer{
+    gap:6px !important;
+    padding-left:6px !important;
+    padding-right:6px !important;
+  }
+
+  html body #facebookVideoPopup .fbPostFrame iframe{
+    height:29dvh !important;
+    min-height:175px !important;
+  }
+
+  html body #facebookVideoPopup .fbVideoFrame iframe{
+    height:40dvh !important;
+    min-height:220px !important;
+  }
+}
+
+</style>
+
+<script id="sakaker-video-clean-topmost-popups-js">
+(function(){
+  'use strict';
+
+  const body = document.body;
+
+  const fbPopup =
+    document.getElementById('facebookVideoPopup');
+
+  const fbClose =
+    document.getElementById('facebookVideoClose');
+
+  const livePopup =
+    document.getElementById('livePopup');
+
+  const videoOverlay =
+    document.getElementById('videoOverlay');
+
+  const mainVideo =
+    document.getElementById('mainVideo');
+
+  function clearPopupClasses(){
+    body.classList.remove(
+      'sakaker-fb-popup-open',
+      'sakaker-live-popup-open',
+      'sakaker-live-video-open'
+    );
+  }
+
+  function syncFacebookState(){
+    if(!fbPopup) return;
+
+    const open =
+      fbPopup.classList.contains('active');
+
+    body.classList.toggle(
+      'sakaker-fb-popup-open',
+      open
+    );
+
+    if(open){
+      body.classList.remove(
+        'sakaker-live-popup-open',
+        'sakaker-live-video-open'
+      );
+    }
+  }
+
+  /* مراقبة آمنة: نراقب class فقط ونغيّر body، وليس نفس العنصر */
+  if(fbPopup){
+    new MutationObserver(
+      syncFacebookState
+    ).observe(
+      fbPopup,
+      {
+        attributes:true,
+        attributeFilter:['class']
+      }
+    );
+
+    fbPopup.addEventListener(
+      'click',
+      function(e){
+        if(e.target === fbPopup){
+          setTimeout(syncFacebookState,0);
+        }
+      }
+    );
+  }
+
+  if(fbClose){
+    fbClose.addEventListener(
+      'click',
+      function(){
+        setTimeout(syncFacebookState,0);
+      }
+    );
+  }
+
+  /* استبدال وظائف القنوات القديمة بنسخة تتحكم بالطبقات بشكل صحيح */
+  window.toggleLivePopup = function(){
+    if(!livePopup) return;
+
+    const isOpen =
+      getComputedStyle(livePopup).display !== 'none';
+
+    if(isOpen){
+      livePopup.style.display = 'none';
+
+      body.classList.remove(
+        'sakaker-live-popup-open'
+      );
+
+      body.style.overflow = '';
+    }else{
+      clearPopupClasses();
+
+      livePopup.style.display = 'flex';
+
+      body.classList.add(
+        'sakaker-live-popup-open'
+      );
+
+      body.style.overflow = 'hidden';
+    }
+  };
+
+  window.openVideo = function(url){
+    if(!videoOverlay || !mainVideo) return;
+
+    clearPopupClasses();
+
+    if(livePopup){
+      livePopup.style.display = 'none';
+    }
+
+    mainVideo.src =
+      url +
+      (url.includes('?') ? '&' : '?') +
+      'autoplay=1';
+
+    videoOverlay.style.display = 'flex';
+
+    body.classList.add(
+      'sakaker-live-video-open'
+    );
+
+    body.style.overflow = 'hidden';
+  };
+
+  window.closeVideo = function(){
+    if(!videoOverlay || !mainVideo) return;
+
+    mainVideo.src = '';
+    videoOverlay.style.display = 'none';
+
+    body.classList.remove(
+      'sakaker-live-video-open'
+    );
+
+    body.style.overflow = '';
+  };
+
+  document.addEventListener(
+    'keydown',
+    function(e){
+      if(e.key !== 'Escape') return;
+
+      if(
+        videoOverlay &&
+        getComputedStyle(videoOverlay).display !== 'none'
+      ){
+        window.closeVideo();
+        return;
+      }
+
+      if(
+        livePopup &&
+        getComputedStyle(livePopup).display !== 'none'
+      ){
+        window.toggleLivePopup();
+        return;
+      }
+
+      if(
+        fbPopup &&
+        fbPopup.classList.contains('active')
+      ){
+        fbPopup.classList.remove('active');
+
+        body.classList.remove(
+          'sakaker-fb-popup-open'
+        );
+
+        body.style.overflow = '';
+      }
+    },
+    true
+  );
+
+  /* إغلاق فيديو القناة عند الضغط خارج الصندوق */
+  if(videoOverlay){
+    videoOverlay.addEventListener(
+      'click',
+      function(e){
+        if(e.target === videoOverlay){
+          window.closeVideo();
+        }
+      }
+    );
+  }
+
+  syncFacebookState();
+})();
+</script>
