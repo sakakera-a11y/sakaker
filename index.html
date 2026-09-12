@@ -21777,3 +21777,129 @@ body.locked #sakakerCenterFeatureDock{
   );
 })();
 </script>
+
+
+<!-- SAKAKER REMOVE BOTTOM SHADOW + ICON SPACING FINAL -->
+<style id="sakaker-remove-shadow-icon-spacing-final">
+
+/* =========================================================
+   إزالة التضليل الأسود أسفل منتصف الصفحة
+   مع إبقاء نص الحكم/الأمثال ووظيفته ومكانه
+========================================================= */
+html body #sakakerWisdomBox{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+
+  border:0 !important;
+  outline:0 !important;
+
+  box-shadow:none !important;
+  -webkit-box-shadow:none !important;
+
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+
+  filter:none !important;
+}
+
+/* إزالة أي خلفية أو طبقة داكنة داخلية */
+html body #sakakerWisdomBox::before,
+html body #sakakerWisdomBox::after{
+  display:none !important;
+  content:none !important;
+
+  background:none !important;
+  box-shadow:none !important;
+}
+
+/* النص يبقى واضحاً فوق الخلفية مباشرة */
+html body #sakakerWisdomBox,
+html body #sakakerWisdomBox *{
+  text-shadow:
+    0 1px 3px rgba(0,0,0,.95),
+    0 0 6px rgba(255,255,255,.35) !important;
+}
+
+
+/* =========================================================
+   تباعد خفيف بين أيقونات اليمين واليسار
+========================================================= */
+:root{
+  --sak-bottom-gap:8px !important;
+}
+
+/* أيقونات المحتوى أسفل اليمين */
+html body .cards{
+  gap:8px !important;
+}
+
+/* أدوات الموقع أسفل اليسار */
+html body #sakakerUtilityDock{
+  gap:8px !important;
+}
+
+/* السفينة و Sakaker Business تحت دائرة الفيديو */
+html body #sakakerCenterFeatureDock{
+  gap:12px !important;
+}
+
+
+/* =========================================================
+   الجوال — تباعد خفيف ومتناسق دون استهلاك المساحة
+========================================================= */
+@media(max-width:700px){
+
+  :root{
+    --sak-bottom-gap:6px !important;
+  }
+
+  html body .cards{
+    gap:6px !important;
+  }
+
+  html body #sakakerUtilityDock{
+    gap:6px !important;
+  }
+
+  html body #sakakerCenterFeatureDock{
+    gap:8px !important;
+  }
+}
+
+
+/* =========================================================
+   الشاشات الصغيرة جداً
+========================================================= */
+@media(max-width:390px){
+
+  :root{
+    --sak-bottom-gap:5px !important;
+  }
+
+  html body .cards{
+    gap:5px !important;
+  }
+
+  html body #sakakerUtilityDock{
+    gap:5px !important;
+  }
+
+  html body #sakakerCenterFeatureDock{
+    gap:7px !important;
+  }
+}
+
+
+/* =========================================================
+   الوضع الأفقي للجوال
+========================================================= */
+@media(max-height:560px) and (orientation:landscape){
+
+  html body .cards,
+  html body #sakakerUtilityDock{
+    gap:5px !important;
+  }
+}
+
+</style>
