@@ -19726,3 +19726,400 @@ html body #logoutButton{
   setTimeout(enforceTransparentTop, 1500);
 })();
 </script>
+
+
+<!-- SAKAKER CORNER INFO PANEL FINAL -->
+<style id="sakaker-corner-info-panel-final">
+
+/* حذف شريط الأخبار القديم بالكامل */
+html body .news-ticker,
+html body .ticker-wrapper,
+html body #newsContent,
+html body #newsContentClone,
+html body .sakaker-news-label{
+  display:none !important;
+}
+
+/* إزالة رمز الساعة القديم إن كان مضافاً بواسطة CSS سابق */
+html body #clock::before,
+html body #clock::after{
+  content:none !important;
+  display:none !important;
+}
+
+/* مربع المعلومات الثابت في أعلى اليسار */
+html body #sakakerInfoPanel{
+  position:fixed !important;
+  top:10px !important;
+  left:10px !important;
+  right:auto !important;
+  bottom:auto !important;
+
+  width:238px !important;
+  padding:10px 11px !important;
+  box-sizing:border-box !important;
+
+  display:flex !important;
+  flex-direction:column !important;
+  gap:6px !important;
+
+  border:1px solid rgba(120,255,224,.48) !important;
+  border-radius:19px !important;
+
+  background:
+    linear-gradient(145deg,rgba(0,22,30,.30),rgba(25,5,38,.23)) !important;
+
+  box-shadow:
+    0 0 12px rgba(0,255,213,.18),
+    0 0 25px rgba(142,70,255,.10),
+    inset 0 0 14px rgba(255,255,255,.025) !important;
+
+  backdrop-filter:blur(6px) saturate(118%) !important;
+  -webkit-backdrop-filter:blur(6px) saturate(118%) !important;
+
+  color:#fff !important;
+  font-family:Tajawal,Cairo,Arial,sans-serif !important;
+
+  z-index:2147482500 !important;
+}
+
+/* رأس المربع: جوهرة + زر اللغة */
+html body #sakakerInfoPanel .sakaker-info-head{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:8px !important;
+  min-height:32px !important;
+  padding-bottom:5px !important;
+  border-bottom:1px solid rgba(255,255,255,.10) !important;
+}
+
+html body #sakakerInfoPanel .sakaker-info-gem{
+  width:31px !important;
+  height:31px !important;
+  flex:0 0 31px !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  border-radius:50% !important;
+  background:rgba(0,255,213,.05) !important;
+
+  font-size:20px !important;
+
+  filter:
+    drop-shadow(0 0 5px rgba(0,255,213,.95))
+    drop-shadow(0 0 10px rgba(160,80,255,.60)) !important;
+
+  animation:sakakerInfoGemPulse 2.8s ease-in-out infinite !important;
+}
+
+@keyframes sakakerInfoGemPulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.08)}
+}
+
+/* زر اللغة أصبح داخل المربع وليس في منتصف الصفحة */
+html body #sakakerInfoPanel #siteLangToggle{
+  position:static !important;
+  inset:auto !important;
+  transform:none !important;
+
+  width:auto !important;
+  min-width:62px !important;
+  max-width:none !important;
+  height:29px !important;
+
+  margin:0 !important;
+  padding:0 11px !important;
+
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  border:1px solid rgba(214,188,255,.72) !important;
+  border-radius:15px !important;
+
+  background:linear-gradient(135deg,rgba(95,38,155,.58),rgba(0,68,68,.40)) !important;
+  color:#f5eaff !important;
+
+  font-size:11px !important;
+  font-weight:900 !important;
+
+  box-shadow:
+    0 0 8px rgba(168,85,247,.22),
+    0 0 13px rgba(0,255,213,.09) !important;
+
+  text-shadow:
+    0 0 5px rgba(255,255,255,.66),
+    0 0 9px rgba(168,85,247,.55) !important;
+
+  cursor:pointer !important;
+  z-index:auto !important;
+}
+
+/* صفوف الوقت والتاريخ والطقس والموقع */
+html body #sakakerInfoPanel .sakaker-info-row{
+  display:grid !important;
+  grid-template-columns:22px minmax(0,1fr) !important;
+  align-items:center !important;
+  gap:7px !important;
+
+  min-height:22px !important;
+  padding:2px 3px !important;
+
+  background:transparent !important;
+}
+
+html body #sakakerInfoPanel .sakaker-info-row-icon{
+  width:22px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  color:#8fffe8 !important;
+  font-size:13px !important;
+
+  text-shadow:
+    0 0 5px rgba(0,0,0,.95),
+    0 0 8px rgba(0,255,213,.72) !important;
+}
+
+html body #sakakerInfoPanel #clock,
+html body #sakakerInfoPanel #date,
+html body #sakakerInfoPanel #weather,
+html body #sakakerInfoPanel #locationName{
+  position:static !important;
+  display:block !important;
+
+  margin:0 !important;
+  padding:0 !important;
+
+  min-width:0 !important;
+  max-width:100% !important;
+
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+
+  line-height:1.28 !important;
+
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+
+  text-shadow:
+    0 1px 3px rgba(0,0,0,1),
+    0 0 6px rgba(0,255,213,.36) !important;
+}
+
+html body #sakakerInfoPanel #clock{
+  color:#fff1a7 !important;
+  font-size:15px !important;
+  font-weight:1000 !important;
+  white-space:nowrap !important;
+}
+
+html body #sakakerInfoPanel #date{
+  color:#e7fffb !important;
+  font-size:10px !important;
+  font-weight:800 !important;
+  white-space:normal !important;
+}
+
+html body #sakakerInfoPanel #weather{
+  color:#ccefff !important;
+  font-size:10px !important;
+  font-weight:800 !important;
+  white-space:normal !important;
+}
+
+html body #sakakerInfoPanel #locationName{
+  color:#aaffea !important;
+  font-size:9px !important;
+  font-weight:800 !important;
+  white-space:normal !important;
+
+  display:-webkit-box !important;
+  -webkit-line-clamp:2 !important;
+  -webkit-box-orient:vertical !important;
+}
+
+/* يبقى في اليسار في اللغتين، ويتغير اتجاه النص داخله فقط */
+html[dir="rtl"] body #sakakerInfoPanel{
+  direction:rtl !important;
+  text-align:right !important;
+}
+html[dir="ltr"] body #sakakerInfoPanel{
+  direction:ltr !important;
+  text-align:left !important;
+}
+
+/* لا يظهر أثناء شاشة الدخول */
+body.locked #sakakerInfoPanel{
+  display:none !important;
+}
+
+/* الجوال */
+@media(max-width:700px){
+  html body #sakakerInfoPanel{
+    top:7px !important;
+    left:7px !important;
+    width:205px !important;
+    padding:8px 9px !important;
+    gap:4px !important;
+    border-radius:16px !important;
+  }
+
+  html body #sakakerInfoPanel .sakaker-info-gem{
+    width:27px !important;
+    height:27px !important;
+    flex-basis:27px !important;
+    font-size:17px !important;
+  }
+
+  html body #sakakerInfoPanel #siteLangToggle{
+    min-width:54px !important;
+    height:26px !important;
+    padding:0 8px !important;
+    font-size:9px !important;
+  }
+
+  html body #sakakerInfoPanel .sakaker-info-row{
+    grid-template-columns:19px minmax(0,1fr) !important;
+    gap:5px !important;
+    min-height:19px !important;
+  }
+
+  html body #sakakerInfoPanel .sakaker-info-row-icon{
+    width:19px !important;
+    font-size:11px !important;
+  }
+
+  html body #sakakerInfoPanel #clock{font-size:13px !important;}
+  html body #sakakerInfoPanel #date,
+  html body #sakakerInfoPanel #weather{font-size:8px !important;}
+  html body #sakakerInfoPanel #locationName{font-size:7px !important;}
+}
+
+@media(max-width:390px){
+  html body #sakakerInfoPanel{
+    width:188px !important;
+    top:5px !important;
+    left:5px !important;
+  }
+}
+
+</style>
+
+<script id="sakaker-corner-info-panel-js">
+(function(){
+  'use strict';
+
+  function buildCornerInfoPanel(){
+    const ticker = document.querySelector('.news-ticker');
+    const langBtn = document.getElementById('siteLangToggle');
+    const clock = document.getElementById('clock');
+    const date = document.getElementById('date');
+    const weather = document.getElementById('weather');
+    const locationName = document.getElementById('locationName');
+
+    if(!langBtn || !clock || !date || !weather || !locationName) return;
+
+    let panel = document.getElementById('sakakerInfoPanel');
+
+    if(!panel){
+      panel = document.createElement('section');
+      panel.id = 'sakakerInfoPanel';
+      panel.setAttribute('aria-label','الوقت والتاريخ والطقس والموقع');
+
+      const head = document.createElement('div');
+      head.className = 'sakaker-info-head';
+
+      const gem = document.createElement('div');
+      gem.className = 'sakaker-info-gem';
+      gem.setAttribute('aria-hidden','true');
+      gem.textContent = '💎';
+
+      head.appendChild(gem);
+      panel.appendChild(head);
+      document.body.appendChild(panel);
+    }
+
+    const head = panel.querySelector('.sakaker-info-head');
+
+    /* نقل زر اللغة نفسه للمربع للحفاظ على وظائف التبديل الموجودة */
+    if(head && langBtn.parentElement !== head){
+      head.appendChild(langBtn);
+    }
+
+    function row(key, icon, node){
+      let r = panel.querySelector('[data-info-row="'+key+'"]');
+
+      if(!r){
+        r = document.createElement('div');
+        r.className = 'sakaker-info-row';
+        r.dataset.infoRow = key;
+
+        const i = document.createElement('span');
+        i.className = 'sakaker-info-row-icon';
+        i.setAttribute('aria-hidden','true');
+        i.textContent = icon;
+
+        r.appendChild(i);
+        panel.appendChild(r);
+      }
+
+      if(node.parentElement !== r){
+        r.appendChild(node);
+      }
+    }
+
+    /* لا توجد أيقونة ساعة قديمة؛ الجوهرة هي أيقونة المربع الرئيسية */
+    row('time','✦',clock);
+    row('date','▣',date);
+    row('weather','☁',weather);
+    row('location','⌖',locationName);
+
+    /* حذف الأخبار من DOM حتى تتوقف وظيفة RSS القديمة دون المساس بالطقس والساعة */
+    if(ticker){
+      const wrapper = ticker.querySelector('.ticker-wrapper');
+      if(wrapper) wrapper.remove();
+      ticker.style.setProperty('display','none','important');
+    }
+
+    const syncLabel = () => {
+      const en =
+        document.documentElement.lang === 'en' ||
+        document.documentElement.dir === 'ltr';
+
+      panel.setAttribute(
+        'aria-label',
+        en ? 'Time, date, weather and location'
+           : 'الوقت والتاريخ والطقس والموقع'
+      );
+    };
+
+    syncLabel();
+
+    if(!panel.dataset.langObserver){
+      panel.dataset.langObserver = '1';
+      new MutationObserver(syncLabel).observe(
+        document.documentElement,
+        {attributes:true,attributeFilter:['lang','dir']}
+      );
+    }
+  }
+
+  /* تنفيذ فوري لأن العناصر موجودة قبل نهاية الملف */
+  buildCornerInfoPanel();
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', buildCornerInfoPanel);
+  }
+
+  /* إعادة التثبيت بعد الأكواد القديمة التي تستخدم تأخيراً */
+  setTimeout(buildCornerInfoPanel,350);
+  setTimeout(buildCornerInfoPanel,1400);
+})();
+</script>
