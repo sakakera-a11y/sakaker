@@ -17653,7 +17653,7 @@ body.locked #loginOverlay {
   background-color:#02090b !important;
   background-image:
     linear-gradient(rgba(0,0,0,.30), rgba(0,0,0,.55)),
-    url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%A3%D8%A8%D9%88%D8%A7%D9%84%D9%82%D9%85%D8%B1%20%D8%B2%D9%85%D8%B1%D8%AF%20%D9%81%D9%8A%20%D8%A7%D9%84%D9%84%D9%8A%D9%84.png") !important;
+    url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%20Sep%2011%2C%202026%2C%2010_02_56%20PM.png") !important;
   background-size:cover !important;
   background-position:center center !important;
   background-repeat:no-repeat !important;
@@ -17808,7 +17808,7 @@ body.sakaker-ship-open #shipPopup_new * {
 
 <script id="sakaker-absolute-final-layer-manager">
 (function(){
-  const OLD_BG = "https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%A3%D8%A8%D9%88%D8%A7%D9%84%D9%82%D9%85%D8%B1%20%D8%B2%D9%85%D8%B1%D8%AF%20%D9%81%D9%8A%20%D8%A7%D9%84%D9%84%D9%8A%D9%84.png";
+  const OLD_BG = "https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%20Sep%2011%2C%202026%2C%2010_02_56%20PM.png";
 
   function forceLoginBackground(){
     const overlay = document.getElementById("loginOverlay");
@@ -17914,6 +17914,343 @@ body.sakaker-ship-open #shipPopup_new * {
     removeFleetNow();
   }
   new MutationObserver(removeFleetNow).observe(document.documentElement,{childList:true,subtree:true});
+})();
+</script>
+
+
+<!-- SAKAKER BACKGROUNDS + PONG STACK FINAL -->
+<style id="sakaker-background-master-final">
+
+/* =========================================================
+   الخلفيات النهائية الوحيدة للموقع
+========================================================= */
+
+/* صفحة الموقع */
+html {
+  min-height:100%;
+  background:#02090b !important;
+}
+
+html body {
+  min-height:100vh !important;
+  background-color:#02090b !important;
+  background-image:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B5%D9%88%D8%B1%D8%A9.png") !important;
+  background-repeat:no-repeat !important;
+  background-position:center top !important;
+  background-size:contain !important;
+  background-attachment:fixed !important;
+}
+
+/* إلغاء أي طبقات خلفية سينمائية قديمة كانت توضع فوق صورة الموقع */
+html body::before {
+  background:none !important;
+}
+
+/* صفحة تسجيل الدخول */
+html body #loginOverlay,
+html body.locked #loginOverlay {
+  background-color:#02090b !important;
+  background-image:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%20Sep%2011%2C%202026%2C%2010_02_56%20PM.png") !important;
+  background-repeat:no-repeat !important;
+  background-position:center center !important;
+  background-size:cover !important;
+  background-attachment:scroll !important;
+}
+
+/* =========================================================
+   مجموعة PONG
+   الترتيب من أعلى إلى أسفل:
+   PONG → قنوات مباشرة → Facebook → Music
+========================================================= */
+
+/* PONG */
+html body #sakakerPongDock {
+  position:fixed !important;
+  left:14px !important;
+  right:auto !important;
+  top:auto !important;
+  bottom:305px !important;
+  transform:none !important;
+  width:68px !important;
+  height:68px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  z-index:2147483004 !important;
+  pointer-events:none !important;
+}
+
+html body #sakakerPongDock #pongGame-btn,
+html body #pongGame-btn {
+  position:relative !important;
+  inset:auto !important;
+  width:62px !important;
+  height:62px !important;
+  min-width:62px !important;
+  max-width:62px !important;
+  min-height:62px !important;
+  max-height:62px !important;
+  margin:0 !important;
+  pointer-events:auto !important;
+}
+
+/* قنوات مباشرة — تحت PONG مباشرة */
+html body #liveFlasher {
+  position:fixed !important;
+  left:14px !important;
+  right:auto !important;
+  top:auto !important;
+  bottom:232px !important;
+  width:62px !important;
+  height:62px !important;
+  transform:none !important;
+  z-index:2147483003 !important;
+}
+
+/* Facebook — تحت القنوات المباشرة */
+html body #facebookVideoIcon {
+  position:fixed !important;
+  left:14px !important;
+  right:auto !important;
+  top:auto !important;
+  bottom:159px !important;
+  width:62px !important;
+  height:62px !important;
+  z-index:2147483002 !important;
+}
+
+/* Music — تحت Facebook */
+html body #emeraldMusicHost #emOpenBtn {
+  position:fixed !important;
+  left:14px !important;
+  right:auto !important;
+  top:auto !important;
+  bottom:86px !important;
+  width:62px !important;
+  height:62px !important;
+  z-index:2147483001 !important;
+}
+
+/* توحيد المسافة البصرية ومنع التداخل */
+html body #liveFlasher,
+html body #facebookVideoIcon,
+html body #emeraldMusicHost #emOpenBtn {
+  margin:0 !important;
+}
+
+/* =========================================================
+   الجوال
+========================================================= */
+@media(max-width:700px) {
+
+  html body {
+    background-image:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B5%D9%88%D8%B1%D8%A9.png") !important;
+    background-size:contain !important;
+    background-position:center top !important;
+    background-repeat:no-repeat !important;
+    background-attachment:scroll !important;
+  }
+
+  html body #loginOverlay,
+  html body.locked #loginOverlay {
+    background-image:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%20Sep%2011%2C%202026%2C%2010_02_56%20PM.png") !important;
+    background-size:cover !important;
+    background-position:center center !important;
+    background-repeat:no-repeat !important;
+  }
+
+  /* عمود واحد مرتب أسفل PONG */
+  html body #sakakerPongDock {
+    left:8px !important;
+    right:auto !important;
+    bottom:316px !important;
+    width:56px !important;
+    height:56px !important;
+  }
+
+  html body #sakakerPongDock #pongGame-btn,
+  html body #pongGame-btn {
+    width:52px !important;
+    height:52px !important;
+    min-width:52px !important;
+    max-width:52px !important;
+    min-height:52px !important;
+    max-height:52px !important;
+  }
+
+  html body #liveFlasher {
+    left:8px !important;
+    right:auto !important;
+    bottom:252px !important;
+    width:52px !important;
+    height:52px !important;
+    transform:none !important;
+  }
+
+  html body #facebookVideoIcon {
+    left:8px !important;
+    right:auto !important;
+    bottom:188px !important;
+    width:52px !important;
+    height:52px !important;
+  }
+
+  html body #emeraldMusicHost #emOpenBtn {
+    left:8px !important;
+    right:auto !important;
+    bottom:124px !important;
+    width:52px !important;
+    height:52px !important;
+  }
+}
+
+@media(max-width:390px) {
+  html body #sakakerPongDock {
+    bottom:300px !important;
+    width:52px !important;
+    height:52px !important;
+  }
+
+  html body #sakakerPongDock #pongGame-btn,
+  html body #pongGame-btn {
+    width:48px !important;
+    height:48px !important;
+    min-width:48px !important;
+    max-width:48px !important;
+    min-height:48px !important;
+    max-height:48px !important;
+  }
+
+  html body #liveFlasher {
+    bottom:242px !important;
+    width:48px !important;
+    height:48px !important;
+  }
+
+  html body #facebookVideoIcon {
+    bottom:184px !important;
+    width:48px !important;
+    height:48px !important;
+  }
+
+  html body #emeraldMusicHost #emOpenBtn {
+    bottom:126px !important;
+    width:48px !important;
+    height:48px !important;
+  }
+}
+
+</style>
+
+<script id="sakaker-background-master-js">
+(function(){
+  const LOGIN_BG = "https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%20Sep%2011%2C%202026%2C%2010_02_56%20PM.png";
+  const SITE_BG  = "https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B5%D9%88%D8%B1%D8%A9.png";
+
+  function applyBackgrounds(){
+    const body = document.body;
+    const overlay = document.getElementById("loginOverlay");
+
+    if(body){
+      body.style.setProperty("background-color","#02090b","important");
+      body.style.setProperty("background-image",'url("' + SITE_BG + '")',"important");
+      body.style.setProperty("background-repeat","no-repeat","important");
+      body.style.setProperty("background-position","center top","important");
+      body.style.setProperty("background-size","contain","important");
+      body.style.setProperty(
+        "background-attachment",
+        window.innerWidth <= 700 ? "scroll" : "fixed",
+        "important"
+      );
+    }
+
+    if(overlay){
+      overlay.style.setProperty("background-color","#02090b","important");
+      overlay.style.setProperty("background-image",'url("' + LOGIN_BG + '")',"important");
+      overlay.style.setProperty("background-repeat","no-repeat","important");
+      overlay.style.setProperty("background-position","center center","important");
+      overlay.style.setProperty("background-size","cover","important");
+      overlay.style.setProperty("background-attachment","scroll","important");
+    }
+  }
+
+  function applyIconStack(){
+    const pongDock = document.getElementById("sakakerPongDock");
+    const pong = document.getElementById("pongGame-btn");
+    const live = document.getElementById("liveFlasher");
+    const fb = document.getElementById("facebookVideoIcon");
+    const music = document.getElementById("emOpenBtn");
+
+    const mobile = window.innerWidth <= 700;
+    const tiny = window.innerWidth <= 390;
+
+    const x = mobile ? "8px" : "14px";
+
+    const positions = tiny
+      ? {pong:"300px", live:"242px", fb:"184px", music:"126px", size:"48px"}
+      : mobile
+        ? {pong:"316px", live:"252px", fb:"188px", music:"124px", size:"52px"}
+        : {pong:"305px", live:"232px", fb:"159px", music:"86px", size:"62px"};
+
+    if(pongDock){
+      pongDock.style.setProperty("left", x, "important");
+      pongDock.style.setProperty("right","auto","important");
+      pongDock.style.setProperty("top","auto","important");
+      pongDock.style.setProperty("bottom",positions.pong,"important");
+      pongDock.style.setProperty("transform","none","important");
+    }
+
+    if(pong){
+      pong.style.setProperty("width",positions.size,"important");
+      pong.style.setProperty("height",positions.size,"important");
+    }
+
+    if(live){
+      live.style.setProperty("left",x,"important");
+      live.style.setProperty("right","auto","important");
+      live.style.setProperty("top","auto","important");
+      live.style.setProperty("bottom",positions.live,"important");
+      live.style.setProperty("transform","none","important");
+      live.style.setProperty("width",positions.size,"important");
+      live.style.setProperty("height",positions.size,"important");
+    }
+
+    if(fb){
+      fb.style.setProperty("left",x,"important");
+      fb.style.setProperty("right","auto","important");
+      fb.style.setProperty("top","auto","important");
+      fb.style.setProperty("bottom",positions.fb,"important");
+      fb.style.setProperty("width",positions.size,"important");
+      fb.style.setProperty("height",positions.size,"important");
+    }
+
+    if(music){
+      music.style.setProperty("left",x,"important");
+      music.style.setProperty("right","auto","important");
+      music.style.setProperty("top","auto","important");
+      music.style.setProperty("bottom",positions.music,"important");
+      music.style.setProperty("width",positions.size,"important");
+      music.style.setProperty("height",positions.size,"important");
+    }
+  }
+
+  function applyAll(){
+    applyBackgrounds();
+    applyIconStack();
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", applyAll);
+  } else {
+    applyAll();
+  }
+
+  window.addEventListener("resize", applyAll);
+
+  /* إعادة التطبيق بعد تحميل المكونات الديناميكية */
+  setTimeout(applyAll, 250);
+  setTimeout(applyAll, 1000);
+  setTimeout(applyAll, 2500);
 })();
 </script>
 
