@@ -3906,6 +3906,7 @@ padding: 30px 15px;
 <style id="sakaker-login-final-update">
 /* ===== تحديث شاشة الدخول: شفافة + نصف الحجم تقريباً + الخلفية كاملة ===== */
 #loginOverlay{
+ #loginOverlay{
     position:fixed;
     inset:0;
     width:100%;
@@ -3937,7 +3938,6 @@ backdrop-filter: blur(2px);
 
 box-sizing: border-box;
 padding: 30px 15px;
-}
 #loginBox{
   width:min(360px,46vw) !important;
   max-width:360px !important;
@@ -6786,7 +6786,7 @@ document.body.classList.add("locked");
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
 
-import { getAnalytics, isSupported as isAnalyticsSupported }
+import { getAnalytics }
 from "https://www.gstatic.com/firebasejs/12.16.0/firebase-analytics.js";
 
 import {
@@ -6863,15 +6863,8 @@ const app =
 window.firebaseApp = app;
 window.sakakerFirebaseConfig = firebaseConfig;
 
-let analytics = null;
-try{
-    if(await isAnalyticsSupported()){
-        analytics = getAnalytics(app);
-    }
-}
-catch(e){
-    console.warn("SAKAKER Analytics unavailable; login will continue:", e);
-}
+const analytics =
+    getAnalytics(app);
 
 const auth =
     getAuth(app);
@@ -6906,16 +6899,10 @@ window.firebaseStorage =
    💾 حفظ تسجيل الدخول
 ========================================================= */
 
-try{
-    await setPersistence(
-        auth,
-        browserLocalPersistence
-    );
-}
-catch(e){
-    /* لا نوقف تسجيل الدخول إذا منع المتصفح التخزين المحلي */
-    console.warn("SAKAKER persistence unavailable; continuing with default persistence:", e);
-}
+await setPersistence(
+    auth,
+    browserLocalPersistence
+);
 
 
 /* =========================================================
@@ -7128,126 +7115,6 @@ const error =
         "loginError"
     );
 
-const googleButton =
-    document.getElementById(
-        "googleButton"
-    );
-
-/* =========================================================
-   ✅ تطبيق حالة المستخدم مباشرة وبأمان
-   يمنع بقاء شاشة الدخول بعد نجاح Google
-========================================================= */
-function applySignedInUser(user){
-
-    if(!user) return;
-
-    if(overlay){
-        overlay.style.display = "none";
-        overlay.setAttribute("aria-hidden", "true");
-    }
-
-    document.body.classList.remove("locked");
-
-    /* تأكيد فتح الموقع في الإطار التالي بعد نجاح Firebase */
-    requestAnimationFrame(() => {
-        document.body.classList.remove("locked");
-        if(overlay){
-            overlay.style.display = "none";
-            overlay.setAttribute("aria-hidden", "true");
-        }
-    });
-
-    const profile = document.getElementById("userProfile");
-    const userName = document.getElementById("userName");
-    const userPhoto = document.getElementById("userPhoto");
-
-    if(profile){
-        profile.style.display = "flex";
-    }
-
-    if(userName){
-        userName.textContent =
-            user.displayName ||
-            user.email ||
-            (currentLang === "en" ? "User" : "المستخدم");
-    }
-
-    if(userPhoto){
-        userPhoto.src =
-            user.photoURL ||
-            "https://cdn-icons-png.flaticon.com/512/149/149071.png";
-    }
-
-    if(error){
-        error.textContent = "";
-    }
-}
-
-function applySignedOutState(){
-
-    if(overlay){
-        overlay.style.display = "flex";
-        overlay.setAttribute("aria-hidden", "false");
-    }
-
-    document.body.classList.add("locked");
-
-    const profile = document.getElementById("userProfile");
-    if(profile){
-        profile.style.display = "none";
-    }
-}
-
-function setGoogleButtonBusy(busy){
-
-    if(!googleButton) return;
-
-    googleButton.disabled = busy;
-    googleButton.style.opacity = busy ? ".72" : "1";
-    googleButton.style.cursor = busy ? "wait" : "pointer";
-
-    if(busy){
-        googleButton.textContent =
-            currentLang === "en"
-            ? "⏳ Signing in with Google..."
-            : "⏳ جاري الدخول بواسطة Google...";
-    }
-    else{
-        googleButton.textContent = translations[currentLang].google;
-    }
-}
-
-function firebaseLoginMessage(e){
-
-    const code = e?.code || "auth/unknown";
-
-    const ar = {
-        "auth/popup-blocked":"❌ المتصفح منع نافذة Google. اسمح بالنوافذ المنبثقة لهذا الموقع ثم حاول مرة أخرى.",
-        "auth/popup-closed-by-user":"تم إغلاق نافذة Google قبل اكتمال تسجيل الدخول.",
-        "auth/cancelled-popup-request":"تم إلغاء محاولة سابقة. اضغط دخول Google مرة واحدة وحاول مجددًا.",
-        "auth/unauthorized-domain":"❌ النطاق sakaker.co غير مصرح به في Firebase Authentication.",
-        "auth/operation-not-allowed":"❌ تسجيل Google غير مفعّل في Firebase Authentication.",
-        "auth/network-request-failed":"❌ تعذر الاتصال بخدمة تسجيل الدخول. تحقق من الإنترنت ثم حاول مرة أخرى.",
-        "auth/too-many-requests":"❌ محاولات كثيرة مؤقتًا. حاول مرة أخرى لاحقًا."
-    };
-
-    const en = {
-        "auth/popup-blocked":"❌ The browser blocked the Google popup. Allow popups for this site and try again.",
-        "auth/popup-closed-by-user":"The Google window was closed before sign-in completed.",
-        "auth/cancelled-popup-request":"A previous popup request was cancelled. Click Google sign-in once and try again.",
-        "auth/unauthorized-domain":"❌ sakaker.co is not authorized in Firebase Authentication.",
-        "auth/operation-not-allowed":"❌ Google sign-in is not enabled in Firebase Authentication.",
-        "auth/network-request-failed":"❌ Could not reach the sign-in service. Check your connection and try again.",
-        "auth/too-many-requests":"❌ Too many attempts. Please try again later."
-    };
-
-    const table = currentLang === "en" ? en : ar;
-    return table[code] ||
-        (currentLang === "en"
-            ? `❌ Google sign-in failed (${code})`
-            : `❌ فشل تسجيل الدخول بواسطة Google (${code})`);
-}
-
 
 /* =========================================================
    🔑 دخول بالبريد وكلمة المرور
@@ -7365,55 +7232,40 @@ document.getElementById(
 
 
 /* =========================================================
-   🔵 Google Login — ثابت للحاسوب والجوال
+   🔵 Google Login
 ========================================================= */
 
-if(googleButton){
+document.getElementById(
+    "googleButton"
+).onclick = async () => {
 
-    googleButton.onclick = async () => {
+    error.textContent = "";
 
-        if(error){
-            error.textContent = "";
-        }
+    const provider =
+        new GoogleAuthProvider();
 
-        setGoogleButtonBusy(true);
 
-        const provider = new GoogleAuthProvider();
+    try{
 
-        /* إجبار Google على إظهار اختيار الحساب بوضوح */
-        provider.setCustomParameters({
-            prompt: "select_account"
-        });
+        await signInWithPopup(
+            auth,
+            provider
+        );
 
-        try{
+    }
 
-            auth.useDeviceLanguage();
+    catch(e){
 
-            const result = await signInWithPopup(
-                auth,
-                provider
-            );
+        console.error(e);
 
-            /* لا ننتظر onAuthStateChanged فقط؛ نفتح الموقع فور نجاح Google */
-            if(result?.user){
-                applySignedInUser(result.user);
-            }
-        }
+        error.textContent =
+            currentLang === "en"
+            ? "❌ Google sign-in failed"
+            : "❌ فشل تسجيل الدخول بواسطة Google";
 
-        catch(e){
+    }
 
-            console.error("SAKAKER Google Login:", e);
-
-            if(error){
-                error.textContent = firebaseLoginMessage(e);
-            }
-        }
-
-        finally{
-            setGoogleButtonBusy(false);
-        }
-    };
-}
+};
 
 
 /* =========================================================
@@ -7425,18 +7277,68 @@ onAuthStateChanged(
     (user) => {
 
         if(user){
-            applySignedInUser(user);
+
+            /* إخفاء صفحة الدخول */
+            overlay.style.display =
+                "none";
+
+
+            /* فتح الموقع */
+            document.body.classList.remove(
+                "locked"
+            );
+
+
+            /* إظهار بيانات المستخدم */
+            document.getElementById(
+                "userProfile"
+            ).style.display =
+                "flex";
+
+
+            /* الاسم */
+            document.getElementById(
+                "userName"
+            ).textContent =
+                user.displayName ||
+                user.email ||
+                (
+                    currentLang === "en"
+                    ? "User"
+                    : "المستخدم"
+                );
+
+
+            /* الصورة */
+            document.getElementById(
+                "userPhoto"
+            ).src =
+                user.photoURL ||
+                "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+
         }
+
         else{
-            applySignedOutState();
+
+            /* إظهار صفحة الدخول */
+            overlay.style.display =
+                "flex";
+
+
+            /* قفل الموقع */
+            document.body.classList.add(
+                "locked"
+            );
+
+
+            /* إخفاء بيانات المستخدم */
+            document.getElementById(
+                "userProfile"
+            ).style.display =
+                "none";
+
         }
-    },
-    (e) => {
-        console.error("SAKAKER auth state error:", e);
-        applySignedOutState();
-        if(error){
-            error.textContent = firebaseLoginMessage(e);
-        }
+
     }
 );
 
@@ -17960,9 +17862,13 @@ body.sakaker-ship-open #shipPopup_new * {
     removeFleet();
     syncModalState();
 
-    /* إصلاح تسجيل الدخول:
-       أزيل مراقب loginOverlay السابق لأنه كان يراقب style ثم يغيّر style
-       من داخل نفس MutationObserver، فيدخل في حلقة بعد إخفاء شاشة الدخول. */
+    /* مراقبة أي كود قديم يحاول تغيير الخلفية أو إعادة الأسطول */
+    const login = document.getElementById("loginOverlay");
+    if(login){
+      new MutationObserver(function(){
+        forceLoginBackground();
+      }).observe(login, {attributes:true, attributeFilter:["style","class"]});
+    }
 
     const ship = document.getElementById("shipPopup_new");
     if(ship){
@@ -19818,367 +19724,5 @@ html body #logoutButton{
 
   setTimeout(enforceTransparentTop, 400);
   setTimeout(enforceTransparentTop, 1500);
-})();
-</script>
-
-
-<!-- SAKAKER LOGOUT PURPLE + EMERALD VIDEO CLOSE FIX -->
-<style id="sakaker-logout-emerald-close-final">
-
-/* =========================================================
-   زر الخروج — بلا خلفية، واللون بنفسجي
-   مع إظهار خلفية الموقع خلف منطقة المستخدم
-========================================================= */
-html body #userProfile{
-  background:transparent !important;
-  background-color:transparent !important;
-  background-image:none !important;
-  border:0 !important;
-  box-shadow:none !important;
-  backdrop-filter:none !important;
-  -webkit-backdrop-filter:none !important;
-}
-
-html body #logoutButton{
-  background:transparent !important;
-  background-color:transparent !important;
-  background-image:none !important;
-
-  border:0 !important;
-  outline:0 !important;
-
-  box-shadow:none !important;
-  -webkit-box-shadow:none !important;
-
-  color:#c084fc !important;
-
-  text-shadow:
-    0 0 5px rgba(0,0,0,.95),
-    0 0 8px rgba(192,132,252,.85),
-    0 0 16px rgba(147,51,234,.58) !important;
-
-  backdrop-filter:none !important;
-  -webkit-backdrop-filter:none !important;
-
-  pointer-events:auto !important;
-}
-
-html body #logoutButton:hover,
-html body #logoutButton:active{
-  background:transparent !important;
-  background-color:transparent !important;
-  background-image:none !important;
-  border:0 !important;
-  box-shadow:none !important;
-
-  color:#e9d5ff !important;
-  transform:scale(1.07) !important;
-}
-
-html body #logoutText{
-  color:#c084fc !important;
-  font-weight:900 !important;
-  text-shadow:
-    0 0 5px rgba(0,0,0,.95),
-    0 0 9px rgba(192,132,252,.90),
-    0 0 18px rgba(147,51,234,.62) !important;
-}
-
-/* الاسم يبقى مقروءاً فوق الخلفية */
-html body #userName{
-  text-shadow:
-    0 1px 3px rgba(0,0,0,1),
-    0 0 7px rgba(0,255,213,.55) !important;
-}
-
-
-/* =========================================================
-   فيديو مكتبة الفيديو الزمردية
-   النافذة وزر الإغلاق فوق جميع محتوى الموقع
-========================================================= */
-html body #emeraldModal{
-  position:fixed !important;
-  inset:0 !important;
-
-  top:0 !important;
-  left:0 !important;
-  right:0 !important;
-  bottom:0 !important;
-
-  width:100vw !important;
-  height:100dvh !important;
-
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-
-  padding:54px 12px 14px !important;
-  box-sizing:border-box !important;
-
-  background:rgba(0,5,10,.82) !important;
-
-  backdrop-filter:blur(10px) saturate(125%) !important;
-  -webkit-backdrop-filter:blur(10px) saturate(125%) !important;
-
-  z-index:2147483646 !important;
-  isolation:isolate !important;
-
-  overflow:hidden !important;
-}
-
-/* الفيديو نفسه يكون أسفل زر الإغلاق */
-html body #emeraldModal iframe{
-  position:relative !important;
-  z-index:1 !important;
-
-  width:min(1100px,94vw) !important;
-  height:min(76dvh,700px) !important;
-
-  border:1px solid rgba(0,255,213,.62) !important;
-  border-radius:18px !important;
-
-  box-shadow:
-    0 0 22px rgba(0,255,213,.48),
-    0 0 70px rgba(0,180,255,.20) !important;
-}
-
-/* زر إغلاق مكتبة الفيديو — فوق الجميع دائماً */
-html body #emeraldModalClose{
-  position:fixed !important;
-
-  top:max(10px, env(safe-area-inset-top)) !important;
-  right:max(10px, env(safe-area-inset-right)) !important;
-  left:auto !important;
-  bottom:auto !important;
-
-  width:auto !important;
-  min-width:86px !important;
-  height:40px !important;
-
-  padding:0 14px !important;
-
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(108,34,180,.94),
-      rgba(65,18,110,.96)
-    ) !important;
-
-  color:#fff !important;
-
-  border:1px solid rgba(233,213,255,.88) !important;
-  border-radius:20px !important;
-
-  box-shadow:
-    0 0 12px rgba(192,132,252,.95),
-    0 0 28px rgba(126,34,206,.64) !important;
-
-  font-family:Tajawal,Cairo,Arial,sans-serif !important;
-  font-size:13px !important;
-  font-weight:900 !important;
-
-  cursor:pointer !important;
-  pointer-events:auto !important;
-
-  z-index:2147483647 !important;
-}
-
-html body #emeraldModalClose:hover{
-  transform:scale(1.06) !important;
-  background:
-    linear-gradient(
-      135deg,
-      rgba(147,51,234,.98),
-      rgba(88,28,135,.98)
-    ) !important;
-}
-
-/* عند فتح فيديو المكتبة نخفي العناصر العائمة العليا
-   حتى لا تغطي زر الإغلاق بأي حال */
-body.sakaker-emerald-video-open #userProfile,
-body.sakaker-emerald-video-open #siteLangToggle,
-body.sakaker-emerald-video-open .news-ticker,
-body.sakaker-emerald-video-open #facebookVideoIcon,
-body.sakaker-emerald-video-open #liveFlasher,
-body.sakaker-emerald-video-open #sakakerPongDock,
-body.sakaker-emerald-video-open #pongGame-btn,
-body.sakaker-emerald-video-open #sakakerBusinessAd,
-body.sakaker-emerald-video-open #emeraldLibraryButton,
-body.sakaker-emerald-video-open #emeraldMusicHost #emOpenBtn,
-body.sakaker-emerald-video-open #shipIcon_new,
-body.sakaker-emerald-video-open .video-top-container-fixed,
-body.sakaker-emerald-video-open .launcher,
-body.sakaker-emerald-video-open #sakakerVisitorCounter,
-body.sakaker-emerald-video-open #sakakerWisdomBox{
-  visibility:hidden !important;
-  opacity:0 !important;
-  pointer-events:none !important;
-}
-
-/* لكن المودال نفسه وزر الإغلاق يظلان ظاهرين */
-body.sakaker-emerald-video-open #emeraldModal,
-body.sakaker-emerald-video-open #emeraldModal *{
-  visibility:visible !important;
-}
-
-@media(max-width:700px){
-  html body #emeraldModal{
-    padding:
-      max(54px, env(safe-area-inset-top))
-      7px
-      max(10px, env(safe-area-inset-bottom))
-      7px !important;
-  }
-
-  html body #emeraldModal iframe{
-    width:calc(100vw - 14px) !important;
-    height:72dvh !important;
-    border-radius:14px !important;
-  }
-
-  html body #emeraldModalClose{
-    top:max(8px, env(safe-area-inset-top)) !important;
-    right:max(8px, env(safe-area-inset-right)) !important;
-    min-width:76px !important;
-    height:38px !important;
-    padding:0 11px !important;
-    font-size:12px !important;
-  }
-}
-
-</style>
-
-<script id="sakaker-logout-emerald-close-js">
-(function(){
-
-  function isEnglish(){
-    return (
-      document.documentElement.lang === "en" ||
-      document.documentElement.dir === "ltr" ||
-      localStorage.getItem("sakakerLang") === "en"
-    );
-  }
-
-  function syncEmeraldVideo(){
-    const modal = document.getElementById("emeraldModal");
-    const closeBtn = document.getElementById("emeraldModalClose");
-
-    if(modal){
-      document.body.classList.add("sakaker-emerald-video-open");
-
-      modal.style.setProperty("z-index","2147483646","important");
-
-      if(closeBtn){
-        closeBtn.style.setProperty("z-index","2147483647","important");
-        closeBtn.style.setProperty("pointer-events","auto","important");
-        closeBtn.textContent = isEnglish() ? "Close ✕" : "إغلاق ✕";
-        closeBtn.setAttribute(
-          "aria-label",
-          isEnglish() ? "Close video" : "إغلاق الفيديو"
-        );
-      }
-    }else{
-      document.body.classList.remove("sakaker-emerald-video-open");
-    }
-  }
-
-  function closeEmeraldVideoSafely(){
-    const modal = document.getElementById("emeraldModal");
-    if(modal){
-      const frame = modal.querySelector("iframe");
-      if(frame) frame.src = "";
-      modal.remove();
-    }
-    document.body.classList.remove("sakaker-emerald-video-open");
-  }
-
-  /* مراقبة إنشاء المودال الديناميكي */
-  new MutationObserver(syncEmeraldVideo).observe(
-    document.body,
-    {childList:true, subtree:true}
-  );
-
-  /* ضمان الإغلاق حتى لو تعارض onclick القديم */
-  document.addEventListener("click", function(e){
-    const btn = e.target.closest("#emeraldModalClose");
-    if(btn){
-      e.preventDefault();
-      e.stopPropagation();
-      closeEmeraldVideoSafely();
-    }
-  }, true);
-
-  /* ESC يغلق الفيديو أيضاً */
-  document.addEventListener("keydown", function(e){
-    if(e.key === "Escape" && document.getElementById("emeraldModal")){
-      closeEmeraldVideoSafely();
-    }
-  });
-
-  /* تحديث لغة زر الإغلاق بعد تبديل اللغة */
-  document.addEventListener("click", function(e){
-    if(e.target.closest("#siteLangToggle")){
-      setTimeout(syncEmeraldVideo, 20);
-      setTimeout(syncEmeraldVideo, 200);
-    }
-  }, true);
-
-  if(document.readyState === "loading"){
-    document.addEventListener("DOMContentLoaded", syncEmeraldVideo);
-  }else{
-    syncEmeraldVideo();
-  }
-
-})();
-</script>
-
-
-<script id="sakaker-login-hang-watchdog-v2">
-(function(){
-  function install(){
-    const btn = document.getElementById("googleButton");
-    const error = document.getElementById("loginError");
-    if(!btn || btn.dataset.hangWatchdogV2 === "1") return;
-
-    btn.dataset.hangWatchdogV2 = "1";
-
-    btn.addEventListener("click", function(){
-      const started = Date.now();
-
-      setTimeout(function(){
-        if(window.firebaseAuth && window.firebaseAuth.currentUser) return;
-
-        if(btn.disabled && Date.now() - started >= 44000){
-          btn.disabled = false;
-          btn.style.opacity = "1";
-          btn.style.cursor = "pointer";
-
-          const en =
-            document.documentElement.lang === "en" ||
-            localStorage.getItem("sakakerLoginLanguage") === "en";
-
-          btn.textContent = en
-            ? "🔵 Sign in with Google"
-            : "🔵 الدخول بواسطة Google";
-
-          if(error && !error.textContent.trim()){
-            error.textContent = en
-              ? "Google sign-in did not finish. Please try again."
-              : "لم تكتمل عملية تسجيل Google. حاول مرة أخرى.";
-          }
-        }
-      }, 45000);
-    }, true);
-  }
-
-  if(document.readyState === "loading"){
-    document.addEventListener("DOMContentLoaded", install);
-  }else{
-    install();
-  }
 })();
 </script>
