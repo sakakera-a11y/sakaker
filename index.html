@@ -22590,3 +22590,445 @@ body.locked #sakakerAllIconsDock{
   );
 })();
 </script>
+
+
+<!-- SAKAKER CENTERED ICONS SHIP VIDEO FINAL -->
+<style id="sakaker-centered-icons-ship-video-final">
+
+/* =========================================================
+   1) أيقونة السفينة — صورة جديدة بدل الخلفية القديمة
+========================================================= */
+html body #shipIcon_new{
+  background-image:
+    linear-gradient(rgba(0,0,0,.06),rgba(0,0,0,.18)),
+    url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%20Sep%208%2C%202026%2C%2012_02_53%20AM.png") !important;
+
+  background-size:cover !important;
+  background-position:center center !important;
+  background-repeat:no-repeat !important;
+
+  border:1px solid rgba(255,255,255,.88) !important;
+
+  box-shadow:
+    0 0 10px rgba(255,255,255,.42),
+    0 0 22px rgba(218,192,250,.28),
+    inset 0 0 10px rgba(255,255,255,.10) !important;
+}
+
+/* =========================================================
+   2) جميع الأيقونات في شريط واحد بمنتصف الصفحة أسفلها
+   مع الحفاظ على نفس الشكل بعد تبديل اللغة
+========================================================= */
+html body #sakakerAllIconsDock{
+  left:50% !important;
+  right:auto !important;
+  bottom:max(8px,env(safe-area-inset-bottom)) !important;
+
+  transform:translateX(-50%) !important;
+
+  width:min(96vw,1200px) !important;
+  max-width:min(96vw,1200px) !important;
+
+  min-height:64px !important;
+  max-height:76px !important;
+
+  padding:5px 8px !important;
+
+  justify-content:flex-start !important;
+  align-items:center !important;
+
+  gap:8px !important;
+
+  overflow-x:auto !important;
+  overflow-y:hidden !important;
+
+  scroll-snap-type:x proximity !important;
+
+  border:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+html body #sakakerAllIconsDock .icon-card,
+html body #sakakerAllIconsDock .sakaker-utility-slot,
+html body #sakakerAllIconsDock #shipIcon_new,
+html body #sakakerAllIconsDock #sakakerBusinessAd{
+  scroll-snap-align:center !important;
+}
+
+html body #sakakerAllIconsDock .icon-card{
+  flex:0 0 54px !important;
+  width:54px !important;
+  height:54px !important;
+  min-width:54px !important;
+  max-width:54px !important;
+  min-height:54px !important;
+  max-height:54px !important;
+}
+
+html body #sakakerAllIconsDock .sakaker-utility-slot,
+html body #sakakerAllIconsDock #shipIcon_new,
+html body #sakakerAllIconsDock #sakakerBusinessAd{
+  flex:0 0 54px !important;
+  width:54px !important;
+  height:54px !important;
+  min-width:54px !important;
+  max-width:54px !important;
+  min-height:54px !important;
+  max-height:54px !important;
+}
+
+html body #sakakerAllIconsDock #facebookVideoIcon,
+html body #sakakerAllIconsDock #liveFlasher,
+html body #sakakerAllIconsDock #emeraldLibraryButton,
+html body #sakakerAllIconsDock #pongGame-btn,
+html body #sakakerAllIconsDock .launcher,
+html body #sakakerAllIconsDock #emeraldMusicHost{
+  width:52px !important;
+  height:52px !important;
+  max-width:52px !important;
+  max-height:52px !important;
+}
+
+html body #sakakerAllIconsDock #emeraldMusicHost #emOpenBtn{
+  width:50px !important;
+  height:50px !important;
+}
+
+html body #sakakerAllIconsDock .icon-card .icon-label{
+  max-width:47px !important;
+  font-size:5.7px !important;
+  line-height:1.02 !important;
+}
+
+html body #sakakerAllIconsDock .icon-card .sub{
+  display:none !important;
+}
+
+/* =========================================================
+   3) دائرة الفيديو — رفعها قليلاً وتحسين الإطار والإضاءة
+========================================================= */
+html body .video-top-container-fixed{
+  top:46% !important;
+  left:50% !important;
+  transform:translate(-50%,-50%) !important;
+}
+
+html body .video-top-container-fixed .video-circle{
+  position:relative !important;
+
+  width:104px !important;
+  height:92px !important;
+
+  overflow:hidden !important;
+  isolation:isolate !important;
+
+  clip-path:polygon(
+    22% 0%,
+    78% 0%,
+    100% 22%,
+    100% 78%,
+    78% 100%,
+    22% 100%,
+    0% 78%,
+    0% 22%
+  ) !important;
+
+  border:1.6px solid rgba(255,255,255,.92) !important;
+
+  background:
+    radial-gradient(circle at 34% 25%, rgba(255,255,255,.34), transparent 34%),
+    radial-gradient(circle at 68% 72%, rgba(178,245,255,.18), transparent 34%),
+    linear-gradient(145deg, rgba(16,24,38,.82), rgba(7,8,16,.92)) !important;
+
+  box-shadow:
+    0 0 12px rgba(255,255,255,.45),
+    0 0 26px rgba(199,171,245,.38),
+    0 0 42px rgba(92,229,255,.18),
+    inset 0 0 16px rgba(255,255,255,.16) !important;
+}
+
+html body .video-top-container-fixed .video-circle::before{
+  content:"" !important;
+  position:absolute !important;
+  inset:-2px !important;
+
+  clip-path:inherit !important;
+
+  background:
+    conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      rgba(255,255,255,.95) 38deg,
+      transparent 80deg,
+      rgba(178,245,255,.85) 140deg,
+      transparent 200deg,
+      rgba(230,209,255,.88) 282deg,
+      transparent 360deg
+    ) !important;
+
+  filter:
+    blur(1.2px)
+    drop-shadow(0 0 7px rgba(255,255,255,.55))
+    drop-shadow(0 0 14px rgba(204,180,245,.32)) !important;
+
+  animation:sakakerVideoGemSpin 5.5s linear infinite !important;
+
+  z-index:0 !important;
+}
+
+html body .video-top-container-fixed .video-circle::after{
+  content:"" !important;
+  position:absolute !important;
+  inset:4px !important;
+
+  clip-path:inherit !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.14),
+      rgba(255,255,255,.04) 18%,
+      transparent 36%
+    ) !important;
+
+  pointer-events:none !important;
+  z-index:2 !important;
+}
+
+@keyframes sakakerVideoGemSpin{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+
+html body .video-top-container-fixed .video-circle > *{
+  position:relative !important;
+  z-index:1 !important;
+}
+
+html body .video-top-container-fixed .video-circle .miniVideo,
+html body .video-top-container-fixed .video-circle iframe{
+  width:100% !important;
+  height:100% !important;
+  clip-path:inherit !important;
+  border:0 !important;
+}
+
+/* =========================================================
+   4) إبعاد النصوص السفلية عن الشريط المركزي
+========================================================= */
+html body #sakakerVisitorCounter{
+  bottom:78px !important;
+}
+
+html body .sakaker-copyright{
+  bottom:103px !important;
+}
+
+html body #sakakerWisdomBox{
+  bottom:130px !important;
+}
+
+/* =========================================================
+   الجوال
+========================================================= */
+@media(max-width:700px){
+  html body #sakakerAllIconsDock{
+    left:50% !important;
+    right:auto !important;
+    bottom:max(5px,env(safe-area-inset-bottom)) !important;
+
+    transform:translateX(-50%) !important;
+
+    width:min(96vw,96vw) !important;
+    max-width:96vw !important;
+
+    min-height:54px !important;
+    max-height:62px !important;
+
+    padding:3px 5px !important;
+
+    gap:6px !important;
+  }
+
+  html body #sakakerAllIconsDock .icon-card,
+  html body #sakakerAllIconsDock .sakaker-utility-slot,
+  html body #sakakerAllIconsDock #shipIcon_new,
+  html body #sakakerAllIconsDock #sakakerBusinessAd{
+    flex-basis:44px !important;
+
+    width:44px !important;
+    height:44px !important;
+
+    min-width:44px !important;
+    max-width:44px !important;
+    min-height:44px !important;
+    max-height:44px !important;
+  }
+
+  html body #sakakerAllIconsDock #facebookVideoIcon,
+  html body #sakakerAllIconsDock #liveFlasher,
+  html body #sakakerAllIconsDock #emeraldLibraryButton,
+  html body #sakakerAllIconsDock #pongGame-btn,
+  html body #sakakerAllIconsDock .launcher,
+  html body #sakakerAllIconsDock #emeraldMusicHost{
+    width:42px !important;
+    height:42px !important;
+    max-width:42px !important;
+    max-height:42px !important;
+  }
+
+  html body #sakakerAllIconsDock #emeraldMusicHost #emOpenBtn{
+    width:40px !important;
+    height:40px !important;
+  }
+
+  html body #sakakerAllIconsDock .icon-card .icon-label{
+    max-width:39px !important;
+    font-size:4.8px !important;
+    line-height:1 !important;
+  }
+
+  html body .video-top-container-fixed{
+    top:44% !important;
+  }
+
+  html body .video-top-container-fixed .video-circle{
+    width:78px !important;
+    height:70px !important;
+
+    box-shadow:
+      0 0 10px rgba(255,255,255,.45),
+      0 0 22px rgba(199,171,245,.34),
+      0 0 30px rgba(92,229,255,.16),
+      inset 0 0 12px rgba(255,255,255,.15) !important;
+  }
+
+  html body #sakakerVisitorCounter{
+    bottom:64px !important;
+  }
+
+  html body .sakaker-copyright{
+    bottom:88px !important;
+  }
+
+  html body #sakakerWisdomBox{
+    bottom:112px !important;
+  }
+}
+
+@media(max-width:390px){
+  html body #sakakerAllIconsDock{
+    gap:5px !important;
+  }
+
+  html body #sakakerAllIconsDock .icon-card,
+  html body #sakakerAllIconsDock .sakaker-utility-slot,
+  html body #sakakerAllIconsDock #shipIcon_new,
+  html body #sakakerAllIconsDock #sakakerBusinessAd{
+    flex-basis:40px !important;
+
+    width:40px !important;
+    height:40px !important;
+
+    min-width:40px !important;
+    max-width:40px !important;
+    min-height:40px !important;
+    max-height:40px !important;
+  }
+
+  html body #sakakerAllIconsDock #facebookVideoIcon,
+  html body #sakakerAllIconsDock #liveFlasher,
+  html body #sakakerAllIconsDock #emeraldLibraryButton,
+  html body #sakakerAllIconsDock #pongGame-btn,
+  html body #sakakerAllIconsDock .launcher,
+  html body #sakakerAllIconsDock #emeraldMusicHost{
+    width:38px !important;
+    height:38px !important;
+    max-width:38px !important;
+    max-height:38px !important;
+  }
+
+  html body #sakakerAllIconsDock #emeraldMusicHost #emOpenBtn{
+    width:36px !important;
+    height:36px !important;
+  }
+
+  html body .video-top-container-fixed{
+    top:43% !important;
+  }
+
+  html body .video-top-container-fixed .video-circle{
+    width:70px !important;
+    height:62px !important;
+  }
+}
+
+</style>
+
+<script id="sakaker-centered-icons-ship-video-js">
+(function(){
+  'use strict';
+
+  function centerIconsDock(){
+    const dock = document.getElementById('sakakerAllIconsDock');
+    if(!dock) return;
+
+    if(dock.scrollWidth <= dock.clientWidth + 4){
+      dock.style.justifyContent = 'center';
+      dock.scrollLeft = 0;
+      return;
+    }
+
+    dock.style.justifyContent = 'flex-start';
+    dock.scrollLeft = Math.max(0, (dock.scrollWidth - dock.clientWidth) / 2);
+  }
+
+  function relabelDock(){
+    const dock = document.getElementById('sakakerAllIconsDock');
+    if(!dock) return;
+
+    const lang = document.documentElement.lang === 'en' ? 'en' : 'ar';
+    dock.setAttribute(
+      'aria-label',
+      lang === 'en' ? 'All site icons' : 'جميع أيقونات الموقع'
+    );
+  }
+
+  function layout(){
+    centerIconsDock();
+    relabelDock();
+  }
+
+  layout();
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', layout);
+  }
+
+  const langBtn = document.getElementById('siteLangToggle');
+  if(langBtn && !langBtn.dataset.centerDockBound){
+    langBtn.dataset.centerDockBound = '1';
+    langBtn.addEventListener('click', function(){
+      setTimeout(layout, 120);
+      setTimeout(layout, 420);
+    });
+  }
+
+  [250, 900, 1800, 3200].forEach(function(ms){
+    setTimeout(layout, ms);
+  });
+
+  window.addEventListener('resize', layout);
+  window.addEventListener('orientationchange', function(){
+    setTimeout(layout, 140);
+  });
+
+  new MutationObserver(function(){
+    relabelDock();
+  }).observe(document.documentElement, {
+    attributes:true,
+    attributeFilter:['lang','dir']
+  });
+})();
+</script>
