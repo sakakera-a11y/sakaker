@@ -33330,3 +33330,1897 @@ html body .sak-story-note{
 
 })();
 </script>
+
+
+<!-- SAKAKER MUSIC STUDIO CLEAN FINAL -->
+<style id="sakaker-music-studio-clean-final">
+
+/* =========================================================
+   1) أيقونة الموسيقى الجديدة — فضية سداسية + Equalizer
+========================================================= */
+html body #emeraldMusicHost #emOpenBtn{
+  position:fixed !important;
+
+  left:18px !important;
+  right:auto !important;
+  bottom:18px !important;
+  top:auto !important;
+
+  width:76px !important;
+  height:76px !important;
+
+  margin:0 !important;
+  padding:0 !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  border:1.5px solid rgba(255,255,255,.98) !important;
+  border-radius:18px !important;
+
+  clip-path:polygon(
+    50% 0%,
+    90% 22%,
+    90% 78%,
+    50% 100%,
+    10% 78%,
+    10% 22%
+  ) !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      #171b20 0%,
+      #7e8791 24%,
+      #f8fbfe 43%,
+      #717a84 58%,
+      #dce2e8 76%,
+      #262c33 100%
+    ) !important;
+
+  background-size:180% 180% !important;
+
+  box-shadow:
+    0 0 8px rgba(255,255,255,.95),
+    0 0 19px rgba(210,220,230,.76),
+    0 0 34px rgba(151,165,179,.54),
+    inset 0 0 12px rgba(255,255,255,.40) !important;
+
+  filter:
+    drop-shadow(0 0 6px rgba(255,255,255,.90))
+    drop-shadow(0 0 14px rgba(188,201,214,.62)) !important;
+
+  cursor:pointer !important;
+  pointer-events:auto !important;
+
+  z-index:2147483600 !important;
+
+  animation:sakMusicIconSweep 4s ease-in-out infinite !important;
+
+  transform:none !important;
+  transition:
+    transform .18s ease,
+    filter .18s ease !important;
+}
+
+html body #emeraldMusicHost #emOpenBtn:hover{
+  transform:scale(1.08) !important;
+
+  filter:
+    brightness(1.13)
+    drop-shadow(0 0 8px rgba(255,255,255,1))
+    drop-shadow(0 0 20px rgba(202,214,226,.78)) !important;
+}
+
+html body #emeraldMusicHost #emOpenBtn:active{
+  transform:scale(.96) !important;
+}
+
+html body .sak-music-icon-face{
+  width:100% !important;
+  height:100% !important;
+
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  gap:3px !important;
+
+  color:#fff !important;
+
+  text-shadow:
+    0 1px 2px rgba(0,0,0,.95),
+    0 0 5px rgba(255,255,255,.98),
+    0 0 10px rgba(191,204,217,.72) !important;
+}
+
+html body .sak-music-note{
+  font-size:22px !important;
+  line-height:20px !important;
+  font-weight:1000 !important;
+}
+
+html body .sak-music-bars{
+  height:13px !important;
+
+  display:flex !important;
+  align-items:flex-end !important;
+  justify-content:center !important;
+
+  gap:2px !important;
+}
+
+html body .sak-music-bars i{
+  display:block !important;
+
+  width:3px !important;
+
+  border-radius:3px !important;
+
+  background:#fff !important;
+
+  box-shadow:
+    0 0 4px rgba(255,255,255,.95),
+    0 0 7px rgba(190,203,216,.70) !important;
+
+  animation:sakMusicBar 1s ease-in-out infinite alternate !important;
+}
+
+html body .sak-music-bars i:nth-child(1){height:6px !important;animation-delay:0s !important}
+html body .sak-music-bars i:nth-child(2){height:12px !important;animation-delay:.18s !important}
+html body .sak-music-bars i:nth-child(3){height:8px !important;animation-delay:.34s !important}
+html body .sak-music-bars i:nth-child(4){height:13px !important;animation-delay:.50s !important}
+html body .sak-music-bars i:nth-child(5){height:7px !important;animation-delay:.66s !important}
+
+html body .sak-music-icon-label{
+  max-width:62px !important;
+
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  white-space:nowrap !important;
+
+  font-size:5.3px !important;
+  line-height:1 !important;
+  font-weight:1000 !important;
+
+  text-align:center !important;
+}
+
+@keyframes sakMusicIconSweep{
+  0%,100%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+}
+
+@keyframes sakMusicBar{
+  from{transform:scaleY(.55);opacity:.60}
+  to{transform:scaleY(1.12);opacity:1}
+}
+
+
+/* =========================================================
+   2) نافذة الموسيقى — تنظيف كامل للخلفيات والمؤثرات القديمة
+========================================================= */
+html body #emeraldMusicHost #emPanel{
+  position:fixed !important;
+  inset:0 !important;
+
+  width:100vw !important;
+  height:100dvh !important;
+
+  z-index:2147483647 !important;
+
+  pointer-events:auto !important;
+
+  isolation:isolate !important;
+}
+
+html body #emeraldMusicHost #emPanel > .emModal,
+html body #emeraldMusicHost .emModal{
+  position:fixed !important;
+  inset:0 !important;
+
+  width:100vw !important;
+  height:100dvh !important;
+
+  padding:10px !important;
+  box-sizing:border-box !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  overflow:hidden !important;
+
+  /* بدون صور، بدون تدرجات، بدون حركة خلفية */
+  background:rgba(0,0,0,.82) !important;
+
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+
+  animation:none !important;
+}
+
+html body #emeraldMusicHost .emModal::before,
+html body #emeraldMusicHost .emModal::after{
+  display:none !important;
+  content:none !important;
+}
+
+html body #emeraldMusicHost .emBox{
+  position:relative !important;
+
+  width:min(1120px,96vw) !important;
+  max-width:96vw !important;
+
+  height:min(94dvh,900px) !important;
+  max-height:94dvh !important;
+
+  padding:10px !important;
+  margin:0 !important;
+
+  display:flex !important;
+  flex-direction:column !important;
+
+  gap:9px !important;
+
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+
+  box-sizing:border-box !important;
+
+  /* نافذة عملية فقط بلا خلفيات زخرفية */
+  background:#090b0e !important;
+
+  border:1px solid rgba(235,241,247,.42) !important;
+  border-radius:18px !important;
+
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.035),
+    0 16px 55px rgba(0,0,0,.70) !important;
+
+  animation:none !important;
+
+  scrollbar-width:thin !important;
+  overscroll-behavior:contain !important;
+}
+
+/* نلغي كل الحركات الزخرفية داخل النافذة */
+html body #emeraldMusicHost #emPanel .emBox *,
+html body #emeraldMusicHost #emPanel .emTopbar *,
+html body #emeraldMusicHost #emPanel .emKeysWrap *{
+  animation-duration:0s;
+}
+
+
+/* =========================================================
+   3) رأس الاستوديو
+========================================================= */
+html body #sakMusicStudioHeader{
+  position:sticky !important;
+  top:-10px !important;
+
+  z-index:60 !important;
+
+  min-height:45px !important;
+
+  margin:-10px -10px 2px !important;
+  padding:8px 52px 8px 12px !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+
+  gap:8px !important;
+
+  box-sizing:border-box !important;
+
+  background:#0d1014 !important;
+
+  border-bottom:1px solid rgba(255,255,255,.12) !important;
+}
+
+html[dir="rtl"] body #sakMusicStudioHeader{
+  padding:8px 12px 8px 52px !important;
+}
+
+html body #sakMusicStudioName{
+  color:#f7f9fb !important;
+
+  font-size:13px !important;
+  font-weight:1000 !important;
+
+  text-shadow:0 0 8px rgba(255,255,255,.16) !important;
+}
+
+html body #sakMusicStudioStatus{
+  color:rgba(255,255,255,.60) !important;
+
+  font-size:7px !important;
+  font-weight:800 !important;
+}
+
+html body #emeraldMusicHost .emClose{
+  position:sticky !important;
+
+  float:right !important;
+
+  top:2px !important;
+
+  margin-left:auto !important;
+  margin-bottom:-43px !important;
+
+  width:34px !important;
+  height:34px !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  border:1px solid rgba(255,255,255,.55) !important;
+  border-radius:50% !important;
+
+  background:#181c21 !important;
+
+  color:#fff !important;
+
+  box-shadow:none !important;
+
+  font-size:15px !important;
+
+  z-index:100 !important;
+}
+
+
+/* =========================================================
+   4) الدفع + الموقع + الكاميرا
+========================================================= */
+html body #emeraldMusicHost .emTopbar{
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+
+  gap:8px !important;
+
+  padding:0 !important;
+
+  direction:inherit !important;
+}
+
+html body #emeraldMusicHost .emPayBox,
+html body #emeraldMusicHost .emBusinessBox,
+html body #emeraldMusicHost .emCamBox{
+  width:100% !important;
+  min-width:0 !important;
+
+  margin:0 !important;
+  padding:8px !important;
+
+  box-sizing:border-box !important;
+
+  background:#111419 !important;
+
+  border:1px solid rgba(255,255,255,.14) !important;
+  border-radius:13px !important;
+
+  box-shadow:none !important;
+
+  color:#f5f7f9 !important;
+
+  animation:none !important;
+}
+
+html body #emeraldMusicHost .emPayBox{
+  min-height:120px !important;
+
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  line-height:1.35 !important;
+}
+
+html body #emeraldMusicHost .emPayBox b{
+  color:#f5f7f9 !important;
+}
+
+html body #emeraldMusicHost #emPaypalBox{
+  width:min(100%,260px) !important;
+
+  margin:7px auto 0 !important;
+  padding:2px !important;
+
+  transform:none !important;
+
+  background:#fff !important;
+
+  border-radius:8px !important;
+}
+
+html body #emeraldMusicHost .emBusinessBox{
+  min-height:120px !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  text-decoration:none !important;
+
+  overflow:hidden !important;
+
+  transition:
+    transform .15s ease,
+    border-color .15s ease !important;
+}
+
+html body #emeraldMusicHost .emBusinessBox::before,
+html body #emeraldMusicHost .emBusinessBox::after{
+  display:none !important;
+  content:none !important;
+}
+
+html body #emeraldMusicHost .emBusinessBox:hover{
+  transform:translateY(-2px) !important;
+
+  border-color:rgba(255,255,255,.48) !important;
+
+  box-shadow:none !important;
+}
+
+html body #emeraldMusicHost .emBusinessContent{
+  padding:5px !important;
+}
+
+html body #emeraldMusicHost .emBusinessIcon{
+  margin-bottom:4px !important;
+
+  font-size:24px !important;
+
+  filter:none !important;
+}
+
+html body #emeraldMusicHost .emBusinessTitle{
+  color:#fff !important;
+
+  font-size:12px !important;
+}
+
+html body #emeraldMusicHost .emBusinessSub{
+  margin-top:3px !important;
+
+  color:rgba(255,255,255,.57) !important;
+
+  font-size:7px !important;
+}
+
+html body #emeraldMusicHost .emBusinessArrow{
+  margin-top:4px !important;
+
+  color:rgba(255,255,255,.72) !important;
+
+  font-size:7px !important;
+}
+
+html body #emeraldMusicHost .emCamBox{
+  min-height:120px !important;
+
+  padding:0 !important;
+
+  overflow:hidden !important;
+
+  background:#000 !important;
+}
+
+html body #emeraldMusicHost .emCamBox video{
+  width:100% !important;
+  height:100% !important;
+  min-height:118px !important;
+
+  aspect-ratio:16/9 !important;
+
+  object-fit:cover !important;
+
+  display:block !important;
+
+  background:#000 !important;
+}
+
+
+/* =========================================================
+   5) عناوين وترتيب الأقسام الوظيفية
+========================================================= */
+html body .sak-em-section-title{
+  margin:2px 0 -2px !important;
+
+  padding:5px 8px !important;
+
+  color:rgba(255,255,255,.75) !important;
+
+  font-size:8px !important;
+  font-weight:1000 !important;
+
+  border-bottom:1px solid rgba(255,255,255,.08) !important;
+}
+
+html body #emeraldMusicHost .emRow{
+  width:100% !important;
+
+  display:flex !important;
+  flex-wrap:wrap !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  gap:6px !important;
+
+  margin:0 !important;
+  padding:5px !important;
+
+  box-sizing:border-box !important;
+
+  border:1px solid rgba(255,255,255,.075) !important;
+  border-radius:11px !important;
+
+  background:transparent !important;
+}
+
+html body #emeraldMusicHost .emCameraControls{
+  display:grid !important;
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+}
+
+html body #emeraldMusicHost .emSoundControls{
+  display:grid !important;
+  grid-template-columns:auto minmax(110px,1fr) auto minmax(110px,1fr) auto auto auto auto !important;
+
+  align-items:center !important;
+}
+
+html body #emeraldMusicHost .emInstrumentControls,
+html body #emeraldMusicHost .emMixControls{
+  justify-content:flex-start !important;
+}
+
+
+/* =========================================================
+   6) أزرار التحكم
+========================================================= */
+html body #emeraldMusicHost .emBtn{
+  min-height:33px !important;
+
+  padding:5px 9px !important;
+
+  border:1px solid rgba(255,255,255,.16) !important;
+  border-radius:9px !important;
+
+  background:#14181d !important;
+
+  color:#f7f9fb !important;
+
+  box-shadow:none !important;
+
+  font-size:8px !important;
+  font-weight:800 !important;
+
+  cursor:pointer !important;
+
+  touch-action:manipulation !important;
+
+  transition:
+    transform .12s ease,
+    background .12s ease,
+    border-color .12s ease !important;
+}
+
+html body #emeraldMusicHost .emBtn:hover{
+  transform:translateY(-1px) !important;
+
+  background:#1b2026 !important;
+  border-color:rgba(255,255,255,.38) !important;
+
+  box-shadow:none !important;
+}
+
+html body #emeraldMusicHost .emBtn.emActive{
+  background:#edf1f5 !important;
+
+  color:#14181d !important;
+
+  border-color:#fff !important;
+
+  box-shadow:none !important;
+}
+
+html body #emeraldMusicHost .emBtn.emWarn{
+  border-color:rgba(255,205,105,.38) !important;
+}
+
+html body #emeraldMusicHost .emBadge{
+  min-height:29px !important;
+
+  padding:4px 8px !important;
+
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  border:1px solid rgba(255,255,255,.12) !important;
+  border-radius:9px !important;
+
+  background:#111419 !important;
+
+  color:rgba(255,255,255,.75) !important;
+
+  font-size:7.5px !important;
+}
+
+html body #emeraldMusicHost input[type="range"]{
+  width:100% !important;
+  min-width:80px !important;
+
+  accent-color:#eef2f6 !important;
+}
+
+html body #emeraldMusicHost .emHint{
+  padding:7px !important;
+
+  border:1px solid rgba(255,255,255,.07) !important;
+  border-radius:10px !important;
+
+  background:transparent !important;
+
+  color:rgba(255,255,255,.56) !important;
+
+  font-size:7px !important;
+  line-height:1.6 !important;
+}
+
+
+/* =========================================================
+   7) لوحة البيانو
+========================================================= */
+html body #emeraldMusicHost .emKeysWrap{
+  width:100% !important;
+
+  padding:8px !important;
+  box-sizing:border-box !important;
+
+  border:1px solid rgba(255,255,255,.12) !important;
+  border-radius:12px !important;
+
+  background:#050607 !important;
+
+  box-shadow:none !important;
+
+  overflow:hidden !important;
+}
+
+html body #emeraldMusicHost .emKeysRow{
+  width:100% !important;
+
+  display:flex !important;
+  justify-content:flex-start !important;
+
+  gap:3px !important;
+
+  overflow-x:auto !important;
+
+  padding:2px 0 5px !important;
+
+  scrollbar-width:thin !important;
+  -webkit-overflow-scrolling:touch !important;
+
+  scroll-snap-type:x proximity !important;
+}
+
+html body #emeraldMusicHost .emKey{
+  flex:0 0 48px !important;
+
+  width:48px !important;
+  min-width:48px !important;
+  max-width:48px !important;
+
+  height:98px !important;
+  min-height:98px !important;
+  max-height:98px !important;
+
+  padding-bottom:5px !important;
+
+  border-radius:7px !important;
+
+  scroll-snap-align:center !important;
+
+  box-shadow:none !important;
+}
+
+html body #emeraldMusicHost .emWhite{
+  background:#f6f6f4 !important;
+  color:#101214 !important;
+}
+
+html body #emeraldMusicHost .emBlack{
+  background:#17191d !important;
+  color:#fff !important;
+}
+
+html body #emeraldMusicHost .emKey.emKeyActive{
+  background:#cfd7df !important;
+
+  color:#111 !important;
+
+  border-color:#fff !important;
+
+  box-shadow:
+    0 0 9px rgba(255,255,255,.50) !important;
+}
+
+
+/* =========================================================
+   8) مؤثرات صوتية إضافية
+========================================================= */
+html body #sakMusicExtras{
+  display:grid !important;
+  grid-template-columns:repeat(7,minmax(0,1fr)) !important;
+
+  gap:5px !important;
+
+  width:100% !important;
+
+  padding:5px !important;
+  box-sizing:border-box !important;
+
+  border:1px solid rgba(255,255,255,.075) !important;
+  border-radius:11px !important;
+}
+
+html body .sak-sound-pad{
+  min-height:36px !important;
+
+  padding:4px !important;
+
+  border:1px solid rgba(255,255,255,.15) !important;
+  border-radius:9px !important;
+
+  background:#14181d !important;
+
+  color:#fff !important;
+
+  font-size:7px !important;
+  font-weight:900 !important;
+
+  cursor:pointer !important;
+
+  touch-action:manipulation !important;
+}
+
+html body .sak-sound-pad:active{
+  background:#eef2f6 !important;
+  color:#121519 !important;
+}
+
+
+/* =========================================================
+   9) النوتات والحقوق
+========================================================= */
+html body #emeraldMusicHost .emNotesModal{
+  background:rgba(0,0,0,.86) !important;
+}
+
+html body #emeraldMusicHost .emNotesBox{
+  width:min(540px,94vw) !important;
+  max-height:82dvh !important;
+
+  background:#0c0f13 !important;
+
+  border:1px solid rgba(255,255,255,.28) !important;
+  border-radius:14px !important;
+
+  box-shadow:none !important;
+}
+
+html body #emeraldMusicHost .emNotesClose{
+  color:#fff !important;
+}
+
+html body #emeraldMusicHost .emCredit{
+  padding:6px !important;
+
+  color:rgba(255,255,255,.47) !important;
+
+  font-size:6.5px !important;
+
+  text-shadow:none !important;
+}
+
+
+/* =========================================================
+   10) الجوال — متجاوب بالكامل
+========================================================= */
+@media(max-width:720px){
+
+  html body #emeraldMusicHost #emOpenBtn{
+    left:8px !important;
+    right:auto !important;
+    bottom:108px !important;
+
+    width:60px !important;
+    height:60px !important;
+
+    border-radius:15px !important;
+  }
+
+  html body .sak-music-note{
+    font-size:18px !important;
+  }
+
+  html body .sak-music-bars{
+    height:10px !important;
+  }
+
+  html body .sak-music-icon-label{
+    max-width:50px !important;
+    font-size:4.6px !important;
+  }
+
+  html body #emeraldMusicHost #emPanel > .emModal,
+  html body #emeraldMusicHost .emModal{
+    padding:
+      max(3px,env(safe-area-inset-top))
+      3px
+      max(3px,env(safe-area-inset-bottom))
+      3px !important;
+
+    align-items:flex-start !important;
+  }
+
+  html body #emeraldMusicHost .emBox{
+    width:calc(100vw - 6px) !important;
+    max-width:calc(100vw - 6px) !important;
+
+    height:calc(100dvh - 6px) !important;
+    max-height:calc(100dvh - 6px) !important;
+
+    padding:7px !important;
+
+    gap:7px !important;
+
+    border-radius:13px !important;
+  }
+
+  html body #sakMusicStudioHeader{
+    top:-7px !important;
+
+    margin:-7px -7px 1px !important;
+
+    min-height:42px !important;
+
+    padding:7px 44px 7px 8px !important;
+  }
+
+  html[dir="rtl"] body #sakMusicStudioHeader{
+    padding:7px 8px 7px 44px !important;
+  }
+
+  html body #sakMusicStudioName{
+    font-size:10px !important;
+  }
+
+  html body #sakMusicStudioStatus{
+    font-size:5.5px !important;
+  }
+
+  html body #emeraldMusicHost .emTopbar{
+    grid-template-columns:1fr 1fr !important;
+
+    gap:6px !important;
+  }
+
+  html body #emeraldMusicHost .emCamBox{
+    grid-column:1/-1 !important;
+
+    min-height:170px !important;
+  }
+
+  html body #emeraldMusicHost .emCamBox video{
+    height:170px !important;
+    min-height:170px !important;
+  }
+
+  html body #emeraldMusicHost .emPayBox,
+  html body #emeraldMusicHost .emBusinessBox{
+    min-height:105px !important;
+
+    padding:6px !important;
+  }
+
+  html body #emeraldMusicHost .emBusinessTitle{
+    font-size:10px !important;
+  }
+
+  html body #emeraldMusicHost .emBusinessSub{
+    font-size:6px !important;
+  }
+
+  html body #emeraldMusicHost .emCameraControls{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+
+  html body #emeraldMusicHost .emSoundControls{
+    grid-template-columns:auto 1fr !important;
+  }
+
+  html body #emeraldMusicHost .emSoundControls > *{
+    min-width:0 !important;
+  }
+
+  html body #emeraldMusicHost .emBtn{
+    min-height:34px !important;
+
+    padding:5px 7px !important;
+
+    font-size:7px !important;
+  }
+
+  html body #emeraldMusicHost .emBadge{
+    min-height:28px !important;
+
+    font-size:6.5px !important;
+  }
+
+  html body #emeraldMusicHost .emKey{
+    flex-basis:36px !important;
+
+    width:36px !important;
+    min-width:36px !important;
+    max-width:36px !important;
+
+    height:88px !important;
+    min-height:88px !important;
+    max-height:88px !important;
+  }
+
+  html body #emeraldMusicHost .emKey small{
+    font-size:7px !important;
+  }
+
+  html body #emeraldMusicHost .emKey .n{
+    font-size:8px !important;
+  }
+
+  html body #sakMusicExtras{
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  }
+
+  html body .sak-sound-pad{
+    min-height:34px !important;
+
+    font-size:6.4px !important;
+  }
+}
+
+@media(max-width:390px){
+
+  html body #emeraldMusicHost .emTopbar{
+    grid-template-columns:1fr !important;
+  }
+
+  html body #emeraldMusicHost .emCamBox{
+    grid-column:auto !important;
+  }
+
+  html body #emeraldMusicHost .emPayBox,
+  html body #emeraldMusicHost .emBusinessBox,
+  html body #emeraldMusicHost .emCamBox{
+    min-height:98px !important;
+  }
+
+  html body #emeraldMusicHost .emCamBox video{
+    min-height:150px !important;
+    height:150px !important;
+  }
+
+  html body #sakMusicExtras{
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  }
+}
+
+</style>
+
+<script id="sakaker-music-studio-clean-final-js">
+(function(){
+  'use strict';
+
+  const btn =
+    document.getElementById(
+      'emOpenBtn'
+    );
+
+  if(!btn) return;
+
+  /* =======================================================
+     1) أصوات وآلات إضافية
+     ======================================================= */
+  try{
+    if(
+      typeof base !== 'undefined' &&
+      typeof LABEL !== 'undefined'
+    ){
+      Object.assign(base,{
+        organ:
+          'https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/church_organ-mp3/',
+        cello:
+          'https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/cello-mp3/',
+        harp:
+          'https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/orchestral_harp-mp3/',
+        clarinet:
+          'https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/clarinet-mp3/',
+        oboe:
+          'https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/oboe-mp3/',
+        harmonica:
+          'https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/harmonica-mp3/',
+        accordion:
+          'https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/accordion-mp3/',
+        marimba:
+          'https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/marimba-mp3/',
+        vibraphone:
+          'https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/vibraphone-mp3/',
+        horn:
+          'https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/french_horn-mp3/',
+        trombone:
+          'https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/trombone-mp3/',
+        sitar:
+          'https://cdn.jsdelivr.net/gh/gleitz/midi-js-soundfonts@master/FluidR3_GM/sitar-mp3/'
+      });
+
+      Object.assign(LABEL,{
+        organ:'🎹 Organ',
+        cello:'🎻 Cello',
+        harp:'🪉 Harp',
+        clarinet:'🎶 Clarinet',
+        oboe:'🎶 Oboe',
+        harmonica:'🎵 Harmonica',
+        accordion:'🪗 Accordion',
+        marimba:'🪵 Marimba',
+        vibraphone:'✨ Vibraphone',
+        horn:'📯 French Horn',
+        trombone:'🎺 Trombone',
+        sitar:'🪕 Sitar'
+      });
+    }
+  }catch(e){}
+
+  /* =======================================================
+     2) شكل الأيقونة
+     ======================================================= */
+  function iconLanguage(){
+    return document.documentElement.lang === 'en'
+      ? 'en'
+      : 'ar';
+  }
+
+  function renderIcon(){
+    const en =
+      iconLanguage() === 'en';
+
+    btn.innerHTML =
+      '<div class="sak-music-icon-face">' +
+        '<div class="sak-music-note">♫</div>' +
+        '<div class="sak-music-bars">' +
+          '<i></i><i></i><i></i><i></i><i></i>' +
+        '</div>' +
+        '<div class="sak-music-icon-label">' +
+          (en ? 'Music Studio' : 'استوديو الموسيقى') +
+        '</div>' +
+      '</div>';
+
+    const label =
+      en
+        ? 'Open Music Studio'
+        : 'فتح استوديو الموسيقى';
+
+    btn.setAttribute(
+      'aria-label',
+      label
+    );
+
+    btn.setAttribute(
+      'title',
+      label
+    );
+  }
+
+  renderIcon();
+
+  /* =======================================================
+     3) فتح موثوق — نحفظ دالة الفتح الأصلية ثم نربطها من جديد
+     ======================================================= */
+  const originalOpen =
+    btn.onclick;
+
+  btn.onclick = null;
+
+  function openMusic(e){
+    if(e){
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    const existing =
+      document.getElementById(
+        'emPanel'
+      );
+
+    if(existing){
+      existing.style.zIndex =
+        '2147483647';
+
+      const box =
+        existing.querySelector(
+          '.emBox'
+        );
+
+      if(box){
+        box.scrollTop = 0;
+      }
+
+      return;
+    }
+
+    try{
+      if(
+        typeof originalOpen ===
+        'function'
+      ){
+        originalOpen.call(
+          btn,
+          e || new Event('click')
+        );
+      }
+    }catch(err){
+      console.error(
+        'Music open error:',
+        err
+      );
+    }
+
+    requestAnimationFrame(
+      function(){
+        enhancePanel();
+      }
+    );
+
+    setTimeout(
+      enhancePanel,
+      80
+    );
+  }
+
+  btn.addEventListener(
+    'click',
+    openMusic,
+    true
+  );
+
+  /* =======================================================
+     4) تنظيم النافذة بعد إنشائها
+     ======================================================= */
+  function addTitleBefore(
+    row,
+    ar,
+    en
+  ){
+    if(
+      !row ||
+      row.previousElementSibling &&
+      row.previousElementSibling
+        .classList &&
+      row.previousElementSibling
+        .classList.contains(
+          'sak-em-section-title'
+        )
+    ){
+      return;
+    }
+
+    const title =
+      document.createElement('div');
+
+    title.className =
+      'sak-em-section-title';
+
+    title.dataset.ar = ar;
+    title.dataset.en = en;
+
+    title.textContent =
+      iconLanguage() === 'en'
+        ? en
+        : ar;
+
+    row.parentNode.insertBefore(
+      title,
+      row
+    );
+  }
+
+  function enhancePanel(){
+    const panel =
+      document.getElementById(
+        'emPanel'
+      );
+
+    if(!panel) return;
+
+    const box =
+      panel.querySelector(
+        '.emBox'
+      );
+
+    if(!box) return;
+
+    panel.style.zIndex =
+      '2147483647';
+
+    if(
+      !document.getElementById(
+        'sakMusicStudioHeader'
+      )
+    ){
+      const header =
+        document.createElement('div');
+
+      header.id =
+        'sakMusicStudioHeader';
+
+      header.innerHTML =
+        '<div id="sakMusicStudioName"></div>' +
+        '<div id="sakMusicStudioStatus"></div>';
+
+      box.insertBefore(
+        header,
+        box.firstChild
+      );
+    }
+
+    const rows =
+      Array.from(
+        box.querySelectorAll(
+          ':scope > .emRow'
+        )
+      );
+
+    rows.forEach(function(row){
+      if(row.querySelector('#emCamRec')){
+        row.classList.add(
+          'emCameraControls'
+        );
+
+        addTitleBefore(
+          row,
+          '📷 الكاميرا والتسجيل',
+          '📷 Camera & Recording'
+        );
+      }
+
+      if(row.querySelector('#emBeet')){
+        row.classList.add(
+          'emMelodyControls'
+        );
+
+        addTitleBefore(
+          row,
+          '🎼 المقطوعات الجاهزة',
+          '🎼 Ready Melodies'
+        );
+      }
+
+      if(row.querySelector('#emV')){
+        row.classList.add(
+          'emSoundControls'
+        );
+
+        addTitleBefore(
+          row,
+          '🎚 التحكم بالصوت',
+          '🎚 Sound Controls'
+        );
+
+        ensureSoundPresets(row);
+      }
+
+      if(row.querySelector('[data-em-i]')){
+        row.classList.add(
+          'emInstrumentControls'
+        );
+
+        addTitleBefore(
+          row,
+          '🎛 الآلات الموسيقية',
+          '🎛 Musical Instruments'
+        );
+      }
+
+      if(row.querySelector('[data-em-m]')){
+        row.classList.add(
+          'emMixControls'
+        );
+
+        addTitleBefore(
+          row,
+          '🔀 دمج صوت آلتين',
+          '🔀 Mix Two Instruments'
+        );
+      }
+    });
+
+    const keys =
+      box.querySelector(
+        '.emKeysWrap'
+      );
+
+    if(keys){
+      addTitleBefore(
+        keys,
+        '🎹 لوحة العزف',
+        '🎹 Keyboard'
+      );
+    }
+
+    ensureExtraSounds(box);
+    applyPanelLanguage();
+
+    /*
+      نضع الدفع والموقع والكاميرا في البداية كما طلب المستخدم.
+    */
+    const topbar =
+      box.querySelector(
+        '.emTopbar'
+      );
+
+    if(topbar){
+      topbar.style.order =
+        '0';
+    }
+
+    try{
+      box.scrollTop = 0;
+    }catch(e){}
+  }
+
+  /* =======================================================
+     5) إعدادات صوت سريعة
+     ======================================================= */
+  function ensureSoundPresets(row){
+    if(
+      document.getElementById(
+        'sakMusicSoundPresets'
+      )
+    ){
+      return;
+    }
+
+    const presets =
+      document.createElement(
+        'div'
+      );
+
+    presets.id =
+      'sakMusicSoundPresets';
+
+    presets.style.display =
+      'contents';
+
+    const items = [
+      {
+        text:'🎧 Dry',
+        echoValue:0
+      },
+      {
+        text:'✨ Soft',
+        echoValue:.45
+      },
+      {
+        text:'🏛 Hall',
+        echoValue:1.15
+      },
+      {
+        text:'🌌 Wide',
+        echoValue:1.75
+      }
+    ];
+
+    items.forEach(function(item){
+      const b =
+        document.createElement(
+          'button'
+        );
+
+      b.type = 'button';
+      b.className = 'emBtn';
+      b.textContent = item.text;
+
+      b.addEventListener(
+        'click',
+        function(){
+          try{
+            echo =
+              item.echoValue;
+          }catch(e){}
+
+          const slider =
+            document.getElementById(
+              'emE'
+            );
+
+          if(slider){
+            slider.value =
+              String(
+                Math.round(
+                  item.echoValue *
+                  100
+                )
+              );
+
+            slider.dispatchEvent(
+              new Event(
+                'input',
+                {bubbles:true}
+              )
+            );
+          }
+        }
+      );
+
+      row.appendChild(b);
+    });
+  }
+
+  /* =======================================================
+     6) إيقاعات ومؤثرات إضافية — Web Audio
+     ======================================================= */
+  let audioCtx = null;
+
+  function ctx(){
+    if(!audioCtx){
+      const AC =
+        window.AudioContext ||
+        window.webkitAudioContext;
+
+      if(AC){
+        audioCtx =
+          new AC();
+      }
+    }
+
+    if(
+      audioCtx &&
+      audioCtx.state ===
+      'suspended'
+    ){
+      audioCtx.resume()
+        .catch(function(){});
+    }
+
+    return audioCtx;
+  }
+
+  function noiseBuffer(ac,duration){
+    const buffer =
+      ac.createBuffer(
+        1,
+        Math.max(
+          1,
+          Math.floor(
+            ac.sampleRate *
+            duration
+          )
+        ),
+        ac.sampleRate
+      );
+
+    const data =
+      buffer.getChannelData(0);
+
+    for(
+      let i=0;
+      i<data.length;
+      i++
+    ){
+      data[i] =
+        Math.random() * 2 - 1;
+    }
+
+    return buffer;
+  }
+
+  function kick(){
+    const ac = ctx();
+    if(!ac) return;
+
+    const o =
+      ac.createOscillator();
+
+    const g =
+      ac.createGain();
+
+    o.type = 'sine';
+
+    o.frequency.setValueAtTime(
+      150,
+      ac.currentTime
+    );
+
+    o.frequency.exponentialRampToValueAtTime(
+      45,
+      ac.currentTime + .18
+    );
+
+    g.gain.setValueAtTime(
+      .75,
+      ac.currentTime
+    );
+
+    g.gain.exponentialRampToValueAtTime(
+      .001,
+      ac.currentTime + .28
+    );
+
+    o.connect(g);
+    g.connect(ac.destination);
+
+    o.start();
+    o.stop(ac.currentTime + .30);
+  }
+
+  function snare(){
+    const ac = ctx();
+    if(!ac) return;
+
+    const noise =
+      ac.createBufferSource();
+
+    noise.buffer =
+      noiseBuffer(ac,.20);
+
+    const filter =
+      ac.createBiquadFilter();
+
+    filter.type =
+      'highpass';
+
+    filter.frequency.value =
+      900;
+
+    const gain =
+      ac.createGain();
+
+    gain.gain.setValueAtTime(
+      .45,
+      ac.currentTime
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+      .001,
+      ac.currentTime + .20
+    );
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(ac.destination);
+
+    noise.start();
+
+    const osc =
+      ac.createOscillator();
+
+    const oscGain =
+      ac.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.value = 180;
+
+    oscGain.gain.setValueAtTime(
+      .22,
+      ac.currentTime
+    );
+
+    oscGain.gain.exponentialRampToValueAtTime(
+      .001,
+      ac.currentTime + .12
+    );
+
+    osc.connect(oscGain);
+    oscGain.connect(ac.destination);
+
+    osc.start();
+    osc.stop(ac.currentTime + .13);
+  }
+
+  function hat(open){
+    const ac = ctx();
+    if(!ac) return;
+
+    const noise =
+      ac.createBufferSource();
+
+    noise.buffer =
+      noiseBuffer(
+        ac,
+        open ? .28 : .08
+      );
+
+    const hp =
+      ac.createBiquadFilter();
+
+    hp.type = 'highpass';
+    hp.frequency.value = 6500;
+
+    const gain =
+      ac.createGain();
+
+    gain.gain.setValueAtTime(
+      open ? .16 : .20,
+      ac.currentTime
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+      .001,
+      ac.currentTime +
+      (open ? .28 : .08)
+    );
+
+    noise.connect(hp);
+    hp.connect(gain);
+    gain.connect(ac.destination);
+
+    noise.start();
+  }
+
+  function clap(){
+    const ac = ctx();
+    if(!ac) return;
+
+    [0,.025,.050].forEach(
+      function(offset){
+        const source =
+          ac.createBufferSource();
+
+        source.buffer =
+          noiseBuffer(ac,.08);
+
+        const bp =
+          ac.createBiquadFilter();
+
+        bp.type = 'bandpass';
+        bp.frequency.value = 1400;
+        bp.Q.value = .7;
+
+        const g =
+          ac.createGain();
+
+        g.gain.setValueAtTime(
+          .28,
+          ac.currentTime +
+          offset
+        );
+
+        g.gain.exponentialRampToValueAtTime(
+          .001,
+          ac.currentTime +
+          offset +
+          .09
+        );
+
+        source.connect(bp);
+        bp.connect(g);
+        g.connect(ac.destination);
+
+        source.start(
+          ac.currentTime +
+          offset
+        );
+      }
+    );
+  }
+
+  function tone(freq,type){
+    const ac = ctx();
+    if(!ac) return;
+
+    const o =
+      ac.createOscillator();
+
+    const g =
+      ac.createGain();
+
+    o.type = type || 'sine';
+    o.frequency.value = freq;
+
+    g.gain.setValueAtTime(
+      .16,
+      ac.currentTime
+    );
+
+    g.gain.exponentialRampToValueAtTime(
+      .001,
+      ac.currentTime + .22
+    );
+
+    o.connect(g);
+    g.connect(ac.destination);
+
+    o.start();
+    o.stop(ac.currentTime + .24);
+  }
+
+  function ensureExtraSounds(box){
+    if(
+      document.getElementById(
+        'sakMusicExtras'
+      )
+    ){
+      return;
+    }
+
+    const title =
+      document.createElement(
+        'div'
+      );
+
+    title.className =
+      'sak-em-section-title';
+
+    title.dataset.ar =
+      '🥁 إيقاعات وأصوات إضافية';
+
+    title.dataset.en =
+      '🥁 Extra Rhythm & Sounds';
+
+    const wrap =
+      document.createElement(
+        'div'
+      );
+
+    wrap.id =
+      'sakMusicExtras';
+
+    const pads = [
+      ['🥁 Kick',kick],
+      ['🥁 Snare',snare],
+      ['✨ Hi-Hat',function(){hat(false)}],
+      ['🌬 Open Hat',function(){hat(true)}],
+      ['👏 Clap',clap],
+      ['🔔 Bell',function(){tone(880,'sine')}],
+      ['⚡ Pulse',function(){tone(220,'square')}]
+    ];
+
+    pads.forEach(function(item){
+      const b =
+        document.createElement(
+          'button'
+        );
+
+      b.type = 'button';
+      b.className =
+        'sak-sound-pad';
+
+      b.textContent =
+        item[0];
+
+      b.addEventListener(
+        'pointerdown',
+        function(e){
+          e.preventDefault();
+          item[1]();
+        }
+      );
+
+      wrap.appendChild(b);
+    });
+
+    const keys =
+      box.querySelector(
+        '.emKeysWrap'
+      );
+
+    if(keys){
+      keys.insertAdjacentElement(
+        'beforebegin',
+        wrap
+      );
+
+      wrap.insertAdjacentElement(
+        'beforebegin',
+        title
+      );
+    }else{
+      box.appendChild(title);
+      box.appendChild(wrap);
+    }
+  }
+
+  /* =======================================================
+     7) اللغة
+     ======================================================= */
+  function applyPanelLanguage(){
+    const en =
+      iconLanguage() === 'en';
+
+    const name =
+      document.getElementById(
+        'sakMusicStudioName'
+      );
+
+    const status =
+      document.getElementById(
+        'sakMusicStudioStatus'
+      );
+
+    if(name){
+      name.textContent =
+        en
+          ? '♫ Sakaker Music Studio'
+          : '♫ استوديو سكاكر للموسيقى';
+    }
+
+    if(status){
+      status.textContent =
+        en
+          ? 'Payment • Sakaker Business • Camera • Instruments • Sounds'
+          : 'الدفع • موقع سكاكر بزنس • الكاميرا • الآلات • الأصوات';
+    }
+
+    document
+      .querySelectorAll(
+        '.sak-em-section-title'
+      )
+      .forEach(function(el){
+        const text =
+          en
+            ? el.dataset.en
+            : el.dataset.ar;
+
+        if(text){
+          el.textContent = text;
+        }
+      });
+  }
+
+  new MutationObserver(
+    function(){
+      renderIcon();
+      applyPanelLanguage();
+    }
+  ).observe(
+    document.documentElement,
+    {
+      attributes:true,
+      attributeFilter:[
+        'lang',
+        'dir'
+      ]
+    }
+  );
+
+  /* =======================================================
+     8) إذا تم إنشاء النافذة بطريقة أخرى ننسقها مباشرة
+     ======================================================= */
+  new MutationObserver(
+    function(){
+      if(
+        document.getElementById(
+          'emPanel'
+        )
+      ){
+        enhancePanel();
+      }
+    }
+  ).observe(
+    document.body,
+    {
+      childList:true,
+      subtree:false
+    }
+  );
+
+})();
+</script>
