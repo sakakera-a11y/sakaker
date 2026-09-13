@@ -32826,3 +32826,507 @@ html body #sakKitchenNote{
 
 })();
 </script>
+
+
+<!-- SAKAKER SILVER ICONS + NEW STORIES FINAL -->
+<style id="sakaker-silver-icons-new-stories-final">
+
+/* =========================================================
+   1) توحيد جميع الأيقونات — فضي معدني مشع وبراق
+   دون تغيير الاسم أو الرمز أو وظيفة الأيقونة
+========================================================= */
+
+html body .cards .icon-card,
+html body #facebookVideoIcon,
+html body #liveFlasher,
+html body #emeraldLibraryButton,
+html body #pongGame-btn,
+html body .launcher,
+html body #emeraldMusicHost #emOpenBtn{
+  border:1.5px solid rgba(250,253,255,.96) !important;
+
+  background:
+    radial-gradient(circle at 29% 22%,rgba(255,255,255,1) 0 6%,transparent 15%),
+    linear-gradient(
+      135deg,
+      #1f2329 0%,
+      #656c75 17%,
+      #dfe4e9 34%,
+      #ffffff 46%,
+      #9ea6af 58%,
+      #41474f 76%,
+      #e8edf2 100%
+    ) !important;
+
+  background-size:230% 230% !important;
+
+  color:#ffffff !important;
+
+  box-shadow:
+    0 0 7px rgba(255,255,255,.96),
+    0 0 15px rgba(220,228,236,.78),
+    0 0 27px rgba(172,184,197,.56),
+    0 0 40px rgba(255,255,255,.24),
+    inset 0 0 10px rgba(255,255,255,.50),
+    inset 0 0 18px rgba(88,96,106,.34) !important;
+
+  filter:
+    drop-shadow(0 0 5px rgba(255,255,255,.88))
+    drop-shadow(0 0 11px rgba(194,204,214,.56)) !important;
+
+  animation:
+    sakSilverMetalSweep 4.7s ease-in-out infinite,
+    sakSilverIconGlow 2.1s ease-in-out infinite alternate !important;
+}
+
+/* الأيقونات التي تعتمد على صورة خلفية: نحافظ على الصورة نفسها
+   ونوحد الإطار والوهج بالفضي */
+html body #shipIcon_new,
+html body #sakakerBusinessAd{
+  border:1.7px solid rgba(250,253,255,.97) !important;
+
+  box-shadow:
+    0 0 8px rgba(255,255,255,.98),
+    0 0 17px rgba(214,224,234,.78),
+    0 0 30px rgba(154,168,182,.58),
+    inset 0 0 11px rgba(255,255,255,.35) !important;
+
+  filter:
+    grayscale(.62)
+    saturate(.48)
+    brightness(1.12)
+    contrast(1.05)
+    drop-shadow(0 0 6px rgba(255,255,255,.78))
+    drop-shadow(0 0 13px rgba(190,201,211,.48)) !important;
+
+  animation:sakSilverImageGlow 2.2s ease-in-out infinite alternate !important;
+}
+
+@keyframes sakSilverMetalSweep{
+  0%,100%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+}
+
+@keyframes sakSilverIconGlow{
+  from{
+    box-shadow:
+      0 0 6px rgba(255,255,255,.86),
+      0 0 13px rgba(212,222,232,.64),
+      0 0 22px rgba(154,168,182,.40),
+      inset 0 0 9px rgba(255,255,255,.36) !important;
+  }
+  to{
+    box-shadow:
+      0 0 10px rgba(255,255,255,1),
+      0 0 22px rgba(225,234,243,.92),
+      0 0 38px rgba(176,190,204,.67),
+      0 0 52px rgba(255,255,255,.18),
+      inset 0 0 13px rgba(255,255,255,.58) !important;
+  }
+}
+
+@keyframes sakSilverImageGlow{
+  from{
+    box-shadow:
+      0 0 6px rgba(255,255,255,.82),
+      0 0 14px rgba(203,214,224,.58),
+      inset 0 0 8px rgba(255,255,255,.25) !important;
+  }
+  to{
+    box-shadow:
+      0 0 10px rgba(255,255,255,1),
+      0 0 24px rgba(221,231,240,.86),
+      0 0 37px rgba(157,172,186,.52),
+      inset 0 0 12px rgba(255,255,255,.40) !important;
+  }
+}
+
+/* SVG والكتابة تبقى بنفس الرمز والاسم، لكن بلمعان فضي */
+html body .cards .icon-card .icon-svg,
+html body .cards .icon-card svg{
+  stroke:#f8fbff !important;
+  color:#f8fbff !important;
+
+  filter:
+    drop-shadow(0 0 3px rgba(255,255,255,.98))
+    drop-shadow(0 0 7px rgba(194,205,216,.66)) !important;
+}
+
+html body .cards .icon-card .icon-svg path,
+html body .cards .icon-card .icon-svg rect,
+html body .cards .icon-card .icon-svg circle,
+html body .cards .icon-card .icon-svg line,
+html body .cards .icon-card .icon-svg polyline{
+  stroke:#f8fbff !important;
+}
+
+html body .cards .icon-card .icon-label,
+html body .cards .icon-card .sub,
+html body #facebookVideoIcon,
+html body #liveFlasher,
+html body #emeraldLibraryButton,
+html body #pongGame-btn,
+html body .launcher,
+html body #emeraldMusicHost #emOpenBtn{
+  text-shadow:
+    0 1px 2px rgba(0,0,0,.98),
+    0 0 5px rgba(255,255,255,.96),
+    0 0 10px rgba(201,211,222,.76) !important;
+}
+
+/* الحفاظ على محتوى الشارات والرموز الخاصة مع تحويل لونها للفضي */
+html body #liveFlasher::before,
+html body #liveFlasher::after,
+html body .launcher::before,
+html body .launcher::after,
+html body #emeraldLibraryButton::before,
+html body #emeraldLibraryButton::after,
+html body .cards .sakaker-kitchen-card::before,
+html body .cards .sakaker-kitchen-card::after{
+  color:#f7fbff !important;
+
+  text-shadow:
+    0 0 4px rgba(255,255,255,1),
+    0 0 9px rgba(210,220,230,.88),
+    0 0 16px rgba(160,173,186,.58) !important;
+}
+
+/* شارة LIVE نفسها فضية مع بقاء كلمة LIVE كما هي */
+html body #liveFlasher::after{
+  background:
+    linear-gradient(
+      135deg,
+      #383e46,
+      #f5f8fb,
+      #7d8792,
+      #dfe5eb
+    ) !important;
+
+  color:#12161b !important;
+
+  border-color:rgba(255,255,255,.96) !important;
+
+  box-shadow:
+    0 0 7px rgba(255,255,255,.92),
+    0 0 13px rgba(185,198,211,.68) !important;
+}
+
+/* النجمة تبقى نجمة، فقط تصبح فضية */
+html body .launcher{
+  clip-path:polygon(
+    50% 0%,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
+  ) !important;
+}
+
+/* =========================================================
+   2) القصص الجديدة في بداية "خواطر وقصص"
+========================================================= */
+html body .sak-new-story-intro{
+  margin:0 0 14px !important;
+  padding:10px !important;
+
+  border:1px solid rgba(235,241,247,.31) !important;
+  border-radius:15px !important;
+
+  background:
+    radial-gradient(circle at 50% 0%,rgba(255,255,255,.07),transparent 40%),
+    linear-gradient(145deg,rgba(33,37,43,.72),rgba(10,12,16,.80)) !important;
+
+  box-shadow:
+    0 0 9px rgba(255,255,255,.08),
+    0 0 18px rgba(181,193,205,.09) !important;
+}
+
+html body .sak-new-story-intro > h2{
+  margin:0 0 9px !important;
+
+  color:#f5f8fb !important;
+
+  font-size:15px !important;
+  font-weight:1000 !important;
+
+  text-align:center !important;
+
+  text-shadow:
+    0 0 6px rgba(255,255,255,.72),
+    0 0 13px rgba(184,197,210,.45) !important;
+}
+
+html body .sak-new-story-card{
+  margin:8px 0 !important;
+  padding:10px 12px !important;
+
+  border:1px solid rgba(229,236,243,.20) !important;
+  border-radius:13px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.038),
+      rgba(115,125,136,.045)
+    ) !important;
+
+  color:#f4f7fa !important;
+
+  box-shadow:inset 0 0 12px rgba(255,255,255,.025) !important;
+}
+
+html body .sak-new-story-card h3{
+  margin:0 0 6px !important;
+
+  color:#ffffff !important;
+
+  font-size:12px !important;
+  font-weight:1000 !important;
+
+  text-shadow:
+    0 0 5px rgba(255,255,255,.55),
+    0 0 10px rgba(182,194,206,.33) !important;
+}
+
+html body .sak-new-story-card p{
+  margin:5px 0 !important;
+
+  color:rgba(245,248,251,.86) !important;
+
+  font-size:10px !important;
+  line-height:1.9 !important;
+}
+
+html body .sak-story-note{
+  color:rgba(228,235,242,.59) !important;
+
+  font-size:8px !important;
+  font-style:italic !important;
+}
+
+/* =========================================================
+   الجوال
+========================================================= */
+@media(max-width:700px){
+  html body .sak-new-story-intro{
+    padding:8px !important;
+    border-radius:12px !important;
+  }
+
+  html body .sak-new-story-intro > h2{
+    font-size:12px !important;
+  }
+
+  html body .sak-new-story-card{
+    padding:8px 9px !important;
+  }
+
+  html body .sak-new-story-card h3{
+    font-size:10px !important;
+  }
+
+  html body .sak-new-story-card p{
+    font-size:8.5px !important;
+  }
+}
+
+</style>
+
+<script id="sakaker-silver-icons-new-stories-js">
+(function(){
+  'use strict';
+
+  /* =======================================================
+     القصص المضافة في بداية خواطر وقصص
+  ======================================================= */
+  const newStoriesHTML = `
+    <div class="sak-new-story-intro">
+
+      <h2>📜 من قصص العرب وحكايات الزمن القديم</h2>
+
+      <div class="sak-new-story-card">
+        <h3>👑 هارون الرشيد — السحابة التي لا تضيع خراجها</h3>
+        <p>
+          من أشهر الحكايات الأدبية المتداولة عن هارون الرشيد أنه نظر يومًا
+          إلى سحابة تمضي في السماء، وقيل إنه خاطبها بمعنى: أمطري حيث شئتِ،
+          فإن خراجك سيعود إلى أرض الدولة. وتعكس الحكاية، سواء أخذت بوصفها
+          قصة أدبية أو قولًا منسوبًا إليه، صورة بغداد العباسية في المخيلة
+          التراثية: دولة واسعة، وأسواق مترابطة، ورحلات تمتد بعيدًا.
+        </p>
+        <p class="sak-story-note">
+          ملاحظة: هذه من الروايات التراثية المشهورة، وتُذكر هنا بوصفها حكاية أدبية متداولة لا توثيقًا حرفيًا للواقعة.
+        </p>
+      </div>
+
+      <div class="sak-new-story-card">
+        <h3>✒️ المتنبي — شاعر لا يدخل المجلس عابرًا</h3>
+        <p>
+          دخل المتنبي مجالس الأمراء وهو يحمل ثقة استثنائية بشعره،
+          وكان يرى الكلمة موقفًا لا مجرد زينة. وفي زمن سيف الدولة الحمداني
+          لمع نجمه، فكانت قصائده تصف المعارك وتبني صورة البطل، لكنها كانت
+          في الوقت نفسه تكشف اعتزاز الشاعر بنفسه. ومع تعاقب الخصومات
+          والحساد لم يكن المتنبي يختار الصمت؛ كان يرد بالشعر، فصار حضوره
+          في الذاكرة العربية أكبر من حدود المجلس الذي وقف فيه.
+        </p>
+      </div>
+
+      <div class="sak-new-story-card">
+        <h3>🏛️ الفرزدق — قصيدة أمام جمع كبير</h3>
+        <p>
+          من أشهر ما يُروى عن الفرزدق موقفه في موسم الحج حين سُئل عن رجل
+          عرفه الناس ولم يُرِد بعض الحاضرين إظهار معرفته. فأنشد الفرزدق
+          قصيدة يعرّف فيها بمكانته ونسبه، غير آبه بما قد يجرّه ذلك عليه
+          من غضب أصحاب السلطة. بقيت الحكاية مثالًا على أن الشاعر العربي
+          لم يكن مجرد صانع أبيات، بل كان أحيانًا صاحب موقف يدفع ثمن كلمته.
+        </p>
+      </div>
+
+      <div class="sak-new-story-card">
+        <h3>🐴 جحا وابنه والحمار — كيف تُرضي الجميع؟</h3>
+        <p>
+          خرج جحا مع ابنه وحماره، فركب جحا ومشى الابن، فلامهما الناس.
+          ثم نزل جحا وركب ابنه، فلامهما قوم آخرون. فركبا معًا، فقيل إنهما
+          أرهقا الحمار، ثم نزلا ومشيا بجانبه، فضحك الناس لأنهما يملكان
+          حمارًا ولا يركبانه. عندها فهم الابن درس الحكاية: من جعل رضا
+          جميع الناس غايته لن يجد هيئة واحدة ترضيهم كلهم.
+        </p>
+        <p class="sak-story-note">
+          حكاية شعبية ساخرة من طرائف جحا المتوارثة بصيغ متعددة.
+        </p>
+      </div>
+
+      <div class="sak-new-story-card">
+        <h3>🍽️ أشعب والوليمة التي صدّق خبرها</h3>
+        <p>
+          تروي كتب الطرائف حكايات كثيرة عن أشعب وطمعه في الطعام.
+          وفي إحدى الصيغ الشعبية أراد التخلص من صبية يلاحقونه، فأخبرهم
+          أن في ناحية المدينة وليمة عظيمة، فانطلقوا مسرعين. وبعد لحظات
+          فكر أشعب وقال في نفسه: لعل الخبر الذي اخترعته صار صحيحًا!
+          فانطلق خلفهم يبحث عن الوليمة. وصارت الحكاية مثالًا طريفًا
+          على من يكرر الوهم حتى يكاد يصدقه.
+        </p>
+        <p class="sak-story-note">
+          أشعب شخصية ارتبطت في الأدب العربي بطرائف الطمع والفكاهة، والروايات عنه كثيرة ومتنوعة.
+        </p>
+      </div>
+
+      <div class="sak-new-story-card">
+        <h3>🏮 حكاية قديمة خيالية — قنديل النحاس في سوق بغداد</h3>
+        <p>
+          كان صبي يعمل عند نحّاس عجوز، وفي آخر السوق وجد قنديلًا لا يلمع
+          إلا عندما يقول حامله الحقيقة. حاول التجار شراءه، لكن القنديل
+          بقي معتمًا كلما بالغ أحدهم في وصف بضاعته. وفي مساء هادئ قال
+          الصبي للعجوز: أنا أخاف الفقر، لكنني لا أريد أن أصبح مخادعًا.
+          عندها أضاء القنديل حتى انعكس نوره على أبواب السوق، فقال العجوز:
+          بعض الكنوز لا تكشف الذهب، بل تكشف صاحب القلب الصادق.
+        </p>
+      </div>
+
+      <div class="sak-new-story-card">
+        <h3>🔔 حكاية خيالية — جرس القاضي الفضي</h3>
+        <p>
+          في مدينة قديمة عُلّق أمام دار القضاء جرس فضي لا يُسمح بدقه إلا
+          للمظلوم. وفي ليلة عاصفة سمع القاضي رنينه، فخرج فلم يجد إنسانًا،
+          بل حصانًا هزيلًا شد الحبل بأسنانه. تتبع القاضي أثره حتى وصل إلى
+          رجل أهمل الحيوان بعد سنوات من خدمته. فقال القاضي: إذا كان العدل
+          لا يسمع من لا يستطيع الكلام، فهو عدل ناقص. ومنذ ذلك اليوم صار
+          الجرس رمزًا لكل ضعيف لا يملك من يدافع عنه.
+        </p>
+      </div>
+
+      <div class="sak-new-story-card">
+        <h3>💍 حكاية خيالية — تاجر العقيق والباب الذي لا يُفتح مرتين</h3>
+        <p>
+          اشترى تاجر خاتم عقيق من شيخ غريب، وقال له الشيخ: سيقودك الخاتم
+          مرة واحدة فقط إلى باب يحقق أمنية، فاختر جيدًا. ظل التاجر سنوات
+          يحلم بالذهب والقصور، حتى عاد يومًا فوجد مدينته تعاني الجفاف.
+          ظهر الباب أخيرًا في جدار مهجور، ففتحَه وتمنى الماء للناس بدل
+          الثروة لنفسه. في الصباح جرى النبع بين البيوت، واختفى الخاتم.
+          وحين سألوه ماذا خسر، قال: ربما خسرت كنزًا صغيرًا وربحت مدينة.
+        </p>
+      </div>
+
+      <div class="sak-new-story-card">
+        <h3>🌙 حكاية خيالية — ناسخ الكتب وقمر المكتبة</h3>
+        <p>
+          كان ناسخ كتب عجوز يعمل ليلًا في مكتبة لا يدخلها أحد بعد الغروب.
+          وفي ليلة بدر وجد صفحة بيضاء تكتب على نفسها كلما مر ضوء القمر
+          فوقها. لم تكتب أسرار الملوك ولا مواقع الكنوز، بل أسماء أشخاص
+          مجهولين فعلوا خيرًا ولم يعرف بهم أحد. فهم الناسخ أن التاريخ
+          الأكبر ليس كله في قصور السلاطين، وأن أعمالًا صغيرة قد تكون
+          جديرة بأن تُكتب حتى لو لم يشاهدها الجمهور.
+        </p>
+      </div>
+
+    </div>
+  `;
+
+  const originalShowKhwater =
+    window.showKhwater;
+
+  if(
+    typeof originalShowKhwater ===
+    'function'
+  ){
+    window.showKhwater =
+      function(el){
+        originalShowKhwater(el);
+
+        if(
+          el &&
+          !el.querySelector(
+            '.sak-new-story-intro'
+          )
+        ){
+          el.insertAdjacentHTML(
+            'afterbegin',
+            newStoriesHTML
+          );
+        }
+      };
+  }
+
+  /*
+    لا نغيّر أسماء الأيقونات ولا رموزها.
+    هذا التأكيد يعيد فقط الصنف المستخدم في الترتيب إن عمل كود قديم بتأخير.
+  */
+  function preserveIconOrdering(){
+    document
+      .querySelectorAll(
+        '.cards .icon-card'
+      )
+      .forEach(function(card){
+        const text =
+          (card.textContent || '')
+            .replace(/\s+/g,' ')
+            .trim();
+
+        if(
+          text.includes('خواطر') ||
+          text.includes('Thoughts')
+        ){
+          card.classList.add(
+            'sak-order-thoughts'
+          );
+        }
+      });
+  }
+
+  preserveIconOrdering();
+
+  [400,1400,2800].forEach(
+    function(ms){
+      setTimeout(
+        preserveIconOrdering,
+        ms
+      );
+    }
+  );
+
+})();
+</script>
