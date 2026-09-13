@@ -26471,12 +26471,8 @@ html body #sakLiveAddedTitle{
       card.appendChild(sub);
 
       card.addEventListener('click',function(){
-        const url =
-          'https://www.youtube.com/embed/live_stream?channel=' +
-          encodeURIComponent(ch.id);
-
-        if(typeof window.openVideo === 'function'){
-          window.openVideo(url);
+        if(typeof window.sakakerOpenLiveChannel === 'function'){
+          window.sakakerOpenLiveChannel(ch);
         }
       });
 
@@ -26654,6 +26650,646 @@ html body #sakLiveAddedTitle{
       attributeFilter:['lang','dir']
     }
   );
+
+})();
+</script>
+
+
+<!-- SAKAKER LIVE CHANNEL RESOLVER FIX -->
+<style id="sakaker-live-channel-resolver-fix">
+
+/* رسالة البحث عن البث */
+html body #sakLiveResolveToast{
+  position:fixed !important;
+
+  top:50% !important;
+  left:50% !important;
+
+  transform:translate(-50%,-50%) !important;
+
+  width:min(88vw,420px) !important;
+
+  padding:14px 18px !important;
+  box-sizing:border-box !important;
+
+  display:none;
+
+  border:1px solid rgba(255,255,255,.62) !important;
+  border-radius:18px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(24,17,34,.96),
+      rgba(7,9,15,.97)
+    ) !important;
+
+  color:#fff !important;
+
+  font-family:Tajawal,Cairo,Tahoma,Arial,sans-serif !important;
+  font-size:12px !important;
+  font-weight:900 !important;
+
+  text-align:center !important;
+
+  box-shadow:
+    0 0 14px rgba(255,255,255,.13),
+    0 0 28px rgba(192,148,239,.20),
+    0 22px 65px rgba(0,0,0,.70) !important;
+
+  backdrop-filter:blur(12px) !important;
+  -webkit-backdrop-filter:blur(12px) !important;
+
+  z-index:2147483647 !important;
+}
+
+/* عند عدم وجود بث قابل للتضمين */
+html body #sakLiveNoEmbed{
+  position:fixed !important;
+
+  inset:0 !important;
+
+  display:none;
+  align-items:center !important;
+  justify-content:center !important;
+
+  padding:12px !important;
+  box-sizing:border-box !important;
+
+  background:rgba(2,3,8,.92) !important;
+
+  backdrop-filter:blur(11px) !important;
+  -webkit-backdrop-filter:blur(11px) !important;
+
+  z-index:2147483647 !important;
+}
+
+html body #sakLiveNoEmbedCard{
+  width:min(92vw,460px) !important;
+
+  padding:20px !important;
+  box-sizing:border-box !important;
+
+  border:1px solid rgba(255,255,255,.62) !important;
+  border-radius:22px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(27,18,38,.97),
+      rgba(7,9,15,.98)
+    ) !important;
+
+  color:#fff !important;
+
+  text-align:center !important;
+
+  box-shadow:
+    0 0 15px rgba(255,255,255,.12),
+    0 0 32px rgba(193,150,240,.20),
+    0 24px 70px rgba(0,0,0,.76) !important;
+}
+
+html body #sakLiveNoEmbedTitle{
+  margin-bottom:9px !important;
+
+  font-size:16px !important;
+  font-weight:1000 !important;
+
+  text-shadow:
+    0 0 7px rgba(255,255,255,.55),
+    0 0 15px rgba(190,143,239,.42) !important;
+}
+
+html body #sakLiveNoEmbedText{
+  margin-bottom:14px !important;
+
+  color:rgba(255,255,255,.76) !important;
+
+  font-size:11px !important;
+  line-height:1.8 !important;
+}
+
+html body #sakLiveNoEmbedActions{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:8px !important;
+  flex-wrap:wrap !important;
+}
+
+html body .sak-live-resolver-btn{
+  min-height:38px !important;
+
+  padding:0 14px !important;
+
+  border:1px solid rgba(255,255,255,.55) !important;
+  border-radius:13px !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,57,124,.64),
+      rgba(117,75,246,.66),
+      rgba(0,190,230,.56)
+    ) !important;
+
+  color:#fff !important;
+
+  font-size:10px !important;
+  font-weight:900 !important;
+
+  cursor:pointer !important;
+
+  box-shadow:
+    0 0 9px rgba(255,255,255,.10),
+    0 0 18px rgba(162,111,235,.18) !important;
+}
+
+html body #sakLiveNoEmbedClose{
+  background:rgba(255,255,255,.07) !important;
+}
+
+
+/* زر فتح البث الرسمي فوق مشغل الفيديو كحل احتياطي */
+html body #sakLiveOfficialBtn{
+  position:absolute !important;
+
+  top:10px !important;
+  left:10px !important;
+
+  min-height:34px !important;
+
+  padding:0 10px !important;
+
+  display:none;
+  align-items:center !important;
+  justify-content:center !important;
+
+  border:1px solid rgba(255,255,255,.72) !important;
+  border-radius:12px !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,34,72,.90),
+      rgba(160,22,68,.90)
+    ) !important;
+
+  color:#fff !important;
+
+  font-size:8px !important;
+  font-weight:1000 !important;
+
+  text-decoration:none !important;
+
+  box-shadow:
+    0 0 10px rgba(255,60,95,.44),
+    0 0 17px rgba(255,255,255,.08) !important;
+
+  z-index:2147483647 !important;
+}
+
+@media(max-width:700px){
+  html body #sakLiveResolveToast{
+    font-size:10px !important;
+  }
+
+  html body #sakLiveOfficialBtn{
+    top:7px !important;
+    left:7px !important;
+
+    min-height:30px !important;
+
+    padding:0 8px !important;
+
+    font-size:7px !important;
+  }
+}
+
+</style>
+
+<script id="sakaker-live-channel-resolver-fix-js">
+(function(){
+  'use strict';
+
+  const mainVideo =
+    document.getElementById('mainVideo');
+
+  const videoBox =
+    document.getElementById('videoBox');
+
+  if(mainVideo){
+    /*
+      YouTube يطلب Referer صالحاً للمشغلات المضمنة.
+      هذه السياسة تحافظ على أصل الموقع عند طلب المشغل.
+    */
+    mainVideo.setAttribute(
+      'referrerpolicy',
+      'strict-origin-when-cross-origin'
+    );
+
+    mainVideo.setAttribute(
+      'allow',
+      'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+    );
+
+    mainVideo.setAttribute(
+      'allowfullscreen',
+      ''
+    );
+  }
+
+  function isEnglish(){
+    return document.documentElement.lang === 'en';
+  }
+
+  function ensureToast(){
+    let toast =
+      document.getElementById('sakLiveResolveToast');
+
+    if(!toast){
+      toast = document.createElement('div');
+      toast.id = 'sakLiveResolveToast';
+      document.body.appendChild(toast);
+    }
+
+    return toast;
+  }
+
+  function showToast(text){
+    const toast = ensureToast();
+
+    toast.textContent = text;
+    toast.style.display = 'block';
+  }
+
+  function hideToast(){
+    const toast =
+      document.getElementById('sakLiveResolveToast');
+
+    if(toast){
+      toast.style.display = 'none';
+    }
+  }
+
+  function ensureNoEmbed(){
+    let overlay =
+      document.getElementById('sakLiveNoEmbed');
+
+    if(overlay) return overlay;
+
+    overlay = document.createElement('div');
+    overlay.id = 'sakLiveNoEmbed';
+
+    const card = document.createElement('div');
+    card.id = 'sakLiveNoEmbedCard';
+
+    const title = document.createElement('div');
+    title.id = 'sakLiveNoEmbedTitle';
+
+    const text = document.createElement('div');
+    text.id = 'sakLiveNoEmbedText';
+
+    const actions = document.createElement('div');
+    actions.id = 'sakLiveNoEmbedActions';
+
+    const open = document.createElement('a');
+    open.id = 'sakLiveNoEmbedOpen';
+    open.className = 'sak-live-resolver-btn';
+    open.target = '_blank';
+    open.rel = 'noopener';
+
+    const close = document.createElement('button');
+    close.id = 'sakLiveNoEmbedClose';
+    close.className = 'sak-live-resolver-btn';
+    close.type = 'button';
+
+    actions.appendChild(open);
+    actions.appendChild(close);
+
+    card.appendChild(title);
+    card.appendChild(text);
+    card.appendChild(actions);
+
+    overlay.appendChild(card);
+    document.body.appendChild(overlay);
+
+    close.addEventListener('click',function(){
+      overlay.style.display = 'none';
+    });
+
+    overlay.addEventListener('click',function(e){
+      if(e.target === overlay){
+        overlay.style.display = 'none';
+      }
+    });
+
+    return overlay;
+  }
+
+  function showNoEmbed(channel,url){
+    hideToast();
+
+    const overlay = ensureNoEmbed();
+
+    const title =
+      document.getElementById('sakLiveNoEmbedTitle');
+
+    const text =
+      document.getElementById('sakLiveNoEmbedText');
+
+    const open =
+      document.getElementById('sakLiveNoEmbedOpen');
+
+    const close =
+      document.getElementById('sakLiveNoEmbedClose');
+
+    if(isEnglish()){
+      title.textContent =
+        '📺 Live stream cannot be embedded';
+
+      text.textContent =
+        'This channel may not be live right now, or YouTube/the broadcaster may not allow this live stream to play inside other websites. You can open the official live page directly.';
+
+      open.textContent =
+        'Open official live page';
+
+      close.textContent =
+        'Back';
+    }else{
+      title.textContent =
+        '📺 تعذّر تشغيل البث داخل الموقع';
+
+      text.textContent =
+        'قد لا تكون القناة في بث مباشر الآن، أو قد يمنع YouTube أو مالك القناة تشغيل هذا البث داخل المواقع الأخرى. يمكنك فتح صفحة البث الرسمية مباشرة.';
+
+      open.textContent =
+        'فتح البث الرسمي';
+
+      close.textContent =
+        'رجوع';
+    }
+
+    open.href = url;
+
+    overlay.style.display = 'flex';
+  }
+
+  function ensureOfficialButton(){
+    if(!videoBox) return null;
+
+    let btn =
+      document.getElementById('sakLiveOfficialBtn');
+
+    if(!btn){
+      btn = document.createElement('a');
+      btn.id = 'sakLiveOfficialBtn';
+      btn.target = '_blank';
+      btn.rel = 'noopener';
+
+      videoBox.appendChild(btn);
+    }
+
+    return btn;
+  }
+
+  function setOfficialButton(url){
+    const btn = ensureOfficialButton();
+
+    if(!btn) return;
+
+    btn.href = url;
+
+    btn.textContent =
+      isEnglish()
+        ? '↗ Open official live'
+        : '↗ فتح البث الرسمي';
+
+    btn.style.display = 'flex';
+  }
+
+  function clearOfficialButton(){
+    const btn =
+      document.getElementById('sakLiveOfficialBtn');
+
+    if(btn){
+      btn.style.display = 'none';
+      btn.removeAttribute('href');
+    }
+  }
+
+  function validVideoId(value){
+    return /^[A-Za-z0-9_-]{11}$/.test(value || '');
+  }
+
+  function extractLiveVideoId(text,finalUrl){
+    text = String(text || '');
+    finalUrl = String(finalUrl || '');
+
+    /* لو أعاد YouTube توجيه /live إلى watch?v=... */
+    let m =
+      finalUrl.match(
+        /[?&]v=([A-Za-z0-9_-]{11})/
+      );
+
+    if(m && validVideoId(m[1])){
+      return m[1];
+    }
+
+    /* بحث قريب من isLiveNow=true لتجنب التقاط فيديو عادي */
+    const liveMarkers = [
+      '"isLiveNow":true',
+      '\\"isLiveNow\\":true',
+      '"isLive":true',
+      '\\"isLive\\":true'
+    ];
+
+    for(const marker of liveMarkers){
+      let pos = text.indexOf(marker);
+
+      while(pos !== -1){
+        const start =
+          Math.max(0,pos - 7000);
+
+        const area =
+          text.slice(start,pos + 2500);
+
+        const ids =
+          Array.from(
+            area.matchAll(
+              /(?:\\"|")videoId(?:\\"|")\s*:\s*(?:\\"|")([A-Za-z0-9_-]{11})(?:\\"|")/g
+            )
+          );
+
+        if(ids.length){
+          const id =
+            ids[ids.length - 1][1];
+
+          if(validVideoId(id)){
+            return id;
+          }
+        }
+
+        pos =
+          text.indexOf(
+            marker,
+            pos + marker.length
+          );
+      }
+    }
+
+    /* canonical/watch URL إذا كنا فعلاً في صفحة بث */
+    const hasLiveSignal =
+      /LIVE_STREAM_OFFLINE|isLiveNow|liveBroadcastDetails|watching now|مشاهدة الآن/i
+        .test(text);
+
+    if(hasLiveSignal){
+      m = text.match(
+        /(?:watch\?v=|watch%3Fv%3D)([A-Za-z0-9_-]{11})/
+      );
+
+      if(m && validVideoId(m[1])){
+        return m[1];
+      }
+    }
+
+    return null;
+  }
+
+  async function fetchLivePage(channelUrl){
+    const controller =
+      new AbortController();
+
+    const timer =
+      setTimeout(
+        function(){
+          controller.abort();
+        },
+        10000
+      );
+
+    try{
+      const proxy =
+        'https://api.allorigins.win/get?url=' +
+        encodeURIComponent(channelUrl);
+
+      const response =
+        await fetch(
+          proxy,
+          {
+            signal:controller.signal,
+            cache:'no-store'
+          }
+        );
+
+      if(!response.ok){
+        throw new Error(
+          'HTTP ' + response.status
+        );
+      }
+
+      return await response.json();
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  window.sakakerOpenLiveChannel =
+    async function(channel){
+
+      if(!channel || !channel.id) return;
+
+      const channelUrl =
+        'https://www.youtube.com/channel/' +
+        encodeURIComponent(channel.id) +
+        '/live';
+
+      clearOfficialButton();
+
+      showToast(
+        isEnglish()
+          ? 'Checking the channel’s current official live stream…'
+          : 'جاري التحقق من البث المباشر الرسمي الحالي للقناة…'
+      );
+
+      try{
+        const data =
+          await fetchLivePage(channelUrl);
+
+        const finalUrl =
+          data &&
+          data.status &&
+          data.status.url
+            ? data.status.url
+            : '';
+
+        const videoId =
+          extractLiveVideoId(
+            data ? data.contents : '',
+            finalUrl
+          );
+
+        hideToast();
+
+        if(!videoId){
+          showNoEmbed(
+            channel,
+            channelUrl
+          );
+          return;
+        }
+
+        const origin =
+          location.origin &&
+          location.origin !== 'null'
+            ? location.origin
+            : 'https://sakaker.co';
+
+        const embedUrl =
+          'https://www.youtube.com/embed/' +
+          encodeURIComponent(videoId) +
+          '?rel=0' +
+          '&playsinline=1' +
+          '&enablejsapi=1' +
+          '&origin=' +
+          encodeURIComponent(origin);
+
+        setOfficialButton(channelUrl);
+
+        if(typeof window.openVideo === 'function'){
+          window.openVideo(embedUrl);
+        }else{
+          window.open(
+            channelUrl,
+            '_blank',
+            'noopener'
+          );
+        }
+
+      }catch(e){
+        hideToast();
+
+        showNoEmbed(
+          channel,
+          channelUrl
+        );
+      }
+    };
+
+  /*
+    لو أغلق المستخدم فيديو القناة نخفي زر YouTube الاحتياطي.
+  */
+  const previousCloseVideo =
+    window.closeVideo;
+
+  if(typeof previousCloseVideo === 'function'){
+    window.closeVideo =
+      function(){
+        previousCloseVideo();
+        clearOfficialButton();
+      };
+  }
 
 })();
 </script>
