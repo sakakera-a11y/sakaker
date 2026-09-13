@@ -35668,3 +35668,844 @@ html[dir="rtl"] body #emeraldMusicHost.sak-music-portal #sakMusicStudioHeader{
 
 })();
 </script>
+
+
+<!-- SAKAKER LIVE GLOBAL RESTORE + RADIO FINAL -->
+<style id="sakaker-live-global-radio-final">
+
+/* إعادة النسخة العالمية وإخفاء البطاقات القديمة */
+html body #livePopup #liveVideosContainer > .live-video{
+  display:none !important;
+}
+html body #livePopup #liveVideosContainer{
+  display:block !important;
+  width:min(1120px,96vw) !important;
+  max-width:96vw !important;
+  max-height:88dvh !important;
+  margin:0 !important;
+  padding:8px !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  box-sizing:border-box !important;
+  border-radius:20px !important;
+  background:#080a0e !important;
+}
+
+/* تبويبا الفيديو والراديو */
+#sakLiveMediaTabs{
+  position:sticky !important;
+  top:0 !important;
+  z-index:70 !important;
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+  gap:6px !important;
+  margin:0 0 7px !important;
+  padding:5px !important;
+  border:1px solid rgba(255,255,255,.14) !important;
+  border-radius:13px !important;
+  background:rgba(7,8,12,.98) !important;
+}
+.sak-live-media-tab{
+  min-height:38px !important;
+  border:1px solid rgba(255,255,255,.18) !important;
+  border-radius:10px !important;
+  background:#15191f !important;
+  color:#fff !important;
+  font-size:9px !important;
+  font-weight:1000 !important;
+  cursor:pointer !important;
+}
+.sak-live-media-tab.active{
+  background:linear-gradient(135deg,#424a54,#f3f6f8,#87919c,#32383f) !important;
+  color:#101419 !important;
+  border-color:#fff !important;
+  box-shadow:0 0 10px rgba(255,255,255,.42) !important;
+}
+#sakLiveVideoPanel,
+#sakLiveRadioPanel{
+  width:100% !important;
+}
+#sakLiveRadioPanel{
+  display:none;
+}
+
+/* مشغل القنوات العالمية فوق القائمة */
+body.sakaker-live-popup-open.sak-global-player-open > #sakGlobalPlayerOverlay{
+  visibility:visible !important;
+  opacity:1 !important;
+  pointer-events:auto !important;
+  z-index:2147483647 !important;
+}
+body.sakaker-live-popup-open.sak-global-player-open > #livePopup{
+  visibility:hidden !important;
+  pointer-events:none !important;
+}
+
+/* الراديو */
+#sakRadioHeader{
+  padding:8px !important;
+  margin-bottom:7px !important;
+  border:1px solid rgba(255,255,255,.12) !important;
+  border-radius:14px !important;
+  background:#0e1116 !important;
+}
+#sakRadioTitle{
+  margin-bottom:6px !important;
+  color:#fff !important;
+  font-size:12px !important;
+  font-weight:1000 !important;
+  text-align:center !important;
+}
+#sakRadioSearchRow{
+  display:grid !important;
+  grid-template-columns:minmax(150px,1fr) auto !important;
+  gap:6px !important;
+}
+#sakRadioSearch{
+  min-width:0 !important;
+  height:36px !important;
+  padding:0 11px !important;
+  border:1px solid rgba(255,255,255,.22) !important;
+  border-radius:10px !important;
+  background:#15191f !important;
+  color:#fff !important;
+  outline:none !important;
+  font-size:9px !important;
+}
+#sakRadioSearchBtn{
+  height:36px !important;
+  padding:0 13px !important;
+  border:1px solid rgba(255,255,255,.55) !important;
+  border-radius:10px !important;
+  background:linear-gradient(135deg,#4a525c,#f0f4f7,#7c8792) !important;
+  color:#11161b !important;
+  font-size:8px !important;
+  font-weight:1000 !important;
+  cursor:pointer !important;
+}
+#sakRadioFilterRow{
+  display:grid !important;
+  grid-template-columns:1fr 1fr auto !important;
+  gap:5px !important;
+  margin-top:6px !important;
+}
+#sakRadioCountry,
+#sakRadioLanguage{
+  min-width:0 !important;
+  height:33px !important;
+  padding:0 7px !important;
+  border:1px solid rgba(255,255,255,.16) !important;
+  border-radius:9px !important;
+  background:#15191f !important;
+  color:#fff !important;
+  font-size:7.5px !important;
+}
+#sakRadioRefresh{
+  height:33px !important;
+  padding:0 9px !important;
+  border:1px solid rgba(255,255,255,.18) !important;
+  border-radius:9px !important;
+  background:#171b20 !important;
+  color:#fff !important;
+  font-size:7.5px !important;
+  font-weight:900 !important;
+  cursor:pointer !important;
+}
+#sakRadioStatusFilters{
+  display:flex !important;
+  justify-content:center !important;
+  flex-wrap:wrap !important;
+  gap:5px !important;
+  margin-top:6px !important;
+}
+.sak-radio-filter{
+  min-height:28px !important;
+  padding:3px 8px !important;
+  border:1px solid rgba(255,255,255,.14) !important;
+  border-radius:9px !important;
+  background:#15191f !important;
+  color:#fff !important;
+  font-size:7px !important;
+  font-weight:900 !important;
+  cursor:pointer !important;
+}
+.sak-radio-filter.active{
+  background:#eef2f5 !important;
+  color:#11161b !important;
+  border-color:#fff !important;
+}
+#sakRadioMeta{
+  margin-top:6px !important;
+  color:rgba(255,255,255,.56) !important;
+  font-size:6.5px !important;
+  text-align:center !important;
+}
+
+/* المشغل */
+#sakRadioPlayer{
+  position:sticky !important;
+  top:51px !important;
+  z-index:50 !important;
+  display:grid !important;
+  grid-template-columns:auto 1fr auto !important;
+  align-items:center !important;
+  gap:7px !important;
+  margin-bottom:7px !important;
+  padding:7px !important;
+  border:1px solid rgba(255,255,255,.15) !important;
+  border-radius:13px !important;
+  background:#0b0e12 !important;
+}
+#sakRadioNowIcon{
+  width:34px !important;
+  height:34px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border-radius:50% !important;
+  background:#171b20 !important;
+  font-size:18px !important;
+}
+#sakRadioNowName{
+  color:#fff !important;
+  font-size:8px !important;
+  font-weight:1000 !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  white-space:nowrap !important;
+}
+#sakRadioNowSub{
+  margin-top:2px !important;
+  color:rgba(255,255,255,.52) !important;
+  font-size:6px !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  white-space:nowrap !important;
+}
+#sakRadioAudio{
+  width:min(270px,36vw) !important;
+  height:30px !important;
+}
+#sakRadioOpenExternal{
+  display:none;
+  min-height:30px !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:4px 8px !important;
+  border:1px solid rgba(255,255,255,.20) !important;
+  border-radius:9px !important;
+  background:#171b20 !important;
+  color:#fff !important;
+  text-decoration:none !important;
+  font-size:6.5px !important;
+  font-weight:900 !important;
+}
+
+/* بطاقات الإذاعات */
+#sakRadioResults{
+  display:grid !important;
+  grid-template-columns:repeat(6,minmax(0,1fr)) !important;
+  gap:7px !important;
+}
+.sak-radio-card{
+  height:90px !important;
+  min-width:0 !important;
+  padding:6px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:3px !important;
+  border:1px solid rgba(255,255,255,.15) !important;
+  border-radius:11px !important;
+  background:#111419 !important;
+  color:#fff !important;
+  overflow:hidden !important;
+  cursor:pointer !important;
+}
+.sak-radio-card:hover{
+  transform:translateY(-2px) !important;
+  border-color:rgba(255,255,255,.48) !important;
+  background:#171b20 !important;
+}
+.sak-radio-logo,
+.sak-radio-logo-fallback{
+  width:30px !important;
+  height:30px !important;
+  border-radius:6px !important;
+}
+.sak-radio-logo{
+  object-fit:contain !important;
+  background:#fff !important;
+}
+.sak-radio-logo-fallback{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  font-size:18px !important;
+}
+.sak-radio-name{
+  max-width:100% !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  white-space:nowrap !important;
+  font-size:7px !important;
+  font-weight:1000 !important;
+}
+.sak-radio-country{
+  max-width:100% !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  white-space:nowrap !important;
+  color:rgba(255,255,255,.52) !important;
+  font-size:5.5px !important;
+}
+.sak-radio-state{
+  padding:2px 5px !important;
+  border-radius:7px !important;
+  font-size:5.2px !important;
+  font-weight:1000 !important;
+}
+.sak-radio-online{color:#7fffc1 !important;background:rgba(33,185,105,.10) !important}
+.sak-radio-external{color:#ffd987 !important;background:rgba(255,173,42,.10) !important}
+.sak-radio-offline{color:#ff9bae !important;background:rgba(255,60,92,.10) !important}
+#sakRadioMore{
+  width:100% !important;
+  min-height:34px !important;
+  margin-top:7px !important;
+  border:1px solid rgba(255,255,255,.14) !important;
+  border-radius:10px !important;
+  background:#15191f !important;
+  color:#fff !important;
+  font-size:7.5px !important;
+  font-weight:900 !important;
+  cursor:pointer !important;
+}
+#sakRadioEmpty{
+  grid-column:1/-1 !important;
+  min-height:100px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  color:rgba(255,255,255,.55) !important;
+  font-size:9px !important;
+  text-align:center !important;
+}
+
+@media(max-width:850px){
+  #sakRadioResults{grid-template-columns:repeat(4,minmax(0,1fr)) !important}
+}
+@media(max-width:700px){
+  html body #livePopup #liveVideosContainer{
+    width:calc(100vw - 10px) !important;
+    max-width:calc(100vw - 10px) !important;
+    max-height:calc(100dvh - 10px) !important;
+    padding:6px !important;
+  }
+  .sak-live-media-tab{min-height:35px !important;font-size:7.5px !important}
+  #sakRadioFilterRow{grid-template-columns:1fr 1fr !important}
+  #sakRadioRefresh{grid-column:1/-1 !important}
+  #sakRadioPlayer{
+    top:46px !important;
+    grid-template-columns:auto 1fr !important;
+  }
+  #sakRadioAudio,
+  #sakRadioOpenExternal{
+    grid-column:1/-1 !important;
+    width:100% !important;
+  }
+  #sakRadioResults{
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+    gap:5px !important;
+  }
+  .sak-radio-card{height:79px !important;padding:5px !important}
+  .sak-radio-logo,.sak-radio-logo-fallback{width:25px !important;height:25px !important}
+}
+@media(max-width:390px){
+  #sakRadioResults{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+}
+
+</style>
+
+<script id="sakaker-live-global-radio-final-js">
+(function(){
+  'use strict';
+
+  const container = document.getElementById('liveVideosContainer');
+  if(!container) return;
+
+  const RADIO_HOSTS = [
+    'https://de1.api.radio-browser.info',
+    'https://nl1.api.radio-browser.info',
+    'https://at1.api.radio-browser.info'
+  ];
+
+  let radioRows = [];
+  let radioFiltered = [];
+  let radioVisible = 72;
+  let radioStatus = 'all';
+  let radioLoaded = false;
+
+  const isEn = () => document.documentElement.lang === 'en';
+
+  function normalize(v){
+    return String(v || '')
+      .normalize('NFD')
+      .replace(/\p{Diacritic}/gu,'')
+      .toLowerCase()
+      .replace(/\s+/g,' ')
+      .trim();
+  }
+
+  function countryName(code,fallback){
+    if(!code) return fallback || '—';
+    try{
+      return new Intl.DisplayNames(
+        [isEn() ? 'en' : 'ar'],
+        {type:'region'}
+      ).of(code) || fallback || code;
+    }catch(e){
+      return fallback || code;
+    }
+  }
+
+  async function radioFetch(path){
+    let err;
+    for(const host of RADIO_HOSTS){
+      try{
+        const r = await fetch(host + path,{cache:'no-store'});
+        if(!r.ok) throw new Error('HTTP ' + r.status);
+        return await r.json();
+      }catch(e){
+        err = e;
+      }
+    }
+    throw err || new Error('Radio unavailable');
+  }
+
+  function buildTabs(){
+    if(document.getElementById('sakLiveMediaTabs')) return;
+
+    const tabs = document.createElement('div');
+    tabs.id = 'sakLiveMediaTabs';
+
+    const videoBtn = document.createElement('button');
+    videoBtn.type = 'button';
+    videoBtn.id = 'sakLiveVideoTab';
+    videoBtn.className = 'sak-live-media-tab active';
+
+    const radioBtn = document.createElement('button');
+    radioBtn.type = 'button';
+    radioBtn.id = 'sakLiveRadioTab';
+    radioBtn.className = 'sak-live-media-tab';
+
+    tabs.append(videoBtn,radioBtn);
+    container.insertBefore(tabs,container.firstChild);
+
+    const videoPanel = document.createElement('div');
+    videoPanel.id = 'sakLiveVideoPanel';
+
+    ['sakGlobalLiveHeader','sakGlobalLiveResults','sakGlobalMoreBtn']
+      .forEach(id=>{
+        const n = document.getElementById(id);
+        if(n) videoPanel.appendChild(n);
+      });
+
+    tabs.insertAdjacentElement('afterend',videoPanel);
+
+    const radioPanel = document.createElement('div');
+    radioPanel.id = 'sakLiveRadioPanel';
+    videoPanel.insertAdjacentElement('afterend',radioPanel);
+    buildRadioUI(radioPanel);
+
+    videoBtn.onclick = ()=>{
+      videoBtn.classList.add('active');
+      radioBtn.classList.remove('active');
+      videoPanel.style.display = 'block';
+      radioPanel.style.display = 'none';
+    };
+
+    radioBtn.onclick = async ()=>{
+      radioBtn.classList.add('active');
+      videoBtn.classList.remove('active');
+      videoPanel.style.display = 'none';
+      radioPanel.style.display = 'block';
+      if(!radioLoaded) await loadRadio();
+    };
+
+    applyLanguage();
+  }
+
+  function buildRadioUI(panel){
+    panel.innerHTML = `
+      <div id="sakRadioHeader">
+        <div id="sakRadioTitle"></div>
+        <div id="sakRadioSearchRow">
+          <input id="sakRadioSearch" type="search" autocomplete="off">
+          <button id="sakRadioSearchBtn" type="button"></button>
+        </div>
+        <div id="sakRadioFilterRow">
+          <select id="sakRadioCountry"><option value=""></option></select>
+          <select id="sakRadioLanguage"><option value=""></option></select>
+          <button id="sakRadioRefresh" type="button"></button>
+        </div>
+        <div id="sakRadioStatusFilters">
+          <button class="sak-radio-filter active" data-filter="all" data-ar="الكل" data-en="All"></button>
+          <button class="sak-radio-filter" data-filter="online" data-ar="🟢 يعمل" data-en="🟢 Online"></button>
+          <button class="sak-radio-filter" data-filter="external" data-ar="🟡 خارجي" data-en="🟡 External"></button>
+          <button class="sak-radio-filter" data-filter="offline" data-ar="🔴 متوقف" data-en="🔴 Offline"></button>
+        </div>
+        <div id="sakRadioMeta"></div>
+      </div>
+
+      <div id="sakRadioPlayer">
+        <div id="sakRadioNowIcon">📻</div>
+        <div id="sakRadioNowText">
+          <div id="sakRadioNowName"></div>
+          <div id="sakRadioNowSub"></div>
+        </div>
+        <audio id="sakRadioAudio" controls preload="none"></audio>
+        <a id="sakRadioOpenExternal" target="_blank" rel="noopener"></a>
+      </div>
+
+      <div id="sakRadioResults"></div>
+      <button id="sakRadioMore" type="button"></button>
+    `;
+
+    document.getElementById('sakRadioSearchBtn').onclick = ()=>{
+      radioVisible = 72;
+      applyRadioFilters();
+    };
+
+    document.getElementById('sakRadioSearch').addEventListener('keydown',e=>{
+      if(e.key === 'Enter'){
+        e.preventDefault();
+        radioVisible = 72;
+        applyRadioFilters();
+      }
+    });
+
+    document.getElementById('sakRadioCountry').onchange =
+    document.getElementById('sakRadioLanguage').onchange = ()=>{
+      radioVisible = 72;
+      applyRadioFilters();
+    };
+
+    document.getElementById('sakRadioRefresh').onclick = async ()=>{
+      radioLoaded = false;
+      radioRows = [];
+      radioFiltered = [];
+      radioVisible = 72;
+      await loadRadio();
+    };
+
+    document.querySelectorAll('.sak-radio-filter').forEach(btn=>{
+      btn.onclick = ()=>{
+        radioStatus = btn.dataset.filter;
+        document.querySelectorAll('.sak-radio-filter')
+          .forEach(b=>b.classList.toggle('active',b===btn));
+        radioVisible = 72;
+        applyRadioFilters();
+      };
+    });
+
+    document.getElementById('sakRadioMore').onclick = ()=>{
+      radioVisible += 72;
+      renderRadio();
+    };
+  }
+
+  async function loadRadio(){
+    const meta = document.getElementById('sakRadioMeta');
+    meta.textContent = isEn()
+      ? 'Loading worldwide radio stations…'
+      : 'جاري تحميل محطات الراديو العالمية…';
+
+    try{
+      const data = await radioFetch(
+        '/json/stations/search?hidebroken=false&order=clickcount&reverse=true&limit=650'
+      );
+      radioRows = Array.isArray(data) ? data : [];
+      radioLoaded = true;
+      buildRadioSelects();
+      applyRadioFilters();
+    }catch(e){
+      meta.textContent = isEn()
+        ? 'Worldwide radio service is temporarily unavailable.'
+        : 'خدمة الراديو العالمية غير متاحة مؤقتًا.';
+      document.getElementById('sakRadioResults').innerHTML =
+        `<div id="sakRadioEmpty">${
+          isEn() ? 'Unable to load stations now.' : 'تعذر تحميل المحطات الآن.'
+        }</div>`;
+    }
+  }
+
+  function buildRadioSelects(){
+    const country = document.getElementById('sakRadioCountry');
+    const language = document.getElementById('sakRadioLanguage');
+
+    const countryVal = country.value;
+    const languageVal = language.value;
+
+    const countries = [...new Set(
+      radioRows.map(s=>String(s.countrycode||'').trim()).filter(Boolean)
+    )].sort();
+
+    const languages = [...new Set(
+      radioRows.flatMap(s=>
+        String(s.languagecodes||s.language||'')
+          .split(',').map(x=>x.trim()).filter(Boolean)
+      )
+    )].sort();
+
+    country.innerHTML = '<option value=""></option>';
+    countries.forEach(code=>{
+      const o = document.createElement('option');
+      o.value = code;
+      o.textContent = countryName(code,code);
+      country.appendChild(o);
+    });
+
+    language.innerHTML = '<option value=""></option>';
+    languages.forEach(code=>{
+      const o = document.createElement('option');
+      o.value = code;
+      o.textContent = code;
+      language.appendChild(o);
+    });
+
+    if(countries.includes(countryVal)) country.value = countryVal;
+    if(languages.includes(languageVal)) language.value = languageVal;
+
+    applyLanguage();
+  }
+
+  function radioState(s){
+    const ok = Number(s.lastcheckok || 0) === 1;
+    const url = String(s.url_resolved || s.url || '');
+    if(ok && url.startsWith('https://')) return 'online';
+    if(ok) return 'external';
+    return 'offline';
+  }
+
+  function applyRadioFilters(){
+    const needle = normalize(document.getElementById('sakRadioSearch').value);
+    const country = document.getElementById('sakRadioCountry').value;
+    const language = document.getElementById('sakRadioLanguage').value;
+
+    radioFiltered = radioRows.filter(s=>{
+      if(country && String(s.countrycode||'') !== country) return false;
+
+      if(language){
+        const langs = String(s.languagecodes||s.language||'')
+          .split(',').map(x=>x.trim());
+        if(!langs.includes(language)) return false;
+      }
+
+      if(needle){
+        const hay = normalize([
+          s.name,s.country,s.countrycode,s.state,s.language,s.tags,s.codec
+        ].join(' '));
+        if(!hay.includes(needle)) return false;
+      }
+
+      if(radioStatus !== 'all' && radioState(s) !== radioStatus) return false;
+      return true;
+    });
+
+    renderRadio();
+  }
+
+  function radioCard(s){
+    const card = document.createElement('button');
+    card.type = 'button';
+    card.className = 'sak-radio-card';
+
+    const state = radioState(s);
+
+    let logo;
+    if(s.favicon){
+      logo = document.createElement('img');
+      logo.className = 'sak-radio-logo';
+      logo.src = s.favicon;
+      logo.alt = '';
+      logo.loading = 'lazy';
+      logo.onerror = ()=>{
+        const f = document.createElement('div');
+        f.className = 'sak-radio-logo-fallback';
+        f.textContent = '📻';
+        logo.replaceWith(f);
+      };
+    }else{
+      logo = document.createElement('div');
+      logo.className = 'sak-radio-logo-fallback';
+      logo.textContent = '📻';
+    }
+
+    const name = document.createElement('div');
+    name.className = 'sak-radio-name';
+    name.textContent = s.name || (isEn()?'Radio':'إذاعة');
+
+    const country = document.createElement('div');
+    country.className = 'sak-radio-country';
+    country.textContent =
+      countryName(s.countrycode,s.country) + (s.codec?' · '+s.codec:'');
+
+    const status = document.createElement('div');
+    status.className = 'sak-radio-state ' + (
+      state==='online'?'sak-radio-online':
+      state==='external'?'sak-radio-external':'sak-radio-offline'
+    );
+    status.textContent =
+      state==='online' ? (isEn()?'🟢 Plays here':'🟢 يعمل هنا') :
+      state==='external' ? (isEn()?'🟡 External':'🟡 فتح خارجي') :
+      (isEn()?'🔴 Last check failed':'🔴 آخر فحص متوقف');
+
+    card.append(logo,name,country,status);
+    card.onclick = ()=>playRadio(s);
+
+    return card;
+  }
+
+  function playRadio(s){
+    const audio = document.getElementById('sakRadioAudio');
+    const nowName = document.getElementById('sakRadioNowName');
+    const nowSub = document.getElementById('sakRadioNowSub');
+    const external = document.getElementById('sakRadioOpenExternal');
+
+    const url = String(s.url_resolved || s.url || '');
+
+    nowName.textContent = s.name || (isEn()?'Radio':'إذاعة');
+    nowSub.textContent =
+      countryName(s.countrycode,s.country) +
+      ' · ' + (s.codec || 'stream') +
+      (s.bitrate ? ' · '+s.bitrate+' kbps' : '');
+
+    external.href = s.homepage || url || '#';
+    external.textContent = isEn() ? '↗ Open externally' : '↗ فتح خارجي';
+
+    if(url.startsWith('https://') && Number(s.lastcheckok||0)===1){
+      external.style.display = 'none';
+      try{audio.pause()}catch(e){}
+      audio.src = url;
+      audio.load();
+      audio.play().catch(()=>{});
+    }else{
+      try{audio.pause()}catch(e){}
+      audio.removeAttribute('src');
+      audio.load();
+      external.style.display = 'flex';
+    }
+  }
+
+  function renderRadio(){
+    const results = document.getElementById('sakRadioResults');
+    const more = document.getElementById('sakRadioMore');
+    const meta = document.getElementById('sakRadioMeta');
+
+    results.innerHTML = '';
+
+    const rows = radioFiltered.slice(0,radioVisible);
+
+    if(!rows.length){
+      results.innerHTML =
+        `<div id="sakRadioEmpty">${
+          isEn() ? 'No stations match your filters.' : 'لا توجد محطات مطابقة للبحث.'
+        }</div>`;
+    }else{
+      rows.forEach(s=>results.appendChild(radioCard(s)));
+    }
+
+    more.style.display = radioFiltered.length > radioVisible ? 'block' : 'none';
+    more.textContent = isEn() ? 'Show more stations' : 'عرض المزيد من المحطات';
+
+    meta.textContent = isEn()
+      ? `Worldwide radio: ${radioFiltered.length} matching stations · broken stations stay visible`
+      : `الراديو العالمي: ${radioFiltered.length} محطة مطابقة · المحطات المتوقفة تبقى ظاهرة`;
+  }
+
+  function applyLanguage(){
+    const videoTab = document.getElementById('sakLiveVideoTab');
+    const radioTab = document.getElementById('sakLiveRadioTab');
+
+    if(videoTab) videoTab.textContent = isEn() ? '📺 Live TV' : '📺 القنوات المباشرة';
+    if(radioTab) radioTab.textContent = isEn() ? '📻 Worldwide Radio' : '📻 الراديو العالمي';
+
+    const title = document.getElementById('sakRadioTitle');
+    if(title) title.textContent = isEn() ? '📻 Worldwide Radio Directory' : '📻 دليل الراديو العالمي';
+
+    const search = document.getElementById('sakRadioSearch');
+    if(search) search.placeholder = isEn()
+      ? 'Search station, country or genre…'
+      : 'ابحث عن إذاعة أو دولة أو نوع…';
+
+    const searchBtn = document.getElementById('sakRadioSearchBtn');
+    if(searchBtn) searchBtn.textContent = isEn() ? '🔎 Search' : '🔎 بحث';
+
+    const refresh = document.getElementById('sakRadioRefresh');
+    if(refresh) refresh.textContent = isEn() ? '↻ Refresh' : '↻ تحديث';
+
+    document.querySelectorAll('.sak-radio-filter').forEach(btn=>{
+      btn.textContent = isEn() ? btn.dataset.en : btn.dataset.ar;
+    });
+
+    const country = document.getElementById('sakRadioCountry');
+    if(country && country.options[0])
+      country.options[0].textContent = isEn() ? 'All countries' : 'كل الدول';
+
+    const language = document.getElementById('sakRadioLanguage');
+    if(language && language.options[0])
+      language.options[0].textContent = isEn() ? 'All languages' : 'كل اللغات';
+
+    const nowName = document.getElementById('sakRadioNowName');
+    const nowSub = document.getElementById('sakRadioNowSub');
+    if(nowName && !nowName.textContent)
+      nowName.textContent = isEn() ? 'Choose a station' : 'اختر محطة';
+    if(nowSub && !nowSub.textContent)
+      nowSub.textContent = isEn() ? 'The player will appear here' : 'سيظهر تشغيل الراديو هنا';
+  }
+
+  function wireGlobalPlayer(){
+    const overlay = document.getElementById('sakGlobalPlayerOverlay');
+    if(!overlay || overlay.dataset.sakTopFixed==='1') return;
+
+    overlay.dataset.sakTopFixed = '1';
+
+    const sync = ()=>{
+      const open = getComputedStyle(overlay).display !== 'none';
+      document.body.classList.toggle('sak-global-player-open',open);
+    };
+
+    new MutationObserver(sync).observe(
+      overlay,
+      {attributes:true,attributeFilter:['style','class']}
+    );
+
+    sync();
+  }
+
+  function initialize(){
+    container.querySelectorAll(':scope > .live-video')
+      .forEach(card=>card.style.display='none');
+
+    buildTabs();
+    wireGlobalPlayer();
+    applyLanguage();
+  }
+
+  initialize();
+
+  [150,600,1600].forEach(ms=>{
+    setTimeout(()=>{
+      buildTabs();
+      wireGlobalPlayer();
+    },ms);
+  });
+
+  new MutationObserver(applyLanguage).observe(
+    document.documentElement,
+    {attributes:true,attributeFilter:['lang','dir']}
+  );
+
+})();
+</script>
