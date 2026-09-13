@@ -30231,3 +30231,1351 @@ html body #emeraldModal iframe{
 
 })();
 </script>
+
+
+<!-- SAKAKER LIBRARY SMART UPLOADS + FULL VIEW FINAL -->
+<style id="sakaker-library-smart-uploads-full-view-final">
+
+/* =========================================================
+   1) نافذة المكتبة — تظهر جميع الأقسام بوضوح
+========================================================= */
+html body #emeraldLibraryContent{
+  position:fixed !important;
+
+  top:max(4dvh,env(safe-area-inset-top)) !important;
+  left:50% !important;
+  right:auto !important;
+  bottom:auto !important;
+
+  transform:translateX(-50%) !important;
+
+  width:min(96vw,980px) !important;
+  max-width:96vw !important;
+
+  height:min(91dvh,900px) !important;
+  max-height:91dvh !important;
+
+  padding:
+    58px
+    10px
+    12px !important;
+
+  box-sizing:border-box !important;
+
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+
+  overscroll-behavior:contain !important;
+  scroll-behavior:smooth !important;
+  scroll-padding-top:62px !important;
+
+  border-radius:22px !important;
+
+  z-index:2147483000 !important;
+}
+
+/* الشريط العلوي الثابت للمكتبة */
+html body #sakLibraryTopBar{
+  position:sticky !important;
+
+  top:-50px !important;
+
+  z-index:40 !important;
+
+  width:100% !important;
+
+  margin:-50px 0 8px !important;
+  padding:5px !important;
+
+  box-sizing:border-box !important;
+
+  display:grid !important;
+  grid-template-columns:1fr auto !important;
+
+  gap:6px !important;
+
+  border:1px solid rgba(255,255,255,.18) !important;
+  border-radius:14px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(15,12,24,.97),
+      rgba(5,7,12,.98)
+    ) !important;
+
+  backdrop-filter:blur(13px) !important;
+  -webkit-backdrop-filter:blur(13px) !important;
+
+  box-shadow:
+    0 0 12px rgba(255,255,255,.07),
+    0 0 23px rgba(0,224,195,.09) !important;
+}
+
+html body #sakLibraryTopTitle{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  min-height:34px !important;
+
+  color:#fff !important;
+
+  font-size:10px !important;
+  font-weight:1000 !important;
+
+  text-align:center !important;
+
+  text-shadow:
+    0 0 6px rgba(255,255,255,.45),
+    0 0 12px rgba(0,255,213,.33) !important;
+}
+
+html body #sakLibraryClose{
+  width:34px !important;
+  height:34px !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  border:1px solid rgba(255,255,255,.65) !important;
+  border-radius:50% !important;
+
+  background:rgba(118,13,43,.94) !important;
+
+  color:#fff !important;
+
+  font-size:15px !important;
+
+  cursor:pointer !important;
+
+  box-shadow:0 0 10px rgba(255,64,105,.38) !important;
+}
+
+/* =========================================================
+   2) قائمة وصول سريعة — كل الأقسام ظاهرة دائماً
+========================================================= */
+html body #sakLibrarySectionNav{
+  position:sticky !important;
+
+  top:3px !important;
+
+  z-index:35 !important;
+
+  width:100% !important;
+
+  margin:0 0 8px !important;
+  padding:6px !important;
+
+  box-sizing:border-box !important;
+
+  display:grid !important;
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+
+  gap:5px !important;
+
+  border:1px solid rgba(255,255,255,.12) !important;
+  border-radius:13px !important;
+
+  background:rgba(7,8,13,.95) !important;
+
+  backdrop-filter:blur(11px) !important;
+  -webkit-backdrop-filter:blur(11px) !important;
+
+  box-shadow:0 0 16px rgba(0,0,0,.28) !important;
+}
+
+html body .sak-library-nav-btn{
+  min-width:0 !important;
+  min-height:37px !important;
+
+  padding:4px 5px !important;
+
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  gap:1px !important;
+
+  border:1px solid rgba(255,255,255,.15) !important;
+  border-radius:10px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.055),
+      rgba(95,63,155,.075)
+    ) !important;
+
+  color:#fff !important;
+
+  cursor:pointer !important;
+
+  overflow:hidden !important;
+}
+
+html body .sak-library-nav-btn:hover{
+  border-color:rgba(255,255,255,.55) !important;
+
+  box-shadow:
+    0 0 8px rgba(255,255,255,.08),
+    0 0 14px rgba(0,226,198,.10) !important;
+}
+
+html body .sak-library-nav-icon{
+  font-size:13px !important;
+  line-height:1 !important;
+}
+
+html body .sak-library-nav-ar{
+  max-width:100% !important;
+
+  font-size:6.8px !important;
+  font-weight:1000 !important;
+  line-height:1 !important;
+
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  white-space:nowrap !important;
+}
+
+html body .sak-library-nav-en{
+  max-width:100% !important;
+
+  color:rgba(255,255,255,.58) !important;
+
+  font-size:5.2px !important;
+  font-weight:800 !important;
+  line-height:1 !important;
+
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  white-space:nowrap !important;
+}
+
+
+/* =========================================================
+   3) تنسيق الأقسام نفسها
+========================================================= */
+html body #emeraldLibraryContent > div:not(#sakLibraryTopBar):not(#sakLibrarySectionNav){
+  width:100% !important;
+  box-sizing:border-box !important;
+}
+
+/* رأس القسم أصغر قليلاً حتى تبقى الأقسام الأخيرة مرئية */
+html body #emeraldLibraryContent .emeraldSectionHeader{
+  min-height:40px !important;
+
+  margin:5px 0 !important;
+  padding:5px 9px !important;
+
+  border-radius:12px !important;
+}
+
+/* القسم المفتوح لا يحتل الصفحة كلها */
+html body #emeraldLibraryContent
+:is(#musicSection,#docSection,#cartoonSection,#moviesSection,#sportsSection,#educationSection,#religiousSection,#generalInfoSection){
+  max-height:45dvh !important;
+
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+
+  overscroll-behavior:contain !important;
+
+  padding:7px !important;
+
+  scrollbar-width:thin !important;
+}
+
+/* =========================================================
+   4) المقاطع المحملة تلقائياً
+========================================================= */
+html body #emeraldLibraryContent .sak-smart-upload{
+  position:relative !important;
+
+  border-color:rgba(255,206,75,.27) !important;
+
+  background:
+    radial-gradient(circle at 32% 20%,rgba(255,255,255,.10),transparent 27%),
+    linear-gradient(
+      145deg,
+      rgba(255,160,28,.18),
+      rgba(110,67,166,.26),
+      rgba(0,160,190,.16)
+    ) !important;
+}
+
+html body #emeraldLibraryContent .sak-smart-upload::before{
+  content:"NEW" !important;
+
+  position:absolute !important;
+  top:3px !important;
+  left:4px !important;
+
+  padding:1px 3px !important;
+
+  border-radius:6px !important;
+
+  background:rgba(255,153,24,.86) !important;
+
+  color:#fff !important;
+
+  font-size:4.5px !important;
+  font-weight:1000 !important;
+
+  box-shadow:0 0 6px rgba(255,175,55,.35) !important;
+}
+
+html body #emeraldLibraryContent .sak-smart-source{
+  max-width:100% !important;
+
+  color:rgba(255,255,255,.52) !important;
+
+  font-size:4.7px !important;
+  line-height:1 !important;
+
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  white-space:nowrap !important;
+}
+
+html body #emeraldLibraryContent .sak-smart-loader{
+  width:100% !important;
+  min-height:28px !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  color:rgba(255,255,255,.62) !important;
+
+  font-size:7px !important;
+  font-weight:800 !important;
+
+  text-align:center !important;
+}
+
+
+/* =========================================================
+   5) الجوال
+========================================================= */
+@media(max-width:700px){
+
+  html body #emeraldLibraryContent{
+    top:max(2dvh,env(safe-area-inset-top)) !important;
+
+    width:calc(100vw - 8px) !important;
+    max-width:calc(100vw - 8px) !important;
+
+    height:96dvh !important;
+    max-height:96dvh !important;
+
+    padding:
+      54px
+      6px
+      8px !important;
+
+    border-radius:16px !important;
+  }
+
+  html body #sakLibraryTopBar{
+    top:-47px !important;
+
+    margin:-47px 0 6px !important;
+  }
+
+  html body #sakLibraryTopTitle{
+    font-size:8.5px !important;
+  }
+
+  html body #sakLibrarySectionNav{
+    top:2px !important;
+
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+
+    gap:4px !important;
+
+    padding:4px !important;
+  }
+
+  html body .sak-library-nav-btn{
+    min-height:34px !important;
+
+    padding:3px !important;
+
+    border-radius:8px !important;
+  }
+
+  html body .sak-library-nav-icon{
+    font-size:11px !important;
+  }
+
+  html body .sak-library-nav-ar{
+    font-size:5.8px !important;
+  }
+
+  html body .sak-library-nav-en{
+    font-size:4.5px !important;
+  }
+
+  html body #emeraldLibraryContent .emeraldSectionHeader{
+    min-height:36px !important;
+
+    margin:4px 0 !important;
+    padding:4px 7px !important;
+  }
+
+  html body #emeraldLibraryContent
+  :is(#musicSection,#docSection,#cartoonSection,#moviesSection,#sportsSection,#educationSection,#religiousSection,#generalInfoSection){
+    max-height:42dvh !important;
+  }
+}
+
+@media(max-width:390px){
+  html body #sakLibrarySectionNav{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+
+  html body .sak-library-nav-btn{
+    min-height:32px !important;
+  }
+}
+
+</style>
+
+<script id="sakaker-library-smart-uploads-full-view-js">
+(function(){
+  'use strict';
+
+  const SECTIONS = [
+    {
+      id:'musicSection',
+      icon:'🎵',
+      ar:'موسيقى',
+      en:'Music',
+      keywords:[
+        'music','song','songs','concert','live performance',
+        'اغنية','اغاني','أغنية','أغاني','موسيقى','حفلة'
+      ]
+    },
+    {
+      id:'docSection',
+      icon:'📼',
+      ar:'وثائقية',
+      en:'Documentaries',
+      keywords:[
+        'documentary','documentaries','history','nature','science',
+        'وثائقي','وثائقية','تاريخ','طبيعة','علوم'
+      ]
+    },
+    {
+      id:'cartoonSection',
+      icon:'🎨',
+      ar:'كرتون',
+      en:'Cartoons',
+      keywords:[
+        'cartoon','animation','animated','kids',
+        'كرتون','رسوم متحركة','انيميشن','أنيميشن'
+      ]
+    },
+    {
+      id:'moviesSection',
+      icon:'🎬',
+      ar:'أفلام',
+      en:'Movies',
+      keywords:[
+        'movie','film','full movie','feature film','cinema',
+        'فيلم','فلم','أفلام','افلام','سينما'
+      ]
+    },
+    {
+      id:'sportsSection',
+      icon:'⚽',
+      ar:'رياضة',
+      en:'Sports',
+      keywords:[
+        'sport','sports','football','soccer','match','game',
+        'رياضة','كرة','مباراة','مباريات'
+      ]
+    },
+    {
+      id:'educationSection',
+      icon:'📘',
+      ar:'تعليمية',
+      en:'Educational',
+      keywords:[
+        'learn','learning','education','course','lesson','tutorial',
+        'تعلم','تعليم','دورة','درس','شرح'
+      ]
+    },
+    {
+      id:'religiousSection',
+      icon:'📿',
+      ar:'دينية',
+      en:'Islamic',
+      locked:true,
+      keywords:[]
+    },
+    {
+      id:'generalInfoSection',
+      icon:'🌍',
+      ar:'معلومات عامة',
+      en:'General Info',
+      keywords:[
+        'facts','explained','science','world','knowledge','information',
+        'معلومات','حقائق','العالم','معرفة','علوم'
+      ]
+    }
+  ];
+
+  const MAX_SMART_PER_SECTION = 42;
+  const FEED_TIMEOUT = 9000;
+
+  function lang(){
+    return document.documentElement.lang === 'en'
+      ? 'en'
+      : 'ar';
+  }
+
+  function library(){
+    return document.getElementById(
+      'emeraldLibraryContent'
+    );
+  }
+
+  function sectionInfo(id){
+    return SECTIONS.find(
+      function(s){
+        return s.id === id;
+      }
+    );
+  }
+
+  function sectionHeader(id){
+    return document.querySelector(
+      '.emeraldSectionHeader' +
+      '[onclick*="' +
+      id +
+      '"]'
+    );
+  }
+
+  /* =======================================================
+     القسم الديني: لا نضيف إليه أي شيء جديد
+  ======================================================= */
+  function freezeReligiousSection(){
+    const section =
+      document.getElementById(
+        'religiousSection'
+      );
+
+    if(!section) return;
+
+    section
+      .querySelectorAll(
+        '.sak-lib-source,' +
+        '.sak-lib-auto,' +
+        '.sak-smart-upload,' +
+        '.sak-library-loader,' +
+        '.sak-smart-loader'
+      )
+      .forEach(function(el){
+        el.remove();
+      });
+
+    /*
+      نمنع السكربت السابق من تحميل إضافات جديدة عند فتح القسم.
+      الفيديوهات الأصلية تبقى كما هي.
+    */
+    section.dataset.sakSourcesAdded =
+      '1';
+
+    section.dataset.sakFeedLoaded =
+      '1';
+
+    section.dataset.sakFeedLoading =
+      '0';
+
+    const count =
+      document.querySelector(
+        '[data-sak-count="religiousSection"]'
+      );
+
+    if(count){
+      count.textContent =
+        section.querySelectorAll(
+          '.emeraldVideoCircle'
+        ).length;
+    }
+  }
+
+  /* =======================================================
+     الشريط العلوي + قائمة الأقسام
+  ======================================================= */
+  function buildLibraryChrome(){
+    const box =
+      library();
+
+    if(!box) return;
+
+    let top =
+      document.getElementById(
+        'sakLibraryTopBar'
+      );
+
+    if(!top){
+      top =
+        document.createElement('div');
+
+      top.id =
+        'sakLibraryTopBar';
+
+      const title =
+        document.createElement('div');
+
+      title.id =
+        'sakLibraryTopTitle';
+
+      const close =
+        document.createElement('button');
+
+      close.id =
+        'sakLibraryClose';
+
+      close.type =
+        'button';
+
+      close.textContent =
+        '✕';
+
+      close.addEventListener(
+        'click',
+        function(){
+          box.style.display =
+            'none';
+        }
+      );
+
+      top.appendChild(title);
+      top.appendChild(close);
+
+      box.insertBefore(
+        top,
+        box.firstChild
+      );
+    }
+
+    let nav =
+      document.getElementById(
+        'sakLibrarySectionNav'
+      );
+
+    if(!nav){
+      nav =
+        document.createElement('div');
+
+      nav.id =
+        'sakLibrarySectionNav';
+
+      SECTIONS.forEach(
+        function(info){
+          const btn =
+            document.createElement(
+              'button'
+            );
+
+          btn.type =
+            'button';
+
+          btn.className =
+            'sak-library-nav-btn';
+
+          btn.dataset.section =
+            info.id;
+
+          btn.innerHTML =
+            '<span class="sak-library-nav-icon">' +
+              info.icon +
+            '</span>' +
+            '<span class="sak-library-nav-ar">' +
+              info.ar +
+            '</span>' +
+            '<span class="sak-library-nav-en">' +
+              info.en +
+            '</span>';
+
+          btn.addEventListener(
+            'click',
+            function(){
+              openOnlySection(
+                info.id,
+                true
+              );
+            }
+          );
+
+          nav.appendChild(btn);
+        }
+      );
+
+      top.insertAdjacentElement(
+        'afterend',
+        nav
+      );
+    }
+
+    updateLibraryChromeLanguage();
+  }
+
+  function updateLibraryChromeLanguage(){
+    const title =
+      document.getElementById(
+        'sakLibraryTopTitle'
+      );
+
+    if(title){
+      title.textContent =
+        lang() === 'en'
+          ? '🎞️ Video Library — choose a section'
+          : '🎞️ مكتبة الفيديو — اختر القسم';
+    }
+  }
+
+  /* =======================================================
+     Accordion: قسم واحد مفتوح فقط
+  ======================================================= */
+  function openOnlySection(
+    id,
+    scrollToHeader
+  ){
+    const target =
+      document.getElementById(id);
+
+    if(!target) return;
+
+    const wasOpen =
+      getComputedStyle(target)
+        .display !== 'none';
+
+    SECTIONS.forEach(
+      function(info){
+        const sec =
+          document.getElementById(
+            info.id
+          );
+
+        if(
+          sec &&
+          info.id !== id
+        ){
+          sec.style.display =
+            'none';
+        }
+      }
+    );
+
+    if(wasOpen){
+      target.style.display =
+        'none';
+    }else{
+      target.style.display =
+        'flex';
+
+      if(id !== 'religiousSection'){
+        loadSmartUploads(id);
+      }
+    }
+
+    if(scrollToHeader){
+      const head =
+        sectionHeader(id);
+
+      if(head){
+        setTimeout(
+          function(){
+            head.scrollIntoView({
+              behavior:'smooth',
+              block:'start'
+            });
+          },
+          60
+        );
+      }
+    }
+  }
+
+  /*
+    نستبدل التبديل السابق مع الحفاظ على نفس الاسم
+    الذي تستخدمه رؤوس الأقسام الأصلية.
+  */
+  window.toggleEmeraldSection =
+    function(id){
+      openOnlySection(
+        id,
+        false
+      );
+    };
+
+  /* =======================================================
+     مصادر القنوات الموجودة أصلاً في كل قسم
+  ======================================================= */
+  function channelSourcesForSection(id){
+    const section =
+      document.getElementById(id);
+
+    if(!section) return [];
+
+    const ids = [];
+
+    section
+      .querySelectorAll(
+        '[data-sak-source]'
+      )
+      .forEach(function(card){
+        const value =
+          String(
+            card.dataset.sakSource ||
+            ''
+          ).trim();
+
+        if(
+          value &&
+          /^UC[A-Za-z0-9_-]+$/
+            .test(value) &&
+          !ids.includes(value)
+        ){
+          ids.push(value);
+        }
+      });
+
+    return ids;
+  }
+
+  function existingIds(section){
+    const ids =
+      new Set();
+
+    section
+      .querySelectorAll(
+        '.emeraldVideoCircle'
+      )
+      .forEach(function(card){
+        const own =
+          card.dataset.sakVideoId;
+
+        if(own){
+          ids.add(own);
+        }
+
+        const click =
+          card.getAttribute(
+            'onclick'
+          ) || '';
+
+        const m =
+          click.match(
+            /youtube\.com\/embed\/([A-Za-z0-9_-]{11})/
+          );
+
+        if(m){
+          ids.add(m[1]);
+        }
+      });
+
+    return ids;
+  }
+
+  function normalize(text){
+    return String(text || '')
+      .toLowerCase()
+      .replace(/\s+/g,' ')
+      .trim();
+  }
+
+  function titleLooksRelevant(
+    title,
+    info
+  ){
+    /*
+      المصدر أصلاً تابع للقسم،
+      والكلمات المفتاحية تعطي أولوية للفيديوهات
+      التي تحمل اسم فيلم/وثائقي/رياضة… إلخ.
+    */
+    const t =
+      normalize(title);
+
+    if(!t) return false;
+
+    return info.keywords.some(
+      function(keyword){
+        return t.includes(
+          normalize(keyword)
+        );
+      }
+    );
+  }
+
+  async function fetchText(
+    url,
+    timeoutMs
+  ){
+    const controller =
+      new AbortController();
+
+    const timer =
+      setTimeout(
+        function(){
+          controller.abort();
+        },
+        timeoutMs
+      );
+
+    try{
+      const response =
+        await fetch(
+          url,
+          {
+            signal:controller.signal,
+            cache:'no-store'
+          }
+        );
+
+      if(!response.ok){
+        throw new Error(
+          'HTTP ' +
+          response.status
+        );
+      }
+
+      return await response.text();
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  function parseYoutubeFeed(xmlText){
+    const xml =
+      new DOMParser()
+        .parseFromString(
+          xmlText,
+          'text/xml'
+        );
+
+    if(
+      xml.querySelector(
+        'parsererror'
+      )
+    ){
+      return [];
+    }
+
+    return Array.from(
+      xml.getElementsByTagName(
+        'entry'
+      )
+    )
+      .map(function(entry){
+        const idNode =
+          entry.getElementsByTagNameNS(
+            '*',
+            'videoId'
+          )[0] ||
+          entry.getElementsByTagName(
+            'yt:videoId'
+          )[0];
+
+        const titleNode =
+          entry.getElementsByTagName(
+            'title'
+          )[0];
+
+        if(!idNode) return null;
+
+        const id =
+          String(
+            idNode.textContent || ''
+          ).trim();
+
+        if(
+          !/^[A-Za-z0-9_-]{11}$/
+            .test(id)
+        ){
+          return null;
+        }
+
+        return {
+          id:id,
+          title:
+            titleNode
+              ? String(
+                  titleNode.textContent ||
+                  ''
+                )
+                  .replace(/\s+/g,' ')
+                  .trim()
+              : 'Video'
+        };
+      })
+      .filter(Boolean);
+  }
+
+  async function fetchChannelUploads(
+    channelId
+  ){
+    const feed =
+      'https://www.youtube.com/feeds/videos.xml?channel_id=' +
+      encodeURIComponent(
+        channelId
+      );
+
+    try{
+      const direct =
+        await fetchText(
+          feed,
+          6500
+        );
+
+      const items =
+        parseYoutubeFeed(
+          direct
+        );
+
+      if(items.length){
+        return items;
+      }
+    }catch(e){}
+
+    try{
+      const proxy =
+        'https://api.allorigins.win/raw?url=' +
+        encodeURIComponent(feed);
+
+      const text =
+        await fetchText(
+          proxy,
+          FEED_TIMEOUT
+        );
+
+      return parseYoutubeFeed(
+        text
+      );
+    }catch(e){
+      return [];
+    }
+  }
+
+  function smartCard(
+    item,
+    sourceLabel
+  ){
+    const card =
+      document.createElement('div');
+
+    card.className =
+      'emeraldVideoCircle ' +
+      'sak-smart-upload';
+
+    card.dataset.sakVideoId =
+      item.id;
+
+    card.onclick =
+      function(){
+        openEmeraldVideo(
+          'https://www.youtube.com/embed/' +
+          encodeURIComponent(
+            item.id
+          )
+        );
+      };
+
+    const icon =
+      document.createElement('span');
+
+    icon.className =
+      'sak-lib-card-icon';
+
+    icon.textContent =
+      '▶';
+
+    const title =
+      document.createElement('span');
+
+    title.className =
+      'sak-lib-card-ar';
+
+    title.textContent =
+      item.title;
+
+    const source =
+      document.createElement('span');
+
+    source.className =
+      'sak-smart-source';
+
+    source.textContent =
+      sourceLabel || 'YouTube';
+
+    card.appendChild(icon);
+    card.appendChild(title);
+    card.appendChild(source);
+
+    return card;
+  }
+
+  async function loadSmartUploads(id){
+    const info =
+      sectionInfo(id);
+
+    const section =
+      document.getElementById(id);
+
+    if(
+      !info ||
+      !section ||
+      info.locked
+    ){
+      return;
+    }
+
+    if(
+      section.dataset.smartUploadsDone ===
+      '1' ||
+      section.dataset.smartUploadsLoading ===
+      '1'
+    ){
+      return;
+    }
+
+    const sources =
+      channelSourcesForSection(id);
+
+    if(!sources.length){
+      section.dataset.smartUploadsDone =
+        '1';
+
+      return;
+    }
+
+    section.dataset.smartUploadsLoading =
+      '1';
+
+    const loader =
+      document.createElement('div');
+
+    loader.className =
+      'sak-smart-loader';
+
+    loader.textContent =
+      lang() === 'en'
+        ? 'Loading more recent uploads for this section…'
+        : 'جاري تحميل مزيد من المقاطع الحديثة لهذا القسم…';
+
+    section.appendChild(loader);
+
+    try{
+      const known =
+        existingIds(section);
+
+      const groups =
+        await Promise.all(
+          sources.map(
+            async function(channelId){
+              return {
+                channelId:channelId,
+                items:
+                  await fetchChannelUploads(
+                    channelId
+                  )
+              };
+            }
+          )
+        );
+
+      const priority = [];
+      const regular = [];
+
+      groups.forEach(
+        function(group){
+          (group.items || [])
+            .forEach(function(item){
+              if(
+                known.has(
+                  item.id
+                )
+              ){
+                return;
+              }
+
+              const record = {
+                item:item,
+                source:
+                  group.channelId
+              };
+
+              if(
+                titleLooksRelevant(
+                  item.title,
+                  info
+                )
+              ){
+                priority.push(
+                  record
+                );
+              }else{
+                regular.push(
+                  record
+                );
+              }
+            });
+        }
+      );
+
+      /*
+        أولاً المقاطع التي يحمل اسمها نوع القسم
+        مثل Film / Documentary / Movie،
+        ثم بقية أحدث المقاطع من نفس مصادر القسم.
+      */
+      const selected =
+        priority
+          .concat(regular)
+          .slice(
+            0,
+            MAX_SMART_PER_SECTION
+          );
+
+      selected.forEach(
+        function(record){
+          if(
+            known.has(
+              record.item.id
+            )
+          ){
+            return;
+          }
+
+          known.add(
+            record.item.id
+          );
+
+          section.appendChild(
+            smartCard(
+              record.item,
+              'YouTube'
+            )
+          );
+        }
+      );
+
+      section.dataset.smartUploadsDone =
+        '1';
+
+    } finally {
+      section.dataset.smartUploadsLoading =
+        '0';
+
+      loader.remove();
+
+      const count =
+        document.querySelector(
+          '[data-sak-count="' +
+          id +
+          '"]'
+        );
+
+      if(count){
+        count.textContent =
+          section.querySelectorAll(
+            '.emeraldVideoCircle'
+          ).length +
+          '+';
+      }
+    }
+  }
+
+  /* =======================================================
+     فتح المكتبة
+  ======================================================= */
+  const button =
+    document.getElementById(
+      'emeraldLibraryButton'
+    );
+
+  if(button){
+    button.addEventListener(
+      'click',
+      function(){
+        setTimeout(
+          function(){
+            const box =
+              library();
+
+            if(
+              box &&
+              getComputedStyle(box)
+                .display !== 'none'
+            ){
+              buildLibraryChrome();
+
+              /*
+                نبدأ والمحتوى مطوياً حتى يستطيع المستخدم
+                مشاهدة كل الأقسام بوضوح.
+              */
+              SECTIONS.forEach(
+                function(info){
+                  const sec =
+                    document.getElementById(
+                      info.id
+                    );
+
+                  if(sec){
+                    sec.style.display =
+                      'none';
+                  }
+                }
+              );
+
+              box.scrollTop = 0;
+
+              freezeReligiousSection();
+            }
+          },
+          40
+        );
+      }
+    );
+  }
+
+  buildLibraryChrome();
+  freezeReligiousSection();
+
+  /*
+    تأكيد المنع بعد انتهاء السكربتات المؤجلة القديمة.
+  */
+  [300,900,1800,3200].forEach(
+    function(ms){
+      setTimeout(
+        freezeReligiousSection,
+        ms
+      );
+    }
+  );
+
+  new MutationObserver(
+    function(){
+      updateLibraryChromeLanguage();
+    }
+  ).observe(
+    document.documentElement,
+    {
+      attributes:true,
+      attributeFilter:[
+        'lang',
+        'dir'
+      ]
+    }
+  );
+
+})();
+</script>
