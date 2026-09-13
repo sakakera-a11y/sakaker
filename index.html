@@ -25880,3 +25880,780 @@ html body #sakakerMapHelp{
 
 })();
 </script>
+
+
+<!-- SAKAKER LIVE CHANNELS MAX FINAL -->
+<style id="sakaker-live-channels-max-final">
+
+/* =========================================================
+   أيقونة القنوات المباشرة — أوضح وأكثر تميزاً
+========================================================= */
+html body #liveFlasher{
+  position:relative !important;
+
+  overflow:visible !important;
+
+  border:1.5px solid rgba(255,255,255,.92) !important;
+  border-radius:50% !important;
+
+  background:
+    radial-gradient(circle at 31% 23%,#fff 0 7%,transparent 15%),
+    radial-gradient(circle at 48% 48%,#fff9b8 0 8%,#ff4f8a 22%,#8a5cff 47%,#00d8ff 70%,#00293b 100%) !important;
+
+  color:#fff !important;
+
+  box-shadow:
+    0 0 8px rgba(255,255,255,.88),
+    0 0 18px rgba(255,63,132,.75),
+    0 0 28px rgba(135,90,255,.62),
+    0 0 42px rgba(0,219,255,.44),
+    inset 0 0 12px rgba(255,255,255,.38) !important;
+
+  filter:
+    drop-shadow(0 0 7px rgba(255,255,255,.74))
+    drop-shadow(0 0 13px rgba(255,80,150,.44)) !important;
+
+  animation:
+    sakLiveMaxPulse 1.65s ease-in-out infinite,
+    sakLiveMaxHue 8s linear infinite !important;
+
+  isolation:isolate !important;
+}
+
+html body #liveFlasher::before{
+  content:"" !important;
+
+  position:absolute !important;
+  inset:-6px !important;
+
+  border-radius:50% !important;
+
+  border:1px solid rgba(255,255,255,.48) !important;
+
+  box-shadow:
+    0 0 12px rgba(255,80,160,.62),
+    0 0 22px rgba(77,205,255,.42) !important;
+
+  animation:sakLiveMaxRing 1.8s ease-out infinite !important;
+
+  pointer-events:none !important;
+  z-index:-1 !important;
+}
+
+html body #liveFlasher::after{
+  content:"LIVE" !important;
+
+  position:absolute !important;
+  top:-7px !important;
+  right:-8px !important;
+
+  min-width:25px !important;
+  height:14px !important;
+
+  padding:0 4px !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  border:1px solid rgba(255,255,255,.88) !important;
+  border-radius:9px !important;
+
+  background:linear-gradient(135deg,#ff1744,#ff5b7f) !important;
+
+  color:#fff !important;
+
+  font-size:6px !important;
+  font-weight:1000 !important;
+  letter-spacing:.4px !important;
+
+  box-shadow:
+    0 0 7px rgba(255,50,90,.92),
+    0 0 13px rgba(255,255,255,.32) !important;
+
+  animation:sakLiveMaxBadge 1s ease-in-out infinite !important;
+
+  pointer-events:none !important;
+  z-index:4 !important;
+}
+
+html body #liveFlasher span{
+  position:relative !important;
+  z-index:2 !important;
+
+  color:#fff !important;
+
+  font-weight:1000 !important;
+
+  text-shadow:
+    0 1px 2px rgba(0,0,0,.95),
+    0 0 5px rgba(255,255,255,.95),
+    0 0 10px rgba(255,83,160,.72),
+    0 0 14px rgba(50,220,255,.70) !important;
+}
+
+html body #liveFlasher span::before{
+  content:"📡" !important;
+
+  display:block !important;
+
+  margin-bottom:1px !important;
+
+  font-size:18px !important;
+  line-height:18px !important;
+
+  filter:
+    drop-shadow(0 0 4px rgba(255,255,255,.9))
+    drop-shadow(0 0 8px rgba(80,220,255,.8)) !important;
+}
+
+@keyframes sakLiveMaxPulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.10)}
+}
+
+@keyframes sakLiveMaxHue{
+  from{hue-rotate:0deg}
+  to{hue-rotate:360deg}
+}
+
+@keyframes sakLiveMaxRing{
+  0%{transform:scale(.88);opacity:.88}
+  75%{transform:scale(1.23);opacity:0}
+  100%{transform:scale(1.23);opacity:0}
+}
+
+@keyframes sakLiveMaxBadge{
+  0%,100%{opacity:.55;transform:scale(.90)}
+  50%{opacity:1;transform:scale(1.08)}
+}
+
+
+/* =========================================================
+   شريط أدوات داخل نافذة القنوات
+========================================================= */
+html body #sakLiveCatalogTools{
+  grid-column:1/-1 !important;
+
+  position:sticky !important;
+  top:0 !important;
+
+  display:grid !important;
+  grid-template-columns:minmax(160px,1fr) auto auto auto !important;
+
+  gap:7px !important;
+
+  width:100% !important;
+
+  padding:7px !important;
+  margin:0 !important;
+
+  box-sizing:border-box !important;
+
+  border:1px solid rgba(255,255,255,.13) !important;
+  border-radius:14px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(22,15,32,.96),
+      rgba(8,10,16,.97)
+    ) !important;
+
+  box-shadow:
+    0 0 12px rgba(255,255,255,.07),
+    0 0 20px rgba(194,154,235,.10) !important;
+
+  backdrop-filter:blur(12px) !important;
+  -webkit-backdrop-filter:blur(12px) !important;
+
+  z-index:10 !important;
+}
+
+html body #sakLiveSearch{
+  min-width:0 !important;
+  height:36px !important;
+
+  padding:0 11px !important;
+
+  border:1px solid rgba(255,255,255,.22) !important;
+  border-radius:11px !important;
+
+  outline:none !important;
+
+  background:rgba(255,255,255,.045) !important;
+
+  color:#fff !important;
+
+  font-size:10px !important;
+}
+
+html body #sakLiveSearch::placeholder{
+  color:rgba(255,255,255,.52) !important;
+}
+
+html body .sak-live-filter{
+  height:36px !important;
+
+  padding:0 10px !important;
+
+  border:1px solid rgba(255,255,255,.22) !important;
+  border-radius:11px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.10),
+      rgba(167,113,228,.09)
+    ) !important;
+
+  color:#fff !important;
+
+  font-size:9px !important;
+  font-weight:900 !important;
+
+  cursor:pointer !important;
+}
+
+html body .sak-live-filter.active{
+  border-color:rgba(255,255,255,.82) !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,52,124,.68),
+      rgba(121,78,255,.64),
+      rgba(0,199,244,.58)
+    ) !important;
+
+  box-shadow:
+    0 0 9px rgba(255,255,255,.13),
+    0 0 16px rgba(151,104,236,.22) !important;
+}
+
+html body #sakLiveCatalogCount{
+  grid-column:1/-1 !important;
+
+  margin-top:-2px !important;
+
+  color:rgba(255,255,255,.63) !important;
+
+  font-size:7px !important;
+  text-align:center !important;
+}
+
+
+/* =========================================================
+   البطاقات الجديدة — خفيفة حتى لا تثقل الموقع بعشرات iframes
+========================================================= */
+html body #livePopup .sak-live-channel-card{
+  position:relative !important;
+
+  aspect-ratio:16/9 !important;
+
+  min-height:86px !important;
+
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  gap:4px !important;
+
+  padding:8px !important;
+  box-sizing:border-box !important;
+
+  overflow:hidden !important;
+
+  border:1px solid rgba(255,255,255,.24) !important;
+  border-radius:14px !important;
+
+  background:
+    radial-gradient(circle at 30% 20%,rgba(255,255,255,.16),transparent 28%),
+    linear-gradient(
+      145deg,
+      rgba(255,40,122,.28),
+      rgba(92,65,215,.30) 47%,
+      rgba(0,174,220,.25)
+    ) !important;
+
+  color:#fff !important;
+
+  box-shadow:
+    0 0 9px rgba(0,0,0,.64),
+    0 0 15px rgba(187,144,238,.09) !important;
+
+  cursor:pointer !important;
+
+  transition:
+    transform .20s ease,
+    box-shadow .20s ease,
+    border-color .20s ease !important;
+}
+
+html body #livePopup .sak-live-channel-card:hover{
+  transform:translateY(-2px) scale(1.02) !important;
+
+  border-color:rgba(255,255,255,.72) !important;
+
+  box-shadow:
+    0 0 12px rgba(255,255,255,.12),
+    0 0 23px rgba(201,160,246,.22) !important;
+}
+
+html body #livePopup .sak-live-channel-card::before{
+  content:"LIVE" !important;
+
+  position:absolute !important;
+  top:6px !important;
+  left:6px !important;
+
+  padding:2px 5px !important;
+
+  border-radius:8px !important;
+
+  background:#ef1747 !important;
+
+  color:#fff !important;
+
+  font-size:6px !important;
+  font-weight:1000 !important;
+
+  box-shadow:0 0 7px rgba(255,40,80,.54) !important;
+}
+
+html body #livePopup .sak-live-channel-card[data-lang="ar"]{
+  background:
+    radial-gradient(circle at 30% 20%,rgba(255,255,255,.16),transparent 28%),
+    linear-gradient(
+      145deg,
+      rgba(255,170,42,.28),
+      rgba(120,65,200,.27) 47%,
+      rgba(0,190,173,.25)
+    ) !important;
+}
+
+html body #livePopup .sak-live-channel-icon{
+  font-size:22px !important;
+  line-height:1 !important;
+
+  filter:
+    drop-shadow(0 0 4px rgba(255,255,255,.42))
+    drop-shadow(0 0 8px rgba(180,135,235,.25)) !important;
+}
+
+html body #livePopup .sak-live-channel-name{
+  max-width:96% !important;
+
+  color:#fff !important;
+
+  font-size:9px !important;
+  font-weight:1000 !important;
+  line-height:1.2 !important;
+
+  text-align:center !important;
+
+  text-shadow:
+    0 1px 2px rgba(0,0,0,.95),
+    0 0 7px rgba(255,255,255,.18) !important;
+}
+
+html body #livePopup .sak-live-channel-sub{
+  color:rgba(255,255,255,.62) !important;
+
+  font-size:6px !important;
+  font-weight:700 !important;
+
+  text-align:center !important;
+}
+
+/* عنوان قسم إضافي داخل الشبكة */
+html body #sakLiveAddedTitle{
+  grid-column:1/-1 !important;
+
+  margin:2px 0 0 !important;
+  padding:5px 7px !important;
+
+  color:#fff !important;
+
+  font-size:10px !important;
+  font-weight:1000 !important;
+
+  text-align:center !important;
+
+  text-shadow:
+    0 0 6px rgba(255,255,255,.55),
+    0 0 12px rgba(195,151,240,.42) !important;
+}
+
+
+/* =========================================================
+   الجوال
+========================================================= */
+@media(max-width:700px){
+
+  html body #sakLiveCatalogTools{
+    grid-template-columns:1fr 1fr 1fr !important;
+
+    gap:5px !important;
+
+    padding:6px !important;
+  }
+
+  html body #sakLiveSearch{
+    grid-column:1/-1 !important;
+
+    height:34px !important;
+
+    font-size:9px !important;
+  }
+
+  html body .sak-live-filter{
+    height:32px !important;
+
+    padding:0 6px !important;
+
+    font-size:8px !important;
+  }
+
+  html body #livePopup .sak-live-channel-card{
+    min-height:78px !important;
+
+    padding:6px !important;
+
+    border-radius:11px !important;
+  }
+
+  html body #livePopup .sak-live-channel-icon{
+    font-size:18px !important;
+  }
+
+  html body #livePopup .sak-live-channel-name{
+    font-size:7.3px !important;
+  }
+
+  html body #livePopup .sak-live-channel-sub{
+    font-size:5.5px !important;
+  }
+}
+
+@media(max-width:390px){
+
+  html body #livePopup .sak-live-channel-card{
+    min-height:70px !important;
+  }
+
+  html body #livePopup .sak-live-channel-name{
+    font-size:6.8px !important;
+  }
+}
+
+</style>
+
+<script id="sakaker-live-channels-max-js">
+(function(){
+  'use strict';
+
+  const NEW_CHANNELS = [{"ar": "الجزيرة", "en": "Al Jazeera Arabic", "id": "UCfiwzLy-8yKzIbsmZTzxDgw", "lang": "ar", "icon": "🟡"}, {"ar": "الجزيرة مباشر", "en": "Al Jazeera Mubasher", "id": "UCCv1Pd24oPErw5S7zJWltnQ", "lang": "ar", "icon": "🔴"}, {"ar": "الحدث", "en": "Al Hadath", "id": "UCrj5BGAhtWxDfqbza9T9hqA", "lang": "ar", "icon": "🔴"}, {"ar": "سكاي نيوز عربية", "en": "Sky News Arabia", "id": "UCIJXOvggjKtCagMfxvcCzAA", "lang": "ar", "icon": "🔵"}, {"ar": "الشرق للأخبار", "en": "Asharq News", "id": "UC23kc3OqslYvI6bOSk9JNhQ", "lang": "ar", "icon": "🟠"}, {"ar": "فرانس 24 عربي", "en": "France 24 Arabic", "id": "UCdTyuXgmJkG_O8_75eqej-w", "lang": "ar", "icon": "🔷"}, {"ar": "التلفزيون العربي", "en": "Al Araby TV", "id": "UC65i3Fyq91uiUkIS0i5GLNQ", "lang": "ar", "icon": "🟣"}, {"ar": "قناة الغد", "en": "Alghad TV", "id": "UCH4UNKBHSNwstan99YDoCVg", "lang": "ar", "icon": "🟢"}, {"ar": "CNBC عربية", "en": "CNBC Arabia", "id": "UCsHdPPJXT-yKVTLGkn3DSvQ", "lang": "ar", "icon": "💹"}, {"ar": "BBC نيوز عربي", "en": "BBC News Arabic", "id": "UCelk6aHijZq-GJBBB9YpReA", "lang": "ar", "icon": "🟥"}, {"ar": "العربية", "en": "Al Arabiya", "id": "UCahpxixMCwoANAftn6IxkTg", "lang": "ar", "icon": "🟦"}, {"ar": "الجزيرة الإنجليزية", "en": "Al Jazeera English", "id": "UCNye-wNBqNL5ZzHSJj3l8Bg", "lang": "en", "icon": "🟡"}, {"ar": "فرانس 24 إنجليزي", "en": "France 24 English", "id": "UCQfwfsi5VrQ8yKZ-UWmAEFg", "lang": "en", "icon": "🔷"}, {"ar": "DW نيوز", "en": "DW News", "id": "UCknLrEdhRCp1aegoMqRaCZg", "lang": "en", "icon": "⚪"}, {"ar": "سكاي نيوز", "en": "Sky News", "id": "UCoMdktPbSTixAyNGwb-UYkQ", "lang": "en", "icon": "🔵"}, {"ar": "يورونيوز", "en": "Euronews", "id": "UCSrZ3UV4jOidv8ppoVuvW9Q", "lang": "en", "icon": "🌍"}, {"ar": "NHK وورلد اليابان", "en": "NHK WORLD-JAPAN", "id": "UCSPEjw8F2nQDtmUKPFNF7_A", "lang": "en", "icon": "🇯🇵"}, {"ar": "CNA سنغافورة", "en": "CNA", "id": "UC83jt4dlz1Gjl58fzQrrKZg", "lang": "en", "icon": "🇸🇬"}, {"ar": "TRT وورلد", "en": "TRT World", "id": "UC7fWeaHhqgM4Ry-RMpM2YYw", "lang": "en", "icon": "🌐"}, {"ar": "WION", "en": "WION", "id": "UC_gUM8rL-Lrg6O3adPW9K1g", "lang": "en", "icon": "🟨"}, {"ar": "ABC نيوز", "en": "ABC News", "id": "UCBi2mrWuNuyYy4gbM6fU18Q", "lang": "en", "icon": "🔴"}, {"ar": "CBS نيوز", "en": "CBS News", "id": "UC8p1vwvWtl6T73JiExfWs1g", "lang": "en", "icon": "🔵"}, {"ar": "NBC نيوز", "en": "NBC News", "id": "UCeY0bbntWzzVIaj2z3QigXg", "lang": "en", "icon": "🦚"}, {"ar": "فوكس ويذر", "en": "FOX Weather", "id": "UC1FbPiXx59_ltnFVx7IxWow", "lang": "en", "icon": "⛅"}, {"ar": "CNBC", "en": "CNBC", "id": "UCvJJ_dzjViJCoLf5uKUTwoA", "lang": "en", "icon": "💹"}, {"ar": "ABC نيوز أستراليا", "en": "ABC News Australia", "id": "UCVgO39Bk5sMo66-6o6Spn6Q", "lang": "en", "icon": "🇦🇺"}, {"ar": "سكاي نيوز أستراليا", "en": "Sky News Australia", "id": "UCO0akufu9MOzyz3nvGIXAAw", "lang": "en", "icon": "🇦🇺"}];
+
+  const container = document.getElementById('liveVideosContainer');
+  const liveIcon = document.getElementById('liveFlasher');
+
+  if(!container || !liveIcon) return;
+
+  function lang(){
+    return document.documentElement.lang === 'en' ? 'en' : 'ar';
+  }
+
+  /* إبقاء القنوات القديمة كما هي */
+  const legacyCards = Array.from(
+    container.querySelectorAll(':scope > .live-video')
+  );
+
+  legacyCards.forEach(function(card,index){
+    card.classList.add('sak-live-legacy-card');
+    card.dataset.lang = 'all';
+    card.dataset.search = 'legacy old channel ' + (index + 1);
+  });
+
+  function buildTools(){
+    if(document.getElementById('sakLiveCatalogTools')) return;
+
+    const tools = document.createElement('div');
+    tools.id = 'sakLiveCatalogTools';
+
+    const search = document.createElement('input');
+    search.id = 'sakLiveSearch';
+    search.type = 'search';
+    search.autocomplete = 'off';
+
+    const allBtn = document.createElement('button');
+    allBtn.type = 'button';
+    allBtn.className = 'sak-live-filter active';
+    allBtn.dataset.filter = 'all';
+
+    const arBtn = document.createElement('button');
+    arBtn.type = 'button';
+    arBtn.className = 'sak-live-filter';
+    arBtn.dataset.filter = 'ar';
+
+    const enBtn = document.createElement('button');
+    enBtn.type = 'button';
+    enBtn.className = 'sak-live-filter';
+    enBtn.dataset.filter = 'en';
+
+    const count = document.createElement('div');
+    count.id = 'sakLiveCatalogCount';
+
+    tools.appendChild(search);
+    tools.appendChild(allBtn);
+    tools.appendChild(arBtn);
+    tools.appendChild(enBtn);
+    tools.appendChild(count);
+
+    container.insertBefore(tools,container.firstChild);
+
+    search.addEventListener('input',applyFilter);
+
+    [allBtn,arBtn,enBtn].forEach(function(btn){
+      btn.addEventListener('click',function(){
+        tools
+          .querySelectorAll('.sak-live-filter')
+          .forEach(function(b){
+            b.classList.toggle('active',b === btn);
+          });
+
+        applyFilter();
+      });
+    });
+  }
+
+  function buildAddedChannels(){
+    if(document.getElementById('sakLiveAddedTitle')) return;
+
+    const title = document.createElement('div');
+    title.id = 'sakLiveAddedTitle';
+
+    container.appendChild(title);
+
+    NEW_CHANNELS.forEach(function(ch){
+      const card = document.createElement('div');
+
+      card.className =
+        'live-video sak-live-channel-card';
+
+      card.dataset.lang = ch.lang;
+      card.dataset.search =
+        (
+          ch.ar + ' ' +
+          ch.en + ' ' +
+          ch.id
+        ).toLowerCase();
+
+      card.dataset.channelId = ch.id;
+
+      const icon = document.createElement('div');
+      icon.className = 'sak-live-channel-icon';
+      icon.textContent = ch.icon || '📺';
+
+      const name = document.createElement('div');
+      name.className = 'sak-live-channel-name';
+      name.dataset.ar = ch.ar;
+      name.dataset.en = ch.en;
+
+      const sub = document.createElement('div');
+      sub.className = 'sak-live-channel-sub';
+      sub.dataset.ar = 'بث مباشر رسمي عبر YouTube';
+      sub.dataset.en = 'Official YouTube live feed';
+
+      card.appendChild(icon);
+      card.appendChild(name);
+      card.appendChild(sub);
+
+      card.addEventListener('click',function(){
+        const url =
+          'https://www.youtube.com/embed/live_stream?channel=' +
+          encodeURIComponent(ch.id);
+
+        if(typeof window.openVideo === 'function'){
+          window.openVideo(url);
+        }
+      });
+
+      container.appendChild(card);
+    });
+  }
+
+  function activeFilter(){
+    const active =
+      document.querySelector(
+        '#sakLiveCatalogTools .sak-live-filter.active'
+      );
+
+    return active
+      ? active.dataset.filter || 'all'
+      : 'all';
+  }
+
+  function applyFilter(){
+    const search =
+      document.getElementById('sakLiveSearch');
+
+    const needle =
+      (search ? search.value : '')
+        .toLowerCase()
+        .trim();
+
+    const filter = activeFilter();
+
+    let shown = 0;
+
+    container
+      .querySelectorAll(
+        ':scope > .sak-live-channel-card'
+      )
+      .forEach(function(card){
+        const matchesLang =
+          filter === 'all' ||
+          card.dataset.lang === filter;
+
+        const matchesSearch =
+          !needle ||
+          (card.dataset.search || '').includes(needle);
+
+        const visible =
+          matchesLang &&
+          matchesSearch;
+
+        card.style.display =
+          visible ? 'flex' : 'none';
+
+        if(visible) shown++;
+      });
+
+    /* القنوات القديمة تبقى ظاهرة في "الكل" فقط */
+    legacyCards.forEach(function(card){
+      const visible =
+        filter === 'all' &&
+        !needle;
+
+      card.style.display =
+        visible ? '' : 'none';
+    });
+
+    const count =
+      document.getElementById('sakLiveCatalogCount');
+
+    if(count){
+      const oldCount =
+        filter === 'all' && !needle
+          ? legacyCards.length
+          : 0;
+
+      const total = shown + oldCount;
+
+      count.textContent =
+        lang() === 'en'
+          ? total + ' live channel options'
+          : total + ' خياراً للقنوات المباشرة';
+    }
+  }
+
+  function applyLanguage(){
+    const isEn = lang() === 'en';
+
+    liveIcon.setAttribute(
+      'aria-label',
+      isEn
+        ? 'Live Channels'
+        : 'قنوات مباشرة'
+    );
+
+    const span =
+      liveIcon.querySelector('span');
+
+    if(span){
+      span.innerHTML =
+        isEn
+          ? 'Live<br>Channels'
+          : 'قنوات<br>مباشرة';
+    }
+
+    const search =
+      document.getElementById('sakLiveSearch');
+
+    if(search){
+      search.placeholder =
+        isEn
+          ? 'Search channels…'
+          : 'ابحث عن قناة…';
+    }
+
+    const buttons =
+      document.querySelectorAll(
+        '#sakLiveCatalogTools .sak-live-filter'
+      );
+
+    buttons.forEach(function(btn){
+      const f = btn.dataset.filter;
+
+      if(f === 'all'){
+        btn.textContent =
+          isEn ? 'All' : 'الكل';
+      }else if(f === 'ar'){
+        btn.textContent =
+          isEn ? 'Arabic' : 'عربي';
+      }else if(f === 'en'){
+        btn.textContent =
+          isEn ? 'International' : 'عالمي';
+      }
+    });
+
+    const title =
+      document.getElementById('sakLiveAddedTitle');
+
+    if(title){
+      title.textContent =
+        isEn
+          ? '🌍 More official live channels'
+          : '🌍 المزيد من القنوات المباشرة الرسمية';
+    }
+
+    container
+      .querySelectorAll('.sak-live-channel-name')
+      .forEach(function(el){
+        el.textContent =
+          isEn
+            ? el.dataset.en
+            : el.dataset.ar;
+      });
+
+    container
+      .querySelectorAll('.sak-live-channel-sub')
+      .forEach(function(el){
+        el.textContent =
+          isEn
+            ? el.dataset.en
+            : el.dataset.ar;
+      });
+
+    applyFilter();
+  }
+
+  buildTools();
+  buildAddedChannels();
+  applyLanguage();
+  applyFilter();
+
+  new MutationObserver(function(){
+    applyLanguage();
+  }).observe(
+    document.documentElement,
+    {
+      attributes:true,
+      attributeFilter:['lang','dir']
+    }
+  );
+
+})();
+</script>
