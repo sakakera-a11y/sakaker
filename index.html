@@ -6696,6 +6696,7 @@ body{
     </div>
 <div id="cartoonSection" style="display:none;flex-wrap:wrap;">
 <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/U5sBC9Fr0fA')">كرتون</div>
+<div class="emeraldVideoCircle sak-moved-picks-video" data-sak-video-id="jtT5Ifr-3VA" onclick="openEmeraldVideo('https://www.youtube.com/embed/jtT5Ifr-3VA')">مختارات سابقة — Previous Selection</div>
 </div>
 </div>
 <!-- أفلام -->
@@ -31566,6 +31567,1252 @@ html body #emeraldLibraryContent .sak-smart-loader{
     function(){
       updateLibraryChromeLanguage();
     }
+  ).observe(
+    document.documentElement,
+    {
+      attributes:true,
+      attributeFilter:[
+        'lang',
+        'dir'
+      ]
+    }
+  );
+
+})();
+</script>
+
+
+<!-- SAKAKER ABU ALQAMAR KITCHEN FINAL -->
+<style id="sakaker-abu-alqamar-kitchen-final">
+
+/* =========================================================
+   1) أيقونة مطبخ أبوالقمرزمرد — مميزة ومبهرة
+========================================================= */
+html body .cards .sakaker-kitchen-card{
+  position:relative !important;
+
+  overflow:visible !important;
+
+  border:1.5px solid rgba(255,255,255,.96) !important;
+  border-radius:50% !important;
+
+  background:
+    radial-gradient(circle at 30% 22%,#fff 0 7%,transparent 15%),
+    radial-gradient(circle at 50% 52%,#fff0a4 0 8%,#ff8c32 25%,#dc405e 48%,#6c46c9 70%,#08162c 100%) !important;
+
+  box-shadow:
+    0 0 8px rgba(255,255,255,.92),
+    0 0 18px rgba(255,172,64,.76),
+    0 0 29px rgba(255,75,112,.56),
+    0 0 41px rgba(146,88,255,.38),
+    inset 0 0 12px rgba(255,255,255,.34) !important;
+
+  filter:
+    drop-shadow(0 0 6px rgba(255,255,255,.74))
+    drop-shadow(0 0 13px rgba(255,145,48,.47)) !important;
+
+  animation:sakKitchenGlow 1.9s ease-in-out infinite !important;
+
+  isolation:isolate !important;
+}
+
+html body .cards .sakaker-kitchen-card::before{
+  content:"✦" !important;
+
+  position:absolute !important;
+  top:-7px !important;
+  right:-6px !important;
+
+  color:#fff8c2 !important;
+
+  font-size:13px !important;
+
+  text-shadow:
+    0 0 4px #fff,
+    0 0 9px #ffca58,
+    0 0 16px #ff6b8b !important;
+
+  animation:sakKitchenSparkle 1.15s ease-in-out infinite !important;
+
+  pointer-events:none !important;
+}
+
+html body .cards .sakaker-kitchen-card::after{
+  content:"☾" !important;
+
+  position:absolute !important;
+  bottom:-3px !important;
+  left:-4px !important;
+
+  color:#fff3a3 !important;
+
+  font-size:17px !important;
+  font-weight:1000 !important;
+
+  text-shadow:
+    0 0 5px rgba(255,255,255,.95),
+    0 0 11px rgba(255,215,80,.82) !important;
+
+  pointer-events:none !important;
+}
+
+html body .sak-kitchen-main-icon{
+  position:relative !important;
+  z-index:2 !important;
+
+  font-size:20px !important;
+  line-height:20px !important;
+
+  filter:
+    drop-shadow(0 0 4px rgba(255,255,255,.88))
+    drop-shadow(0 0 8px rgba(255,184,76,.72)) !important;
+}
+
+html body .sak-kitchen-label{
+  position:relative !important;
+  z-index:2 !important;
+
+  max-width:96% !important;
+
+  color:#fff !important;
+
+  font-size:5.4px !important;
+  line-height:1.02 !important;
+  font-weight:1000 !important;
+
+  text-align:center !important;
+
+  text-shadow:
+    0 1px 2px rgba(0,0,0,.96),
+    0 0 5px rgba(255,255,255,.90),
+    0 0 9px rgba(255,158,57,.66) !important;
+}
+
+html body .sak-kitchen-sub{
+  position:relative !important;
+  z-index:2 !important;
+
+  color:rgba(255,255,255,.78) !important;
+
+  font-size:4.2px !important;
+  font-weight:900 !important;
+  line-height:1 !important;
+
+  text-align:center !important;
+}
+
+@keyframes sakKitchenGlow{
+  0%,100%{transform:scale(1);filter:brightness(.96)}
+  50%{transform:scale(1.08);filter:brightness(1.17)}
+}
+
+@keyframes sakKitchenSparkle{
+  0%,100%{opacity:.25;transform:scale(.70) rotate(0deg)}
+  50%{opacity:1;transform:scale(1.33) rotate(70deg)}
+}
+
+
+/* =========================================================
+   2) نافذة المطبخ
+========================================================= */
+html body #folderModal.sak-kitchen-open{
+  position:fixed !important;
+  inset:0 !important;
+
+  width:100vw !important;
+  height:100dvh !important;
+
+  padding:
+    max(8px,env(safe-area-inset-top))
+    max(8px,env(safe-area-inset-right))
+    max(8px,env(safe-area-inset-bottom))
+    max(8px,env(safe-area-inset-left)) !important;
+
+  box-sizing:border-box !important;
+
+  background:
+    radial-gradient(circle at 50% 12%,rgba(255,158,60,.11),transparent 35%),
+    rgba(2,3,8,.92) !important;
+
+  backdrop-filter:blur(12px) !important;
+  -webkit-backdrop-filter:blur(12px) !important;
+
+  overflow:hidden !important;
+
+  z-index:2147483647 !important;
+}
+
+html body #folderModal.sak-kitchen-open .panel{
+  position:relative !important;
+
+  width:min(980px,96vw) !important;
+  max-width:96vw !important;
+
+  height:min(92dvh,880px) !important;
+  max-height:92dvh !important;
+
+  margin:0 auto !important;
+  padding:10px !important;
+
+  box-sizing:border-box !important;
+
+  overflow:hidden !important;
+
+  border:1px solid rgba(255,240,220,.60) !important;
+  border-radius:24px !important;
+
+  background:
+    radial-gradient(circle at 50% 0%,rgba(255,165,68,.08),transparent 32%),
+    linear-gradient(145deg,rgba(26,17,25,.97),rgba(7,9,15,.98)) !important;
+
+  box-shadow:
+    0 0 15px rgba(255,255,255,.11),
+    0 0 34px rgba(255,135,63,.16),
+    0 25px 80px rgba(0,0,0,.76) !important;
+}
+
+html body #folderModal.sak-kitchen-open .panel-head{
+  min-height:42px !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  padding:3px 44px !important;
+
+  border:0 !important;
+}
+
+html body #folderModal.sak-kitchen-open #folderTitle{
+  color:#fff8e7 !important;
+
+  font-size:15px !important;
+  font-weight:1000 !important;
+
+  text-align:center !important;
+
+  text-shadow:
+    0 0 6px rgba(255,255,255,.55),
+    0 0 14px rgba(255,150,65,.42) !important;
+}
+
+html body #folderModal.sak-kitchen-open #folderBody{
+  height:calc(100% - 90px) !important;
+  max-height:calc(100% - 90px) !important;
+
+  padding:0 !important;
+
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+
+  box-sizing:border-box !important;
+
+  scrollbar-width:thin !important;
+  overscroll-behavior:contain !important;
+}
+
+html body #folderModal.sak-kitchen-open .close{
+  position:absolute !important;
+
+  left:50% !important;
+  right:auto !important;
+  bottom:9px !important;
+
+  transform:translateX(-50%) !important;
+
+  width:38px !important;
+  height:38px !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  margin:0 !important;
+  padding:0 !important;
+
+  border:1px solid rgba(255,255,255,.72) !important;
+  border-radius:50% !important;
+
+  background:rgba(111,15,43,.95) !important;
+
+  color:#fff !important;
+
+  font-size:19px !important;
+
+  box-shadow:
+    0 0 9px rgba(255,75,112,.46),
+    0 0 16px rgba(255,255,255,.08) !important;
+
+  z-index:20 !important;
+}
+
+
+/* =========================================================
+   3) واجهة المطبخ الداخلية
+========================================================= */
+html body #sakKitchenApp{
+  width:100% !important;
+
+  padding:4px 5px 10px !important;
+  box-sizing:border-box !important;
+}
+
+html body #sakKitchenHero{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  gap:8px !important;
+
+  min-height:52px !important;
+
+  margin:0 0 8px !important;
+  padding:8px !important;
+
+  border:1px solid rgba(255,255,255,.13) !important;
+  border-radius:16px !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,138,49,.16),
+      rgba(142,69,198,.13),
+      rgba(0,159,184,.09)
+    ) !important;
+
+  color:#fff !important;
+
+  text-align:center !important;
+}
+
+html body #sakKitchenHeroIcon{
+  font-size:29px !important;
+
+  filter:
+    drop-shadow(0 0 6px rgba(255,255,255,.36))
+    drop-shadow(0 0 12px rgba(255,170,62,.32)) !important;
+}
+
+html body #sakKitchenHeroTitle{
+  font-size:11px !important;
+  font-weight:1000 !important;
+}
+
+html body #sakKitchenHeroSub{
+  margin-top:2px !important;
+
+  color:rgba(255,255,255,.62) !important;
+
+  font-size:7px !important;
+}
+
+html body #sakKitchenTabs{
+  position:sticky !important;
+  top:0 !important;
+  z-index:10 !important;
+
+  display:grid !important;
+  grid-template-columns:1fr 1fr !important;
+
+  gap:6px !important;
+
+  margin-bottom:8px !important;
+
+  padding:5px !important;
+
+  border:1px solid rgba(255,255,255,.10) !important;
+  border-radius:13px !important;
+
+  background:rgba(8,9,14,.94) !important;
+
+  backdrop-filter:blur(10px) !important;
+  -webkit-backdrop-filter:blur(10px) !important;
+}
+
+html body .sak-kitchen-tab{
+  min-height:38px !important;
+
+  padding:4px 8px !important;
+
+  border:1px solid rgba(255,255,255,.18) !important;
+  border-radius:10px !important;
+
+  background:rgba(255,255,255,.045) !important;
+
+  color:#fff !important;
+
+  font-size:8px !important;
+  font-weight:1000 !important;
+
+  cursor:pointer !important;
+}
+
+html body .sak-kitchen-tab.active{
+  border-color:rgba(255,239,208,.68) !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,146,47,.57),
+      rgba(205,68,105,.52),
+      rgba(105,63,205,.49)
+    ) !important;
+
+  box-shadow:
+    0 0 9px rgba(255,159,62,.15),
+    0 0 17px rgba(179,91,220,.12) !important;
+}
+
+html body .sak-kitchen-panel{
+  display:none;
+}
+
+html body .sak-kitchen-panel.active{
+  display:block;
+}
+
+
+/* =========================================================
+   4) فيديوهات الطبخ
+========================================================= */
+html body #sakKitchenVideosGrid{
+  display:grid !important;
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+
+  gap:8px !important;
+}
+
+html body .sak-kitchen-video-card{
+  position:relative !important;
+
+  min-height:100px !important;
+
+  padding:9px 7px !important;
+
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  gap:5px !important;
+
+  box-sizing:border-box !important;
+
+  border:1px solid rgba(255,255,255,.17) !important;
+  border-radius:14px !important;
+
+  background:
+    radial-gradient(circle at 30% 20%,rgba(255,255,255,.10),transparent 28%),
+    linear-gradient(
+      145deg,
+      rgba(255,130,42,.17),
+      rgba(126,64,173,.20),
+      rgba(0,139,166,.14)
+    ) !important;
+
+  color:#fff !important;
+
+  box-shadow:
+    0 0 8px rgba(0,0,0,.45),
+    0 0 14px rgba(255,133,48,.055) !important;
+
+  cursor:pointer !important;
+
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease !important;
+}
+
+html body .sak-kitchen-video-card:hover{
+  transform:translateY(-2px) scale(1.02) !important;
+
+  border-color:rgba(255,255,255,.60) !important;
+
+  box-shadow:
+    0 0 9px rgba(255,255,255,.08),
+    0 0 18px rgba(255,139,53,.13) !important;
+}
+
+html body .sak-kitchen-video-icon{
+  font-size:24px !important;
+  line-height:1 !important;
+}
+
+html body .sak-kitchen-video-ar{
+  color:#fff !important;
+
+  font-size:8.5px !important;
+  font-weight:1000 !important;
+
+  text-align:center !important;
+}
+
+html body .sak-kitchen-video-en{
+  color:rgba(255,255,255,.58) !important;
+
+  font-size:6.5px !important;
+  font-weight:800 !important;
+
+  text-align:center !important;
+}
+
+html body .sak-kitchen-play{
+  margin-top:2px !important;
+
+  color:#ffdc8f !important;
+
+  font-size:6px !important;
+  font-weight:1000 !important;
+}
+
+
+/* =========================================================
+   5) مقادير بعض الوجبات — نصوص فقط
+========================================================= */
+html body #sakKitchenRecipesGrid{
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+
+  gap:8px !important;
+}
+
+html body .sak-recipe-card{
+  padding:10px !important;
+
+  box-sizing:border-box !important;
+
+  border:1px solid rgba(255,255,255,.13) !important;
+  border-radius:14px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.035),
+      rgba(255,139,49,.055),
+      rgba(101,63,166,.055)
+    ) !important;
+
+  color:#fff !important;
+}
+
+html body .sak-recipe-title{
+  display:flex !important;
+  align-items:center !important;
+
+  gap:6px !important;
+
+  margin-bottom:7px !important;
+
+  color:#fff2d9 !important;
+
+  font-size:10px !important;
+  font-weight:1000 !important;
+
+  text-shadow:0 0 8px rgba(255,160,65,.22) !important;
+}
+
+html body .sak-recipe-section-title{
+  margin:5px 0 3px !important;
+
+  color:#ffd48d !important;
+
+  font-size:7px !important;
+  font-weight:1000 !important;
+}
+
+html body .sak-recipe-text{
+  color:rgba(255,255,255,.76) !important;
+
+  font-size:7px !important;
+  line-height:1.75 !important;
+}
+
+html body .sak-recipe-en{
+  color:rgba(255,255,255,.64) !important;
+}
+
+html body #sakKitchenNote{
+  margin-top:8px !important;
+  padding:7px 9px !important;
+
+  border:1px solid rgba(255,215,113,.12) !important;
+  border-radius:11px !important;
+
+  background:rgba(255,194,77,.025) !important;
+
+  color:rgba(255,245,215,.68) !important;
+
+  font-size:6.5px !important;
+  line-height:1.6 !important;
+
+  text-align:center !important;
+}
+
+
+/* =========================================================
+   الجوال
+========================================================= */
+@media(max-width:700px){
+
+  html body #folderModal.sak-kitchen-open{
+    padding:
+      max(4px,env(safe-area-inset-top))
+      4px
+      max(4px,env(safe-area-inset-bottom))
+      4px !important;
+  }
+
+  html body #folderModal.sak-kitchen-open .panel{
+    width:calc(100vw - 8px) !important;
+    max-width:calc(100vw - 8px) !important;
+
+    height:calc(100dvh - 8px) !important;
+    max-height:calc(100dvh - 8px) !important;
+
+    padding:7px !important;
+
+    border-radius:17px !important;
+  }
+
+  html body #folderModal.sak-kitchen-open #folderTitle{
+    font-size:12px !important;
+  }
+
+  html body #sakKitchenHero{
+    min-height:45px !important;
+
+    margin-bottom:6px !important;
+    padding:6px !important;
+  }
+
+  html body #sakKitchenHeroIcon{
+    font-size:23px !important;
+  }
+
+  html body #sakKitchenHeroTitle{
+    font-size:9px !important;
+  }
+
+  html body #sakKitchenHeroSub{
+    font-size:6px !important;
+  }
+
+  html body #sakKitchenTabs{
+    gap:4px !important;
+    padding:4px !important;
+  }
+
+  html body .sak-kitchen-tab{
+    min-height:35px !important;
+
+    padding:4px !important;
+
+    font-size:7px !important;
+  }
+
+  html body #sakKitchenVideosGrid{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+
+    gap:6px !important;
+  }
+
+  html body .sak-kitchen-video-card{
+    min-height:82px !important;
+
+    padding:7px 5px !important;
+  }
+
+  html body .sak-kitchen-video-icon{
+    font-size:19px !important;
+  }
+
+  html body .sak-kitchen-video-ar{
+    font-size:7.2px !important;
+  }
+
+  html body .sak-kitchen-video-en{
+    font-size:5.6px !important;
+  }
+
+  html body #sakKitchenRecipesGrid{
+    grid-template-columns:1fr !important;
+
+    gap:6px !important;
+  }
+
+  html body .sak-recipe-card{
+    padding:8px !important;
+  }
+
+  html body .sak-recipe-title{
+    font-size:9px !important;
+  }
+
+  html body .sak-recipe-text{
+    font-size:6.5px !important;
+  }
+}
+
+</style>
+
+<script id="sakaker-abu-alqamar-kitchen-js">
+(function(){
+  'use strict';
+
+  const VIDEOS = [{"id": "bW_nnH2EAMM", "ar": "وصفة مطبخ مختارة", "en": "Featured Kitchen Recipe", "icon": "🍳"}, {"id": "hqbzI8L0i8o", "ar": "وصفات دجاج سهلة", "en": "Easy Chicken Recipes", "icon": "🍗"}, {"id": "d-XL05EYWrQ", "ar": "3 وصفات إفطار", "en": "3 Breakfast Recipes", "icon": "🥐"}, {"id": "itSTX87ptK8", "ar": "مكرونة خضراء سريعة", "en": "10-Minute Green Pasta", "icon": "🍝"}, {"id": "Jf75I9LKhvg", "ar": "طريقة الأرز المثالي", "en": "How to Cook Perfect Rice", "icon": "🍚"}, {"id": "sU6lMFWj3Ik", "ar": "وصفات بيتزا سهلة", "en": "Easy Pizza Recipes", "icon": "🍕"}, {"id": "JZVWkjFGCBI", "ar": "5 وصفات ستيك", "en": "Top 5 Steak Recipes", "icon": "🥩"}];
+  const RECIPES = [{"icon": "🍗", "ar": "كبسة دجاج", "en": "Chicken Kabsa", "ingredients_ar": "دجاجة مقطعة، 2 كوب أرز بسمتي، بصلة، 2 طماطم، ملعقة معجون طماطم، 3 أكواب مرق، هيل وقرفة وقرنفل وورق غار، ملح وفلفل، ملعقتان زيت.", "method_ar": "يُحمّر البصل ثم الدجاج، وتضاف الطماطم والبهارات والمرق. بعد نضج الدجاج جزئيًا يضاف الأرز المغسول ويُطهى على نار هادئة حتى ينضج.", "ingredients_en": "1 cut chicken, 2 cups basmati rice, 1 onion, 2 tomatoes, 1 tbsp tomato paste, 3 cups stock, cardamom, cinnamon, cloves, bay leaf, salt, pepper, 2 tbsp oil.", "method_en": "Brown onion and chicken, add tomatoes, spices and stock. Add washed rice after the chicken partly cooks, then simmer until rice is tender."}, {"icon": "🍝", "ar": "مكرونة بالبشاميل", "en": "Béchamel Pasta", "ingredients_ar": "500غ مكرونة، 300غ لحم مفروم، بصلة، 4 ملاعق دقيق، 4 ملاعق زبدة، 4 أكواب حليب، ملح وفلفل وجوزة الطيب، جبن حسب الرغبة.", "method_ar": "تسلق المكرونة ويُجهز اللحم مع البصل. يُطهى الدقيق بالزبدة ثم يضاف الحليب تدريجيًا. تُرص المكرونة واللحم والبشاميل وتُخبز حتى يتحمر الوجه.", "ingredients_en": "500 g pasta, 300 g minced meat, 1 onion, 4 tbsp flour, 4 tbsp butter, 4 cups milk, salt, pepper, nutmeg, optional cheese.", "method_en": "Boil pasta and cook meat with onion. Cook flour in butter, whisk in milk, then layer pasta, meat and béchamel and bake until golden."}, {"icon": "🍕", "ar": "بيتزا منزلية", "en": "Homemade Pizza", "ingredients_ar": "3 أكواب دقيق، ملعقة خميرة، ملعقة سكر، ملعقة ملح صغيرة، كوب ماء دافئ تقريبًا، ملعقتان زيت، صلصة طماطم، جبن موزاريلا، إضافات حسب الرغبة.", "method_ar": "تعجن مكونات العجينة وتترك حتى تختمر، ثم تفرد وتضاف الصلصة والجبن والإضافات وتخبز في فرن حار حتى تتحمر الأطراف.", "ingredients_en": "3 cups flour, 1 tbsp yeast, 1 tbsp sugar, 1 tsp salt, about 1 cup warm water, 2 tbsp oil, tomato sauce, mozzarella and toppings.", "method_en": "Knead the dough, let it rise, roll it out, add sauce, cheese and toppings, then bake in a hot oven until the edges are golden."}, {"icon": "🌯", "ar": "شاورما دجاج", "en": "Chicken Shawarma", "ingredients_ar": "500غ دجاج شرائح، 3 ملاعق زبادي، عصير نصف ليمونة، ملعقة خل، ثوم، بابريكا، كمون، كركم، فلفل أسود، ملح، خبز وصوص ثوم.", "method_ar": "يتبل الدجاج ساعة على الأقل ثم يطهى على نار عالية حتى يتحمر. يقدم في الخبز مع صوص الثوم والخضار.", "ingredients_en": "500 g sliced chicken, 3 tbsp yogurt, juice of 1/2 lemon, 1 tbsp vinegar, garlic, paprika, cumin, turmeric, black pepper, salt, bread and garlic sauce.", "method_en": "Marinate chicken for at least an hour, cook over high heat until browned, then serve in bread with garlic sauce and vegetables."}, {"icon": "🍚", "ar": "أرز بخاري", "en": "Bukhari Rice", "ingredients_ar": "2 كوب أرز بسمتي، جزرة مبشورة، بصلة، 2 طماطم، 3 أكواب مرق، ملعقة معجون طماطم، قرفة وهيل وكمون، ملح، زبيب اختياري.", "method_ar": "يُحمّر البصل والجزر، ثم تضاف الطماطم والبهارات والمرق. يضاف الأرز ويطهى مغطى على نار هادئة حتى ينضج.", "ingredients_en": "2 cups basmati rice, grated carrot, onion, 2 tomatoes, 3 cups stock, 1 tbsp tomato paste, cinnamon, cardamom, cumin, salt, optional raisins.", "method_en": "Sauté onion and carrot, add tomato, spices and stock, then add rice and cook covered over low heat until tender."}, {"icon": "🥣", "ar": "شوربة عدس", "en": "Lentil Soup", "ingredients_ar": "كوب عدس أحمر، بصلة، جزرة، حبة بطاطس صغيرة، 5 أكواب ماء أو مرق، كمون، ملح وفلفل، عصرة ليمون.", "method_ar": "تسلق جميع المكونات حتى تلين ثم تخلط بالخلاط حتى تصبح ناعمة، وتعدل التوابل وتقدم مع الليمون.", "ingredients_en": "1 cup red lentils, onion, carrot, small potato, 5 cups water or stock, cumin, salt, pepper and lemon.", "method_en": "Simmer all ingredients until soft, blend until smooth, adjust seasoning and serve with lemon."}, {"icon": "🍔", "ar": "برجر منزلي", "en": "Homemade Burger", "ingredients_ar": "500غ لحم مفروم، ملح وفلفل، بصلة مبشورة اختيارية، خبز برجر، جبن، خس، طماطم، صوص حسب الرغبة.", "method_ar": "يشكل اللحم أقراصًا دون ضغط زائد ويُتبل، ثم يشوى أو يحمر من الجهتين. يقدم بالخبز مع الجبن والخضار.", "ingredients_en": "500 g minced beef, salt, pepper, optional grated onion, burger buns, cheese, lettuce, tomato and sauce.", "method_en": "Shape beef gently into patties, season, grill or pan-sear on both sides, then serve in buns with cheese and vegetables."}, {"icon": "🐟", "ar": "سمك بالفرن", "en": "Oven-Baked Fish", "ingredients_ar": "سمكة أو فيليه، عصير ليمونة، ثوم، زيت زيتون، كمون، بابريكا، كزبرة ناشفة، ملح وفلفل، شرائح بصل وفلفل.", "method_ar": "يتبل السمك ويوضع فوق البصل والفلفل، ثم يخبز حتى ينضج ويتحمر قليلًا. يقدم مع الأرز أو السلطة.", "ingredients_en": "Whole fish or fillets, lemon juice, garlic, olive oil, cumin, paprika, dried coriander, salt, pepper, sliced onion and bell pepper.", "method_en": "Season the fish, place over onion and pepper, then bake until cooked and lightly browned. Serve with rice or salad."}, {"icon": "🥗", "ar": "فتوش", "en": "Fattoush", "ingredients_ar": "خس، خيار، طماطم، فجل، بقدونس، نعناع، خبز عربي محمص، عصير ليمون، دبس رمان، زيت زيتون، سماق وملح.", "method_ar": "تقطع الخضار وتخلط مع التتبيلة، ويضاف الخبز المحمص قبل التقديم مباشرة حتى يبقى مقرمشًا.", "ingredients_en": "Lettuce, cucumber, tomato, radish, parsley, mint, toasted pita, lemon juice, pomegranate molasses, olive oil, sumac and salt.", "method_en": "Chop vegetables, toss with dressing, and add toasted pita just before serving to keep it crisp."}, {"icon": "🥞", "ar": "بان كيك", "en": "Pancakes", "ingredients_ar": "كوب دقيق، ملعقتان سكر، ملعقة بيكنج باودر، رشة ملح، بيضة، كوب حليب، ملعقتان زبدة مذابة، فانيليا.", "method_ar": "تخلط المكونات الجافة ثم السائلة دون مبالغة بالخلط. تصب كميات صغيرة على مقلاة ساخنة وتقلب عند ظهور الفقاعات.", "ingredients_en": "1 cup flour, 2 tbsp sugar, 1 tbsp baking powder, pinch of salt, 1 egg, 1 cup milk, 2 tbsp melted butter and vanilla.", "method_en": "Combine dry and wet ingredients without overmixing. Cook small portions on a hot pan and flip when bubbles appear."}, {"icon": "🍮", "ar": "كريم كراميل", "en": "Crème Caramel", "ingredients_ar": "4 بيضات، 2 كوب حليب، نصف كوب سكر، فانيليا. للكراميل: نصف كوب سكر.", "method_ar": "يذاب سكر الكراميل ويصب بالقالب. يخفق البيض مع الحليب والسكر والفانيليا، ثم يصب فوق الكراميل ويخبز بحمام مائي حتى يتماسك.", "ingredients_en": "4 eggs, 2 cups milk, 1/2 cup sugar, vanilla. Caramel: 1/2 cup sugar.", "method_en": "Caramelize the sugar in the mold. Whisk eggs, milk, sugar and vanilla, pour over caramel, then bake in a water bath until set."}, {"icon": "🍲", "ar": "جريش", "en": "Jareesh", "ingredients_ar": "2 كوب جريش مغسول، بصلة، 500غ دجاج أو لحم، 5 أكواب مرق، كوب لبن أو زبادي مخفف، كمون، ملح، زبدة أو سمن.", "method_ar": "يطهى الجريش مع اللحم أو الدجاج والمرق على نار هادئة حتى يطرى جدًا، ثم يضاف اللبن ويقلب حتى يصبح قوامه كريميًا.", "ingredients_en": "2 cups washed jareesh, onion, 500 g chicken or meat, 5 cups stock, 1 cup thinned yogurt, cumin, salt and butter or ghee.", "method_en": "Slow-cook jareesh with meat or chicken and stock until very soft, then stir in yogurt and continue until creamy."}];
+
+  function isEnglish(){
+    return document.documentElement.lang === 'en';
+  }
+
+  /* =======================================================
+     إعادة تصميم أيقونة مختارات وتحويلها إلى المطبخ
+  ======================================================= */
+  function decorateKitchenIcon(){
+    const card =
+      document.querySelector(
+        '.cards .icon-card[onclick="openFolder(2)"]'
+      );
+
+    if(!card) return;
+
+    card.classList.add(
+      'sakaker-kitchen-card',
+      'sak-order-picks'
+    );
+
+    card.setAttribute(
+      'aria-label',
+      isEnglish()
+        ? 'Abu Alqamar Kitchen'
+        : 'مطبخ ابوالقمرزمرد'
+    );
+
+    card.innerHTML =
+      '<div class="sak-kitchen-main-icon">🍲</div>' +
+      '<div class="sak-kitchen-label">' +
+        (
+          isEnglish()
+            ? 'Abu Alqamar Kitchen'
+            : 'مطبخ ابوالقمرزمرد'
+        ) +
+      '</div>' +
+      '<div class="sak-kitchen-sub">' +
+        (
+          isEnglish()
+            ? 'FOOD • RECIPES'
+            : 'طبخ • وصفات'
+        ) +
+      '</div>';
+  }
+
+  /* =======================================================
+     بناء تبويب الفيديو
+  ======================================================= */
+  function buildVideoPanel(){
+    const panel =
+      document.createElement('div');
+
+    panel.id =
+      'sakKitchenVideosPanel';
+
+    panel.className =
+      'sak-kitchen-panel active';
+
+    const grid =
+      document.createElement('div');
+
+    grid.id =
+      'sakKitchenVideosGrid';
+
+    VIDEOS.forEach(function(video){
+      const card =
+        document.createElement('button');
+
+      card.type = 'button';
+      card.className =
+        'sak-kitchen-video-card';
+
+      const icon =
+        document.createElement('div');
+
+      icon.className =
+        'sak-kitchen-video-icon';
+
+      icon.textContent =
+        video.icon || '🍽️';
+
+      const ar =
+        document.createElement('div');
+
+      ar.className =
+        'sak-kitchen-video-ar';
+
+      ar.textContent =
+        video.ar;
+
+      const en =
+        document.createElement('div');
+
+      en.className =
+        'sak-kitchen-video-en';
+
+      en.textContent =
+        video.en;
+
+      const play =
+        document.createElement('div');
+
+      play.className =
+        'sak-kitchen-play';
+
+      play.textContent =
+        isEnglish()
+          ? '▶ Watch'
+          : '▶ مشاهدة';
+
+      card.appendChild(icon);
+      card.appendChild(ar);
+      card.appendChild(en);
+      card.appendChild(play);
+
+      card.addEventListener(
+        'click',
+        function(){
+          if(
+            typeof window.openEmeraldVideo ===
+            'function'
+          ){
+            window.openEmeraldVideo(
+              'https://www.youtube.com/embed/' +
+              encodeURIComponent(video.id)
+            );
+          }
+        }
+      );
+
+      grid.appendChild(card);
+    });
+
+    panel.appendChild(grid);
+
+    return panel;
+  }
+
+  /* =======================================================
+     بناء تبويب المقادير والنصوص
+  ======================================================= */
+  function buildRecipesPanel(){
+    const panel =
+      document.createElement('div');
+
+    panel.id =
+      'sakKitchenRecipesPanel';
+
+    panel.className =
+      'sak-kitchen-panel';
+
+    const grid =
+      document.createElement('div');
+
+    grid.id =
+      'sakKitchenRecipesGrid';
+
+    RECIPES.forEach(function(recipe){
+      const card =
+        document.createElement('article');
+
+      card.className =
+        'sak-recipe-card';
+
+      const title =
+        document.createElement('div');
+
+      title.className =
+        'sak-recipe-title';
+
+      title.textContent =
+        recipe.icon +
+        ' ' +
+        (
+          isEnglish()
+            ? recipe.en
+            : recipe.ar
+        );
+
+      const ingredientsTitle =
+        document.createElement('div');
+
+      ingredientsTitle.className =
+        'sak-recipe-section-title';
+
+      ingredientsTitle.textContent =
+        isEnglish()
+          ? 'Ingredients'
+          : 'المقادير';
+
+      const ingredients =
+        document.createElement('div');
+
+      ingredients.className =
+        'sak-recipe-text' +
+        (isEnglish()
+          ? ' sak-recipe-en'
+          : '');
+
+      ingredients.textContent =
+        isEnglish()
+          ? recipe.ingredients_en
+          : recipe.ingredients_ar;
+
+      const methodTitle =
+        document.createElement('div');
+
+      methodTitle.className =
+        'sak-recipe-section-title';
+
+      methodTitle.textContent =
+        isEnglish()
+          ? 'Preparation'
+          : 'طريقة التحضير';
+
+      const method =
+        document.createElement('div');
+
+      method.className =
+        'sak-recipe-text' +
+        (isEnglish()
+          ? ' sak-recipe-en'
+          : '');
+
+      method.textContent =
+        isEnglish()
+          ? recipe.method_en
+          : recipe.method_ar;
+
+      card.appendChild(title);
+      card.appendChild(ingredientsTitle);
+      card.appendChild(ingredients);
+      card.appendChild(methodTitle);
+      card.appendChild(method);
+
+      grid.appendChild(card);
+    });
+
+    const note =
+      document.createElement('div');
+
+    note.id =
+      'sakKitchenNote';
+
+    note.textContent =
+      isEnglish()
+        ? 'Quantities are practical home-cooking guides and can be adjusted to taste and serving size.'
+        : 'المقادير إرشادية للطبخ المنزلي ويمكن تعديلها حسب الذوق وعدد الأشخاص.';
+
+    panel.appendChild(grid);
+    panel.appendChild(note);
+
+    return panel;
+  }
+
+  /* =======================================================
+     عرض المطبخ داخل نفس نافذة "مختارات" القديمة
+  ======================================================= */
+  function renderKitchen(el){
+    if(!el) return;
+
+    const title =
+      document.getElementById(
+        'folderTitle'
+      );
+
+    const modal =
+      document.getElementById(
+        'folderModal'
+      );
+
+    if(modal){
+      modal.classList.add(
+        'sak-kitchen-open'
+      );
+    }
+
+    if(title){
+      title.textContent =
+        isEnglish()
+          ? '🍲 Abu Alqamar Kitchen'
+          : '🍲 مطبخ ابوالقمرزمرد';
+    }
+
+    el.innerHTML = '';
+
+    const app =
+      document.createElement('div');
+
+    app.id =
+      'sakKitchenApp';
+
+    const hero =
+      document.createElement('div');
+
+    hero.id =
+      'sakKitchenHero';
+
+    hero.innerHTML =
+      '<div id="sakKitchenHeroIcon">🍲🌙</div>' +
+      '<div>' +
+        '<div id="sakKitchenHeroTitle">' +
+          (
+            isEnglish()
+              ? 'Abu Alqamar Kitchen'
+              : 'مطبخ ابوالقمرزمرد'
+          ) +
+        '</div>' +
+        '<div id="sakKitchenHeroSub">' +
+          (
+            isEnglish()
+              ? 'Cooking videos + meal ingredients'
+              : 'فيديوهات طبخ + مقادير وتحضير الوجبات'
+          ) +
+        '</div>' +
+      '</div>';
+
+    const tabs =
+      document.createElement('div');
+
+    tabs.id =
+      'sakKitchenTabs';
+
+    const videoTab =
+      document.createElement('button');
+
+    videoTab.type =
+      'button';
+
+    videoTab.className =
+      'sak-kitchen-tab active';
+
+    videoTab.textContent =
+      isEnglish()
+        ? '🎥 Food & Cooking Videos'
+        : '🎥 فيديو الطعام وكيفية الطبخ';
+
+    const recipeTab =
+      document.createElement('button');
+
+    recipeTab.type =
+      'button';
+
+    recipeTab.className =
+      'sak-kitchen-tab';
+
+    recipeTab.textContent =
+      isEnglish()
+        ? '📜 Meal Ingredients'
+        : '📜 مقادير بعض الوجبات';
+
+    tabs.appendChild(videoTab);
+    tabs.appendChild(recipeTab);
+
+    const videoPanel =
+      buildVideoPanel();
+
+    const recipePanel =
+      buildRecipesPanel();
+
+    videoTab.addEventListener(
+      'click',
+      function(){
+        videoTab.classList.add('active');
+        recipeTab.classList.remove('active');
+
+        videoPanel.classList.add('active');
+        recipePanel.classList.remove('active');
+      }
+    );
+
+    recipeTab.addEventListener(
+      'click',
+      function(){
+        recipeTab.classList.add('active');
+        videoTab.classList.remove('active');
+
+        recipePanel.classList.add('active');
+        videoPanel.classList.remove('active');
+      }
+    );
+
+    app.appendChild(hero);
+    app.appendChild(tabs);
+    app.appendChild(videoPanel);
+    app.appendChild(recipePanel);
+
+    el.appendChild(app);
+  }
+
+  /* استبدال محتوى مختارات القديم بالمطبخ */
+  window.showMonowaat =
+    function(el){
+      renderKitchen(el);
+    };
+
+  /* =======================================================
+     إضافة فيديو مختارات السابق إلى قسم الكرتون إذا لم يكن موجوداً
+  ======================================================= */
+  function ensureOldSelectionInCartoons(){
+    const section =
+      document.getElementById(
+        'cartoonSection'
+      );
+
+    if(!section) return;
+
+    const exists =
+      section.querySelector(
+        '[data-sak-video-id="jtT5Ifr-3VA"]'
+      );
+
+    if(exists) return;
+
+    const card =
+      document.createElement('div');
+
+    card.className =
+      'emeraldVideoCircle sak-moved-picks-video';
+
+    card.dataset.sakVideoId =
+      'jtT5Ifr-3VA';
+
+    card.textContent =
+      isEnglish()
+        ? 'Previous Selection'
+        : 'مختارات سابقة';
+
+    card.onclick =
+      function(){
+        window.openEmeraldVideo(
+          'https://www.youtube.com/embed/jtT5Ifr-3VA'
+        );
+      };
+
+    section.appendChild(card);
+  }
+
+  /* =======================================================
+     فتح/إغلاق المجلد: نمط المطبخ فقط للأيقونة رقم 2
+  ======================================================= */
+  const oldOpenFolder =
+    window.openFolder;
+
+  if(
+    typeof oldOpenFolder ===
+    'function'
+  ){
+    window.openFolder =
+      function(n){
+        const modal =
+          document.getElementById(
+            'folderModal'
+          );
+
+        if(modal){
+          modal.classList.toggle(
+            'sak-kitchen-open',
+            n === 2
+          );
+        }
+
+        return oldOpenFolder(n);
+      };
+  }
+
+  const oldCloseFolder =
+    window.closeFolder;
+
+  if(
+    typeof oldCloseFolder ===
+    'function'
+  ){
+    window.closeFolder =
+      function(){
+        const modal =
+          document.getElementById(
+            'folderModal'
+          );
+
+        if(modal){
+          modal.classList.remove(
+            'sak-kitchen-open'
+          );
+        }
+
+        return oldCloseFolder();
+      };
+  }
+
+  /* =======================================================
+     اللغة
+  ======================================================= */
+  function refreshLanguage(){
+    decorateKitchenIcon();
+
+    const modal =
+      document.getElementById(
+        'folderModal'
+      );
+
+    const body =
+      document.getElementById(
+        'folderBody'
+      );
+
+    if(
+      modal &&
+      body &&
+      modal.classList.contains(
+        'sak-kitchen-open'
+      ) &&
+      getComputedStyle(modal)
+        .display !== 'none'
+    ){
+      renderKitchen(body);
+    }
+  }
+
+  decorateKitchenIcon();
+  ensureOldSelectionInCartoons();
+
+  if(
+    document.readyState ===
+    'loading'
+  ){
+    document.addEventListener(
+      'DOMContentLoaded',
+      function(){
+        decorateKitchenIcon();
+        ensureOldSelectionInCartoons();
+      }
+    );
+  }
+
+  /*
+    أكواد الترتيب القديمة تعمل بتأخير.
+    نعيد تأكيد شكل المطبخ بعدها دون تغيير مكانه.
+  */
+  [300,900,1800,3200].forEach(
+    function(ms){
+      setTimeout(
+        decorateKitchenIcon,
+        ms
+      );
+    }
+  );
+
+  new MutationObserver(
+    refreshLanguage
   ).observe(
     document.documentElement,
     {
