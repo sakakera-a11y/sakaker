@@ -34337,6 +34337,130 @@ html body #emeraldMusicHost .emCredit{
 
   if(!btn) return;
 
+  const musicHost =
+    document.getElementById(
+      'emeraldMusicHost'
+    );
+
+  let musicPortalMarker = null;
+  let musicPortalParent = null;
+  let musicPortalNext = null;
+
+  function enterMusicPortal(){
+    if(!musicHost) return;
+
+    if(
+      musicHost.parentElement ===
+      document.body
+    ){
+      musicHost.classList.add(
+        'sak-music-portal'
+      );
+      return;
+    }
+
+    musicPortalParent =
+      musicHost.parentNode;
+
+    musicPortalNext =
+      musicHost.nextSibling;
+
+    musicPortalMarker =
+      document.createElement(
+        'span'
+      );
+
+    musicPortalMarker.hidden = true;
+    musicPortalMarker.setAttribute(
+      'data-sak-music-marker',
+      '1'
+    );
+
+    if(musicPortalParent){
+      musicPortalParent.insertBefore(
+        musicPortalMarker,
+        musicHost
+      );
+    }
+
+    document.body.appendChild(
+      musicHost
+    );
+
+    musicHost.classList.add(
+      'sak-music-portal'
+    );
+  }
+
+  function leaveMusicPortal(){
+    if(!musicHost) return;
+
+    musicHost.classList.remove(
+      'sak-music-portal'
+    );
+
+    if(
+      musicPortalMarker &&
+      musicPortalMarker.parentNode
+    ){
+      musicPortalMarker.parentNode
+        .insertBefore(
+          musicHost,
+          musicPortalMarker
+        );
+
+      musicPortalMarker.remove();
+    }
+    else if(
+      musicPortalParent &&
+      musicPortalParent.isConnected
+    ){
+      if(
+        musicPortalNext &&
+        musicPortalNext.parentNode ===
+        musicPortalParent
+      ){
+        musicPortalParent.insertBefore(
+          musicHost,
+          musicPortalNext
+        );
+      }else{
+        musicPortalParent.appendChild(
+          musicHost
+        );
+      }
+    }
+
+    musicPortalMarker = null;
+    musicPortalParent = null;
+    musicPortalNext = null;
+  }
+
+  if(musicHost){
+    new MutationObserver(
+      function(){
+        if(
+          musicHost.classList.contains(
+            'sak-music-portal'
+          ) &&
+          !musicHost.querySelector(
+            '#emPanel'
+          )
+        ){
+          setTimeout(
+            leaveMusicPortal,
+            0
+          );
+        }
+      }
+    ).observe(
+      musicHost,
+      {
+        childList:true
+      }
+    );
+  }
+
   /* =======================================================
      1) أصوات وآلات إضافية
      ======================================================= */
@@ -34445,6 +34569,15 @@ html body #emeraldMusicHost .emCredit{
       e.stopPropagation();
     }
 
+    /*
+      مهم:
+      كان emeraldMusicHost موجوداً داخل شريط الأيقونات الذي يستخدم transform.
+      في CSS، أي عنصر position:fixed داخل عنصر transformed يصبح مثبتاً
+      بالنسبة لذلك الشريط، ولذلك كانت نافذة الموسيقى تظهر أسفل الصفحة.
+      ننقل الـ host مؤقتاً إلى body أثناء فتح الاستوديو.
+    */
+    enterMusicPortal();
+
     const existing =
       document.getElementById(
         'emPanel'
@@ -34463,6 +34596,7 @@ html body #emeraldMusicHost .emCredit{
         box.scrollTop = 0;
       }
 
+      enhancePanel();
       return;
     }
 
@@ -34481,6 +34615,9 @@ html body #emeraldMusicHost .emCredit{
         'Music open error:',
         err
       );
+
+      leaveMusicPortal();
+      return;
     }
 
     requestAnimationFrame(
@@ -34492,6 +34629,11 @@ html body #emeraldMusicHost .emCredit{
     setTimeout(
       enhancePanel,
       80
+    );
+
+    setTimeout(
+      enhancePanel,
+      220
     );
   }
 
@@ -35221,6 +35363,308 @@ html body #emeraldMusicHost .emCredit{
       subtree:false
     }
   );
+
+})();
+</script>
+
+
+<!-- SAKAKER MUSIC PORTAL FIX FINAL -->
+<style id="sakaker-music-portal-fix-final">
+
+/* =========================================================
+   نقل نظام الموسيقى مؤقتاً خارج شريط الأيقونات عند الفتح
+   حتى يصبح position:fixed مرتبطاً بالشاشة فعلاً
+========================================================= */
+html body #emeraldMusicHost.sak-music-portal{
+  position:fixed !important;
+  inset:0 !important;
+
+  top:0 !important;
+  left:0 !important;
+  right:0 !important;
+  bottom:0 !important;
+
+  width:100vw !important;
+  height:100dvh !important;
+
+  min-width:100vw !important;
+  max-width:none !important;
+  min-height:100dvh !important;
+  max-height:none !important;
+
+  margin:0 !important;
+  padding:0 !important;
+
+  transform:none !important;
+
+  overflow:visible !important;
+
+  pointer-events:none !important;
+
+  z-index:2147483647 !important;
+}
+
+/* النافذة نفسها مرتبطة بالشاشة وليس بأسفل الصفحة */
+html body #emeraldMusicHost.sak-music-portal #emPanel{
+  position:fixed !important;
+  inset:0 !important;
+
+  top:0 !important;
+  left:0 !important;
+  right:0 !important;
+  bottom:0 !important;
+
+  width:100vw !important;
+  height:100dvh !important;
+
+  margin:0 !important;
+  padding:0 !important;
+
+  transform:none !important;
+
+  display:block !important;
+
+  overflow:hidden !important;
+
+  pointer-events:auto !important;
+
+  z-index:2147483647 !important;
+}
+
+html body #emeraldMusicHost.sak-music-portal #emPanel > .emModal{
+  position:fixed !important;
+  inset:0 !important;
+
+  top:0 !important;
+  left:0 !important;
+
+  width:100vw !important;
+  height:100dvh !important;
+
+  margin:0 !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  overflow:hidden !important;
+
+  pointer-events:auto !important;
+
+  z-index:2147483647 !important;
+}
+
+html body #emeraldMusicHost.sak-music-portal #emPanel .emBox{
+  position:relative !important;
+
+  width:min(1120px,96vw) !important;
+  max-width:96vw !important;
+
+  height:min(94dvh,900px) !important;
+  max-height:94dvh !important;
+
+  margin:0 auto !important;
+
+  transform:none !important;
+
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+
+  pointer-events:auto !important;
+
+  z-index:2147483647 !important;
+}
+
+/* زر الإغلاق: ثابت وواضح داخل أعلى النافذة */
+html body #emeraldMusicHost.sak-music-portal #emPanel .emClose{
+  position:absolute !important;
+
+  top:8px !important;
+  right:8px !important;
+  left:auto !important;
+  bottom:auto !important;
+
+  float:none !important;
+
+  width:38px !important;
+  height:38px !important;
+
+  margin:0 !important;
+  padding:0 !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  border:1px solid rgba(255,255,255,.72) !important;
+  border-radius:50% !important;
+
+  background:#6f102a !important;
+
+  color:#fff !important;
+
+  font-size:17px !important;
+  line-height:1 !important;
+
+  box-shadow:
+    0 0 8px rgba(255,255,255,.11),
+    0 0 15px rgba(255,74,110,.40) !important;
+
+  cursor:pointer !important;
+  pointer-events:auto !important;
+
+  z-index:2147483647 !important;
+}
+
+/* منع رأس الاستوديو من تغطية زر الإغلاق */
+html body #emeraldMusicHost.sak-music-portal #sakMusicStudioHeader{
+  padding-right:54px !important;
+}
+
+html[dir="rtl"] body #emeraldMusicHost.sak-music-portal #sakMusicStudioHeader{
+  padding-right:12px !important;
+  padding-left:54px !important;
+}
+
+/* الجوال: الاستوديو كامل الشاشة تقريباً */
+@media(max-width:720px){
+
+  html body #emeraldMusicHost.sak-music-portal #emPanel > .emModal{
+    padding:
+      max(3px,env(safe-area-inset-top))
+      3px
+      max(3px,env(safe-area-inset-bottom))
+      3px !important;
+
+    align-items:flex-start !important;
+  }
+
+  html body #emeraldMusicHost.sak-music-portal #emPanel .emBox{
+    width:calc(100vw - 6px) !important;
+    max-width:calc(100vw - 6px) !important;
+
+    height:calc(100dvh - 6px) !important;
+    max-height:calc(100dvh - 6px) !important;
+
+    margin:0 !important;
+
+    border-radius:13px !important;
+  }
+
+  html body #emeraldMusicHost.sak-music-portal #emPanel .emClose{
+    top:7px !important;
+    right:7px !important;
+
+    width:36px !important;
+    height:36px !important;
+  }
+}
+
+</style>
+
+<script id="sakaker-music-portal-fix-final-js">
+(function(){
+  'use strict';
+
+  /*
+    حماية إضافية:
+    لو بقيت نافذة موسيقى قديمة مفتوحة من كود سابق،
+    نرفعها فوراً إلى أعلى الشاشة.
+  */
+  function normalizeOpenMusic(){
+    const host =
+      document.getElementById(
+        'emeraldMusicHost'
+      );
+
+    const panel =
+      document.getElementById(
+        'emPanel'
+      );
+
+    if(!host || !panel) return;
+
+    if(
+      host.parentElement !==
+      document.body
+    ){
+      document.body.appendChild(
+        host
+      );
+    }
+
+    host.classList.add(
+      'sak-music-portal'
+    );
+
+    panel.style.position =
+      'fixed';
+
+    panel.style.inset =
+      '0';
+
+    panel.style.zIndex =
+      '2147483647';
+
+    const box =
+      panel.querySelector(
+        '.emBox'
+      );
+
+    if(box){
+      box.scrollTop = 0;
+    }
+  }
+
+  document.addEventListener(
+    'keydown',
+    function(e){
+      if(
+        e.key === 'Escape' &&
+        document.getElementById(
+          'emPanel'
+        )
+      ){
+        const close =
+          document.querySelector(
+            '#emPanel .emClose'
+          );
+
+        if(close){
+          close.click();
+        }
+      }
+    },
+    true
+  );
+
+  /*
+    مراقبة محدودة فقط عند تغير أبناء host،
+    وليست مراقبة شاملة للصفحة.
+  */
+  const host =
+    document.getElementById(
+      'emeraldMusicHost'
+    );
+
+  if(host){
+    new MutationObserver(
+      function(){
+        if(
+          document.getElementById(
+            'emPanel'
+          )
+        ){
+          normalizeOpenMusic();
+        }
+      }
+    ).observe(
+      host,
+      {
+        childList:true
+      }
+    );
+  }
 
 })();
 </script>
