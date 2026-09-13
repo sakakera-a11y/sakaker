@@ -24793,3 +24793,1090 @@ body.sakaker-music-open #sakakerBusinessCenterHost{
   }
 })();
 </script>
+
+
+<!-- SAKAKER MAPS PLUS + STAR GLOW FINAL -->
+<style id="sakaker-maps-plus-star-final">
+
+/* =========================================================
+   1) أيقونة الخرائط النجمة — لمعان وبريق أقوى
+========================================================= */
+html body .launcher{
+  position:relative !important;
+  overflow:visible !important;
+
+  background:
+    radial-gradient(circle at 32% 24%,#ffffff 0 7%,transparent 18%),
+    radial-gradient(circle at 50% 46%,#fffbd2 0 12%,#ffe66d 27%,#ffb300 52%,#8c4dff 78%,#2b0f57 100%) !important;
+
+  border:0 !important;
+
+  clip-path:polygon(
+    50% 0%,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
+  ) !important;
+
+  filter:
+    drop-shadow(0 0 5px rgba(255,255,255,1))
+    drop-shadow(0 0 11px rgba(255,231,102,.96))
+    drop-shadow(0 0 19px rgba(194,137,255,.82))
+    drop-shadow(0 0 30px rgba(100,223,255,.58)) !important;
+
+  box-shadow:
+    inset 0 0 10px rgba(255,255,255,.88),
+    inset 0 0 20px rgba(255,218,95,.34) !important;
+
+  animation:
+    sakMapStarPulse 1.75s ease-in-out infinite,
+    sakMapStarHue 7s linear infinite !important;
+
+  isolation:isolate !important;
+}
+
+html body .launcher::before{
+  content:"" !important;
+
+  position:absolute !important;
+  inset:11% !important;
+
+  clip-path:inherit !important;
+
+  background:
+    radial-gradient(circle at 35% 28%,rgba(255,255,255,.95),rgba(255,244,163,.48) 34%,transparent 72%) !important;
+
+  filter:blur(.8px) !important;
+
+  opacity:.78 !important;
+
+  animation:sakMapStarInner 1.4s ease-in-out infinite alternate !important;
+
+  pointer-events:none !important;
+  z-index:0 !important;
+}
+
+html body .launcher::after{
+  content:"✦" !important;
+
+  position:absolute !important;
+  top:-7px !important;
+  right:-8px !important;
+
+  color:#fff !important;
+
+  font-size:13px !important;
+  line-height:1 !important;
+
+  text-shadow:
+    0 0 3px #fff,
+    0 0 8px #fff7a6,
+    0 0 15px #c594ff !important;
+
+  animation:sakMapSparkle 1.2s ease-in-out infinite !important;
+
+  pointer-events:none !important;
+  z-index:4 !important;
+}
+
+html body .launcher span{
+  position:relative !important;
+  z-index:2 !important;
+
+  color:#fff !important;
+
+  font-weight:1000 !important;
+
+  text-shadow:
+    0 1px 2px rgba(0,0,0,.95),
+    0 0 5px rgba(255,255,255,.95),
+    0 0 10px rgba(255,224,100,.78),
+    0 0 15px rgba(183,122,255,.62) !important;
+}
+
+@keyframes sakMapStarPulse{
+  0%,100%{
+    transform:scale(1);
+    filter:
+      drop-shadow(0 0 5px rgba(255,255,255,.95))
+      drop-shadow(0 0 10px rgba(255,229,92,.82))
+      drop-shadow(0 0 18px rgba(193,135,255,.70))
+      drop-shadow(0 0 26px rgba(92,217,255,.48));
+  }
+  50%{
+    transform:scale(1.12);
+    filter:
+      drop-shadow(0 0 8px rgba(255,255,255,1))
+      drop-shadow(0 0 17px rgba(255,234,107,1))
+      drop-shadow(0 0 28px rgba(201,148,255,.98))
+      drop-shadow(0 0 42px rgba(92,224,255,.72));
+  }
+}
+
+@keyframes sakMapStarHue{
+  from{hue-rotate:0deg}
+  to{hue-rotate:360deg}
+}
+
+@keyframes sakMapStarInner{
+  from{opacity:.42;transform:scale(.80)}
+  to{opacity:.96;transform:scale(1.08)}
+}
+
+@keyframes sakMapSparkle{
+  0%,100%{opacity:.25;transform:scale(.65) rotate(0deg)}
+  50%{opacity:1;transform:scale(1.30) rotate(55deg)}
+}
+
+
+/* =========================================================
+   2) نافذة الخرائط — أكثر شمولية وجمالاً
+========================================================= */
+html body #sakakerMapOverlay{
+  position:fixed !important;
+  inset:0 !important;
+
+  width:100vw !important;
+  height:100dvh !important;
+
+  padding:
+    max(10px,env(safe-area-inset-top))
+    max(10px,env(safe-area-inset-right))
+    max(10px,env(safe-area-inset-bottom))
+    max(10px,env(safe-area-inset-left)) !important;
+
+  box-sizing:border-box !important;
+
+  align-items:center !important;
+  justify-content:center !important;
+
+  background:
+    radial-gradient(circle at 50% 14%,rgba(213,182,248,.13),transparent 34%),
+    rgba(2,3,8,.91) !important;
+
+  backdrop-filter:blur(12px) saturate(115%) !important;
+  -webkit-backdrop-filter:blur(12px) saturate(115%) !important;
+
+  overflow:hidden !important;
+
+  z-index:2147483647 !important;
+}
+
+html body #sakakerMapOverlay .box{
+  position:relative !important;
+
+  width:min(980px,96vw) !important;
+  max-width:96vw !important;
+
+  height:auto !important;
+  max-height:94dvh !important;
+
+  padding:0 !important;
+  margin:0 !important;
+
+  box-sizing:border-box !important;
+
+  overflow:hidden !important;
+
+  border:1px solid rgba(246,236,255,.72) !important;
+  border-radius:25px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(24,17,34,.96),
+      rgba(7,9,15,.97)
+    ) !important;
+
+  box-shadow:
+    0 0 15px rgba(255,255,255,.18),
+    0 0 38px rgba(204,174,240,.21),
+    0 26px 80px rgba(0,0,0,.76),
+    inset 0 0 24px rgba(255,255,255,.035) !important;
+
+  backdrop-filter:blur(14px) !important;
+  -webkit-backdrop-filter:blur(14px) !important;
+}
+
+html body #sakakerMapOverlay .backgroundShade{
+  display:none !important;
+}
+
+html body #sakakerMapOverlay .mapContent{
+  position:relative !important;
+
+  height:auto !important;
+  max-height:94dvh !important;
+
+  padding:16px !important;
+  box-sizing:border-box !important;
+
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:stretch !important;
+  justify-content:flex-start !important;
+
+  gap:10px !important;
+
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+
+  overscroll-behavior:contain !important;
+  scrollbar-width:thin !important;
+}
+
+html body #sakakerMapOverlay .mapTitle{
+  margin:0 !important;
+  padding:3px 45px 5px !important;
+
+  text-align:center !important;
+
+  color:#fff !important;
+
+  font-size:17px !important;
+  font-weight:1000 !important;
+
+  text-shadow:
+    0 1px 3px rgba(0,0,0,.95),
+    0 0 10px rgba(219,192,249,.48) !important;
+}
+
+html body #sakakerMapOverlay #mapCloseBtn{
+  position:absolute !important;
+
+  top:10px !important;
+  right:10px !important;
+
+  width:38px !important;
+  height:38px !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  border:1px solid rgba(255,255,255,.75) !important;
+  border-radius:50% !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(137,22,52,.96),
+      rgba(54,7,23,.98)
+    ) !important;
+
+  color:#fff !important;
+
+  font-size:18px !important;
+
+  box-shadow:
+    0 0 10px rgba(255,83,120,.46),
+    0 0 18px rgba(255,255,255,.10) !important;
+
+  z-index:20 !important;
+}
+
+html body #sakakerMapOverlay #mapFrame{
+  width:100% !important;
+
+  height:min(48dvh,470px) !important;
+  min-height:300px !important;
+
+  margin:0 !important;
+
+  border:1px solid rgba(255,255,255,.54) !important;
+  border-radius:18px !important;
+
+  background:#fff !important;
+
+  box-shadow:
+    0 0 15px rgba(0,0,0,.70),
+    0 0 24px rgba(206,179,241,.12) !important;
+}
+
+
+/* =========================================================
+   3) أدوات الخرائط الجديدة
+========================================================= */
+html body #sakakerMapTools{
+  display:grid !important;
+  grid-template-columns:1fr auto !important;
+  gap:8px !important;
+
+  width:100% !important;
+}
+
+html body #sakakerMapSearch{
+  width:100% !important;
+  min-width:0 !important;
+
+  height:42px !important;
+
+  padding:0 13px !important;
+  box-sizing:border-box !important;
+
+  border:1px solid rgba(239,224,255,.34) !important;
+  border-radius:13px !important;
+
+  outline:none !important;
+
+  background:rgba(255,255,255,.055) !important;
+
+  color:#fff !important;
+
+  font-family:Tajawal,Cairo,Tahoma,Arial,sans-serif !important;
+  font-size:13px !important;
+
+  box-shadow:inset 0 0 10px rgba(255,255,255,.025) !important;
+}
+
+html body #sakakerMapSearch::placeholder{
+  color:rgba(255,255,255,.56) !important;
+}
+
+html body #sakakerMapSearch:focus{
+  border-color:rgba(224,198,255,.85) !important;
+
+  box-shadow:
+    0 0 0 3px rgba(200,162,240,.10),
+    0 0 13px rgba(205,177,240,.15) !important;
+}
+
+html body #sakakerMapSearchBtn,
+html body .sak-map-btn,
+html body .sak-map-select{
+  height:42px !important;
+
+  padding:0 12px !important;
+
+  border:1px solid rgba(240,226,255,.34) !important;
+  border-radius:13px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.11),
+      rgba(177,136,225,.09)
+    ) !important;
+
+  color:#fff !important;
+
+  font-family:Tajawal,Cairo,Tahoma,Arial,sans-serif !important;
+  font-size:12px !important;
+  font-weight:800 !important;
+
+  cursor:pointer !important;
+
+  box-shadow:0 0 10px rgba(206,176,242,.08) !important;
+}
+
+html body #sakakerMapSearchBtn:hover,
+html body .sak-map-btn:hover{
+  border-color:rgba(255,255,255,.72) !important;
+
+  box-shadow:
+    0 0 10px rgba(255,255,255,.13),
+    0 0 18px rgba(210,179,245,.14) !important;
+}
+
+html body #sakakerMapQuickActions{
+  display:grid !important;
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+
+  gap:7px !important;
+}
+
+html body #sakakerMapSettings{
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+
+  gap:7px !important;
+}
+
+html body #sakakerMapMeta{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:8px !important;
+  flex-wrap:wrap !important;
+
+  min-height:30px !important;
+
+  padding:5px 8px !important;
+
+  border:1px solid rgba(255,255,255,.08) !important;
+  border-radius:12px !important;
+
+  background:rgba(255,255,255,.025) !important;
+
+  color:rgba(255,255,255,.76) !important;
+
+  font-size:10px !important;
+}
+
+html body #sakakerMapPermission{
+  color:#e8dbf7 !important;
+}
+
+html body #sakakerMapCoords{
+  direction:ltr !important;
+  unicode-bidi:plaintext !important;
+
+  color:#fff5bf !important;
+}
+
+html body #sakakerMapHelp{
+  display:none;
+
+  padding:9px 11px !important;
+
+  border:1px solid rgba(225,201,250,.17) !important;
+  border-radius:12px !important;
+
+  background:rgba(255,255,255,.028) !important;
+
+  color:rgba(255,255,255,.78) !important;
+
+  font-size:10px !important;
+  line-height:1.7 !important;
+}
+
+
+/* =========================================================
+   4) الجوال
+========================================================= */
+@media(max-width:700px){
+
+  html body #sakakerMapOverlay{
+    padding:
+      max(5px,env(safe-area-inset-top))
+      5px
+      max(5px,env(safe-area-inset-bottom))
+      5px !important;
+  }
+
+  html body #sakakerMapOverlay .box{
+    width:calc(100vw - 10px) !important;
+    max-width:calc(100vw - 10px) !important;
+
+    max-height:calc(100dvh - 10px) !important;
+
+    border-radius:18px !important;
+  }
+
+  html body #sakakerMapOverlay .mapContent{
+    max-height:calc(100dvh - 10px) !important;
+
+    padding:10px !important;
+
+    gap:8px !important;
+  }
+
+  html body #sakakerMapOverlay .mapTitle{
+    padding:4px 40px 3px !important;
+
+    font-size:13px !important;
+  }
+
+  html body #sakakerMapOverlay #mapCloseBtn{
+    width:35px !important;
+    height:35px !important;
+
+    top:7px !important;
+    right:7px !important;
+  }
+
+  html body #sakakerMapTools{
+    grid-template-columns:1fr auto !important;
+    gap:6px !important;
+  }
+
+  html body #sakakerMapSearch{
+    height:39px !important;
+
+    font-size:11px !important;
+  }
+
+  html body #sakakerMapSearchBtn,
+  html body .sak-map-btn,
+  html body .sak-map-select{
+    height:39px !important;
+
+    padding:0 8px !important;
+
+    font-size:9px !important;
+  }
+
+  html body #sakakerMapQuickActions{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+
+    gap:6px !important;
+  }
+
+  html body #sakakerMapSettings{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+
+    gap:6px !important;
+  }
+
+  html body #sakakerMapSettings .sak-map-select:last-child{
+    grid-column:1/-1 !important;
+  }
+
+  html body #sakakerMapMeta{
+    font-size:8px !important;
+  }
+
+  html body #sakakerMapOverlay #mapFrame{
+    height:40dvh !important;
+    min-height:230px !important;
+
+    border-radius:13px !important;
+  }
+
+  html body #sakakerMapHelp{
+    font-size:8px !important;
+  }
+}
+
+@media(max-width:390px){
+  html body #sakakerMapOverlay #mapFrame{
+    height:37dvh !important;
+    min-height:205px !important;
+  }
+}
+
+</style>
+
+<script id="sakaker-maps-plus-star-js">
+(function(){
+  'use strict';
+
+  const mapFrame = document.getElementById('mapFrame');
+  const mapClose = document.getElementById('mapCloseBtn');
+  const launcher = document.querySelector('.launcher');
+
+  if(!mapFrame || !mapClose || !launcher) return;
+
+  const overlay = mapClose.closest('.overlay');
+
+  if(!overlay) return;
+
+  overlay.id = 'sakakerMapOverlay';
+
+  const mapContent = overlay.querySelector('.mapContent');
+  const mapTitle = overlay.querySelector('.mapTitle');
+
+  if(!mapContent || !mapTitle) return;
+
+  let lastLat = null;
+  let lastLon = null;
+  let lastAccuracy = null;
+  let lastQuery = '';
+  let currentZoom = 15;
+  let currentType = 'm';
+
+  function lang(){
+    return document.documentElement.lang === 'en' ? 'en' : 'ar';
+  }
+
+  const TEXT = {
+    ar:{
+      icon:'خرائط',
+      title:'🗺️ الخرائط والموقع',
+      searchPlaceholder:'ابحث عن مدينة، مكان، عنوان أو معلم…',
+      search:'بحث',
+      locate:'📍 موقعي الحالي',
+      directions:'🧭 الاتجاهات',
+      open:'↗ فتح Google Maps',
+      copy:'📋 نسخ الإحداثيات',
+      zoom:'مستوى التكبير',
+      mapType:'نوع الخريطة',
+      permission:'إذن الموقع',
+      settings:'⚙️ إعدادات الموقع',
+      zoom5:'واسع',
+      zoom10:'مدينة',
+      zoom15:'قريب',
+      zoom18:'تفصيلي',
+      normal:'عادية',
+      satellite:'قمر صناعي',
+      hybrid:'هجين',
+      locating:'جاري تحديد موقعك…',
+      locationReady:'تم تحديد الموقع',
+      denied:'تم رفض إذن الموقع',
+      unavailable:'تعذّر تحديد الموقع',
+      unsupported:'المتصفح لا يدعم تحديد الموقع',
+      copied:'تم نسخ الإحداثيات',
+      nothingCopy:'لا توجد إحداثيات بعد',
+      permissionGranted:'مسموح',
+      permissionPrompt:'سيطلب الإذن',
+      permissionDenied:'مرفوض',
+      permissionUnknown:'غير معروف',
+      help:'لتغيير إذن الموقع استخدم إعدادات الموقع في المتصفح لهذا الموقع، ثم أعد الضغط على «موقعي الحالي». لا يتم إرسال موقعك إلا عند طلبك له من المتصفح.'
+    },
+    en:{
+      icon:'Maps',
+      title:'🗺️ Maps & Location',
+      searchPlaceholder:'Search for a city, place, address, or landmark…',
+      search:'Search',
+      locate:'📍 My location',
+      directions:'🧭 Directions',
+      open:'↗ Open Google Maps',
+      copy:'📋 Copy coordinates',
+      zoom:'Zoom level',
+      mapType:'Map type',
+      permission:'Location permission',
+      settings:'⚙️ Location settings',
+      zoom5:'Wide',
+      zoom10:'City',
+      zoom15:'Near',
+      zoom18:'Detailed',
+      normal:'Map',
+      satellite:'Satellite',
+      hybrid:'Hybrid',
+      locating:'Locating you…',
+      locationReady:'Location ready',
+      denied:'Location permission denied',
+      unavailable:'Unable to get location',
+      unsupported:'Geolocation is not supported',
+      copied:'Coordinates copied',
+      nothingCopy:'No coordinates yet',
+      permissionGranted:'Allowed',
+      permissionPrompt:'Will ask',
+      permissionDenied:'Blocked',
+      permissionUnknown:'Unknown',
+      help:'To change location permission, use your browser’s site settings for this website, then press “My location” again. Your location is requested only through the browser when you choose to use it.'
+    }
+  };
+
+  function T(){
+    return TEXT[lang()];
+  }
+
+  function buildTools(){
+    if(document.getElementById('sakakerMapTools')) return;
+
+    const tools = document.createElement('div');
+    tools.id = 'sakakerMapTools';
+
+    const input = document.createElement('input');
+    input.id = 'sakakerMapSearch';
+    input.type = 'search';
+    input.autocomplete = 'off';
+
+    const searchBtn = document.createElement('button');
+    searchBtn.id = 'sakakerMapSearchBtn';
+    searchBtn.type = 'button';
+
+    tools.appendChild(input);
+    tools.appendChild(searchBtn);
+
+    const quick = document.createElement('div');
+    quick.id = 'sakakerMapQuickActions';
+
+    [
+      ['sakakerMapLocate','locate'],
+      ['sakakerMapDirections','directions'],
+      ['sakakerMapExternal','open'],
+      ['sakakerMapCopy','copy']
+    ].forEach(function(pair){
+      const btn = document.createElement('button');
+      btn.id = pair[0];
+      btn.className = 'sak-map-btn';
+      btn.type = 'button';
+      btn.dataset.textKey = pair[1];
+      quick.appendChild(btn);
+    });
+
+    const settings = document.createElement('div');
+    settings.id = 'sakakerMapSettings';
+
+    const zoom = document.createElement('select');
+    zoom.id = 'sakakerMapZoom';
+    zoom.className = 'sak-map-select';
+
+    [
+      [5,'zoom5'],
+      [10,'zoom10'],
+      [15,'zoom15'],
+      [18,'zoom18']
+    ].forEach(function(pair){
+      const option = document.createElement('option');
+      option.value = pair[0];
+      option.dataset.textKey = pair[1];
+      zoom.appendChild(option);
+    });
+
+    zoom.value = String(currentZoom);
+
+    const type = document.createElement('select');
+    type.id = 'sakakerMapType';
+    type.className = 'sak-map-select';
+
+    [
+      ['m','normal'],
+      ['k','satellite'],
+      ['h','hybrid']
+    ].forEach(function(pair){
+      const option = document.createElement('option');
+      option.value = pair[0];
+      option.dataset.textKey = pair[1];
+      type.appendChild(option);
+    });
+
+    type.value = currentType;
+
+    const helpBtn = document.createElement('button');
+    helpBtn.id = 'sakakerMapSettingsBtn';
+    helpBtn.className = 'sak-map-btn';
+    helpBtn.type = 'button';
+    helpBtn.dataset.textKey = 'settings';
+
+    settings.appendChild(zoom);
+    settings.appendChild(type);
+    settings.appendChild(helpBtn);
+
+    const meta = document.createElement('div');
+    meta.id = 'sakakerMapMeta';
+
+    const permission = document.createElement('span');
+    permission.id = 'sakakerMapPermission';
+
+    const coords = document.createElement('span');
+    coords.id = 'sakakerMapCoords';
+    coords.textContent = '—';
+
+    meta.appendChild(permission);
+    meta.appendChild(coords);
+
+    const help = document.createElement('div');
+    help.id = 'sakakerMapHelp';
+
+    mapContent.insertBefore(tools,mapFrame);
+    mapContent.insertBefore(quick,mapFrame);
+    mapContent.insertBefore(settings,mapFrame);
+    mapContent.insertBefore(meta,mapFrame);
+    mapContent.insertBefore(help,mapFrame);
+
+    input.addEventListener('keydown',function(e){
+      if(e.key === 'Enter'){
+        e.preventDefault();
+        runSearch();
+      }
+    });
+
+    searchBtn.addEventListener('click',runSearch);
+
+    document.getElementById('sakakerMapLocate')
+      .addEventListener('click',locateUser);
+
+    document.getElementById('sakakerMapDirections')
+      .addEventListener('click',openDirections);
+
+    document.getElementById('sakakerMapExternal')
+      .addEventListener('click',openExternalMap);
+
+    document.getElementById('sakakerMapCopy')
+      .addEventListener('click',copyCoordinates);
+
+    zoom.addEventListener('change',function(){
+      currentZoom = Number(zoom.value) || 15;
+      refreshCurrentMap();
+    });
+
+    type.addEventListener('change',function(){
+      currentType = type.value || 'm';
+      refreshCurrentMap();
+    });
+
+    helpBtn.addEventListener('click',function(){
+      help.style.display =
+        help.style.display === 'block'
+          ? 'none'
+          : 'block';
+    });
+  }
+
+  function setFrameByQuery(query){
+    lastQuery = String(query || '').trim();
+
+    if(!lastQuery) return;
+
+    mapFrame.src =
+      'https://www.google.com/maps?q=' +
+      encodeURIComponent(lastQuery) +
+      '&z=' + encodeURIComponent(currentZoom) +
+      '&t=' + encodeURIComponent(currentType) +
+      '&output=embed';
+  }
+
+  function setFrameByCoords(lat,lon){
+    lastLat = Number(lat);
+    lastLon = Number(lon);
+    lastQuery = lastLat + ',' + lastLon;
+
+    setFrameByQuery(lastQuery);
+
+    const coords = document.getElementById('sakakerMapCoords');
+
+    if(coords){
+      coords.textContent =
+        lastLat.toFixed(6) +
+        ', ' +
+        lastLon.toFixed(6) +
+        (lastAccuracy
+          ? '  ±' + Math.round(lastAccuracy) + 'm'
+          : '');
+    }
+  }
+
+  function refreshCurrentMap(){
+    if(lastLat !== null && lastLon !== null){
+      setFrameByCoords(lastLat,lastLon);
+      return;
+    }
+
+    if(lastQuery){
+      setFrameByQuery(lastQuery);
+      return;
+    }
+
+    setFrameByQuery('Saudi Arabia');
+  }
+
+  function runSearch(){
+    const input = document.getElementById('sakakerMapSearch');
+    if(!input) return;
+
+    const value = input.value.trim();
+    if(!value) return;
+
+    lastLat = null;
+    lastLon = null;
+    lastAccuracy = null;
+
+    const coords = document.getElementById('sakakerMapCoords');
+    if(coords) coords.textContent = value;
+
+    setFrameByQuery(value);
+  }
+
+  function setPermissionText(state){
+    const el = document.getElementById('sakakerMapPermission');
+    if(!el) return;
+
+    const t = T();
+
+    let value = t.permissionUnknown;
+
+    if(state === 'granted') value = t.permissionGranted;
+    if(state === 'prompt') value = t.permissionPrompt;
+    if(state === 'denied') value = t.permissionDenied;
+
+    el.textContent = t.permission + ': ' + value;
+  }
+
+  async function updatePermission(){
+    if(!navigator.permissions || !navigator.permissions.query){
+      setPermissionText('unknown');
+      return;
+    }
+
+    try{
+      const status = await navigator.permissions.query({
+        name:'geolocation'
+      });
+
+      setPermissionText(status.state);
+
+      status.onchange = function(){
+        setPermissionText(status.state);
+      };
+    }catch(e){
+      setPermissionText('unknown');
+    }
+  }
+
+  function locateUser(){
+    const t = T();
+    const coords = document.getElementById('sakakerMapCoords');
+
+    if(!navigator.geolocation){
+      if(coords) coords.textContent = t.unsupported;
+      return;
+    }
+
+    if(coords) coords.textContent = t.locating;
+
+    navigator.geolocation.getCurrentPosition(
+      function(position){
+        lastAccuracy = position.coords.accuracy || null;
+
+        setFrameByCoords(
+          position.coords.latitude,
+          position.coords.longitude
+        );
+
+        updatePermission();
+      },
+      function(error){
+        if(coords){
+          coords.textContent =
+            error && error.code === 1
+              ? t.denied
+              : t.unavailable;
+        }
+
+        updatePermission();
+      },
+      {
+        enableHighAccuracy:true,
+        timeout:12000,
+        maximumAge:30000
+      }
+    );
+  }
+
+  function currentTarget(){
+    if(lastLat !== null && lastLon !== null){
+      return lastLat + ',' + lastLon;
+    }
+
+    if(lastQuery){
+      return lastQuery;
+    }
+
+    return 'Saudi Arabia';
+  }
+
+  function openExternalMap(){
+    const target = currentTarget();
+
+    window.open(
+      'https://www.google.com/maps/search/?api=1&query=' +
+      encodeURIComponent(target),
+      '_blank',
+      'noopener'
+    );
+  }
+
+  function openDirections(){
+    const target = currentTarget();
+
+    window.open(
+      'https://www.google.com/maps/dir/?api=1&destination=' +
+      encodeURIComponent(target),
+      '_blank',
+      'noopener'
+    );
+  }
+
+  async function copyCoordinates(){
+    const t = T();
+
+    if(lastLat === null || lastLon === null){
+      const coords = document.getElementById('sakakerMapCoords');
+      if(coords) coords.textContent = t.nothingCopy;
+      return;
+    }
+
+    const value =
+      lastLat.toFixed(6) +
+      ', ' +
+      lastLon.toFixed(6);
+
+    try{
+      await navigator.clipboard.writeText(value);
+
+      const coords = document.getElementById('sakakerMapCoords');
+
+      if(coords){
+        coords.textContent =
+          t.copied + ': ' + value;
+      }
+    }catch(e){}
+  }
+
+  function applyMapLanguage(){
+    const t = T();
+
+    launcher.title =
+      lang() === 'en'
+        ? 'Open maps'
+        : 'فتح الخرائط';
+
+    const span = launcher.querySelector('span');
+    if(span){
+      span.innerHTML =
+        t.icon +
+        '<br><small style="font-size:.72em;opacity:.78">MAP</small>';
+    }
+
+    mapTitle.innerHTML = t.title;
+
+    const input = document.getElementById('sakakerMapSearch');
+    const searchBtn = document.getElementById('sakakerMapSearchBtn');
+    const help = document.getElementById('sakakerMapHelp');
+
+    if(input) input.placeholder = t.searchPlaceholder;
+    if(searchBtn) searchBtn.textContent = t.search;
+    if(help) help.textContent = t.help;
+
+    document
+      .querySelectorAll('#sakakerMapOverlay [data-text-key]')
+      .forEach(function(el){
+        const key = el.dataset.textKey;
+
+        if(t[key]){
+          el.textContent = t[key];
+        }
+      });
+
+    updatePermission();
+  }
+
+  buildTools();
+  applyMapLanguage();
+  updatePermission();
+
+  /* عندما تفتح النافذة نجعلها أعلى كل المحتوى */
+  launcher.addEventListener('click',function(){
+    setTimeout(function(){
+      overlay.style.zIndex = '2147483647';
+      applyMapLanguage();
+    },0);
+  });
+
+  /* نغلق بزر Escape */
+  document.addEventListener(
+    'keydown',
+    function(e){
+      if(
+        e.key === 'Escape' &&
+        getComputedStyle(overlay).display !== 'none'
+      ){
+        if(typeof window.closeMap === 'function'){
+          window.closeMap();
+        }
+      }
+    },
+    true
+  );
+
+  new MutationObserver(function(){
+    applyMapLanguage();
+  }).observe(
+    document.documentElement,
+    {
+      attributes:true,
+      attributeFilter:['lang','dir']
+    }
+  );
+
+})();
+</script>
