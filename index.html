@@ -23939,3 +23939,678 @@ html body #videoOverlay #closeVideo{
   syncFacebookState();
 })();
 </script>
+
+
+<!-- SAKAKER BOUNCING VIDEO + WORLD NEWS FINAL -->
+<style id="sakaker-bouncing-video-world-news-final">
+
+html body .video-top-container-fixed{
+  position:fixed !important;
+  top:0 !important;
+  left:0 !important;
+  right:auto !important;
+  bottom:auto !important;
+  width:max-content !important;
+  max-width:none !important;
+  height:max-content !important;
+  margin:0 !important;
+  padding:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  transform:none !important;
+  z-index:810000 !important;
+  pointer-events:none !important;
+  will-change:transform !important;
+  contain:layout style !important;
+}
+
+html body .video-top-container-fixed .video-circle{
+  pointer-events:auto !important;
+  margin:0 !important;
+  transition:box-shadow .28s ease,filter .28s ease !important;
+}
+
+html body .video-top-container-fixed .video-circle:hover{
+  transform:none !important;
+  filter:brightness(1.08) !important;
+}
+
+html body #sakakerTopDateTime{
+  overflow:visible !important;
+}
+
+html body #sakakerWorldNews{
+  position:absolute !important;
+  top:calc(100% + 7px) !important;
+  left:50% !important;
+  right:auto !important;
+  transform:translateX(-50%) !important;
+  width:min(94vw,1040px) !important;
+  max-width:min(94vw,1040px) !important;
+  height:36px !important;
+  min-height:36px !important;
+  padding:0 12px !important;
+  box-sizing:border-box !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  overflow:hidden !important;
+  white-space:nowrap !important;
+  border:1px solid currentColor !important;
+  border-radius:30px !important;
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+  color:#e9dcff !important;
+  box-shadow:
+    0 0 7px currentColor,
+    0 0 17px rgba(220,195,250,.42),
+    0 0 28px rgba(255,255,255,.12) !important;
+  text-shadow:
+    0 0 5px currentColor,
+    0 0 11px currentColor,
+    0 0 20px rgba(255,255,255,.40) !important;
+  font-family:Tajawal,Cairo,Tahoma,Arial,sans-serif !important;
+  font-size:11px !important;
+  font-weight:800 !important;
+  pointer-events:auto !important;
+  z-index:900590 !important;
+  animation:sakakerWorldNewsGlow 2.2s ease-in-out infinite alternate !important;
+}
+
+@keyframes sakakerWorldNewsGlow{
+  from{
+    filter:brightness(.92);
+    box-shadow:0 0 6px currentColor,0 0 13px rgba(220,195,250,.28) !important;
+  }
+  to{
+    filter:brightness(1.20);
+    box-shadow:
+      0 0 9px currentColor,
+      0 0 22px rgba(220,195,250,.48),
+      0 0 34px rgba(255,255,255,.13) !important;
+  }
+}
+
+html body #sakakerWorldNewsTrack{
+  display:inline-block !important;
+  min-width:max-content !important;
+  padding-inline:40px !important;
+  white-space:nowrap !important;
+  direction:var(--sak-news-dir,rtl) !important;
+  animation:sakakerWorldNewsMove var(--sak-news-duration,95s) linear infinite !important;
+  will-change:transform !important;
+}
+
+html body #sakakerWorldNews:hover #sakakerWorldNewsTrack{
+  animation-play-state:paused !important;
+}
+
+@keyframes sakakerWorldNewsMove{
+  from{transform:translateX(100%)}
+  to{transform:translateX(-100%)}
+}
+
+html body #sakakerWorldNews .sak-news-title{
+  font-weight:1000 !important;
+  color:#fff9ff !important;
+  margin-inline-end:12px !important;
+  text-shadow:
+    0 0 6px rgba(255,255,255,.95),
+    0 0 13px rgba(218,190,248,.70) !important;
+}
+
+@media(max-width:700px){
+  html body #sakakerWorldNews{
+    top:calc(100% + 5px) !important;
+    width:94vw !important;
+    max-width:94vw !important;
+    height:30px !important;
+    min-height:30px !important;
+    padding:0 8px !important;
+    border-radius:22px !important;
+    font-size:8px !important;
+  }
+
+  html body #sakakerWorldNewsTrack{
+    padding-inline:24px !important;
+  }
+}
+
+@media(max-width:390px){
+  html body #sakakerWorldNews{
+    width:95vw !important;
+    max-width:95vw !important;
+    height:27px !important;
+    min-height:27px !important;
+    font-size:7px !important;
+  }
+}
+
+body.locked #sakakerWorldNews{
+  visibility:hidden !important;
+}
+
+body.sakaker-fb-popup-open #sakakerWorldNews,
+body.sakaker-live-popup-open #sakakerWorldNews,
+body.sakaker-live-video-open #sakakerWorldNews,
+body.sakaker-fb-popup-open .video-top-container-fixed,
+body.sakaker-live-popup-open .video-top-container-fixed,
+body.sakaker-live-video-open .video-top-container-fixed{
+  visibility:hidden !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+
+</style>
+
+<script id="sakaker-bouncing-video-world-news-js">
+(function(){
+  'use strict';
+
+  const NEWS_FEEDS = {
+    ar: [
+      ['Google News عربي','https://news.google.com/rss/headlines/section/topic/WORLD?hl=ar&gl=SA&ceid=SA:ar'],
+      ['الجزيرة','https://www.aljazeera.net/aljazeerarss/arabe.xml'],
+      ['العربية','https://www.alarabiya.net/.mrss/ar.xml'],
+      ['BBC عربي','https://www.bbc.com/arabic/index.xml'],
+      ['CNN عربي','https://arabic.cnn.com/rss.xml'],
+      ['الشرق الأوسط','https://aawsat.com/rss.xml'],
+      ['سكاي نيوز عربية','https://www.skynewsarabia.com/web/rss'],
+      ['فرانس 24 عربي','https://www.france24.com/ar/rss'],
+      ['روسيا اليوم عربي','https://arabic.rt.com/rss/'],
+      ['TRT عربي','https://www.trtarabi.com/rss'],
+      ['DW عربي','https://rss.dw.com/rdf/rss-ar-all']
+    ],
+    en: [
+      ['Google News World','https://news.google.com/rss/headlines/section/topic/WORLD?hl=en-US&gl=US&ceid=US:en'],
+      ['BBC','https://feeds.bbci.co.uk/news/rss.xml'],
+      ['CNN','https://rss.cnn.com/rss/edition.rss'],
+      ['Al Jazeera English','https://www.aljazeera.com/xml/rss/all.xml'],
+      ['France 24','https://www.france24.com/en/rss'],
+      ['DW','https://rss.dw.com/rdf/rss-en-all'],
+      ['NPR','https://feeds.npr.org/1001/rss.xml'],
+      ['The Guardian','https://www.theguardian.com/world/rss'],
+      ['Sky News','https://feeds.skynews.com/feeds/rss/world.xml']
+    ]
+  };
+
+  let newsLoadToken = 0;
+
+  function currentLang(){
+    return document.documentElement.lang === 'en' ? 'en' : 'ar';
+  }
+
+  function ensureWorldNews(){
+    const clockBox = document.getElementById('sakakerTopDateTime');
+    if(!clockBox) return null;
+
+    let news = document.getElementById('sakakerWorldNews');
+
+    if(!news){
+      news = document.createElement('div');
+      news.id = 'sakakerWorldNews';
+      news.setAttribute('role','status');
+      news.setAttribute('aria-live','polite');
+
+      const track = document.createElement('div');
+      track.id = 'sakakerWorldNewsTrack';
+
+      news.appendChild(track);
+      clockBox.appendChild(news);
+    }
+
+    return news;
+  }
+
+  function setNewsText(items, lang){
+    const news = ensureWorldNews();
+    const track = document.getElementById('sakakerWorldNewsTrack');
+    if(!news || !track) return;
+
+    const title = lang === 'en' ? '🌍 World News' : '🌍 أخبار العالم';
+    const fallback = lang === 'en'
+      ? 'News is temporarily unavailable — automatic refresh will retry.'
+      : 'تعذّر تحميل الأخبار مؤقتاً — ستتم إعادة المحاولة تلقائياً.';
+
+    const bodyText = items && items.length ? items.join('   ◆   ') : fallback;
+
+    track.innerHTML = '';
+
+    const titleSpan = document.createElement('span');
+    titleSpan.className = 'sak-news-title';
+    titleSpan.textContent = title;
+
+    const textSpan = document.createElement('span');
+    textSpan.textContent = bodyText;
+
+    track.appendChild(titleSpan);
+    track.appendChild(textSpan);
+
+    news.style.setProperty('--sak-news-dir',lang === 'ar' ? 'rtl' : 'ltr');
+
+    const chars = (title + bodyText).length;
+    const duration = Math.max(55,Math.min(180,Math.round(chars * .22)));
+    news.style.setProperty('--sak-news-duration',duration + 's');
+
+    track.style.animation = 'none';
+    void track.offsetWidth;
+    track.style.animation = '';
+  }
+
+  function cacheKey(lang){
+    return 'sakakerWorldNewsCacheV2-' + lang;
+  }
+
+  function readNewsCache(lang){
+    try{
+      const raw = localStorage.getItem(cacheKey(lang));
+      if(!raw) return null;
+
+      const data = JSON.parse(raw);
+      if(!data || !Array.isArray(data.items)) return null;
+
+      if(Date.now() - Number(data.time || 0) > 12 * 60 * 60 * 1000){
+        return null;
+      }
+
+      return data.items;
+    }catch(e){
+      return null;
+    }
+  }
+
+  function writeNewsCache(lang,items){
+    try{
+      localStorage.setItem(
+        cacheKey(lang),
+        JSON.stringify({time:Date.now(),items:items})
+      );
+    }catch(e){}
+  }
+
+  async function fetchWithTimeout(url,timeoutMs){
+    const controller = new AbortController();
+    const timer = setTimeout(function(){controller.abort();},timeoutMs);
+
+    try{
+      const proxy = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
+
+      const response = await fetch(proxy,{
+        signal:controller.signal,
+        cache:'no-store'
+      });
+
+      if(!response.ok) throw new Error('HTTP ' + response.status);
+
+      return await response.json();
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  async function fetchFeed(name,url){
+    try{
+      const data = await fetchWithTimeout(url,9000);
+      if(!data || !data.contents) return [];
+
+      const xml = new DOMParser().parseFromString(data.contents,'text/xml');
+      if(xml.querySelector('parsererror')) return [];
+
+      const nodes = Array.from(xml.querySelectorAll('item, entry')).slice(0,3);
+      const results = [];
+
+      nodes.forEach(function(node){
+        const titleNode = node.querySelector('title');
+        if(!titleNode) return;
+
+        const title = (titleNode.textContent || '').replace(/\s+/g,' ').trim();
+        if(!title) return;
+
+        results.push('(' + name + ') ' + title);
+      });
+
+      return results;
+    }catch(e){
+      return [];
+    }
+  }
+
+  async function loadWorldNews(){
+    const token = ++newsLoadToken;
+    const lang = currentLang();
+
+    ensureWorldNews();
+
+    const cached = readNewsCache(lang);
+
+    if(cached && cached.length){
+      setNewsText(cached,lang);
+    }else{
+      setNewsText(
+        [lang === 'en' ? 'Loading global headlines…' : 'جاري تحميل أبرز الأخبار العالمية…'],
+        lang
+      );
+    }
+
+    const feeds = NEWS_FEEDS[lang] || NEWS_FEEDS.ar;
+
+    const settled = await Promise.allSettled(
+      feeds.map(function(pair){
+        return fetchFeed(pair[0],pair[1]);
+      })
+    );
+
+    if(token !== newsLoadToken) return;
+
+    let items = [];
+
+    settled.forEach(function(result){
+      if(result.status === 'fulfilled'){
+        items = items.concat(result.value || []);
+      }
+    });
+
+    const seen = new Set();
+
+    items = items.filter(function(item){
+      const key = item.toLowerCase().replace(/[^\p{L}\p{N}]+/gu,' ').trim();
+
+      if(!key || seen.has(key)) return false;
+
+      seen.add(key);
+      return true;
+    }).slice(0,36);
+
+    if(items.length){
+      writeNewsCache(lang,items);
+      setNewsText(items,lang);
+    }else if(!(cached && cached.length)){
+      setNewsText([],lang);
+    }
+  }
+
+  const mover = document.querySelector('.video-top-container-fixed');
+
+  if(mover){
+    let x = 0;
+    let y = 0;
+    let vx = window.innerWidth <= 700 ? 0.055 : 0.070;
+    let vy = window.innerWidth <= 700 ? 0.046 : 0.058;
+    let lastTime = 0;
+    let initialized = false;
+    let pausedByPointer = false;
+
+    const EDGE = 8;
+    const HIT_PAD = 7;
+
+    const obstacleSelectors = [
+      '#sakakerTopDateTime',
+      '#sakakerWorldNews',
+      '#sakakerTopTools',
+      '#userProfile',
+      '#sakakerAllIconsDock',
+      '#sakakerVisitorCounter',
+      '#sakakerWisdomBox',
+      '.sakaker-copyright',
+      '#sakakerCenterFeatureDock'
+    ];
+
+    function isVisible(el){
+      if(!el || el === mover || mover.contains(el)) return false;
+
+      const cs = getComputedStyle(el);
+
+      if(
+        cs.display === 'none' ||
+        cs.visibility === 'hidden' ||
+        Number(cs.opacity) === 0
+      ){
+        return false;
+      }
+
+      const r = el.getBoundingClientRect();
+
+      return (
+        r.width > 2 &&
+        r.height > 2 &&
+        r.bottom > 0 &&
+        r.right > 0 &&
+        r.top < window.innerHeight &&
+        r.left < window.innerWidth
+      );
+    }
+
+    function obstacleRects(){
+      const rects = [];
+
+      obstacleSelectors.forEach(function(selector){
+        document.querySelectorAll(selector).forEach(function(el){
+          if(!isVisible(el)) return;
+
+          const r = el.getBoundingClientRect();
+
+          rects.push({
+            left:r.left - HIT_PAD,
+            top:r.top - HIT_PAD,
+            right:r.right + HIT_PAD,
+            bottom:r.bottom + HIT_PAD
+          });
+        });
+      });
+
+      return rects;
+    }
+
+    function intersects(a,b){
+      return !(
+        a.right <= b.left ||
+        a.left >= b.right ||
+        a.bottom <= b.top ||
+        a.top >= b.bottom
+      );
+    }
+
+    function pausedByUI(){
+      const body = document.body;
+
+      if(
+        body.classList.contains('locked') ||
+        body.classList.contains('sakaker-fb-popup-open') ||
+        body.classList.contains('sakaker-live-popup-open') ||
+        body.classList.contains('sakaker-live-video-open') ||
+        body.classList.contains('sakaker-ship-open') ||
+        body.classList.contains('sakaker-music-open')
+      ){
+        return true;
+      }
+
+      const fixedVideo = document.getElementById('videoBoxFixed');
+
+      if(fixedVideo && getComputedStyle(fixedVideo).display !== 'none'){
+        return true;
+      }
+
+      return pausedByPointer || document.hidden;
+    }
+
+    function initialize(){
+      const r = mover.getBoundingClientRect();
+      const w = Math.max(1,r.width);
+      const h = Math.max(1,r.height);
+
+      x = Math.max(
+        EDGE,
+        Math.min(window.innerWidth - w - EDGE,(window.innerWidth - w) / 2)
+      );
+
+      y = Math.max(
+        95,
+        Math.min(window.innerHeight - h - 100,(window.innerHeight - h) / 2)
+      );
+
+      mover.style.setProperty(
+        'transform',
+        'translate3d(' + x + 'px,' + y + 'px,0)',
+        'important'
+      );
+
+      initialized = true;
+    }
+
+    function resolveObstacle(nextX,nextY,w,h){
+      const candidate = {
+        left:nextX,
+        top:nextY,
+        right:nextX + w,
+        bottom:nextY + h
+      };
+
+      const rects = obstacleRects();
+
+      for(const b of rects){
+        if(!intersects(candidate,b)) continue;
+
+        const overlapLeft = candidate.right - b.left;
+        const overlapRight = b.right - candidate.left;
+        const overlapTop = candidate.bottom - b.top;
+        const overlapBottom = b.bottom - candidate.top;
+
+        const overlapX = Math.min(overlapLeft,overlapRight);
+        const overlapY = Math.min(overlapTop,overlapBottom);
+
+        if(overlapX < overlapY){
+          vx *= -1;
+          nextX = x < b.left ? b.left - w - HIT_PAD : b.right + HIT_PAD;
+        }else{
+          vy *= -1;
+          nextY = y < b.top ? b.top - h - HIT_PAD : b.bottom + HIT_PAD;
+        }
+
+        break;
+      }
+
+      return [nextX,nextY];
+    }
+
+    function frame(now){
+      if(!initialized) initialize();
+      if(!lastTime) lastTime = now;
+
+      const dt = Math.min(36,Math.max(0,now - lastTime));
+      lastTime = now;
+
+      if(!pausedByUI()){
+        const r = mover.getBoundingClientRect();
+        const w = Math.max(1,r.width);
+        const h = Math.max(1,r.height);
+
+        let nextX = x + vx * dt;
+        let nextY = y + vy * dt;
+
+        const maxX = Math.max(EDGE,window.innerWidth - w - EDGE);
+        const maxY = Math.max(EDGE,window.innerHeight - h - EDGE);
+
+        if(nextX <= EDGE){
+          nextX = EDGE;
+          vx = Math.abs(vx);
+        }else if(nextX >= maxX){
+          nextX = maxX;
+          vx = -Math.abs(vx);
+        }
+
+        if(nextY <= EDGE){
+          nextY = EDGE;
+          vy = Math.abs(vy);
+        }else if(nextY >= maxY){
+          nextY = maxY;
+          vy = -Math.abs(vy);
+        }
+
+        [nextX,nextY] = resolveObstacle(nextX,nextY,w,h);
+
+        nextX = Math.max(EDGE,Math.min(maxX,nextX));
+        nextY = Math.max(EDGE,Math.min(maxY,nextY));
+
+        x = nextX;
+        y = nextY;
+
+        mover.style.setProperty(
+          'transform',
+          'translate3d(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px,0)',
+          'important'
+        );
+      }
+
+      requestAnimationFrame(frame);
+    }
+
+    mover.addEventListener('pointerenter',function(){
+      pausedByPointer = true;
+    });
+
+    mover.addEventListener('pointerleave',function(){
+      pausedByPointer = false;
+    });
+
+    mover.addEventListener('touchstart',function(){
+      pausedByPointer = true;
+    },{passive:true});
+
+    mover.addEventListener('touchend',function(){
+      setTimeout(function(){pausedByPointer = false;},350);
+    },{passive:true});
+
+    window.addEventListener('resize',function(){
+      initialized = false;
+
+      const mobile = window.innerWidth <= 700;
+
+      vx = (vx < 0 ? -1 : 1) * (mobile ? 0.055 : 0.070);
+      vy = (vy < 0 ? -1 : 1) * (mobile ? 0.046 : 0.058);
+    });
+
+    requestAnimationFrame(frame);
+  }
+
+  function initNews(){
+    ensureWorldNews();
+
+    const lang = currentLang();
+    const cached = readNewsCache(lang);
+
+    if(cached && cached.length){
+      setNewsText(cached,lang);
+    }
+
+    loadWorldNews();
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded',function(){
+      setTimeout(initNews,500);
+    });
+  }else{
+    setTimeout(initNews,200);
+  }
+
+  new MutationObserver(function(mutations){
+    const changed = mutations.some(function(m){
+      return m.attributeName === 'lang';
+    });
+
+    if(changed){
+      setTimeout(loadWorldNews,120);
+    }
+  }).observe(document.documentElement,{
+    attributes:true,
+    attributeFilter:['lang']
+  });
+
+  setInterval(loadWorldNews,15 * 60 * 1000);
+
+})();
+</script>
