@@ -24614,3 +24614,182 @@ body.sakaker-live-video-open .video-top-container-fixed{
 
 })();
 </script>
+
+
+<!-- SAKAKER BUSINESS CENTER FINAL -->
+<style id="sakaker-business-center-final">
+
+/* =========================================================
+   Sakaker Business — منتصف الصفحة تماماً
+========================================================= */
+html body #sakakerBusinessCenterHost{
+  position:fixed !important;
+
+  top:50% !important;
+  left:50% !important;
+  right:auto !important;
+  bottom:auto !important;
+
+  transform:translate(-50%,-50%) !important;
+
+  width:72px !important;
+  height:72px !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  margin:0 !important;
+  padding:0 !important;
+
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+
+  z-index:805000 !important;
+
+  pointer-events:none !important;
+}
+
+html body #sakakerBusinessCenterHost #sakakerBusinessAd{
+  position:relative !important;
+
+  inset:auto !important;
+  top:auto !important;
+  left:auto !important;
+  right:auto !important;
+  bottom:auto !important;
+
+  width:68px !important;
+  height:68px !important;
+
+  min-width:68px !important;
+  max-width:68px !important;
+  min-height:68px !important;
+  max-height:68px !important;
+
+  margin:0 !important;
+  padding:0 !important;
+
+  transform:none !important;
+
+  z-index:auto !important;
+
+  pointer-events:auto !important;
+}
+
+html body #sakakerBusinessCenterHost #sakakerBusinessIcon{
+  position:relative !important;
+  inset:auto !important;
+
+  width:100% !important;
+  height:100% !important;
+
+  margin:0 !important;
+}
+
+/* الجوال */
+@media(max-width:700px){
+  html body #sakakerBusinessCenterHost{
+    width:58px !important;
+    height:58px !important;
+  }
+
+  html body #sakakerBusinessCenterHost #sakakerBusinessAd{
+    width:56px !important;
+    height:56px !important;
+
+    min-width:56px !important;
+    max-width:56px !important;
+    min-height:56px !important;
+    max-height:56px !important;
+  }
+}
+
+@media(max-width:390px){
+  html body #sakakerBusinessCenterHost{
+    width:52px !important;
+    height:52px !important;
+  }
+
+  html body #sakakerBusinessCenterHost #sakakerBusinessAd{
+    width:50px !important;
+    height:50px !important;
+
+    min-width:50px !important;
+    max-width:50px !important;
+    min-height:50px !important;
+    max-height:50px !important;
+  }
+}
+
+/* لا تظهر أثناء شاشة الدخول */
+body.locked #sakakerBusinessCenterHost{
+  visibility:hidden !important;
+}
+
+/* لا تظهر فوق النوافذ المنبثقة الكاملة */
+body.sakaker-fb-popup-open #sakakerBusinessCenterHost,
+body.sakaker-live-popup-open #sakakerBusinessCenterHost,
+body.sakaker-live-video-open #sakakerBusinessCenterHost,
+body.sakaker-ship-open #sakakerBusinessCenterHost,
+body.sakaker-music-open #sakakerBusinessCenterHost{
+  visibility:hidden !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+
+</style>
+
+<script id="sakaker-business-center-final-js">
+(function(){
+  'use strict';
+
+  function placeBusinessCenter(){
+    let host = document.getElementById('sakakerBusinessCenterHost');
+
+    if(!host){
+      host = document.createElement('div');
+      host.id = 'sakakerBusinessCenterHost';
+      host.setAttribute('aria-label','Sakaker Business');
+      document.body.appendChild(host);
+    }
+
+    const business = document.getElementById('sakakerBusinessAd');
+
+    if(business && business.parentElement !== host){
+      host.appendChild(business);
+    }
+
+    /* حذف أي خانة فارغة بقيت في شريط الأيقونات */
+    document
+      .querySelectorAll('.sakaker-utility-slot')
+      .forEach(function(slot){
+        if(!slot.children.length){
+          slot.remove();
+        }
+      });
+  }
+
+  placeBusinessCenter();
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded',placeBusinessCenter);
+  }
+
+  /*
+    بعض أكواد الترتيب القديمة تعمل بتأخير،
+    لذلك نؤكد مكان Sakaker Business بعد انتهائها.
+  */
+  [300,900,1800,3300,4300,5200].forEach(function(ms){
+    setTimeout(placeBusinessCenter,ms);
+  });
+
+  const langBtn = document.getElementById('siteLangToggle');
+  if(langBtn){
+    langBtn.addEventListener('click',function(){
+      setTimeout(placeBusinessCenter,180);
+    });
+  }
+})();
+</script>
