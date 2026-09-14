@@ -4412,6 +4412,122 @@ html[lang="ar"] body{direction:rtl;}
   else init();
 })();
 </script>
+<!-- SAKAKER LIBRARY ORGANIZATION: video kitchen + text library -->
+<style id="sakaker-library-organization">
+/* The former kitchen card is now a section of the video library. */
+html body .cards .sakaker-kitchen-card{display:none!important}
+
+/* One clear, bilingual entry point for the six text sections. */
+html body .cards .sak-text-library-card{
+  background:linear-gradient(135deg,#eef7ff 0%,#9ab5d1 48%,#f9fcff 100%)!important;
+  border-color:rgba(255,255,255,.92)!important;
+  color:#132337!important;
+  box-shadow:0 0 14px rgba(224,243,255,.92), inset 0 0 13px rgba(255,255,255,.78)!important;
+}
+html body .sak-text-library-card .icon-label,
+html body .sak-text-library-card .sub{color:#132337!important;text-shadow:0 1px 0 #fff!important}
+html body .sak-text-library-card .icon-svg{stroke:#132337!important}
+
+#sakTextLibraryModal{position:fixed;inset:0;z-index:2147483000;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(4,12,24,.78);backdrop-filter:blur(8px)}
+#sakTextLibraryModal.sak-open{display:flex}
+#sakTextLibraryModal .sak-text-library-box{width:min(680px,100%);max-height:min(760px,calc(100vh - 32px));overflow:auto;border:1px solid rgba(255,255,255,.65);border-radius:24px;padding:18px;background:linear-gradient(145deg,#10233e,#294b70 56%,#122236);color:#fff;box-shadow:0 24px 70px rgba(0,0,0,.62)}
+#sakTextLibraryModal .sak-text-library-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}
+#sakTextLibraryModal h2{margin:0;font-size:clamp(18px,4vw,27px)}
+#sakTextLibraryModal .sak-text-library-close{width:38px;height:38px;border:1px solid rgba(255,255,255,.6);border-radius:50%;background:#dceeff;color:#12253c;font-size:25px;cursor:pointer}
+#sakTextLibraryModal .sak-text-library-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+#sakTextLibraryModal .sak-text-library-item{min-height:106px;padding:14px;border:1px solid rgba(255,255,255,.35);border-radius:17px;background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(143,198,237,.13));color:#fff;text-align:inherit;cursor:pointer;font:inherit;transition:transform .18s ease,background .18s ease}
+#sakTextLibraryModal .sak-text-library-item:hover{transform:translateY(-2px);background:rgba(197,230,255,.28)}
+#sakTextLibraryModal .sak-text-library-item b{display:block;font-size:16px;margin-bottom:6px}
+#sakTextLibraryModal .sak-text-library-item small{opacity:.8}
+
+/* A distinct coloured section inside the existing video library. */
+#sakKitchenVideoLibrarySection .emeraldSectionHeader{background:linear-gradient(90deg,#ff7a18,#ffcb52,#b721ff)!important;color:#1b1020!important;font-weight:900}
+#sakKitchenVideoLibrarySection .sak-kitchen-library-launch{border:0;cursor:pointer;min-width:140px;min-height:95px;padding:10px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#fff4c8,#ffb347 37%,#d64b2a 74%,#5f1b4e);color:#fff;font-weight:900;box-shadow:0 0 15px rgba(255,162,45,.85),inset 0 0 11px rgba(255,255,255,.65)}
+#sakKitchenVideoLibrarySection .sak-kitchen-library-launch span{display:block;font-size:11px;margin-top:4px}
+@media(max-width:520px){#sakTextLibraryModal{padding:8px}#sakTextLibraryModal .sak-text-library-box{padding:13px;border-radius:18px}#sakTextLibraryModal .sak-text-library-grid{grid-template-columns:1fr}#sakTextLibraryModal .sak-text-library-item{min-height:74px}}
+</style>
+<script id="sakaker-library-organization-js">
+(function(){
+  'use strict';
+  const textItems = [
+    {icon:'📚', ar:'خواطر وقصص', en:'Thoughts & Stories', run:function(){window.openFolder(1);}},
+    {icon:'❓', ar:'اختبر معلوماتك', en:'Test Your Knowledge', run:function(){window.startQuiz();}},
+    {icon:'🌍', ar:'ثقافة عامة', en:'General Culture', run:function(){window.openFolder(4);}},
+    {icon:'🧩', ar:'ألغاز', en:'Riddles', run:function(){window.openPuzzle();}},
+    {icon:'ℹ️', ar:'تعريف بالموقع', en:'About the Site', run:function(){window.openFolder(5);}},
+    {icon:'📰', ar:'أخبار الموقع', en:'Site News', run:function(){window.openSiteNewsModal();}}
+  ];
+  const isEnglish = function(){return document.documentElement.lang === 'en';};
+  const label = function(ar,en){return isEnglish() ? en : ar;};
+
+  function closeTextLibrary(){
+    const modal=document.getElementById('sakTextLibraryModal');
+    if(modal) modal.classList.remove('sak-open');
+  }
+  function openTextLibrary(){
+    const modal=ensureTextLibrary();
+    modal.classList.add('sak-open');
+  }
+  function ensureTextLibrary(){
+    let modal=document.getElementById('sakTextLibraryModal');
+    if(!modal){
+      modal=document.createElement('div'); modal.id='sakTextLibraryModal';
+      modal.innerHTML='<div class="sak-text-library-box" role="dialog" aria-modal="true"><div class="sak-text-library-head"><h2></h2><button class="sak-text-library-close" type="button" aria-label="Close">×</button></div><div class="sak-text-library-grid"></div></div>';
+      document.body.appendChild(modal);
+      modal.addEventListener('click',function(e){if(e.target===modal) closeTextLibrary();});
+      modal.querySelector('.sak-text-library-close').addEventListener('click',closeTextLibrary);
+    }
+    const title=modal.querySelector('h2'), grid=modal.querySelector('.sak-text-library-grid');
+    title.textContent=label('📖 المكتبة النصية','📖 Text Library');
+    grid.innerHTML='';
+    textItems.forEach(function(item){
+      const button=document.createElement('button'); button.type='button'; button.className='sak-text-library-item';
+      button.innerHTML='<b>'+item.icon+' '+label(item.ar,item.en)+'</b><small>'+label('فتح القسم','Open section')+'</small>';
+      button.addEventListener('click',function(){closeTextLibrary(); item.run();}); grid.appendChild(button);
+    });
+    return modal;
+  }
+  function configureTextLibraryCard(){
+    const cards=[].slice.call(document.querySelectorAll('.cards .icon-card'));
+    const thought=cards.find(function(card){return /خواطر|Thoughts/.test(card.textContent);});
+    if(!thought) return;
+    thought.classList.add('sak-text-library-card');
+    thought.setAttribute('onclick','openSakakerTextLibrary()');
+    thought.setAttribute('aria-label',label('المكتبة النصية','Text Library'));
+    thought.innerHTML='<svg class="icon-svg" fill="none" viewBox="0 0 24 24"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 0-3 3V4Z" stroke-width="1.4"></path><path d="M8 8h8M8 12h8M8 16h5" stroke-linecap="round" stroke-width="1.4"></path></svg><div class="icon-label">'+label('المكتبة النصية','Text Library')+'</div><div class="sub">'+label('قصص • معرفة • ألغاز','Stories • Knowledge • Riddles')+'</div>';
+    const patterns=[/اختبر معلوماتك|Test Your Knowledge/,/ثقافة عامة|General Culture/,/ألغاز|Riddles/,/تعريف بالموقع|About/,/أخبار الموقع|Site News/];
+    cards.forEach(function(card){if(patterns.some(function(pattern){return pattern.test(card.textContent);})){card.style.display='none';}});
+  }
+  function addKitchenToVideoLibrary(){
+    const host=document.getElementById('emeraldLibraryContent');
+    if(!host) return;
+    const existing=document.getElementById('sakKitchenVideoLibrarySection');
+    if(existing){
+      const existingHeader=existing.querySelector('.emeraldSectionHeader');
+      const existingLaunch=existing.querySelector('.sak-kitchen-library-launch span');
+      if(existingHeader) existingHeader.textContent='🍲 '+label('مطبخ ابوالقمرزمرد','Abu Alqamar Kitchen');
+      if(existingLaunch) existingLaunch.textContent=label('مطبخ ابوالقمرزمرد','Abu Alqamar Kitchen');
+      return;
+    }
+    const section=document.createElement('div'); section.id='sakKitchenVideoLibrarySection';
+    section.innerHTML='<div class="emeraldSectionHeader" role="button" tabindex="0">🍲 '+label('مطبخ ابوالقمرزمرد','Abu Alqamar Kitchen')+'</div><div class="sak-kitchen-library-content" style="display:none;flex-wrap:wrap;"></div>';
+    const header=section.querySelector('.emeraldSectionHeader'), content=section.querySelector('.sak-kitchen-library-content');
+    const launch=document.createElement('button'); launch.type='button'; launch.className='sak-kitchen-library-launch';
+    launch.innerHTML='🍲<span>'+label('مطبخ ابوالقمرزمرد','Abu Alqamar Kitchen')+'</span>';
+    launch.addEventListener('click',function(){window.openFolder(2);}); content.appendChild(launch);
+    header.addEventListener('click',function(){content.style.display=content.style.display==='flex'?'none':'flex';});
+    host.appendChild(section);
+  }
+  window.openSakakerTextLibrary=openTextLibrary;
+  function apply(){configureTextLibraryCard(); addKitchenToVideoLibrary(); const modal=document.getElementById('sakTextLibraryModal'); if(modal && modal.classList.contains('sak-open')) ensureTextLibrary();}
+  window.sakakerApplyLibraryOrganization=apply;
+  document.addEventListener('sakaker-library-ready',apply);
+  apply();
+  [350,1000,1900,3400,5400].forEach(function(ms){setTimeout(apply,ms);});
+  new MutationObserver(function(){setTimeout(apply,0);}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape') closeTextLibrary();});
+})();
+</script>
 
 </head>
 <body>
@@ -37865,5 +37981,16 @@ body.sakaker-music-open #sakSecondStreamCorner{
     }
   );
 
+})();
+</script>
+<script>
+/* The document is complete here; this makes the requested organization resilient
+   to the older delayed layout code above. */
+(function(){
+  function refresh(){
+    var event=new Event('sakaker-library-ready');
+    document.dispatchEvent(event);
+  }
+  [50,500,1500,3500,5600].forEach(function(ms){setTimeout(refresh,ms);});
 })();
 </script>
