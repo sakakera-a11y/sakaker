@@ -38314,3 +38314,877 @@ html body #videoBoxFixed video{
 })();
 </script>
 
+
+<!-- SAKAKER CENTER ICONS + DIRECT VIDEO FINAL -->
+<style id="sakaker-center-icons-direct-video-final">
+
+/* =========================================================
+   1) إزالة أي تضليل/طبقة داكنة باقية أسفل الصفحة
+========================================================= */
+html body::before,
+html body::after{
+  content:none !important;
+  display:none !important;
+  background:none !important;
+  background-image:none !important;
+  box-shadow:none !important;
+  filter:none !important;
+}
+
+html body footer,
+html body footer::before,
+html body footer::after,
+html body #sakakerAllIconsDock::before,
+html body #sakakerAllIconsDock::after,
+html body #sakakerWisdomBox,
+html body #sakakerWisdomText,
+html body #sakakerVisitorCounter,
+html body .sakaker-copyright,
+html body .sakaker-copyright-inner{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  box-shadow:none !important;
+  -webkit-box-shadow:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+  filter:none !important;
+}
+
+html body footer{
+  border:0 !important;
+}
+
+
+/* =========================================================
+   2) جميع الأيقونات في منتصف الشاشة دائماً
+   نفس المكان في العربية والإنجليزية
+========================================================= */
+html body #sakakerAllIconsDock,
+html[dir="rtl"] body #sakakerAllIconsDock,
+html[dir="ltr"] body #sakakerAllIconsDock{
+  position:fixed !important;
+
+  left:50% !important;
+  right:auto !important;
+
+  top:auto !important;
+  bottom:max(7px,env(safe-area-inset-bottom)) !important;
+
+  transform:translateX(-50%) !important;
+
+  width:max-content !important;
+  max-width:96vw !important;
+  min-width:0 !important;
+
+  margin:0 !important;
+  padding:4px 7px !important;
+
+  display:flex !important;
+  flex-direction:row !important;
+  flex-wrap:nowrap !important;
+
+  align-items:center !important;
+  justify-content:center !important;
+
+  gap:8px !important;
+
+  direction:ltr !important;
+
+  overflow-x:auto !important;
+  overflow-y:hidden !important;
+
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+
+  scrollbar-width:none !important;
+}
+
+html body #sakakerAllIconsDock::-webkit-scrollbar{
+  display:none !important;
+}
+
+/* النص داخل الأيقونات يبقى في المنتصف مهما كانت اللغة */
+html body #sakakerAllIconsDock .icon-card,
+html body #sakakerAllIconsDock .icon-card .icon-label,
+html body #sakakerAllIconsDock .icon-card .sub{
+  text-align:center !important;
+}
+
+html[lang="ar"] body #sakakerAllIconsDock .icon-card{
+  direction:rtl !important;
+}
+
+html[lang="en"] body #sakakerAllIconsDock .icon-card{
+  direction:ltr !important;
+}
+
+
+/* الجوال: نفس التوسيط تماماً */
+@media(max-width:700px){
+  html body #sakakerAllIconsDock,
+  html[dir="rtl"] body #sakakerAllIconsDock,
+  html[dir="ltr"] body #sakakerAllIconsDock{
+    left:50% !important;
+    right:auto !important;
+
+    bottom:max(5px,env(safe-area-inset-bottom)) !important;
+
+    transform:translateX(-50%) !important;
+
+    width:max-content !important;
+    max-width:96vw !important;
+
+    justify-content:center !important;
+
+    padding:3px 4px !important;
+    gap:6px !important;
+  }
+}
+
+@media(max-width:390px){
+  html body #sakakerAllIconsDock,
+  html[dir="rtl"] body #sakakerAllIconsDock,
+  html[dir="ltr"] body #sakakerAllIconsDock{
+    left:50% !important;
+    right:auto !important;
+    transform:translateX(-50%) !important;
+    max-width:97vw !important;
+    gap:5px !important;
+  }
+}
+
+
+/* =========================================================
+   3) مشغل الفيديو — أخف عند الفتح
+========================================================= */
+html body #videoBoxFixed{
+  animation:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+
+  box-shadow:
+    0 0 8px rgba(255,255,255,.48),
+    0 0 18px rgba(120,220,255,.24) !important;
+}
+
+html body #videoBoxFixed .video-box-border,
+html body #videoBoxFixed .video-box-inner{
+  animation:none !important;
+  filter:none !important;
+}
+
+html body #videoBoxFixed iframe,
+html body #videoBoxFixed video{
+  contain:strict !important;
+  transform:translateZ(0) !important;
+  backface-visibility:hidden !important;
+}
+
+</style>
+
+<script id="sakaker-center-icons-direct-video-js">
+(function(){
+  'use strict';
+
+  /*
+    المصدر الأول:
+    رابط YouTube المباشر للمقطع نفسه.
+    لا يتم إنشاء رابط جديد أو المرور على صفحة وسيطة عند الضغط.
+  */
+  const DIRECT_VIDEO_URL =
+    'https://www.youtube.com/embed/n7eQejkXbnM?autoplay=1&controls=1&playsinline=1&rel=0&modestbranding=1';
+
+  /*
+    المصدر الثاني:
+    رابط HLS المباشر الذي أعطاه المستخدم.
+  */
+  const DIRECT_HLS_URL =
+    'https://cffda8ff.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9GSUZBUGx1c3dvbWVuX0hMUw/playlist.m3u8';
+
+  let directHls = null;
+
+  /* =======================================================
+     Preconnect فقط — لا نشغل أي فيديو بالخلفية
+  ======================================================= */
+  function addPreconnect(href){
+    if(
+      document.querySelector(
+        'link[data-sak-preconnect="' +
+        href +
+        '"]'
+      )
+    ){
+      return;
+    }
+
+    const link =
+      document.createElement('link');
+
+    link.rel =
+      'preconnect';
+
+    link.href =
+      href;
+
+    link.crossOrigin =
+      'anonymous';
+
+    link.dataset.sakPreconnect =
+      href;
+
+    document.head.appendChild(
+      link
+    );
+  }
+
+  addPreconnect(
+    'https://www.youtube.com'
+  );
+
+  addPreconnect(
+    'https://i.ytimg.com'
+  );
+
+  addPreconnect(
+    'https://cffda8ff.wurl.com'
+  );
+
+
+  /* =======================================================
+     توسيط شريط الأيقونات بعد أي تبديل لغة أو تغيير عرض
+  ======================================================= */
+  function centerDock(){
+    const dock =
+      document.getElementById(
+        'sakakerAllIconsDock'
+      );
+
+    if(!dock) return;
+
+    dock.style.setProperty(
+      'left',
+      '50%',
+      'important'
+    );
+
+    dock.style.setProperty(
+      'right',
+      'auto',
+      'important'
+    );
+
+    dock.style.setProperty(
+      'transform',
+      'translateX(-50%)',
+      'important'
+    );
+
+    /*
+      إذا كان عدد الأيقونات أعرض من الشاشة نبدأ من منتصف الصف،
+      لأن direction ثابت LTR فلا يتغير السلوك عند تبديل اللغة.
+    */
+    requestAnimationFrame(
+      function(){
+        if(
+          dock.scrollWidth >
+          dock.clientWidth
+        ){
+          dock.scrollLeft =
+            Math.max(
+              0,
+              (
+                dock.scrollWidth -
+                dock.clientWidth
+              ) / 2
+            );
+        }
+      }
+    );
+  }
+
+
+  /* =======================================================
+     تنظيف مشغل HLS
+  ======================================================= */
+  function stopDirectHls(){
+    if(directHls){
+      try{
+        directHls.destroy();
+      }catch(e){}
+
+      directHls =
+        null;
+    }
+
+    const video =
+      document.getElementById(
+        'sakFixedHlsVideo'
+      );
+
+    if(video){
+      try{
+        video.pause();
+      }catch(e){}
+
+      video.removeAttribute(
+        'src'
+      );
+
+      try{
+        video.load();
+      }catch(e){}
+    }
+  }
+
+
+  /* =======================================================
+     فتح دائرة YouTube من الرابط المباشر نفسه
+  ======================================================= */
+  function wireDirectYoutube(){
+    const oldCircle =
+      document.querySelector(
+        '.video-top-container-fixed .video-circle'
+      );
+
+    if(
+      !oldCircle ||
+      oldCircle.dataset.sakDirectRewired ===
+      '1'
+    ){
+      return;
+    }
+
+    /*
+      استبدال العنصر بنسخة مطابقة يزيل المستمعات القديمة
+      التي كانت تبني الرابط ديناميكياً أكثر من مرة.
+    */
+    const circle =
+      oldCircle.cloneNode(
+        true
+      );
+
+    circle.dataset.sakDirectRewired =
+      '1';
+
+    oldCircle.replaceWith(
+      circle
+    );
+
+    const mini =
+      circle.querySelector(
+        '.miniVideo'
+      );
+
+    if(mini){
+      mini.src =
+        'about:blank';
+
+      mini.removeAttribute(
+        'data-src'
+      );
+    }
+
+    circle.addEventListener(
+      'click',
+      function(e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        const box =
+          document.getElementById(
+            'videoBoxFixed'
+          );
+
+        const iframe =
+          document.getElementById(
+            'fixedVideo'
+          );
+
+        const title =
+          box
+            ? box.querySelector(
+                '.video-box-title'
+              )
+            : null;
+
+        if(
+          !box ||
+          !iframe
+        ){
+          return;
+        }
+
+        stopDirectHls();
+
+        box.classList.remove(
+          'sak-hls-mode'
+        );
+
+        const sameOpen =
+          getComputedStyle(box)
+            .display !== 'none' &&
+          iframe.src ===
+            DIRECT_VIDEO_URL;
+
+        if(sameOpen){
+          iframe.src = '';
+          box.style.display =
+            'none';
+
+          document.body.classList.remove(
+            'sak-fixed-video-open'
+          );
+
+          return;
+        }
+
+        /*
+          نضع الرابط المباشر أولاً ثم نظهر النافذة.
+          لا يوجد تحويل لصفحة أخرى.
+        */
+        iframe.src =
+          DIRECT_VIDEO_URL;
+
+        if(title){
+          title.textContent =
+            '✦ VIDEO ✦';
+        }
+
+        box.style.display =
+          'block';
+
+        document.body.classList.add(
+          'sak-fixed-video-open'
+        );
+      }
+    );
+  }
+
+
+  /* =======================================================
+     فتح دائرة HLS مباشرة من ملف m3u8
+  ======================================================= */
+  function ensureHlsVideo(){
+    const box =
+      document.getElementById(
+        'videoBoxFixed'
+      );
+
+    if(!box) return null;
+
+    let video =
+      document.getElementById(
+        'sakFixedHlsVideo'
+      );
+
+    if(!video){
+      video =
+        document.createElement(
+          'video'
+        );
+
+      video.id =
+        'sakFixedHlsVideo';
+
+      video.controls =
+        true;
+
+      video.autoplay =
+        true;
+
+      video.playsInline =
+        true;
+
+      video.preload =
+        'metadata';
+
+      box.appendChild(
+        video
+      );
+    }
+
+    return video;
+  }
+
+  function loadHlsJs(){
+    if(window.Hls){
+      return Promise.resolve(
+        window.Hls
+      );
+    }
+
+    return new Promise(
+      function(resolve,reject){
+        let script =
+          document.querySelector(
+            'script[data-sak-fast-hls-preload="1"],script[data-sak-second-hls="1"]'
+          );
+
+        if(script){
+          if(window.Hls){
+            resolve(window.Hls);
+            return;
+          }
+
+          script.addEventListener(
+            'load',
+            function(){
+              resolve(window.Hls);
+            },
+            {once:true}
+          );
+
+          script.addEventListener(
+            'error',
+            reject,
+            {once:true}
+          );
+
+          return;
+        }
+
+        script =
+          document.createElement(
+            'script'
+          );
+
+        script.src =
+          'https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js';
+
+        script.async =
+          true;
+
+        script.dataset.sakFastHlsPreload =
+          '1';
+
+        script.onload =
+          function(){
+            resolve(window.Hls);
+          };
+
+        script.onerror =
+          reject;
+
+        document.head.appendChild(
+          script
+        );
+      }
+    );
+  }
+
+  async function openDirectHls(){
+    const box =
+      document.getElementById(
+        'videoBoxFixed'
+      );
+
+    const iframe =
+      document.getElementById(
+        'fixedVideo'
+      );
+
+    const title =
+      box
+        ? box.querySelector(
+            '.video-box-title'
+          )
+        : null;
+
+    if(!box) return;
+
+    const video =
+      ensureHlsVideo();
+
+    if(!video) return;
+
+    const sameOpen =
+      getComputedStyle(box)
+        .display !== 'none' &&
+      box.classList.contains(
+        'sak-hls-mode'
+      );
+
+    if(sameOpen){
+      stopDirectHls();
+
+      box.classList.remove(
+        'sak-hls-mode'
+      );
+
+      box.style.display =
+        'none';
+
+      document.body.classList.remove(
+        'sak-fixed-video-open'
+      );
+
+      return;
+    }
+
+    if(iframe){
+      iframe.src =
+        '';
+    }
+
+    stopDirectHls();
+
+    box.classList.add(
+      'sak-hls-mode'
+    );
+
+    if(title){
+      title.textContent =
+        '✦ LIVE STREAM ✦';
+    }
+
+    box.style.display =
+      'block';
+
+    document.body.classList.add(
+      'sak-fixed-video-open'
+    );
+
+    /*
+      Safari/iPhone وبعض المتصفحات:
+      تشغيل ملف m3u8 مباشرة بدون أي مكتبة وسيطة.
+    */
+    if(
+      video.canPlayType(
+        'application/vnd.apple.mpegurl'
+      )
+    ){
+      video.src =
+        DIRECT_HLS_URL;
+
+      try{
+        await video.play();
+      }catch(e){}
+
+      return;
+    }
+
+    /*
+      Chrome/Edge:
+      hls.js لا يحول الصفحة ولا يستخدم موقعاً وسيطاً؛
+      هو يقرأ نفس رابط m3u8 المباشر فقط عندما المتصفح
+      لا يدعم HLS بنفسه.
+    */
+    try{
+      const Hls =
+        await loadHlsJs();
+
+      if(
+        Hls &&
+        Hls.isSupported()
+      ){
+        directHls =
+          new Hls({
+            enableWorker:true,
+            lowLatencyMode:false,
+            startLevel:-1,
+            backBufferLength:12,
+            maxBufferLength:18,
+            maxMaxBufferLength:30
+          });
+
+        directHls.loadSource(
+          DIRECT_HLS_URL
+        );
+
+        directHls.attachMedia(
+          video
+        );
+
+        directHls.on(
+          Hls.Events.MANIFEST_PARSED,
+          function(){
+            video.play()
+              .catch(function(){});
+          }
+        );
+      }
+    }catch(e){}
+  }
+
+  function wireDirectHls(){
+    const oldCircle =
+      document.getElementById(
+        'sakSecondStreamCircle'
+      );
+
+    if(
+      !oldCircle ||
+      oldCircle.dataset.sakDirectRewired ===
+      '1'
+    ){
+      return;
+    }
+
+    /*
+      إزالة مستمعات الفتح القديمة التي قد تكرر عملية التحميل.
+    */
+    const circle =
+      oldCircle.cloneNode(
+        true
+      );
+
+    circle.dataset.sakDirectRewired =
+      '1';
+
+    oldCircle.replaceWith(
+      circle
+    );
+
+    const preview =
+      circle.querySelector(
+        '#sakSecondStreamPreview'
+      );
+
+    if(preview){
+      try{
+        preview.pause();
+      }catch(e){}
+
+      preview.removeAttribute(
+        'src'
+      );
+
+      preview.preload =
+        'none';
+    }
+
+    circle.addEventListener(
+      'click',
+      function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        openDirectHls();
+      }
+    );
+
+    circle.addEventListener(
+      'keydown',
+      function(e){
+        if(
+          e.key === 'Enter' ||
+          e.key === ' '
+        ){
+          e.preventDefault();
+          openDirectHls();
+        }
+      }
+    );
+  }
+
+
+  /* =======================================================
+     إغلاق موحد
+  ======================================================= */
+  const previousClose =
+    window.closeFixedVideo;
+
+  window.closeFixedVideo =
+    function(){
+      stopDirectHls();
+
+      const box =
+        document.getElementById(
+          'videoBoxFixed'
+        );
+
+      const iframe =
+        document.getElementById(
+          'fixedVideo'
+        );
+
+      if(iframe){
+        iframe.src =
+          '';
+      }
+
+      if(box){
+        box.classList.remove(
+          'sak-hls-mode'
+        );
+
+        box.style.display =
+          'none';
+      }
+
+      document.body.classList.remove(
+        'sak-fixed-video-open'
+      );
+
+      /*
+        لا نستدعي close القديم لأنه كان يكرر عمليات إغلاق
+        وربط من أكثر من نسخة سابقة.
+      */
+    };
+
+
+  function apply(){
+    centerDock();
+    wireDirectYoutube();
+    wireDirectHls();
+  }
+
+  apply();
+
+  if(
+    document.readyState ===
+    'loading'
+  ){
+    document.addEventListener(
+      'DOMContentLoaded',
+      apply,
+      {once:true}
+    );
+  }
+
+  new MutationObserver(
+    function(){
+      setTimeout(
+        centerDock,
+        0
+      );
+    }
+  ).observe(
+    document.documentElement,
+    {
+      attributes:true,
+      attributeFilter:[
+        'lang',
+        'dir'
+      ]
+    }
+  );
+
+  window.addEventListener(
+    'resize',
+    centerDock
+  );
+
+  window.addEventListener(
+    'orientationchange',
+    function(){
+      setTimeout(
+        centerDock,
+        120
+      );
+    }
+  );
+
+  [300,900,1800,3500,6000].forEach(
+    function(ms){
+      setTimeout(
+        apply,
+        ms
+      );
+    }
+  );
+
+})();
+</script>
+
