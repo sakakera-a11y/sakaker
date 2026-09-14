@@ -4488,15 +4488,34 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
     return modal;
   }
   function configureTextLibraryCard(){
-    const cards=[].slice.call(document.querySelectorAll('.cards .icon-card'));
-    const thought=cards.find(function(card){return /خواطر|Thoughts/.test(card.textContent);});
-    if(!thought) return;
-    thought.classList.add('sak-text-library-card');
-    thought.setAttribute('onclick','openSakakerTextLibrary()');
-    thought.setAttribute('aria-label',label('المكتبة النصية','Text Library'));
-    thought.innerHTML='<svg class="icon-svg" fill="none" viewBox="0 0 24 24"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 0-3 3V4Z" stroke-width="1.4"></path><path d="M8 8h8M8 12h8M8 16h5" stroke-linecap="round" stroke-width="1.4"></path></svg><div class="icon-label">'+label('المكتبة النصية','Text Library')+'</div><div class="sub">'+label('قصص • معرفة • ألغاز','Stories • Knowledge • Riddles')+'</div>';
-    const patterns=[/اختبر معلوماتك|Test Your Knowledge/,/ثقافة عامة|General Culture/,/ألغاز|Riddles/,/تعريف بالموقع|About/,/أخبار الموقع|Site News/];
-    cards.forEach(function(card){if(patterns.some(function(pattern){return pattern.test(card.textContent);})){card.style.display='none';}});
+    const card=document.querySelector('.cards .sak-text-library-card');
+    if(!card) return;
+
+    card.setAttribute('onclick','openSakakerTextLibrary()');
+    card.setAttribute('role','button');
+    card.setAttribute('tabindex','0');
+    card.setAttribute('aria-label',label('المكتبة النصية','Text Library'));
+
+    card.innerHTML=
+      '<svg class="icon-svg" fill="none" viewBox="0 0 24 24">' +
+        '<path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 0-3 3V4Z" stroke-width="1.4"></path>' +
+        '<path d="M8 8h8M8 12h8M8 16h5" stroke-linecap="round" stroke-width="1.4"></path>' +
+      '</svg>' +
+      '<div class="icon-label">'+label('المكتبة النصية','Text Library')+'</div>' +
+      '<div class="sub">'+label('قصص • معرفة • ألغاز','Stories • Knowledge • Riddles')+'</div>';
+
+    const legacySelectors=[
+      '.cards .icon-card[onclick="openFolder(1)"]',
+      '.cards .icon-card[onclick="startQuiz()"]',
+      '.cards .icon-card[onclick="openFolder(4)"]',
+      '.cards .icon-card[onclick="openPuzzle()"]',
+      '.cards .icon-card[onclick="openFolder(5)"]',
+      '.cards .sakaker-site-news-card'
+    ];
+
+    document.querySelectorAll(legacySelectors.join(',')).forEach(function(oldCard){
+      if(oldCard!==card) oldCard.remove();
+    });
   }
   function addKitchenToVideoLibrary(){
     const host=document.getElementById('emeraldLibraryContent');
@@ -5285,129 +5304,44 @@ birdBtn.addEventListener('click',async e=>{e.stopPropagation();try{if(birdAudio.
   >
 
 
+    
     <!-- =====================================================
-         01 - خواطر
+         01 - المكتبة النصية
     ====================================================== -->
-
     <div
-      class="icon-card"
-      onclick="openFolder(1)"
+      class="icon-card sak-text-library-card"
+      onclick="openSakakerTextLibrary()"
       role="button"
       tabindex="0"
+      aria-label="المكتبة النصية"
     >
-
       <svg
         class="icon-svg"
         fill="none"
         viewbox="0 0 24 24"
       >
-
         <path
-          d="M3 7c0-1.1.9-2 2-2h4l2 2h8c1.1 0 2 .9 2 2v9c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V7Z"
-          stroke-linejoin="round"
+          d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 0-3 3V4Z"
           stroke-width="1.4"
         ></path>
-
-      </svg>
-
-      <div class="icon-label">
-        خواطر
-      </div>
-
-      <div class="sub">
-        قصص وحكايات
-      </div>
-
-    </div>
-
-
-    <!-- =====================================================
-         02 - اختبر معلوماتك
-    ====================================================== -->
-
-    <div
-      class="icon-card"
-      onclick="startQuiz()"
-      role="button"
-      tabindex="0"
-    >
-
-      <svg
-        class="icon-svg"
-        fill="none"
-        viewbox="0 0 24 24"
-      >
-
-        <circle
-          cx="12"
-          cy="12"
-          r="9"
-          stroke-width="1.4"
-        ></circle>
-
         <path
-          d="M8 12h8M8 16h5M8 8h8"
+          d="M8 8h8M8 12h8M8 16h5"
           stroke-linecap="round"
           stroke-width="1.4"
         ></path>
-
       </svg>
 
       <div class="icon-label">
-        اختبر معلوماتك
+        المكتبة النصية
       </div>
 
       <div class="sub">
-        20 سؤالًا متنوعًا
+        قصص • معرفة • ألغاز
       </div>
-
     </div>
 
 
-    <!-- =====================================================
-         03 - الثقافة
-    ====================================================== -->
-
-    <div
-      class="icon-card"
-      onclick="openFolder(4)"
-      role="button"
-      tabindex="0"
-    >
-
-      <svg
-        class="icon-svg"
-        fill="none"
-        viewbox="0 0 24 24"
-      >
-
-        <circle
-          cx="12"
-          cy="12"
-          r="9"
-          stroke-width="1.4"
-        ></circle>
-
-        <path
-          d="M12 8v.01M10.8 11H12c.7 0 1.2.5 1.2 1.2V16"
-          stroke-linecap="round"
-          stroke-width="1.4"
-        ></path>
-
-      </svg>
-
-      <div class="icon-label">
-        ثقافة عامة
-      </div>
-
-      <div class="sub">
-        معلومات وموضوعات متنوعة
-      </div>
-
-    </div>
-
-
-    <!-- =====================================================
+<!-- =====================================================
          04 - مختارات
     ====================================================== -->
 
@@ -5495,114 +5429,7 @@ birdBtn.addEventListener('click',async e=>{e.stopPropagation();try{if(birdAudio.
     </div>
 
 
-    <!-- =====================================================
-         06 - الألغاز
-    ====================================================== -->
-
-    <div
-      class="icon-card"
-      onclick="openPuzzle()"
-      role="button"
-      tabindex="0"
-    >
-
-      <svg
-        class="icon-svg"
-        fill="none"
-        viewbox="0 0 24 24"
-      >
-
-        <path
-          d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"
-          stroke-width="1.2"
-        ></path>
-
-      </svg>
-
-      <div class="icon-label">
-        ألغاز
-      </div>
-
-      <div class="sub">
-        30 لغزًا متنوعًا
-      </div>
-
-    </div>
-
-
-    <!-- =====================================================
-         07 - تعريف الموقع
-    ====================================================== -->
-
-    <div
-      class="icon-card"
-      onclick="openFolder(5)"
-      role="button"
-      tabindex="0"
-    >
-
-      <svg
-        class="icon-svg"
-        fill="none"
-        viewbox="0 0 24 24"
-      >
-
-        <path
-          d="M7 5h6l4 4v10H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"
-          stroke-width="1.3"
-        ></path>
-
-        <path
-          d="M13 5v5h4"
-          stroke-width="1.3"
-        ></path>
-
-      </svg>
-
-      <div class="icon-label">
-        تعريف بالموقع
-      </div>
-
-      <div class="sub">
-        عن الموقع وفكرته
-      </div>
-
-    </div>
-
-    <!-- =====================================================
-         08 - أخبار الموقع
-    ====================================================== -->
-    <div
-      class="icon-card sakaker-site-news-card"
-      onclick="openSiteNewsModal()"
-      role="button"
-      tabindex="0"
-      aria-label="أخبار الموقع"
-    >
-      <svg
-        class="icon-svg"
-        fill="none"
-        viewbox="0 0 24 24"
-      >
-        <path
-          d="M5 5h14v14H5z"
-          stroke-width="1.3"
-        ></path>
-        <path
-          d="M8 9h8M8 12h8M8 15h5"
-          stroke-linecap="round"
-          stroke-width="1.3"
-        ></path>
-      </svg>
-
-      <div class="icon-label" data-site-news-label>
-        أخبار الموقع
-      </div>
-
-      <div class="sub" data-site-news-sub>
-        آخر التحديثات
-      </div>
-    </div>
+    
 
   </section>
 
@@ -37994,3 +37821,295 @@ body.sakaker-music-open #sakSecondStreamCorner{
   [50,500,1500,3500,5600].forEach(function(ms){setTimeout(refresh,ms);});
 })();
 </script>
+
+
+<!-- SAKAKER TEXT LIBRARY CLEAN FINAL -->
+<style id="sakaker-text-library-clean-final">
+html body .cards .sak-text-library-card{
+  display:flex !important;
+  grid-column:auto !important;
+  grid-row:auto !important;
+}
+html body .cards .icon-card[onclick="openFolder(1)"],
+html body .cards .icon-card[onclick="startQuiz()"],
+html body .cards .icon-card[onclick="openFolder(4)"],
+html body .cards .icon-card[onclick="openPuzzle()"],
+html body .cards .icon-card[onclick="openFolder(5)"],
+html body .cards .sakaker-site-news-card{
+  display:none !important;
+}
+</style>
+
+<script id="sakaker-text-library-clean-final-js">
+(function(){
+  'use strict';
+
+  function cleanLegacyTextIcons(){
+    const keep=document.querySelector('.cards .sak-text-library-card');
+
+    [
+      '.cards .icon-card[onclick="openFolder(1)"]',
+      '.cards .icon-card[onclick="startQuiz()"]',
+      '.cards .icon-card[onclick="openFolder(4)"]',
+      '.cards .icon-card[onclick="openPuzzle()"]',
+      '.cards .icon-card[onclick="openFolder(5)"]',
+      '.cards .sakaker-site-news-card'
+    ].forEach(function(selector){
+      document.querySelectorAll(selector).forEach(function(card){
+        if(card!==keep) card.remove();
+      });
+    });
+
+    if(typeof window.sakakerApplyLibraryOrganization==='function'){
+      window.sakakerApplyLibraryOrganization();
+    }
+  }
+
+  cleanLegacyTextIcons();
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',cleanLegacyTextIcons,{once:true});
+  }
+
+  [300,900,1800,3200,5400].forEach(function(ms){
+    setTimeout(cleanLegacyTextIcons,ms);
+  });
+})();
+</script>
+
+
+<!-- SAKAKER STRICT TEXT ICON REMOVAL FINAL -->
+<style id="sakaker-strict-text-icon-removal-final">
+
+/* =========================================================
+   الأيقونات الست القديمة لا تظهر مطلقاً في الواجهة الرئيسية
+   بعد نقل محتواها إلى المكتبة النصية.
+========================================================= */
+html body .cards > .icon-card[onclick*="openFolder(1)"],
+html body .cards > .icon-card[onclick*="startQuiz"],
+html body .cards > .icon-card[onclick*="openFolder(4)"],
+html body .cards > .icon-card[onclick*="openPuzzle"],
+html body .cards > .icon-card[onclick*="openFolder(5)"],
+html body .cards > .sakaker-site-news-card{
+  display:none !important;
+  visibility:hidden !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+
+/* أيقونة المطبخ القديمة أيضاً لا تظهر لأنها أصبحت داخل مكتبة الفيديو */
+html body .cards > .icon-card[onclick*="openFolder(2)"],
+html body .cards > .sakaker-kitchen-card{
+  display:none !important;
+  visibility:hidden !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+
+/* المكتبة النصية تبقى هي المدخل الوحيد للأقسام الست */
+html body .cards > .sak-text-library-card{
+  display:flex !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  pointer-events:auto !important;
+}
+
+</style>
+
+<script id="sakaker-strict-text-icon-removal-js">
+(function(){
+  'use strict';
+
+  function isTextLibrary(card){
+    return !!(
+      card &&
+      card.classList &&
+      card.classList.contains(
+        'sak-text-library-card'
+      )
+    );
+  }
+
+  function shouldRemove(card){
+    if(
+      !card ||
+      !card.classList ||
+      !card.classList.contains(
+        'icon-card'
+      ) ||
+      isTextLibrary(card)
+    ){
+      return false;
+    }
+
+    const onclick =
+      (
+        card.getAttribute(
+          'onclick'
+        ) || ''
+      )
+      .replace(/\s+/g,'');
+
+    if(
+      onclick.includes('openFolder(1)') ||
+      onclick.includes('startQuiz(') ||
+      onclick.includes('openFolder(4)') ||
+      onclick.includes('openPuzzle(') ||
+      onclick.includes('openFolder(5)') ||
+      onclick.includes('openSiteNewsModal(') ||
+      onclick.includes('openFolder(2)')
+    ){
+      return true;
+    }
+
+    if(
+      card.classList.contains(
+        'sakaker-site-news-card'
+      ) ||
+      card.classList.contains(
+        'sakaker-kitchen-card'
+      )
+    ){
+      return true;
+    }
+
+    const text =
+      (
+        card.textContent || ''
+      )
+      .replace(/\s+/g,' ')
+      .trim();
+
+    /*
+      فحص احتياطي إذا غيّرت أكواد قديمة onclick أو اللغة.
+    */
+    return (
+      /اختبر معلوماتك|Test Your Knowledge/i.test(text) ||
+      /ثقافة عامة|General Culture/i.test(text) ||
+      /ألغاز|Riddles/i.test(text) ||
+      /تعريف بالموقع|About the Site/i.test(text) ||
+      /أخبار الموقع|Site News/i.test(text) ||
+      /مطبخ ابوالقمرزمرد|Abu Alqamar Kitchen/i.test(text)
+    );
+  }
+
+  function cleanMainCards(){
+    const cards =
+      document.querySelector(
+        '.cards'
+      );
+
+    if(!cards) return;
+
+    cards
+      .querySelectorAll(
+        ':scope > .icon-card'
+      )
+      .forEach(function(card){
+        if(
+          shouldRemove(card)
+        ){
+          card.remove();
+        }
+      });
+
+    /*
+      ضمان أن المكتبة النصية موجودة وتعمل حتى لو غيّرها كود ترتيب قديم.
+    */
+    const library =
+      cards.querySelector(
+        ':scope > .sak-text-library-card'
+      );
+
+    if(library){
+      library.style.removeProperty(
+        'display'
+      );
+
+      library.setAttribute(
+        'onclick',
+        'openSakakerTextLibrary()'
+      );
+    }
+  }
+
+  cleanMainCards();
+
+  if(
+    document.readyState ===
+    'loading'
+  ){
+    document.addEventListener(
+      'DOMContentLoaded',
+      cleanMainCards,
+      {once:true}
+    );
+  }
+
+  /*
+    مراقبة ضيقة جداً لحاوية الأيقونات فقط:
+    إذا أعاد أي كود قديم إنشاء إحدى الأيقونات، تُحذف فوراً.
+  */
+  function startObserver(){
+    const cards =
+      document.querySelector(
+        '.cards'
+      );
+
+    if(
+      !cards ||
+      cards.dataset.sakStrictObserver ===
+      '1'
+    ){
+      return;
+    }
+
+    cards.dataset.sakStrictObserver =
+      '1';
+
+    new MutationObserver(
+      function(mutations){
+        let needClean = false;
+
+        mutations.forEach(
+          function(mutation){
+            if(
+              mutation.type ===
+              'childList' &&
+              mutation.addedNodes.length
+            ){
+              needClean = true;
+            }
+          }
+        );
+
+        if(needClean){
+          cleanMainCards();
+        }
+      }
+    ).observe(
+      cards,
+      {
+        childList:true,
+        subtree:false
+      }
+    );
+  }
+
+  startObserver();
+
+  [200,700,1500,3000,5200,8000].forEach(
+    function(ms){
+      setTimeout(
+        function(){
+          cleanMainCards();
+          startObserver();
+        },
+        ms
+      );
+    }
+  );
+
+})();
+</script>
+
