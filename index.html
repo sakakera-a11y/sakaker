@@ -4453,6 +4453,7 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
     {icon:'📚', ar:'خواطر وقصص', en:'Thoughts & Stories', run:function(){window.openFolder(1);}},
     {icon:'❓', ar:'اختبر معلوماتك', en:'Test Your Knowledge', run:function(){window.startQuiz();}},
     {icon:'🌍', ar:'ثقافة عامة', en:'General Culture', run:function(){window.openFolder(4);}},
+    {icon:'💡', ar:'معلومة اليوم', en:'Fact of the Day', run:function(){window.openTodayFact();}},
     {icon:'🧩', ar:'ألغاز', en:'Riddles', run:function(){window.openPuzzle();}},
     {icon:'ℹ️', ar:'تعريف بالموقع', en:'About the Site', run:function(){window.openFolder(5);}},
     {icon:'📰', ar:'أخبار الموقع', en:'Site News', run:function(){window.openSiteNewsModal();}}
@@ -4508,6 +4509,7 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
       '.cards .icon-card[onclick="openFolder(1)"]',
       '.cards .icon-card[onclick="startQuiz()"]',
       '.cards .icon-card[onclick="openFolder(4)"]',
+      '.cards .icon-card[onclick="openTodayFact()"]',
       '.cards .icon-card[onclick="openPuzzle()"]',
       '.cards .icon-card[onclick="openFolder(5)"]',
       '.cards .sakaker-site-news-card'
@@ -5386,48 +5388,6 @@ birdBtn.addEventListener('click',async e=>{e.stopPropagation();try{if(birdAudio.
     </div>
 
 
-    <!-- =====================================================
-         05 - معلومة اليوم
-    ====================================================== -->
-
-    <div
-      class="icon-card feature"
-      onclick="openTodayFact()"
-      role="button"
-      tabindex="0"
-    >
-
-      <svg
-        class="icon-svg"
-        fill="none"
-        viewbox="0 0 24 24"
-      >
-
-        <circle
-          cx="12"
-          cy="12"
-          r="9"
-          stroke-width="1.4"
-        ></circle>
-
-        <path
-          d="M12 8v4l3 3"
-          stroke-linecap="round"
-          stroke-width="1.4"
-        ></path>
-
-      </svg>
-
-      <div class="icon-label">
-        معلومة اليوم
-      </div>
-
-      <div class="sub">
-        معلومة جديدة بحسب اليوم
-      </div>
-
-    </div>
-
 
     
 
@@ -5892,8 +5852,7 @@ birdBtn.addEventListener('click',async e=>{e.stopPropagation();try{if(birdAudio.
 <div class="circle-orbit orbit-1"></div>
 <div class="circle-orbit orbit-2"></div>
 <!-- الفيديو المصغر -->
-<iframe allow="autoplay; encrypted-media" class="miniVideo" frameborder="0" src="https://www.youtube.com/embed/n7eQejkXbnM?autoplay=1&amp;mute=1&amp;playsinline=1&amp;controls=0&amp;loop=1&amp;playlist=n7eQejkXbnM" title="Video">
-</iframe>
+<iframe allow="autoplay; encrypted-media" class="miniVideo" frameborder="0" data-src="https://www.youtube.com/embed/n7eQejkXbnM" loading="lazy" src="about:blank" title="Video"></iframe>
 <!-- رمز التشغيل -->
 <div class="video-play-icon">▶</div>
 ```
@@ -37378,9 +37337,8 @@ body.sakaker-music-open #sakSecondStreamCorner{
         <video
           id="sakSecondStreamPreview"
           muted
-          autoplay
           playsinline
-          preload="metadata">
+          preload="none">
         </video>
         <div id="sakSecondStreamPlay">▶</div>
         <div id="sakSecondStreamBadge">LIVE</div>
@@ -37412,7 +37370,7 @@ body.sakaker-music-open #sakSecondStreamCorner{
       }
     );
 
-    startPreview();
+    /* المعاينة الحية أوقفت لتخفيف الحمل؛ البث يبدأ عند الضغط فقط */
   }
 
   /* =======================================================
@@ -37636,8 +37594,12 @@ body.sakaker-music-open #sakSecondStreamCorner{
         fullHls =
           new Hls({
             enableWorker:true,
-            lowLatencyMode:true,
-            backBufferLength:60
+            lowLatencyMode:false,
+            backBufferLength:8,
+            maxBufferLength:18,
+            maxMaxBufferLength:30,
+            capLevelToPlayerSize:true,
+            startLevel:0
           });
 
         fullHls.loadSource(
@@ -37851,6 +37813,7 @@ html body .cards .sakaker-site-news-card{
       '.cards .icon-card[onclick="openFolder(1)"]',
       '.cards .icon-card[onclick="startQuiz()"]',
       '.cards .icon-card[onclick="openFolder(4)"]',
+      '.cards .icon-card[onclick="openTodayFact()"]',
       '.cards .icon-card[onclick="openPuzzle()"]',
       '.cards .icon-card[onclick="openFolder(5)"]',
       '.cards .sakaker-site-news-card'
@@ -37888,6 +37851,7 @@ html body .cards .sakaker-site-news-card{
 html body .cards > .icon-card[onclick*="openFolder(1)"],
 html body .cards > .icon-card[onclick*="startQuiz"],
 html body .cards > .icon-card[onclick*="openFolder(4)"],
+html body .cards > .icon-card[onclick*="openTodayFact"],
 html body .cards > .icon-card[onclick*="openPuzzle"],
 html body .cards > .icon-card[onclick*="openFolder(5)"],
 html body .cards > .sakaker-site-news-card{
@@ -37954,6 +37918,7 @@ html body .cards > .sak-text-library-card{
       onclick.includes('openFolder(1)') ||
       onclick.includes('startQuiz(') ||
       onclick.includes('openFolder(4)') ||
+      onclick.includes('openTodayFact(') ||
       onclick.includes('openPuzzle(') ||
       onclick.includes('openFolder(5)') ||
       onclick.includes('openSiteNewsModal(') ||
@@ -37986,6 +37951,7 @@ html body .cards > .sak-text-library-card{
     return (
       /اختبر معلوماتك|Test Your Knowledge/i.test(text) ||
       /ثقافة عامة|General Culture/i.test(text) ||
+      /معلومة اليوم|Fact of the Day/i.test(text) ||
       /ألغاز|Riddles/i.test(text) ||
       /تعريف بالموقع|About the Site/i.test(text) ||
       /أخبار الموقع|Site News/i.test(text) ||
@@ -38110,6 +38076,241 @@ html body .cards > .sak-text-library-card{
     }
   );
 
+})();
+</script>
+
+
+<!-- SAKAKER TEXT FACT + FAST VIDEO FINAL -->
+<style id="sakaker-text-fact-fast-video-final">
+
+/* =========================================================
+   معلومة اليوم أصبحت داخل المكتبة النصية فقط
+========================================================= */
+html body .cards > .icon-card[onclick*="openTodayFact"]{
+  display:none !important;
+  visibility:hidden !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+
+/* =========================================================
+   تخفيف دائرتي الفيديو: معاينة ثابتة بدلاً من تشغيل فيديو دائم
+   — يقلل استهلاك CPU/GPU والشبكة أثناء تصفح الموقع.
+========================================================= */
+html body .video-top-container-fixed .video-circle{
+  background:
+    linear-gradient(180deg,rgba(0,0,0,.06),rgba(0,0,0,.28)),
+    url("https://i.ytimg.com/vi/n7eQejkXbnM/hqdefault.jpg") center/cover no-repeat !important;
+}
+
+html body .video-top-container-fixed .miniVideo{
+  display:none !important;
+}
+
+html body #sakSecondStreamPreview{
+  display:none !important;
+}
+
+html body #sakSecondStreamCircle{
+  background:
+    radial-gradient(circle at 34% 26%,rgba(255,255,255,.95) 0 5%,transparent 13%),
+    radial-gradient(circle at 50% 48%,#13283c 0 24%,#0a1522 55%,#03070c 100%) !important;
+}
+
+html body #sakSecondStreamCircle::before{
+  content:"📺" !important;
+  position:absolute !important;
+  inset:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  font-size:28px !important;
+  line-height:1 !important;
+  z-index:3 !important;
+  pointer-events:none !important;
+  filter:drop-shadow(0 0 8px rgba(255,255,255,.72)) !important;
+}
+
+/* =========================================================
+   عند فتح المشغل: أوقف وهج/حركة الدائرتين مؤقتاً وخفف الرسم
+========================================================= */
+body.sak-fixed-video-open .video-top-container-fixed,
+body.sak-fixed-video-open #sakSecondStreamCorner{
+  visibility:hidden !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+
+body.sak-fixed-video-open .video-top-container-fixed::before,
+body.sak-fixed-video-open .video-top-container-fixed::after,
+body.sak-fixed-video-open #sakSecondStreamCorner::before,
+body.sak-fixed-video-open #sakSecondStreamCorner::after{
+  animation-play-state:paused !important;
+}
+
+/* =========================================================
+   نافذة الفيديو نفسها أخف عند الفتح
+========================================================= */
+html body #videoBoxFixed{
+  z-index:2147483646 !important;
+  animation:none !important;
+  contain:layout paint style !important;
+  will-change:transform !important;
+  backface-visibility:hidden !important;
+  transform:translateX(-50%) translateZ(0) !important;
+  box-shadow:
+    0 0 9px rgba(255,255,255,.72),
+    0 0 24px rgba(112,220,255,.34) !important;
+}
+
+html body #videoBoxFixed .video-box-border{
+  animation:none !important;
+  filter:none !important;
+  border-color:rgba(255,255,255,.60) !important;
+  box-shadow:inset 0 0 10px rgba(255,255,255,.10) !important;
+}
+
+html body #videoBoxFixed .video-box-inner{
+  box-shadow:none !important;
+}
+
+html body #videoBoxFixed iframe,
+html body #videoBoxFixed video{
+  transform:translateZ(0) !important;
+  backface-visibility:hidden !important;
+}
+
+/* الجوال: لا تستخدم ظلالاً كبيرة أثناء التشغيل */
+@media(max-width:700px){
+  html body #videoBoxFixed{
+    box-shadow:0 0 12px rgba(170,230,255,.30) !important;
+  }
+}
+</style>
+
+<script id="sakaker-text-fact-fast-video-js">
+(function(){
+  'use strict';
+
+  /* =======================================================
+     ضمان إزالة أي أيقونة مستقلة لمعلومة اليوم إذا أعادها كود قديم
+  ======================================================= */
+  function removeFactCard(){
+    document.querySelectorAll(
+      '.cards > .icon-card[onclick*="openTodayFact"]'
+    ).forEach(function(card){
+      card.remove();
+    });
+  }
+
+  /* =======================================================
+     مزامنة حالة المشغل لتوقيف مؤثرات الدائرتين أثناء التشغيل
+  ======================================================= */
+  const box=document.getElementById('videoBoxFixed');
+  const iframe=document.getElementById('fixedVideo');
+  const title=box ? box.querySelector('.video-box-title') : null;
+  const originalCircle=document.querySelector('.video-top-container-fixed .video-circle');
+
+  function playerIsOpen(){
+    return !!(
+      box &&
+      getComputedStyle(box).display !== 'none'
+    );
+  }
+
+  function syncPlayerState(){
+    document.body.classList.toggle(
+      'sak-fixed-video-open',
+      playerIsOpen()
+    );
+  }
+
+  if(box){
+    new MutationObserver(syncPlayerState).observe(
+      box,
+      {attributes:true,attributeFilter:['style','class']}
+    );
+    syncPlayerState();
+  }
+
+  /* =======================================================
+     فتح YouTube بسرعة: أظهر الإطار أولاً ثم حمّل الفيديو في الإطار
+     في الدورة التالية حتى لا يتجمّد الضغط نفسه.
+  ======================================================= */
+  if(originalCircle && box && iframe && originalCircle.dataset.sakFastVideo !== '1'){
+    originalCircle.dataset.sakFastVideo='1';
+
+    originalCircle.addEventListener('click',function(e){
+      e.preventDefault();
+      e.stopImmediatePropagation();
+
+      const current=iframe.getAttribute('src') || '';
+      const isYoutubeOpen=(
+        box.style.display === 'block' &&
+        !box.classList.contains('sak-hls-mode') &&
+        current.includes('youtube.com/embed/')
+      );
+
+      if(isYoutubeOpen){
+        iframe.src='';
+        box.style.display='none';
+        syncPlayerState();
+        return;
+      }
+
+      const videoId=this.getAttribute('data-video') || 'n7eQejkXbnM';
+
+      box.style.display='block';
+      if(title) title.textContent='✦ VIDEO ✦';
+      syncPlayerState();
+
+      requestAnimationFrame(function(){
+        iframe.src=
+          'https://www.youtube.com/embed/' +
+          encodeURIComponent(videoId) +
+          '?autoplay=1&controls=1&playsinline=1&rel=0&modestbranding=1';
+      });
+    },true);
+  }
+
+  /* =======================================================
+     إغلاق خفيف وموحد — نحافظ على وظيفة HLS السابقة
+  ======================================================= */
+  const previousClose=window.closeFixedVideo;
+  window.closeFixedVideo=function(){
+    if(typeof previousClose==='function'){
+      previousClose();
+    }else if(box){
+      if(iframe) iframe.src='';
+      box.style.display='none';
+    }
+    document.body.classList.remove('sak-fixed-video-open');
+  };
+
+  /* =======================================================
+     حمّل مكتبة HLS في وقت الخمول فقط، بدون تشغيل البث.
+     هذا يجعل أول ضغط على دائرة البث أسرع بكثير.
+  ======================================================= */
+  function preloadHlsLibrary(){
+    if(window.Hls || document.querySelector('script[data-sak-fast-hls-preload="1"]')) return;
+
+    const s=document.createElement('script');
+    s.src='https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js';
+    s.async=true;
+    s.dataset.sakFastHlsPreload='1';
+    document.head.appendChild(s);
+  }
+
+  if('requestIdleCallback' in window){
+    requestIdleCallback(preloadHlsLibrary,{timeout:3500});
+  }else{
+    setTimeout(preloadHlsLibrary,1800);
+  }
+
+  removeFactCard();
+  [300,900,1800,3500,6000].forEach(function(ms){
+    setTimeout(removeFactCard,ms);
+  });
 })();
 </script>
 
