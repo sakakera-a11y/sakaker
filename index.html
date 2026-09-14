@@ -36889,3 +36889,981 @@ body.sakaker-music-open #sakakerBusinessCenterHost{
 
 })();
 </script>
+
+
+<!-- SAKAKER SECOND STREAM CIRCLE + BUSINESS CENTER FINAL -->
+<style id="sakaker-second-stream-business-center-final">
+
+/* =========================================================
+   دائرة البث الجديدة — مكان بزنس السابق أسفل اليسار
+========================================================= */
+html body #sakSecondStreamCorner{
+  position:fixed !important;
+
+  top:auto !important;
+  left:max(16px,env(safe-area-inset-left)) !important;
+  right:auto !important;
+  bottom:max(91px,calc(env(safe-area-inset-bottom) + 85px)) !important;
+
+  width:96px !important;
+  height:96px !important;
+
+  margin:0 !important;
+  padding:0 !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  transform:none !important;
+
+  overflow:visible !important;
+
+  z-index:812000 !important;
+
+  pointer-events:none !important;
+}
+
+html body #sakSecondStreamCorner::before{
+  content:"" !important;
+
+  position:absolute !important;
+  inset:-10px !important;
+
+  border-radius:50% !important;
+
+  background:
+    conic-gradient(
+      from 180deg,
+      rgba(255,255,255,.05),
+      #ffffff,
+      #bfc8d2,
+      #8ff0ff,
+      #ffffff,
+      #c8afff,
+      #ffffff,
+      rgba(255,255,255,.05)
+    ) !important;
+
+  filter:
+    blur(4px)
+    drop-shadow(0 0 8px rgba(255,255,255,.95))
+    drop-shadow(0 0 18px rgba(158,230,255,.58))
+    drop-shadow(0 0 28px rgba(205,178,255,.40)) !important;
+
+  opacity:.90 !important;
+
+  animation:sakSecondStreamSpin 5.5s linear infinite !important;
+
+  pointer-events:none !important;
+
+  z-index:0 !important;
+}
+
+html body #sakSecondStreamCorner::after{
+  content:"" !important;
+
+  position:absolute !important;
+  inset:-5px !important;
+
+  border:1px solid rgba(255,255,255,.93) !important;
+  border-radius:50% !important;
+
+  box-shadow:
+    0 0 8px rgba(255,255,255,.95),
+    0 0 18px rgba(177,228,255,.54),
+    inset 0 0 11px rgba(255,255,255,.18) !important;
+
+  animation:sakSecondStreamPulse 1.9s ease-in-out infinite alternate !important;
+
+  pointer-events:none !important;
+
+  z-index:1 !important;
+}
+
+html body #sakSecondStreamCircle{
+  position:relative !important;
+
+  width:86px !important;
+  height:86px !important;
+
+  min-width:86px !important;
+  max-width:86px !important;
+  min-height:86px !important;
+  max-height:86px !important;
+
+  margin:0 !important;
+  padding:4px !important;
+
+  box-sizing:border-box !important;
+
+  overflow:hidden !important;
+
+  border:1.5px solid rgba(255,255,255,.98) !important;
+  border-radius:50% !important;
+
+  clip-path:circle(50% at 50% 50%) !important;
+
+  background:
+    conic-gradient(
+      from 45deg,
+      #f8fbff,
+      #7e8995,
+      #ffffff,
+      #8ce7ff,
+      #ffffff,
+      #cbb4ff,
+      #f8fbff
+    ) !important;
+
+  box-shadow:
+    0 0 9px rgba(255,255,255,.95),
+    0 0 21px rgba(177,224,255,.55),
+    0 0 34px rgba(205,179,255,.34),
+    inset 0 0 8px rgba(255,255,255,.44) !important;
+
+  pointer-events:auto !important;
+
+  cursor:pointer !important;
+
+  z-index:2 !important;
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease !important;
+}
+
+html body #sakSecondStreamCircle:hover{
+  transform:scale(1.08) !important;
+
+  box-shadow:
+    0 0 12px rgba(255,255,255,1),
+    0 0 28px rgba(173,224,255,.72),
+    0 0 44px rgba(207,177,255,.48),
+    inset 0 0 10px rgba(255,255,255,.48) !important;
+}
+
+html body #sakSecondStreamPreview{
+  position:absolute !important;
+
+  inset:4px !important;
+
+  width:calc(100% - 8px) !important;
+  height:calc(100% - 8px) !important;
+
+  border:0 !important;
+  border-radius:50% !important;
+
+  clip-path:circle(50% at 50% 50%) !important;
+
+  object-fit:cover !important;
+
+  background:#05070a !important;
+
+  z-index:2 !important;
+}
+
+html body #sakSecondStreamPlay{
+  position:absolute !important;
+
+  inset:50% auto auto 50% !important;
+
+  transform:translate(-50%,-50%) !important;
+
+  width:28px !important;
+  height:28px !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  border:1px solid rgba(255,255,255,.88) !important;
+  border-radius:50% !important;
+
+  background:rgba(0,0,0,.42) !important;
+
+  color:#fff !important;
+
+  font-size:12px !important;
+
+  box-shadow:
+    0 0 8px rgba(255,255,255,.72),
+    0 0 16px rgba(174,223,255,.44) !important;
+
+  pointer-events:none !important;
+
+  z-index:5 !important;
+}
+
+html body #sakSecondStreamBadge{
+  position:absolute !important;
+
+  left:50% !important;
+  bottom:7px !important;
+
+  transform:translateX(-50%) !important;
+
+  min-width:34px !important;
+
+  padding:2px 5px !important;
+
+  border:1px solid rgba(255,255,255,.76) !important;
+  border-radius:8px !important;
+
+  background:rgba(88,10,32,.90) !important;
+
+  color:#fff !important;
+
+  font-size:5.5px !important;
+  font-weight:1000 !important;
+
+  text-align:center !important;
+
+  box-shadow:0 0 8px rgba(255,255,255,.24) !important;
+
+  pointer-events:none !important;
+
+  z-index:6 !important;
+}
+
+@keyframes sakSecondStreamSpin{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+
+@keyframes sakSecondStreamPulse{
+  from{
+    transform:scale(.98);
+    opacity:.58;
+  }
+  to{
+    transform:scale(1.05);
+    opacity:1;
+  }
+}
+
+
+/* =========================================================
+   مشغل HLS داخل نفس إطار دائرة الفيديو الأصلية
+========================================================= */
+html body #sakFixedHlsVideo{
+  position:absolute !important;
+
+  inset:0 !important;
+
+  width:100% !important;
+  height:100% !important;
+
+  display:none;
+
+  border:0 !important;
+
+  background:#000 !important;
+
+  object-fit:contain !important;
+
+  z-index:10 !important;
+}
+
+html body #videoBoxFixed.sak-hls-mode #fixedVideo{
+  display:none !important;
+}
+
+html body #videoBoxFixed.sak-hls-mode #sakFixedHlsVideo{
+  display:block !important;
+}
+
+html body #videoBoxFixed.sak-hls-mode .video-box-title{
+  z-index:20 !important;
+}
+
+html body #videoBoxFixed.sak-hls-mode #videoCloseBtn{
+  z-index:30 !important;
+}
+
+
+/* =========================================================
+   بزنس — وسط الصفحة
+========================================================= */
+html body #sakakerBusinessCenterHost{
+  position:fixed !important;
+
+  top:50% !important;
+  left:50% !important;
+  right:auto !important;
+  bottom:auto !important;
+
+  transform:translate(-50%,-50%) !important;
+
+  width:68px !important;
+  height:68px !important;
+
+  margin:0 !important;
+  padding:0 !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  background:transparent !important;
+
+  z-index:805000 !important;
+
+  pointer-events:none !important;
+}
+
+html body #sakakerBusinessCenterHost #sakakerBusinessAd{
+  position:relative !important;
+
+  inset:auto !important;
+
+  width:66px !important;
+  height:66px !important;
+
+  min-width:66px !important;
+  max-width:66px !important;
+  min-height:66px !important;
+  max-height:66px !important;
+
+  margin:0 !important;
+  padding:0 !important;
+
+  transform:none !important;
+
+  pointer-events:auto !important;
+}
+
+html body #sakakerBusinessCenterHost #sakakerBusinessIcon{
+  width:100% !important;
+  height:100% !important;
+
+  margin:0 !important;
+
+  pointer-events:auto !important;
+}
+
+
+/* =========================================================
+   الجوال
+========================================================= */
+@media(max-width:700px){
+
+  html body #sakSecondStreamCorner{
+    left:max(8px,env(safe-area-inset-left)) !important;
+    bottom:max(70px,calc(env(safe-area-inset-bottom) + 66px)) !important;
+
+    width:76px !important;
+    height:76px !important;
+  }
+
+  html body #sakSecondStreamCorner::before{
+    inset:-7px !important;
+  }
+
+  html body #sakSecondStreamCorner::after{
+    inset:-4px !important;
+  }
+
+  html body #sakSecondStreamCircle{
+    width:68px !important;
+    height:68px !important;
+
+    min-width:68px !important;
+    max-width:68px !important;
+    min-height:68px !important;
+    max-height:68px !important;
+  }
+
+  html body #sakakerBusinessCenterHost{
+    width:56px !important;
+    height:56px !important;
+  }
+
+  html body #sakakerBusinessCenterHost #sakakerBusinessAd{
+    width:54px !important;
+    height:54px !important;
+
+    min-width:54px !important;
+    max-width:54px !important;
+    min-height:54px !important;
+    max-height:54px !important;
+  }
+}
+
+@media(max-width:390px){
+
+  html body #sakSecondStreamCorner{
+    left:max(6px,env(safe-area-inset-left)) !important;
+    bottom:max(63px,calc(env(safe-area-inset-bottom) + 60px)) !important;
+
+    width:70px !important;
+    height:70px !important;
+  }
+
+  html body #sakSecondStreamCircle{
+    width:62px !important;
+    height:62px !important;
+
+    min-width:62px !important;
+    max-width:62px !important;
+    min-height:62px !important;
+    max-height:62px !important;
+  }
+
+  html body #sakakerBusinessCenterHost{
+    width:50px !important;
+    height:50px !important;
+  }
+
+  html body #sakakerBusinessCenterHost #sakakerBusinessAd{
+    width:48px !important;
+    height:48px !important;
+
+    min-width:48px !important;
+    max-width:48px !important;
+    min-height:48px !important;
+    max-height:48px !important;
+  }
+}
+
+
+/* الإخفاء مع تسجيل الدخول والنوافذ الكاملة */
+body.locked #sakSecondStreamCorner,
+body.sakaker-fb-popup-open #sakSecondStreamCorner,
+body.sakaker-live-popup-open #sakSecondStreamCorner,
+body.sakaker-live-video-open #sakSecondStreamCorner,
+body.sakaker-music-open #sakSecondStreamCorner{
+  visibility:hidden !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+
+</style>
+
+<script id="sakaker-second-stream-business-center-js">
+(function(){
+  'use strict';
+
+  const STREAM_URL =
+    'https://cffda8ff.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9GSUZBUGx1c3dvbWVuX0hMUw/playlist.m3u8';
+
+  let previewHls = null;
+  let fullHls = null;
+
+  function ensureHls(){
+    if(window.Hls){
+      return Promise.resolve(
+        window.Hls
+      );
+    }
+
+    return new Promise(
+      function(resolve,reject){
+        const old =
+          document.querySelector(
+            'script[data-sak-second-hls="1"]'
+          );
+
+        if(old){
+          old.addEventListener(
+            'load',
+            function(){
+              resolve(window.Hls);
+            },
+            {once:true}
+          );
+
+          old.addEventListener(
+            'error',
+            reject,
+            {once:true}
+          );
+
+          return;
+        }
+
+        const s =
+          document.createElement(
+            'script'
+          );
+
+        s.src =
+          'https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js';
+
+        s.async = true;
+        s.dataset.sakSecondHls =
+          '1';
+
+        s.onload =
+          function(){
+            resolve(window.Hls);
+          };
+
+        s.onerror =
+          reject;
+
+        document.head.appendChild(s);
+      }
+    );
+  }
+
+  /* =======================================================
+     إنشاء دائرة البث
+  ======================================================= */
+  function createStreamCircle(){
+    if(
+      document.getElementById(
+        'sakSecondStreamCorner'
+      )
+    ){
+      return;
+    }
+
+    const host =
+      document.createElement(
+        'div'
+      );
+
+    host.id =
+      'sakSecondStreamCorner';
+
+    host.innerHTML = `
+      <div id="sakSecondStreamCircle"
+           role="button"
+           tabindex="0"
+           aria-label="بث مباشر إضافي">
+        <video
+          id="sakSecondStreamPreview"
+          muted
+          autoplay
+          playsinline
+          preload="metadata">
+        </video>
+        <div id="sakSecondStreamPlay">▶</div>
+        <div id="sakSecondStreamBadge">LIVE</div>
+      </div>
+    `;
+
+    document.body.appendChild(host);
+
+    const circle =
+      document.getElementById(
+        'sakSecondStreamCircle'
+      );
+
+    circle.addEventListener(
+      'click',
+      openSecondStream
+    );
+
+    circle.addEventListener(
+      'keydown',
+      function(e){
+        if(
+          e.key === 'Enter' ||
+          e.key === ' '
+        ){
+          e.preventDefault();
+          openSecondStream();
+        }
+      }
+    );
+
+    startPreview();
+  }
+
+  /* =======================================================
+     معاينة صامتة داخل الدائرة
+  ======================================================= */
+  async function startPreview(){
+    const video =
+      document.getElementById(
+        'sakSecondStreamPreview'
+      );
+
+    if(!video) return;
+
+    try{
+      if(
+        video.canPlayType(
+          'application/vnd.apple.mpegurl'
+        )
+      ){
+        video.src = STREAM_URL;
+
+        await video.play()
+          .catch(function(){});
+
+        return;
+      }
+
+      const Hls =
+        await ensureHls();
+
+      if(
+        Hls &&
+        Hls.isSupported()
+      ){
+        previewHls =
+          new Hls({
+            enableWorker:true,
+            lowLatencyMode:true,
+            backBufferLength:20
+          });
+
+        previewHls.loadSource(
+          STREAM_URL
+        );
+
+        previewHls.attachMedia(
+          video
+        );
+
+        previewHls.on(
+          Hls.Events.MANIFEST_PARSED,
+          function(){
+            video.play()
+              .catch(function(){});
+          }
+        );
+      }
+    }catch(e){}
+  }
+
+  /* =======================================================
+     فيديو HLS داخل نفس نافذة الفيديو الأصلية
+  ======================================================= */
+  function ensureFullVideo(){
+    const box =
+      document.getElementById(
+        'videoBoxFixed'
+      );
+
+    if(!box) return null;
+
+    let video =
+      document.getElementById(
+        'sakFixedHlsVideo'
+      );
+
+    if(!video){
+      video =
+        document.createElement(
+          'video'
+        );
+
+      video.id =
+        'sakFixedHlsVideo';
+
+      video.controls = true;
+      video.autoplay = true;
+      video.playsInline = true;
+
+      box.appendChild(video);
+    }
+
+    return video;
+  }
+
+  function stopFullStream(){
+    if(fullHls){
+      try{
+        fullHls.destroy();
+      }catch(e){}
+
+      fullHls = null;
+    }
+
+    const video =
+      document.getElementById(
+        'sakFixedHlsVideo'
+      );
+
+    if(video){
+      try{
+        video.pause();
+      }catch(e){}
+
+      video.removeAttribute(
+        'src'
+      );
+
+      video.load();
+    }
+
+    const box =
+      document.getElementById(
+        'videoBoxFixed'
+      );
+
+    if(box){
+      box.classList.remove(
+        'sak-hls-mode'
+      );
+    }
+  }
+
+  async function openSecondStream(){
+    const box =
+      document.getElementById(
+        'videoBoxFixed'
+      );
+
+    const iframe =
+      document.getElementById(
+        'fixedVideo'
+      );
+
+    const title =
+      box
+        ? box.querySelector(
+            '.video-box-title'
+          )
+        : null;
+
+    if(!box) return;
+
+    /*
+      إذا كان نفس البث مفتوحاً، الضغط مرة ثانية يغلقه.
+    */
+    if(
+      box.style.display ===
+      'block' &&
+      box.classList.contains(
+        'sak-hls-mode'
+      )
+    ){
+      stopFullStream();
+      box.style.display =
+        'none';
+
+      if(title){
+        title.textContent =
+          '✦ VIDEO ✦';
+      }
+
+      return;
+    }
+
+    if(iframe){
+      iframe.src = '';
+    }
+
+    stopFullStream();
+
+    const video =
+      ensureFullVideo();
+
+    if(!video) return;
+
+    box.classList.add(
+      'sak-hls-mode'
+    );
+
+    box.style.display =
+      'block';
+
+    if(title){
+      title.textContent =
+        '✦ LIVE STREAM ✦';
+    }
+
+    try{
+      if(
+        video.canPlayType(
+          'application/vnd.apple.mpegurl'
+        )
+      ){
+        video.src =
+          STREAM_URL;
+
+        await video.play()
+          .catch(function(){});
+
+        return;
+      }
+
+      const Hls =
+        await ensureHls();
+
+      if(
+        Hls &&
+        Hls.isSupported()
+      ){
+        fullHls =
+          new Hls({
+            enableWorker:true,
+            lowLatencyMode:true,
+            backBufferLength:60
+          });
+
+        fullHls.loadSource(
+          STREAM_URL
+        );
+
+        fullHls.attachMedia(
+          video
+        );
+
+        fullHls.on(
+          Hls.Events.MANIFEST_PARSED,
+          function(){
+            video.play()
+              .catch(function(){});
+          }
+        );
+      }
+    }catch(e){}
+  }
+
+  /* =======================================================
+     إغلاق موحد لنفس نافذة الفيديو
+  ======================================================= */
+  const oldCloseFixedVideo =
+    window.closeFixedVideo;
+
+  window.closeFixedVideo =
+    function(){
+      stopFullStream();
+
+      if(
+        typeof oldCloseFixedVideo ===
+        'function'
+      ){
+        oldCloseFixedVideo();
+      }else{
+        const box =
+          document.getElementById(
+            'videoBoxFixed'
+          );
+
+        if(box){
+          box.style.display =
+            'none';
+        }
+      }
+
+      const title =
+        document.querySelector(
+          '#videoBoxFixed .video-box-title'
+        );
+
+      if(title){
+        title.textContent =
+          '✦ VIDEO ✦';
+      }
+    };
+
+  /*
+    عند النقر على دائرة YouTube الأصلية أثناء بث HLS،
+    نوقف HLS أولاً حتى لا يبقى الصوت بالخلفية.
+  */
+  const originalCircle =
+    document.querySelector(
+      '.video-top-container-fixed .video-circle'
+    );
+
+  if(originalCircle){
+    originalCircle.addEventListener(
+      'click',
+      function(){
+        const box =
+          document.getElementById(
+            'videoBoxFixed'
+          );
+
+        if(
+          box &&
+          box.classList.contains(
+            'sak-hls-mode'
+          )
+        ){
+          stopFullStream();
+
+          const title =
+            box.querySelector(
+              '.video-box-title'
+            );
+
+          if(title){
+            title.textContent =
+              '✦ VIDEO ✦';
+          }
+        }
+      },
+      true
+    );
+  }
+
+  /* =======================================================
+     بزنس في منتصف الصفحة
+  ======================================================= */
+  function centerBusiness(){
+    let host =
+      document.getElementById(
+        'sakakerBusinessCenterHost'
+      );
+
+    const business =
+      document.getElementById(
+        'sakakerBusinessAd'
+      );
+
+    if(!business) return;
+
+    if(!host){
+      host =
+        document.createElement(
+          'div'
+        );
+
+      host.id =
+        'sakakerBusinessCenterHost';
+
+      document.body.appendChild(
+        host
+      );
+    }
+
+    if(
+      business.parentElement !==
+      host
+    ){
+      host.appendChild(
+        business
+      );
+    }
+  }
+
+  function apply(){
+    createStreamCircle();
+    centerBusiness();
+  }
+
+  apply();
+
+  if(
+    document.readyState ===
+    'loading'
+  ){
+    document.addEventListener(
+      'DOMContentLoaded',
+      apply
+    );
+  }
+
+  /*
+    لأن الموقع يحتوي أكواد ترتيب قديمة مؤجلة،
+    نعيد تثبيت مكان بزنس والدائرة الجديدة بعد انتهائها.
+  */
+  [300,900,1800,3300,5200].forEach(
+    function(ms){
+      setTimeout(
+        apply,
+        ms
+      );
+    }
+  );
+
+})();
+</script>
