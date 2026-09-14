@@ -24334,248 +24334,7 @@ body.sakaker-live-video-open .video-top-container-fixed{
     }
   }
 
-  const mover = document.querySelector('.video-top-container-fixed');
-
-  if(mover){
-    let x = 0;
-    let y = 0;
-    let vx = window.innerWidth <= 700 ? 0.055 : 0.070;
-    let vy = window.innerWidth <= 700 ? 0.046 : 0.058;
-    let lastTime = 0;
-    let initialized = false;
-    let pausedByPointer = false;
-
-    const EDGE = 8;
-    const HIT_PAD = 7;
-
-    const obstacleSelectors = [
-      '#sakakerTopDateTime',
-      '#sakakerWorldNews',
-      '#sakakerTopTools',
-      '#userProfile',
-      '#sakakerAllIconsDock',
-      '#sakakerVisitorCounter',
-      '#sakakerWisdomBox',
-      '.sakaker-copyright',
-      '#sakakerCenterFeatureDock'
-    ];
-
-    function isVisible(el){
-      if(!el || el === mover || mover.contains(el)) return false;
-
-      const cs = getComputedStyle(el);
-
-      if(
-        cs.display === 'none' ||
-        cs.visibility === 'hidden' ||
-        Number(cs.opacity) === 0
-      ){
-        return false;
-      }
-
-      const r = el.getBoundingClientRect();
-
-      return (
-        r.width > 2 &&
-        r.height > 2 &&
-        r.bottom > 0 &&
-        r.right > 0 &&
-        r.top < window.innerHeight &&
-        r.left < window.innerWidth
-      );
-    }
-
-    function obstacleRects(){
-      const rects = [];
-
-      obstacleSelectors.forEach(function(selector){
-        document.querySelectorAll(selector).forEach(function(el){
-          if(!isVisible(el)) return;
-
-          const r = el.getBoundingClientRect();
-
-          rects.push({
-            left:r.left - HIT_PAD,
-            top:r.top - HIT_PAD,
-            right:r.right + HIT_PAD,
-            bottom:r.bottom + HIT_PAD
-          });
-        });
-      });
-
-      return rects;
-    }
-
-    function intersects(a,b){
-      return !(
-        a.right <= b.left ||
-        a.left >= b.right ||
-        a.bottom <= b.top ||
-        a.top >= b.bottom
-      );
-    }
-
-    function pausedByUI(){
-      const body = document.body;
-
-      if(
-        body.classList.contains('locked') ||
-        body.classList.contains('sakaker-fb-popup-open') ||
-        body.classList.contains('sakaker-live-popup-open') ||
-        body.classList.contains('sakaker-live-video-open') ||
-        body.classList.contains('sakaker-ship-open') ||
-        body.classList.contains('sakaker-music-open')
-      ){
-        return true;
-      }
-
-      const fixedVideo = document.getElementById('videoBoxFixed');
-
-      if(fixedVideo && getComputedStyle(fixedVideo).display !== 'none'){
-        return true;
-      }
-
-      return pausedByPointer || document.hidden;
-    }
-
-    function initialize(){
-      const r = mover.getBoundingClientRect();
-      const w = Math.max(1,r.width);
-      const h = Math.max(1,r.height);
-
-      x = Math.max(
-        EDGE,
-        Math.min(window.innerWidth - w - EDGE,(window.innerWidth - w) / 2)
-      );
-
-      y = Math.max(
-        95,
-        Math.min(window.innerHeight - h - 100,(window.innerHeight - h) / 2)
-      );
-
-      mover.style.setProperty(
-        'transform',
-        'translate3d(' + x + 'px,' + y + 'px,0)',
-        'important'
-      );
-
-      initialized = true;
-    }
-
-    function resolveObstacle(nextX,nextY,w,h){
-      const candidate = {
-        left:nextX,
-        top:nextY,
-        right:nextX + w,
-        bottom:nextY + h
-      };
-
-      const rects = obstacleRects();
-
-      for(const b of rects){
-        if(!intersects(candidate,b)) continue;
-
-        const overlapLeft = candidate.right - b.left;
-        const overlapRight = b.right - candidate.left;
-        const overlapTop = candidate.bottom - b.top;
-        const overlapBottom = b.bottom - candidate.top;
-
-        const overlapX = Math.min(overlapLeft,overlapRight);
-        const overlapY = Math.min(overlapTop,overlapBottom);
-
-        if(overlapX < overlapY){
-          vx *= -1;
-          nextX = x < b.left ? b.left - w - HIT_PAD : b.right + HIT_PAD;
-        }else{
-          vy *= -1;
-          nextY = y < b.top ? b.top - h - HIT_PAD : b.bottom + HIT_PAD;
-        }
-
-        break;
-      }
-
-      return [nextX,nextY];
-    }
-
-    function frame(now){
-      if(!initialized) initialize();
-      if(!lastTime) lastTime = now;
-
-      const dt = Math.min(36,Math.max(0,now - lastTime));
-      lastTime = now;
-
-      if(!pausedByUI()){
-        const r = mover.getBoundingClientRect();
-        const w = Math.max(1,r.width);
-        const h = Math.max(1,r.height);
-
-        let nextX = x + vx * dt;
-        let nextY = y + vy * dt;
-
-        const maxX = Math.max(EDGE,window.innerWidth - w - EDGE);
-        const maxY = Math.max(EDGE,window.innerHeight - h - EDGE);
-
-        if(nextX <= EDGE){
-          nextX = EDGE;
-          vx = Math.abs(vx);
-        }else if(nextX >= maxX){
-          nextX = maxX;
-          vx = -Math.abs(vx);
-        }
-
-        if(nextY <= EDGE){
-          nextY = EDGE;
-          vy = Math.abs(vy);
-        }else if(nextY >= maxY){
-          nextY = maxY;
-          vy = -Math.abs(vy);
-        }
-
-        [nextX,nextY] = resolveObstacle(nextX,nextY,w,h);
-
-        nextX = Math.max(EDGE,Math.min(maxX,nextX));
-        nextY = Math.max(EDGE,Math.min(maxY,nextY));
-
-        x = nextX;
-        y = nextY;
-
-        mover.style.setProperty(
-          'transform',
-          'translate3d(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px,0)',
-          'important'
-        );
-      }
-
-      requestAnimationFrame(frame);
-    }
-
-    mover.addEventListener('pointerenter',function(){
-      pausedByPointer = true;
-    });
-
-    mover.addEventListener('pointerleave',function(){
-      pausedByPointer = false;
-    });
-
-    mover.addEventListener('touchstart',function(){
-      pausedByPointer = true;
-    },{passive:true});
-
-    mover.addEventListener('touchend',function(){
-      setTimeout(function(){pausedByPointer = false;},350);
-    },{passive:true});
-
-    window.addEventListener('resize',function(){
-      initialized = false;
-
-      const mobile = window.innerWidth <= 700;
-
-      vx = (vx < 0 ? -1 : 1) * (mobile ? 0.055 : 0.070);
-      vy = (vy < 0 ? -1 : 1) * (mobile ? 0.046 : 0.058);
-    });
-
-    requestAnimationFrame(frame);
-  }
+  /* تم تعطيل الحركة المتجولة للفيديو — أصبح ثابتاً في الزاوية السفلية */
 
   function initNews(){
     ensureWorldNews();
@@ -36505,6 +36264,627 @@ body.sakaker-live-popup-open.sak-global-player-open > #livePopup{
   new MutationObserver(applyLanguage).observe(
     document.documentElement,
     {attributes:true,attributeFilter:['lang','dir']}
+  );
+
+})();
+</script>
+
+
+<!-- SAKAKER VIDEO CORNER + BUSINESS DIRECT FINAL -->
+<style id="sakaker-video-corner-business-direct-final">
+
+/* =========================================================
+   دائرة الفيديو — ثابتة بالزاوية السفلية اليمنى
+========================================================= */
+html body .video-top-container-fixed{
+  position:fixed !important;
+
+  top:auto !important;
+  left:auto !important;
+  right:max(16px,env(safe-area-inset-right)) !important;
+  bottom:max(88px,calc(env(safe-area-inset-bottom) + 82px)) !important;
+
+  width:96px !important;
+  height:96px !important;
+
+  margin:0 !important;
+  padding:0 !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  transform:none !important;
+
+  contain:none !important;
+  will-change:auto !important;
+
+  overflow:visible !important;
+
+  z-index:812000 !important;
+
+  pointer-events:none !important;
+}
+
+/* الهالة الخارجية */
+html body .video-top-container-fixed::before{
+  content:"" !important;
+
+  position:absolute !important;
+  inset:-10px !important;
+
+  border-radius:50% !important;
+
+  background:
+    conic-gradient(
+      from 0deg,
+      rgba(255,255,255,.05),
+      #ffffff,
+      #bfc8d2,
+      #7cecff,
+      #ffffff,
+      #c7a9ff,
+      #ffffff,
+      rgba(255,255,255,.05)
+    ) !important;
+
+  filter:
+    blur(4px)
+    drop-shadow(0 0 8px rgba(255,255,255,.95))
+    drop-shadow(0 0 18px rgba(167,224,255,.58))
+    drop-shadow(0 0 28px rgba(205,176,255,.40)) !important;
+
+  opacity:.88 !important;
+
+  animation:sakVideoHaloSpin 5.5s linear infinite !important;
+
+  pointer-events:none !important;
+
+  z-index:0 !important;
+}
+
+/* حلقة ثانية نابضة */
+html body .video-top-container-fixed::after{
+  content:"" !important;
+
+  position:absolute !important;
+  inset:-5px !important;
+
+  border:1px solid rgba(255,255,255,.92) !important;
+  border-radius:50% !important;
+
+  box-shadow:
+    0 0 8px rgba(255,255,255,.92),
+    0 0 18px rgba(183,225,255,.52),
+    inset 0 0 11px rgba(255,255,255,.18) !important;
+
+  animation:sakVideoRingPulse 1.9s ease-in-out infinite alternate !important;
+
+  pointer-events:none !important;
+
+  z-index:1 !important;
+}
+
+@keyframes sakVideoHaloSpin{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+
+@keyframes sakVideoRingPulse{
+  from{
+    transform:scale(.98);
+    opacity:.58;
+  }
+  to{
+    transform:scale(1.05);
+    opacity:1;
+  }
+}
+
+/* دائرة الفيديو نفسها */
+html body .video-top-container-fixed .video-circle{
+  position:relative !important;
+
+  width:86px !important;
+  height:86px !important;
+
+  min-width:86px !important;
+  max-width:86px !important;
+  min-height:86px !important;
+  max-height:86px !important;
+
+  margin:0 !important;
+  padding:4px !important;
+
+  box-sizing:border-box !important;
+
+  overflow:hidden !important;
+
+  border:1.5px solid rgba(255,255,255,.98) !important;
+  border-radius:50% !important;
+
+  clip-path:circle(50% at 50% 50%) !important;
+
+  background:
+    conic-gradient(
+      from 45deg,
+      #f8fbff,
+      #818b96,
+      #ffffff,
+      #8edfff,
+      #ffffff,
+      #cab4ff,
+      #f8fbff
+    ) !important;
+
+  box-shadow:
+    0 0 9px rgba(255,255,255,.95),
+    0 0 21px rgba(177,220,255,.54),
+    0 0 34px rgba(204,177,255,.33),
+    inset 0 0 8px rgba(255,255,255,.44) !important;
+
+  filter:none !important;
+
+  pointer-events:auto !important;
+
+  z-index:2 !important;
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease !important;
+}
+
+html body .video-top-container-fixed .video-circle:hover{
+  transform:scale(1.08) !important;
+
+  box-shadow:
+    0 0 12px rgba(255,255,255,1),
+    0 0 28px rgba(173,224,255,.72),
+    0 0 44px rgba(207,177,255,.48),
+    inset 0 0 10px rgba(255,255,255,.48) !important;
+}
+
+/* الفيديو داخل الدائرة */
+html body .video-top-container-fixed .video-circle .miniVideo,
+html body .video-top-container-fixed .video-circle iframe{
+  position:absolute !important;
+
+  inset:4px !important;
+
+  width:calc(100% - 8px) !important;
+  height:calc(100% - 8px) !important;
+
+  border:0 !important;
+  border-radius:50% !important;
+
+  clip-path:circle(50% at 50% 50%) !important;
+
+  object-fit:cover !important;
+
+  opacity:1 !important;
+
+  transform:none !important;
+
+  filter:
+    brightness(1.03)
+    contrast(1.04)
+    saturate(1.05) !important;
+
+  z-index:2 !important;
+}
+
+/* رمز التشغيل */
+html body .video-top-container-fixed .video-play-icon{
+  z-index:5 !important;
+
+  border:1px solid rgba(255,255,255,.90) !important;
+  border-radius:50% !important;
+
+  background:rgba(0,0,0,.35) !important;
+
+  color:#fff !important;
+
+  box-shadow:
+    0 0 8px rgba(255,255,255,.72),
+    0 0 16px rgba(174,223,255,.44) !important;
+}
+
+
+/* =========================================================
+   Sakaker Business — يسار أسفل الصفحة بعيداً عن الفيديو والشريط
+========================================================= */
+html body #sakakerBusinessCenterHost{
+  position:fixed !important;
+
+  top:auto !important;
+  left:max(16px,env(safe-area-inset-left)) !important;
+  right:auto !important;
+  bottom:max(91px,calc(env(safe-area-inset-bottom) + 85px)) !important;
+
+  transform:none !important;
+
+  width:64px !important;
+  height:64px !important;
+
+  margin:0 !important;
+  padding:0 !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  z-index:811900 !important;
+
+  pointer-events:none !important;
+}
+
+html body #sakakerBusinessCenterHost #sakakerBusinessAd{
+  position:relative !important;
+
+  inset:auto !important;
+
+  width:62px !important;
+  height:62px !important;
+
+  min-width:62px !important;
+  max-width:62px !important;
+  min-height:62px !important;
+  max-height:62px !important;
+
+  margin:0 !important;
+  padding:0 !important;
+
+  transform:none !important;
+
+  pointer-events:auto !important;
+}
+
+html body #sakakerBusinessCenterHost #sakakerBusinessIcon{
+  position:relative !important;
+
+  inset:auto !important;
+
+  width:100% !important;
+  height:100% !important;
+
+  margin:0 !important;
+
+  border:1.6px solid rgba(255,255,255,.96) !important;
+
+  box-shadow:
+    0 0 8px rgba(255,255,255,.96),
+    0 0 18px rgba(206,216,226,.72),
+    0 0 29px rgba(160,175,190,.46),
+    inset 0 0 10px rgba(255,255,255,.40) !important;
+
+  animation:sakBusinessSilverPulse 2s ease-in-out infinite alternate !important;
+}
+
+@keyframes sakBusinessSilverPulse{
+  from{
+    filter:
+      brightness(.96)
+      drop-shadow(0 0 5px rgba(255,255,255,.60));
+  }
+  to{
+    filter:
+      brightness(1.15)
+      drop-shadow(0 0 11px rgba(255,255,255,.92));
+  }
+}
+
+/* الأيقونة ثابتة دائماً — إلغاء نظام الاختفاء الدوري */
+html body #sakakerBusinessIcon.sakakerBusinessHidden,
+html body #sakakerBusinessIcon{
+  opacity:1 !important;
+  visibility:visible !important;
+  pointer-events:auto !important;
+}
+
+/* بما أن الضغط صار يفتح الموقع مباشرة، لا نحتاج النافذة القديمة */
+html body #sakakerBusinessPopup{
+  display:none !important;
+}
+
+
+/* =========================================================
+   الجوال
+========================================================= */
+@media(max-width:700px){
+
+  html body .video-top-container-fixed{
+    right:max(8px,env(safe-area-inset-right)) !important;
+    bottom:max(68px,calc(env(safe-area-inset-bottom) + 64px)) !important;
+
+    width:76px !important;
+    height:76px !important;
+  }
+
+  html body .video-top-container-fixed::before{
+    inset:-7px !important;
+  }
+
+  html body .video-top-container-fixed::after{
+    inset:-4px !important;
+  }
+
+  html body .video-top-container-fixed .video-circle{
+    width:68px !important;
+    height:68px !important;
+
+    min-width:68px !important;
+    max-width:68px !important;
+    min-height:68px !important;
+    max-height:68px !important;
+  }
+
+  html body #sakakerBusinessCenterHost{
+    left:max(8px,env(safe-area-inset-left)) !important;
+    bottom:max(70px,calc(env(safe-area-inset-bottom) + 66px)) !important;
+
+    width:54px !important;
+    height:54px !important;
+  }
+
+  html body #sakakerBusinessCenterHost #sakakerBusinessAd{
+    width:52px !important;
+    height:52px !important;
+
+    min-width:52px !important;
+    max-width:52px !important;
+    min-height:52px !important;
+    max-height:52px !important;
+  }
+}
+
+@media(max-width:390px){
+
+  html body .video-top-container-fixed{
+    right:max(6px,env(safe-area-inset-right)) !important;
+    bottom:max(62px,calc(env(safe-area-inset-bottom) + 59px)) !important;
+
+    width:70px !important;
+    height:70px !important;
+  }
+
+  html body .video-top-container-fixed .video-circle{
+    width:62px !important;
+    height:62px !important;
+
+    min-width:62px !important;
+    max-width:62px !important;
+    min-height:62px !important;
+    max-height:62px !important;
+  }
+
+  html body #sakakerBusinessCenterHost{
+    left:max(6px,env(safe-area-inset-left)) !important;
+    bottom:max(63px,calc(env(safe-area-inset-bottom) + 60px)) !important;
+
+    width:48px !important;
+    height:48px !important;
+  }
+
+  html body #sakakerBusinessCenterHost #sakakerBusinessAd{
+    width:46px !important;
+    height:46px !important;
+
+    min-width:46px !important;
+    max-width:46px !important;
+    min-height:46px !important;
+    max-height:46px !important;
+  }
+}
+
+/* الإخفاء أثناء الدخول والنوافذ الكاملة يبقى كما هو */
+body.locked .video-top-container-fixed,
+body.locked #sakakerBusinessCenterHost,
+body.sakaker-fb-popup-open .video-top-container-fixed,
+body.sakaker-live-popup-open .video-top-container-fixed,
+body.sakaker-live-video-open .video-top-container-fixed,
+body.sakaker-music-open .video-top-container-fixed,
+body.sakaker-fb-popup-open #sakakerBusinessCenterHost,
+body.sakaker-live-popup-open #sakakerBusinessCenterHost,
+body.sakaker-live-video-open #sakakerBusinessCenterHost,
+body.sakaker-music-open #sakakerBusinessCenterHost{
+  visibility:hidden !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+
+</style>
+
+<script id="sakaker-video-corner-business-direct-js">
+(function(){
+  'use strict';
+
+  /* =======================================================
+     تثبيت الفيديو في الزاوية وإزالة أي transform قديم
+  ======================================================= */
+  function fixVideoCorner(){
+    const mover =
+      document.querySelector(
+        '.video-top-container-fixed'
+      );
+
+    if(!mover) return;
+
+    mover.style.removeProperty(
+      'transform'
+    );
+
+    mover.style.setProperty(
+      'transform',
+      'none',
+      'important'
+    );
+
+    mover.setAttribute(
+      'aria-label',
+      document.documentElement.lang === 'en'
+        ? 'Featured video'
+        : 'فيديو مميز'
+    );
+  }
+
+  /* =======================================================
+     رابط بزنس مباشر
+  ======================================================= */
+  function wireBusinessDirect(){
+    const icon =
+      document.getElementById(
+        'sakakerBusinessIcon'
+      );
+
+    if(!icon) return;
+
+    if(
+      icon.dataset.sakBusinessDirect ===
+      '1'
+    ){
+      return;
+    }
+
+    icon.dataset.sakBusinessDirect =
+      '1';
+
+    const updateLabel =
+      function(){
+        const en =
+          document.documentElement.lang ===
+          'en';
+
+        const label =
+          en
+            ? 'Open Sakaker Business'
+            : 'فتح Sakaker Business';
+
+        icon.setAttribute(
+          'aria-label',
+          label
+        );
+
+        icon.setAttribute(
+          'title',
+          label
+        );
+      };
+
+    updateLabel();
+
+    /*
+      نستخدم capture + stopImmediatePropagation
+      لمنع مستمع النافذة القديمة من العمل.
+    */
+    icon.addEventListener(
+      'click',
+      function(e){
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        window.open(
+          'https://business.sakaker.co/',
+          '_blank',
+          'noopener,noreferrer'
+        );
+      },
+      true
+    );
+
+    new MutationObserver(
+      updateLabel
+    ).observe(
+      document.documentElement,
+      {
+        attributes:true,
+        attributeFilter:[
+          'lang',
+          'dir'
+        ]
+      }
+    );
+  }
+
+  /* =======================================================
+     تأكيد موقع البزنس بعد أكواد الترتيب القديمة
+  ======================================================= */
+  function ensureBusinessHost(){
+    let host =
+      document.getElementById(
+        'sakakerBusinessCenterHost'
+      );
+
+    const business =
+      document.getElementById(
+        'sakakerBusinessAd'
+      );
+
+    if(!business) return;
+
+    if(!host){
+      host =
+        document.createElement(
+          'div'
+        );
+
+      host.id =
+        'sakakerBusinessCenterHost';
+
+      document.body.appendChild(
+        host
+      );
+    }
+
+    if(
+      business.parentElement !==
+      host
+    ){
+      host.appendChild(
+        business
+      );
+    }
+  }
+
+  function apply(){
+    fixVideoCorner();
+    ensureBusinessHost();
+    wireBusinessDirect();
+  }
+
+  apply();
+
+  if(
+    document.readyState ===
+    'loading'
+  ){
+    document.addEventListener(
+      'DOMContentLoaded',
+      apply
+    );
+  }
+
+  [250,900,1800,3300,5200].forEach(
+    function(ms){
+      setTimeout(
+        apply,
+        ms
+      );
+    }
+  );
+
+  window.addEventListener(
+    'resize',
+    fixVideoCorner
+  );
+
+  window.addEventListener(
+    'orientationchange',
+    function(){
+      setTimeout(
+        fixVideoCorner,
+        120
+      );
+    }
   );
 
 })();
