@@ -37584,6 +37584,7 @@ body.sak-media-heavy-open #emOpenBtn{
     return document.getElementById('sakakerMainVideoBackground');
   }
 
+
   function setMediaHeavy(active){
     if(!document.body) return;
 
@@ -37657,6 +37658,7 @@ body.sak-media-heavy-open #emOpenBtn{
     source.type = 'video/mp4';
 
     video.appendChild(source);
+
 
     function rate(){
       video.defaultPlaybackRate = 0.25;
@@ -37795,6 +37797,7 @@ body.sak-media-heavy-open #emOpenBtn{
       ){
         p.catch(function(){});
       }
+
     }catch(e){}
   }
 
@@ -37810,6 +37813,7 @@ body.sak-media-heavy-open #emOpenBtn{
     try{
       video.pause();
     }catch(e){}
+
   }
 
 
@@ -38538,6 +38542,32 @@ html body.locked #sakakerMainVideoBackground{
     object-fit:contain !important;
     object-position:center center !important;
   }
+}
+
+/* فيديو واحد يملأ الشاشة مع الحفاظ على نسب الأبعاد. */
+html body:not(.locked) #sakakerMainVideoBackground{
+  position:fixed !important;
+  inset:0 !important;
+  width:100vw !important;
+  height:100vh !important;
+  max-width:none !important;
+  max-height:none !important;
+  object-fit:cover !important;
+  object-position:center center !important;
+  z-index:-1 !important;
+  pointer-events:none !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  filter:none !important;
+  transform:none !important;
+  background:transparent !important;
+}
+
+html body.locked #sakakerMainVideoBackground{
+  display:none !important;
+  visibility:hidden !important;
+  opacity:0 !important;
 }
 
 </style>
