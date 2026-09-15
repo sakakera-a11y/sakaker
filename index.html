@@ -5762,7 +5762,7 @@ birdBtn.addEventListener('click',async e=>{e.stopPropagation();try{if(birdAudio.
 <div class="video-top-container-fixed">
 <div class="video-circle" data-video="n7eQejkXbnM">
 
-```
+
 <!-- وهج خارجي -->
 <div class="circle-glow"></div>
 <!-- انعكاس زجاجي -->
@@ -5774,7 +5774,7 @@ birdBtn.addEventListener('click',async e=>{e.stopPropagation();try{if(birdAudio.
 <iframe allow="autoplay; encrypted-media" class="miniVideo" frameborder="0" data-src="https://www.youtube.com/embed/n7eQejkXbnM" loading="lazy" src="about:blank" title="Video"></iframe>
 <!-- رمز التشغيل -->
 <div class="video-play-icon">▶</div>
-```
+
 
   </div>
 </div>
@@ -5791,7 +5791,7 @@ birdBtn.addEventListener('click',async e=>{e.stopPropagation();try{if(birdAudio.
     ✦ VIDEO ✦
   </div>
 <!-- زر الإغلاق -->
-<button id="videoCloseBtn" onclick="closeFixedVideo()">
+<button type="button" id="videoCloseBtn" onclick="closeFixedVideo()">
 ✕ </button>
 <!-- الفيديو -->
 <iframe allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen="" id="fixedVideo" src="">
@@ -5864,8 +5864,8 @@ pongBtn.addEventListener('mouseleave', () => {
 });
 </script>
 
-<html lang="ar" dir="rtl">
-<head>
+
+
 <!-- 🔹 حاوية اللعبة -->
 <div id="pongGame-container" style="display:none;position:fixed;top:2px;left:2px;width:100vw;height:100vh;background:black;z-index:10000;overflow:hidden;">
 
@@ -6175,419 +6175,6 @@ html body:not(.locked)::after{
 </style>
 
 <!-- SAKAKER VIDEO PLAYER + PERFORMANCE FINAL -->
-<style id="sakaker-video-player-performance-final">
-
-html body:not(.locked){
-  background-color:#02090b !important;
-  background-image:var(--sakaker-site-bg) !important;
-  background-size:cover !important;
-  background-position:center center !important;
-  background-repeat:no-repeat !important;
-  background-attachment:fixed !important;
-}
-
-#sakakerMainVideoBackground{
-  position:fixed !important;
-  inset:0 !important;
-  width:100vw !important;
-  height:100vh !important;
-  object-fit:cover !important;
-  object-position:center center !important;
-  z-index:-1 !important;
-  pointer-events:none !important;
-  background:#02090b !important;
-  opacity:0 !important;
-  transition:opacity .25s ease !important;
-}
-
-#sakakerMainVideoBackground.sak-bg-ready{
-  opacity:1 !important;
-}
-
-body.locked #sakakerMainVideoBackground{
-  display:none !important;
-}
-
-/* نافذة فيديو الدوائر لا تُغلق من الأكواد القديمة */
-html body #videoBoxFixed.sak-player-open{
-  display:block !important;
-  visibility:visible !important;
-  opacity:1 !important;
-  pointer-events:auto !important;
-  z-index:2147483647 !important;
-  animation:none !important;
-}
-
-html body #videoBoxFixed.sak-player-open:not(.sak-hls-mode) #fixedVideo{
-  display:block !important;
-}
-
-html body #videoBoxFixed.sak-player-open:not(.sak-hls-mode) #sakFixedHlsVideo{
-  display:none !important;
-}
-
-/* تخفيف الزخارف المتحركة الأكثر استهلاكاً */
-html body .video-top-container-fixed::before,
-html body .video-top-container-fixed::after,
-html body #sakSecondStreamCorner::before,
-html body #sakSecondStreamCorner::after,
-html body .fbIconRays,
-html body .launcher::before,
-html body .launcher::after,
-html body .sbShine,
-html body .sbSpark{
-  animation:none !important;
-}
-
-/* عند فتح فيديو نوقف بقية المؤثرات مؤقتاً */
-body.sak-fixed-video-open .icon-card,
-body.sak-fixed-video-open #facebookVideoIcon,
-body.sak-fixed-video-open #liveFlasher,
-body.sak-fixed-video-open #emeraldLibraryButton,
-body.sak-fixed-video-open #pongGame-btn,
-body.sak-fixed-video-open .launcher,
-body.sak-fixed-video-open #emOpenBtn{
-  animation-play-state:paused !important;
-}
-
-@media(max-width:768px){
-  html body:not(.locked){
-    background-attachment:scroll !important;
-  }
-}
-
-</style>
-
-<script id="sakaker-video-player-performance-js">
-(function(){
-  'use strict';
-
-  const BG_VIDEO_URL = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/v2_awv-7e0c4c00ad02ab7c.mp4';
-  const YOUTUBE_URL = 'https://www.youtube.com/embed/n7eQejkXbnM?autoplay=1&controls=1&playsinline=1&rel=0&modestbranding=1';
-  const HLS_URL = 'https://cffda8ff.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9GSUZBUGx1c3dvbWVuX0hMUw/playlist.m3u8';
-
-  let hls = null;
-  let hlsPromise = null;
-
-  function loggedIn(){
-    return !!document.body && !document.body.classList.contains('locked');
-  }
-
-  function box(){
-    return document.getElementById('videoBoxFixed');
-  }
-
-  function iframe(){
-    return document.getElementById('fixedVideo');
-  }
-
-  function bgVideo(){
-    return document.getElementById('sakakerMainVideoBackground');
-  }
-
-  function ensureBgVideo(){
-    if(!document.body || !loggedIn()) return null;
-
-    let v = bgVideo();
-    if(v) return v;
-
-    v = document.createElement('video');
-    v.id = 'sakakerMainVideoBackground';
-    v.autoplay = true;
-    v.loop = true;
-    v.muted = true;
-    v.playsInline = true;
-    v.preload = 'metadata';
-    v.defaultPlaybackRate = 0.85;
-    v.playbackRate = 0.85;
-
-    v.setAttribute('muted','');
-    v.setAttribute('playsinline','');
-    v.setAttribute('webkit-playsinline','');
-    v.setAttribute('disablepictureinpicture','');
-    v.setAttribute('aria-hidden','true');
-
-    const source = document.createElement('source');
-    source.src = BG_VIDEO_URL;
-    source.type = 'video/mp4';
-    v.appendChild(source);
-
-    v.addEventListener('loadedmetadata', function(){
-      v.defaultPlaybackRate = 0.85;
-      v.playbackRate = 0.85;
-    });
-
-    v.addEventListener('canplay', function(){
-      v.classList.add('sak-bg-ready');
-      v.defaultPlaybackRate = 0.85;
-      v.playbackRate = 0.85;
-    });
-
-    document.body.insertBefore(v, document.body.firstChild);
-    return v;
-  }
-
-  function playBg(){
-    if(!loggedIn() || document.body.classList.contains('sak-fixed-video-open')) return;
-
-    const v = ensureBgVideo();
-    if(!v) return;
-
-    v.defaultPlaybackRate = 0.85;
-    v.playbackRate = 0.85;
-
-    try{
-      const p = v.play();
-      if(p && typeof p.catch === 'function') p.catch(function(){});
-    }catch(e){}
-  }
-
-  function pauseBg(){
-    const v = bgVideo();
-    if(!v) return;
-    try{ v.pause(); }catch(e){}
-  }
-
-  function ensureHlsVideo(){
-    const b = box();
-    if(!b) return null;
-
-    let v = document.getElementById('sakFixedHlsVideo');
-    if(!v){
-      v = document.createElement('video');
-      v.id = 'sakFixedHlsVideo';
-      v.controls = true;
-      v.autoplay = true;
-      v.playsInline = true;
-      v.preload = 'metadata';
-      b.appendChild(v);
-    }
-    return v;
-  }
-
-  function stopHls(){
-    if(hls){
-      try{ hls.destroy(); }catch(e){}
-      hls = null;
-    }
-
-    const v = document.getElementById('sakFixedHlsVideo');
-    if(v){
-      try{ v.pause(); }catch(e){}
-      v.removeAttribute('src');
-      try{ v.load(); }catch(e){}
-    }
-  }
-
-  function loadHls(){
-    if(window.Hls) return Promise.resolve(window.Hls);
-    if(hlsPromise) return hlsPromise;
-
-    hlsPromise = new Promise(function(resolve,reject){
-      let s = document.querySelector('script[data-sak-v12-hls="1"]');
-
-      if(!s){
-        s = document.createElement('script');
-        s.src = 'https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js';
-        s.async = true;
-        s.dataset.sakV12Hls = '1';
-        document.head.appendChild(s);
-      }
-
-      s.addEventListener('load', function(){ resolve(window.Hls); }, {once:true});
-      s.addEventListener('error', reject, {once:true});
-    });
-
-    return hlsPromise;
-  }
-
-  function markOpen(mode){
-    const b = box();
-    if(!b) return;
-
-    b.classList.add('sak-player-open');
-    b.style.setProperty('display','block','important');
-    b.style.setProperty('visibility','visible','important');
-    b.style.setProperty('opacity','1','important');
-    b.dataset.sakPlayerMode = mode;
-
-    document.body.classList.add('sak-fixed-video-open');
-    pauseBg();
-  }
-
-  function openYoutube(){
-    const b = box();
-    const f = iframe();
-    if(!b || !f) return;
-
-    stopHls();
-
-    b.classList.remove('sak-hls-mode');
-
-    const hv = document.getElementById('sakFixedHlsVideo');
-    if(hv) hv.style.display = 'none';
-
-    const title = b.querySelector('.video-box-title');
-    if(title) title.textContent = '✦ VIDEO ✦';
-
-    f.style.display = 'block';
-    if(f.getAttribute('src') !== YOUTUBE_URL){
-      f.src = YOUTUBE_URL;
-    }
-
-    markOpen('youtube');
-  }
-
-  async function openHls(){
-    const b = box();
-    const f = iframe();
-    if(!b) return;
-
-    if(f){
-      f.src = '';
-      f.style.display = 'none';
-    }
-
-    stopHls();
-
-    const v = ensureHlsVideo();
-    if(!v) return;
-
-    b.classList.add('sak-hls-mode');
-    v.style.display = 'block';
-
-    const title = b.querySelector('.video-box-title');
-    if(title) title.textContent = '✦ LIVE STREAM ✦';
-
-    markOpen('hls');
-
-    if(v.canPlayType('application/vnd.apple.mpegurl')){
-      v.src = HLS_URL;
-      try{
-        const p = v.play();
-        if(p && typeof p.catch === 'function') p.catch(function(){});
-      }catch(e){}
-      return;
-    }
-
-    try{
-      const Hls = await loadHls();
-
-      if(Hls && Hls.isSupported()){
-        hls = new Hls({
-          enableWorker:true,
-          lowLatencyMode:false,
-          backBufferLength:8,
-          maxBufferLength:14,
-          maxMaxBufferLength:24,
-          capLevelToPlayerSize:true
-        });
-
-        hls.loadSource(HLS_URL);
-        hls.attachMedia(v);
-
-        hls.on(Hls.Events.MANIFEST_PARSED, function(){
-          v.play().catch(function(){});
-        });
-      }
-    }catch(e){}
-  }
-
-  function closePlayer(){
-    const b = box();
-    const f = iframe();
-
-    stopHls();
-    if(f) f.src = '';
-
-    if(b){
-      b.classList.remove('sak-player-open','sak-hls-mode');
-      b.removeAttribute('data-sak-player-mode');
-      b.style.setProperty('display','none','important');
-      b.style.removeProperty('visibility');
-      b.style.removeProperty('opacity');
-    }
-
-    document.body.classList.remove('sak-fixed-video-open');
-
-    requestAnimationFrame(playBg);
-  }
-
-  window.closeFixedVideo = closePlayer;
-
-  /*
-    Capture على window يمنع مستمعات click القديمة من فتح النافذة
-    ثم إغلاقها مباشرة في نفس الضغطة.
-  */
-  window.addEventListener('click', function(e){
-    const t = e.target;
-    if(!(t instanceof Element)) return;
-
-    if(t.closest('.video-top-container-fixed .video-circle')){
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      openYoutube();
-      return;
-    }
-
-    if(t.closest('#sakSecondStreamCircle')){
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      openHls();
-    }
-  }, true);
-
-  window.addEventListener('keydown', function(e){
-    if(e.key === 'Escape'){
-      closePlayer();
-      return;
-    }
-
-    if(e.key === 'Enter' || e.key === ' '){
-      const active = document.activeElement;
-
-      if(active && active.id === 'sakSecondStreamCircle'){
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        openHls();
-      }
-    }
-  }, true);
-
-  function sync(){
-    if(loggedIn()){
-      playBg();
-    }else{
-      pauseBg();
-    }
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', sync, {once:true});
-  }else{
-    sync();
-  }
-
-  if(document.body){
-    new MutationObserver(sync).observe(
-      document.body,
-      {attributes:true,attributeFilter:['class']}
-    );
-  }
-
-  document.addEventListener('visibilitychange', function(){
-    if(document.visibilityState === 'hidden'){
-      pauseBg();
-    }else{
-      playBg();
-    }
-  });
-})();
-</script>
-
-</body>
-</html>
-
 <!-- 🌟 أيقونة فليشر القنوات المباشرة -->
 <div id="liveFlasher" onclick="toggleLivePopup()">
 <span>قنوات مباشرة<br/>Live Channels</span>
@@ -6598,34 +6185,34 @@ body.sak-fixed-video-open #emOpenBtn{
 <button id="closePopup" onclick="toggleLivePopup()">❌</button>
 <div id="liveVideosContainer">
 <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/AGkp2AL8e7o')">
-<iframe allowfullscreen="" src="https://www.youtube.com/embed/AGkp2AL8e7o?mute=1"></iframe>
+<iframe allowfullscreen="" data-src="https://www.youtube.com/embed/AGkp2AL8e7o?mute=1" src="about:blank"></iframe>
 </div>
 <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/0FBiyFpV__g')">
-<iframe allowfullscreen="" src="https://www.youtube.com/embed/0FBiyFpV__g?mute=1"></iframe>
+<iframe allowfullscreen="" data-src="https://www.youtube.com/embed/0FBiyFpV__g?mute=1" src="about:blank"></iframe>
 </div>
 <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/HfgIFGbdGJ0')">
-<iframe allowfullscreen="" src="https://www.youtube.com/embed/HfgIFGbdGJ0?mute=1"></iframe>
+<iframe allowfullscreen="" data-src="https://www.youtube.com/embed/HfgIFGbdGJ0?mute=1" src="about:blank"></iframe>
 </div>
 <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/LuKwFajn37U')">
-<iframe allowfullscreen="" src="https://www.youtube.com/embed/LuKwFajn37U?mute=1"></iframe>
+<iframe allowfullscreen="" data-src="https://www.youtube.com/embed/LuKwFajn37U?mute=1" src="about:blank"></iframe>
 </div>
 <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/n7eQejkXbnM')">
-<iframe allowfullscreen="" src="https://www.youtube.com/embed/n7eQejkXbnM?mute=1"></iframe>
+<iframe allowfullscreen="" data-src="https://www.youtube.com/embed/n7eQejkXbnM?mute=1" src="about:blank"></iframe>
 </div>
 <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/J2TXKYeBUi4')">
-<iframe allowfullscreen="" src="https://www.youtube.com/embed/J2TXKYeBUi4?mute=1"></iframe>
+<iframe allowfullscreen="" data-src="https://www.youtube.com/embed/J2TXKYeBUi4?mute=1" src="about:blank"></iframe>
 </div>
 <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/GNi0keWY1io')">
-<iframe allowfullscreen="" src="https://www.youtube.com/embed/GNi0keWY1io?mute=1"></iframe>
+<iframe allowfullscreen="" data-src="https://www.youtube.com/embed/GNi0keWY1io?mute=1" src="about:blank"></iframe>
 </div>
 <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/Va6QU9n3q18')">
-<iframe allowfullscreen="" src="https://www.youtube.com/embed/Va6QU9n3q18?mute=1"></iframe>
+<iframe allowfullscreen="" data-src="https://www.youtube.com/embed/Va6QU9n3q18?mute=1" src="about:blank"></iframe>
 </div>
 <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/MiQe9ob9aDc')">
-<iframe allowfullscreen="" src="https://www.youtube.com/embed/MiQe9ob9aDc?mute=1"></iframe>
+<iframe allowfullscreen="" data-src="https://www.youtube.com/embed/MiQe9ob9aDc?mute=1" src="about:blank"></iframe>
 </div>
 <div class="live-video" onclick="openVideo('https://www.youtube.com/embed/TLRlAlyiT7Y')">
-<iframe allowfullscreen="" src="https://www.youtube.com/embed/TLRlAlyiT7Y?mute=1"></iframe>
+<iframe allowfullscreen="" data-src="https://www.youtube.com/embed/TLRlAlyiT7Y?mute=1" src="about:blank"></iframe>
 </div>
 </div>
 </div>
@@ -15756,10 +15343,6 @@ window.addEventListener(
 <div id="sakakerWatermarkMask" aria-hidden="true"></div>
 
 
-
-
-</body>
-
 <style>
 /* =========================================================
    الأيقونات الرئيسية
@@ -17067,7 +16650,7 @@ body{}
 }
 </style>
 
-</body>
+
 
 <!-- =========================================================
      SAKAKER — FINAL CONFLICT FIX
@@ -17590,7 +17173,7 @@ html body.locked #bird-sound-btn:active {
 }
 
 </style>
-</html>
+
 
 
 <!-- SAKAKER TRUE FINAL VISUAL FIX -->
@@ -25832,7 +25415,7 @@ html body #sakGlobalStreamDetails{
         const response =
           await fetch(
             SEARCH_URL,
-            {cache:'no-store'}
+            {cache:'no-cache'}
           );
 
         if(!response.ok){
@@ -25864,7 +25447,7 @@ html body #sakGlobalStreamDetails{
           const indexResponse =
             await fetch(
               INDEX_URL,
-              {cache:'no-store'}
+              {cache:'no-cache'}
             );
 
           if(indexResponse.ok){
@@ -26663,7 +26246,7 @@ html body #sakGlobalStreamDetails{
           '/api/v1/channels/' +
           encodeURIComponent(ch.id) +
           '.json',
-          {cache:'no-store'}
+          {cache:'no-cache'}
         );
 
       if(!response.ok){
@@ -34259,6 +33842,49 @@ body.sakaker-live-popup-open.sak-global-player-open > #livePopup{
   let radioStatus = 'all';
   let radioLoaded = false;
 
+  const RADIO_CACHE_KEY = 'sakakerRadioCacheV4';
+  const RADIO_CACHE_TTL = 30 * 60 * 1000;
+
+  function readRadioCache(){
+    try{
+      const raw = localStorage.getItem(RADIO_CACHE_KEY);
+      if(!raw) return null;
+
+      const data = JSON.parse(raw);
+
+      if(
+        !data ||
+        !Array.isArray(data.rows) ||
+        Date.now() - Number(data.time || 0) > RADIO_CACHE_TTL
+      ){
+        return null;
+      }
+
+      return data.rows;
+    }catch(e){
+      return null;
+    }
+  }
+
+  function writeRadioCache(rows){
+    try{
+      localStorage.setItem(
+        RADIO_CACHE_KEY,
+        JSON.stringify({
+          time:Date.now(),
+          rows:Array.isArray(rows) ? rows : []
+        })
+      );
+    }catch(e){}
+  }
+
+  function clearRadioCache(){
+    try{
+      localStorage.removeItem(RADIO_CACHE_KEY);
+    }catch(e){}
+  }
+
+
   const isEn = () => document.documentElement.lang === 'en';
 
   function normalize(v){
@@ -34405,6 +34031,7 @@ body.sakaker-live-popup-open.sak-global-player-open > #livePopup{
     };
 
     document.getElementById('sakRadioRefresh').onclick = async ()=>{
+      clearRadioCache();
       radioLoaded = false;
       radioRows = [];
       radioFiltered = [];
@@ -34430,22 +34057,48 @@ body.sakaker-live-popup-open.sak-global-player-open > #livePopup{
 
   async function loadRadio(){
     const meta = document.getElementById('sakRadioMeta');
-    meta.textContent = isEn()
-      ? 'Loading worldwide radio stations…'
-      : 'جاري تحميل محطات الراديو العالمية…';
 
-    try{
-      const data = await radioFetch(
-        '/json/stations/search?hidebroken=false&order=clickcount&reverse=true&limit=650'
-      );
-      radioRows = Array.isArray(data) ? data : [];
+    const cached = readRadioCache();
+
+    if(cached && cached.length){
+      radioRows = cached;
       radioLoaded = true;
       buildRadioSelects();
       applyRadioFilters();
+
+      meta.textContent = isEn()
+        ? 'Fast cached list — refresh for the newest station checks.'
+        : 'قائمة سريعة محفوظة — اضغط تحديث لأحدث فحص للمحطات.';
+
+      return;
+    }
+
+    meta.textContent = isEn()
+      ? 'Loading the best currently checked radio stations…'
+      : 'جاري تحميل أفضل محطات الراديو التي تم فحصها…';
+
+    try{
+      const data = await radioFetch(
+        '/json/stations/search?hidebroken=true&order=clickcount&reverse=true&limit=500'
+      );
+
+      radioRows = Array.isArray(data) ? data : [];
+      radioLoaded = true;
+
+      writeRadioCache(radioRows);
+
+      buildRadioSelects();
+      applyRadioFilters();
+
+      meta.textContent = isEn()
+        ? `${radioRows.length} checked stations loaded`
+        : `تم تحميل ${radioRows.length} محطة مفحوصة`;
+
     }catch(e){
       meta.textContent = isEn()
         ? 'Worldwide radio service is temporarily unavailable.'
         : 'خدمة الراديو العالمية غير متاحة مؤقتًا.';
+
       document.getElementById('sakRadioResults').innerHTML =
         `<div id="sakRadioEmpty">${
           isEn() ? 'Unable to load stations now.' : 'تعذر تحميل المحطات الآن.'
@@ -37641,3 +37294,1084 @@ html body #videoBoxFixed video{
 })();
 </script>
 
+
+<!-- SAKAKER MEDIA STABILITY + LIVE RADIO FINAL -->
+<style id="sakaker-media-stability-live-radio-final">
+
+/* =========================================================
+   خلفية الموقع بعد الدخول: صورة ثابتة fallback + فيديو سلس
+========================================================= */
+html body:not(.locked){
+  position:relative !important;
+  isolation:isolate !important;
+
+  background-color:#02090b !important;
+  background-image:var(--sakaker-site-bg) !important;
+  background-size:cover !important;
+  background-position:center center !important;
+  background-repeat:no-repeat !important;
+  background-attachment:fixed !important;
+}
+
+#sakakerMainVideoBackground{
+  position:fixed !important;
+  inset:0 !important;
+
+  width:100vw !important;
+  height:100vh !important;
+
+  object-fit:cover !important;
+  object-position:center center !important;
+
+  z-index:-1 !important;
+  pointer-events:none !important;
+
+  opacity:0 !important;
+  transition:opacity .32s ease !important;
+
+  background:#02090b !important;
+}
+
+#sakakerMainVideoBackground.sak-bg-playing{
+  opacity:1 !important;
+}
+
+body.locked #sakakerMainVideoBackground{
+  display:none !important;
+}
+
+
+/* =========================================================
+   نافذة فيديو الدوائر — فوق الجميع
+========================================================= */
+html body #videoBoxFixed.sak-player-open{
+  display:block !important;
+  visibility:visible !important;
+  opacity:1 !important;
+
+  pointer-events:auto !important;
+
+  z-index:2147483646 !important;
+
+  animation:none !important;
+}
+
+html body #videoBoxFixed #videoCloseBtn{
+  position:absolute !important;
+  top:8px !important;
+  right:8px !important;
+
+  width:38px !important;
+  height:38px !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  z-index:2147483647 !important;
+
+  pointer-events:auto !important;
+
+  border:1px solid rgba(255,255,255,.88) !important;
+  border-radius:50% !important;
+
+  background:rgba(120,10,28,.96) !important;
+  color:#fff !important;
+
+  font-size:18px !important;
+  line-height:1 !important;
+
+  cursor:pointer !important;
+
+  box-shadow:
+    0 0 10px rgba(255,80,110,.55),
+    0 0 20px rgba(0,0,0,.35) !important;
+}
+
+html body #videoBoxFixed.sak-player-open:not(.sak-hls-mode) #fixedVideo{
+  display:block !important;
+}
+
+html body #videoBoxFixed.sak-player-open:not(.sak-hls-mode) #sakFixedHlsVideo{
+  display:none !important;
+}
+
+html body #videoBoxFixed.sak-hls-mode #fixedVideo{
+  display:none !important;
+}
+
+html body #videoBoxFixed.sak-hls-mode #sakFixedHlsVideo{
+  display:block !important;
+}
+
+
+/* =========================================================
+   نافذة القنوات + الراديو — خلفية أوضح وأخف
+========================================================= */
+html body #livePopup{
+  background:
+    linear-gradient(180deg,rgba(1,7,14,.80),rgba(1,12,18,.94)),
+    var(--sakaker-site-bg) center center / cover no-repeat !important;
+
+  color:#fff !important;
+
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+html body #livePopup #liveVideosContainer{
+  background:
+    linear-gradient(145deg,rgba(2,11,18,.88),rgba(1,5,10,.93)) !important;
+
+  border:1px solid rgba(125,235,255,.32) !important;
+
+  box-shadow:
+    0 0 22px rgba(0,220,255,.12),
+    0 24px 70px rgba(0,0,0,.62) !important;
+
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+html body #sakLiveMediaTabs{
+  background:
+    linear-gradient(145deg,rgba(7,25,32,.97),rgba(5,8,16,.98)) !important;
+
+  border:1px solid rgba(134,238,255,.28) !important;
+
+  box-shadow:
+    0 0 16px rgba(0,220,255,.10) !important;
+}
+
+html body #sakLiveVideoPanel,
+html body #sakLiveRadioPanel{
+  min-height:220px !important;
+
+  border-radius:16px !important;
+
+  background:
+    linear-gradient(180deg,rgba(4,16,24,.62),rgba(3,7,13,.78)) !important;
+}
+
+html body #sakGlobalLiveHeader,
+html body #sakRadioHeader{
+  background:
+    linear-gradient(145deg,rgba(7,28,35,.94),rgba(5,8,17,.95)) !important;
+
+  border:1px solid rgba(120,230,255,.24) !important;
+
+  box-shadow:
+    0 0 14px rgba(0,210,255,.08) !important;
+
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+html body .sak-global-channel-card,
+html body .sak-radio-card{
+  background:
+    linear-gradient(145deg,rgba(12,24,31,.94),rgba(6,9,15,.96)) !important;
+
+  border:1px solid rgba(255,255,255,.12) !important;
+
+  box-shadow:
+    0 8px 20px rgba(0,0,0,.28) !important;
+
+  transition:
+    transform .16s ease,
+    border-color .16s ease,
+    box-shadow .16s ease !important;
+}
+
+html body .sak-global-channel-card:hover,
+html body .sak-radio-card:hover{
+  transform:translateY(-2px) !important;
+
+  border-color:rgba(116,235,255,.42) !important;
+
+  box-shadow:
+    0 10px 24px rgba(0,0,0,.34),
+    0 0 12px rgba(0,220,255,.10) !important;
+}
+
+html body #sakRadioPlayer{
+  position:sticky !important;
+  top:58px !important;
+  z-index:55 !important;
+
+  background:
+    linear-gradient(145deg,rgba(10,34,38,.97),rgba(7,10,18,.98)) !important;
+
+  border:1px solid rgba(97,239,218,.28) !important;
+
+  box-shadow:
+    0 0 16px rgba(0,230,190,.09) !important;
+}
+
+html body #sakRadioAudio{
+  width:100% !important;
+  min-height:38px !important;
+}
+
+
+/* =========================================================
+   تخفيف الحركة الثقيلة المستمرة
+========================================================= */
+html body .video-top-container-fixed::before,
+html body .video-top-container-fixed::after,
+html body #sakSecondStreamCorner::before,
+html body #sakSecondStreamCorner::after,
+html body .fbIconRays,
+html body .launcher::before,
+html body .launcher::after,
+html body .sbShine,
+html body .sbSpark{
+  animation:none !important;
+}
+
+body.sak-media-heavy-open .icon-card,
+body.sak-media-heavy-open #facebookVideoIcon,
+body.sak-media-heavy-open #liveFlasher,
+body.sak-media-heavy-open #emeraldLibraryButton,
+body.sak-media-heavy-open #pongGame-btn,
+body.sak-media-heavy-open .launcher,
+body.sak-media-heavy-open #emOpenBtn{
+  animation-play-state:paused !important;
+}
+
+@media(max-width:768px){
+  html body:not(.locked){
+    background-attachment:scroll !important;
+  }
+
+  html body #livePopup{
+    background-position:center center !important;
+  }
+}
+
+</style>
+
+<script id="sakaker-media-stability-live-radio-js">
+(function(){
+  'use strict';
+
+  const BG_VIDEO_URL = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/v2_awv-7e0c4c00ad02ab7c.mp4';
+  const YOUTUBE_URL = 'https://www.youtube.com/embed/n7eQejkXbnM?autoplay=1&controls=1&playsinline=1&rel=0&modestbranding=1';
+  const HLS_URL = 'https://cffda8ff.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9GSUZBUGx1c3dvbWVuX0hMUw/playlist.m3u8';
+
+  let circleHls = null;
+  let hlsPromise = null;
+  let bgRetryTimer = null;
+
+  function loggedIn(){
+    return !!document.body &&
+      !document.body.classList.contains('locked');
+  }
+
+  function playerBox(){
+    return document.getElementById('videoBoxFixed');
+  }
+
+  function playerIframe(){
+    return document.getElementById('fixedVideo');
+  }
+
+  function bgVideo(){
+    return document.getElementById('sakakerMainVideoBackground');
+  }
+
+  function setMediaHeavy(active){
+    if(!document.body) return;
+
+    document.body.classList.toggle(
+      'sak-media-heavy-open',
+      !!active
+    );
+  }
+
+
+  /* =======================================================
+     خلفية الفيديو
+  ======================================================= */
+  function ensurePreconnect(){
+    if(
+      document.querySelector(
+        'link[data-sak-bg-preconnect="1"]'
+      )
+    ){
+      return;
+    }
+
+    const link =
+      document.createElement('link');
+
+    link.rel = 'preconnect';
+    link.href = 'https://raw.githubusercontent.com';
+    link.crossOrigin = 'anonymous';
+    link.dataset.sakBgPreconnect = '1';
+
+    document.head.appendChild(link);
+  }
+
+  function ensureBackgroundVideo(){
+    if(!document.body || !loggedIn()) return null;
+
+    let video = bgVideo();
+
+    if(video) return video;
+
+    ensurePreconnect();
+
+    video = document.createElement('video');
+
+    video.id =
+      'sakakerMainVideoBackground';
+
+    video.autoplay = true;
+    video.loop = true;
+    video.muted = true;
+    video.playsInline = true;
+
+    video.preload = 'auto';
+
+    video.defaultPlaybackRate = 0.85;
+    video.playbackRate = 0.85;
+
+    video.setAttribute('muted','');
+    video.setAttribute('autoplay','');
+    video.setAttribute('loop','');
+    video.setAttribute('playsinline','');
+    video.setAttribute('webkit-playsinline','');
+    video.setAttribute('disablepictureinpicture','');
+    video.setAttribute('aria-hidden','true');
+
+    const source =
+      document.createElement('source');
+
+    source.src = BG_VIDEO_URL;
+    source.type = 'video/mp4';
+
+    video.appendChild(source);
+
+    function rate(){
+      video.defaultPlaybackRate = 0.85;
+      video.playbackRate = 0.85;
+    }
+
+    function showWhenPlaying(){
+      rate();
+
+      if(
+        !document.body.classList.contains(
+          'sak-media-heavy-open'
+        )
+      ){
+        video.classList.add(
+          'sak-bg-playing'
+        );
+      }
+    }
+
+    function fallbackDuringBuffer(){
+      video.classList.remove(
+        'sak-bg-playing'
+      );
+    }
+
+    video.addEventListener(
+      'loadedmetadata',
+      rate
+    );
+
+    video.addEventListener(
+      'canplay',
+      rate
+    );
+
+    video.addEventListener(
+      'playing',
+      showWhenPlaying
+    );
+
+    video.addEventListener(
+      'waiting',
+      fallbackDuringBuffer
+    );
+
+    video.addEventListener(
+      'stalled',
+      fallbackDuringBuffer
+    );
+
+    video.addEventListener(
+      'error',
+      function(){
+        fallbackDuringBuffer();
+
+        clearTimeout(bgRetryTimer);
+
+        bgRetryTimer =
+          setTimeout(
+            function(){
+              if(!loggedIn()) return;
+
+              try{
+                video.load();
+
+                const p =
+                  video.play();
+
+                if(
+                  p &&
+                  typeof p.catch ===
+                  'function'
+                ){
+                  p.catch(function(){});
+                }
+              }catch(e){}
+            },
+            2500
+          );
+      }
+    );
+
+    document.body.insertBefore(
+      video,
+      document.body.firstChild
+    );
+
+    return video;
+  }
+
+  function playBackground(){
+    if(!loggedIn()) return;
+
+    if(
+      document.body.classList.contains(
+        'sak-media-heavy-open'
+      )
+    ){
+      return;
+    }
+
+    const video =
+      ensureBackgroundVideo();
+
+    if(!video) return;
+
+    video.defaultPlaybackRate = 0.85;
+    video.playbackRate = 0.85;
+
+    try{
+      const p =
+        video.play();
+
+      if(
+        p &&
+        typeof p.catch ===
+        'function'
+      ){
+        p.catch(function(){});
+      }
+    }catch(e){}
+  }
+
+  function pauseBackground(){
+    const video = bgVideo();
+
+    if(!video) return;
+
+    video.classList.remove(
+      'sak-bg-playing'
+    );
+
+    try{
+      video.pause();
+    }catch(e){}
+  }
+
+
+  /* =======================================================
+     HLS لدائرة البث الثانية
+  ======================================================= */
+  function ensureCircleHlsVideo(){
+    const box = playerBox();
+
+    if(!box) return null;
+
+    let video =
+      document.getElementById(
+        'sakFixedHlsVideo'
+      );
+
+    if(!video){
+      video =
+        document.createElement('video');
+
+      video.id =
+        'sakFixedHlsVideo';
+
+      video.controls = true;
+      video.autoplay = true;
+      video.playsInline = true;
+      video.preload = 'metadata';
+
+      box.appendChild(video);
+    }
+
+    return video;
+  }
+
+  function stopCircleHls(){
+    if(circleHls){
+      try{
+        circleHls.destroy();
+      }catch(e){}
+
+      circleHls = null;
+    }
+
+    const video =
+      document.getElementById(
+        'sakFixedHlsVideo'
+      );
+
+    if(video){
+      try{
+        video.pause();
+      }catch(e){}
+
+      video.removeAttribute('src');
+
+      try{
+        video.load();
+      }catch(e){}
+    }
+  }
+
+  function loadHls(){
+    if(window.Hls){
+      return Promise.resolve(
+        window.Hls
+      );
+    }
+
+    if(hlsPromise){
+      return hlsPromise;
+    }
+
+    hlsPromise =
+      new Promise(
+        function(resolve,reject){
+          let script =
+            document.querySelector(
+              'script[data-sak-final-hls="1"]'
+            );
+
+          if(!script){
+            script =
+              document.createElement(
+                'script'
+              );
+
+            script.src =
+              'https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js';
+
+            script.async = true;
+
+            script.dataset.sakFinalHls =
+              '1';
+
+            document.head.appendChild(
+              script
+            );
+          }
+
+          if(window.Hls){
+            resolve(window.Hls);
+            return;
+          }
+
+          script.addEventListener(
+            'load',
+            function(){
+              resolve(window.Hls);
+            },
+            {once:true}
+          );
+
+          script.addEventListener(
+            'error',
+            reject,
+            {once:true}
+          );
+        }
+      );
+
+    return hlsPromise;
+  }
+
+
+  /* =======================================================
+     نافذة دوائر الفيديو
+  ======================================================= */
+  function markCirclePlayerOpen(mode){
+    const box = playerBox();
+
+    if(!box) return;
+
+    box.classList.add(
+      'sak-player-open'
+    );
+
+    box.dataset.sakPlayerMode =
+      mode;
+
+    box.style.setProperty(
+      'display',
+      'block',
+      'important'
+    );
+
+    box.style.setProperty(
+      'visibility',
+      'visible',
+      'important'
+    );
+
+    box.style.setProperty(
+      'opacity',
+      '1',
+      'important'
+    );
+
+    document.body.classList.add(
+      'sak-fixed-video-open'
+    );
+
+    setMediaHeavy(true);
+    pauseBackground();
+  }
+
+  function openYoutubeCircle(){
+    const box = playerBox();
+    const iframe = playerIframe();
+
+    if(!box || !iframe) return;
+
+    stopCircleHls();
+
+    box.classList.remove(
+      'sak-hls-mode'
+    );
+
+    const hlsVideo =
+      document.getElementById(
+        'sakFixedHlsVideo'
+      );
+
+    if(hlsVideo){
+      hlsVideo.style.display =
+        'none';
+    }
+
+    const title =
+      box.querySelector(
+        '.video-box-title'
+      );
+
+    if(title){
+      title.textContent =
+        '✦ VIDEO ✦';
+    }
+
+    iframe.style.display =
+      'block';
+
+    if(
+      iframe.getAttribute('src') !==
+      YOUTUBE_URL
+    ){
+      iframe.src =
+        YOUTUBE_URL;
+    }
+
+    markCirclePlayerOpen(
+      'youtube'
+    );
+  }
+
+  async function openHlsCircle(){
+    const box = playerBox();
+    const iframe = playerIframe();
+
+    if(!box) return;
+
+    if(iframe){
+      iframe.src = '';
+      iframe.style.display = 'none';
+    }
+
+    stopCircleHls();
+
+    const video =
+      ensureCircleHlsVideo();
+
+    if(!video) return;
+
+    box.classList.add(
+      'sak-hls-mode'
+    );
+
+    video.style.display =
+      'block';
+
+    const title =
+      box.querySelector(
+        '.video-box-title'
+      );
+
+    if(title){
+      title.textContent =
+        '✦ LIVE STREAM ✦';
+    }
+
+    markCirclePlayerOpen(
+      'hls'
+    );
+
+    if(
+      video.canPlayType(
+        'application/vnd.apple.mpegurl'
+      )
+    ){
+      video.src = HLS_URL;
+
+      try{
+        const p =
+          video.play();
+
+        if(
+          p &&
+          typeof p.catch ===
+          'function'
+        ){
+          p.catch(function(){});
+        }
+      }catch(e){}
+
+      return;
+    }
+
+    try{
+      const Hls =
+        await loadHls();
+
+      if(
+        Hls &&
+        Hls.isSupported()
+      ){
+        circleHls =
+          new Hls({
+            enableWorker:true,
+            lowLatencyMode:false,
+            backBufferLength:8,
+            maxBufferLength:14,
+            maxMaxBufferLength:24,
+            capLevelToPlayerSize:true
+          });
+
+        circleHls.loadSource(
+          HLS_URL
+        );
+
+        circleHls.attachMedia(
+          video
+        );
+
+        circleHls.on(
+          Hls.Events.MANIFEST_PARSED,
+          function(){
+            video.play()
+              .catch(function(){});
+          }
+        );
+      }
+    }catch(e){}
+  }
+
+  function closeCirclePlayer(){
+    const box = playerBox();
+    const iframe = playerIframe();
+
+    stopCircleHls();
+
+    if(iframe){
+      iframe.src = '';
+      iframe.style.display =
+        'block';
+    }
+
+    if(box){
+      box.classList.remove(
+        'sak-player-open',
+        'sak-hls-mode'
+      );
+
+      box.removeAttribute(
+        'data-sak-player-mode'
+      );
+
+      box.style.setProperty(
+        'display',
+        'none',
+        'important'
+      );
+
+      box.style.removeProperty(
+        'visibility'
+      );
+
+      box.style.removeProperty(
+        'opacity'
+      );
+    }
+
+    document.body.classList.remove(
+      'sak-fixed-video-open'
+    );
+
+    setMediaHeavy(false);
+
+    requestAnimationFrame(
+      playBackground
+    );
+  }
+
+  /* آخر تعريف في الملف — حتى لا يستبدله كود قديم */
+  window.closeFixedVideo =
+    closeCirclePlayer;
+
+
+  /* =======================================================
+     التقاط النقرات قبل listeners القديمة
+  ======================================================= */
+  document.addEventListener(
+    'click',
+    function(e){
+      const target = e.target;
+
+      if(!(target instanceof Element)){
+        return;
+      }
+
+      if(
+        target.closest(
+          '#videoCloseBtn'
+        )
+      ){
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        closeCirclePlayer();
+
+        return;
+      }
+
+      if(
+        target.closest(
+          '.video-top-container-fixed .video-circle'
+        )
+      ){
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        openYoutubeCircle();
+
+        return;
+      }
+
+      if(
+        target.closest(
+          '#sakSecondStreamCircle'
+        )
+      ){
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        openHlsCircle();
+
+        return;
+      }
+    },
+    true
+  );
+
+
+  /* =======================================================
+     الراديو والقنوات: تخفيف الخلفية أثناء التشغيل
+  ======================================================= */
+  function bindHeavyMedia(){
+    const radio =
+      document.getElementById(
+        'sakRadioAudio'
+      );
+
+    if(
+      radio &&
+      radio.dataset.sakPerfBound !==
+      '1'
+    ){
+      radio.dataset.sakPerfBound =
+        '1';
+
+      radio.addEventListener(
+        'play',
+        function(){
+          setMediaHeavy(true);
+          pauseBackground();
+        }
+      );
+
+      ['pause','ended'].forEach(
+        function(name){
+          radio.addEventListener(
+            name,
+            function(){
+              setMediaHeavy(false);
+              playBackground();
+            }
+          );
+        }
+      );
+    }
+
+    const liveVideo =
+      document.getElementById(
+        'sakGlobalVideo'
+      );
+
+    if(
+      liveVideo &&
+      liveVideo.dataset.sakPerfBound !==
+      '1'
+    ){
+      liveVideo.dataset.sakPerfBound =
+        '1';
+
+      liveVideo.addEventListener(
+        'play',
+        function(){
+          setMediaHeavy(true);
+          pauseBackground();
+        }
+      );
+
+      ['pause','ended'].forEach(
+        function(name){
+          liveVideo.addEventListener(
+            name,
+            function(){
+              setMediaHeavy(false);
+              playBackground();
+            }
+          );
+        }
+      );
+    }
+  }
+
+  const mediaObserver =
+    new MutationObserver(
+      bindHeavyMedia
+    );
+
+  mediaObserver.observe(
+    document.documentElement,
+    {
+      childList:true,
+      subtree:true
+    }
+  );
+
+  bindHeavyMedia();
+
+
+  /* =======================================================
+     حالة الدخول / الرؤية
+  ======================================================= */
+  function syncLogin(){
+    if(loggedIn()){
+      playBackground();
+    }else{
+      pauseBackground();
+    }
+  }
+
+  if(
+    document.readyState ===
+    'loading'
+  ){
+    document.addEventListener(
+      'DOMContentLoaded',
+      function(){
+        bindHeavyMedia();
+        syncLogin();
+      },
+      {once:true}
+    );
+  }else{
+    bindHeavyMedia();
+    syncLogin();
+  }
+
+  if(document.body){
+    new MutationObserver(
+      syncLogin
+    ).observe(
+      document.body,
+      {
+        attributes:true,
+        attributeFilter:['class']
+      }
+    );
+  }
+
+  document.addEventListener(
+    'visibilitychange',
+    function(){
+      if(
+        document.visibilityState ===
+        'hidden'
+      ){
+        pauseBackground();
+      }else{
+        playBackground();
+      }
+    }
+  );
+
+  window.addEventListener(
+    'keydown',
+    function(e){
+      if(
+        e.key === 'Escape' &&
+        playerBox() &&
+        playerBox().classList.contains(
+          'sak-player-open'
+        )
+      ){
+        e.preventDefault();
+
+        closeCirclePlayer();
+      }
+    },
+    true
+  );
+
+})();
+</script>
+
+
+</body>
+</html>
