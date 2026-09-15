@@ -2,6 +2,9 @@
 
 <html dir="rtl" lang="ar">
 <head>
+
+
+
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>SAKAKER | أبو القمر زمرد</title>
@@ -6079,7 +6082,7 @@ html body #loginBox #loginCopyright{
 <style id="sakaker-transparent-login-ship-site-final">
 
 :root{
-  --sakaker-login-bg:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%A7%D9%86%D9%85%D9%8A");
+  --sakaker-login-bg:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B5%D9%88%D8%B1%D8%A9%20Codex%2015%20%D8%B3%D8%A8%D8%AA%D9%85%D8%A8%D8%B1%202026%D8%8C%2006_25_38%20%D9%85.png");
   --sakaker-site-bg:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/1ba59cd06bb1d178dae04825e2affe5e0ca009e3/15");
 }
 
@@ -37320,7 +37323,7 @@ html body:not(.locked){
   width:100vw !important;
   height:100vh !important;
 
-  object-fit:cover !important;
+  object-fit:contain !important;
   object-position:center center !important;
 
   z-index:-1 !important;
@@ -37330,7 +37333,8 @@ html body:not(.locked){
   transition:opacity .32s ease !important;
 
   background:#02090b !important;
-}
+
+  background-color:#02090b !important;}
 
 #sakakerMainVideoBackground.sak-bg-playing{
   opacity:1 !important;
@@ -37555,7 +37559,7 @@ body.sak-media-heavy-open #emOpenBtn{
 (function(){
   'use strict';
 
-  const BG_VIDEO_URL = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/v2_awv-7e0c4c00ad02ab7c.mp4';
+  const BG_VIDEO_URL = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/sakaker-background-fixed.mp4';
   const YOUTUBE_URL = 'https://www.youtube.com/embed/n7eQejkXbnM?autoplay=1&controls=1&playsinline=1&rel=0&modestbranding=1';
   const HLS_URL = 'https://cffda8ff.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9GSUZBUGx1c3dvbWVuX0hMUw/playlist.m3u8';
 
@@ -37636,6 +37640,7 @@ body.sak-media-heavy-open #emOpenBtn{
 
     video.defaultPlaybackRate = 0.85;
     video.playbackRate = 0.85;
+    if('preservesPitch' in video) video.preservesPitch = true;
 
     video.setAttribute('muted','');
     video.setAttribute('autoplay','');
@@ -37701,6 +37706,23 @@ body.sak-media-heavy-open #emOpenBtn{
     video.addEventListener(
       'stalled',
       fallbackDuringBuffer
+    );
+
+    video.dataset.sakakerLoopGuard = '1';
+
+    video.addEventListener(
+      'timeupdate',
+      function(){
+        if(
+          Number.isFinite(video.duration) &&
+          video.duration > 1 &&
+          video.currentTime >= video.duration - 0.06
+        ){
+          try{
+            video.currentTime = 0.02;
+          }catch(e){}
+        }
+      }
     );
 
     video.addEventListener(
@@ -38372,6 +38394,313 @@ body.sak-media-heavy-open #emOpenBtn{
 })();
 </script>
 
+
+
+<!-- SAKAKER LOGIN PHOTO + SITE VIDEO FINAL -->
+<style id="sakaker-login-photo-site-video-final">
+
+:root{
+  --sakaker-login-bg:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B5%D9%88%D8%B1%D8%A9%20Codex%2015%20%D8%B3%D8%A8%D8%AA%D9%85%D8%A8%D8%B1%202026%D8%8C%2006_25_38%20%D9%85.png") !important;
+}
+
+/* خلفية تسجيل الدخول على الصفحة نفسها */
+html body.locked{
+  background-color:#02090b !important;
+  background-image:var(--sakaker-login-bg) !important;
+  background-size:cover !important;
+  background-position:center center !important;
+  background-repeat:no-repeat !important;
+  background-attachment:fixed !important;
+}
+
+/* واجهة تسجيل الدخول تبقى شفافة ولا تغطي الصورة */
+html body.locked #loginOverlay,
+html body #loginOverlay{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+html body #loginOverlay #loginBox{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+  box-shadow:none !important;
+}
+
+/* الفيديو هو خلفية صفحة الموقع بعد الدخول */
+html body:not(.locked) #sakakerMainVideoBackground{
+  display:block !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+}
+
+@media(max-width:768px){
+  html body.locked{
+    background-attachment:scroll !important;
+  }
+}
+
+</style>
+
+
+<!-- SAKAKER LOGIN FULL IMAGE FINAL -->
+<style id="sakaker-login-full-image-final">
+
+/* =========================================================
+   صفحة تسجيل الدخول:
+   عرض الصورة كاملة كما هي بدون قص أو تكبير زائد
+========================================================= */
+
+html body.locked{
+  min-height:100vh !important;
+
+  background-color:#02090b !important;
+  background-image:var(--sakaker-login-bg) !important;
+
+  /* إظهار الصورة كاملة */
+  background-size:contain !important;
+  background-position:center center !important;
+  background-repeat:no-repeat !important;
+  background-attachment:fixed !important;
+}
+
+/* واجهة الدخول تظل شفافة فوق الصورة */
+html body.locked #loginOverlay,
+html body #loginOverlay{
+  position:fixed !important;
+  inset:0 !important;
+
+  width:100vw !important;
+  height:100vh !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  padding:18px !important;
+
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+
+  overflow:auto !important;
+}
+
+/* صندوق تسجيل الدخول يبقى صغيرًا وشفافًا داخل الصورة */
+html body #loginOverlay #loginBox{
+  width:min(330px,86vw) !important;
+  max-width:330px !important;
+
+  margin:0 !important;
+  padding:18px 15px 14px !important;
+
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+
+  box-shadow:none !important;
+
+  position:relative !important;
+  z-index:10 !important;
+}
+
+/* إبقاء حقول الدخول واضحة فقط بدون حجب الخلفية */
+html body #loginBox .loginInput,
+html body #loginBox .loginAction{
+  max-width:100% !important;
+}
+
+/* الجوال: الصورة كاملة أيضًا */
+@media(max-width:768px){
+  html body.locked{
+    background-size:contain !important;
+    background-position:center center !important;
+    background-repeat:no-repeat !important;
+    background-attachment:scroll !important;
+  }
+
+  html body.locked #loginOverlay{
+    padding:12px !important;
+  }
+
+  html body #loginOverlay #loginBox{
+    width:min(305px,88vw) !important;
+    max-width:305px !important;
+    padding:16px 13px 12px !important;
+  }
+}
+
+/* الشاشات القصيرة */
+@media(max-height:620px){
+  html body.locked #loginOverlay{
+    align-items:flex-start !important;
+    padding-top:18px !important;
+  }
+}
+
+</style>
+
+
+<!-- SAKAKER LOGIN LAYERED SHIP FINAL -->
+<style id="sakaker-login-layered-ship-final">
+
+/* =========================================================
+   صفحة تسجيل الدخول:
+   الصورة الرئيسية كاملة فوق خلفية السفينة الثابتة
+   لتغطية المساحات التي كانت سوداء
+========================================================= */
+html body.locked{
+  min-height:100vh !important;
+
+  background-color:#02090b !important;
+
+  /* الطبقة الأولى: صورة الدخول كاملة
+     الطبقة الثانية: خلفية السفينة تغطي كامل الشاشة */
+  background-image:
+    var(--sakaker-login-bg),
+    var(--sakaker-site-bg) !important;
+
+  background-size:
+    contain,
+    cover !important;
+
+  background-position:
+    center center,
+    center center !important;
+
+  background-repeat:
+    no-repeat,
+    no-repeat !important;
+
+  background-attachment:
+    fixed,
+    fixed !important;
+}
+
+/* واجهة الدخول شفافة بالكامل فوق الصورتين */
+html body.locked #loginOverlay,
+html body #loginOverlay{
+  position:fixed !important;
+  inset:0 !important;
+
+  width:100vw !important;
+  height:100vh !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  padding:18px !important;
+
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+
+  overflow:auto !important;
+
+  visibility:visible !important;
+  opacity:1 !important;
+  pointer-events:auto !important;
+
+  z-index:2147483647 !important;
+}
+
+/* صندوق الدخول يبقى شفافًا */
+html body #loginOverlay #loginBox{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+
+  box-shadow:none !important;
+
+  position:relative !important;
+  z-index:10 !important;
+}
+
+/* =========================================================
+   أثناء شاشة الدخول:
+   لا يظهر أي محتوى من الموقع إطلاقًا
+========================================================= */
+html body.locked > *:not(#loginOverlay):not(script):not(style){
+  visibility:hidden !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+
+/* إذا كانت بعض العناصر ثابتة وتملك z-index مرتفعاً */
+html body.locked .cards,
+html body.locked #sakakerAllIconsDock,
+html body.locked #sakakerUtilityDock,
+html body.locked #sakakerCenterFeatureDock,
+html body.locked .video-top-container-fixed,
+html body.locked #sakSecondStreamCorner,
+html body.locked #sakakerBusinessCenterHost,
+html body.locked #emeraldLibraryButton,
+html body.locked #liveFlasher,
+html body.locked #pongGame-btn,
+html body.locked .launcher,
+html body.locked #emeraldMusicHost,
+html body.locked #facebookVideoIcon,
+html body.locked #sakakerWorldNews,
+html body.locked #sakakerVisitorCounter,
+html body.locked #sakakerWisdomBox,
+html body.locked .sakaker-copyright{
+  visibility:hidden !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+
+/* تأكيد أن عناصر تسجيل الدخول نفسها تبقى مرئية */
+html body.locked #loginOverlay,
+html body.locked #loginOverlay *{
+  visibility:visible !important;
+  opacity:1;
+  pointer-events:auto;
+}
+
+/* الجوال */
+@media(max-width:768px){
+  html body.locked{
+    background-size:
+      contain,
+      cover !important;
+
+    background-position:
+      center center,
+      center center !important;
+
+    background-repeat:
+      no-repeat,
+      no-repeat !important;
+
+    background-attachment:
+      scroll,
+      scroll !important;
+  }
+
+  html body.locked #loginOverlay{
+    padding:12px !important;
+  }
+}
+
+</style>
 
 </body>
 </html>
