@@ -37559,7 +37559,7 @@ body.sak-media-heavy-open #emOpenBtn{
 (function(){
   'use strict';
 
-  const BG_VIDEO_URL = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/sakaker-background-fixed.mp4';
+  const BG_VIDEO_URL = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/v2_awv-7e0c4c00ad02ab7c.mp4';
   const YOUTUBE_URL = 'https://www.youtube.com/embed/n7eQejkXbnM?autoplay=1&controls=1&playsinline=1&rel=0&modestbranding=1';
   const HLS_URL = 'https://cffda8ff.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9GSUZBUGx1c3dvbWVuX0hMUw/playlist.m3u8';
 
@@ -37638,8 +37638,8 @@ body.sak-media-heavy-open #emOpenBtn{
 
     video.preload = 'auto';
 
-    video.defaultPlaybackRate = 0.85;
-    video.playbackRate = 0.85;
+    video.defaultPlaybackRate = 0.35;
+    video.playbackRate = 0.35;
     if('preservesPitch' in video) video.preservesPitch = true;
 
     video.setAttribute('muted','');
@@ -37659,8 +37659,8 @@ body.sak-media-heavy-open #emOpenBtn{
     video.appendChild(source);
 
     function rate(){
-      video.defaultPlaybackRate = 0.85;
-      video.playbackRate = 0.85;
+      video.defaultPlaybackRate = 0.35;
+      video.playbackRate = 0.35;
     }
 
     function showWhenPlaying(){
@@ -37781,8 +37781,8 @@ body.sak-media-heavy-open #emOpenBtn{
 
     if(!video) return;
 
-    video.defaultPlaybackRate = 0.85;
-    video.playbackRate = 0.85;
+    video.defaultPlaybackRate = 0.35;
+    video.playbackRate = 0.35;
 
     try{
       const p =
@@ -38443,6 +38443,41 @@ html body:not(.locked) #sakakerMainVideoBackground{
   html body.locked{
     background-attachment:scroll !important;
   }
+}
+
+</style>
+
+
+<!-- SAKAKER PRELOGIN LOCK FINAL -->
+<style id="sakaker-prelogin-lock-final">
+
+/* لا يظهر أي محتوى من الموقع قبل إتمام تسجيل الدخول */
+html body.locked > *:not(#loginOverlay):not(script):not(style){
+  display:none !important;
+  visibility:hidden !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+
+/* شاشة تسجيل الدخول وحدها تبقى ظاهرة */
+html body.locked #loginOverlay{
+  display:flex !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  pointer-events:auto !important;
+  z-index:2147483647 !important;
+}
+
+/* الفيديو الخلفي لا يبدأ ولا يظهر قبل تسجيل الدخول */
+html body.locked #sakakerMainVideoBackground{
+  display:none !important;
+  visibility:hidden !important;
+  opacity:0 !important;
+}
+
+/* بعد تسجيل الدخول يعود المحتوى إلى وضعه الطبيعي */
+html body:not(.locked) #sakakerMainVideoBackground{
+  display:block !important;
 }
 
 </style>
