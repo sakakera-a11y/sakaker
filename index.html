@@ -6926,6 +6926,70 @@ html body #loginOverlay #loginBox{
 })();
 </script>
 
+
+<!-- SAKAKER SMALLER LOGIN SPACING FINAL -->
+<style id="sakaker-smaller-login-spacing-final">
+
+/* تصغير صندوق تسجيل الدخول قليلاً وإبعاده عن منطقة السفينة */
+html body #loginOverlay #loginBox,
+html body.locked #loginOverlay #loginBox{
+  width:min(335px,88vw) !important;
+  max-width:335px !important;
+
+  padding:20px 16px 15px !important;
+
+  margin-top:-7vh !important;
+}
+
+/* تقليل الأحجام الداخلية بنسبة بسيطة فقط */
+html body #loginBox #loginTitle{
+  margin:14px 0 18px !important;
+  font-size:23px !important;
+}
+
+html body #loginBox .loginInput,
+html body #loginBox .loginAction{
+  height:46px !important;
+}
+
+html body #loginBox #loginCopyright{
+  margin-top:14px !important;
+  padding-top:10px !important;
+  line-height:1.65 !important;
+}
+
+/* الجوال: أصغر قليلاً مع مسافة أخف حتى لا يخرج من الشاشة */
+@media(max-width:700px){
+  html body #loginOverlay #loginBox,
+  html body.locked #loginOverlay #loginBox{
+    width:min(320px,88vw) !important;
+    max-width:320px !important;
+
+    padding:18px 14px 13px !important;
+
+    margin-top:-4vh !important;
+  }
+
+  html body #loginBox #loginTitle{
+    font-size:21px !important;
+    margin:13px 0 16px !important;
+  }
+
+  html body #loginBox .loginInput,
+  html body #loginBox .loginAction{
+    height:44px !important;
+  }
+}
+
+@media(max-height:620px){
+  html body #loginOverlay #loginBox,
+  html body.locked #loginOverlay #loginBox{
+    margin-top:-2vh !important;
+  }
+}
+
+</style>
+
 </body>
 </html>
 
