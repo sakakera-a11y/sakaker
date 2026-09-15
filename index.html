@@ -4482,6 +4482,9 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
      🔐 نافذة تسجيل الدخول
 ========================================================= -->
 <div id="loginOverlay">
+<video id="sakLoginBackgroundVideo" autoplay muted loop playsinline preload="metadata" aria-hidden="true" disablepictureinpicture>
+  <source src="https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/7b04366e-b146-11f1-a3a7-0242ac110005_849382371452101_raw.mp4" type="video/mp4">
+</video>
 <!-- 🐦 أيقونة صوت الطيور بتوهج زمردي -->
 <div id="bird-sound-btn" title="تشغيل/إيقاف صوت الطيور" style="
   position: fixed;
@@ -24801,6 +24804,45 @@ html body #sakGlobalStreamDetails{
 
   const legacyStreams = [];
 
+  const favoriteKey = 'sakaker-live-favorites-v1';
+  let favorites = {};
+  try{
+    const saved = JSON.parse(localStorage.getItem(favoriteKey) || '{}');
+    if(saved && typeof saved === 'object' && !Array.isArray(saved)) favorites = saved;
+  }catch(e){}
+
+  function favoriteButton(ch){
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'sak-channel-favorite';
+    function label(){
+      const active = !!favorites[ch.id];
+      button.textContent = active ? '★' : '☆';
+      button.setAttribute('aria-pressed', String(active));
+      button.title = isEn() ? (active ? 'Remove favorite' : 'Save favorite') : (active ? 'إزالة من المفضلة' : 'حفظ في المفضلة');
+      button.setAttribute('aria-label', button.title + ': ' + (ch.name || ch.nameAr));
+    }
+    label();
+    button.addEventListener('click', function(e){
+      e.stopPropagation();
+      const next = Object.assign({}, favorites);
+      if(next[ch.id]) delete next[ch.id]; else next[ch.id] = ch;
+      try{
+        localStorage.setItem(favoriteKey, JSON.stringify(next));
+        favorites = next;
+      }catch(err){
+        alert(isEn() ? 'Could not save. Allow browser storage and try again.' : 'تعذر الحفظ. اسمح بتخزين البيانات في المتصفح ثم حاول مجددًا.');
+        return;
+      }
+      label();
+      if(currentFilter === 'favorites'){
+        currentMatches = filterRows();
+        renderResultsOnly();
+      }
+    });
+    return button;
+  }
+
   /* =======================================================
      قراءة القنوات القديمة قبل إخفائها
   ======================================================= */
@@ -24979,6 +25021,8 @@ html body #sakGlobalStreamDetails{
       ['unchecked','⚪ غير مفحوص','⚪ Unchecked'],
       ['dw','DW','DW'],
       ['news','📰 أخبار','📰 News'],
+      ['sports','⚽ رياضة','⚽ Sports'],
+      ['favorites','★ المفضلة','★ Favorites'],
       ['saved','⭐ المحفوظة','⭐ Saved']
     ].forEach(function(row){
       const btn =
@@ -25705,7 +25749,11 @@ html body #sakGlobalStreamDetails{
     const languageCode =
       language ? language.value : '';
 
-    return allRows.filter(function(ch){
+    const candidates = currentFilter === 'favorites'
+      ? Object.values(favorites).map(function(ch){ return allRows.find(function(row){return row.id === ch.id;}) || ch; })
+      : allRows;
+    return candidates.filter(function(ch){
+      if(currentFilter === 'sports' && !ch.categories.some(function(category){return /sport/i.test(category);})) return false;
       if(
         countryCode &&
         ch.country !== countryCode
@@ -25893,7 +25941,11 @@ html body #sakGlobalStreamDetails{
       }
     );
 
-    return card;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'sak-channel-with-favorite';
+    wrapper.appendChild(card);
+    wrapper.appendChild(favoriteButton(ch));
+    return wrapper;
   }
 
   function createSavedCard(item){
@@ -25970,7 +26022,11 @@ html body #sakGlobalStreamDetails{
       }
     );
 
-    return card;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'sak-channel-with-favorite';
+    wrapper.appendChild(card);
+    wrapper.appendChild(favoriteButton(Object.assign({name:item.nameAr, search:item.nameEn, country:'', categories:[], languages:[]}, item)));
+    return wrapper;
   }
 
   function renderDWInfo(results){
@@ -26070,7 +26126,7 @@ html body #sakGlobalStreamDetails{
     }else{
       rows.forEach(function(ch){
         results.appendChild(
-          createChannelCard(ch)
+            ch.videoId ? createSavedCard(ch) : createChannelCard(ch)
         );
       });
     }
@@ -37556,7 +37612,7 @@ body.sak-media-heavy-open #emOpenBtn{
   'use strict';
 
   const BG_VIDEO_URL = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/v2_awv-7e0c4c00ad02ab7c.mp4';
-  const YOUTUBE_URL = 'https://www.youtube.com/embed/n7eQejkXbnM?autoplay=1&controls=1&playsinline=1&rel=0&modestbranding=1';
+  const YOUTUBE_URL = 'https://www.youtube.com/embed/n7eQejkXbnM?autoplay=1&mute=1&controls=1&playsinline=1&rel=0';
   const HLS_URL = 'https://cffda8ff.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9GSUZBUGx1c3dvbWVuX0hMUw/playlist.m3u8';
 
   let circleHls = null;
@@ -37980,6 +38036,11 @@ body.sak-media-heavy-open #emOpenBtn{
     const iframe = playerIframe();
 
     if(!box || !iframe) return;
+
+    iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+    iframe.allow = 'autoplay; encrypted-media; fullscreen; picture-in-picture';
+    iframe.setAttribute('allowfullscreen', '');
+    iframe.title = 'مشغل فيديو الدائرة';
 
     stopCircleHls();
 
@@ -38593,5 +38654,95 @@ html,body{
 }
 </style>
 
+<style id="sakaker-login-favorites-mobile-update">
+html body #loginOverlay { isolation:isolate !important; }
+html body #loginOverlay #sakLoginBackgroundVideo {
+  position:fixed !important; inset:0 !important;
+  width:100% !important; height:100% !important;
+  max-width:none !important; max-height:none !important;
+  object-fit:cover !important; object-position:center !important;
+  z-index:-1 !important; pointer-events:none !important;
+  filter:none !important; transform:none !important;
+}
+html body:not(.locked) #sakLoginBackgroundVideo { display:none !important; }
+html body #sakGlobalLiveSearch {
+  background:#f1fff9 !important; color:#063e32 !important;
+  -webkit-text-fill-color:#063e32 !important;
+  caret-color:#006b50 !important; border:2px solid #15a580 !important;
+  font-size:16px !important; font-weight:600 !important;
+  text-shadow:none !important; opacity:1 !important;
+}
+html body #sakGlobalLiveSearch::placeholder {
+  color:#496b60 !important; -webkit-text-fill-color:#496b60 !important; opacity:1 !important;
+}
+html body #sakGlobalLiveSearch:focus {
+  outline:3px solid #ffd166 !important; outline-offset:2px !important;
+}
+html body .sak-channel-with-favorite { position:relative; min-width:0; }
+html body .sak-channel-with-favorite > .sak-global-channel-card {
+  width:100% !important; height:100%; box-sizing:border-box;
+  padding-top:44px !important;
+}
+html body .sak-channel-favorite {
+  position:absolute; top:5px; inset-inline-end:5px; z-index:2;
+  width:40px; height:36px; border:1px solid #ffd166;
+  border-radius:10px; background:#07382f; color:#ffe19a;
+  font-size:25px; line-height:1; cursor:pointer;
+}
+html body .sak-channel-favorite[aria-pressed="true"] { background:#ffe19a; color:#07382f; }
+html body .sak-channel-favorite:focus-visible { outline:3px solid white; }
+/* لا نغيّر مشغل HLS الخاص بالدائرة اليسرى. */
+html body #videoBoxFixed.sak-player-open:not(.sak-hls-mode) {
+  contain:none !important; backface-visibility:visible !important;
+  transform:translateX(-50%) !important;
+  width:min(560px,calc(100vw - 20px)) !important;
+  height:clamp(260px,65vh,355px) !important;
+  top:max(12px,env(safe-area-inset-top)) !important;
+}
+html body #videoBoxFixed.sak-player-open:not(.sak-hls-mode) #fixedVideo {
+  position:absolute !important; top:34px !important; left:0 !important;
+  width:100% !important; height:calc(100% - 72px) !important;
+  min-height:200px !important; opacity:1 !important; visibility:visible !important;
+  contain:none !important; transform:none !important;
+  backface-visibility:visible !important; pointer-events:auto !important;
+  z-index:2 !important; border:0 !important;
+}
+html body #sakCircleExternal {
+  display:none; position:absolute; bottom:5px; left:10px; right:10px;
+  z-index:10; padding:6px; border-radius:8px; background:#063e32;
+  color:#fff4c2; text-align:center; font-size:13px;
+}
+html body #videoBoxFixed.sak-player-open:not(.sak-hls-mode) #sakCircleExternal { display:block; }
+</style>
+<script id="sakaker-login-video-lifecycle">
+(function(){
+  const video = document.getElementById('sakLoginBackgroundVideo');
+  function syncLoginVideo(){
+    if(!video) return;
+    if(document.body.classList.contains('locked') && !document.hidden){
+      video.muted = true;
+      video.defaultPlaybackRate = .25;
+      video.playbackRate = .25;
+      const play = video.play();
+      if(play) play.catch(function(){});
+    }else{ video.pause(); }
+  }
+  new MutationObserver(syncLoginVideo).observe(document.body, {attributes:true,attributeFilter:['class']});
+  document.addEventListener('visibilitychange',syncLoginVideo);
+  document.getElementById('loginOverlay').addEventListener('pointerdown',syncLoginVideo);
+  video.addEventListener('loadedmetadata',syncLoginVideo);
+  syncLoginVideo();
+  const box = document.getElementById('videoBoxFixed');
+  if(box){
+    const link = document.createElement('a');
+    link.id = 'sakCircleExternal';
+    link.href = 'https://www.youtube.com/watch?v=n7eQejkXbnM';
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.textContent = 'إذا تعذر التشغيل: افتح الفيديو على YouTube ↗';
+    box.appendChild(link);
+  }
+})();
+</script>
 </body>
 </html>
