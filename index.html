@@ -37638,8 +37638,8 @@ body.sak-media-heavy-open #emOpenBtn{
 
     video.preload = 'auto';
 
-    video.defaultPlaybackRate = 0.35;
-    video.playbackRate = 0.35;
+    video.defaultPlaybackRate = 0.25;
+    video.playbackRate = 0.25;
     if('preservesPitch' in video) video.preservesPitch = true;
 
     video.setAttribute('muted','');
@@ -37659,8 +37659,8 @@ body.sak-media-heavy-open #emOpenBtn{
     video.appendChild(source);
 
     function rate(){
-      video.defaultPlaybackRate = 0.35;
-      video.playbackRate = 0.35;
+      video.defaultPlaybackRate = 0.25;
+      video.playbackRate = 0.25;
     }
 
     function showWhenPlaying(){
@@ -37781,8 +37781,8 @@ body.sak-media-heavy-open #emOpenBtn{
 
     if(!video) return;
 
-    video.defaultPlaybackRate = 0.35;
-    video.playbackRate = 0.35;
+    video.defaultPlaybackRate = 0.25;
+    video.playbackRate = 0.25;
 
     try{
       const p =
@@ -38478,6 +38478,66 @@ html body.locked #sakakerMainVideoBackground{
 /* بعد تسجيل الدخول يعود المحتوى إلى وضعه الطبيعي */
 html body:not(.locked) #sakakerMainVideoBackground{
   display:block !important;
+}
+
+</style>
+
+
+<!-- SAKAKER FULL VIDEO NO CROP FINAL -->
+<style id="sakaker-full-video-no-crop-final">
+
+/* =========================================================
+   خلفية الموقع بعد تسجيل الدخول:
+   الفيديو كامل بدون أي اقتصاص
+========================================================= */
+
+html body:not(.locked){
+  min-height:100vh !important;
+  background-color:#02090b !important;
+  background-image:none !important;
+  overflow-x:hidden !important;
+}
+
+html body:not(.locked) #sakakerMainVideoBackground{
+  position:fixed !important;
+  inset:0 !important;
+
+  width:100vw !important;
+  height:100vh !important;
+
+  max-width:none !important;
+  max-height:none !important;
+
+  /* إظهار كامل الفيديو بدون قص */
+  object-fit:contain !important;
+  object-position:center center !important;
+
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+
+  pointer-events:none !important;
+
+  z-index:-1 !important;
+
+  background:#02090b !important;
+}
+
+/* لا يظهر فيديو الخلفية قبل تسجيل الدخول */
+html body.locked #sakakerMainVideoBackground{
+  display:none !important;
+  visibility:hidden !important;
+  opacity:0 !important;
+}
+
+/* الجوال والتابلت: نفس المبدأ بدون قص */
+@media(max-width:900px){
+  html body:not(.locked) #sakakerMainVideoBackground{
+    width:100vw !important;
+    height:100vh !important;
+    object-fit:contain !important;
+    object-position:center center !important;
+  }
 }
 
 </style>
