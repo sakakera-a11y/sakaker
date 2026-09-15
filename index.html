@@ -43,21 +43,10 @@ body{
     direction:rtl;
 
     /* 🖼️ خلفية صفحة الدخول فقط */
-    background-image:
-        linear-gradient(
-            rgba(0,0,0,.30),
-            rgba(0,0,0,.55)
-        ),
-      url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%2012%20%D8%B3%D8%A8%D8%AA%D9%85%D8%A8%D8%B1%202026%D8%8C%2008_04_27%20%D8%B5.png");
-    background-size:contain;
-    background-position:center;
-    background-repeat:no-repeat;
-
-    backdrop-filter:blur(2px);
+    
 
     box-sizing:border-box;
-    padding:30px 15px;
-}
+    padding:30px 15px;}
 
 
 /* =========================================================
@@ -529,8 +518,7 @@ body{
 
     #loginOverlay{
         padding:
-            20px 10px;
-    }
+            20px 10px;}
 
     #loginBox{
         width:94%;
@@ -3706,9 +3694,7 @@ body.locked #loginOverlay {
 
     opacity:1 !important;
 
-    pointer-events:auto !important;
-
-}
+    pointer-events:auto !important;}
 
 
 /* 🚫 إخفاء كل محتوى الموقع أثناء الدخول */
@@ -3741,9 +3727,7 @@ body.locked [style*="position: absolute"] {
 body.locked #loginOverlay,
 body.locked #loginOverlay * {
 
-    visibility:visible !important;
-
-}
+    visibility:visible !important;}
 
 
 /* 🌑 منع التمرير خلف نافذة الدخول */
@@ -3987,10 +3971,7 @@ padding: 30px 15px;
 }
 @media(max-width:600px){
   #loginOverlay{
-    padding:10px !important;
-    background-size:cover !important;
-    background-position:center center !important;
-  }
+    padding:10px !important;}
   #loginBox{
     width:min(82vw,320px) !important;
     max-width:320px !important;
@@ -6391,14 +6372,7 @@ body{
   background-size:100% 100% !important;
   background-attachment:fixed !important;
 }
-#loginOverlay{
-  background-image:
-    linear-gradient(rgba(0,8,14,.18),rgba(0,8,14,.28)),
-    url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%2012%20%D8%B3%D8%A8%D8%AA%D9%85%D8%A8%D8%B1%202026%D8%8C%2008_04_27%20%D8%B5.png") !important;
-  background-size:100% 100% !important;
-  background-position:center !important;
-  background-repeat:no-repeat !important;
-}
+#loginOverlay{}
 
 /* اسم أبو القمر زمرد: لمعان لوني متغير */
 #shipIcon_new::after,
@@ -6493,6 +6467,464 @@ body{
 }
 </style>
 
+
+
+<!-- SAKAKER LOGIN MEDIA 15 — SINGLE SOURCE FINAL -->
+<style id="sakaker-login-media-15-single-source">
+
+html body #loginOverlay,
+html body.locked #loginOverlay{
+  background:#020713 !important;
+  background-image:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+
+  overflow:hidden !important;
+  isolation:isolate !important;
+}
+
+html body #sakakerLoginMedia15Host{
+  position:absolute !important;
+  inset:0 !important;
+
+  width:100% !important;
+  height:100% !important;
+
+  overflow:hidden !important;
+
+  pointer-events:none !important;
+
+  z-index:0 !important;
+
+  background:#020713 !important;
+}
+
+html body #sakakerLoginMedia15Host > img,
+html body #sakakerLoginMedia15Host > video{
+  position:absolute !important;
+  inset:0 !important;
+
+  width:100% !important;
+  height:100% !important;
+
+  margin:0 !important;
+  padding:0 !important;
+
+  border:0 !important;
+
+  object-fit:cover !important;
+  object-position:center center !important;
+
+  pointer-events:none !important;
+
+  opacity:0;
+
+  transition:opacity .35s ease;
+}
+
+html body #sakakerLoginMedia15Host > .sak-media-active{
+  opacity:1 !important;
+}
+
+html body #loginOverlay #loginBox{
+  position:relative !important;
+  z-index:10 !important;
+}
+
+</style>
+
+<script id="sakaker-login-media-15-single-source-js">
+(function(){
+  'use strict';
+
+  const MEDIA_URLS = [
+    'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/15',
+    'https://github.com/sakakera-a11y/sakaker/raw/refs/heads/main/15'
+  ];
+
+  function overlayVisible(overlay){
+    if(!overlay) return false;
+
+    const style = getComputedStyle(overlay);
+
+    return !(
+      style.display === 'none' ||
+      style.visibility === 'hidden' ||
+      overlay.hidden ||
+      overlay.classList.contains('hidden')
+    );
+  }
+
+  function init(){
+    const overlay =
+      document.getElementById(
+        'loginOverlay'
+      );
+
+    if(!overlay){
+      setTimeout(
+        init,
+        250
+      );
+
+      return;
+    }
+
+    if(
+      document.getElementById(
+        'sakakerLoginMedia15Host'
+      )
+    ){
+      return;
+    }
+
+    const host =
+      document.createElement(
+        'div'
+      );
+
+    host.id =
+      'sakakerLoginMedia15Host';
+
+    host.setAttribute(
+      'aria-hidden',
+      'true'
+    );
+
+
+    /* =============================
+       الصورة
+    ============================= */
+
+    const image =
+      document.createElement(
+        'img'
+      );
+
+    image.alt = '';
+    image.decoding = 'async';
+    image.loading = 'eager';
+
+
+    /* =============================
+       الفيديو
+    ============================= */
+
+    const video =
+      document.createElement(
+        'video'
+      );
+
+    video.autoplay = true;
+    video.loop = true;
+    video.muted = true;
+    video.playsInline = true;
+    video.preload = 'auto';
+
+    video.setAttribute(
+      'autoplay',
+      ''
+    );
+
+    video.setAttribute(
+      'loop',
+      ''
+    );
+
+    video.setAttribute(
+      'muted',
+      ''
+    );
+
+    video.setAttribute(
+      'playsinline',
+      ''
+    );
+
+    video.setAttribute(
+      'webkit-playsinline',
+      ''
+    );
+
+    video.setAttribute(
+      'disablepictureinpicture',
+      ''
+    );
+
+    video.setAttribute(
+      'aria-hidden',
+      'true'
+    );
+
+
+    host.appendChild(
+      image
+    );
+
+    host.appendChild(
+      video
+    );
+
+    overlay.insertBefore(
+      host,
+      overlay.firstChild
+    );
+
+
+    let imageIndex = 0;
+    let videoIndex = 0;
+
+    let chosen = '';
+
+
+    function activate(type){
+
+      if(
+        chosen &&
+        chosen !== type
+      ){
+        return;
+      }
+
+      chosen = type;
+
+      if(type === 'video'){
+
+        image.classList.remove(
+          'sak-media-active'
+        );
+
+        video.classList.add(
+          'sak-media-active'
+        );
+
+      }
+
+      else{
+
+        video.classList.remove(
+          'sak-media-active'
+        );
+
+        image.classList.add(
+          'sak-media-active'
+        );
+
+      }
+
+    }
+
+
+    /* =============================
+       تجربة الملف كصورة
+    ============================= */
+
+    function tryImage(){
+
+      if(
+        imageIndex >=
+        MEDIA_URLS.length
+      ){
+        return;
+      }
+
+      image.onload =
+        function(){
+          if(!chosen){
+            activate(
+              'image'
+            );
+          }
+        };
+
+
+      image.onerror =
+        function(){
+          imageIndex += 1;
+
+          tryImage();
+        };
+
+
+      image.src =
+        MEDIA_URLS[
+          imageIndex
+        ];
+
+    }
+
+
+    /* =============================
+       تجربة الملف كفيديو
+    ============================= */
+
+    function loadVideoUrl(){
+
+      if(
+        videoIndex >=
+        MEDIA_URLS.length
+      ){
+        return;
+      }
+
+      video.src =
+        MEDIA_URLS[
+          videoIndex
+        ];
+
+      try{
+        video.load();
+
+        const p =
+          video.play();
+
+        if(
+          p &&
+          typeof p.catch ===
+          'function'
+        ){
+          p.catch(
+            function(){}
+          );
+        }
+
+      }
+      catch(error){}
+
+    }
+
+
+    video.addEventListener(
+      'loadeddata',
+      function(){
+        activate(
+          'video'
+        );
+      }
+    );
+
+
+    video.addEventListener(
+      'canplay',
+      function(){
+        activate(
+          'video'
+        );
+
+        try{
+          const p =
+            video.play();
+
+          if(
+            p &&
+            typeof p.catch ===
+            'function'
+          ){
+            p.catch(
+              function(){}
+            );
+          }
+        }
+        catch(error){}
+
+      }
+    );
+
+
+    video.addEventListener(
+      'error',
+      function(){
+        videoIndex += 1;
+
+        loadVideoUrl();
+      }
+    );
+
+
+    tryImage();
+    loadVideoUrl();
+
+
+    /* =============================
+       إيقاف الفيديو بعد الدخول
+    ============================= */
+
+    new MutationObserver(
+      function(){
+
+        if(
+          chosen !==
+          'video'
+        ){
+          return;
+        }
+
+        if(
+          overlayVisible(
+            overlay
+          )
+        ){
+
+          try{
+            const p =
+              video.play();
+
+            if(
+              p &&
+              typeof p.catch ===
+              'function'
+            ){
+              p.catch(
+                function(){}
+              );
+            }
+          }
+          catch(error){}
+
+        }
+
+        else{
+
+          try{
+            video.pause();
+          }
+          catch(error){}
+
+        }
+
+      }
+    ).observe(
+      overlay,
+      {
+        attributes:true,
+        attributeFilter:[
+          'style',
+          'class',
+          'hidden'
+        ]
+      }
+    );
+
+  }
+
+
+  if(
+    document.readyState ===
+    'loading'
+  ){
+    document.addEventListener(
+      'DOMContentLoaded',
+      init,
+      {once:true}
+    );
+  }
+
+  else{
+    init();
+  }
+
+})();
+</script>
 
 </body>
 </html>
@@ -16084,14 +16516,7 @@ body{
   background-size:100% 100% !important;
   background-attachment:fixed !important;
 }
-#loginOverlay{
-  background-image:
-    linear-gradient(rgba(0,8,14,.18),rgba(0,8,14,.28)),
-    url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%2012%20%D8%B3%D8%A8%D8%AA%D9%85%D8%A8%D8%B1%202026%D8%8C%2008_04_27%20%D8%B5.png") !important;
-  background-size:100% 100% !important;
-  background-position:center !important;
-  background-repeat:no-repeat !important;
-}
+#loginOverlay{}
 
 /* اسم أبو القمر زمرد: لمعان لوني متغير */
 #shipIcon_new::after,
@@ -16751,8 +17176,7 @@ body{
     width:100vw !important;
     height:100dvh !important;
     min-height:100dvh !important;
-    overflow:hidden !important;
-  }
+    overflow:hidden !important;}
   body.locked #bird-sound-btn{
     display:flex !important;
     visibility:visible !important;
@@ -17204,19 +17628,7 @@ body::before{
 }
 
 /* صفحة الدخول تستخدم نفس الخلفية */
-#loginOverlay{
-  background-image:
-    linear-gradient(180deg,
-      rgba(0,8,12,.20) 0%,
-      rgba(0,8,12,.34) 45%,
-      rgba(0,0,0,.64) 100%),
-    var(--sak-bg) !important;
-  background-size:100% 100% !important;
-  background-position:center center !important;
-  background-repeat:no-repeat !important;
-  backdrop-filter:none !important;
-  -webkit-backdrop-filter:none !important;
-}
+#loginOverlay{}
 
 /* صندوق الدخول: زجاج زمردي فاخر */
 #loginBox{
@@ -17445,14 +17857,7 @@ body{
   background-size:100% 100% !important;
   background-attachment:fixed !important;
 }
-#loginOverlay{
-  background-image:
-    linear-gradient(rgba(0,8,14,.18),rgba(0,8,14,.28)),
-    url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%2012%20%D8%B3%D8%A8%D8%AA%D9%85%D8%A8%D8%B1%202026%D8%8C%2008_04_27%20%D8%B5.png") !important;
-  background-size:100% 100% !important;
-  background-position:center !important;
-  background-repeat:no-repeat !important;
-}
+#loginOverlay{}
 
 /* اسم أبو القمر زمرد: لمعان لوني متغير */
 #shipIcon_new::after,
@@ -17574,18 +17979,7 @@ body{
    هذا الكود في نهاية الملف حتى يتغلب على جميع التكرارات القديمة
 --------------------------------------------------------- */
 html body #loginOverlay,
-body.locked #loginOverlay {
-  background-color:#02090b !important;
-  background-image:
-    linear-gradient(rgba(0,0,0,.30), rgba(0,0,0,.55)),
-    url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%20Sep%2011%2C%202026%2C%2010_02_56%20PM.png") !important;
-  background-size:cover !important;
-  background-position:center center !important;
-  background-repeat:no-repeat !important;
-  background-attachment:scroll !important;
-  backdrop-filter:blur(2px) !important;
-  -webkit-backdrop-filter:blur(2px) !important;
-}
+body.locked #loginOverlay {}
 
 /* ---------------------------------------------------------
    نافذة السفينة: فوق كل شيء
@@ -17884,14 +18278,7 @@ html body::before {
 
 /* صفحة تسجيل الدخول */
 html body #loginOverlay,
-html body.locked #loginOverlay {
-  background-color:#02090b !important;
-  background-image:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%20Sep%2011%2C%202026%2C%2010_02_56%20PM.png") !important;
-  background-repeat:no-repeat !important;
-  background-position:center center !important;
-  background-size:cover !important;
-  background-attachment:scroll !important;
-}
+html body.locked #loginOverlay {}
 
 /* =========================================================
    مجموعة PONG
@@ -17988,12 +18375,7 @@ html body #emeraldMusicHost #emOpenBtn {
   }
 
   html body #loginOverlay,
-  html body.locked #loginOverlay {
-    background-image:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%20Sep%2011%2C%202026%2C%2010_02_56%20PM.png") !important;
-    background-size:cover !important;
-    background-position:center center !important;
-    background-repeat:no-repeat !important;
-  }
+  html body.locked #loginOverlay {}
 
   /* عمود واحد مرتب أسفل PONG */
   html body #sakakerPongDock {
@@ -19191,24 +19573,7 @@ html body::before{
    صفحة الدخول — نفس الصورة تماماً
 ========================================================= */
 html body #loginOverlay,
-html body.locked #loginOverlay{
-  background-color:#02090b !important;
-
-  background-image:
-    linear-gradient(
-      rgba(0,0,0,.08),
-      rgba(0,0,0,.12)
-    ),
-    url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%2012%20%D8%B3%D8%A8%D8%AA%D9%85%D8%A8%D8%B1%202026%D8%8C%2007_19_34%20%D9%85.png.crdownload") !important;
-
-  background-size:100% 100% !important;
-  background-position:center center !important;
-  background-repeat:no-repeat !important;
-  background-attachment:scroll !important;
-
-  backdrop-filter:none !important;
-  -webkit-backdrop-filter:none !important;
-}
+html body.locked #loginOverlay{}
 
 /* الجوال: نفس المبدأ بدون قص */
 @media(max-width:700px){
@@ -19220,11 +19585,7 @@ html body.locked #loginOverlay{
   }
 
   html body #loginOverlay,
-  html body.locked #loginOverlay{
-    background-size:100% 100% !important;
-    background-position:center center !important;
-    background-repeat:no-repeat !important;
-  }
+  html body.locked #loginOverlay{}
 }
 
 </style>
@@ -21771,20 +22132,9 @@ html body #sakakerCenterFeatureDock{
 ========================================================= */
 html body #loginOverlay,
 html body.locked #loginOverlay{
-  background-color:#02090b !important;
-
-  background-image:
-    url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/ChatGPT%20Image%2012%20%D8%B3%D8%A8%D8%AA%D9%85%D8%A8%D8%B1%202026%D8%8C%2009_34_57%20%D9%85.png") !important;
 
   /* كامل الصورة دون اقتصاص */
-  background-size:100% 100% !important;
-  background-position:center center !important;
-  background-repeat:no-repeat !important;
-  background-attachment:scroll !important;
-
-  backdrop-filter:none !important;
-  -webkit-backdrop-filter:none !important;
-}
+  background-size:100% 100% !important;}
 
 /* صندوق تسجيل الدخول نفسه بلا خلفية نهائياً */
 html body #loginBox{
@@ -22142,10 +22492,7 @@ html body #sakakerWisdomBox{
 @media(max-width:700px){
 
   html body #loginOverlay,
-  html body.locked #loginOverlay{
-    background-size:100% 100% !important;
-    background-position:center center !important;
-  }
+  html body.locked #loginOverlay{}
 
   html body #loginBox{
     width:min(355px,92vw) !important;
