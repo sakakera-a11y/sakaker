@@ -6560,6 +6560,160 @@ html body:not(.locked)::after{
 
 </style>
 
+
+<!-- SAKAKER MAIN VIDEO BACKGROUND FINAL -->
+<style id="sakaker-main-video-background-final">
+
+/* خلفية تسجيل الدخول الحالية تبقى كما هي */
+html body.locked #sakakerMainVideoBackground {
+  display:none !important;
+}
+
+/* خلفية فيديو لصفحة الأيقونات بعد تسجيل الدخول */
+html body:not(.locked) {
+  isolation:isolate !important;
+}
+
+html body #sakakerMainVideoBackground {
+  position:fixed !important;
+  inset:0 !important;
+
+  width:100vw !important;
+  height:100vh !important;
+
+  object-fit:cover !important;
+  object-position:center center !important;
+
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+
+  pointer-events:none !important;
+
+  z-index:-1 !important;
+
+  background:#02090b !important;
+}
+
+/* تخفيف الخلفية الثابتة بعد الدخول حتى يظهر الفيديو */
+html body:not(.locked) {
+  background-color:#02090b !important;
+  background-image:none !important;
+  background-attachment:scroll !important;
+}
+
+/* تبقى عناصر الموقع والأيقونات فوق الفيديو */
+html body:not(.locked) > *:not(#sakakerMainVideoBackground) {
+  position:relative;
+}
+
+@media(max-width:768px) {
+  html body #sakakerMainVideoBackground {
+    object-fit:cover !important;
+    object-position:center center !important;
+  }
+}
+
+</style>
+
+<script id="sakaker-main-video-background-js">
+(function(){
+  'use strict';
+
+  const VIDEO_URL = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/v2_awv-7e0c4c00ad02ab7c.mp4';
+
+  function isLoggedInView(){
+    return document.body && !document.body.classList.contains('locked');
+  }
+
+  function ensureVideo(){
+    if(!document.body) return null;
+
+    let video = document.getElementById('sakakerMainVideoBackground');
+
+    if(video) return video;
+
+    video = document.createElement('video');
+    video.id = 'sakakerMainVideoBackground';
+
+    video.autoplay = true;
+    video.loop = true;
+    video.muted = true;
+    video.playsInline = true;
+    video.preload = 'metadata';
+
+    video.setAttribute('autoplay','');
+    video.setAttribute('loop','');
+    video.setAttribute('muted','');
+    video.setAttribute('playsinline','');
+    video.setAttribute('webkit-playsinline','');
+    video.setAttribute('disablepictureinpicture','');
+    video.setAttribute('aria-hidden','true');
+
+    const source = document.createElement('source');
+    source.src = VIDEO_URL;
+    source.type = 'video/mp4';
+
+    video.appendChild(source);
+    document.body.insertBefore(video, document.body.firstChild);
+
+    return video;
+  }
+
+  function syncVideo(){
+    const video = ensureVideo();
+    if(!video) return;
+
+    if(isLoggedInView()){
+      video.style.display = 'block';
+
+      try{
+        const p = video.play();
+        if(p && typeof p.catch === 'function'){
+          p.catch(function(){});
+        }
+      }catch(e){}
+
+    }else{
+      video.style.display = 'none';
+
+      try{
+        video.pause();
+      }catch(e){}
+    }
+  }
+
+  function init(){
+    ensureVideo();
+    syncVideo();
+
+    new MutationObserver(syncVideo).observe(
+      document.body,
+      {
+        attributes:true,
+        attributeFilter:['class']
+      }
+    );
+
+    document.addEventListener(
+      'visibilitychange',
+      syncVideo
+    );
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener(
+      'DOMContentLoaded',
+      init,
+      {once:true}
+    );
+  }else{
+    init();
+  }
+
+})();
+</script>
+
 </body>
 </html>
 
@@ -23404,7 +23558,7 @@ html body #sakakerWorldNewsTrack{
   padding-inline:40px !important;
   white-space:nowrap !important;
   direction:var(--sak-news-dir,rtl) !important;
-  animation:sakakerWorldNewsMove var(--sak-news-duration,95s) linear infinite !important;
+  animation:sakakerWorldNewsMove var(--sak-news-duration,180s) linear infinite !important;
   will-change:transform !important;}
 
 html body #sakakerWorldNews:hover #sakakerWorldNewsTrack{
@@ -23472,28 +23626,40 @@ body.sakaker-live-video-open .video-top-container-fixed{
 
   const NEWS_FEEDS = {
     ar: [
-      ['Google News عربي','https://news.google.com/rss/headlines/section/topic/WORLD?hl=ar&gl=SA&ceid=SA:ar'],
-      ['الجزيرة','https://www.aljazeera.net/aljazeerarss/arabe.xml'],
-      ['العربية','https://www.alarabiya.net/.mrss/ar.xml'],
-      ['BBC عربي','https://www.bbc.com/arabic/index.xml'],
-      ['CNN عربي','https://arabic.cnn.com/rss.xml'],
-      ['الشرق الأوسط','https://aawsat.com/rss.xml'],
-      ['سكاي نيوز عربية','https://www.skynewsarabia.com/web/rss'],
-      ['فرانس 24 عربي','https://www.france24.com/ar/rss'],
-      ['روسيا اليوم عربي','https://arabic.rt.com/rss/'],
-      ['TRT عربي','https://www.trtarabi.com/rss'],
-      ['DW عربي','https://rss.dw.com/rdf/rss-ar-all']
+      ['📰 عام - Google','https://news.google.com/rss?hl=ar&gl=SA&ceid=SA:ar'],
+      ['🌍 عالم - Google','https://news.google.com/rss/headlines/section/topic/WORLD?hl=ar&gl=SA&ceid=SA:ar'],
+      ['⚽ رياضة - Google','https://news.google.com/rss/headlines/section/topic/SPORTS?hl=ar&gl=SA&ceid=SA:ar'],
+      ['💹 اقتصاد - Google','https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=ar&gl=SA&ceid=SA:ar'],
+
+      ['📰 الجزيرة','https://www.aljazeera.net/aljazeerarss/arabe.xml'],
+      ['📰 العربية','https://www.alarabiya.net/.mrss/ar.xml'],
+      ['📰 BBC عربي','https://www.bbc.com/arabic/index.xml'],
+      ['📰 CNN عربي','https://arabic.cnn.com/rss.xml'],
+      ['📰 الشرق الأوسط','https://aawsat.com/rss.xml'],
+      ['📰 سكاي نيوز عربية','https://www.skynewsarabia.com/web/rss'],
+      ['📰 فرانس 24 عربي','https://www.france24.com/ar/rss'],
+      ['📰 روسيا اليوم عربي','https://arabic.rt.com/rss/'],
+      ['📰 TRT عربي','https://www.trtarabi.com/rss'],
+      ['📰 DW عربي','https://rss.dw.com/rdf/rss-ar-all']
     ],
+
     en: [
-      ['Google News World','https://news.google.com/rss/headlines/section/topic/WORLD?hl=en-US&gl=US&ceid=US:en'],
-      ['BBC','https://feeds.bbci.co.uk/news/rss.xml'],
-      ['CNN','https://rss.cnn.com/rss/edition.rss'],
-      ['Al Jazeera English','https://www.aljazeera.com/xml/rss/all.xml'],
-      ['France 24','https://www.france24.com/en/rss'],
-      ['DW','https://rss.dw.com/rdf/rss-en-all'],
-      ['NPR','https://feeds.npr.org/1001/rss.xml'],
-      ['The Guardian','https://www.theguardian.com/world/rss'],
-      ['Sky News','https://feeds.skynews.com/feeds/rss/world.xml']
+      ['📰 General - Google','https://news.google.com/rss?hl=en-US&gl=US&ceid=US:en'],
+      ['🌍 World - Google','https://news.google.com/rss/headlines/section/topic/WORLD?hl=en-US&gl=US&ceid=US:en'],
+      ['⚽ Sports - Google','https://news.google.com/rss/headlines/section/topic/SPORTS?hl=en-US&gl=US&ceid=US:en'],
+      ['💹 Economy - Google','https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=en-US&gl=US&ceid=US:en'],
+
+      ['📰 BBC','https://feeds.bbci.co.uk/news/rss.xml'],
+      ['⚽ BBC Sport','https://feeds.bbci.co.uk/sport/rss.xml?edition=uk'],
+      ['💹 BBC Business','https://feeds.bbci.co.uk/news/business/rss.xml'],
+      ['📰 Al Jazeera English','https://www.aljazeera.com/xml/rss/all.xml'],
+      ['📰 France 24','https://www.france24.com/en/rss'],
+      ['📰 DW','https://rss.dw.com/rdf/rss-en-all'],
+      ['📰 NPR','https://feeds.npr.org/1001/rss.xml'],
+      ['🌍 Guardian World','https://www.theguardian.com/world/rss'],
+      ['⚽ Guardian Sport','https://www.theguardian.com/sport/rss'],
+      ['💹 Guardian Business','https://www.theguardian.com/business/rss'],
+      ['🌍 Sky News','https://feeds.skynews.com/feeds/rss/world.xml']
     ]
   };
 
@@ -23530,7 +23696,7 @@ body.sakaker-live-video-open .video-top-container-fixed{
     const track = document.getElementById('sakakerWorldNewsTrack');
     if(!news || !track) return;
 
-    const title = lang === 'en' ? '🌍 World News' : '🌍 أخبار العالم';
+    const title = lang === 'en' ? '📰 News  ⚽ Sports  💹 Economy' : '📰 أخبار  ⚽ رياضة  💹 اقتصاد';
     const fallback = lang === 'en'
       ? 'News is temporarily unavailable — automatic refresh will retry.'
       : 'تعذّر تحميل الأخبار مؤقتاً — ستتم إعادة المحاولة تلقائياً.';
@@ -23552,7 +23718,7 @@ body.sakaker-live-video-open .video-top-container-fixed{
     news.style.setProperty('--sak-news-dir',lang === 'ar' ? 'rtl' : 'ltr');
 
     const chars = (title + bodyText).length;
-    const duration = Math.max(55,Math.min(180,Math.round(chars * .22)));
+    const duration = Math.max(120,Math.min(420,Math.round(chars * .48)));
     news.style.setProperty('--sak-news-duration',duration + 's');
 
     track.style.animation = 'none';
@@ -23561,7 +23727,7 @@ body.sakaker-live-video-open .video-top-container-fixed{
   }
 
   function cacheKey(lang){
-    return 'sakakerWorldNewsCacheV2-' + lang;
+    return 'sakakerWorldNewsCacheV3-' + lang;
   }
 
   function readNewsCache(lang){
@@ -23572,7 +23738,7 @@ body.sakaker-live-video-open .video-top-container-fixed{
       const data = JSON.parse(raw);
       if(!data || !Array.isArray(data.items)) return null;
 
-      if(Date.now() - Number(data.time || 0) > 12 * 60 * 60 * 1000){
+      if(Date.now() - Number(data.time || 0) > 90 * 60 * 1000){
         return null;
       }
 
@@ -23619,7 +23785,7 @@ body.sakaker-live-video-open .video-top-container-fixed{
       const xml = new DOMParser().parseFromString(data.contents,'text/xml');
       if(xml.querySelector('parsererror')) return [];
 
-      const nodes = Array.from(xml.querySelectorAll('item, entry')).slice(0,3);
+      const nodes = Array.from(xml.querySelectorAll('item, entry')).slice(0,4);
       const results = [];
 
       nodes.forEach(function(node){
@@ -23682,7 +23848,7 @@ body.sakaker-live-video-open .video-top-container-fixed{
 
       seen.add(key);
       return true;
-    }).slice(0,36);
+    }).slice(0,64);
 
     if(items.length){
       writeNewsCache(lang,items);
@@ -23728,7 +23894,7 @@ body.sakaker-live-video-open .video-top-container-fixed{
     attributeFilter:['lang']
   });
 
-  setInterval(loadWorldNews,15 * 60 * 1000);
+  setInterval(loadWorldNews,10 * 60 * 1000);
 
 })();
 </script>
