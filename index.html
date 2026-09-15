@@ -6640,9 +6640,12 @@ html body:not(.locked) > *:not(#sakakerMainVideoBackground) {
     video.loop = true;
     video.muted = true;
     video.playsInline = true;
-    video.preload = 'metadata';
+    video.preload = 'auto';
+    video.defaultPlaybackRate = 0.85;
+    video.playbackRate = 0.85;
 
     video.setAttribute('autoplay','');
+    video.setAttribute('preload','auto');
     video.setAttribute('loop','');
     video.setAttribute('muted','');
     video.setAttribute('playsinline','');
@@ -6655,6 +6658,23 @@ html body:not(.locked) > *:not(#sakakerMainVideoBackground) {
     source.type = 'video/mp4';
 
     video.appendChild(source);
+
+    video.addEventListener('loadedmetadata', function(){
+      video.defaultPlaybackRate = 0.85;
+      video.playbackRate = 0.85;
+    });
+
+    video.addEventListener('canplaythrough', function(){
+      video.defaultPlaybackRate = 0.85;
+      video.playbackRate = 0.85;
+    });
+
+    video.addEventListener('play', function(){
+      if(video.playbackRate !== 0.85){
+        video.playbackRate = 0.85;
+      }
+    });
+
     document.body.insertBefore(video, document.body.firstChild);
 
     return video;
