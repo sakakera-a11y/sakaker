@@ -38744,5 +38744,223 @@ html body #videoBoxFixed.sak-player-open:not(.sak-hls-mode) #sakCircleExternal {
   }
 })();
 </script>
+<style id="sak-creative-studio-style">
+html body #sakCreativeIcon { cursor:pointer; font-family:inherit; }
+html body #sakCreativeIcon .icon-label { white-space:normal !important; }
+html body #sakStudio[hidden] { display:none !important; }
+html body #sakStudio {
+  position:fixed !important; inset:0 !important; z-index:2147483647 !important;
+  display:flex; align-items:center; justify-content:center; padding:12px;
+  background:rgba(1,10,15,.92); color:#eef8ff; box-sizing:border-box;
+  font-family:Tahoma,Arial,sans-serif; text-align:start;
+}
+html body #sakStudio * { box-sizing:border-box; }
+html body #sakStudio .studio-panel {
+  width:min(1100px,100%); max-height:calc(100dvh - 24px); overflow:auto;
+  border:1px solid #adc5d1; border-radius:22px; padding:18px;
+  background:linear-gradient(135deg,#172934,#081923); box-shadow:0 0 28px #81b8c84d;
+}
+html body #sakStudio h2 { margin:0; font-size:22px; color:#f2dfab; }
+html body #sakStudio .studio-row { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:12px; }
+html body #sakStudio .studio-head { justify-content:space-between; }
+html body #sakStudio button,html body #sakStudio select,html body #sakStudio input {
+  font:inherit; font-size:15px; border:1px solid #7298a9; border-radius:9px;
+  min-height:40px; padding:8px 12px; background:#eff8fc; color:#102d3b;
+  text-shadow:none; max-width:100%;
+}
+html body #sakStudio button { cursor:pointer; }
+html body #sakStudio button:disabled { opacity:.45; cursor:default; }
+html body #sakStudio button[aria-pressed="true"] { background:#ffdc82; border-color:#ffdc82; }
+html body #sakStudio :focus-visible { outline:3px solid #5de2bf; outline-offset:2px; }
+html body #sakStudio label { display:flex; align-items:center; flex-wrap:wrap; gap:6px; font-size:13px; }
+html body #sakStudio input[type="color"] { width:46px; padding:3px; }
+html body #sakStudio input[type="range"] { width:105px; padding:0; }
+html body #sakStudio input[type="text"] { flex:1; min-width:160px; }
+html body #sakStudio .studio-workspace { overflow:auto; padding:12px; border-radius:12px; background:#071019; }
+html body #sakStudio canvas {
+  display:block; position:static; width:100% !important; max-width:900px !important;
+  height:auto !important; margin:auto; touch-action:none; cursor:crosshair;
+  border-radius:0; box-shadow:0 4px 24px #0006;
+}
+html body #sakStudio .studio-help { color:#bfd1dc; font-size:13px; line-height:1.7; margin:8px 0; }
+html body #sakStudio #studioStatus { min-height:24px; color:#ffdc82; font-size:13px; }
+@media(max-width:600px){
+  html body #sakStudio { padding:5px; }
+  html body #sakStudio .studio-panel { padding:10px; border-radius:14px; max-height:calc(100dvh - 10px); }
+  html body #sakStudio h2 { font-size:18px; }
+  html body #sakStudio .studio-workspace { padding:4px; }
+}
+</style>
+<section id="sakStudio" hidden role="dialog" aria-modal="true" aria-labelledby="studioTitle">
+  <div class="studio-panel">
+    <div class="studio-row studio-head"><h2 id="studioTitle" data-studio-i18n="title"></h2><div class="studio-row"><button id="studioLang" type="button">English</button><button id="studioClose" type="button" data-studio-i18n="close"></button></div></div>
+    <div class="studio-row" id="studioTools">
+      <button type="button" data-tool="pen" data-studio-i18n="pen"></button>
+      <button type="button" data-tool="eraser" data-studio-i18n="eraser"></button>
+      <button type="button" data-tool="move" data-studio-i18n="move"></button>
+      <button type="button" data-tool="rect" data-studio-i18n="rect"></button>
+      <button type="button" data-tool="ellipse" data-studio-i18n="ellipse"></button>
+      <button type="button" id="studioUndo" data-studio-i18n="undo"></button>
+      <button type="button" id="studioRedo" data-studio-i18n="redo"></button>
+    </div>
+    <div class="studio-row">
+      <label><span data-studio-i18n="color"></span><input id="studioColor" type="color" value="#126b62"></label>
+      <label><span data-studio-i18n="size"></span><input id="studioSize" type="range" min="2" max="50" value="6"><output id="studioSizeValue">6</output></label>
+      <label><span data-studio-i18n="background"></span><input id="studioBackground" type="color" value="#ffffff"></label>
+      <label><span data-studio-i18n="format"></span><select id="studioFormat"><option value="900,600" data-studio-i18n="landscape"></option><option value="800,800" data-studio-i18n="square"></option><option value="600,900" data-studio-i18n="portrait"></option></select></label>
+      <label><span data-studio-i18n="template"></span><select id="studioTemplate"><option value="blank" data-studio-i18n="blank"></option><option value="gold" data-studio-i18n="gold"></option><option value="celebrate" data-studio-i18n="celebrate"></option></select></label>
+    </div>
+    <div class="studio-row">
+      <input id="studioText" type="text" maxlength="120" dir="auto">
+      <label><span data-studio-i18n="textSize"></span><select id="studioTextSize"><option>24</option><option selected>40</option><option>60</option><option>80</option></select></label>
+      <button id="studioAddText" type="button" data-studio-i18n="addText"></button>
+      <button id="studioDelete" type="button" data-studio-i18n="delete"></button>
+    </div>
+    <p class="studio-help" data-studio-i18n="help"></p>
+    <div class="studio-workspace"><canvas id="studioCanvas" width="900" height="600" tabindex="0"></canvas></div>
+    <div class="studio-row" style="margin-top:12px">
+      <button id="studioExport" type="button" data-studio-i18n="export"></button>
+      <button id="studioSave" type="button" data-studio-i18n="save"></button>
+      <button id="studioLoad" type="button" data-studio-i18n="load"></button>
+      <button id="studioClear" type="button" data-studio-i18n="clear"></button>
+    </div>
+    <div id="studioStatus" role="status" aria-live="polite"></div>
+  </div>
+</section>
+<script id="sak-creative-studio-script">
+(function(){
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const modal=$('sakStudio'), canvas=$('studioCanvas'), ctx=canvas.getContext('2d');
+  const layer=document.createElement('canvas'), ink=layer.getContext('2d');
+  const words={
+    ar:{title:'🎨 الاستديو الابداعي',close:'إغلاق ✕',pen:'✎ رسم',eraser:'ممحاة',move:'↔ تحريك',rect:'▭ مستطيل',ellipse:'◯ دائرة',undo:'تراجع',redo:'إعادة',color:'اللون',size:'حجم الفرشاة',background:'الخلفية',format:'المقاس',landscape:'بطاقة أفقية',square:'مربع',portrait:'بطاقة عمودية',template:'القالب',blank:'بسيط',gold:'إطار ذهبي',celebrate:'احتفال',textSize:'حجم النص',addText:'إضافة النص',delete:'حذف المحدد',help:'ارسم باللمس أو الماوس. اسحب لرسم الأشكال. أضف نصًا ثم اختر «تحريك» واسحبه لمكانه. اختر عنصرًا لتحريكه أو حذفه. الممحاة تمسح الآثار الموجودة قبلها.',export:'⬇ حفظ صورة PNG',save:'حفظ مسودة',load:'استعادة المسودة',clear:'لوحة جديدة',placeholder:'اكتب عبارتك بالعربية أو الإنجليزية…',saved:'تم حفظ المسودة على هذا المتصفح.',loaded:'تمت استعادة المسودة.',missing:'لا توجد مسودة محفوظة.',failed:'تعذر الحفظ أو الاستعادة. تحقق من مساحة المتصفح وإذن التخزين.',downloaded:'الصورة جاهزة للحفظ. راجع التنزيلات.',confirm:'بدء لوحة جديدة ومسح العمل الحالي؟ يمكنك التراجع بعد ذلك.',replace:'استبدال العمل الحالي بالمسودة المحفوظة؟',empty:'اكتب النص أولًا.',canvas:'مساحة الرسم وتصميم البطاقات',icon:'الاستديو الابداعي',sub:'رسم وبطاقات',downloadError:'تعذر تصدير الصورة. حاول مجددًا.'},
+    en:{title:'🎨 Creative Studio',close:'Close ✕',pen:'✎ Draw',eraser:'Eraser',move:'↔ Move',rect:'▭ Rectangle',ellipse:'◯ Circle',undo:'Undo',redo:'Redo',color:'Color',size:'Brush size',background:'Background',format:'Size',landscape:'Landscape card',square:'Square',portrait:'Portrait card',template:'Template',blank:'Plain',gold:'Gold frame',celebrate:'Celebration',textSize:'Text size',addText:'Add text',delete:'Delete selected',help:'Draw with touch or mouse. Drag to draw shapes. Add text, then choose Move and drag it into place. Select an item to move or delete it. The eraser removes marks drawn before it.',export:'⬇ Save PNG image',save:'Save draft',load:'Restore draft',clear:'New canvas',placeholder:'Type your message in Arabic or English…',saved:'Draft saved in this browser.',loaded:'Draft restored.',missing:'No saved draft found.',failed:'Could not save or restore. Check browser storage permissions and space.',downloaded:'Image ready to save. Check your downloads.',confirm:'Start a new canvas and clear this work? You can undo this action.',replace:'Replace this work with your saved draft?',empty:'Type your text first.',canvas:'Drawing and card design canvas',icon:'Creative Studio',sub:'Draw & cards',downloadError:'Could not export the image. Please try again.'}
+  };
+  let lang=document.documentElement.lang==='en'?'en':'ar';
+  let state={w:900,h:600,bg:'#ffffff',template:'blank',objects:[]};
+  let undo=[],redo=[],tool='pen',selected=-1,gesture=null,lastFocus=null,scrollBefore='';
+  const copy = x=>JSON.parse(JSON.stringify(x));
+  function say(key){$('studioStatus').textContent=words[lang][key];}
+  function history(){undo.push(copy(state));if(undo.length>35)undo.shift();redo=[];}
+  function language(){
+    modal.dir=lang==='ar'?'rtl':'ltr';modal.lang=lang;
+    modal.querySelectorAll('[data-studio-i18n]').forEach(el=>el.textContent=words[lang][el.dataset.studioI18n]);
+    $('studioText').placeholder=words[lang].placeholder;
+    $('studioText').setAttribute('aria-label',words[lang].placeholder);
+    canvas.setAttribute('aria-label',words[lang].canvas);
+    $('studioLang').textContent=lang==='ar'?'English':'العربية';
+    $('studioStatus').textContent='';
+  }
+  function controls(){
+    $('studioUndo').disabled=!undo.length;$('studioRedo').disabled=!redo.length;
+    $('studioDelete').disabled=selected<0;
+    $('studioBackground').value=state.bg;$('studioTemplate').value=state.template;
+    $('studioFormat').value=state.w+','+state.h;
+    modal.querySelectorAll('[data-tool]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tool===tool)));
+  }
+  function bounds(o){
+    if(o.type==='text'){
+      ink.font='bold '+o.size+'px Tahoma, Arial, sans-serif';
+      const width=ink.measureText(o.text).width;
+      return {x:o.x-width/2,y:o.y-o.size/2,w:width,h:o.size*1.3};
+    }
+    if(o.points){const xs=o.points.map(p=>p.x),ys=o.points.map(p=>p.y);return{x:Math.min(...xs)-o.size/2,y:Math.min(...ys)-o.size/2,w:Math.max(...xs)-Math.min(...xs)+o.size,h:Math.max(...ys)-Math.min(...ys)+o.size};}
+    return{x:Math.min(o.x,o.x2),y:Math.min(o.y,o.y2),w:Math.abs(o.x2-o.x),h:Math.abs(o.y2-o.y)};
+  }
+  function paintObject(o){
+    ink.save();ink.strokeStyle=o.color;ink.fillStyle=o.color;ink.lineWidth=o.size;ink.lineCap='round';ink.lineJoin='round';
+    if(o.type==='pen'||o.type==='eraser'){
+      ink.globalCompositeOperation=o.type==='eraser'?'destination-out':'source-over';
+      ink.beginPath();o.points.forEach((p,i)=>i?ink.lineTo(p.x,p.y):ink.moveTo(p.x,p.y));
+      if(o.points.length===1){ink.arc(o.points[0].x,o.points[0].y,o.size/2,0,Math.PI*2);ink.fill();}else ink.stroke();
+    }else if(o.type==='text'){
+      ink.font='bold '+o.size+'px Tahoma, Arial, sans-serif';ink.textAlign='center';ink.textBaseline='middle';
+      ink.direction=/[\u0600-\u06ff]/.test(o.text)?'rtl':'ltr';ink.fillText(o.text,o.x,o.y);
+    }else{
+      const b=bounds(o);ink.beginPath();
+      if(o.type==='rect')ink.rect(b.x,b.y,b.w,b.h);else ink.ellipse(b.x+b.w/2,b.y+b.h/2,b.w/2,b.h/2,0,0,Math.PI*2);
+      ink.stroke();
+    }ink.restore();
+  }
+  function render(selection=true){
+    if(canvas.width!==state.w||canvas.height!==state.h){canvas.width=state.w;canvas.height=state.h;}
+    layer.width=state.w;layer.height=state.h;
+    ctx.fillStyle=state.bg;ctx.fillRect(0,0,state.w,state.h);
+    if(state.template==='gold'){
+      ctx.strokeStyle='#c59a3b';ctx.lineWidth=5;ctx.strokeRect(25,25,state.w-50,state.h-50);
+      ctx.lineWidth=1;ctx.strokeRect(36,36,state.w-72,state.h-72);
+    }else if(state.template==='celebrate'){
+      for(let i=0;i<48;i++){ctx.fillStyle=['#e9ae46','#d46391','#3a9f94','#7995d2'][i%4];const x=(i*137+21)%state.w,y=i%2?state.h-45-(i*7)%40:18+(i*11)%60;ctx.beginPath();ctx.arc(x,y,4+i%5,0,Math.PI*2);ctx.fill();}
+    }
+    state.objects.forEach(paintObject);ctx.drawImage(layer,0,0);
+    if(selection&&selected>=0&&state.objects[selected]){const b=bounds(state.objects[selected]);ctx.save();ctx.strokeStyle='#267bed';ctx.lineWidth=2;ctx.setLineDash([7,5]);ctx.strokeRect(b.x-5,b.y-5,b.w+10,b.h+10);ctx.restore();}
+    controls();
+  }
+  function point(e){const b=canvas.getBoundingClientRect();return{x:Math.max(0,Math.min(state.w,(e.clientX-b.left)*state.w/b.width)),y:Math.max(0,Math.min(state.h,(e.clientY-b.top)*state.h/b.height))};}
+  function pick(p){for(let i=state.objects.length-1;i>=0;i--){const o=state.objects[i];if(o.type==='eraser')continue;const b=bounds(o);if(p.x>=b.x-8&&p.x<=b.x+b.w+8&&p.y>=b.y-8&&p.y<=b.y+b.h+8)return i;}return -1;}
+  canvas.addEventListener('pointerdown',function(e){
+    if(gesture||e.button!==0)return;e.preventDefault();canvas.setPointerCapture(e.pointerId);const p=point(e);
+    if(tool==='move'){selected=pick(p);if(selected>=0){history();gesture={id:e.pointerId,p,original:copy(state.objects[selected]),move:true};}}
+    else{history();selected=-1;const o={type:tool,color:$('studioColor').value,size:Number($('studioSize').value)};
+      if(tool==='pen'||tool==='eraser')o.points=[p];else Object.assign(o,{x:p.x,y:p.y,x2:p.x,y2:p.y});
+      state.objects.push(o);gesture={id:e.pointerId,index:state.objects.length-1};}
+    render();
+  });
+  canvas.addEventListener('pointermove',function(e){
+    if(!gesture||gesture.id!==e.pointerId)return;e.preventDefault();const p=point(e);
+    if(gesture.move){const o=copy(gesture.original),dx=p.x-gesture.p.x,dy=p.y-gesture.p.y;
+      if(o.points)o.points=o.points.map(q=>({x:q.x+dx,y:q.y+dy}));else{o.x+=dx;o.y+=dy;if(o.x2!==undefined){o.x2+=dx;o.y2+=dy;}}
+      state.objects[selected]=o;
+    }else{const o=state.objects[gesture.index];if(o.points)o.points.push(p);else{o.x2=p.x;o.y2=p.y;}}
+    render();
+  });
+  function finish(e){if(gesture&&gesture.id===e.pointerId){gesture=null;render();}}
+  canvas.addEventListener('pointerup',finish);canvas.addEventListener('pointercancel',finish);canvas.addEventListener('lostpointercapture',finish);
+  $('studioTools').addEventListener('click',e=>{const b=e.target.closest('[data-tool]');if(b){tool=b.dataset.tool;selected=-1;render();}});
+  $('studioSize').addEventListener('input',()=>{$('studioSizeValue').value=$('studioSize').value;});
+  $('studioBackground').addEventListener('change',()=>{history();state.bg=$('studioBackground').value;render();});
+  $('studioTemplate').addEventListener('change',()=>{history();state.template=$('studioTemplate').value;render();});
+  $('studioFormat').addEventListener('change',()=>{
+    history();const [w,h]=$('studioFormat').value.split(',').map(Number),sx=w/state.w,sy=h/state.h;
+    state.objects.forEach(o=>{if(o.points)o.points.forEach(p=>{p.x*=sx;p.y*=sy;});else{o.x*=sx;o.y*=sy;if(o.x2!==undefined){o.x2*=sx;o.y2*=sy;}}});
+    state.w=w;state.h=h;selected=-1;render();
+  });
+  $('studioAddText').addEventListener('click',()=>{const text=$('studioText').value.trim();if(!text){say('empty');return;}
+    history();state.objects.push({type:'text',text,size:Number($('studioTextSize').value),color:$('studioColor').value,x:state.w/2,y:state.h/2});
+    selected=state.objects.length-1;tool='move';render();
+  });
+  $('studioDelete').addEventListener('click',()=>{if(selected>=0){history();state.objects.splice(selected,1);selected=-1;render();}});
+  $('studioUndo').addEventListener('click',()=>{if(undo.length){redo.push(copy(state));state=undo.pop();selected=-1;render();}});
+  $('studioRedo').addEventListener('click',()=>{if(redo.length){undo.push(copy(state));state=redo.pop();selected=-1;render();}});
+  $('studioClear').addEventListener('click',()=>{if(!state.objects.length||confirm(words[lang].confirm)){history();state.objects=[];selected=-1;render();}});
+  $('studioSave').addEventListener('click',()=>{try{localStorage.setItem('sak-creative-draft-v1',JSON.stringify(state));say('saved');}catch(e){say('failed');}});
+  $('studioLoad').addEventListener('click',()=>{try{
+    const raw=localStorage.getItem('sak-creative-draft-v1');if(!raw){say('missing');return;}
+    const saved=JSON.parse(raw);
+    if(!['900,600','800,800','600,900'].includes(saved.w+','+saved.h)||!Array.isArray(saved.objects)||saved.objects.length>10000||!/^#[0-9a-f]{6}$/i.test(saved.bg)||!['blank','gold','celebrate'].includes(saved.template))throw Error('Invalid draft');
+    saved.objects.forEach(o=>{if(!['pen','eraser','text','rect','ellipse'].includes(o.type)||!Number.isFinite(o.size)||o.size<1||o.size>100||!/^#[0-9a-f]{6}$/i.test(o.color))throw Error('Invalid object');if(o.type==='pen'||o.type==='eraser'){if(!Array.isArray(o.points)||!o.points.length||o.points.length>100000||o.points.some(p=>!Number.isFinite(p.x)||!Number.isFinite(p.y)))throw Error('Invalid path');}else{if(!Number.isFinite(o.x)||!Number.isFinite(o.y))throw Error('Invalid position');if(o.type==='text'){if(typeof o.text!=='string'||o.text.length>120)throw Error('Invalid text');}else if(!Number.isFinite(o.x2)||!Number.isFinite(o.y2))throw Error('Invalid shape');}});
+    if(state.objects.length&&!confirm(words[lang].replace))return;history();state=saved;selected=-1;render();say('loaded');
+  }catch(e){say('failed');}});
+  $('studioExport').addEventListener('click',()=>{
+    render(false);canvas.toBlob(blob=>{if(!blob){say('downloadError');return;}const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='SAKAKER-creative-'+Date.now()+'.png';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);say('downloaded');},'image/png');render();
+  });
+  function close(){modal.hidden=true;gesture=null;document.body.style.overflow=scrollBefore;if(lastFocus&&lastFocus.isConnected)lastFocus.focus();}
+  function open(){if(document.body.classList.contains('locked'))return;lastFocus=document.activeElement;scrollBefore=document.body.style.overflow;document.body.style.overflow='hidden';lang=document.documentElement.lang==='en'?'en':'ar';language();modal.hidden=false;render();$('studioClose').focus();}
+  $('studioClose').addEventListener('click',close);
+  $('studioLang').addEventListener('click',()=>{lang=lang==='ar'?'en':'ar';language();});
+  modal.addEventListener('keydown',e=>{if(e.key==='Escape'){e.stopPropagation();close();}if(e.key==='Tab'){const list=[...modal.querySelectorAll('button:not(:disabled),input,select,canvas')];const first=list[0],last=list[list.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}});
+  function mount(){
+    const host=document.querySelector('.cards')||$('sakakerAllIconsDock');if(!host||$('sakCreativeIcon'))return;
+    const button=document.createElement('button');button.id='sakCreativeIcon';button.type='button';button.className='icon-card';
+    button.innerHTML='<span class="icon-svg" aria-hidden="true" style="font-size:25px">🎨</span><span class="icon-label"></span><span class="sub"></span>';
+    button.addEventListener('click',open);host.appendChild(button);labelIcon();
+  }
+  function labelIcon(){const b=$('sakCreativeIcon'),l=document.documentElement.lang==='en'?'en':'ar';if(b){b.querySelector('.icon-label').textContent=words[l].icon;b.querySelector('.sub').textContent=words[l].sub;b.title=words[l].icon;b.setAttribute('aria-label',words[l].icon);}}
+  new MutationObserver(()=>{labelIcon();if(!modal.hidden){lang=document.documentElement.lang==='en'?'en':'ar';language();}}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  new MutationObserver(()=>{if(document.body.classList.contains('locked')&&!modal.hidden)close();}).observe(document.body,{attributes:true,attributeFilter:['class']});
+  mount();document.addEventListener('DOMContentLoaded',mount,{once:true});language();render();
+})();
+</script>
 </body>
 </html>
