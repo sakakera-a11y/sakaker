@@ -37730,9 +37730,16 @@ body.sak-media-heavy-open #emOpenBtn{
     }
 
     function fallbackDuringBuffer(){
-      video.classList.remove(
-        'sak-bg-playing'
-      );
+      /*
+        لا نخفي الفيديو أثناء buffering/stalled.
+        إبقاء آخر إطار ظاهر يمنع تحول الخلفية إلى شاشة سوداء.
+      */
+      if(
+        loggedIn() &&
+        !document.body.classList.contains('sak-media-heavy-open')
+      ){
+        video.classList.add('sak-bg-playing');
+      }
     }
 
     video.addEventListener(
@@ -40260,6 +40267,347 @@ html body #sakChatPanel{
 })();
 </script>
 <!-- /SAKAKER FIREBASE SOCIAL CHAT FINAL -->
+
+
+
+<!-- SAKAKER BG STABILITY + PIANO HINT FINAL -->
+<style id="sakaker-bg-stability-piano-hint-final">
+
+/* =========================================================
+   خلفية احتياطية ثابتة خلف الفيديو.
+   إذا تأخر الفيديو أو توقف التحميل لحظة، لا تظهر شاشة سوداء.
+========================================================= */
+html body:not(.locked){
+  background-color:#02090b !important;
+  background-image:var(--sakaker-site-bg) !important;
+  background-size:cover !important;
+  background-position:center center !important;
+  background-repeat:no-repeat !important;
+  background-attachment:fixed !important;
+}
+
+/* الفيديو يبقى فوق الخلفية الاحتياطية */
+html body:not(.locked) #sakakerMainVideoBackground{
+  background:transparent !important;
+  background-color:transparent !important;
+  will-change:opacity;
+}
+
+/* عند وجود إطار جاهز نبقيه ظاهرًا حتى أثناء buffering */
+html body:not(.locked) #sakakerMainVideoBackground.sak-bg-playing{
+  opacity:1 !important;
+}
+
+/* =========================================================
+   الساعة + تنبيه استخدام البيانو من لوحة المفاتيح
+========================================================= */
+html body #sakakerClockSlot{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:100% !important;
+}
+
+html body #sakakerMiniClockWrap{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  max-width:min(92vw,760px);
+  padding:6px 12px;
+  border-radius:18px;
+  background:rgba(2,12,18,.28);
+  border:1px solid rgba(255,215,90,.18);
+  box-shadow:
+    0 0 10px rgba(255,215,70,.12),
+    inset 0 0 10px rgba(255,255,255,.03);
+  backdrop-filter:blur(3px);
+  -webkit-backdrop-filter:blur(3px);
+}
+
+html body #sakakerMiniClock{
+  color:#fff2aa;
+  font-family:Tajawal,Cairo,Tahoma,Arial,sans-serif;
+  font-size:clamp(16px,2vw,23px);
+  line-height:1.2;
+  font-weight:1000;
+  white-space:nowrap;
+  text-align:center;
+  text-shadow:
+    0 0 4px #fff,
+    0 0 9px #ffbf24,
+    0 0 17px rgba(255,105,0,.72);
+}
+
+html body #sakPianoKeyboardHint{
+  color:#dffdf5;
+  font-family:Tajawal,Cairo,Tahoma,Arial,sans-serif;
+  font-size:clamp(10px,1.2vw,14px);
+  line-height:1.55;
+  font-weight:800;
+  text-align:center;
+  text-shadow:
+    0 1px 3px #000,
+    0 0 7px rgba(0,255,205,.45);
+}
+
+@media(max-width:700px){
+  html body:not(.locked){
+    background-attachment:scroll !important;
+  }
+  html body #sakakerMiniClockWrap{
+    max-width:94vw;
+    padding:5px 9px;
+    gap:3px;
+  }
+  html body #sakPianoKeyboardHint{
+    font-size:10px;
+    line-height:1.45;
+  }
+}
+
+</style>
+
+<script id="sakaker-bg-stability-piano-hint-js">
+(function(){
+  'use strict';
+
+  const FALLBACK_RETRY_MS = 4000;
+  const STALL_LIMIT_MS = 12000;
+  let lastVideoTime = -1;
+  let lastAdvanceAt = Date.now();
+
+  function loggedIn(){
+    return document.body && !document.body.classList.contains('locked');
+  }
+
+  function mediaHeavy(){
+    return !!(document.body && document.body.classList.contains('sak-media-heavy-open'));
+  }
+
+  function bgVideo(){
+    return document.getElementById('sakakerMainVideoBackground');
+  }
+
+  function keepVisible(video){
+    if(!video || !loggedIn() || mediaHeavy()) return;
+    /*
+      إذا تم فك ترميز إطار واحد على الأقل، أبقِ الفيديو ظاهرًا.
+      هذا يمنع الوميض/السواد عند waiting و stalled.
+    */
+    if(video.readyState >= 2 || video.currentTime > 0){
+      video.classList.add('sak-bg-playing');
+    }
+  }
+
+  function tryResume(video){
+    if(!video || !loggedIn() || mediaHeavy() || document.hidden) return;
+
+    video.muted = true;
+    video.defaultPlaybackRate = 0.25;
+    video.playbackRate = 0.25;
+
+    keepVisible(video);
+
+    if(video.paused){
+      try{
+        const p = video.play();
+        if(p && typeof p.catch === 'function'){
+          p.catch(function(){});
+        }
+      }catch(e){}
+    }
+  }
+
+  function bindVideo(video){
+    if(!video || video.dataset.sakStabilityBound === '1') return;
+    video.dataset.sakStabilityBound = '1';
+
+    ['loadeddata','canplay','playing','waiting','stalled','suspend'].forEach(function(type){
+      video.addEventListener(type,function(){
+        keepVisible(video);
+        if(type === 'playing' || type === 'loadeddata'){
+          lastAdvanceAt = Date.now();
+          lastVideoTime = video.currentTime || 0;
+        }
+      });
+    });
+
+    video.addEventListener('ended',function(){
+      if(!loggedIn() || mediaHeavy()) return;
+      try{
+        video.currentTime = 0.02;
+      }catch(e){}
+      tryResume(video);
+    });
+
+    /*
+      لا نستعمل load() بشكل متكرر، لأنه يعيد الفيديو إلى شاشة فارغة.
+      نعيد التشغيل أولًا ونترك آخر إطار ظاهرًا.
+    */
+    video.addEventListener('error',function(){
+      keepVisible(video);
+      setTimeout(function(){
+        if(!video.isConnected || !loggedIn()) return;
+        tryResume(video);
+      },1800);
+    });
+
+    tryResume(video);
+  }
+
+  function stabilityWatch(){
+    const video = bgVideo();
+    if(!video){
+      return;
+    }
+
+    bindVideo(video);
+
+    if(!loggedIn() || mediaHeavy() || document.hidden){
+      return;
+    }
+
+    const now = Date.now();
+    const current = Number(video.currentTime) || 0;
+
+    if(current > lastVideoTime + 0.015){
+      lastVideoTime = current;
+      lastAdvanceAt = now;
+      keepVisible(video);
+      return;
+    }
+
+    /*
+      إذا لم يتقدم الزمن مدة طويلة مع أن الخلفية يفترض أن تعمل،
+      نحاول play() فقط بدون مسح المصدر أو إعادة التحميل.
+    */
+    if(now - lastAdvanceAt >= STALL_LIMIT_MS){
+      lastAdvanceAt = now;
+      tryResume(video);
+
+      if(Number.isFinite(video.duration) && video.duration > 1){
+        try{
+          if(current >= video.duration - 0.08){
+            video.currentTime = 0.02;
+          }
+        }catch(e){}
+      }
+    }
+  }
+
+  function ensurePianoHint(){
+    const slot = document.getElementById('sakakerClockSlot');
+    if(!slot) return;
+
+    let wrap = document.getElementById('sakakerMiniClockWrap');
+    if(!wrap){
+      wrap = document.createElement('div');
+      wrap.id = 'sakakerMiniClockWrap';
+
+      const clock = document.createElement('div');
+      clock.id = 'sakakerMiniClock';
+      clock.setAttribute('aria-live','off');
+
+      const hint = document.createElement('div');
+      hint.id = 'sakPianoKeyboardHint';
+
+      wrap.append(clock,hint);
+      slot.replaceChildren(wrap);
+    }
+
+    updateClockAndHint();
+  }
+
+  function isEnglish(){
+    return document.documentElement.lang === 'en';
+  }
+
+  function updateClockAndHint(){
+    const clock = document.getElementById('sakakerMiniClock');
+    const hint = document.getElementById('sakPianoKeyboardHint');
+    if(!clock || !hint) return;
+
+    const en = isEnglish();
+    const locale = en ? 'en-US' : 'ar-SA';
+
+    try{
+      clock.textContent = new Intl.DateTimeFormat(locale,{
+        hour:'2-digit',
+        minute:'2-digit',
+        second:'2-digit',
+        hour12:true
+      }).format(new Date());
+    }catch(e){
+      clock.textContent = new Date().toLocaleTimeString();
+    }
+
+    hint.textContent = en
+      ? '🎹 You can use your keyboard to play the piano directly without opening the Music icon.'
+      : '🎹 يمكنك استخدام لوحة المفاتيح للعزف على البيانو مباشرة، دون الحاجة إلى فتح أيقونة الموسيقى.';
+
+    hint.dir = en ? 'ltr' : 'rtl';
+  }
+
+  function init(){
+    ensurePianoHint();
+
+    const video = bgVideo();
+    if(video) bindVideo(video);
+
+    /*
+      الفيديو يُنشأ بعد نجاح تسجيل الدخول؛ نراقب تغيّر أبناء body
+      فقط حتى نربطه عند ظهوره، ثم لا نغيّر بقية الموقع.
+    */
+    const observer = new MutationObserver(function(mutations){
+      for(const mutation of mutations){
+        for(const node of mutation.addedNodes){
+          if(node && node.nodeType === 1 && node.id === 'sakakerMainVideoBackground'){
+            bindVideo(node);
+          }
+        }
+      }
+    });
+
+    if(document.body){
+      observer.observe(document.body,{childList:true});
+    }
+
+    new MutationObserver(function(){
+      updateClockAndHint();
+      const v = bgVideo();
+      if(v) tryResume(v);
+    }).observe(document.documentElement,{
+      attributes:true,
+      attributeFilter:['lang','dir']
+    });
+
+    setInterval(updateClockAndHint,1000);
+    setInterval(stabilityWatch,FALLBACK_RETRY_MS);
+
+    document.addEventListener('visibilitychange',function(){
+      if(!document.hidden){
+        const v=bgVideo();
+        if(v) tryResume(v);
+      }
+    });
+
+    window.addEventListener('pageshow',function(){
+      const v=bgVideo();
+      if(v) tryResume(v);
+      ensurePianoHint();
+    });
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded',init,{once:true});
+  }else{
+    init();
+  }
+})();
+</script>
+<!-- /SAKAKER BG STABILITY + PIANO HINT FINAL -->
 
 </body>
 </html>
