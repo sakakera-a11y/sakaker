@@ -40310,10 +40310,9 @@ html body #sakakerClockSlot{
 
 html body #sakakerMiniClockWrap{
   display:flex;
-  flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:4px;
+  gap:0;
   max-width:min(92vw,760px);
   padding:6px 12px;
   border-radius:18px;
@@ -40326,19 +40325,6 @@ html body #sakakerMiniClockWrap{
   -webkit-backdrop-filter:blur(3px);
 }
 
-html body #sakakerMiniClock{
-  color:#fff2aa;
-  font-family:Tajawal,Cairo,Tahoma,Arial,sans-serif;
-  font-size:clamp(16px,2vw,23px);
-  line-height:1.2;
-  font-weight:1000;
-  white-space:nowrap;
-  text-align:center;
-  text-shadow:
-    0 0 4px #fff,
-    0 0 9px #ffbf24,
-    0 0 17px rgba(255,105,0,.72);
-}
 
 html body #sakPianoKeyboardHint{
   color:#dffdf5;
@@ -40506,42 +40492,29 @@ html body #sakPianoKeyboardHint{
       wrap = document.createElement('div');
       wrap.id = 'sakakerMiniClockWrap';
 
-      const clock = document.createElement('div');
-      clock.id = 'sakakerMiniClock';
-      clock.setAttribute('aria-live','off');
-
       const hint = document.createElement('div');
       hint.id = 'sakPianoKeyboardHint';
 
-      wrap.append(clock,hint);
+      wrap.append(hint);
+    }
+
+    /* استبدال الساعة في أعلى الصفحة بالنص مباشرة */
+    if(slot.firstElementChild !== wrap || slot.children.length !== 1){
       slot.replaceChildren(wrap);
     }
 
-    updateClockAndHint();
+    updatePianoHint();
   }
 
   function isEnglish(){
     return document.documentElement.lang === 'en';
   }
 
-  function updateClockAndHint(){
-    const clock = document.getElementById('sakakerMiniClock');
+  function updatePianoHint(){
     const hint = document.getElementById('sakPianoKeyboardHint');
-    if(!clock || !hint) return;
+    if(!hint) return;
 
     const en = isEnglish();
-    const locale = en ? 'en-US' : 'ar-SA';
-
-    try{
-      clock.textContent = new Intl.DateTimeFormat(locale,{
-        hour:'2-digit',
-        minute:'2-digit',
-        second:'2-digit',
-        hour12:true
-      }).format(new Date());
-    }catch(e){
-      clock.textContent = new Date().toLocaleTimeString();
-    }
 
     hint.textContent = en
       ? '🎹 You can use your keyboard to play the piano directly without opening the Music icon.'
@@ -40575,7 +40548,7 @@ html body #sakPianoKeyboardHint{
     }
 
     new MutationObserver(function(){
-      updateClockAndHint();
+      updatePianoHint();
       const v = bgVideo();
       if(v) tryResume(v);
     }).observe(document.documentElement,{
@@ -40608,6 +40581,32 @@ html body #sakPianoKeyboardHint{
 })();
 </script>
 <!-- /SAKAKER BG STABILITY + PIANO HINT FINAL -->
+
+
+
+<style id="sakaker-remove-top-clock-final">
+/* حذف الساعة من المنطقة العلوية ووضع رسالة البيانو مكانها فقط */
+html body #sakakerClockSlot #clock,
+html body #sakakerClockSlot .clock,
+html body #sakakerClockSlot [data-clock],
+html body #sakakerClockSlot #sakakerMiniClock{
+  display:none !important;
+}
+
+html body #sakakerClockSlot #sakPianoKeyboardHint{
+  display:block !important;
+  width:100% !important;
+  padding:6px 10px !important;
+  color:#fff2b3 !important;
+  font-weight:900 !important;
+  text-align:center !important;
+  letter-spacing:.1px;
+  text-shadow:
+    0 1px 3px #000,
+    0 0 8px rgba(255,211,76,.55),
+    0 0 13px rgba(0,255,205,.28) !important;
+}
+</style>
 
 </body>
 </html>
