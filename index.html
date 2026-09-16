@@ -6077,104 +6077,6 @@ html body #loginBox #loginCopyright{
 <!-- SAKAKER POST-LOGIN ANIME BACKGROUND FINAL -->
 
 <!-- SAKAKER TRANSPARENT LOGIN + SHIP SITE FINAL -->
-<style id="sakaker-transparent-login-ship-site-final">
-
-:root{
-  --sakaker-login-bg:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B5%D9%88%D8%B1%D8%A9%20Codex%2016%20%D8%B3%D8%A8%D8%AA%D9%85%D8%A8%D8%B1%202026%D8%8C%2001_32_47%20%D9%85.png");
-  --sakaker-site-bg:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/1ba59cd06bb1d178dae04825e2affe5e0ca009e3/15");
-}
-
-/* =========================================================
-   أثناء تسجيل الدخول:
-   صورة الأنمي تكون خلفية الصفحة نفسها.
-   Overlay وصندوق الدخول بلا خلفية حتى لا يحجبا الصورة.
-========================================================= */
-
-html,
-html body.locked{
-  min-height:100% !important;
-}
-
-html body.locked{
-  background-color:#02090b !important;
-  background-image:var(--sakaker-login-bg) !important;
-  background-size:cover !important;
-  background-position:center center !important;
-  background-repeat:no-repeat !important;
-  background-attachment:fixed !important;
-}
-
-html body.locked #loginOverlay,
-html body #loginOverlay{
-  background:transparent !important;
-  background-color:transparent !important;
-  background-image:none !important;
-
-  backdrop-filter:none !important;
-  -webkit-backdrop-filter:none !important;
-
-  box-shadow:none !important;
-}
-
-/* صندوق تسجيل الدخول نفسه بلا لوحة تغطي صورة الأنمي */
-html body #loginOverlay #loginBox{
-  background:transparent !important;
-  background-color:transparent !important;
-  background-image:none !important;
-
-  backdrop-filter:none !important;
-  -webkit-backdrop-filter:none !important;
-
-  box-shadow:none !important;
-
-  position:relative !important;
-  z-index:10 !important;
-}
-
-/* إبقاء عناصر الإدخال والأزرار مقروءة فقط */
-html body #loginBox .loginInput{
-  background:rgba(0,0,0,.24) !important;
-}
-
-html body #loginBox #loginCopyright{
-  background:transparent !important;
-  box-shadow:none !important;
-}
-
-/* =========================================================
-   بعد تسجيل الدخول:
-   تعود آخر خلفية السفينة السابقة.
-========================================================= */
-
-html body:not(.locked){
-  min-height:100vh !important;
-
-  background-color:#02090b !important;
-  background-image:var(--sakaker-site-bg) !important;
-  background-size:cover !important;
-  background-position:center center !important;
-  background-repeat:no-repeat !important;
-  background-attachment:fixed !important;
-}
-
-/* لا نسمح بطبقات قديمة أن تغطي خلفية الموقع */
-html body:not(.locked)::before,
-html body:not(.locked)::after{
-  background:none !important;
-  background-image:none !important;
-}
-
-/* الجوال */
-@media(max-width:768px){
-  html body.locked,
-  html body:not(.locked){
-    background-attachment:scroll !important;
-    background-position:center center !important;
-  }
-}
-
-</style>
-
 <!-- SAKAKER VIDEO PLAYER + PERFORMANCE FINAL -->
 <!-- 🌟 أيقونة فليشر القنوات المباشرة -->
 <div id="liveFlasher" onclick="toggleLivePopup()">
@@ -6460,8 +6362,12 @@ const app =
 window.firebaseApp = app;
 window.sakakerFirebaseConfig = firebaseConfig;
 
-const analytics =
-    getAnalytics(app);
+let analytics = null;
+try{
+    analytics = getAnalytics(app);
+}catch(e){
+    console.warn("Firebase Analytics unavailable:", e && e.code ? e.code : e);
+}
 
 const auth =
     getAuth(app);
@@ -6496,10 +6402,14 @@ window.firebaseStorage =
    💾 حفظ تسجيل الدخول
 ========================================================= */
 
-await setPersistence(
-    auth,
-    browserLocalPersistence
-);
+try{
+    await setPersistence(
+        auth,
+        browserLocalPersistence
+    );
+}catch(e){
+    console.warn("Auth persistence unavailable; continuing with current session:", e && e.code ? e.code : e);
+}
 
 
 /* =========================================================
@@ -6561,53 +6471,32 @@ const translations = {
 function updateLoginLanguage(lang){
 
     currentLang = lang;
+    localStorage.setItem("sakakerLoginLanguage", lang);
 
-    localStorage.setItem(
-        "sakakerLoginLanguage",
-        lang
-    );
+    const t = translations[lang] || translations.ar;
 
-    const t = translations[lang];
+    const overlayEl = document.getElementById("loginOverlay");
+    const boxEl = document.getElementById("loginBox");
+    const profileEl = document.getElementById("userProfile");
 
-    document.getElementById(
-        "loginOverlay"
-    ).style.direction = t.direction;
+    if(overlayEl) overlayEl.style.direction = t.direction;
+    if(boxEl) boxEl.style.direction = t.direction;
+    if(profileEl) profileEl.style.direction = t.direction;
 
-    document.getElementById(
-        "loginBox"
-    ).style.direction = t.direction;
+    const setText = (id, value) => {
+        const el = document.getElementById(id);
+        if(el) el.textContent = value;
+    };
 
-    document.getElementById(
-        "userProfile"
-    ).style.direction = t.direction;
+    setText("loginLanguageButton", t.languageButton);
+    setText("loginTitle", t.title);
+    setText("googleButton", t.google);
+    setText("microsoftButton", t.microsoft);
+    setText("facebookLoginButton", t.facebook);
+    setText("logoutText", t.logout);
 
-    document.getElementById(
-        "loginLanguageButton"
-    ).textContent = t.languageButton;
-
-    document.getElementById(
-        "loginTitle"
-    ).textContent = t.title;
-
-    document.getElementById(
-        "googleButton"
-    ).textContent = t.google;
-
-    document.getElementById(
-        "microsoftButton"
-    ).textContent = t.microsoft;
-
-    document.getElementById(
-        "facebookLoginButton"
-    ).textContent = t.facebook;
-
-    document.getElementById(
-        "logoutText"
-    ).textContent = t.logout;
-
-    document.getElementById(
-        "logoutButton"
-    ).title = t.logout;
+    const logout = document.getElementById("logoutButton");
+    if(logout) logout.title = t.logout;
 }
 
 /* =========================================================
@@ -6655,232 +6544,167 @@ const error =
    Google + Microsoft + Facebook
 ========================================================= */
 
+let socialLoginBusy = false;
+
+function setSocialLoginBusy(busy){
+    socialLoginBusy = !!busy;
+
+    [
+        "googleButton",
+        "microsoftButton",
+        "facebookLoginButton"
+    ].forEach(id => {
+        const btn = document.getElementById(id);
+        if(!btn) return;
+        btn.disabled = socialLoginBusy;
+        btn.setAttribute("aria-busy", socialLoginBusy ? "true" : "false");
+    });
+}
+
 function socialLoginError(providerName, e){
 
     console.error(providerName + " sign-in:", e);
 
+    const code = e && e.code ? String(e.code) : "";
     let message;
 
-    if(e && e.code === "auth/account-exists-with-different-credential"){
-
+    if(code === "auth/account-exists-with-different-credential"){
         message =
             currentLang === "en"
-            ? "❌ This email is already linked to another sign-in provider. Please use the provider you used previously."
+            ? "❌ This email is already linked to another sign-in provider. Use the provider you used previously."
             : "❌ هذا البريد مرتبط مسبقًا بطريقة دخول أخرى. استخدم طريقة الدخول التي استعملتها سابقًا.";
-
-    }else if(e && (
-        e.code === "auth/popup-closed-by-user" ||
-        e.code === "auth/cancelled-popup-request"
-    )){
-
+    }else if(
+        code === "auth/popup-closed-by-user" ||
+        code === "auth/cancelled-popup-request"
+    ){
         message =
             currentLang === "en"
             ? "Sign-in was cancelled."
             : "تم إلغاء تسجيل الدخول.";
-
-    }else if(e && e.code === "auth/popup-blocked"){
-
+    }else if(code === "auth/popup-blocked"){
         message =
             currentLang === "en"
             ? "❌ The browser blocked the sign-in window. Allow pop-ups and try again."
             : "❌ المتصفح منع نافذة تسجيل الدخول. اسمح بالنوافذ المنبثقة ثم حاول مرة أخرى.";
-
-    }else{
-
+    }else if(code === "auth/unauthorized-domain"){
         message =
             currentLang === "en"
-            ? "❌ Sign-in failed. Check that this provider is enabled in Firebase Authentication."
-            : "❌ فشل تسجيل الدخول. تأكد من تفعيل مزود الدخول في Firebase Authentication.";
+            ? "❌ This domain is not authorized in Firebase Authentication."
+            : "❌ نطاق الموقع غير مصرح به في Firebase Authentication.";
+    }else if(code === "auth/operation-not-allowed"){
+        message =
+            currentLang === "en"
+            ? "❌ This sign-in provider is not enabled in Firebase Authentication."
+            : "❌ مزود تسجيل الدخول غير مفعّل في Firebase Authentication.";
+    }else if(code === "auth/network-request-failed"){
+        message =
+            currentLang === "en"
+            ? "❌ Network error. Check the connection and try again."
+            : "❌ خطأ في الاتصال بالشبكة. تحقق من الاتصال ثم حاول مرة أخرى.";
+    }else{
+        message =
+            currentLang === "en"
+            ? "❌ Sign-in failed."
+            : "❌ فشل تسجيل الدخول.";
 
+        if(code){
+            message += " (" + code + ")";
+        }
     }
 
-    error.textContent = message;
+    const errorEl = document.getElementById("loginError");
+    if(errorEl) errorEl.textContent = message;
 }
 
+async function runSocialLogin(providerName, provider){
+    if(socialLoginBusy) return;
 
-/* =========================================================
-   🔵 Google Login
-========================================================= */
+    const errorEl = document.getElementById("loginError");
+    if(errorEl) errorEl.textContent = "";
 
-document.getElementById(
-    "googleButton"
-).onclick = async () => {
-
-    error.textContent = "";
-
-    const provider =
-        new GoogleAuthProvider();
-
-    provider.setCustomParameters({
-        prompt:"select_account"
-    });
+    setSocialLoginBusy(true);
 
     try{
-
-        await signInWithPopup(
-            auth,
-            provider
-        );
-
+        await signInWithPopup(auth, provider);
     }catch(e){
-
-        socialLoginError(
-            "Google",
-            e
-        );
-
+        socialLoginError(providerName, e);
+    }finally{
+        setSocialLoginBusy(false);
     }
+}
 
-};
+const googleLoginButton = document.getElementById("googleButton");
+if(googleLoginButton){
+    googleLoginButton.onclick = async () => {
+        const provider = new GoogleAuthProvider();
+        provider.setCustomParameters({prompt:"select_account"});
+        await runSocialLogin("Google", provider);
+    };
+}
 
+const microsoftLoginButton = document.getElementById("microsoftButton");
+if(microsoftLoginButton){
+    microsoftLoginButton.onclick = async () => {
+        const provider = new OAuthProvider("microsoft.com");
+        provider.setCustomParameters({prompt:"select_account"});
+        await runSocialLogin("Microsoft", provider);
+    };
+}
 
-/* =========================================================
-   🪟 Microsoft Login
-========================================================= */
-
-document.getElementById(
-    "microsoftButton"
-).onclick = async () => {
-
-    error.textContent = "";
-
-    const provider =
-        new OAuthProvider(
-            "microsoft.com"
-        );
-
-    provider.setCustomParameters({
-        prompt:"select_account"
-    });
-
-    try{
-
-        await signInWithPopup(
-            auth,
-            provider
-        );
-
-    }catch(e){
-
-        socialLoginError(
-            "Microsoft",
-            e
-        );
-
-    }
-
-};
-
-
-/* =========================================================
-   🔷 Facebook Login
-========================================================= */
-
-document.getElementById(
-    "facebookLoginButton"
-).onclick = async () => {
-
-    error.textContent = "";
-
-    const provider =
-        new FacebookAuthProvider();
-
-    provider.addScope(
-        "email"
-    );
-
-    try{
-
-        await signInWithPopup(
-            auth,
-            provider
-        );
-
-    }catch(e){
-
-        socialLoginError(
-            "Facebook",
-            e
-        );
-
-    }
-
-};
+const facebookButton = document.getElementById("facebookLoginButton");
+if(facebookButton){
+    facebookButton.onclick = async () => {
+        const provider = new FacebookAuthProvider();
+        provider.addScope("email");
+        await runSocialLogin("Facebook", provider);
+    };
+}
 
 
 /* =========================================================
    👤 مراقبة حالة الدخول
 ========================================================= */
 
-onAuthStateChanged(
-    auth,
-    (user) => {
+onAuthStateChanged(auth, (user) => {
 
-        if(user){
+    const profile = document.getElementById("userProfile");
 
-            /* إخفاء صفحة الدخول */
-            overlay.style.display =
-                "none";
+    if(user){
+        /* أولًا نفتح الموقع ثم نخفي صفحة الدخول */
+        document.body.classList.remove("locked");
 
+        overlay.style.setProperty("display", "none", "important");
+        overlay.setAttribute("aria-hidden", "true");
 
-            /* فتح الموقع */
-            document.body.classList.remove(
-                "locked"
-            );
+        if(profile) profile.style.display = "flex";
 
-
-            /* إظهار بيانات المستخدم */
-            document.getElementById(
-                "userProfile"
-            ).style.display =
-                "flex";
-
-
-            /* الاسم */
-            document.getElementById(
-                "userName"
-            ).textContent =
+        const nameEl = document.getElementById("userName");
+        if(nameEl){
+            nameEl.textContent =
                 user.displayName ||
                 user.email ||
-                (
-                    currentLang === "en"
-                    ? "User"
-                    : "المستخدم"
-                );
+                (currentLang === "en" ? "User" : "المستخدم");
+        }
 
-
-            /* الصورة */
-            document.getElementById(
-                "userPhoto"
-            ).src =
+        const photoEl = document.getElementById("userPhoto");
+        if(photoEl){
+            photoEl.src =
                 user.photoURL ||
                 "https://cdn-icons-png.flaticon.com/512/149/149071.png";
-
         }
 
-        else{
+        const errorEl = document.getElementById("loginError");
+        if(errorEl) errorEl.textContent = "";
+    }else{
+        /* أولًا نقفل الموقع ثم نظهر صفحة الدخول */
+        document.body.classList.add("locked");
 
-            /* إظهار صفحة الدخول */
-            overlay.style.display =
-                "flex";
+        overlay.style.setProperty("display", "flex", "important");
+        overlay.removeAttribute("aria-hidden");
 
-
-            /* قفل الموقع */
-            document.body.classList.add(
-                "locked"
-            );
-
-
-            /* إخفاء بيانات المستخدم */
-            document.getElementById(
-                "userProfile"
-            ).style.display =
-                "none";
-
-        }
-
+        if(profile) profile.style.display = "none";
     }
-);
+});
 
 
 /* =========================================================
@@ -37293,49 +37117,7 @@ html body #videoBoxFixed video{
 <!-- SAKAKER MEDIA STABILITY + LIVE RADIO FINAL -->
 <style id="sakaker-media-stability-live-radio-final">
 
-/* =========================================================
-   خلفية الموقع بعد الدخول: صورة ثابتة fallback + فيديو سلس
-========================================================= */
-html body:not(.locked){
-  position:relative !important;
-  isolation:isolate !important;
-
-  background-color:#02090b !important;
-  background-image:var(--sakaker-site-bg) !important;
-  background-size:cover !important;
-  background-position:center center !important;
-  background-repeat:no-repeat !important;
-  background-attachment:fixed !important;
-}
-
-#sakakerMainVideoBackground{
-  position:fixed !important;
-  inset:0 !important;
-
-  width:100vw !important;
-  height:100vh !important;
-
-  object-fit:contain !important;
-  object-position:center center !important;
-
-  z-index:-1 !important;
-  pointer-events:none !important;
-
-  opacity:0 !important;
-  transition:opacity .32s ease !important;
-
-  background:#02090b !important;
-
-  background-color:#02090b !important;}
-
-#sakakerMainVideoBackground.sak-bg-playing{
-  opacity:1 !important;
-}
-
-body.locked #sakakerMainVideoBackground{
-  display:none !important;
-}
-
+/* تنسيق الخلفية الرئيسية يديره نظام SAKAKER V30 الموحد. */
 
 /* =========================================================
    نافذة فيديو الدوائر — فوق الجميع
@@ -37579,7 +37361,7 @@ body.sak-media-heavy-open #emOpenBtn{
 
   function setMediaHeavy(active){
     if(!document.body) return;
-    /* v29: الخلفية تستمر حتى عند فتح الفيديو/الراديو/القنوات */
+    /* V30: تشغيل المشغلات لا يوقف خلفية الموقع */
     document.body.classList.remove('sak-media-heavy-open');
   }
 
@@ -37765,16 +37547,7 @@ body.sak-media-heavy-open #emOpenBtn{
 
   function playBackground(){
     if(!loggedIn()) return;
-
-    if(
-      document.body.classList.contains(
-        'sak-media-heavy-open'
-      )
-    ){
-      return;
-    }
-
-    const video =
+const video =
       ensureBackgroundVideo();
 
     if(!video) return;
@@ -37799,17 +37572,22 @@ body.sak-media-heavy-open #emOpenBtn{
 
   function pauseBackground(){
     const video = bgVideo();
-
     if(!video) return;
 
-    video.classList.remove(
-      'sak-bg-playing'
-    );
+    if(loggedIn() && document.visibilityState !== 'hidden'){
+      video.classList.add('sak-bg-playing');
+      video.muted = true;
+      video.defaultPlaybackRate = 1.0;
+      video.playbackRate = 1.0;
+      try{
+        const p = video.play();
+        if(p && typeof p.catch === 'function') p.catch(function(){});
+      }catch(e){}
+      return;
+    }
 
-    try{
-      video.pause();
-    }catch(e){}
-
+    video.classList.remove('sak-bg-playing');
+    try{ video.pause(); }catch(e){}
   }
 
 
@@ -38402,57 +38180,6 @@ body.sak-media-heavy-open #emOpenBtn{
 
 
 <!-- SAKAKER LOGIN PHOTO + SITE VIDEO FINAL -->
-<style id="sakaker-login-photo-site-video-final">
-
-:root{
-  --sakaker-login-bg:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B5%D9%88%D8%B1%D8%A9%20Codex%2016%20%D8%B3%D8%A8%D8%AA%D9%85%D8%A8%D8%B1%202026%D8%8C%2001_32_47%20%D9%85.png") !important;
-}
-
-/* خلفية تسجيل الدخول على الصفحة نفسها */
-html body.locked{
-  background-color:#02090b !important;
-  background-image:var(--sakaker-login-bg) !important;
-  background-size:cover !important;
-  background-position:center center !important;
-  background-repeat:no-repeat !important;
-  background-attachment:fixed !important;
-}
-
-/* واجهة تسجيل الدخول تبقى شفافة ولا تغطي الصورة */
-html body.locked #loginOverlay,
-html body #loginOverlay{
-  background:transparent !important;
-  background-color:transparent !important;
-  background-image:none !important;
-  backdrop-filter:none !important;
-  -webkit-backdrop-filter:none !important;
-}
-
-html body #loginOverlay #loginBox{
-  background:transparent !important;
-  background-color:transparent !important;
-  background-image:none !important;
-  backdrop-filter:none !important;
-  -webkit-backdrop-filter:none !important;
-  box-shadow:none !important;
-}
-
-/* الفيديو هو خلفية صفحة الموقع بعد الدخول */
-html body:not(.locked) #sakakerMainVideoBackground{
-  display:block !important;
-  object-fit:contain !important;
-  object-position:center center !important;
-}
-
-@media(max-width:768px){
-  html body.locked{
-    background-attachment:scroll !important;
-  }
-}
-
-</style>
-
-
 <!-- SAKAKER PRELOGIN LOCK FINAL -->
 <style id="sakaker-prelogin-lock-final">
 
@@ -38489,92 +38216,6 @@ html body:not(.locked) #sakakerMainVideoBackground{
 
 
 <!-- SAKAKER FULL VIDEO NO CROP FINAL -->
-<style id="sakaker-full-video-no-crop-final">
-
-/* =========================================================
-   خلفية الموقع بعد تسجيل الدخول:
-   الفيديو كامل بدون أي اقتصاص
-========================================================= */
-
-html body:not(.locked){
-  min-height:100vh !important;
-  background-color:#02090b !important;
-  background-image:none !important;
-  overflow-x:hidden !important;
-}
-
-html body:not(.locked) #sakakerMainVideoBackground{
-  position:fixed !important;
-  inset:0 !important;
-
-  width:100vw !important;
-  height:100vh !important;
-
-  max-width:none !important;
-  max-height:none !important;
-
-  /* إظهار كامل الفيديو بدون قص */
-  object-fit:contain !important;
-  object-position:center center !important;
-
-  margin:0 !important;
-  padding:0 !important;
-  border:0 !important;
-
-  pointer-events:none !important;
-
-  z-index:-1 !important;
-
-  background:#02090b !important;
-}
-
-/* لا يظهر فيديو الخلفية قبل تسجيل الدخول */
-html body.locked #sakakerMainVideoBackground{
-  display:none !important;
-  visibility:hidden !important;
-  opacity:0 !important;
-}
-
-/* الجوال والتابلت: نفس المبدأ بدون قص */
-@media(max-width:900px){
-  html body:not(.locked) #sakakerMainVideoBackground{
-    width:100vw !important;
-    height:100vh !important;
-    object-fit:contain !important;
-    object-position:center center !important;
-  }
-}
-
-/* فيديو واحد يملأ الشاشة مع الحفاظ على نسب الأبعاد. */
-html body:not(.locked) #sakakerMainVideoBackground{
-  position:fixed !important;
-  inset:0 !important;
-  width:100vw !important;
-  height:100vh !important;
-  max-width:none !important;
-  max-height:none !important;
-  object-fit:cover !important;
-  object-position:center center !important;
-  z-index:-1 !important;
-  pointer-events:none !important;
-  margin:0 !important;
-  padding:0 !important;
-  border:0 !important;
-  filter:none !important;
-  transform:none !important;
-  background:transparent !important;
-}
-
-html body.locked #sakakerMainVideoBackground{
-  display:none !important;
-  visibility:hidden !important;
-  opacity:0 !important;
-}
-
-</style>
-
-
-
 <!-- SAKAKER MOBILE FINAL SAFETY — لا يغيّر أي خلفية أو محتوى -->
 <style id="sakaker-mobile-final-safety">
 html,body{
@@ -38599,16 +38240,7 @@ html,body{
 </style>
 
 <style id="sakaker-login-favorites-mobile-update">
-html body #loginOverlay { isolation:isolate !important; }
-html body #loginOverlay #sakLoginBackgroundVideo {
-  position:fixed !important; inset:0 !important;
-  width:100% !important; height:100% !important;
-  max-width:none !important; max-height:none !important;
-  object-fit:cover !important; object-position:center !important;
-  z-index:-1 !important; pointer-events:none !important;
-  filter:none !important; transform:none !important;
-}
-html body:not(.locked) #sakLoginBackgroundVideo { display:none !important; }
+/* خلفية الدخول يديرها نظام V30 الموحد. */
 html body #sakGlobalLiveSearch {
   background:#f1fff9 !important; color:#063e32 !important;
   -webkit-text-fill-color:#063e32 !important;
@@ -38973,37 +38605,7 @@ html body #sakStudio #studioStatus { min-height:24px; color:#ffdc82; font-size:1
   --sak-chat-danger:#ff6f7d;
 }
 
-/* خلفية الدخول الجديدة فقط — صفحة الدخول والصندوق يبقيان شفافين */
-html body.locked{
-  background-color:#02090b !important;
-  background-image:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B5%D9%88%D8%B1%D8%A9%20Codex%2016%20%D8%B3%D8%A8%D8%AA%D9%85%D8%A8%D8%B1%202026%D8%8C%2001_32_47%20%D9%85.png") !important;
-  background-size:cover !important;
-  background-position:center center !important;
-  background-repeat:no-repeat !important;
-  background-attachment:fixed !important;
-}
-
-html body.locked #loginOverlay,
-html body #loginOverlay{
-  background:transparent !important;
-  background-color:transparent !important;
-  background-image:none !important;
-}
-
-html body #loginOverlay #loginBox{
-  background:transparent !important;
-  background-color:transparent !important;
-  background-image:none !important;
-  backdrop-filter:none !important;
-  -webkit-backdrop-filter:none !important;
-  box-shadow:none !important;
-}
-
-html body #sakLoginBackgroundVideo{
-  display:none !important;
-  visibility:hidden !important;
-  opacity:0 !important;
-}
+/* خلفية الدخول يديرها نظام SAKAKER V30 الموحد. */
 
 /* لا تظهر الدردشة قبل الدخول */
 html body.locked #sakChatIcon,
@@ -40192,42 +39794,12 @@ html body #sakChatPanel{
 
 })();
 </script>
-
-<script id="sakaker-static-login-background-final">
-/* v29: تم إلغاء التعطيل القديم لفيديو خلفية صفحة الدخول. */
-</script>
 <!-- /SAKAKER FIREBASE SOCIAL CHAT FINAL -->
 
 
 
 <!-- SAKAKER BG STABILITY + PIANO HINT FINAL -->
 <style id="sakaker-bg-stability-piano-hint-final">
-
-/* =========================================================
-   خلفية احتياطية ثابتة خلف الفيديو.
-   إذا تأخر الفيديو أو توقف التحميل لحظة، لا تظهر شاشة سوداء.
-========================================================= */
-html body:not(.locked){
-  background-color:#02090b !important;
-  background-image:var(--sakaker-site-bg) !important;
-  background-size:cover !important;
-  background-position:center center !important;
-  background-repeat:no-repeat !important;
-  background-attachment:fixed !important;
-}
-
-/* الفيديو يبقى فوق الخلفية الاحتياطية */
-html body:not(.locked) #sakakerMainVideoBackground{
-  background:transparent !important;
-  background-color:transparent !important;
-  will-change:opacity;
-}
-
-/* عند وجود إطار جاهز نبقيه ظاهرًا حتى أثناء buffering */
-html body:not(.locked) #sakakerMainVideoBackground.sak-bg-playing{
-  opacity:1 !important;
-}
-
 /* =========================================================
    الساعة + تنبيه استخدام البيانو من لوحة المفاتيح
 ========================================================= */
@@ -40289,126 +39861,19 @@ html body #sakPianoKeyboardHint{
 (function(){
   'use strict';
 
-  const FALLBACK_RETRY_MS = 4000;
-  const STALL_LIMIT_MS = 12000;
-  let lastVideoTime = -1;
-  let lastAdvanceAt = Date.now();
-
-  function loggedIn(){
-    return document.body && !document.body.classList.contains('locked');
+  function isEnglish(){
+    return document.documentElement.lang === 'en';
   }
 
-  function mediaHeavy(){ return false; }
+  function updatePianoHint(){
+    const hint = document.getElementById('sakPianoKeyboardHint');
+    if(!hint) return;
 
-  function bgVideo(){
-    return document.getElementById('sakakerMainVideoBackground');
-  }
-
-  function keepVisible(video){
-    if(!video || !loggedIn() || mediaHeavy()) return;
-    /*
-      إذا تم فك ترميز إطار واحد على الأقل، أبقِ الفيديو ظاهرًا.
-      هذا يمنع الوميض/السواد عند waiting و stalled.
-    */
-    if(video.readyState >= 2 || video.currentTime > 0){
-      video.classList.add('sak-bg-playing');
-    }
-  }
-
-  function tryResume(video){
-    if(!video || !loggedIn() || mediaHeavy() || document.hidden) return;
-
-    video.muted = true;
-    video.defaultPlaybackRate = 1.0;
-    video.playbackRate = 1.0;
-
-    keepVisible(video);
-
-    if(video.paused){
-      try{
-        const p = video.play();
-        if(p && typeof p.catch === 'function'){
-          p.catch(function(){});
-        }
-      }catch(e){}
-    }
-  }
-
-  function bindVideo(video){
-    if(!video || video.dataset.sakStabilityBound === '1') return;
-    video.dataset.sakStabilityBound = '1';
-
-    ['loadeddata','canplay','playing','waiting','stalled','suspend'].forEach(function(type){
-      video.addEventListener(type,function(){
-        keepVisible(video);
-        if(type === 'playing' || type === 'loadeddata'){
-          lastAdvanceAt = Date.now();
-          lastVideoTime = video.currentTime || 0;
-        }
-      });
-    });
-
-    video.addEventListener('ended',function(){
-      if(!loggedIn() || mediaHeavy()) return;
-      try{
-        video.currentTime = 0.02;
-      }catch(e){}
-      tryResume(video);
-    });
-
-    /*
-      لا نستعمل load() بشكل متكرر، لأنه يعيد الفيديو إلى شاشة فارغة.
-      نعيد التشغيل أولًا ونترك آخر إطار ظاهرًا.
-    */
-    video.addEventListener('error',function(){
-      keepVisible(video);
-      setTimeout(function(){
-        if(!video.isConnected || !loggedIn()) return;
-        tryResume(video);
-      },1800);
-    });
-
-    tryResume(video);
-  }
-
-  function stabilityWatch(){
-    const video = bgVideo();
-    if(!video){
-      return;
-    }
-
-    bindVideo(video);
-
-    if(!loggedIn() || mediaHeavy() || document.hidden){
-      return;
-    }
-
-    const now = Date.now();
-    const current = Number(video.currentTime) || 0;
-
-    if(current > lastVideoTime + 0.015){
-      lastVideoTime = current;
-      lastAdvanceAt = now;
-      keepVisible(video);
-      return;
-    }
-
-    /*
-      إذا لم يتقدم الزمن مدة طويلة مع أن الخلفية يفترض أن تعمل،
-      نحاول play() فقط بدون مسح المصدر أو إعادة التحميل.
-    */
-    if(now - lastAdvanceAt >= STALL_LIMIT_MS){
-      lastAdvanceAt = now;
-      tryResume(video);
-
-      if(Number.isFinite(video.duration) && video.duration > 1){
-        try{
-          if(current >= video.duration - 0.08){
-            video.currentTime = 0.02;
-          }
-        }catch(e){}
-      }
-    }
+    const en = isEnglish();
+    hint.textContent = en
+      ? '🎹 You can use your keyboard to play the piano directly without opening the Music icon.'
+      : '🎹 يمكنك استخدام لوحة المفاتيح للعزف على البيانو مباشرة، دون الحاجة إلى فتح أيقونة الموسيقى.';
+    hint.dir = en ? 'ltr' : 'rtl';
   }
 
   function ensurePianoHint(){
@@ -40422,11 +39887,9 @@ html body #sakPianoKeyboardHint{
 
       const hint = document.createElement('div');
       hint.id = 'sakPianoKeyboardHint';
-
-      wrap.append(hint);
+      wrap.appendChild(hint);
     }
 
-    /* استبدال الساعة في أعلى الصفحة بالنص مباشرة */
     if(slot.firstElementChild !== wrap || slot.children.length !== 1){
       slot.replaceChildren(wrap);
     }
@@ -40434,71 +39897,17 @@ html body #sakPianoKeyboardHint{
     updatePianoHint();
   }
 
-  function isEnglish(){
-    return document.documentElement.lang === 'en';
-  }
-
-  function updatePianoHint(){
-    const hint = document.getElementById('sakPianoKeyboardHint');
-    if(!hint) return;
-
-    const en = isEnglish();
-
-    hint.textContent = en
-      ? '🎹 You can use your keyboard to play the piano directly without opening the Music icon.'
-      : '🎹 يمكنك استخدام لوحة المفاتيح للعزف على البيانو مباشرة، دون الحاجة إلى فتح أيقونة الموسيقى.';
-
-    hint.dir = en ? 'ltr' : 'rtl';
-  }
-
   function init(){
     ensurePianoHint();
 
-    const video = bgVideo();
-    if(video) bindVideo(video);
-
-    /*
-      الفيديو يُنشأ بعد نجاح تسجيل الدخول؛ نراقب تغيّر أبناء body
-      فقط حتى نربطه عند ظهوره، ثم لا نغيّر بقية الموقع.
-    */
-    const observer = new MutationObserver(function(mutations){
-      for(const mutation of mutations){
-        for(const node of mutation.addedNodes){
-          if(node && node.nodeType === 1 && node.id === 'sakakerMainVideoBackground'){
-            bindVideo(node);
-          }
-        }
-      }
-    });
-
-    if(document.body){
-      observer.observe(document.body,{childList:true});
-    }
-
     new MutationObserver(function(){
-      updatePianoHint();
-      const v = bgVideo();
-      if(v) tryResume(v);
+      ensurePianoHint();
     }).observe(document.documentElement,{
       attributes:true,
       attributeFilter:['lang','dir']
     });
 
-    setInterval(updateClockAndHint,1000);
-    setInterval(stabilityWatch,FALLBACK_RETRY_MS);
-
-    document.addEventListener('visibilitychange',function(){
-      if(!document.hidden){
-        const v=bgVideo();
-        if(v) tryResume(v);
-      }
-    });
-
-    window.addEventListener('pageshow',function(){
-      const v=bgVideo();
-      if(v) tryResume(v);
-      ensurePianoHint();
-    });
+    window.addEventListener('pageshow',ensurePianoHint);
   }
 
   if(document.readyState === 'loading'){
@@ -40666,240 +40075,130 @@ html body #signupButton{
 
 
 
-<!-- SAKAKER DREAMINA BACKGROUND V28 -->
-<style id="sakaker-dreamina-background-v28">
+<!-- SAKAKER CLEAN BACKGROUND + LOGIN V30 -->
+<style id="sakaker-clean-background-login-v30">
+:root{
+  --sakaker-site-bg:none;
+  --sakaker-login-bg:none;
+}
 
-/* لا نعرض الخلفيات الثابتة القديمة خلف الفيديو الجديد */
+/* لا توجد أي صورة خلفية قديمة */
+html,
+html body{
+  background-color:#02090b !important;
+}
+
 html body.locked,
 html body:not(.locked){
-  background-color:#02090b !important;
   background-image:none !important;
 }
 
 /* =========================================================
-   صفحة الدخول — نفس فيديو Dreamina
+   صفحة الدخول: فيديو Dreamina فقط
 ========================================================= */
 html body.locked #loginOverlay{
   position:fixed !important;
   inset:0 !important;
+  width:100vw !important;
+  height:100dvh !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  overflow:auto !important;
   isolation:isolate !important;
-  overflow:hidden !important;
   background:transparent !important;
-  background-color:transparent !important;
   background-image:none !important;
+  pointer-events:auto !important;
+  z-index:2147483647 !important;
 }
 
 html body.locked #loginOverlay #sakLoginBackgroundVideo{
   display:block !important;
   visibility:visible !important;
   opacity:1 !important;
-
   position:fixed !important;
   inset:0 !important;
-
   width:100vw !important;
   height:100dvh !important;
   max-width:none !important;
   max-height:none !important;
-
   object-fit:cover !important;
   object-position:center center !important;
-
   z-index:0 !important;
   pointer-events:none !important;
-
   background:#02090b !important;
   filter:none !important;
   transform:none !important;
 }
 
-/* عناصر الدخول فوق الفيديو */
 html body.locked #loginOverlay #loginBox{
   position:relative !important;
   z-index:20 !important;
+  background:rgba(0,8,10,.14) !important;
+  background-image:none !important;
+  backdrop-filter:blur(2px) !important;
+  -webkit-backdrop-filter:blur(2px) !important;
 }
 
 html body.locked #loginOverlay #bird-sound-btn{
   z-index:25 !important;
 }
 
-/* بعد الدخول نخفي فيديو صفحة الدخول */
+html body:not(.locked) #loginOverlay,
 html body:not(.locked) #sakLoginBackgroundVideo{
   display:none !important;
   visibility:hidden !important;
   opacity:0 !important;
+  pointer-events:none !important;
 }
 
 /* =========================================================
-   الموقع بعد الدخول — نفس فيديو Dreamina
+   الموقع بعد الدخول: فيديو Dreamina الرئيسي فقط
 ========================================================= */
+html body:not(.locked){
+  position:relative !important;
+  isolation:isolate !important;
+  min-height:100vh !important;
+}
+
 html body:not(.locked) #sakakerMainVideoBackground{
   display:block !important;
   visibility:visible !important;
-
   position:fixed !important;
   inset:0 !important;
-
   width:100vw !important;
   height:100dvh !important;
   max-width:none !important;
   max-height:none !important;
-
   object-fit:cover !important;
   object-position:center center !important;
-
+  z-index:-1 !important;
+  pointer-events:none !important;
   background:#02090b !important;
   filter:none !important;
   transform:none !important;
-
-  z-index:-1 !important;
-  pointer-events:none !important;
 }
 
 html body:not(.locked) #sakakerMainVideoBackground.sak-bg-playing{
   opacity:1 !important;
 }
 
-@media(max-width:700px){
-  html body.locked #loginOverlay #sakLoginBackgroundVideo,
-  html body:not(.locked) #sakakerMainVideoBackground{
-    width:100vw !important;
-    height:100dvh !important;
-    object-fit:cover !important;
-    object-position:center center !important;
-  }
+/* الدائرتان تبقيان ظاهرتين عند فتح المشغل */
+html body.sak-fixed-video-open .video-top-container-fixed,
+html body.sak-fixed-video-open #sakSecondStreamCorner{
+  visibility:visible !important;
+  opacity:1 !important;
+  pointer-events:auto !important;
 }
 
-</style>
-
-<script id="sakaker-dreamina-background-v28-js">
-(function(){
-  'use strict';
-
-  const VIDEO_URL = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/dreamina-2026-09-16-2526-Spoken-language%20constraint_%20All%20dialogue....mp4';
-
-  function playSilently(video){
-    if(!video) return;
-
-    video.muted = true;
-    video.loop = true;
-    video.autoplay = true;
-    video.playsInline = true;
-    video.preload = 'auto';
-    video.defaultPlaybackRate = 1.0;
-    video.playbackRate = 1.0;
-
-    video.setAttribute('muted','');
-    video.setAttribute('loop','');
-    video.setAttribute('autoplay','');
-    video.setAttribute('playsinline','');
-    video.setAttribute('webkit-playsinline','');
-
-    try{
-      const p = video.play();
-      if(p && typeof p.catch === 'function') p.catch(function(){});
-    }catch(e){}
-  }
-
-  function setupLoginVideo(){
-    const video = document.getElementById('sakLoginBackgroundVideo');
-    if(!video) return;
-
-    const current = video.currentSrc || video.getAttribute('src') || '';
-
-    if(!current.includes('dreamina-2026-09-16-2526-Spoken-language')){
-      video.innerHTML = '';
-      video.setAttribute('src', VIDEO_URL);
-      try{ video.load(); }catch(e){}
-    }
-
-    if(document.body.classList.contains('locked') && !document.hidden){
-      playSilently(video);
-    }else{
-      try{ video.pause(); }catch(e){}
-    }
-  }
-
-  function setupSiteVideo(){
-    if(document.body.classList.contains('locked')) return;
-
-    const video = document.getElementById('sakakerMainVideoBackground');
-    if(!video) return;
-
-    let source = video.querySelector('source');
-
-    if(source){
-      if(source.getAttribute('src') !== VIDEO_URL){
-        source.setAttribute('src', VIDEO_URL);
-        try{ video.load(); }catch(e){}
-      }
-    }else if(video.getAttribute('src') !== VIDEO_URL){
-      video.setAttribute('src', VIDEO_URL);
-      try{ video.load(); }catch(e){}
-    }
-
-    playSilently(video);
-  }
-
-  function sync(){
-    setupLoginVideo();
-
-    if(!document.body.classList.contains('locked')){
-      setupSiteVideo();
-
-      /*
-        فيديو الموقع قد يتم إنشاؤه لاحقًا بواسطة وحدة الخلفية الحالية.
-        نعيد المحاولة بدون تغيير بقية وظائف الموقع.
-      */
-      setTimeout(setupSiteVideo,150);
-      setTimeout(setupSiteVideo,700);
-      setTimeout(setupSiteVideo,1800);
-    }
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded',sync,{once:true});
-  }else{
-    sync();
-  }
-
-  new MutationObserver(sync).observe(document.body,{
-    attributes:true,
-    attributeFilter:['class']
-  });
-
-  new MutationObserver(function(mutations){
-    for(const mutation of mutations){
-      for(const node of mutation.addedNodes){
-        if(node && node.nodeType === 1 && node.id === 'sakakerMainVideoBackground'){
-          setupSiteVideo();
-        }
-      }
-    }
-  }).observe(document.body,{childList:true});
-
-  document.addEventListener('visibilitychange',function(){
-    if(!document.hidden) sync();
-  });
-
-  document.getElementById('loginOverlay')?.addEventListener('pointerdown',function(){
-    if(document.body.classList.contains('locked')) setupLoginVideo();
-  });
-})();
-</script>
-<!-- /SAKAKER DREAMINA BACKGROUND V28 -->
-
-
-
-<!-- SAKAKER DREAMINA CONTINUOUS BG V29 -->
-<style id="sakaker-dreamina-continuous-bg-v29">
-
-/* =========================================================
-   أيقونة SAKAKER Business — إنزالها قليلاً بعيداً عن النص
-========================================================= */
+/* SAKAKER Business: أسفل النص بمسافة أوضح */
 html body:not(.locked) #sakakerBusinessAd{
   top:142px !important;
   right:18px !important;
+  left:auto !important;
+  bottom:auto !important;
 }
 
 @media(max-width:700px){
@@ -40915,105 +40214,17 @@ html body:not(.locked) #sakakerBusinessAd{
     right:8px !important;
   }
 }
-
-/* =========================================================
-   خلفية صفحة الدخول — إجبار ظهور فيديو Dreamina
-========================================================= */
-html body #loginOverlay{
-  isolation:isolate !important;
-  background:#02090b !important;
-  background-image:none !important;
-}
-
-html body #loginOverlay #sakLoginBackgroundVideo{
-  display:block !important;
-  visibility:visible !important;
-  opacity:1 !important;
-
-  position:fixed !important;
-  inset:0 !important;
-
-  width:100vw !important;
-  height:100dvh !important;
-  max-width:none !important;
-  max-height:none !important;
-
-  object-fit:cover !important;
-  object-position:center center !important;
-
-  z-index:0 !important;
-  pointer-events:none !important;
-
-  background:#02090b !important;
-  filter:none !important;
-  transform:none !important;
-}
-
-/* جميع عناصر الدخول فوق الخلفية */
-html body #loginOverlay #loginBox{
-  position:relative !important;
-  z-index:20 !important;
-}
-
-html body #loginOverlay #bird-sound-btn{
-  z-index:25 !important;
-}
-
-/* =========================================================
-   الدائرتان تبقيان مرئيتين حتى عند فتح المشغل
-========================================================= */
-html body.sak-fixed-video-open .video-top-container-fixed,
-html body.sak-fixed-video-open #sakSecondStreamCorner{
-  visibility:visible !important;
-  opacity:1 !important;
-  pointer-events:auto !important;
-}
-
-html body.sak-fixed-video-open .video-top-container-fixed::before,
-html body.sak-fixed-video-open .video-top-container-fixed::after,
-html body.sak-fixed-video-open #sakSecondStreamCorner::before,
-html body.sak-fixed-video-open #sakSecondStreamCorner::after,
-html body.sak-fixed-video-open .video-circle,
-html body.sak-fixed-video-open #sakSecondStreamCircle{
-  animation-play-state:running !important;
-}
-
-/* =========================================================
-   خلفية الموقع لا تختفي ولا تتوقف مع أي مشغل أو أيقونة
-========================================================= */
-html body:not(.locked) #sakakerMainVideoBackground{
-  display:block !important;
-  visibility:visible !important;
-  opacity:1 !important;
-  pointer-events:none !important;
-}
-
-html body.sak-media-heavy-open #sakakerMainVideoBackground,
-html body.sak-fixed-video-open #sakakerMainVideoBackground,
-html body:not(.locked) #sakakerMainVideoBackground.sak-bg-playing{
-  display:block !important;
-  visibility:visible !important;
-  opacity:1 !important;
-}
-
 </style>
 
-<script id="sakaker-dreamina-continuous-bg-v29-js">
+<script id="sakaker-clean-login-background-v30-js">
 (function(){
   'use strict';
 
   const VIDEO_URL = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/dreamina-2026-09-16-2526-Spoken-language%20constraint_%20All%20dialogue....mp4';
+  const video = document.getElementById('sakLoginBackgroundVideo');
+  if(!video) return;
 
-  function overlayVisible(){
-    const overlay = document.getElementById('loginOverlay');
-    if(!overlay) return false;
-    const s = getComputedStyle(overlay);
-    return s.display !== 'none' && s.visibility !== 'hidden';
-  }
-
-  function prepareVideo(video){
-    if(!video) return;
-
+  function prepare(){
     video.muted = true;
     video.loop = true;
     video.autoplay = true;
@@ -41022,150 +40233,42 @@ html body:not(.locked) #sakakerMainVideoBackground.sak-bg-playing{
     video.defaultPlaybackRate = 1.0;
     video.playbackRate = 1.0;
 
-    video.setAttribute('muted','');
-    video.setAttribute('loop','');
-    video.setAttribute('autoplay','');
-    video.setAttribute('playsinline','');
-    video.setAttribute('webkit-playsinline','');
-  }
-
-  function ensureLoginBackground(){
-    const video = document.getElementById('sakLoginBackgroundVideo');
-    if(!video || !overlayVisible()) return;
-
-    prepareVideo(video);
-
-    const current =
-      video.currentSrc ||
-      video.getAttribute('src') ||
-      '';
-
-    if(!current.includes('dreamina-2026-09-16-2526-Spoken-language')){
-      video.innerHTML = '';
-      video.setAttribute('src', VIDEO_URL);
+    if(video.getAttribute('src') !== VIDEO_URL){
+      video.setAttribute('src',VIDEO_URL);
       try{ video.load(); }catch(e){}
     }
-
-    try{
-      const p = video.play();
-      if(p && typeof p.catch === 'function') p.catch(function(){});
-    }catch(e){}
-  }
-
-  function ensureSiteBackground(){
-    if(document.body.classList.contains('locked')) return;
-
-    /* لا نسمح لأي كود أداء بإيقاف الخلفية */
-    document.body.classList.remove('sak-media-heavy-open');
-
-    const video =
-      document.getElementById('sakakerMainVideoBackground');
-
-    if(!video) return;
-
-    prepareVideo(video);
-    video.classList.add('sak-bg-playing');
-
-    let source = video.querySelector('source');
-
-    if(source){
-      if(source.getAttribute('src') !== VIDEO_URL){
-        source.setAttribute('src',VIDEO_URL);
-        try{ video.load(); }catch(e){}
-      }
-    }else{
-      const current =
-        video.currentSrc ||
-        video.getAttribute('src') ||
-        '';
-
-      if(!current.includes('dreamina-2026-09-16-2526-Spoken-language')){
-        video.setAttribute('src',VIDEO_URL);
-        try{ video.load(); }catch(e){}
-      }
-    }
-
-    try{
-      const p = video.play();
-      if(p && typeof p.catch === 'function') p.catch(function(){});
-    }catch(e){}
   }
 
   function sync(){
-    ensureLoginBackground();
-    ensureSiteBackground();
+    prepare();
+
+    if(document.body.classList.contains('locked') && !document.hidden){
+      try{
+        const p = video.play();
+        if(p && typeof p.catch === 'function') p.catch(function(){});
+      }catch(e){}
+    }else{
+      try{ video.pause(); }catch(e){}
+    }
   }
 
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded',sync,{once:true});
-  }else{
-    sync();
-  }
-
-  /* أي تغيير في حالة الدخول يعيد مزامنة الخلفيتين */
-  new MutationObserver(function(){
-    sync();
-    setTimeout(sync,100);
-    setTimeout(sync,600);
-  }).observe(document.body,{
+  new MutationObserver(sync).observe(document.body,{
     attributes:true,
     attributeFilter:['class']
-  });
-
-  const overlay = document.getElementById('loginOverlay');
-  if(overlay){
-    new MutationObserver(function(){
-      ensureLoginBackground();
-    }).observe(overlay,{
-      attributes:true,
-      attributeFilter:['style','class']
-    });
-  }
-
-  /* إذا حاول أي كود إيقاف خلفية الموقع، نعيد تشغيلها فوراً */
-  document.addEventListener('pause',function(e){
-    const v = e.target;
-    if(
-      v &&
-      v.id === 'sakakerMainVideoBackground' &&
-      !document.body.classList.contains('locked') &&
-      !document.hidden
-    ){
-      setTimeout(ensureSiteBackground,0);
-    }
-  },true);
-
-  /* الالتقاط من window يسبق listeners القديمة التي قد توقف الخلفية */
-  ['pointerdown','click','touchstart'].forEach(function(type){
-    window.addEventListener(type,function(){
-      if(document.body.classList.contains('locked')){
-        setTimeout(ensureLoginBackground,0);
-      }else{
-        setTimeout(ensureSiteBackground,0);
-        setTimeout(ensureSiteBackground,180);
-      }
-    },true);
   });
 
   document.addEventListener('visibilitychange',function(){
     if(!document.hidden) sync();
   });
 
+  document.getElementById('loginOverlay')?.addEventListener('pointerdown',sync);
+  video.addEventListener('loadedmetadata',sync);
   window.addEventListener('pageshow',sync);
 
-  /* مراقبة خفيفة لضمان استمرار الخلفية بدون إعادة تحميلها */
-  setInterval(function(){
-    if(document.hidden) return;
-    if(document.body.classList.contains('locked')){
-      ensureLoginBackground();
-    }else{
-      ensureSiteBackground();
-    }
-  },2500);
-
+  sync();
 })();
 </script>
-<!-- /SAKAKER DREAMINA CONTINUOUS BG V29 -->
+<!-- /SAKAKER CLEAN BACKGROUND + LOGIN V30 -->
 
 </body>
 </html>
