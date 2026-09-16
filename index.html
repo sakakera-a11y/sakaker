@@ -4541,24 +4541,23 @@ birdBtn.addEventListener('click',async e=>{e.stopPropagation();try{if(birdAudio.
 <h2 id="loginTitle">
             🔐 تسجيل الدخول
         </h2>
-<!-- 📧 البريد -->
-<input autocomplete="email" class="loginInput" id="emailInput" placeholder="📧 البريد الإلكتروني" type="email"/>
-<!-- 🔒 كلمة المرور -->
-<input autocomplete="current-password" class="loginInput" id="passwordInput" placeholder="🔒 كلمة المرور" type="password"/>
-<!-- 🟢 دخول -->
-<button class="loginAction" id="loginButton" type="button">
-            دخول
-        </button>
 <!-- 🔵 Google -->
-<button class="loginAction" id="googleButton" type="button">
+<button class="loginAction socialLoginButton" id="googleButton" type="button">
             🔵 الدخول بواسطة Google
         </button>
+
+<!-- 🪟 Microsoft -->
+<button class="loginAction socialLoginButton" id="microsoftButton" type="button">
+            🪟 الدخول بواسطة Microsoft
+        </button>
+
+<!-- 🔷 Facebook -->
+<button class="loginAction socialLoginButton" id="facebookLoginButton" type="button">
+            🔷 الدخول بواسطة Facebook
+        </button>
+
 <!-- ❌ الخطأ -->
 <div id="loginError"></div>
-<!-- 📝 إنشاء حساب -->
-<button class="loginAction" id="signupButton" type="button">
-            📝 إنشاء حساب جديد
-        </button>
 <!-- © الحقوق -->
 <div id="loginCopyright">
 <div>
@@ -6389,9 +6388,9 @@ from "https://www.gstatic.com/firebasejs/12.16.0/firebase-analytics.js";
 
 import {
     getAuth,
-    signInWithEmailAndPassword,
-    createUserWithEmailAndPassword,
     GoogleAuthProvider,
+    FacebookAuthProvider,
+    OAuthProvider,
     signInWithPopup,
     onAuthStateChanged,
     setPersistence,
@@ -6523,15 +6522,11 @@ const translations = {
 
         title:"🔐 تسجيل الدخول",
 
-        email:"📧 البريد الإلكتروني",
-
-        password:"🔒 كلمة المرور",
-
-        login:"دخول",
-
         google:"🔵 الدخول بواسطة Google",
 
-        signup:"📝 إنشاء حساب جديد",
+        microsoft:"🪟 الدخول بواسطة Microsoft",
+
+        facebook:"🔷 الدخول بواسطة Facebook",
 
         logout:"خروج"
 
@@ -6546,15 +6541,11 @@ const translations = {
 
         title:"🔐 Login",
 
-        email:"📧 Email Address",
-
-        password:"🔒 Password",
-
-        login:"Login",
-
         google:"🔵 Sign in with Google",
 
-        signup:"📝 Create New Account",
+        microsoft:"🪟 Sign in with Microsoft",
+
+        facebook:"🔷 Sign in with Facebook",
 
         logout:"Logout"
 
@@ -6576,93 +6567,48 @@ function updateLoginLanguage(lang){
         lang
     );
 
+    const t = translations[lang];
 
-    const t =
-        translations[lang];
-
-
-    /* اتجاه الصفحة */
     document.getElementById(
         "loginOverlay"
-    ).style.direction =
-        t.direction;
-
+    ).style.direction = t.direction;
 
     document.getElementById(
         "loginBox"
-    ).style.direction =
-        t.direction;
-
+    ).style.direction = t.direction;
 
     document.getElementById(
         "userProfile"
-    ).style.direction =
-        t.direction;
+    ).style.direction = t.direction;
 
-
-    /* زر اللغة */
     document.getElementById(
         "loginLanguageButton"
-    ).textContent =
-        t.languageButton;
+    ).textContent = t.languageButton;
 
-
-    /* العنوان */
     document.getElementById(
         "loginTitle"
-    ).textContent =
-        t.title;
+    ).textContent = t.title;
 
-
-    /* البريد */
-    document.getElementById(
-        "emailInput"
-    ).placeholder =
-        t.email;
-
-
-    /* كلمة المرور */
-    document.getElementById(
-        "passwordInput"
-    ).placeholder =
-        t.password;
-
-
-    /* دخول */
-    document.getElementById(
-        "loginButton"
-    ).textContent =
-        t.login;
-
-
-    /* Google */
     document.getElementById(
         "googleButton"
-    ).textContent =
-        t.google;
+    ).textContent = t.google;
 
-
-    /* إنشاء حساب */
     document.getElementById(
-        "signupButton"
-    ).textContent =
-        t.signup;
+        "microsoftButton"
+    ).textContent = t.microsoft;
 
+    document.getElementById(
+        "facebookLoginButton"
+    ).textContent = t.facebook;
 
-    /* خروج */
     document.getElementById(
         "logoutText"
-    ).textContent =
-        t.logout;
-
+    ).textContent = t.logout;
 
     document.getElementById(
         "logoutButton"
-    ).title =
-        t.logout;
-
+    ).title = t.logout;
 }
-
 
 /* =========================================================
    🌐 زر اللغة
@@ -6698,16 +6644,6 @@ const overlay =
         "loginOverlay"
     );
 
-const email =
-    document.getElementById(
-        "emailInput"
-    );
-
-const pass =
-    document.getElementById(
-        "passwordInput"
-    );
-
 const error =
     document.getElementById(
         "loginError"
@@ -6715,118 +6651,51 @@ const error =
 
 
 /* =========================================================
-   🔑 دخول بالبريد وكلمة المرور
+   🌐 تسجيل الدخول عبر مزودي الهوية
+   Google + Microsoft + Facebook
 ========================================================= */
 
-document.getElementById(
-    "loginButton"
-).onclick = async () => {
+function socialLoginError(providerName, e){
 
-    error.textContent = "";
+    console.error(providerName + " sign-in:", e);
 
-    const emailValue =
-        email.value.trim();
+    let message;
 
-    const passwordValue =
-        pass.value;
+    if(e && e.code === "auth/account-exists-with-different-credential"){
 
-
-    if(!emailValue || !passwordValue){
-
-        error.textContent =
+        message =
             currentLang === "en"
-            ? "❌ Please enter email and password"
-            : "❌ يرجى إدخال البريد الإلكتروني وكلمة المرور";
+            ? "❌ This email is already linked to another sign-in provider. Please use the provider you used previously."
+            : "❌ هذا البريد مرتبط مسبقًا بطريقة دخول أخرى. استخدم طريقة الدخول التي استعملتها سابقًا.";
 
-        return;
-    }
+    }else if(e && (
+        e.code === "auth/popup-closed-by-user" ||
+        e.code === "auth/cancelled-popup-request"
+    )){
 
-
-    try{
-
-        await signInWithEmailAndPassword(
-            auth,
-            emailValue,
-            passwordValue
-        );
-
-    }
-
-    catch(e){
-
-        console.error(e);
-
-        error.textContent =
+        message =
             currentLang === "en"
-            ? "❌ Login failed"
-            : "❌ فشل تسجيل الدخول";
+            ? "Sign-in was cancelled."
+            : "تم إلغاء تسجيل الدخول.";
 
-    }
+    }else if(e && e.code === "auth/popup-blocked"){
 
-};
-
-
-/* =========================================================
-   📝 إنشاء حساب
-========================================================= */
-
-document.getElementById(
-    "signupButton"
-).onclick = async () => {
-
-    error.textContent = "";
-
-    const emailValue =
-        email.value.trim();
-
-    const passwordValue =
-        pass.value;
-
-
-    if(!emailValue || !passwordValue){
-
-        error.textContent =
+        message =
             currentLang === "en"
-            ? "❌ Enter email and password first"
-            : "❌ أدخل البريد الإلكتروني وكلمة المرور أولاً";
+            ? "❌ The browser blocked the sign-in window. Allow pop-ups and try again."
+            : "❌ المتصفح منع نافذة تسجيل الدخول. اسمح بالنوافذ المنبثقة ثم حاول مرة أخرى.";
 
-        return;
-    }
+    }else{
 
-
-    if(passwordValue.length < 6){
-
-        error.textContent =
+        message =
             currentLang === "en"
-            ? "❌ Password must be at least 6 characters"
-            : "❌ كلمة المرور يجب أن تكون 6 أحرف على الأقل";
-
-        return;
-    }
-
-
-    try{
-
-        await createUserWithEmailAndPassword(
-            auth,
-            emailValue,
-            passwordValue
-        );
+            ? "❌ Sign-in failed. Check that this provider is enabled in Firebase Authentication."
+            : "❌ فشل تسجيل الدخول. تأكد من تفعيل مزود الدخول في Firebase Authentication.";
 
     }
 
-    catch(e){
-
-        console.error(e);
-
-        error.textContent =
-            currentLang === "en"
-            ? "❌ Account creation failed"
-            : "❌ فشل إنشاء الحساب";
-
-    }
-
-};
+    error.textContent = message;
+}
 
 
 /* =========================================================
@@ -6842,6 +6711,9 @@ document.getElementById(
     const provider =
         new GoogleAuthProvider();
 
+    provider.setCustomParameters({
+        prompt:"select_account"
+    });
 
     try{
 
@@ -6850,16 +6722,86 @@ document.getElementById(
             provider
         );
 
+    }catch(e){
+
+        socialLoginError(
+            "Google",
+            e
+        );
+
     }
 
-    catch(e){
+};
 
-        console.error(e);
 
-        error.textContent =
-            currentLang === "en"
-            ? "❌ Google sign-in failed"
-            : "❌ فشل تسجيل الدخول بواسطة Google";
+/* =========================================================
+   🪟 Microsoft Login
+========================================================= */
+
+document.getElementById(
+    "microsoftButton"
+).onclick = async () => {
+
+    error.textContent = "";
+
+    const provider =
+        new OAuthProvider(
+            "microsoft.com"
+        );
+
+    provider.setCustomParameters({
+        prompt:"select_account"
+    });
+
+    try{
+
+        await signInWithPopup(
+            auth,
+            provider
+        );
+
+    }catch(e){
+
+        socialLoginError(
+            "Microsoft",
+            e
+        );
+
+    }
+
+};
+
+
+/* =========================================================
+   🔷 Facebook Login
+========================================================= */
+
+document.getElementById(
+    "facebookLoginButton"
+).onclick = async () => {
+
+    error.textContent = "";
+
+    const provider =
+        new FacebookAuthProvider();
+
+    provider.addScope(
+        "email"
+    );
+
+    try{
+
+        await signInWithPopup(
+            auth,
+            provider
+        );
+
+    }catch(e){
+
+        socialLoginError(
+            "Facebook",
+            e
+        );
 
     }
 
@@ -40674,6 +40616,67 @@ html body:not(.locked) #sakakerBusinessIcon{
 
 </style>
 <!-- /SAKAKER BUSINESS POSITION FINAL -->
+
+
+
+<!-- SAKAKER SOCIAL LOGIN FINAL -->
+<style id="sakaker-social-login-final">
+
+/* تسجيل اجتماعي فقط — بدون بريد/كلمة مرور أو إنشاء حساب */
+html body #loginBox .socialLoginButton{
+  position:relative;
+  width:100% !important;
+  min-height:52px !important;
+  margin-top:10px !important;
+  border-radius:14px !important;
+  font-weight:900 !important;
+  letter-spacing:.1px;
+  color:#fff !important;
+  border:1px solid rgba(255,255,255,.22) !important;
+  box-shadow:0 7px 22px rgba(0,0,0,.24) !important;
+  transition:transform .2s ease,box-shadow .2s ease,filter .2s ease !important;
+}
+
+html body #loginBox .socialLoginButton:hover{
+  transform:translateY(-2px) !important;
+  filter:brightness(1.08);
+}
+
+html body #googleButton{
+  background:linear-gradient(135deg,#4285f4,#2864c7) !important;
+}
+
+html body #microsoftButton{
+  background:linear-gradient(135deg,#1267b7,#243f75) !important;
+}
+
+html body #facebookLoginButton{
+  background:linear-gradient(135deg,#1877f2,#0b4eaa) !important;
+}
+
+html body #loginError{
+  margin-top:13px !important;
+}
+
+/* أي عناصر قديمة لو بقيت من CSS أو نسخة cache لا تظهر */
+html body #emailInput,
+html body #passwordInput,
+html body #loginButton,
+html body #signupButton{
+  display:none !important;
+  visibility:hidden !important;
+  pointer-events:none !important;
+}
+
+@media(max-width:600px){
+  html body #loginBox .socialLoginButton{
+    min-height:50px !important;
+    font-size:14px !important;
+  }
+}
+
+</style>
+<!-- /SAKAKER SOCIAL LOGIN FINAL -->
 
 </body>
 </html>
