@@ -37579,11 +37579,8 @@ body.sak-media-heavy-open #emOpenBtn{
 
   function setMediaHeavy(active){
     if(!document.body) return;
-
-    document.body.classList.toggle(
-      'sak-media-heavy-open',
-      !!active
-    );
+    /* v29: الخلفية تستمر حتى عند فتح الفيديو/الراديو/القنوات */
+    document.body.classList.remove('sak-media-heavy-open');
   }
 
 
@@ -40197,16 +40194,7 @@ html body #sakChatPanel{
 </script>
 
 <script id="sakaker-static-login-background-final">
-(function(){
-  const v=document.getElementById('sakLoginBackgroundVideo');
-  if(v){
-    try{v.pause();}catch(e){}
-    v.removeAttribute('autoplay');
-    v.removeAttribute('src');
-    v.querySelectorAll('source').forEach(s=>s.removeAttribute('src'));
-    try{v.load();}catch(e){}
-  }
-})();
+/* v29: تم إلغاء التعطيل القديم لفيديو خلفية صفحة الدخول. */
 </script>
 <!-- /SAKAKER FIREBASE SOCIAL CHAT FINAL -->
 
@@ -40310,9 +40298,7 @@ html body #sakPianoKeyboardHint{
     return document.body && !document.body.classList.contains('locked');
   }
 
-  function mediaHeavy(){
-    return !!(document.body && document.body.classList.contains('sak-media-heavy-open'));
-  }
+  function mediaHeavy(){ return false; }
 
   function bgVideo(){
     return document.getElementById('sakakerMainVideoBackground');
@@ -40902,6 +40888,284 @@ html body:not(.locked) #sakakerMainVideoBackground.sak-bg-playing{
 })();
 </script>
 <!-- /SAKAKER DREAMINA BACKGROUND V28 -->
+
+
+
+<!-- SAKAKER DREAMINA CONTINUOUS BG V29 -->
+<style id="sakaker-dreamina-continuous-bg-v29">
+
+/* =========================================================
+   أيقونة SAKAKER Business — إنزالها قليلاً بعيداً عن النص
+========================================================= */
+html body:not(.locked) #sakakerBusinessAd{
+  top:142px !important;
+  right:18px !important;
+}
+
+@media(max-width:700px){
+  html body:not(.locked) #sakakerBusinessAd{
+    top:136px !important;
+    right:10px !important;
+  }
+}
+
+@media(max-width:380px){
+  html body:not(.locked) #sakakerBusinessAd{
+    top:130px !important;
+    right:8px !important;
+  }
+}
+
+/* =========================================================
+   خلفية صفحة الدخول — إجبار ظهور فيديو Dreamina
+========================================================= */
+html body #loginOverlay{
+  isolation:isolate !important;
+  background:#02090b !important;
+  background-image:none !important;
+}
+
+html body #loginOverlay #sakLoginBackgroundVideo{
+  display:block !important;
+  visibility:visible !important;
+  opacity:1 !important;
+
+  position:fixed !important;
+  inset:0 !important;
+
+  width:100vw !important;
+  height:100dvh !important;
+  max-width:none !important;
+  max-height:none !important;
+
+  object-fit:cover !important;
+  object-position:center center !important;
+
+  z-index:0 !important;
+  pointer-events:none !important;
+
+  background:#02090b !important;
+  filter:none !important;
+  transform:none !important;
+}
+
+/* جميع عناصر الدخول فوق الخلفية */
+html body #loginOverlay #loginBox{
+  position:relative !important;
+  z-index:20 !important;
+}
+
+html body #loginOverlay #bird-sound-btn{
+  z-index:25 !important;
+}
+
+/* =========================================================
+   الدائرتان تبقيان مرئيتين حتى عند فتح المشغل
+========================================================= */
+html body.sak-fixed-video-open .video-top-container-fixed,
+html body.sak-fixed-video-open #sakSecondStreamCorner{
+  visibility:visible !important;
+  opacity:1 !important;
+  pointer-events:auto !important;
+}
+
+html body.sak-fixed-video-open .video-top-container-fixed::before,
+html body.sak-fixed-video-open .video-top-container-fixed::after,
+html body.sak-fixed-video-open #sakSecondStreamCorner::before,
+html body.sak-fixed-video-open #sakSecondStreamCorner::after,
+html body.sak-fixed-video-open .video-circle,
+html body.sak-fixed-video-open #sakSecondStreamCircle{
+  animation-play-state:running !important;
+}
+
+/* =========================================================
+   خلفية الموقع لا تختفي ولا تتوقف مع أي مشغل أو أيقونة
+========================================================= */
+html body:not(.locked) #sakakerMainVideoBackground{
+  display:block !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  pointer-events:none !important;
+}
+
+html body.sak-media-heavy-open #sakakerMainVideoBackground,
+html body.sak-fixed-video-open #sakakerMainVideoBackground,
+html body:not(.locked) #sakakerMainVideoBackground.sak-bg-playing{
+  display:block !important;
+  visibility:visible !important;
+  opacity:1 !important;
+}
+
+</style>
+
+<script id="sakaker-dreamina-continuous-bg-v29-js">
+(function(){
+  'use strict';
+
+  const VIDEO_URL = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/dreamina-2026-09-16-2526-Spoken-language%20constraint_%20All%20dialogue....mp4';
+
+  function overlayVisible(){
+    const overlay = document.getElementById('loginOverlay');
+    if(!overlay) return false;
+    const s = getComputedStyle(overlay);
+    return s.display !== 'none' && s.visibility !== 'hidden';
+  }
+
+  function prepareVideo(video){
+    if(!video) return;
+
+    video.muted = true;
+    video.loop = true;
+    video.autoplay = true;
+    video.playsInline = true;
+    video.preload = 'auto';
+    video.defaultPlaybackRate = 1.0;
+    video.playbackRate = 1.0;
+
+    video.setAttribute('muted','');
+    video.setAttribute('loop','');
+    video.setAttribute('autoplay','');
+    video.setAttribute('playsinline','');
+    video.setAttribute('webkit-playsinline','');
+  }
+
+  function ensureLoginBackground(){
+    const video = document.getElementById('sakLoginBackgroundVideo');
+    if(!video || !overlayVisible()) return;
+
+    prepareVideo(video);
+
+    const current =
+      video.currentSrc ||
+      video.getAttribute('src') ||
+      '';
+
+    if(!current.includes('dreamina-2026-09-16-2526-Spoken-language')){
+      video.innerHTML = '';
+      video.setAttribute('src', VIDEO_URL);
+      try{ video.load(); }catch(e){}
+    }
+
+    try{
+      const p = video.play();
+      if(p && typeof p.catch === 'function') p.catch(function(){});
+    }catch(e){}
+  }
+
+  function ensureSiteBackground(){
+    if(document.body.classList.contains('locked')) return;
+
+    /* لا نسمح لأي كود أداء بإيقاف الخلفية */
+    document.body.classList.remove('sak-media-heavy-open');
+
+    const video =
+      document.getElementById('sakakerMainVideoBackground');
+
+    if(!video) return;
+
+    prepareVideo(video);
+    video.classList.add('sak-bg-playing');
+
+    let source = video.querySelector('source');
+
+    if(source){
+      if(source.getAttribute('src') !== VIDEO_URL){
+        source.setAttribute('src',VIDEO_URL);
+        try{ video.load(); }catch(e){}
+      }
+    }else{
+      const current =
+        video.currentSrc ||
+        video.getAttribute('src') ||
+        '';
+
+      if(!current.includes('dreamina-2026-09-16-2526-Spoken-language')){
+        video.setAttribute('src',VIDEO_URL);
+        try{ video.load(); }catch(e){}
+      }
+    }
+
+    try{
+      const p = video.play();
+      if(p && typeof p.catch === 'function') p.catch(function(){});
+    }catch(e){}
+  }
+
+  function sync(){
+    ensureLoginBackground();
+    ensureSiteBackground();
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded',sync,{once:true});
+  }else{
+    sync();
+  }
+
+  /* أي تغيير في حالة الدخول يعيد مزامنة الخلفيتين */
+  new MutationObserver(function(){
+    sync();
+    setTimeout(sync,100);
+    setTimeout(sync,600);
+  }).observe(document.body,{
+    attributes:true,
+    attributeFilter:['class']
+  });
+
+  const overlay = document.getElementById('loginOverlay');
+  if(overlay){
+    new MutationObserver(function(){
+      ensureLoginBackground();
+    }).observe(overlay,{
+      attributes:true,
+      attributeFilter:['style','class']
+    });
+  }
+
+  /* إذا حاول أي كود إيقاف خلفية الموقع، نعيد تشغيلها فوراً */
+  document.addEventListener('pause',function(e){
+    const v = e.target;
+    if(
+      v &&
+      v.id === 'sakakerMainVideoBackground' &&
+      !document.body.classList.contains('locked') &&
+      !document.hidden
+    ){
+      setTimeout(ensureSiteBackground,0);
+    }
+  },true);
+
+  /* الالتقاط من window يسبق listeners القديمة التي قد توقف الخلفية */
+  ['pointerdown','click','touchstart'].forEach(function(type){
+    window.addEventListener(type,function(){
+      if(document.body.classList.contains('locked')){
+        setTimeout(ensureLoginBackground,0);
+      }else{
+        setTimeout(ensureSiteBackground,0);
+        setTimeout(ensureSiteBackground,180);
+      }
+    },true);
+  });
+
+  document.addEventListener('visibilitychange',function(){
+    if(!document.hidden) sync();
+  });
+
+  window.addEventListener('pageshow',sync);
+
+  /* مراقبة خفيفة لضمان استمرار الخلفية بدون إعادة تحميلها */
+  setInterval(function(){
+    if(document.hidden) return;
+    if(document.body.classList.contains('locked')){
+      ensureLoginBackground();
+    }else{
+      ensureSiteBackground();
+    }
+  },2500);
+
+})();
+</script>
+<!-- /SAKAKER DREAMINA CONTINUOUS BG V29 -->
 
 </body>
 </html>
