@@ -39119,8 +39119,13 @@ html body #sakChatOverlay[hidden]{display:none !important;}
 html body #sakChatOverlay{
   position:fixed !important;
   inset:0 !important;
+  margin:0 !important;
+  padding:10px !important;
   width:100vw !important;
   height:100dvh !important;
+  max-width:none !important;
+  max-height:none !important;
+  border:0 !important;
   z-index:2147483647 !important;
   display:flex;
   align-items:center;
@@ -39473,7 +39478,7 @@ html body #sakChatPanel{
 
 </style>
 
-<div id="sakChatOverlay" hidden aria-modal="true" role="dialog" aria-labelledby="sakChatTitle">
+<dialog id="sakChatOverlay" hidden aria-modal="true" aria-labelledby="sakChatTitle">
   <section id="sakChatPanel">
     <header id="sakChatHeader">
       <div>
@@ -39538,7 +39543,7 @@ html body #sakChatPanel{
       <div id="sakChatToast" role="status" aria-live="polite" hidden></div>
     </main>
   </section>
-</div>
+</dialog>
 
 <script type="module" id="sakaker-firebase-social-chat-js">
 (async function(){
@@ -39584,7 +39589,7 @@ html body #sakChatPanel{
       loginRequired:'يجب تسجيل الدخول إلى الموقع أولاً.',
       tooManyWords:'الحد الأقصى للرسالة هو 20 كلمة.',
       empty:'اكتب الرسالة أولاً.',
-      sendFailed:'تعذر إرسال الرسالة. تحقق من اتصال Firebase وقواعد قاعدة البيانات.',
+      sendFailed:'تعذر إرسال الرسالة. تأكد من نشر قواعد Firebase للدردشة وأن المستخدم مسجل الدخول.',
       requestFailed:'تعذر إرسال الطلب. قد يكون المستخدم حظرك أو توجد مشكلة في قواعد Firebase.',
       noPrivate:'ابدأ محادثة خاصة بالضغط على اسم مستخدم ثم انتظر موافقته.',
       privateWith:'محادثة خاصة مع',
@@ -39633,7 +39638,7 @@ html body #sakChatPanel{
       loginRequired:'Please sign in to the site first.',
       tooManyWords:'Messages are limited to 20 words.',
       empty:'Write a message first.',
-      sendFailed:'Could not send the message. Check your Firebase connection and database rules.',
+      sendFailed:'Could not send the message. Make sure the Firebase chat rules are published and the user is signed in.',
       requestFailed:'Could not send the request. The user may have blocked you or Firebase rules may need updating.',
       noPrivate:'Start a private chat by selecting a user, then wait for their approval.',
       privateWith:'Private chat with',
@@ -39736,14 +39741,29 @@ html body #sakChatPanel{
 
   function openOverlay(){
     if(!currentUser){toast(t('loginRequired'));return;}
-    $('sakChatOverlay').hidden=false;
+    const overlay=$('sakChatOverlay');
+    overlay.hidden=false;
     document.body.style.overflow='hidden';
     setLanguage(document.documentElement.lang==='en'?'en':'ar');
     showTab('public');
+    try{
+      if(typeof overlay.showModal==='function' && !overlay.open){
+        overlay.showModal();
+      }else{
+        overlay.setAttribute('open','');
+      }
+    }catch(e){
+      overlay.setAttribute('open','');
+    }
     $('sakChatClose').focus();
   }
   function closeOverlay(){
-    $('sakChatOverlay').hidden=true;
+    const overlay=$('sakChatOverlay');
+    try{
+      if(typeof overlay.close==='function' && overlay.open) overlay.close();
+    }catch(e){}
+    overlay.removeAttribute('open');
+    overlay.hidden=true;
     document.body.style.overflow='';
     const icon=$('sakChatIcon');
     if(icon) icon.focus();
@@ -39860,7 +39880,7 @@ html body #sakChatPanel{
       const meta=document.createElement('div');meta.className='sak-chat-meta';
       const author=document.createElement('button');author.type='button';author.className='sak-chat-author';author.textContent=m.uid===currentUser?.uid?t('you'):(m.name||'User');
       if(m.uid!==currentUser?.uid) author.onclick=()=>sendPrivateRequest(m.uid,m.name||'User');
-      const time=document.createElement('span');time.textContent=fmtTime(m.createdAt);
+      const time=document.createElement('span');time.textContent=fmtTime(m.createdAt||m.timestamp);
       meta.append(author,time);
       const body=document.createElement('div');body.textContent=m.text||'';
       wrap.append(meta,body);host.appendChild(wrap);
@@ -39916,13 +39936,12 @@ html body #sakChatPanel{
   const rtdb=window.firebaseRTDB;
 
   async function startPresence(user){
-    const userRef=ref(rtdb,'chatUsers/'+user.uid);
+    const userRef=ref(rtdb,'onlineUsers/'+user.uid);
     const payload={
       uid:user.uid,
       name:safeName(user),
-      photo:(user.photoURL||'').slice(0,500),
-      online:true,
-      lastSeen:serverTimestamp()
+      status:'available',
+      joinedAt:serverTimestamp()
     };
     await set(userRef,payload);
     try{await onDisconnect(userRef).remove();}catch(e){}
@@ -39937,18 +39956,19 @@ html body #sakChatPanel{
 
   function startListeners(){
     if(!currentUser) return;
-    publicUnsub=onValue(ref(rtdb,'chatPublic'),snap=>{
+    publicUnsub=onValue(ref(rtdb,'publicChat'),snap=>{
       const data=snap.val()||{};
       publicData=data;
       renderPublic(publicData);
       const now=Date.now();
       Object.entries(data).forEach(([id,m])=>{
-        if(typeof m?.createdAt==='number' && m.createdAt <= now-180000){
-          remove(ref(rtdb,'chatPublic/'+id)).catch(()=>{});
+        const msgTime=(typeof m?.createdAt==='number'?m.createdAt:m?.timestamp);
+        if(typeof msgTime==='number' && msgTime <= now-180000){
+          remove(ref(rtdb,'publicChat/'+id)).catch(()=>{});
         }
       });
     });
-    usersUnsub=onValue(ref(rtdb,'chatUsers'),snap=>{users=snap.val()||{};renderUsers();});
+    usersUnsub=onValue(ref(rtdb,'onlineUsers'),snap=>{users=snap.val()||{};renderUsers();});
     blocksUnsub=onValue(ref(rtdb,'chatBlocks/'+currentUser.uid),snap=>{blocks=snap.val()||{};renderUsers();renderPublic(publicData);});
     requestsUnsub=onValue(ref(rtdb,'chatRequests/'+currentUser.uid),snap=>{incoming=snap.val()||{};renderRequests();});
   }
@@ -40094,13 +40114,53 @@ html body #sakChatPanel{
     }
   }
 
-  $('sakChatPublicForm').addEventListener('submit',async e=>{
-    e.preventDefault();
-    const text=validMessage($('sakChatPublicInput').value);if(!text||!currentUser)return;
+  async function sendPublicMessage(){
+    const input=$('sakChatPublicInput');
+    const text=validMessage(input.value);
+    if(!text||!currentUser)return;
+
+    const legacyPayload={
+      uid:currentUser.uid,
+      name:currentName,
+      text,
+      timestamp:serverTimestamp()
+    };
+
     try{
-      await set(push(ref(rtdb,'chatPublic')),{uid:currentUser.uid,name:currentName,text,createdAt:serverTimestamp()});
-      $('sakChatPublicInput').value='';
-    }catch(err){console.warn(err);toast(t('sendFailed'));}
+      await set(push(ref(rtdb,'publicChat')),legacyPayload);
+      input.value='';
+      return;
+    }catch(firstError){
+      console.warn('SAKAKER publicChat write failed, trying chatPublic:',firstError);
+    }
+
+    try{
+      await set(push(ref(rtdb,'chatPublic')),{
+        uid:currentUser.uid,
+        name:currentName,
+        text,
+        createdAt:serverTimestamp()
+      });
+      input.value='';
+    }catch(err){
+      console.warn('SAKAKER chat public write failed:',err);
+      toast(t('sendFailed'));
+    }
+  }
+
+  $('sakChatPublicForm').addEventListener('submit',e=>{
+    e.preventDefault();
+    sendPublicMessage();
+  });
+
+  $('sakChatPublicSend').type='button';
+  $('sakChatPublicSend').addEventListener('click',sendPublicMessage);
+
+  $('sakChatPublicInput').addEventListener('keydown',e=>{
+    if(e.key==='Enter' && !e.shiftKey){
+      e.preventDefault();
+      sendPublicMessage();
+    }
   });
 
   $('sakChatPrivateForm').addEventListener('submit',async e=>{
@@ -40122,6 +40182,7 @@ html body #sakChatPanel{
     const b=e.target.closest('[data-chat-tab]');if(b)showTab(b.dataset.chatTab);
   });
   $('sakChatClose').addEventListener('click',closeOverlay);
+  $('sakChatOverlay').addEventListener('cancel',e=>{e.preventDefault();closeOverlay();});
   $('sakChatLang').addEventListener('click',()=>setLanguage(lang==='ar'?'en':'ar'));
   $('sakChatEnd').addEventListener('click',endPrivate);
   $('sakChatBlock').addEventListener('click',blockCurrent);
