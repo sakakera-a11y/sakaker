@@ -4482,9 +4482,7 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
      🔐 نافذة تسجيل الدخول
 ========================================================= -->
 <div id="loginOverlay">
-<video id="sakLoginBackgroundVideo" autoplay muted loop playsinline preload="metadata" aria-hidden="true" disablepictureinpicture>
-  <source src="https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/7b04366e-b146-11f1-a3a7-0242ac110005_849382371452101_raw.mp4" type="video/mp4">
-</video>
+<video id="sakLoginBackgroundVideo" muted playsinline aria-hidden="true" style="display:none !important"></video>
 <!-- 🐦 أيقونة صوت الطيور بتوهج زمردي -->
 <div id="bird-sound-btn" title="تشغيل/إيقاف صوت الطيور" style="
   position: fixed;
@@ -6083,7 +6081,7 @@ html body #loginBox #loginCopyright{
 <style id="sakaker-transparent-login-ship-site-final">
 
 :root{
-  --sakaker-login-bg:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B5%D9%88%D8%B1%D8%A9%20Codex%2015%20%D8%B3%D8%A8%D8%AA%D9%85%D8%A8%D8%B1%202026%D8%8C%2006_25_38%20%D9%85.png");
+  --sakaker-login-bg:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B5%D9%88%D8%B1%D8%A9%20Codex%2016%20%D8%B3%D8%A8%D8%AA%D9%85%D8%A8%D8%B1%202026%D8%8C%2001_32_47%20%D9%85.png");
   --sakaker-site-bg:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/1ba59cd06bb1d178dae04825e2affe5e0ca009e3/15");
 }
 
@@ -38461,7 +38459,7 @@ body.sak-media-heavy-open #emOpenBtn{
 <style id="sakaker-login-photo-site-video-final">
 
 :root{
-  --sakaker-login-bg:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B5%D9%88%D8%B1%D8%A9%20Codex%2015%20%D8%B3%D8%A8%D8%AA%D9%85%D8%A8%D8%B1%202026%D8%8C%2006_25_38%20%D9%85.png") !important;
+  --sakaker-login-bg:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B5%D9%88%D8%B1%D8%A9%20Codex%2016%20%D8%B3%D8%A8%D8%AA%D9%85%D8%A8%D8%B1%202026%D8%8C%2001_32_47%20%D9%85.png") !important;
 }
 
 /* خلفية تسجيل الدخول على الصفحة نفسها */
@@ -39013,5 +39011,1194 @@ html body #sakStudio #studioStatus { min-height:24px; color:#ffdc82; font-size:1
   mount();document.addEventListener('DOMContentLoaded',mount,{once:true});language();render();
 })();
 </script>
+
+<!-- SAKAKER FIREBASE SOCIAL CHAT FINAL -->
+<style id="sakaker-firebase-social-chat-style">
+
+:root{
+  --sak-chat-gold:#ffd76a;
+  --sak-chat-gold2:#b98517;
+  --sak-chat-emerald:#21d6ad;
+  --sak-chat-bg:#061019;
+  --sak-chat-panel:#0a1822;
+  --sak-chat-soft:#102834;
+  --sak-chat-text:#f4f8fb;
+  --sak-chat-muted:#b8c8d1;
+  --sak-chat-danger:#ff6f7d;
+}
+
+/* خلفية الدخول الجديدة فقط — صفحة الدخول والصندوق يبقيان شفافين */
+html body.locked{
+  background-color:#02090b !important;
+  background-image:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B5%D9%88%D8%B1%D8%A9%20Codex%2016%20%D8%B3%D8%A8%D8%AA%D9%85%D8%A8%D8%B1%202026%D8%8C%2001_32_47%20%D9%85.png") !important;
+  background-size:cover !important;
+  background-position:center center !important;
+  background-repeat:no-repeat !important;
+  background-attachment:fixed !important;
+}
+
+html body.locked #loginOverlay,
+html body #loginOverlay{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+}
+
+html body #loginOverlay #loginBox{
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+  box-shadow:none !important;
+}
+
+html body #sakLoginBackgroundVideo{
+  display:none !important;
+  visibility:hidden !important;
+  opacity:0 !important;
+}
+
+/* لا تظهر الدردشة قبل الدخول */
+html body.locked #sakChatIcon,
+html body.locked #sakChatOverlay{
+  display:none !important;
+  visibility:hidden !important;
+  pointer-events:none !important;
+}
+
+/* الأيقونة الذهبية — بنفس نمط بطاقات الموقع */
+html body #sakChatIcon{
+  position:relative;
+  overflow:visible;
+  border:1px solid rgba(255,220,112,.78) !important;
+  background:
+    radial-gradient(circle at 35% 25%,rgba(255,255,255,.22),transparent 25%),
+    linear-gradient(145deg,rgba(66,44,4,.88),rgba(12,20,24,.90)) !important;
+  box-shadow:
+    0 0 9px rgba(255,215,94,.90),
+    0 0 24px rgba(255,187,45,.55),
+    inset 0 0 14px rgba(255,237,164,.16) !important;
+  color:#fff9db !important;
+  animation:sakChatGoldPulse 2.8s ease-in-out infinite !important;
+}
+
+html body #sakChatIcon .sak-chat-gold-symbol{
+  display:grid;
+  place-items:center;
+  width:46px;
+  height:46px;
+  margin:0 auto 7px;
+  border-radius:50%;
+  color:#3a2600;
+  font-size:25px;
+  background:
+    radial-gradient(circle at 35% 30%,#fff9c7 0%,#ffe079 25%,#d7a82b 66%,#8c5f06 100%);
+  border:1px solid #fff0a8;
+  box-shadow:
+    0 0 8px #ffe47d,
+    0 0 20px rgba(255,199,55,.82);
+}
+
+html body #sakChatIcon .icon-label{
+  color:#fff2b2 !important;
+  text-shadow:0 0 7px rgba(255,215,90,.92);
+}
+
+html body #sakChatIcon .sub{
+  color:#f6d77d !important;
+}
+
+@keyframes sakChatGoldPulse{
+  0%,100%{filter:drop-shadow(0 0 4px rgba(255,213,84,.45));}
+  50%{filter:drop-shadow(0 0 13px rgba(255,218,91,.95));}
+}
+
+/* النافذة فوق أي محتوى */
+html body #sakChatOverlay[hidden]{display:none !important;}
+html body #sakChatOverlay{
+  position:fixed !important;
+  inset:0 !important;
+  width:100vw !important;
+  height:100dvh !important;
+  z-index:2147483647 !important;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-sizing:border-box;
+  padding:10px;
+  background:rgba(0,5,10,.82);
+  backdrop-filter:blur(7px);
+  -webkit-backdrop-filter:blur(7px);
+  color:var(--sak-chat-text);
+  font-family:Tahoma,Arial,sans-serif;
+}
+
+html body #sakChatPanel{
+  width:min(1050px,100%);
+  height:min(780px,calc(100dvh - 20px));
+  display:grid;
+  grid-template-rows:auto auto auto 1fr;
+  overflow:hidden;
+  border:1px solid rgba(255,215,96,.62);
+  border-radius:22px;
+  background:
+    radial-gradient(circle at 15% 5%,rgba(31,104,91,.18),transparent 35%),
+    linear-gradient(145deg,rgba(10,27,35,.985),rgba(3,11,18,.99));
+  box-shadow:
+    0 0 18px rgba(255,213,91,.23),
+    0 22px 70px rgba(0,0,0,.65);
+}
+
+#sakChatPanel *{box-sizing:border-box;}
+#sakChatPanel button,
+#sakChatPanel input,
+#sakChatPanel textarea{
+  font:inherit;
+}
+
+#sakChatHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:11px 14px;
+  border-bottom:1px solid rgba(255,215,96,.22);
+  background:rgba(4,14,20,.80);
+}
+
+#sakChatTitle{
+  font-weight:900;
+  color:#ffe59a;
+  text-shadow:0 0 9px rgba(255,211,87,.55);
+}
+
+.sak-chat-head-actions{
+  display:flex;
+  gap:7px;
+}
+
+.sak-chat-head-actions button,
+#sakChatTabs button,
+.sak-chat-action{
+  min-height:38px;
+  border:1px solid rgba(255,222,123,.38);
+  border-radius:10px;
+  background:#102833;
+  color:#f8f4df;
+  cursor:pointer;
+  padding:7px 11px;
+}
+
+.sak-chat-head-actions button:hover,
+#sakChatTabs button:hover,
+.sak-chat-action:hover{
+  border-color:#ffe18c;
+}
+
+#sakChatClose{
+  color:#fff !important;
+  background:#5c1420 !important;
+  border-color:#ff8590 !important;
+  min-width:42px;
+}
+
+#sakChatWarning{
+  padding:9px 13px;
+  background:rgba(116,72,8,.28);
+  color:#fff0bf;
+  border-bottom:1px solid rgba(255,213,89,.24);
+  font-size:13px;
+  line-height:1.6;
+}
+
+#sakChatTabs{
+  display:flex;
+  gap:6px;
+  padding:8px 10px;
+  overflow-x:auto;
+  border-bottom:1px solid rgba(255,255,255,.09);
+}
+
+#sakChatTabs button[aria-selected="true"]{
+  color:#202000;
+  background:linear-gradient(135deg,#ffe990,#c99a2f);
+  border-color:#fff0a9;
+  font-weight:900;
+}
+
+#sakChatRequestBadge{
+  display:none;
+  min-width:20px;
+  padding:1px 6px;
+  margin-inline-start:4px;
+  border-radius:20px;
+  background:#d83d55;
+  color:white;
+  font-size:11px;
+}
+
+#sakChatRequestBadge.active{display:inline-block;}
+
+#sakChatBody{
+  min-height:0;
+  overflow:hidden;
+  position:relative;
+}
+
+.sak-chat-view{
+  height:100%;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+}
+
+.sak-chat-view[hidden]{display:none !important;}
+
+.sak-chat-scroll{
+  flex:1;
+  min-height:0;
+  overflow:auto;
+  padding:12px;
+  scrollbar-width:thin;
+}
+
+.sak-chat-message{
+  max-width:82%;
+  margin:7px 0;
+  padding:9px 11px;
+  border-radius:14px;
+  background:#102733;
+  border:1px solid rgba(255,255,255,.08);
+  line-height:1.55;
+  overflow-wrap:anywhere;
+}
+
+.sak-chat-message.mine{
+  margin-inline-start:auto;
+  background:#173c37;
+  border-color:rgba(55,220,177,.24);
+}
+
+.sak-chat-meta{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  margin-bottom:4px;
+  color:var(--sak-chat-muted);
+  font-size:11px;
+}
+
+.sak-chat-author{
+  border:0;
+  background:transparent;
+  color:#ffe28c;
+  cursor:pointer;
+  padding:0;
+  font-weight:800;
+}
+
+.sak-chat-compose{
+  display:flex;
+  gap:7px;
+  padding:10px;
+  border-top:1px solid rgba(255,255,255,.09);
+  background:rgba(2,11,17,.72);
+}
+
+.sak-chat-compose input{
+  flex:1;
+  min-width:0;
+  height:43px;
+  border:1px solid #41606b;
+  border-radius:11px;
+  background:#eef8fb;
+  color:#0b2630;
+  padding:0 12px;
+  outline:none;
+}
+
+.sak-chat-compose input:focus{
+  border-color:#e0ae37;
+  box-shadow:0 0 0 3px rgba(255,213,90,.15);
+}
+
+.sak-chat-send{
+  min-width:74px;
+  border:1px solid #ffe28c;
+  border-radius:11px;
+  background:linear-gradient(135deg,#ffeb9c,#c99d31);
+  color:#302000;
+  cursor:pointer;
+  font-weight:900;
+}
+
+#sakChatUsersList,
+#sakChatRequestsList{
+  display:grid;
+  gap:8px;
+}
+
+.sak-chat-user,
+.sak-chat-request{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:9px;
+  padding:10px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:13px;
+  background:#0f2530;
+}
+
+.sak-chat-user-main{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.sak-chat-avatar{
+  width:39px;
+  height:39px;
+  border-radius:50%;
+  object-fit:cover;
+  border:1px solid #d9b853;
+  background:#16313d;
+  display:grid;
+  place-items:center;
+  color:#ffe28a;
+  font-weight:900;
+  flex:0 0 auto;
+}
+
+.sak-chat-user-name{
+  font-weight:800;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.sak-chat-online-dot{
+  color:#4ee3a9;
+  font-size:11px;
+}
+
+.sak-chat-small{
+  color:var(--sak-chat-muted);
+  font-size:12px;
+}
+
+.sak-chat-btns{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.sak-chat-btn{
+  min-height:34px;
+  border:1px solid #55707b;
+  border-radius:9px;
+  padding:5px 9px;
+  color:#f5fbfd;
+  background:#18323e;
+  cursor:pointer;
+}
+
+.sak-chat-btn.accept{border-color:#38d5a7;background:#15513f;}
+.sak-chat-btn.reject,
+.sak-chat-btn.danger{border-color:#ff7b86;background:#5c1b25;}
+.sak-chat-btn.gold{border-color:#eacb6c;background:#5b4712;color:#fff0ad;}
+
+#sakChatPrivateTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  padding:9px 11px;
+  border-bottom:1px solid rgba(255,255,255,.09);
+  background:#0c202a;
+}
+
+#sakChatPrivatePartner{font-weight:900;color:#ffe18b;}
+
+#sakChatPrivateActions{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+.sak-chat-empty{
+  padding:22px 12px;
+  text-align:center;
+  color:#aac0ca;
+}
+
+#sakChatToast{
+  position:absolute;
+  inset-inline-start:50%;
+  bottom:14px;
+  transform:translateX(-50%);
+  max-width:min(90%,520px);
+  z-index:5;
+  padding:9px 13px;
+  border-radius:10px;
+  background:#071115;
+  border:1px solid #d9b85b;
+  color:#fff0bb;
+  box-shadow:0 8px 25px #0009;
+}
+
+#sakChatToast[hidden]{display:none !important;}
+
+@media(max-width:700px){
+  html body.locked{
+    background-attachment:scroll !important;
+  }
+  html body #sakChatOverlay{padding:4px;}
+  html body #sakChatPanel{
+    height:calc(100dvh - 8px);
+    border-radius:14px;
+  }
+  #sakChatHeader{padding:8px;}
+  #sakChatWarning{font-size:12px;padding:7px 9px;}
+  #sakChatTabs{padding:6px;}
+  #sakChatTabs button{padding:6px 8px;white-space:nowrap;}
+  .sak-chat-message{max-width:93%;}
+  .sak-chat-user,.sak-chat-request{align-items:flex-start;flex-direction:column;}
+  .sak-chat-btns{width:100%;justify-content:flex-start;}
+  #sakChatPrivateTop{align-items:flex-start;flex-direction:column;}
+}
+
+</style>
+
+<div id="sakChatOverlay" hidden aria-modal="true" role="dialog" aria-labelledby="sakChatTitle">
+  <section id="sakChatPanel">
+    <header id="sakChatHeader">
+      <div>
+        <div id="sakChatTitle">💬 دردشة SAKAKER</div>
+        <div id="sakChatIdentity" class="sak-chat-small"></div>
+      </div>
+      <div class="sak-chat-head-actions">
+        <button id="sakChatLang" type="button">English</button>
+        <button id="sakChatClose" type="button" aria-label="إغلاق">✕</button>
+      </div>
+    </header>
+
+    <div id="sakChatWarning"></div>
+
+    <nav id="sakChatTabs" aria-label="Chat sections">
+      <button type="button" data-chat-tab="public" aria-selected="true" id="sakChatTabPublic"></button>
+      <button type="button" data-chat-tab="users" aria-selected="false" id="sakChatTabUsers"></button>
+      <button type="button" data-chat-tab="requests" aria-selected="false" id="sakChatTabRequests"><span id="sakChatTabRequestsText"></span><span id="sakChatRequestBadge">0</span></button>
+      <button type="button" data-chat-tab="private" aria-selected="false" id="sakChatTabPrivate"></button>
+    </nav>
+
+    <main id="sakChatBody">
+      <section class="sak-chat-view" id="sakChatViewPublic" data-chat-view="public">
+        <div class="sak-chat-scroll" id="sakChatPublicMessages"></div>
+        <form class="sak-chat-compose" id="sakChatPublicForm">
+          <input id="sakChatPublicInput" type="text" maxlength="400" autocomplete="off">
+          <button class="sak-chat-send" id="sakChatPublicSend" type="submit"></button>
+        </form>
+      </section>
+
+      <section class="sak-chat-view" id="sakChatViewUsers" data-chat-view="users" hidden>
+        <div class="sak-chat-scroll">
+          <div id="sakChatUsersList"></div>
+        </div>
+      </section>
+
+      <section class="sak-chat-view" id="sakChatViewRequests" data-chat-view="requests" hidden>
+        <div class="sak-chat-scroll">
+          <div id="sakChatRequestsList"></div>
+        </div>
+      </section>
+
+      <section class="sak-chat-view" id="sakChatViewPrivate" data-chat-view="private" hidden>
+        <div id="sakChatPrivateTop">
+          <div>
+            <div id="sakChatPrivatePartner"></div>
+            <div id="sakChatPrivateState" class="sak-chat-small"></div>
+          </div>
+          <div id="sakChatPrivateActions">
+            <button class="sak-chat-btn gold" type="button" id="sakChatReport"></button>
+            <button class="sak-chat-btn danger" type="button" id="sakChatBlock"></button>
+            <button class="sak-chat-btn" type="button" id="sakChatEnd"></button>
+          </div>
+        </div>
+        <div class="sak-chat-scroll" id="sakChatPrivateMessages"></div>
+        <form class="sak-chat-compose" id="sakChatPrivateForm">
+          <input id="sakChatPrivateInput" type="text" maxlength="400" autocomplete="off">
+          <button class="sak-chat-send" id="sakChatPrivateSend" type="submit"></button>
+        </form>
+      </section>
+
+      <div id="sakChatToast" role="status" aria-live="polite" hidden></div>
+    </main>
+  </section>
+</div>
+
+<script type="module" id="sakaker-firebase-social-chat-js">
+(async function(){
+  'use strict';
+
+  const $ = id => document.getElementById(id);
+
+  const words = {
+    ar:{
+      title:'💬 دردشة SAKAKER',
+      public:'عام',
+      users:'المتواجدون',
+      requests:'الطلبات',
+      private:'خاص',
+      send:'إرسال',
+      publicPlaceholder:'اكتب رسالة عامة — بحد أقصى 20 كلمة',
+      privatePlaceholder:'اكتب رسالة خاصة — بحد أقصى 20 كلمة',
+      warning:'⚠ تنبيه: إساءة الاستخدام أو السلوك غير اللائق أو خطاب الكراهية أو العنصرية أو أي محتوى مخالف قد يؤدي إلى اتخاذ الإجراءات اللازمة، بما في ذلك الحظر ومراجعة البلاغات.',
+      online:'متصل',
+      you:'أنت',
+      chat:'مراسلة',
+      blocked:'محظور',
+      unblock:'إلغاء الحظر',
+      noUsers:'لا يوجد مستخدمون آخرون متصلون الآن.',
+      noRequests:'لا توجد طلبات محادثة حالياً.',
+      accept:'موافقة',
+      reject:'رفض',
+      open:'فتح',
+      pending:'تم إرسال طلب المحادثة. يبدأ الخاص بعد موافقة الطرف الآخر.',
+      accepted:'تم قبول طلب المحادثة الخاصة.',
+      rejected:'تم رفض طلب المحادثة.',
+      requestReceived:'طلب محادثة خاصة',
+      report:'إبلاغ إساءة',
+      block:'حظر',
+      end:'إنهاء المحادثة',
+      ended:'تم إنهاء هذه المحادثة الخاصة.',
+      reported:'تم إرسال البلاغ إلى Firebase.',
+      reportReason:'اكتب سبب البلاغ باختصار:',
+      reportCancelled:'لم يتم إرسال البلاغ.',
+      blockConfirm:'هل تريد حظر هذا المستخدم؟ لن تصلك منه طلبات أو رسائل خاصة.',
+      blockedDone:'تم حظر المستخدم وإنهاء المحادثة.',
+      unblockedDone:'تم إلغاء الحظر.',
+      loginRequired:'يجب تسجيل الدخول إلى الموقع أولاً.',
+      tooManyWords:'الحد الأقصى للرسالة هو 20 كلمة.',
+      empty:'اكتب الرسالة أولاً.',
+      sendFailed:'تعذر إرسال الرسالة. تحقق من اتصال Firebase وقواعد قاعدة البيانات.',
+      requestFailed:'تعذر إرسال الطلب. قد يكون المستخدم حظرك أو توجد مشكلة في قواعد Firebase.',
+      noPrivate:'ابدأ محادثة خاصة بالضغط على اسم مستخدم ثم انتظر موافقته.',
+      privateWith:'محادثة خاصة مع',
+      identity:'مسجل باسم',
+      loading:'جاري الاتصال بـ Firebase…',
+      connected:'متصل بـ Firebase',
+      firebaseError:'تعذر تهيئة الدردشة. تحقق من Firebase والقواعد.',
+      publicEmpty:'لا توجد رسائل عامة حالياً.',
+      privateEmpty:'لا توجد رسائل في هذه المحادثة بعد.',
+      wordsLeft:'20 كلمة كحد أقصى'
+    },
+    en:{
+      title:'💬 SAKAKER Chat',
+      public:'Public',
+      users:'Online',
+      requests:'Requests',
+      private:'Private',
+      send:'Send',
+      publicPlaceholder:'Write a public message — maximum 20 words',
+      privatePlaceholder:'Write a private message — maximum 20 words',
+      warning:'⚠ Notice: abuse, inappropriate conduct, hate speech, racism, or other prohibited content may result in appropriate action, including blocking and review of reports.',
+      online:'Online',
+      you:'You',
+      chat:'Message',
+      blocked:'Blocked',
+      unblock:'Unblock',
+      noUsers:'No other users are online right now.',
+      noRequests:'There are no chat requests right now.',
+      accept:'Accept',
+      reject:'Reject',
+      open:'Open',
+      pending:'Chat request sent. Private chat starts after the other user accepts.',
+      accepted:'Private chat request accepted.',
+      rejected:'The chat request was rejected.',
+      requestReceived:'Private chat request',
+      report:'Report abuse',
+      block:'Block',
+      end:'End chat',
+      ended:'This private chat has ended.',
+      reported:'The report was sent to Firebase.',
+      reportReason:'Briefly describe the reason for the report:',
+      reportCancelled:'The report was not sent.',
+      blockConfirm:'Block this user? You will no longer receive private requests or messages from them.',
+      blockedDone:'User blocked and the private chat was ended.',
+      unblockedDone:'User unblocked.',
+      loginRequired:'Please sign in to the site first.',
+      tooManyWords:'Messages are limited to 20 words.',
+      empty:'Write a message first.',
+      sendFailed:'Could not send the message. Check your Firebase connection and database rules.',
+      requestFailed:'Could not send the request. The user may have blocked you or Firebase rules may need updating.',
+      noPrivate:'Start a private chat by selecting a user, then wait for their approval.',
+      privateWith:'Private chat with',
+      identity:'Signed in as',
+      loading:'Connecting to Firebase…',
+      connected:'Connected to Firebase',
+      firebaseError:'Chat could not initialize. Check Firebase and the database rules.',
+      publicEmpty:'No public messages yet.',
+      privateEmpty:'No messages in this private chat yet.',
+      wordsLeft:'Maximum 20 words'
+    }
+  };
+
+  let lang = document.documentElement.lang === 'en' ? 'en' : 'ar';
+  let currentUser = null;
+  let currentName = '';
+  let currentPrivate = null;
+  let users = {};
+  let blocks = {};
+  let incoming = {};
+  let publicData = {};
+  let publicUnsub = null;
+  let usersUnsub = null;
+  let blocksUnsub = null;
+  let requestsUnsub = null;
+  let privateMessagesUnsub = null;
+  let privateMetaUnsub = null;
+  const outgoingUnsubs = new Map();
+  let toastTimer = null;
+
+  function t(key){ return words[lang][key] || key; }
+  function safeName(user){
+    const name = (user?.displayName || '').trim();
+    if(name) return name.slice(0,50);
+    const email = (user?.email || '').trim();
+    if(email) return email.split('@')[0].slice(0,50);
+    return lang === 'en' ? 'User' : 'مستخدم';
+  }
+  function wordCount(text){
+    return text.trim() ? text.trim().split(/\s+/u).length : 0;
+  }
+  function validMessage(text){
+    const value = text.trim();
+    if(!value){ toast(t('empty')); return null; }
+    if(wordCount(value) > 20){ toast(t('tooManyWords')); return null; }
+    return value.slice(0,400);
+  }
+  function fmtTime(v){
+    if(typeof v !== 'number') return '';
+    try{ return new Intl.DateTimeFormat(lang === 'ar' ? 'ar-SA' : 'en-US',{hour:'2-digit',minute:'2-digit'}).format(new Date(v)); }
+    catch(e){ return ''; }
+  }
+  function toast(message){
+    const el=$('sakChatToast');
+    el.textContent=message;
+    el.hidden=false;
+    clearTimeout(toastTimer);
+    toastTimer=setTimeout(()=>{el.hidden=true;},3600);
+  }
+  function setStatus(message){
+    $('sakChatIdentity').textContent=message;
+  }
+  function escText(el, value){ el.textContent = value ?? ''; }
+
+  function setLanguage(next){
+    lang = next === 'en' ? 'en' : 'ar';
+    const panel=$('sakChatPanel');
+    panel.dir=lang==='ar'?'rtl':'ltr';
+    panel.lang=lang;
+    $('sakChatTitle').textContent=t('title');
+    $('sakChatLang').textContent=lang==='ar'?'English':'العربية';
+    $('sakChatClose').setAttribute('aria-label',lang==='ar'?'إغلاق':'Close');
+    $('sakChatWarning').textContent=t('warning');
+    $('sakChatTabPublic').textContent=t('public');
+    $('sakChatTabUsers').textContent=t('users');
+    $('sakChatTabRequestsText').textContent=t('requests');
+    $('sakChatTabPrivate').textContent=t('private');
+    $('sakChatPublicSend').textContent=t('send');
+    $('sakChatPrivateSend').textContent=t('send');
+    $('sakChatPublicInput').placeholder=t('publicPlaceholder');
+    $('sakChatPrivateInput').placeholder=t('privatePlaceholder');
+    $('sakChatReport').textContent=t('report');
+    $('sakChatBlock').textContent=t('block');
+    $('sakChatEnd').textContent=t('end');
+    if(currentUser) setStatus(t('identity')+' '+currentName);
+    renderUsers();
+    renderRequests();
+    if(currentPrivate){
+      $('sakChatPrivatePartner').textContent=t('privateWith')+' '+currentPrivate.partnerName;
+    }else{
+      renderNoPrivate();
+    }
+    labelIcon();
+  }
+
+  function showTab(name){
+    document.querySelectorAll('#sakChatTabs [data-chat-tab]').forEach(btn=>btn.setAttribute('aria-selected',String(btn.dataset.chatTab===name)));
+    document.querySelectorAll('#sakChatBody [data-chat-view]').forEach(view=>view.hidden=view.dataset.chatView!==name);
+  }
+
+  function openOverlay(){
+    if(!currentUser){toast(t('loginRequired'));return;}
+    $('sakChatOverlay').hidden=false;
+    document.body.style.overflow='hidden';
+    setLanguage(document.documentElement.lang==='en'?'en':'ar');
+    showTab('public');
+    $('sakChatClose').focus();
+  }
+  function closeOverlay(){
+    $('sakChatOverlay').hidden=true;
+    document.body.style.overflow='';
+    const icon=$('sakChatIcon');
+    if(icon) icon.focus();
+  }
+
+  function makeAvatar(name,photo){
+    if(photo){
+      const img=document.createElement('img');
+      img.className='sak-chat-avatar';
+      img.src=photo;
+      img.alt='';
+      img.referrerPolicy='no-referrer';
+      img.onerror=()=>{img.replaceWith(makeAvatar(name,''));};
+      return img;
+    }
+    const d=document.createElement('div');
+    d.className='sak-chat-avatar';
+    d.textContent=(name||'?').trim().slice(0,1).toUpperCase();
+    return d;
+  }
+
+  function renderNoPrivate(){
+    $('sakChatPrivatePartner').textContent=t('private');
+    $('sakChatPrivateState').textContent=t('noPrivate');
+    $('sakChatPrivateMessages').innerHTML='';
+    const e=document.createElement('div');
+    e.className='sak-chat-empty';
+    e.textContent=t('noPrivate');
+    $('sakChatPrivateMessages').appendChild(e);
+    $('sakChatPrivateInput').disabled=true;
+    $('sakChatPrivateSend').disabled=true;
+    $('sakChatReport').disabled=true;
+    $('sakChatBlock').disabled=true;
+    $('sakChatEnd').disabled=true;
+  }
+
+  function updateRequestBadge(){
+    const count=Object.values(incoming).filter(r=>r&&r.status==='pending').length;
+    const badge=$('sakChatRequestBadge');
+    badge.textContent=String(count);
+    badge.classList.toggle('active',count>0);
+  }
+
+  function renderUsers(){
+    const host=$('sakChatUsersList');
+    if(!host) return;
+    host.innerHTML='';
+    if(!currentUser) return;
+    const list=Object.values(users).filter(u=>u&&u.uid&&u.uid!==currentUser.uid);
+    if(!list.length){
+      const e=document.createElement('div');e.className='sak-chat-empty';e.textContent=t('noUsers');host.appendChild(e);return;
+    }
+    list.sort((a,b)=>(a.name||'').localeCompare(b.name||'',lang==='ar'?'ar':'en'));
+    list.forEach(u=>{
+      const row=document.createElement('div');row.className='sak-chat-user';
+      const main=document.createElement('div');main.className='sak-chat-user-main';
+      main.appendChild(makeAvatar(u.name,u.photo||''));
+      const info=document.createElement('div');
+      const name=document.createElement('div');name.className='sak-chat-user-name';name.textContent=u.name||'—';
+      const online=document.createElement('div');online.className='sak-chat-online-dot';online.textContent='● '+t('online');
+      info.append(name,online);main.appendChild(info);
+      const btns=document.createElement('div');btns.className='sak-chat-btns';
+      const isBlocked=blocks[u.uid]===true;
+      const btn=document.createElement('button');btn.type='button';btn.className='sak-chat-btn '+(isBlocked?'gold':'');
+      btn.textContent=isBlocked?t('unblock'):t('chat');
+      btn.addEventListener('click',()=>isBlocked?unblockUser(u.uid):sendPrivateRequest(u.uid,u.name||'User'));
+      btns.appendChild(btn);
+      row.append(main,btns);host.appendChild(row);
+    });
+  }
+
+  function renderRequests(){
+    const host=$('sakChatRequestsList');
+    if(!host) return;
+    host.innerHTML='';
+    const rows=Object.entries(incoming).filter(([,r])=>r&&r.fromUid);
+    if(!rows.length){
+      const e=document.createElement('div');e.className='sak-chat-empty';e.textContent=t('noRequests');host.appendChild(e);updateRequestBadge();return;
+    }
+    rows.sort((a,b)=>(b[1].createdAt||0)-(a[1].createdAt||0));
+    rows.forEach(([id,r])=>{
+      const row=document.createElement('div');row.className='sak-chat-request';
+      const txt=document.createElement('div');
+      const strong=document.createElement('div');strong.className='sak-chat-user-name';strong.textContent=(r.fromName||'User')+' — '+t('requestReceived');
+      const small=document.createElement('div');small.className='sak-chat-small';small.textContent=fmtTime(r.createdAt);
+      txt.append(strong,small);
+      const btns=document.createElement('div');btns.className='sak-chat-btns';
+      if(r.status==='pending'){
+        const a=document.createElement('button');a.type='button';a.className='sak-chat-btn accept';a.textContent=t('accept');a.onclick=()=>acceptRequest(id,r);
+        const d=document.createElement('button');d.type='button';d.className='sak-chat-btn reject';d.textContent=t('reject');d.onclick=()=>rejectRequest(id,r);
+        btns.append(a,d);
+      }else if(r.status==='accepted'){
+        const o=document.createElement('button');o.type='button';o.className='sak-chat-btn gold';o.textContent=t('open');o.onclick=()=>openPrivate(currentUser.uid,id,r.fromUid,r.fromName||'User');
+        btns.append(o);
+      }else{
+        const s=document.createElement('span');s.className='sak-chat-small';s.textContent=t('rejected');btns.append(s);
+      }
+      row.append(txt,btns);host.appendChild(row);
+    });
+    updateRequestBadge();
+  }
+
+  function renderPublic(data){
+    const host=$('sakChatPublicMessages');
+    host.innerHTML='';
+    const rows=Object.entries(data||{})
+      .filter(([,m])=>m&&m.uid&&!blocks[m.uid])
+      .sort((a,b)=>(a[1].createdAt||0)-(b[1].createdAt||0));
+    if(!rows.length){
+      const e=document.createElement('div');e.className='sak-chat-empty';e.textContent=t('publicEmpty');host.appendChild(e);return;
+    }
+    rows.slice(-100).forEach(([id,m])=>{
+      const wrap=document.createElement('div');wrap.className='sak-chat-message'+(m.uid===currentUser?.uid?' mine':'');
+      const meta=document.createElement('div');meta.className='sak-chat-meta';
+      const author=document.createElement('button');author.type='button';author.className='sak-chat-author';author.textContent=m.uid===currentUser?.uid?t('you'):(m.name||'User');
+      if(m.uid!==currentUser?.uid) author.onclick=()=>sendPrivateRequest(m.uid,m.name||'User');
+      const time=document.createElement('span');time.textContent=fmtTime(m.createdAt);
+      meta.append(author,time);
+      const body=document.createElement('div');body.textContent=m.text||'';
+      wrap.append(meta,body);host.appendChild(wrap);
+    });
+    host.scrollTop=host.scrollHeight;
+  }
+
+  function renderPrivate(data){
+    const host=$('sakChatPrivateMessages');
+    host.innerHTML='';
+    const rows=Object.entries(data||{}).sort((a,b)=>(a[1].createdAt||0)-(b[1].createdAt||0));
+    if(!rows.length){
+      const e=document.createElement('div');e.className='sak-chat-empty';e.textContent=t('privateEmpty');host.appendChild(e);return;
+    }
+    rows.slice(-150).forEach(([id,m])=>{
+      const wrap=document.createElement('div');wrap.className='sak-chat-message'+(m.uid===currentUser?.uid?' mine':'');
+      wrap.dataset.messageId=id;
+      const meta=document.createElement('div');meta.className='sak-chat-meta';
+      const who=document.createElement('span');who.textContent=m.uid===currentUser?.uid?t('you'):(m.name||currentPrivate?.partnerName||'User');
+      const time=document.createElement('span');time.textContent=fmtTime(m.createdAt);
+      meta.append(who,time);
+      const body=document.createElement('div');body.textContent=m.text||'';
+      wrap.append(meta,body);host.appendChild(wrap);
+    });
+    host.scrollTop=host.scrollHeight;
+  }
+
+  async function waitForFirebase(){
+    for(let i=0;i<120;i++){
+      if(window.firebaseAuth && window.firebaseRTDB) return true;
+      await new Promise(r=>setTimeout(r,100));
+    }
+    return false;
+  }
+
+  const [
+    {onAuthStateChanged},
+    {
+      ref,push,set,update,remove,onValue,onDisconnect,serverTimestamp
+    }
+  ] = await Promise.all([
+    import('https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js'),
+    import('https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js')
+  ]);
+
+  if(!(await waitForFirebase())){
+    setStatus(t('firebaseError'));
+    console.warn('SAKAKER chat: Firebase globals are not available.');
+    return;
+  }
+
+  const auth=window.firebaseAuth;
+  const rtdb=window.firebaseRTDB;
+
+  async function startPresence(user){
+    const userRef=ref(rtdb,'chatUsers/'+user.uid);
+    const payload={
+      uid:user.uid,
+      name:safeName(user),
+      photo:(user.photoURL||'').slice(0,500),
+      online:true,
+      lastSeen:serverTimestamp()
+    };
+    await set(userRef,payload);
+    try{await onDisconnect(userRef).remove();}catch(e){}
+  }
+
+  function detachChatListeners(){
+    [publicUnsub,usersUnsub,blocksUnsub,requestsUnsub,privateMessagesUnsub,privateMetaUnsub].forEach(fn=>{try{if(typeof fn==='function')fn();}catch(e){}});
+    publicUnsub=usersUnsub=blocksUnsub=requestsUnsub=privateMessagesUnsub=privateMetaUnsub=null;
+    outgoingUnsubs.forEach(fn=>{try{fn();}catch(e){}});
+    outgoingUnsubs.clear();
+  }
+
+  function startListeners(){
+    if(!currentUser) return;
+    publicUnsub=onValue(ref(rtdb,'chatPublic'),snap=>{
+      const data=snap.val()||{};
+      publicData=data;
+      renderPublic(publicData);
+      const now=Date.now();
+      Object.entries(data).forEach(([id,m])=>{
+        if(typeof m?.createdAt==='number' && m.createdAt <= now-180000){
+          remove(ref(rtdb,'chatPublic/'+id)).catch(()=>{});
+        }
+      });
+    });
+    usersUnsub=onValue(ref(rtdb,'chatUsers'),snap=>{users=snap.val()||{};renderUsers();});
+    blocksUnsub=onValue(ref(rtdb,'chatBlocks/'+currentUser.uid),snap=>{blocks=snap.val()||{};renderUsers();renderPublic(publicData);});
+    requestsUnsub=onValue(ref(rtdb,'chatRequests/'+currentUser.uid),snap=>{incoming=snap.val()||{};renderRequests();});
+  }
+
+  async function sendPrivateRequest(targetUid,targetName){
+    if(!currentUser || !targetUid || targetUid===currentUser.uid) return;
+    if(blocks[targetUid]){toast(t('blocked'));return;}
+    try{
+      const reqRef=push(ref(rtdb,'chatRequests/'+targetUid));
+      const reqId=reqRef.key;
+      await set(reqRef,{
+        fromUid:currentUser.uid,
+        toUid:targetUid,
+        fromName:currentName,
+        toName:String(targetName||'User').slice(0,50),
+        status:'pending',
+        createdAt:serverTimestamp()
+      });
+      toast(t('pending'));
+      const unsub=onValue(reqRef,snap=>{
+        const r=snap.val();
+        if(!r) return;
+        if(r.status==='accepted'){
+          toast(t('accepted'));
+          openPrivate(targetUid,reqId,targetUid,targetName||r.toName||'User');
+          const fn=outgoingUnsubs.get(reqId);if(fn)fn();outgoingUnsubs.delete(reqId);
+        }else if(r.status==='rejected'){
+          toast(t('rejected'));
+          const fn=outgoingUnsubs.get(reqId);if(fn)fn();outgoingUnsubs.delete(reqId);
+        }
+      });
+      outgoingUnsubs.set(reqId,unsub);
+    }catch(e){
+      console.warn('SAKAKER private request:',e);
+      toast(t('requestFailed'));
+    }
+  }
+
+  async function acceptRequest(reqId,r){
+    try{
+      const base='chatPrivate/'+currentUser.uid+'/'+reqId;
+      await update(ref(rtdb,base+'/meta'),{
+        status:'active',
+        fromUid:r.fromUid,
+        toUid:currentUser.uid,
+        fromName:String(r.fromName||'User').slice(0,50),
+        toName:currentName,
+        createdAt:serverTimestamp()
+      });
+      await update(ref(rtdb,'chatRequests/'+currentUser.uid+'/'+reqId),{status:'accepted',respondedAt:serverTimestamp()});
+      openPrivate(currentUser.uid,reqId,r.fromUid,r.fromName||'User');
+    }catch(e){
+      console.warn('SAKAKER accept request:',e);
+      toast(t('sendFailed'));
+    }
+  }
+
+  async function rejectRequest(reqId){
+    try{
+      await update(ref(rtdb,'chatRequests/'+currentUser.uid+'/'+reqId),{status:'rejected',respondedAt:serverTimestamp()});
+    }catch(e){toast(t('sendFailed'));}
+  }
+
+  function openPrivate(targetUid,reqId,partnerUid,partnerName){
+    if(privateMessagesUnsub){privateMessagesUnsub();privateMessagesUnsub=null;}
+    if(privateMetaUnsub){privateMetaUnsub();privateMetaUnsub=null;}
+    currentPrivate={targetUid,reqId,partnerUid,partnerName:String(partnerName||'User').slice(0,50)};
+    $('sakChatPrivatePartner').textContent=t('privateWith')+' '+currentPrivate.partnerName;
+    $('sakChatPrivateState').textContent=t('connected');
+    $('sakChatPrivateInput').disabled=false;
+    $('sakChatPrivateSend').disabled=false;
+    $('sakChatReport').disabled=false;
+    $('sakChatBlock').disabled=false;
+    $('sakChatEnd').disabled=false;
+    privateMessagesUnsub=onValue(ref(rtdb,'chatPrivate/'+targetUid+'/'+reqId+'/messages'),snap=>renderPrivate(snap.val()||{}));
+    privateMetaUnsub=onValue(ref(rtdb,'chatPrivate/'+targetUid+'/'+reqId+'/meta'),snap=>{
+      const meta=snap.val()||{};
+      if(meta.ended && Object.keys(meta.ended).length){
+        $('sakChatPrivateState').textContent=t('ended');
+        $('sakChatPrivateInput').disabled=true;
+        $('sakChatPrivateSend').disabled=true;
+      }
+    });
+    showTab('private');
+  }
+
+  async function endPrivate(){
+    if(!currentPrivate||!currentUser)return;
+    try{
+      await set(ref(rtdb,'chatPrivate/'+currentPrivate.targetUid+'/'+currentPrivate.reqId+'/meta/ended/'+currentUser.uid),serverTimestamp());
+      $('sakChatPrivateState').textContent=t('ended');
+      $('sakChatPrivateInput').disabled=true;
+      $('sakChatPrivateSend').disabled=true;
+    }catch(e){toast(t('sendFailed'));}
+  }
+
+  async function blockCurrent(){
+    if(!currentPrivate||!currentUser)return;
+    if(!confirm(t('blockConfirm')))return;
+    try{
+      await set(ref(rtdb,'chatBlocks/'+currentUser.uid+'/'+currentPrivate.partnerUid),true);
+      await endPrivate();
+      toast(t('blockedDone'));
+    }catch(e){toast(t('sendFailed'));}
+  }
+
+  async function unblockUser(uid){
+    try{await remove(ref(rtdb,'chatBlocks/'+currentUser.uid+'/'+uid));toast(t('unblockedDone'));}
+    catch(e){toast(t('sendFailed'));}
+  }
+
+  async function reportCurrent(){
+    if(!currentPrivate||!currentUser)return;
+    const reason=prompt(t('reportReason'));
+    if(reason===null){toast(t('reportCancelled'));return;}
+    const cleaned=reason.trim().slice(0,500);
+    if(!cleaned){toast(t('reportCancelled'));return;}
+    let messageId='',messageText='';
+    const rows=[...$('sakChatPrivateMessages').querySelectorAll('.sak-chat-message')].reverse();
+    const lastFromPartner=rows.find(el=>!el.classList.contains('mine'));
+    if(lastFromPartner){
+      messageId=lastFromPartner.dataset.messageId||'';
+      messageText=(lastFromPartner.lastElementChild?.textContent||'').slice(0,500);
+    }
+    try{
+      const reportRef=push(ref(rtdb,'chatReports'));
+      await set(reportRef,{
+        reporterUid:currentUser.uid,
+        reporterName:currentName,
+        targetUid:currentPrivate.partnerUid,
+        targetName:currentPrivate.partnerName,
+        privateTargetUid:currentPrivate.targetUid,
+        requestId:currentPrivate.reqId,
+        messageId,
+        messageText,
+        reason:cleaned,
+        createdAt:serverTimestamp()
+      });
+      toast(t('reported'));
+    }catch(e){
+      console.warn('SAKAKER report:',e);
+      toast(t('sendFailed'));
+    }
+  }
+
+  $('sakChatPublicForm').addEventListener('submit',async e=>{
+    e.preventDefault();
+    const text=validMessage($('sakChatPublicInput').value);if(!text||!currentUser)return;
+    try{
+      await set(push(ref(rtdb,'chatPublic')),{uid:currentUser.uid,name:currentName,text,createdAt:serverTimestamp()});
+      $('sakChatPublicInput').value='';
+    }catch(err){console.warn(err);toast(t('sendFailed'));}
+  });
+
+  $('sakChatPrivateForm').addEventListener('submit',async e=>{
+    e.preventDefault();
+    const text=validMessage($('sakChatPrivateInput').value);if(!text||!currentUser||!currentPrivate)return;
+    try{
+      await set(push(ref(rtdb,'chatPrivate/'+currentPrivate.targetUid+'/'+currentPrivate.reqId+'/messages')),{
+        uid:currentUser.uid,
+        toUid:currentPrivate.partnerUid,
+        name:currentName,
+        text,
+        createdAt:serverTimestamp()
+      });
+      $('sakChatPrivateInput').value='';
+    }catch(err){console.warn(err);toast(t('sendFailed'));}
+  });
+
+  $('sakChatTabs').addEventListener('click',e=>{
+    const b=e.target.closest('[data-chat-tab]');if(b)showTab(b.dataset.chatTab);
+  });
+  $('sakChatClose').addEventListener('click',closeOverlay);
+  $('sakChatLang').addEventListener('click',()=>setLanguage(lang==='ar'?'en':'ar'));
+  $('sakChatEnd').addEventListener('click',endPrivate);
+  $('sakChatBlock').addEventListener('click',blockCurrent);
+  $('sakChatReport').addEventListener('click',reportCurrent);
+  $('sakChatOverlay').addEventListener('click',e=>{if(e.target===$('sakChatOverlay'))closeOverlay();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('sakChatOverlay').hidden)closeOverlay();});
+
+  function labelIcon(){
+    const b=$('sakChatIcon');if(!b)return;
+    const l=document.documentElement.lang==='en'?'en':'ar';
+    b.querySelector('.icon-label').textContent=l==='ar'?'الدردشة':'Chat';
+    b.querySelector('.sub').textContent=l==='ar'?'عام وخاص':'Public & private';
+    b.title=l==='ar'?'دردشة SAKAKER':'SAKAKER Chat';
+    b.setAttribute('aria-label',b.title);
+  }
+
+  function mountIcon(){
+    if($('sakChatIcon'))return;
+    const host=document.querySelector('.cards')||$('sakakerAllIconsDock');
+    if(!host)return;
+    const b=document.createElement('button');
+    b.id='sakChatIcon';b.type='button';b.className='icon-card';
+    b.innerHTML='<span class="sak-chat-gold-symbol" aria-hidden="true">💬</span><span class="icon-label"></span><span class="sub"></span>';
+    b.addEventListener('click',openOverlay);
+    const studio=$('sakCreativeIcon');
+    if(studio&&studio.parentNode===host)studio.insertAdjacentElement('afterend',b);else host.appendChild(b);
+    labelIcon();
+  }
+
+  new MutationObserver(()=>{labelIcon();if(!$('sakChatOverlay').hidden)setLanguage(document.documentElement.lang==='en'?'en':'ar');})
+    .observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+
+  onAuthStateChanged(auth,async user=>{
+    detachChatListeners();
+    currentUser=user||null;
+    currentPrivate=null;
+    users={};blocks={};incoming={};publicData={};
+    renderNoPrivate();
+    if(!user){
+      $('sakChatOverlay').hidden=true;
+      const icon=$('sakChatIcon');if(icon)icon.style.display='none';
+      return;
+    }
+    currentName=safeName(user);
+    mountIcon();
+    const icon=$('sakChatIcon');if(icon)icon.style.display='';
+    setStatus(t('loading'));
+    try{
+      await startPresence(user);
+      startListeners();
+      setStatus(t('identity')+' '+currentName);
+    }catch(e){
+      console.warn('SAKAKER chat init:',e);
+      setStatus(t('firebaseError'));
+    }
+  });
+
+  mountIcon();
+  setLanguage(lang);
+  renderNoPrivate();
+
+})();
+</script>
+
+<script id="sakaker-static-login-background-final">
+(function(){
+  const v=document.getElementById('sakLoginBackgroundVideo');
+  if(v){
+    try{v.pause();}catch(e){}
+    v.removeAttribute('autoplay');
+    v.removeAttribute('src');
+    v.querySelectorAll('source').forEach(s=>s.removeAttribute('src'));
+    try{v.load();}catch(e){}
+  }
+})();
+</script>
+<!-- /SAKAKER FIREBASE SOCIAL CHAT FINAL -->
+
 </body>
 </html>
