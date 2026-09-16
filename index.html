@@ -40608,5 +40608,72 @@ html body #sakakerClockSlot #sakPianoKeyboardHint{
 }
 </style>
 
+
+
+<!-- SAKAKER BUSINESS POSITION FINAL -->
+<style id="sakaker-business-position-final">
+
+/* =========================================================
+   نقل أيقونة SAKAKER BUSINESS من الوسط
+   إلى أعلى يمين الصفحة أسفل منطقة الطيور واللغة
+========================================================= */
+
+html body:not(.locked) #sakakerBusinessAd{
+  position:fixed !important;
+
+  /* أسفل أدوات الطيور/اللغة في أعلى اليمين */
+  top:108px !important;
+  right:18px !important;
+
+  left:auto !important;
+  bottom:auto !important;
+
+  margin:0 !important;
+  transform:none !important;
+
+  z-index:2147483646 !important;
+}
+
+/* إبقاء الأيقونة نفسها بحجم متناسق */
+html body:not(.locked) #sakakerBusinessIcon{
+  width:68px !important;
+  height:68px !important;
+  margin:0 !important;
+}
+
+/* الجوال */
+@media(max-width:700px){
+  html body:not(.locked) #sakakerBusinessAd{
+    top:102px !important;
+    right:10px !important;
+    left:auto !important;
+    bottom:auto !important;
+    transform:none !important;
+  }
+
+  html body:not(.locked) #sakakerBusinessIcon{
+    width:62px !important;
+    height:62px !important;
+  }
+}
+
+/* الشاشات الصغيرة جدًا */
+@media(max-width:380px){
+  html body:not(.locked) #sakakerBusinessAd{
+    top:96px !important;
+    right:8px !important;
+    left:auto !important;
+    bottom:auto !important;
+  }
+
+  html body:not(.locked) #sakakerBusinessIcon{
+    width:58px !important;
+    height:58px !important;
+  }
+}
+
+</style>
+<!-- /SAKAKER BUSINESS POSITION FINAL -->
+
 </body>
 </html>
