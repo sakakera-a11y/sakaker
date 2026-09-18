@@ -40392,7 +40392,7 @@ lobby();if(auth)onAuthStateChanged(auth,activate);
   html body #sakSecondStreamPreview{
     display:block !important; position:absolute !important; inset:0 !important;
     width:100% !important; height:100% !important; object-fit:cover !important;
-    z-index:4 !important; opacity:1 !important;
+    z-index:4 !important; opacity:1 !important; pointer-events:none !important;
   }
   html body #sakSecondStreamCircle::before{display:none !important;}
   html body #sakSecondStreamPlay{z-index:8 !important;pointer-events:none !important;opacity:.75 !important;}
@@ -40410,6 +40410,16 @@ lobby();if(auth)onAuthStateChanged(auth,activate);
     frame.src = youtubePreview;
     frame.setAttribute('allow','autoplay; encrypted-media; picture-in-picture');
     frame.title = document.documentElement.lang === 'en' ? 'Featured video preview' : 'معاينة الفيديو المميز';
+  }
+
+  function prioritizeBackground(){
+    document.querySelectorAll('#sakLoginBackgroundVideo,#sakakerMainVideoBackground').forEach(video=>{
+      video.preload = 'auto';
+      video.setAttribute('preload','auto');
+      video.setAttribute('fetchpriority','high');
+      video.setAttribute('playsinline','');
+      video.play().catch(() => {});
+    });
   }
 
   function startLivePreview(){
@@ -40474,7 +40484,8 @@ lobby();if(auth)onAuthStateChanged(auth,activate);
   }
   const languageObserver = new MutationObserver(translateStaticUi);
   languageObserver.observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
-  window.addEventListener('load',()=>{startYouTubePreview();setTimeout(startLivePreview,900);translateStaticUi();},{once:true});
+  window.addEventListener('load',()=>{prioritizeBackground();startYouTubePreview();setTimeout(startLivePreview,900);translateStaticUi();},{once:true});
+  prioritizeBackground();
   translateStaticUi();
 })();
 </script>
