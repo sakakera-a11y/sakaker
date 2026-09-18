@@ -40395,6 +40395,13 @@ lobby();if(auth)onAuthStateChanged(auth,activate);
     z-index:4 !important; opacity:1 !important; pointer-events:none !important;
   }
   html body #sakSecondStreamCircle::before{display:none !important;}
+  html body #sakSecondStreamCircle.sak-preview-loading::after{
+    content:"📺  LIVE"; position:absolute; inset:0; z-index:6; display:flex;
+    align-items:center; justify-content:center; color:#fff; font:800 13px/1 Tahoma,Arial,sans-serif;
+    letter-spacing:.7px; text-shadow:0 2px 5px #000; pointer-events:none;
+    background:linear-gradient(145deg,rgba(4,48,67,.92),rgba(0,13,24,.72)),
+      radial-gradient(circle at 50% 38%,#37c9df 0 3%,transparent 4% 100%);
+  }
   html body #sakSecondStreamPlay{z-index:8 !important;pointer-events:none !important;opacity:.75 !important;}
 </style>
 <script id="sakaker-final-preview-and-bilingual-update">
@@ -40424,8 +40431,12 @@ lobby();if(auth)onAuthStateChanged(auth,activate);
 
   function startLivePreview(){
     const video = document.getElementById('sakSecondStreamPreview');
+    const circle = document.getElementById('sakSecondStreamCircle');
     if(!video || video.dataset.previewReady === '1') return;
     video.dataset.previewReady = '1'; video.muted = true; video.autoplay = true; video.playsInline = true; video.preload = 'metadata';
+    circle?.classList.add('sak-preview-loading');
+    video.addEventListener('playing',()=>circle?.classList.remove('sak-preview-loading'),{once:true});
+    video.addEventListener('canplay',()=>video.play().catch(()=>{}),{once:true});
     const play = () => video.play().catch(() => {});
     if(video.canPlayType('application/vnd.apple.mpegurl')){ video.src = hlsPreview; play(); return; }
     const loadHls = () => {
