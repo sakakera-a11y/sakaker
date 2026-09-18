@@ -40381,5 +40381,102 @@ lobby();if(auth)onAuthStateChanged(auth,activate);
   prepareChatIcon();
 })();
 </script>
+<style id="sakaker-live-preview-and-language-complete">
+  /* معاينات فيديو صامتة داخل الدوائر، بدون فتح نافذة المشغل. */
+  html body .video-top-container-fixed .miniVideo{
+    display:block !important; position:absolute !important; inset:0 !important;
+    width:100% !important; height:100% !important; z-index:8 !important;
+    border:0 !important; opacity:1 !important; pointer-events:auto !important;
+  }
+  html body .video-top-container-fixed .video-play-icon{z-index:9 !important;pointer-events:none !important;opacity:.72 !important;}
+  html body #sakSecondStreamPreview{
+    display:block !important; position:absolute !important; inset:0 !important;
+    width:100% !important; height:100% !important; object-fit:cover !important;
+    z-index:4 !important; opacity:1 !important;
+  }
+  html body #sakSecondStreamCircle::before{display:none !important;}
+  html body #sakSecondStreamPlay{z-index:8 !important;pointer-events:none !important;opacity:.75 !important;}
+</style>
+<script id="sakaker-final-preview-and-bilingual-update">
+(() => {
+  'use strict';
+  const youtubePreview = 'https://www.youtube-nocookie.com/embed/n7eQejkXbnM?autoplay=1&mute=1&loop=1&playlist=n7eQejkXbnM&controls=0&playsinline=1&rel=0';
+  const hlsPreview = 'https://cffda8ff.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9GSUZBUGx1c3dvbWVuX0hMUw/playlist.m3u8';
+
+  function startYouTubePreview(){
+    const frame = document.querySelector('.video-top-container-fixed .miniVideo');
+    if(!frame || frame.dataset.previewReady === '1') return;
+    frame.dataset.previewReady = '1';
+    frame.src = youtubePreview;
+    frame.setAttribute('allow','autoplay; encrypted-media; picture-in-picture');
+    frame.title = document.documentElement.lang === 'en' ? 'Featured video preview' : 'معاينة الفيديو المميز';
+  }
+
+  function startLivePreview(){
+    const video = document.getElementById('sakSecondStreamPreview');
+    if(!video || video.dataset.previewReady === '1') return;
+    video.dataset.previewReady = '1'; video.muted = true; video.autoplay = true; video.playsInline = true; video.preload = 'metadata';
+    const play = () => video.play().catch(() => {});
+    if(video.canPlayType('application/vnd.apple.mpegurl')){ video.src = hlsPreview; play(); return; }
+    const loadHls = () => {
+      if(!window.Hls || !window.Hls.isSupported()) return;
+      const player = new window.Hls({enableWorker:true,lowLatencyMode:true,backBufferLength:8,maxBufferLength:12});
+      player.loadSource(hlsPreview); player.attachMedia(video);
+      player.on(window.Hls.Events.MANIFEST_PARSED, play);
+    };
+    if(window.Hls) { loadHls(); return; }
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/hls.js@1.5.20/dist/hls.min.js'; script.async = true;
+    script.onload = loadHls; document.head.appendChild(script);
+  }
+
+  /* استكمال ترجمة الملصقات العامة الثابتة التي لم تكن ضمن قاموس الصفحة. */
+  const pairs = [
+    ['إغلاق','Close'],['رجوع','Back'],['تشغيل','Play'],['إيقاف','Pause'],['كتم الصوت','Mute'],['الصوت','Sound'],
+    ['بحث','Search'],['مشاركة','Share'],['حفظ','Save'],['حذف','Delete'],['إرسال','Send'],['تحميل','Loading'],
+    ['اللغة','Language'],['الإعدادات','Settings'],['الخريطة','Map'],['الموسيقى','Music'],['الفيديو','Video'],
+    ['الأخبار','News'],['البث المباشر','Live stream'],['مباشر','Live'],['مكتبة الفيديو','Video library'],
+    ['مكتبة الفيديو الزمردية','Emerald Video Library'],['لعبة بونج','Pong game'],['لعبة Pong','Pong game'],
+    ['لاعب','Player'],['كمبيوتر','Computer'],['سهل','Easy'],['صعب','Hard'],['أصعب','Harder'],['مستحيل','Impossible'],
+    ['الدردشة','Chat'],['عام','Public'],['خاص','Private'],['المستخدمون','Users'],['طلبات','Requests'],
+    ['قبول','Accept'],['رفض','Decline'],['حظر','Block'],['إبلاغ','Report'],['تسجيل الدخول','Sign in'],
+    ['تسجيل الخروج','Sign out'],['فيديو مميز','Featured video'],['معاينة الفيديو المميز','Featured video preview'],
+    ['Close','إغلاق'],['Back','رجوع'],['Play','تشغيل'],['Pause','إيقاف'],['Mute','كتم الصوت'],['Sound','الصوت'],
+    ['Search','بحث'],['Share','مشاركة'],['Save','حفظ'],['Delete','حذف'],['Send','إرسال'],['Loading','تحميل'],
+    ['Language','اللغة'],['Settings','الإعدادات'],['Map','الخريطة'],['Music','الموسيقى'],['Video','الفيديو'],
+    ['News','الأخبار'],['Live stream','البث المباشر'],['Live','مباشر'],['Video library','مكتبة الفيديو'],
+    ['Pong game','لعبة بونج'],['Player','لاعب'],['Computer','كمبيوتر'],['Easy','سهل'],['Hard','صعب'],
+    ['Harder','أصعب'],['Impossible','مستحيل'],['Chat','الدردشة'],['Public','عام'],['Private','خاص'],
+    ['Users','المستخدمون'],['Requests','طلبات'],['Accept','قبول'],['Decline','رفض'],['Block','حظر'],
+    ['Report','إبلاغ'],['Sign in','تسجيل الدخول'],['Sign out','تسجيل الخروج'],['Featured video','فيديو مميز'],
+    ['Featured video preview','معاينة الفيديو المميز']
+  ];
+  const lookup = new Map(pairs);
+  function translate(value, lang){
+    const key = String(value || '').trim(); const counterpart = lookup.get(key);
+    if(!counterpart) return value;
+    const wantsEnglish = lang === 'en';
+    const arabic = /[\u0600-\u06FF]/.test(key);
+    return wantsEnglish === arabic ? counterpart : value;
+  }
+  function translateStaticUi(){
+    const lang = document.documentElement.lang === 'en' ? 'en' : 'ar';
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {acceptNode(node){
+      const parent = node.parentElement;
+      return !parent || /^(SCRIPT|STYLE|TEXTAREA|OPTION)$/i.test(parent.tagName) || parent.closest('.sak-chat-message') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
+    }});
+    const nodes=[]; while(walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(node => { const next=translate(node.nodeValue,lang); if(next!==node.nodeValue) node.nodeValue=next; });
+    document.querySelectorAll('[title],[aria-label],[placeholder]').forEach(el=>{
+      ['title','aria-label','placeholder'].forEach(attr=>{if(el.hasAttribute(attr)){const next=translate(el.getAttribute(attr),lang);if(next!==el.getAttribute(attr))el.setAttribute(attr,next);}});
+    });
+    startYouTubePreview();
+  }
+  const languageObserver = new MutationObserver(translateStaticUi);
+  languageObserver.observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  window.addEventListener('load',()=>{startYouTubePreview();setTimeout(startLivePreview,900);translateStaticUi();},{once:true});
+  translateStaticUi();
+})();
+</script>
 </body>
 </html>
