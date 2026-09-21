@@ -35142,7 +35142,7 @@ body.sakaker-music-open #sakSecondStreamCorner{
   'use strict';
 
   const STREAM_URL =
-    'https://cffda8ff.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9GSUZBUGx1c3dvbWVuX0hMUw/playlist.m3u8';
+    'http://88.212.15.19/live/film_plus_hun_atk/index.m3u8';
 
   let previewHls = null;
   let fullHls = null;
@@ -36375,7 +36375,7 @@ html body #videoBoxFixed video{
     رابط HLS المباشر الذي أعطاه المستخدم.
   */
   const DIRECT_HLS_URL =
-    'https://cffda8ff.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9GSUZBUGx1c3dvbWVuX0hMUw/playlist.m3u8';
+    'http://88.212.15.19/live/film_plus_hun_atk/index.m3u8';
 
   let directHls = null;
 
@@ -36422,7 +36422,7 @@ html body #videoBoxFixed video{
   );
 
   addPreconnect(
-    'https://cffda8ff.wurl.com'
+    'http://88.212.15.19'
   );
 
 
@@ -37284,7 +37284,7 @@ body.sak-media-heavy-open #emOpenBtn{
 
   const BG_VIDEO_URL = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B6%D8%B9_%D8%A7%D9%84%D8%A7%D9%85%D9%88%D8%A7%D8%AC_%D8%AA%D8%AA%D9%84%D8%A7%D8%B7%D9%85_%D9%88%D9%83%D8%B0%D9%84%D9%83_%D8%A7%D9%84%D8%B3%D9%81%D9%8A%D9%86.mp4';
   const YOUTUBE_URL = 'https://www.youtube.com/embed/n7eQejkXbnM?autoplay=1&mute=1&controls=1&playsinline=1&rel=0';
-  const HLS_URL = 'https://cffda8ff.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9GSUZBUGx1c3dvbWVuX0hMUw/playlist.m3u8';
+  const HLS_URL = 'http://88.212.15.19/live/film_plus_hun_atk/index.m3u8';
 
   let circleHls = null;
   let hlsPromise = null;
@@ -40355,7 +40355,7 @@ html body:not(.locked) #sakakerBusinessAd{
 (() => {
   'use strict';
   const youtubePreview = 'https://www.youtube-nocookie.com/embed/n7eQejkXbnM?autoplay=1&mute=1&loop=1&playlist=n7eQejkXbnM&controls=0&playsinline=1&rel=0';
-  const hlsPreview = 'https://cffda8ff.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9GSUZBUGx1c3dvbWVuX0hMUw/playlist.m3u8';
+  const hlsPreview = 'http://88.212.15.19/live/film_plus_hun_atk/index.m3u8';
 
   function startYouTubePreview(){
     const frame = document.querySelector('.video-top-container-fixed .miniVideo');
@@ -41643,7 +41643,7 @@ html body #sakSecondStreamPreview{
 </style>
 <script id="sak-reliable-second-eye-preview-js">
 (()=>{'use strict';
- const stream='https://cffda8ff.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9GSUZBUGx1c3dvbWVuX0hMUw/playlist.m3u8';
+ const stream='http://88.212.15.19/live/film_plus_hun_atk/index.m3u8';
  function start(){
    document.getElementById('sakSecondEyePreview')?.remove();
    const video=document.getElementById('sakSecondStreamPreview');if(!video||video.dataset.sakEyeLive==='1')return;video.dataset.sakEyeLive='1';
@@ -41659,7 +41659,7 @@ html body #sakSecondStreamPreview{
 <!-- CLEAN HLS PLAYER FOR THE SECOND EYE -->
 <script id="sak-clean-second-eye-hls-js">
 (()=>{'use strict';
- const stream='https://cffda8ff.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9GSUZBUGx1c3dvbWVuX0hMUw/playlist.m3u8';
+ const stream='http://88.212.15.19/live/film_plus_hun_atk/index.m3u8';
  let started=false;
  function makePlayer(){
    if(started)return;
@@ -41681,6 +41681,29 @@ html body #sakSecondStreamPreview{
    const script=document.createElement('script');script.dataset.sakEyeHls='1';script.src='https://cdn.jsdelivr.net/npm/hls.js@1.5.18/dist/hls.min.js';script.async=true;script.onload=connect;document.head.append(script);
  }
  makePlayer();[700,2500,6000].forEach(ms=>setTimeout(makePlayer,ms));
+})();
+</script>
+<!-- RELIABLE HTTPS SECOND VIDEO + HIDE THE OTHER EYE WHILE OPEN -->
+<style id="sak-reliable-second-video-and-peer-eye">
+html body #sakSecondStreamPreview{display:none!important;}
+html body #sakSecondEyeReliablePreview{display:block!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;border:0!important;clip-path:inherit!important;z-index:4!important;pointer-events:none!important;background:#102a36!important;}
+html body .video-top-container-fixed.sak-eye-peer-hidden,
+html body #sakSecondStreamCorner.sak-eye-peer-hidden{visibility:hidden!important;opacity:0!important;pointer-events:none!important;transition:opacity .18s ease!important;}
+</style>
+<script id="sak-reliable-second-video-and-peer-eye-js">
+(()=>{'use strict';
+ const videoId='jtT5Ifr-3VA';
+ const previewUrl='https://www.youtube-nocookie.com/embed/'+videoId+'?autoplay=1&mute=1&loop=1&playlist='+videoId+'&controls=0&playsinline=1&rel=0';
+ const openUrl='https://www.youtube-nocookie.com/embed/'+videoId+'?autoplay=1&controls=1&playsinline=1&rel=0&modestbranding=1';
+ function mountPreview(){const eye=document.getElementById('sakSecondStreamCircle');if(!eye)return;document.getElementById('sakSecondEyePreview')?.remove();let frame=document.getElementById('sakSecondEyeReliablePreview');if(!frame){frame=document.createElement('iframe');frame.id='sakSecondEyeReliablePreview';frame.title='Video preview';frame.tabIndex=-1;frame.allow='autoplay; encrypted-media; picture-in-picture';eye.prepend(frame);}if(frame.src!==previewUrl)frame.src=previewUrl;}
+ function hidePeer(which){const first=document.querySelector('.video-top-container-fixed'),second=document.getElementById('sakSecondStreamCorner');(which==='first'?second:first)?.classList.add('sak-eye-peer-hidden');}
+ function showEyes(){document.querySelector('.video-top-container-fixed')?.classList.remove('sak-eye-peer-hidden');document.getElementById('sakSecondStreamCorner')?.classList.remove('sak-eye-peer-hidden');}
+ function openSecond(e){e.preventDefault();e.stopImmediatePropagation();const box=document.getElementById('videoBoxFixed'),frame=document.getElementById('fixedVideo'),title=box?.querySelector('.video-box-title');if(!box||!frame)return;hidePeer('second');box.classList.remove('sak-hls-mode');document.getElementById('sakFixedHlsVideo')?.pause();frame.src=openUrl;box.style.display='block';if(title)title.textContent='✦ VIDEO ✦';document.body.classList.add('sak-fixed-video-open');}
+ function openFirst(){hidePeer('first');}
+ mountPreview();[300,1000,2500].forEach(ms=>setTimeout(mountPreview,ms));
+ const second=document.getElementById('sakSecondStreamCircle'),first=document.querySelector('.video-top-container-fixed .video-circle');second?.addEventListener('click',openSecond,true);first?.addEventListener('click',openFirst,true);
+ const oldClose=window.closeFixedVideo;window.closeFixedVideo=function(){oldClose?.();showEyes();};
+ document.getElementById('videoCloseBtn')?.addEventListener('click',()=>setTimeout(showEyes,0),true);
 })();
 </script>
 </body>
