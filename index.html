@@ -41628,5 +41628,30 @@ html body #sakakerAllIconsDock :is(.icon-card,#facebookVideoIcon,#liveFlasher,#e
 @keyframes sakSilverFishRadiance{0%,100%{filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 10px #d9e4e8) drop-shadow(0 0 16px #8ea5ae)}50%{filter:drop-shadow(0 0 7px #fff) drop-shadow(0 0 17px #edf4f6) drop-shadow(0 0 28px #a7bac1)}}
 @media(max-width:700px){html body #sakakerAllIconsDock{grid-template-columns:repeat(6,minmax(0,1fr))!important;grid-auto-rows:46px!important;gap:4px!important;} }
 </style>
+<!-- RELIABLE VIDEO PREVIEW FOR THE SECOND EYE -->
+<style id="sak-reliable-second-eye-preview">
+html body .video-top-container-fixed .video-circle,
+html body #sakSecondStreamCircle{
+  border-radius:0!important;
+  clip-path:polygon(0% 50%,9% 34%,22% 18%,38% 6%,50% 2%,62% 6%,78% 18%,91% 34%,100% 50%,91% 66%,78% 82%,62% 94%,50% 98%,38% 94%,22% 82%,9% 66%)!important;
+  background:#102a36!important;overflow:hidden!important;
+}
+html body #sakSecondStreamPreview{display:none!important;}
+html body #sakSecondEyePreview{
+  display:block!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;border:0!important;
+  border-radius:0!important;clip-path:inherit!important;object-fit:cover!important;z-index:4!important;pointer-events:none!important;background:#102a36!important;
+}
+</style>
+<script id="sak-reliable-second-eye-preview-js">
+(()=>{'use strict';
+ function mount(){
+   const eye=document.getElementById('sakSecondStreamCircle');if(!eye||document.getElementById('sakSecondEyePreview'))return;
+   const frame=document.createElement('iframe');frame.id='sakSecondEyePreview';frame.title='Live video preview';frame.tabIndex=-1;
+   frame.allow='autoplay; encrypted-media; picture-in-picture';frame.src='https://www.youtube-nocookie.com/embed/n7eQejkXbnM?autoplay=1&mute=1&loop=1&playlist=n7eQejkXbnM&controls=0&playsinline=1&rel=0';
+   eye.prepend(frame);
+ }
+ mount();[300,1000,2500,5000].forEach(ms=>setTimeout(mount,ms));
+})();
+</script>
 </body>
 </html>
