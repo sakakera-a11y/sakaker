@@ -41745,5 +41745,29 @@ html body #sakSecureFullVideo{display:block!important;width:100%!important;heigh
  function wire(){const eye=document.getElementById('sakSecondStreamCircleSecure');if(!eye||eye.dataset.sakModalWire)return;eye.dataset.sakModalWire='1';eye.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();open()},true);eye.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}},true)}wire();[500,1500,3500].forEach(ms=>setTimeout(wire,ms));
 })();
 </script>
+<!-- DIRECT CLICK TARGET + ENHANCED EYE BEAUTY -->
+<style id="sak-direct-eye-opener-and-beauty">
+html body .video-top-container-fixed .video-circle,
+html body #sakSecondStreamCircleSecure{
+  outline:2px solid rgba(232,255,253,.92)!important;outline-offset:3px!important;
+  box-shadow:inset 0 0 14px rgba(255,255,255,.82),inset 0 -18px 22px rgba(3,28,40,.55),0 0 9px #fff,0 0 23px #82fff0,0 0 44px rgba(99,210,224,.82)!important;
+  animation:sakEyeBeauty 3.6s ease-in-out infinite!important;
+}
+html body .video-top-container-fixed::after,
+html body #sakSecondStreamCorner::after{content:'✦  ✦  ✦'!important;display:block!important;position:absolute!important;left:50%!important;bottom:-19px!important;transform:translateX(-50%)!important;color:#dcfffa!important;font:12px/1 Arial,sans-serif!important;letter-spacing:8px!important;text-shadow:0 0 5px #fff,0 0 12px #55f5e1!important;pointer-events:none!important;z-index:60!important}
+@keyframes sakEyeBeauty{0%,100%{filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 13px #81f7e8);transform:scale(1)}50%{filter:drop-shadow(0 0 9px #fff) drop-shadow(0 0 23px #72fff0);transform:scale(1.035)}}
+#sakSecureEyeOpenButton{position:absolute!important;inset:0!important;z-index:100!important;width:100%!important;height:100%!important;border:0!important;border-radius:0!important;background:transparent!important;color:transparent!important;cursor:pointer!important;clip-path:polygon(0% 50%,9% 34%,22% 18%,38% 6%,50% 2%,62% 6%,78% 18%,91% 34%,100% 50%,91% 66%,78% 82%,62% 94%,50% 98%,38% 94%,22% 82%,9% 66%)!important}
+@media(max-width:600px){html body .video-top-container-fixed::after,html body #sakSecondStreamCorner::after{bottom:-15px!important;font-size:9px!important;}}
+</style>
+<script id="sak-direct-eye-opener-js">
+(()=>{'use strict';
+ const stream='https://cityeden.catcast.tv/content/41333/index.m3u8';let hls=null;
+ function hlsLoader(){if(window.Hls)return Promise.resolve(window.Hls);return new Promise(resolve=>{const old=document.querySelector('script[data-sak-direct-modal-hls]');if(old){old.addEventListener('load',()=>resolve(window.Hls),{once:true});return}const s=document.createElement('script');s.dataset.sakDirectModalHls='1';s.src='https://cdn.jsdelivr.net/npm/hls.js@1.5.18/dist/hls.min.js';s.async=true;s.onload=()=>resolve(window.Hls);s.onerror=()=>resolve(null);document.head.append(s)})}
+ async function open(){const modal=document.getElementById('sakSecureStreamModal');if(!modal)return;modal.classList.add('sak-open');const video=modal.querySelector('video');hls?.destroy();hls=null;if(video.canPlayType('application/vnd.apple.mpegurl')){video.src=stream;video.play().catch(()=>{});return}const Hls=await hlsLoader();if(!Hls||!Hls.isSupported())return;hls=new Hls({enableWorker:true,lowLatencyMode:true,backBufferLength:20});hls.loadSource(stream);hls.attachMedia(video);hls.on(Hls.Events.MANIFEST_PARSED,()=>video.play().catch(()=>{}));}
+ function install(){const host=document.getElementById('sakSecondStreamCorner');if(!host||document.getElementById('sakSecureEyeOpenButton'))return;const b=document.createElement('button');b.id='sakSecureEyeOpenButton';b.type='button';b.setAttribute('aria-label','فتح البث المباشر');b.onclick=e=>{e.preventDefault();e.stopPropagation();open()};host.append(b)}
+ document.querySelector('#sakSecureStreamModal button')?.addEventListener('click',()=>{hls?.destroy();hls=null;});
+ install();[300,1000,2500,5000].forEach(ms=>setTimeout(install,ms));
+})();
+</script>
 </body>
 </html>
