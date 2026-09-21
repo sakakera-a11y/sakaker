@@ -41636,21 +41636,24 @@ html body #sakSecondStreamCircle{
   clip-path:polygon(0% 50%,9% 34%,22% 18%,38% 6%,50% 2%,62% 6%,78% 18%,91% 34%,100% 50%,91% 66%,78% 82%,62% 94%,50% 98%,38% 94%,22% 82%,9% 66%)!important;
   background:#102a36!important;overflow:hidden!important;
 }
-html body #sakSecondStreamPreview{display:none!important;}
-html body #sakSecondEyePreview{
+html body #sakSecondStreamPreview{
   display:block!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;border:0!important;
   border-radius:0!important;clip-path:inherit!important;object-fit:cover!important;z-index:4!important;pointer-events:none!important;background:#102a36!important;
 }
 </style>
 <script id="sak-reliable-second-eye-preview-js">
 (()=>{'use strict';
- function mount(){
-   const eye=document.getElementById('sakSecondStreamCircle');if(!eye||document.getElementById('sakSecondEyePreview'))return;
-   const frame=document.createElement('iframe');frame.id='sakSecondEyePreview';frame.title='Live video preview';frame.tabIndex=-1;
-   frame.allow='autoplay; encrypted-media; picture-in-picture';frame.src='https://www.youtube-nocookie.com/embed/jtT5Ifr-3VA?autoplay=1&mute=1&loop=1&playlist=jtT5Ifr-3VA&controls=0&playsinline=1&rel=0';
-   eye.prepend(frame);
+ const stream='https://cffda8ff.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9GSUZBUGx1c3dvbWVuX0hMUw/playlist.m3u8';
+ function start(){
+   document.getElementById('sakSecondEyePreview')?.remove();
+   const video=document.getElementById('sakSecondStreamPreview');if(!video||video.dataset.sakEyeLive==='1')return;video.dataset.sakEyeLive='1';
+   video.muted=true;video.autoplay=true;video.playsInline=true;video.src=stream;
+   if(video.canPlayType('application/vnd.apple.mpegurl')){video.play().catch(()=>{});return;}
+   const attach=()=>{if(!window.Hls||!window.Hls.isSupported())return;const hls=new window.Hls({enableWorker:true,lowLatencyMode:true,backBufferLength:15});hls.loadSource(stream);hls.attachMedia(video);hls.on(window.Hls.Events.MANIFEST_PARSED,()=>video.play().catch(()=>{}));};
+   if(window.Hls){attach();return;}
+   const script=document.createElement('script');script.src='https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js';script.async=true;script.onload=attach;document.head.append(script);
  }
- mount();[300,1000,2500,5000].forEach(ms=>setTimeout(mount,ms));
+ start();[500,1800,4000].forEach(ms=>setTimeout(start,ms));
 })();
 </script>
 </body>
