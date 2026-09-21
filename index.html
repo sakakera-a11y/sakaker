@@ -41647,7 +41647,7 @@ html body #sakSecondEyePreview{
  function mount(){
    const eye=document.getElementById('sakSecondStreamCircle');if(!eye||document.getElementById('sakSecondEyePreview'))return;
    const frame=document.createElement('iframe');frame.id='sakSecondEyePreview';frame.title='Live video preview';frame.tabIndex=-1;
-   frame.allow='autoplay; encrypted-media; picture-in-picture';frame.src='https://www.youtube-nocookie.com/embed/n7eQejkXbnM?autoplay=1&mute=1&loop=1&playlist=n7eQejkXbnM&controls=0&playsinline=1&rel=0';
+   frame.allow='autoplay; encrypted-media; picture-in-picture';frame.src='https://www.youtube-nocookie.com/embed/jtT5Ifr-3VA?autoplay=1&mute=1&loop=1&playlist=jtT5Ifr-3VA&controls=0&playsinline=1&rel=0';
    eye.prepend(frame);
  }
  mount();[300,1000,2500,5000].forEach(ms=>setTimeout(mount,ms));
