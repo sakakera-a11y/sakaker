@@ -41726,7 +41726,7 @@ html body #sakSecureFullVideo{display:block!important;width:100%!important;heigh
 })();
 </script>
 <!-- CENTERED FULL-PAGE SECURE STREAM WINDOW -->
-<style id="sak-centered-secure-stream-modal">
+<style id="sak-centered-secure-stream-modal" media="not all">
 #sakSecureStreamModal{position:fixed!important;inset:0!important;z-index:2147483647!important;display:none!important;align-items:center!important;justify-content:center!important;padding:16px!important;box-sizing:border-box!important;background:rgba(0,0,0,.96)!important;backdrop-filter:blur(12px)!important}
 #sakSecureStreamModal.sak-open{display:flex!important}
 #sakSecureStreamModal .sak-secure-stream-box{position:relative!important;width:min(1100px,96vw)!important;height:min(78dvh,700px)!important;min-height:260px!important;background:#000!important;border:2px solid #d7ffff!important;border-radius:22px!important;overflow:hidden!important;box-shadow:0 0 18px #fff,0 0 45px #65e9dc!important}
@@ -41734,7 +41734,7 @@ html body #sakSecureFullVideo{display:block!important;width:100%!important;heigh
 #sakSecureStreamModal button{position:absolute!important;top:10px!important;right:10px!important;z-index:2!important;width:40px!important;height:40px!important;border:1px solid #fff!important;border-radius:50%!important;background:#9e1d45!important;color:#fff!important;font-size:23px!important;cursor:pointer!important}
 @media(max-width:600px){#sakSecureStreamModal{padding:8px!important}#sakSecureStreamModal .sak-secure-stream-box{width:100%!important;height:60dvh!important;border-radius:14px!important}}
 </style>
-<script id="sak-centered-secure-stream-modal-js">
+<script id="sak-centered-secure-stream-modal-js" type="application/json">
 (()=>{'use strict';
  const stream='https://cityeden.catcast.tv/content/41333/index.m3u8';let hls=null;
  async function getHls(){if(window.Hls)return window.Hls;return new Promise(resolve=>{const old=document.querySelector('script[data-sak-modal-hls]');if(old){old.addEventListener('load',()=>resolve(window.Hls),{once:true});return}const s=document.createElement('script');s.dataset.sakModalHls='1';s.src='https://cdn.jsdelivr.net/npm/hls.js@1.5.18/dist/hls.min.js';s.async=true;s.onload=()=>resolve(window.Hls);s.onerror=()=>resolve(null);document.head.append(s)})}
@@ -41746,7 +41746,7 @@ html body #sakSecureFullVideo{display:block!important;width:100%!important;heigh
 })();
 </script>
 <!-- DIRECT CLICK TARGET + ENHANCED EYE BEAUTY -->
-<style id="sak-direct-eye-opener-and-beauty">
+<style id="sak-direct-eye-opener-and-beauty" media="not all">
 html body .video-top-container-fixed .video-circle,
 html body #sakSecondStreamCircleSecure{
   outline:2px solid rgba(232,255,253,.92)!important;outline-offset:3px!important;
@@ -41759,7 +41759,7 @@ html body #sakSecondStreamCorner::after{content:'✦  ✦  ✦'!important;displa
 #sakSecureEyeOpenButton{position:absolute!important;inset:0!important;z-index:100!important;width:100%!important;height:100%!important;border:0!important;border-radius:0!important;background:transparent!important;color:transparent!important;cursor:pointer!important;clip-path:polygon(0% 50%,9% 34%,22% 18%,38% 6%,50% 2%,62% 6%,78% 18%,91% 34%,100% 50%,91% 66%,78% 82%,62% 94%,50% 98%,38% 94%,22% 82%,9% 66%)!important}
 @media(max-width:600px){html body .video-top-container-fixed::after,html body #sakSecondStreamCorner::after{bottom:-15px!important;font-size:9px!important;}}
 </style>
-<script id="sak-direct-eye-opener-js">
+<script id="sak-direct-eye-opener-js" type="application/json">
 (()=>{'use strict';
  const stream='https://cityeden.catcast.tv/content/41333/index.m3u8';let hls=null;
  function hlsLoader(){if(window.Hls)return Promise.resolve(window.Hls);return new Promise(resolve=>{const old=document.querySelector('script[data-sak-direct-modal-hls]');if(old){old.addEventListener('load',()=>resolve(window.Hls),{once:true});return}const s=document.createElement('script');s.dataset.sakDirectModalHls='1';s.src='https://cdn.jsdelivr.net/npm/hls.js@1.5.18/dist/hls.min.js';s.async=true;s.onload=()=>resolve(window.Hls);s.onerror=()=>resolve(null);document.head.append(s)})}
