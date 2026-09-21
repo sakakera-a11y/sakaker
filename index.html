@@ -41656,5 +41656,32 @@ html body #sakSecondStreamPreview{
  start();[500,1800,4000].forEach(ms=>setTimeout(start,ms));
 })();
 </script>
+<!-- CLEAN HLS PLAYER FOR THE SECOND EYE -->
+<script id="sak-clean-second-eye-hls-js">
+(()=>{'use strict';
+ const stream='https://cffda8ff.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9GSUZBUGx1c3dvbWVuX0hMUw/playlist.m3u8';
+ let started=false;
+ function makePlayer(){
+   if(started)return;
+   const eye=document.getElementById('sakSecondStreamCircle');let old=document.getElementById('sakSecondStreamPreview');if(!eye||!old)return;
+   /* استبدال عنصر المعاينة يزيل أي مشغل قديم عالق على الخلفية السوداء. */
+   const video=document.createElement('video');video.id='sakSecondStreamPreview';video.muted=true;video.autoplay=true;video.playsInline=true;video.preload='auto';video.crossOrigin='anonymous';video.setAttribute('aria-hidden','true');old.replaceWith(video);started=true;
+   const play=()=>video.play().catch(()=>{});
+   const connect=()=>{
+     if(video.canPlayType('application/vnd.apple.mpegurl')){video.src=stream;video.addEventListener('canplay',play,{once:true});video.load();return;}
+     if(!window.Hls||!window.Hls.isSupported())return;
+     const hls=new window.Hls({enableWorker:true,lowLatencyMode:false,backBufferLength:30,maxBufferLength:30});
+     hls.loadSource(stream);hls.attachMedia(video);
+     hls.on(window.Hls.Events.MANIFEST_PARSED,play);
+     hls.on(window.Hls.Events.ERROR,(_,data)=>{if(data.fatal){hls.destroy();started=false;setTimeout(makePlayer,2500);}});
+   };
+   if(window.Hls){connect();return;}
+   const existing=document.querySelector('script[data-sak-eye-hls]');
+   if(existing){existing.addEventListener('load',connect,{once:true});return;}
+   const script=document.createElement('script');script.dataset.sakEyeHls='1';script.src='https://cdn.jsdelivr.net/npm/hls.js@1.5.18/dist/hls.min.js';script.async=true;script.onload=connect;document.head.append(script);
+ }
+ makePlayer();[700,2500,6000].forEach(ms=>setTimeout(makePlayer,ms));
+})();
+</script>
 </body>
 </html>
