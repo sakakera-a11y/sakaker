@@ -38949,10 +38949,10 @@ html body #sakSecureFullVideo{display:block!important;width:100%!important;heigh
 </style>
 <script id="sak-secure-hls-second-eye-js">
 (()=>{'use strict';
- const stream='https://cityeden.catcast.tv/content/41333/index.m3u8';let previewHls=null,fullHls=null;
+ const stream='https://cffda8ff.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9GSUZBUGx1c3dvbWVuX0hMUw/playlist.m3u8';let previewHls=null,fullHls=null;
  function loadHls(){if(window.Hls)return Promise.resolve(window.Hls);return new Promise(resolve=>{const old=document.querySelector('script[data-sak-secure-hls]');if(old){old.addEventListener('load',()=>resolve(window.Hls),{once:true});return;}const s=document.createElement('script');s.dataset.sakSecureHls='1';s.src='https://cdn.jsdelivr.net/npm/hls.js@1.5.18/dist/hls.min.js';s.async=true;s.onload=()=>resolve(window.Hls);s.onerror=()=>resolve(null);document.head.append(s);});}
  async function attach(video,type){const Hls=await loadHls();if(video.canPlayType('application/vnd.apple.mpegurl')){video.src=stream;video.play().catch(()=>{});return;}if(!Hls||!Hls.isSupported())return;const hls=new Hls({enableWorker:true,lowLatencyMode:true,backBufferLength:20});hls.loadSource(stream);hls.attachMedia(video);hls.on(Hls.Events.MANIFEST_PARSED,()=>video.play().catch(()=>{}));if(type==='preview')previewHls=hls;else fullHls=hls;}
- function mount(){const old=document.getElementById('sakSecondStreamCircle');if(!old||document.getElementById('sakSecondStreamCircleSecure'))return;const eye=document.createElement('div');eye.id='sakSecondStreamCircleSecure';eye.setAttribute('role','button');eye.tabIndex=0;eye.setAttribute('aria-label','DAZN FIFA+');eye.innerHTML='<span class="sak-dazn-preview"><iframe src="https://www.dazn.com/competition/Competition:50kvbmxi5r9amj2e39hznggqj" title="DAZN FIFA+ preview" tabindex="-1" aria-hidden="true" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></span>';old.replaceWith(eye);}
+ function mount(){const old=document.getElementById('sakSecondStreamCircle');if(!old||document.getElementById('sakSecondStreamCircleSecure'))return;const eye=document.createElement('div');eye.id='sakSecondStreamCircleSecure';eye.setAttribute('role','button');eye.tabIndex=0;eye.setAttribute('aria-label','FIFA+ Live');eye.innerHTML='<video id="sakSecureEyeVideo" muted playsinline autoplay preload="metadata" aria-label="FIFA+ preview"></video>';old.replaceWith(eye);attach(document.getElementById('sakSecureEyeVideo'),'preview');}
  function open(e){e?.preventDefault();e?.stopPropagation();const box=document.getElementById('videoBoxFixed'),frame=document.getElementById('fixedVideo'),title=box?.querySelector('.video-box-title');if(!box)return;document.querySelector('.video-top-container-fixed')?.classList.add('sak-eye-peer-hidden');frame.style.display='none';let video=document.getElementById('sakSecureFullVideo');if(!video){video=document.createElement('video');video.id='sakSecureFullVideo';video.controls=true;video.autoplay=true;video.playsInline=true;box.append(video);}fullHls?.destroy();fullHls=null;attach(video,'full');box.style.display='block';if(title)title.textContent='✦ LIVE STREAM ✦';}
  const previousClose=window.closeFixedVideo;window.closeFixedVideo=function(){fullHls?.destroy();fullHls=null;document.getElementById('sakSecureFullVideo')?.pause();const frame=document.getElementById('fixedVideo');if(frame)frame.style.display='block';previousClose?.();document.querySelector('.video-top-container-fixed')?.classList.remove('sak-eye-peer-hidden');};
  mount();[400,1300,3200].forEach(ms=>setTimeout(mount,ms));
@@ -39018,7 +39018,7 @@ html body #sakSecondStreamCorner #sakSecondStreamCircleSecure::after{
 </style>
 <script id="sak-shell-crystal-player">
 (()=>{'use strict';
- const stream='https://cityeden.catcast.tv/content/41333/index.m3u8';
+ const stream='https://cffda8ff.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9GSUZBUGx1c3dvbWVuX0hMUw/playlist.m3u8';
  const dialog=document.createElement('dialog');dialog.id='sakCrystalDialog';dialog.setAttribute('aria-labelledby','sakCrystalTitle');
  dialog.innerHTML='<div class="crystal-head"><span id="sakCrystalTitle"></span><button class="crystal-close" type="button" aria-label="إغلاق / Close">×</button></div><div id="sakCrystalStage"></div><p id="sakCrystalStatus" role="status"></p>';
  document.body.append(dialog);
@@ -39033,13 +39033,20 @@ html body #sakSecondStreamCorner #sakSecondStreamCircleSecure::after{
  async function open(kind,trigger){
   stop();const current=ticket;focusBefore=trigger;scrollBefore=document.body.style.overflow;document.body.style.overflow='hidden';dialog.dir=en()?'ltr':'rtl';dialog.querySelector('#sakCrystalTitle').textContent=kind==='live'?(en()?'✧ Live stream':'✧ البث المباشر'):(en()?'✧ Video':'✧ الفيديو');dialog.showModal();dialog.querySelector('button').focus();
   if(kind==='youtube'){const f=document.createElement('iframe');const id=document.querySelector('.video-top-container-fixed .video-circle')?.dataset.video||'n7eQejkXbnM';f.src='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id)+'?autoplay=1&playsinline=1&rel=0';f.allow='autoplay; encrypted-media; fullscreen; picture-in-picture';f.allowFullscreen=true;f.title=en()?'Video':'الفيديو';stage.append(f);return}
-  dialog.querySelector('#sakCrystalTitle').textContent='DAZN · FIFA+';
-  const frame=document.createElement('iframe');
-  frame.src='https://www.dazn.com/competition/Competition:50kvbmxi5r9amj2e39hznggqj';
-  frame.title='DAZN · FIFA+';
-  frame.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';
-  frame.allowFullscreen=true;
-  stage.append(frame);
+  dialog.querySelector('#sakCrystalTitle').textContent='FIFA+ · LIVE';
+  const video=document.createElement('video');video.controls=true;video.autoplay=true;video.playsInline=true;stage.append(video);
+  status.textContent=en()?'Loading stream…':'جارٍ تحميل البث…';
+  video.addEventListener('playing',()=>{status.textContent='';});
+  const failure=()=>{if(current===ticket&&dialog.open)status.textContent=en()?'Stream unavailable. Please try again.':'تعذر تحميل البث، حاول مرة أخرى.';};
+  const play=()=>video.play().catch(()=>{if(current===ticket)status.textContent=en()?'Press play to watch.':'اضغط تشغيل للمشاهدة.';});
+  try{
+    if(video.canPlayType('application/vnd.apple.mpegurl')){video.src=stream;video.addEventListener('error',failure);play();return;}
+    const H=await loader();if(current!==ticket||!dialog.open)return;
+    if(!H?.isSupported()){failure();return;}
+    hls=new H({enableWorker:true,backBufferLength:15,maxBufferLength:20});
+    hls.loadSource(stream);hls.attachMedia(video);
+    hls.on(H.Events.MANIFEST_PARSED,play);hls.on(H.Events.ERROR,(_,data)=>{if(data.fatal)failure();});
+  }catch(_){failure();}
  }
  /* Capture at window level, before legacy document listeners intercept clicks. */
  function route(e){if(!(e.target instanceof Element))return;const first=e.target.closest('.video-top-container-fixed'),second=e.target.closest('#sakSecondStreamCorner');if(!first&&!second)return;if(e.type==='keydown'&&!['Enter',' '].includes(e.key))return;e.preventDefault();e.stopImmediatePropagation();open(second?'live':'youtube',second?.querySelector('[role=button]')||first?.querySelector('.video-circle'))}
@@ -39555,5 +39562,21 @@ html body #sakSecondStreamCorner .sak-dazn-preview iframe{position:absolute!impo
 #sakCrystalStage .sak-dazn-card a{display:inline-block;padding:12px 20px;border-radius:10px;background:#f6ff00;color:#101413;font-weight:700;text-decoration:none}
 #sakCrystalStage .sak-dazn-card a:focus-visible{outline:3px solid white;outline-offset:4px}
 </style>
+<style id="sak-two-previews-visible">
+html body:not(.locked) .video-top-container-fixed.sak-cycle-hidden,
+html body:not(.locked) #sakSecondStreamCorner.sak-cycle-hidden{opacity:1!important;visibility:visible!important;pointer-events:auto!important}
+html body .video-top-container-fixed .video-circle .miniVideo{display:block!important;visibility:visible!important;opacity:1!important;pointer-events:none!important}
+</style>
+<script id="sak-left-preview-ready">
+(()=>{
+ const preview=document.querySelector('.video-top-container-fixed .miniVideo');
+ if(!preview)return;
+ const id=document.querySelector('.video-top-container-fixed .video-circle')?.dataset.video||'n7eQejkXbnM';
+ const src='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id)+'?autoplay=1&mute=1&loop=1&playlist='+encodeURIComponent(id)+'&controls=0&playsinline=1&rel=0';
+ preview.loading='eager';preview.removeAttribute('data-src');
+ preview.setAttribute('allow','autoplay; encrypted-media; picture-in-picture');
+ if(preview.src!==src)preview.src=src;
+})();
+</script>
 </body>
 </html>
