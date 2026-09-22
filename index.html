@@ -39578,5 +39578,64 @@ html body .video-top-container-fixed .video-circle .miniVideo{display:block!impo
  if(preview.src!==src)preview.src=src;
 })();
 </script>
+<style id="sak-responsive-corner-layout">
+html body{--sak-dock-width:430px;--sak-cell:56px;--sak-row:76px;--sak-cols:6;--sak-edge:8px}
+html body #sakakerAllIconsDock#sakakerAllIconsDock{
+ position:fixed!important;inset:auto!important;right:max(var(--sak-edge),env(safe-area-inset-right))!important;bottom:max(var(--sak-edge),env(safe-area-inset-bottom))!important;
+ left:auto!important;top:auto!important;transform:none!important;translate:none!important;
+ width:var(--sak-dock-width)!important;max-width:calc(100vw - 16px)!important;height:auto!important;min-height:0!important;max-height:42dvh!important;
+ display:grid!important;grid-template-columns:repeat(var(--sak-cols),minmax(0,1fr))!important;grid-auto-rows:var(--sak-row)!important;
+ gap:6px!important;padding:8px!important;align-items:start!important;justify-items:center!important;
+ overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior:contain!important;touch-action:pan-y!important;
+ background:rgba(3,23,35,.56)!important;border:1px solid #c1eee433!important;border-radius:16px!important;box-sizing:border-box!important;scrollbar-width:thin!important;
+}
+html body #sakakerAllIconsDock#sakakerAllIconsDock #sakUtilityRow,
+html body #sakakerAllIconsDock#sakakerAllIconsDock :is(#sakakerBusinessCenterHost,#sakakerBusinessAd){display:contents!important}
+html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock :is(.icon-card,.sakaker-utility-slot,.sak-shore-gull,#facebookVideoIcon,#liveFlasher,#emeraldLibraryButton,#pongGame-btn,#shipIcon_new,#emOpenBtn,#sakakerBusinessIcon,.launcher,#sakMusicIcon){
+ position:relative!important;inset:auto!important;transform:none!important;translate:none!important;
+ width:var(--sak-cell)!important;min-width:var(--sak-cell)!important;max-width:var(--sak-cell)!important;
+ height:var(--sak-cell)!important;min-height:var(--sak-cell)!important;max-height:var(--sak-cell)!important;
+ margin:0!important;box-sizing:border-box!important;justify-self:center!important;
+}
+html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock .sak-shore-gull::after{width:calc(var(--sak-cell) + 6px)!important;font-size:10px!important;line-height:1.25!important;white-space:normal!important}
+html body #sakakerWatermarkClock,
+html body #sakakerVisitorCounter,
+html body .sakaker-copyright{
+ left:max(8px,env(safe-area-inset-left))!important;right:auto!important;top:auto!important;transform:none!important;translate:none!important;
+ width:max-content!important;max-width:calc(100vw - var(--sak-dock-width) - 32px)!important;box-sizing:border-box!important;
+}
+html body .sakaker-copyright{bottom:max(6px,env(safe-area-inset-bottom))!important;max-height:none!important;min-height:24px!important}
+html body #sakakerVisitorCounter{bottom:var(--sak-counter-bottom,38px)!important;flex-wrap:wrap!important;gap:4px 8px!important;height:auto!important;max-height:none!important;min-height:24px!important;overflow:visible!important;justify-content:flex-start!important}
+html body #sakakerWatermarkClock{bottom:var(--sak-clock-bottom,78px)!important;white-space:normal!important;text-align:right!important;font-size:11px!important;line-height:1.6!important}
+html body #sakakerWatermarkClock time{white-space:normal!important;overflow-wrap:anywhere}
+html body .sakaker-copyright-inner{flex-wrap:wrap!important;white-space:normal!important;font-size:10px!important;overflow-wrap:anywhere}
+html body .video-top-container-fixed,
+html body #sakSecondStreamCorner{top:var(--sak-preview-top,38vh)!important;width:var(--sak-preview-size,130px)!important;height:var(--sak-preview-size,130px)!important;bottom:auto!important;translate:0 -50%!important;transform:none!important}
+@media(max-width:900px){html body{--sak-dock-width:286px;--sak-cell:52px;--sak-row:72px;--sak-cols:4}}
+@media(max-width:600px){html body{--sak-dock-width:176px;--sak-cell:46px;--sak-row:65px;--sak-cols:3}html body #sakakerWatermarkClock{font-size:10px!important}html body #sakakerAllIconsDock#sakakerAllIconsDock{padding:6px!important;gap:4px!important}html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock .sak-shore-gull::after{font-size:9px!important}}
+@media(max-width:350px){html body{--sak-dock-width:152px;--sak-cell:40px;--sak-row:60px}}
+@media(max-height:500px) and (orientation:landscape){html body{--sak-dock-width:340px;--sak-cols:6;--sak-cell:42px;--sak-row:60px}html body #sakakerAllIconsDock#sakakerAllIconsDock{max-height:38dvh!important}}
+</style>
+<script id="sak-responsive-corner-measure">
+(()=>{
+ const body=document.body,dock=document.getElementById('sakakerAllIconsDock'),clock=document.getElementById('sakakerWatermarkClock'),counter=document.getElementById('sakakerVisitorCounter'),copyright=document.querySelector('.sakaker-copyright');
+ let pending=false;
+ function layout(){
+  pending=false;
+  const h=window.innerHeight;
+  if(copyright&&counter){const r=copyright.getBoundingClientRect();body.style.setProperty('--sak-counter-bottom',Math.ceil(h-r.top+8)+'px');}
+  if(counter&&clock){const r=counter.getBoundingClientRect();body.style.setProperty('--sak-clock-bottom',Math.ceil(h-r.top+8)+'px');}
+  const tops=[dock,clock].filter(Boolean).map(el=>el.getBoundingClientRect().top);
+  const bottom=Math.min(h-12,...tops)-18,top=116;
+  const size=Math.max(40,Math.min(innerWidth<=600?88:130,bottom-top));
+  const center=Math.max(top+size/2,Math.min(h*.43,bottom-size/2));
+  body.style.setProperty('--sak-preview-size',size+'px');body.style.setProperty('--sak-preview-top',center+'px');
+ }
+ function queue(){if(!pending){pending=true;requestAnimationFrame(layout);}}
+ const observer=new ResizeObserver(queue);[dock,clock,counter,copyright].filter(Boolean).forEach(el=>observer.observe(el));
+ window.addEventListener('resize',queue,{passive:true});window.visualViewport?.addEventListener('resize',queue,{passive:true});
+ window.addEventListener('load',queue,{once:true});queue();
+})();
+</script>
 </body>
 </html>
