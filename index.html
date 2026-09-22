@@ -39686,5 +39686,24 @@ html body :is(.video-top-container-fixed,#sakSecondStreamCorner) :is(.video-circ
  object-fit:cover!important;opacity:1!important;visibility:visible!important;pointer-events:none!important;z-index:4!important;box-shadow:none!important;
 }
 </style>
+<style id="sak-glowing-circular-previews">
+html body .video-top-container-fixed,
+html body #sakSecondStreamCorner{
+ width:var(--sak-preview-size,130px)!important;height:var(--sak-preview-size,130px)!important;
+ aspect-ratio:1!important;filter:none!important;overflow:visible!important;
+}
+html body :is(.video-top-container-fixed,#sakSecondStreamCorner) :is(.video-circle,#sakSecondStreamCircleSecure,#sakSecondStreamCircle){
+ clip-path:none!important;border-radius:50%!important;
+ border:2px solid #d6ffff!important;
+ background:radial-gradient(circle at 35% 25%,#c5fff4,#137c94 50%,#082a45 85%)!important;
+ box-shadow:0 0 8px #b9fff4,0 0 18px #50d9e5aa,0 0 30px #458ad066,inset 0 0 10px #d6ffff66!important;
+ overflow:hidden!important;
+}
+html body :is(.video-top-container-fixed,#sakSecondStreamCorner) :is(.video-circle,#sakSecondStreamCircleSecure,#sakSecondStreamCircle) :is(.miniVideo,#sakSecureEyeVideo,#sakSecondStreamPreview){
+ inset:4%!important;width:92%!important;height:92%!important;
+ border-radius:50%!important;clip-path:none!important;border:0!important;
+ object-fit:cover!important;box-shadow:none!important;
+}
+</style>
 </body>
 </html>
