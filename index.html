@@ -32853,12 +32853,7 @@ body.sakaker-music-open #sakSecondStreamCorner{
            role="button"
            tabindex="0"
            aria-label="بث مباشر إضافي">
-        <video
-          id="sakSecondStreamPreview"
-          muted
-          playsinline
-          preload="none">
-        </video>
+        <span class="sak-dazn-preview">DAZN<br><small>FIFA+ ▶</small></span>
         <div id="sakSecondStreamPlay">▶</div>
         <div id="sakSecondStreamBadge">LIVE</div>
       </div>
@@ -38957,7 +38952,7 @@ html body #sakSecureFullVideo{display:block!important;width:100%!important;heigh
  const stream='https://cityeden.catcast.tv/content/41333/index.m3u8';let previewHls=null,fullHls=null;
  function loadHls(){if(window.Hls)return Promise.resolve(window.Hls);return new Promise(resolve=>{const old=document.querySelector('script[data-sak-secure-hls]');if(old){old.addEventListener('load',()=>resolve(window.Hls),{once:true});return;}const s=document.createElement('script');s.dataset.sakSecureHls='1';s.src='https://cdn.jsdelivr.net/npm/hls.js@1.5.18/dist/hls.min.js';s.async=true;s.onload=()=>resolve(window.Hls);s.onerror=()=>resolve(null);document.head.append(s);});}
  async function attach(video,type){const Hls=await loadHls();if(video.canPlayType('application/vnd.apple.mpegurl')){video.src=stream;video.play().catch(()=>{});return;}if(!Hls||!Hls.isSupported())return;const hls=new Hls({enableWorker:true,lowLatencyMode:true,backBufferLength:20});hls.loadSource(stream);hls.attachMedia(video);hls.on(Hls.Events.MANIFEST_PARSED,()=>video.play().catch(()=>{}));if(type==='preview')previewHls=hls;else fullHls=hls;}
- function mount(){const old=document.getElementById('sakSecondStreamCircle');if(!old||document.getElementById('sakSecondStreamCircleSecure'))return;const eye=document.createElement('div');eye.id='sakSecondStreamCircleSecure';eye.setAttribute('role','button');eye.tabIndex=0;eye.setAttribute('aria-label','البث المباشر');eye.innerHTML='<video id="sakSecureEyeVideo" muted playsinline autoplay preload="auto"></video>';old.replaceWith(eye);attach(document.getElementById('sakSecureEyeVideo'),'preview');eye.addEventListener('click',open);eye.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open(e);}});}
+ function mount(){const old=document.getElementById('sakSecondStreamCircle');if(!old||document.getElementById('sakSecondStreamCircleSecure'))return;const eye=document.createElement('div');eye.id='sakSecondStreamCircleSecure';eye.setAttribute('role','button');eye.tabIndex=0;eye.setAttribute('aria-label','DAZN FIFA+');eye.innerHTML='<span class="sak-dazn-preview"><iframe src="https://www.dazn.com/competition/Competition:50kvbmxi5r9amj2e39hznggqj" title="DAZN FIFA+ preview" tabindex="-1" aria-hidden="true" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></span>';old.replaceWith(eye);}
  function open(e){e?.preventDefault();e?.stopPropagation();const box=document.getElementById('videoBoxFixed'),frame=document.getElementById('fixedVideo'),title=box?.querySelector('.video-box-title');if(!box)return;document.querySelector('.video-top-container-fixed')?.classList.add('sak-eye-peer-hidden');frame.style.display='none';let video=document.getElementById('sakSecureFullVideo');if(!video){video=document.createElement('video');video.id='sakSecureFullVideo';video.controls=true;video.autoplay=true;video.playsInline=true;box.append(video);}fullHls?.destroy();fullHls=null;attach(video,'full');box.style.display='block';if(title)title.textContent='✦ LIVE STREAM ✦';}
  const previousClose=window.closeFixedVideo;window.closeFixedVideo=function(){fullHls?.destroy();fullHls=null;document.getElementById('sakSecureFullVideo')?.pause();const frame=document.getElementById('fixedVideo');if(frame)frame.style.display='block';previousClose?.();document.querySelector('.video-top-container-fixed')?.classList.remove('sak-eye-peer-hidden');};
  mount();[400,1300,3200].forEach(ms=>setTimeout(mount,ms));
@@ -39038,8 +39033,13 @@ html body #sakSecondStreamCorner #sakSecondStreamCircleSecure::after{
  async function open(kind,trigger){
   stop();const current=ticket;focusBefore=trigger;scrollBefore=document.body.style.overflow;document.body.style.overflow='hidden';dialog.dir=en()?'ltr':'rtl';dialog.querySelector('#sakCrystalTitle').textContent=kind==='live'?(en()?'✧ Live stream':'✧ البث المباشر'):(en()?'✧ Video':'✧ الفيديو');dialog.showModal();dialog.querySelector('button').focus();
   if(kind==='youtube'){const f=document.createElement('iframe');const id=document.querySelector('.video-top-container-fixed .video-circle')?.dataset.video||'n7eQejkXbnM';f.src='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(id)+'?autoplay=1&playsinline=1&rel=0';f.allow='autoplay; encrypted-media; fullscreen; picture-in-picture';f.allowFullscreen=true;f.title=en()?'Video':'الفيديو';stage.append(f);return}
-  const v=document.createElement('video');v.controls=true;v.playsInline=true;v.autoplay=true;stage.append(v);status.textContent=en()?'Loading stream…':'جارٍ تحميل البث…';v.addEventListener('playing',()=>status.textContent='');const failure=()=>{if(current===ticket)status.textContent=en()?'Unable to load the stream. Close and try again.':'تعذر تحميل البث. أغلق النافذة وحاول مجددًا.'};const play=()=>v.play().catch(()=>{status.textContent=en()?'Press play to start.':'اضغط تشغيل لبدء البث.'});
-  try{if(v.canPlayType('application/vnd.apple.mpegurl')){v.src=stream;v.addEventListener('error',failure);play();return}const H=await loader();if(current!==ticket||!dialog.open)return;if(!H?.isSupported()){failure();return}hls=new H({enableWorker:true,backBufferLength:20});hls.on(H.Events.MANIFEST_PARSED,play);hls.on(H.Events.ERROR,(_,d)=>{if(d.fatal)failure()});hls.loadSource(stream);hls.attachMedia(v)}catch(_){failure()}
+  dialog.querySelector('#sakCrystalTitle').textContent='DAZN · FIFA+';
+  const frame=document.createElement('iframe');
+  frame.src='https://www.dazn.com/competition/Competition:50kvbmxi5r9amj2e39hznggqj';
+  frame.title='DAZN · FIFA+';
+  frame.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';
+  frame.allowFullscreen=true;
+  stage.append(frame);
  }
  /* Capture at window level, before legacy document listeners intercept clicks. */
  function route(e){if(!(e.target instanceof Element))return;const first=e.target.closest('.video-top-container-fixed'),second=e.target.closest('#sakSecondStreamCorner');if(!first&&!second)return;if(e.type==='keydown'&&!['Enter',' '].includes(e.key))return;e.preventDefault();e.stopImmediatePropagation();open(second?'live':'youtube',second?.querySelector('[role=button]')||first?.querySelector('.video-circle'))}
@@ -39545,5 +39545,15 @@ html body #sakakerVisitorCounter{
   window.addEventListener('resize',()=>{x=0;y=0;position();});
 })();
 </script>
+<style id="sak-dazn-replacement">
+#sakSecondStreamCorner .sak-dazn-preview{position:absolute;inset:14% 12% 24%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#111;color:#f6ff00;border:2px solid #efffff;border-radius:48% 48% 42% 42%;box-sizing:border-box;font:900 clamp(14px,2.2vw,25px)/1.2 Arial,sans-serif;z-index:5;pointer-events:none;text-align:center}
+#sakSecondStreamCorner .sak-dazn-preview{overflow:hidden;isolation:isolate}
+html body #sakSecondStreamCorner .sak-dazn-preview iframe{position:absolute!important;top:0!important;left:0!important;width:600%!important;height:600%!important;max-width:none!important;max-height:none!important;border:0!important;transform:scale(.166666667)!important;transform-origin:top left!important;pointer-events:none!important;background:#111}
+#sakCrystalStage .sak-dazn-card{height:100%;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px;text-align:center;background:radial-gradient(ellipse at top,#354735,#101413 70%);font-family:Tahoma,Arial,sans-serif;color:#fff}
+#sakCrystalStage .sak-dazn-card strong{font-size:clamp(22px,5vw,44px);color:#f6ff00}
+#sakCrystalStage .sak-dazn-card p{margin:0;font-size:clamp(12px,2vw,17px)}
+#sakCrystalStage .sak-dazn-card a{display:inline-block;padding:12px 20px;border-radius:10px;background:#f6ff00;color:#101413;font-weight:700;text-decoration:none}
+#sakCrystalStage .sak-dazn-card a:focus-visible{outline:3px solid white;outline-offset:4px}
+</style>
 </body>
 </html>
