@@ -14862,8 +14862,10 @@ body.sakaker-ship-open #shipPopup_new * {
     let shipOpen = false;
 
     if(ship){
+      const dialog = ship.closest('dialog');
       const cs = getComputedStyle(ship);
       shipOpen =
+        (!dialog || dialog.open) &&
         cs.display !== "none" &&
         cs.visibility !== "hidden";
     }
@@ -39511,10 +39513,11 @@ html body #sakakerVisitorCounter{
     if(dialog.open)return;
     previousFocus=document.activeElement;savedOverflow=document.body.style.overflow;
     x=0;y=0;position();dialog.showModal();popup.scrollTop=0;
+    document.body.classList.add('sakaker-ship-open');
     document.body.style.overflow='hidden';closeButton.focus();
   }
   function close(){if(dialog.open)dialog.close();}
-  dialog.addEventListener('close',()=>{drag=null;document.body.style.overflow=savedOverflow;previousFocus?.focus?.();});
+  dialog.addEventListener('close',()=>{drag=null;document.body.classList.remove('sakaker-ship-open');document.body.style.overflow=savedOverflow;previousFocus?.focus?.();});
   window.addEventListener('click',e=>{
     if(!(e.target instanceof Element))return;
     if(e.target.closest('#shipIcon_new')){e.preventDefault();e.stopImmediatePropagation();open();}
