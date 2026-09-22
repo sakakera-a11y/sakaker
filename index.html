@@ -39455,5 +39455,92 @@ html body #sakakerVisitorCounter{bottom:48px !important;}
   new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 })();
 </script>
+<style id="sak-ship-dialog-repair">
+/* Native top layer avoids all legacy stacking contexts. */
+html body #sakShipDialog{
+  position:fixed!important;inset:0!important;margin:auto!important;
+  width:min(900px,calc(100vw - 24px))!important;
+  height:min(760px,calc(100dvh - 32px))!important;
+  max-width:calc(100vw - 24px)!important;max-height:calc(100dvh - 32px)!important;
+  padding:0!important;border:1px solid #60ead4!important;border-radius:20px!important;
+  background:#071e29!important;color:#e6fff9!important;overflow:hidden!important;
+  box-sizing:border-box!important;transform:translate(var(--ship-x,0px),var(--ship-y,0px))!important;
+  box-shadow:0 12px 55px #0009!important;
+}
+#sakShipDialog::backdrop{background:rgba(0,8,16,.82);backdrop-filter:blur(5px)}
+html body #sakShipDialog:not([open]){display:none!important}
+html body #sakShipDialog[open]{display:flex!important;flex-direction:column!important}
+#sakShipHandle{display:flex;align-items:center;justify-content:space-between;gap:12px;flex:0 0 auto;min-height:52px;padding:6px 14px;background:#103a46;cursor:grab;touch-action:none;user-select:none;font:700 15px/1.5 Tahoma,Arial,sans-serif;box-sizing:border-box}
+#sakShipHandle:active{cursor:grabbing}
+html body #sakShipDialog #closeShip_new{position:static!important;float:none!important;transform:none!important;margin:0!important;width:40px!important;height:40px!important;flex:none!important}
+html body #sakShipDialog #shipPopup_new{
+  position:relative!important;inset:auto!important;transform:none!important;translate:none!important;
+  display:block!important;flex:1 1 0!important;min-height:0!important;height:auto!important;
+  width:100%!important;max-width:100%!important;max-height:none!important;
+  margin:0!important;padding:12px clamp(12px,3vw,28px) 28px!important;
+  overflow-y:auto!important;overflow-x:hidden!important;touch-action:pan-y!important;
+  overscroll-behavior:contain!important;box-sizing:border-box!important;
+  border:0!important;border-radius:0!important;box-shadow:none!important;
+  visibility:visible!important;pointer-events:auto!important;
+}
+html body #sakShipDialog #shipPopup_new::before{display:none!important}
+html body #sakakerVisitorCounter{
+  left:max(4px,env(safe-area-inset-left))!important;right:auto!important;
+  bottom:calc(48px + env(safe-area-inset-bottom))!important;
+  transform:none!important;translate:none!important;max-width:calc(100vw - 16px)!important;
+}
+</style>
+<script id="sak-ship-dialog-repair-js">
+(()=>{
+  'use strict';
+  const popup=document.getElementById('shipPopup_new');
+  const closeButton=document.getElementById('closeShip_new');
+  const trigger=document.getElementById('shipIcon_new');
+  if(!popup||!closeButton||!trigger)return;
+  const dialog=document.createElement('dialog');dialog.id='sakShipDialog';
+  dialog.setAttribute('aria-labelledby','sakShipHandleLabel');
+  const handle=document.createElement('header');handle.id='sakShipHandle';
+  const label=document.createElement('span');label.id='sakShipHandleLabel';
+  handle.append(label,closeButton);dialog.append(handle,popup);document.body.append(dialog);
+  popup.removeAttribute('role');popup.removeAttribute('aria-modal');popup.tabIndex=0;
+  const translate=()=>{label.textContent=document.documentElement.lang==='en'?'Ship — drag here to move':'السفينة — اسحب من هنا لتحريك النافذة';};
+  translate();new MutationObserver(translate).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  let savedOverflow='',previousFocus=null,x=0,y=0,drag=null;
+  function position(){dialog.style.setProperty('--ship-x',x+'px');dialog.style.setProperty('--ship-y',y+'px');}
+  function open(){
+    if(dialog.open)return;
+    previousFocus=document.activeElement;savedOverflow=document.body.style.overflow;
+    x=0;y=0;position();dialog.showModal();popup.scrollTop=0;
+    document.body.style.overflow='hidden';closeButton.focus();
+  }
+  function close(){if(dialog.open)dialog.close();}
+  dialog.addEventListener('close',()=>{drag=null;document.body.style.overflow=savedOverflow;previousFocus?.focus?.();});
+  window.addEventListener('click',e=>{
+    if(!(e.target instanceof Element))return;
+    if(e.target.closest('#shipIcon_new')){e.preventDefault();e.stopImmediatePropagation();open();}
+    else if(e.target.closest('#closeShip_new')){e.preventDefault();e.stopImmediatePropagation();close();}
+    else if(dialog.open&&e.target===popup){e.stopImmediatePropagation();}
+  },true);
+  window.addEventListener('keydown',e=>{
+    if(e.target instanceof Element&&e.target.closest('#shipIcon_new')&&['Enter',' '].includes(e.key)){
+      e.preventDefault();e.stopImmediatePropagation();open();
+    }
+  },true);
+  handle.addEventListener('pointerdown',e=>{
+    if(e.button!==0||e.target.closest('button'))return;
+    const r=dialog.getBoundingClientRect();
+    drag={id:e.pointerId,px:e.clientX,py:e.clientY,x,y,left:r.left,top:r.top,width:r.width,height:r.height};
+    handle.setPointerCapture(e.pointerId);
+  });
+  handle.addEventListener('pointermove',e=>{
+    if(!drag||drag.id!==e.pointerId)return;
+    const dx=Math.max(8-drag.left,Math.min(innerWidth-8-drag.left-drag.width,e.clientX-drag.px));
+    const dy=Math.max(8-drag.top,Math.min(innerHeight-8-drag.top-drag.height,e.clientY-drag.py));
+    x=drag.x+dx;y=drag.y+dy;position();
+  });
+  ['pointerup','pointercancel','lostpointercapture'].forEach(type=>handle.addEventListener(type,()=>{drag=null;}));
+  window.addEventListener('resize',()=>{x=0;y=0;position();});
+})();
+</script>
 </body>
 </html>
