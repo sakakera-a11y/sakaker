@@ -39315,7 +39315,8 @@ html body #sakSecondStreamCorner{top:var(--sak-preview-top,38vh)!important;width
   pending=false;
   const h=window.innerHeight;
   const news=document.getElementById('sakakerWorldNews');
-  const newsTop=Math.max(68,clock?Math.ceil(clock.getBoundingClientRect().bottom+8):68);
+  const header=document.getElementById('sakFestiveHeader')||clock;
+  const newsTop=Math.max(68,header?Math.ceil(header.getBoundingClientRect().bottom+8):68);
   body.style.setProperty('--sak-news-top',newsTop+'px');
   const top=(news?news.getBoundingClientRect().bottom:newsTop)+12;
   const counterTop=counter?counter.getBoundingClientRect().top:h-8;
@@ -39630,5 +39631,137 @@ html body #sakTopInformation :is(.clock-box,#sakHeaderClock,#sakakerClockSlot){d
  html body #sakakerWatermarkClock{top:calc(44px + env(safe-area-inset-top))!important;max-width:94vw!important;font-size:10px!important}
 }
 </style>
+<style id="sak-celestial-countdown-style">
+html body #sakakerWatermarkClock{
+ display:grid!important;grid-template-columns:auto 1fr 1fr!important;align-items:center!important;gap:8px!important;
+ width:min(740px,calc(100vw - 320px))!important;max-width:calc(100vw - 24px)!important;
+ padding:6px!important;border:0!important;border-radius:18px!important;
+ background:linear-gradient(120deg,#061e30d9,#123c4dbb,#061b30d9)!important;
+ box-shadow:0 0 18px #6de8ff24,inset 0 1px 0 #b5f9ff55!important;backdrop-filter:blur(8px)!important;
+ color:#ecfcff!important;line-height:1.35!important;
+}
+html body #sakakerWatermarkClock>time{font-size:11px!important;max-width:190px;padding:0 6px;text-shadow:0 0 8px #b6f8ff}
+#sakakerWatermarkClock .sak-festival{position:relative;min-width:0;border:1px solid #84edff66;border-radius:13px;padding:5px 7px;overflow:hidden;background:radial-gradient(ellipse at top,#65dfff20,transparent 75%);color:#9cefff}
+#sakakerWatermarkClock .sak-festival:last-child{border-color:#f5d68b66;color:#ffe2a1;background:radial-gradient(ellipse at top,#ffda6d20,transparent 75%)}
+#sakakerWatermarkClock .sak-festival-title{display:block;font:700 11px/1.4 Tahoma,Arial,sans-serif;text-shadow:0 0 9px currentColor;white-space:nowrap}
+#sakakerWatermarkClock .sak-festival-digits{display:grid;grid-template-columns:1.3fr repeat(3,1fr);direction:ltr;gap:3px;margin-top:3px}
+#sakakerWatermarkClock .sak-festival-unit{display:flex;flex-direction:column;align-items:center;min-width:0}
+#sakakerWatermarkClock .sak-festival-unit b{font:700 16px/1.15 Tahoma,Arial,sans-serif;font-variant-numeric:tabular-nums;color:#fff;text-shadow:0 0 9px #8cdfff88}
+#sakakerWatermarkClock .sak-festival-unit small{font:400 8px/1.5 Tahoma,Arial,sans-serif;color:#e3eff6}
+#sakakerWatermarkClock .sak-festival-greeting{font:700 11px/1.5 Tahoma,Arial,sans-serif;display:block;padding:5px 0}
+@media(max-width:1000px){html body #sakakerWatermarkClock{top:calc(44px + env(safe-area-inset-top))!important;width:min(560px,calc(100vw - 20px))!important;grid-template-columns:1fr 1fr!important;gap:4px!important}html body #sakakerWatermarkClock>time{grid-column:1/-1;max-width:none;font-size:10px!important}}
+@media(max-height:500px) and (min-width:601px){html body #sakakerWatermarkClock{grid-template-columns:1fr 1fr 1fr!important}html body #sakakerWatermarkClock>time{grid-column:auto}}
+</style>
+<script id="sak-celestial-countdown-js">
+(()=>{
+ const host=document.getElementById('sakakerWatermarkClock');if(!host)return;
+ // Midnight in the visitor's local timezone; holidays follow the Gregorian calendar.
+ function remaining(now,month,day){
+  let target=new Date(now.getFullYear(),month,day);
+  const celebrating=now.getMonth()===month&&now.getDate()===day;
+  if(!celebrating&&target<=now)target=new Date(now.getFullYear()+1,month,day);
+  const seconds=Math.max(0,Math.ceil((target-now)/1000));
+  return {celebrating,year:target.getFullYear(),parts:[Math.floor(seconds/86400),Math.floor(seconds%86400/3600),Math.floor(seconds%3600/60),seconds%60]};
+ }
+ const holidays=[{month:0,day:1,ar:'رأس السنة',en:'New Year',symbol:'✦',greetingAr:'عام جديد سعيد',greetingEn:'Happy New Year'},{month:11,day:25,ar:'الكريسماس',en:'Christmas',symbol:'✧',greetingAr:'كريسماس سعيد',greetingEn:'Merry Christmas'}];
+ const cards=holidays.map(()=>{const card=document.createElement('section');card.className='sak-festival';card.setAttribute('role','timer');card.setAttribute('aria-live','off');host.append(card);return card;});
+ let lastLanguage='';
+ function render(){
+  const ar=document.documentElement.lang!=='en',language=ar?'ar':'en',now=new Date();
+  const labels=ar?['يوم','ساعة','دقيقة','ثانية']:['Days','Hours','Min','Sec'];
+  const number=new Intl.NumberFormat(ar?'ar-SA':'en-GB',{minimumIntegerDigits:2,useGrouping:false});
+  cards.forEach((card,i)=>{
+   const holiday=holidays[i],state=remaining(now,holiday.month,holiday.day),title=`${holiday.symbol} ${ar?holiday.ar:holiday.en} ${state.year}`;
+   const mode=language+state.celebrating;
+   if(card.dataset.mode!==mode){
+    card.replaceChildren();const heading=document.createElement('span');heading.className='sak-festival-title';card.append(heading);
+    const digits=document.createElement('span');digits.className=state.celebrating?'sak-festival-greeting':'sak-festival-digits';card.append(digits);
+    if(!state.celebrating)labels.forEach(label=>{const unit=document.createElement('span');unit.className='sak-festival-unit';const value=document.createElement('b'),caption=document.createElement('small');caption.textContent=label;unit.append(value,caption);digits.append(unit);});
+    card.dataset.mode=mode;
+   }
+   card.firstElementChild.textContent=title;card.dir=ar?'rtl':'ltr';
+   card.title=ar?'حسب التوقيت المحلي لجهازك':'Based on your device’s local time';
+   card.setAttribute('aria-label',title+' — '+(state.celebrating?(ar?holiday.greetingAr:holiday.greetingEn):state.parts.map((value,j)=>number.format(value)+' '+labels[j]).join('، ')));
+   if(state.celebrating)card.lastElementChild.textContent=ar?holiday.greetingAr:holiday.greetingEn;
+   else card.querySelectorAll('b').forEach((value,j)=>{value.textContent=number.format(state.parts[j]);});
+  });
+  if(lastLanguage!==language){lastLanguage=language;window.dispatchEvent(new Event('resize'));}
+ }
+ render();setInterval(render,1000);
+ new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden)render();});
+})();
+</script>
+<style id="sak-festive-header-payment-layout">
+html body #sakFestiveHeader{position:fixed!important;top:max(6px,env(safe-area-inset-top))!important;left:max(6px,env(safe-area-inset-left))!important;right:max(6px,env(safe-area-inset-right))!important;display:grid;grid-template-columns:118px minmax(210px,1fr) minmax(140px,210px) minmax(100px,150px);gap:8px;align-items:center;direction:ltr;z-index:900501;pointer-events:none}
+html body #sakFestiveHeader #sakakerTopTools{position:static!important;inset:auto!important;transform:none!important;max-width:100%!important;gap:4px!important}
+html body #sakFestiveHeader #sakakerWatermarkClock{position:static!important;inset:auto!important;transform:none!important;display:block!important;width:auto!important;max-width:100%!important;padding:5px!important;background:transparent!important;box-shadow:none!important;backdrop-filter:none!important;grid-column:auto!important}
+html body #sakFestiveHeader #sakakerWatermarkClock>time{font-size:10px!important;max-width:none!important}
+#sakHolidayCountdowns{display:grid;grid-template-columns:1fr 1fr;gap:6px;min-width:0;direction:ltr}
+#sakHolidayCountdowns .sak-festival{min-width:0;text-align:center;padding:5px;border:1px solid #e5c8eaa3;border-radius:14px;background:linear-gradient(135deg,#ca428333,#e8efff29 48%,#932d6b44);box-shadow:inset 0 1px 0 #fff9,0 0 12px #ff93cc38;color:#ffd0e9}
+#sakHolidayCountdowns .sak-festival-title{display:block;font:700 11px/1.4 Tahoma,Arial,sans-serif;color:#ffd0ea;text-shadow:0 0 8px #ff8cce;white-space:nowrap}
+#sakHolidayCountdowns .sak-festival-digits{display:grid;grid-template-columns:1.3fr repeat(3,1fr);direction:ltr;gap:2px;margin-top:3px}
+#sakHolidayCountdowns .sak-festival-unit{display:flex;flex-direction:column;align-items:center;min-width:0}
+#sakHolidayCountdowns .sak-festival-unit b{font:700 15px/1.2 Tahoma,Arial,sans-serif;font-variant-numeric:tabular-nums;color:#f5efff;text-shadow:0 0 7px #f6d4ef}
+#sakHolidayCountdowns .sak-festival-unit small{font:400 8px/1.5 Tahoma,Arial,sans-serif;color:#f6ddeb}
+#sakHolidayCountdowns .sak-festival-greeting{font:700 11px/1.5 Tahoma,Arial,sans-serif}
+html body #sakFestiveHeader #userProfile{position:static!important;inset:auto!important;transform:none!important;display:flex!important;align-items:center!important;gap:4px!important;min-width:0!important;max-width:100%!important;width:auto!important;padding:4px!important;font-size:10px!important;pointer-events:auto!important;box-sizing:border-box!important}
+html body #sakFestiveHeader #userPhoto{width:24px!important;height:24px!important;flex:none!important}
+html body #sakFestiveHeader #userName{min-width:0!important;max-width:70px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;font-size:9px!important}
+html body #sakFestiveHeader #userProfile button{font-size:10px!important;min-width:0!important;padding:5px!important}
+html body .sakaker-copyright{left:auto!important;right:max(6px,env(safe-area-inset-right))!important;bottom:max(4px,env(safe-area-inset-bottom))!important;max-width:54vw!important;min-height:22px!important;justify-content:flex-end!important}
+html body #sakakerVisitorCounter{bottom:var(--sak-copyright-clearance,32px)!important}
+html body.locked #loginOverlay #loginBox{width:min(290px,calc(100vw - 32px))!important;max-width:290px!important;max-height:calc(100dvh - 100px)!important;overflow:auto!important;padding:14px!important;margin:auto!important;box-sizing:border-box!important;transform:none!important;min-height:0!important}
+html body #loginBox #loginTitle{font-size:18px!important;margin:8px 0!important}
+html body #loginBox .loginAction{font-size:12px!important;padding:9px 10px!important;min-height:40px!important;margin:5px 0!important;width:100%!important;box-sizing:border-box!important}
+html body #loginBox #loginCopyright{font-size:9px!important;margin-top:10px!important}
+html body #sakGlobalPayment{position:fixed!important;inset:auto!important;left:max(8px,env(safe-area-inset-left))!important;bottom:max(6px,env(safe-area-inset-bottom))!important;width:auto!important;height:auto!important;max-width:calc(100vw - 16px)!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important;z-index:2147483647!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;color:white!important}
+html body #sakGlobalPayment:popover-open,html body.locked #sakGlobalPayment{display:block!important}
+#sakGlobalPayment::backdrop{background:transparent;pointer-events:none}
+html body #sakPaymentLaunch{display:flex!important;align-items:center;gap:5px;min-height:42px;padding:3px 6px!important;background:none!important;border:0!important;box-shadow:none!important;color:#ffdcf3!important;font:700 12px Tahoma,Arial,sans-serif;text-shadow:0 0 6px #e48bbb;cursor:pointer}
+#sakPaymentLaunch svg{width:30px;height:30px;flex:none}
+html body #sakPaymentPanel{position:absolute;left:0;bottom:calc(100% + 8px);width:min(290px,calc(100vw - 24px));max-height:calc(100dvh - 90px);overflow:auto;background:#092333f5;border:1px solid #dfb5d4;border-radius:15px;padding:12px;box-sizing:border-box;box-shadow:0 8px 30px #0007}
+#sakPaymentPanel[hidden]{display:none!important}
+#sakPaymentClose{float:right;background:transparent;border:0;color:white;font-size:24px;cursor:pointer;min-width:40px;min-height:40px}
+#sakPaymentPanel .emPayBox{background:none!important;border:0!important;box-shadow:none!important;color:#fff!important;text-align:center;padding:0!important;min-height:0!important}
+#sakPaymentPanel #emPaypalBox{max-width:100%;margin-top:8px}
+@media(max-width:800px){html body #sakFestiveHeader{grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:5px}html body #sakFestiveHeader #sakakerTopTools{grid-column:1;grid-row:1}html body #sakFestiveHeader #userProfile{grid-column:2;grid-row:1;justify-self:end}#sakHolidayCountdowns{grid-column:1;grid-row:2;gap:4px}html body #sakFestiveHeader #sakakerWatermarkClock{grid-column:2!important;grid-row:2}#sakHolidayCountdowns .sak-festival{padding:4px 2px}#sakHolidayCountdowns .sak-festival-title{font-size:9px}#sakHolidayCountdowns .sak-festival-unit b{font-size:12px}#sakHolidayCountdowns .sak-festival-unit small{font-size:7px}}
+</style>
+<script id="sak-festive-header-payment-js">
+(()=>{
+ const clock=document.getElementById('sakakerWatermarkClock');
+ const header=document.createElement('div');header.id='sakFestiveHeader';
+ const holidays=document.createElement('div');holidays.id='sakHolidayCountdowns';
+ clock?.querySelectorAll('.sak-festival').forEach(card=>holidays.append(card));
+ const tools=document.getElementById('sakakerTopTools'),profile=document.getElementById('userProfile');
+ [tools,holidays,clock,profile].filter(Boolean).forEach(el=>header.append(el));document.body.append(header);
+ const footer=document.querySelector('.sakaker-copyright');
+ function measure(){if(footer)document.body.style.setProperty('--sak-copyright-clearance',Math.ceil(innerHeight-footer.getBoundingClientRect().top+5)+'px');window.dispatchEvent(new Event('resize'));}
+ const observer=new ResizeObserver(measure);observer.observe(header);if(footer)observer.observe(footer);
+ const payment=document.createElement('div');payment.id='sakGlobalPayment';payment.setAttribute('popover','manual');
+ payment.innerHTML='<button type="button" id="sakPaymentLaunch" aria-expanded="false" aria-controls="sakPaymentPanel"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="3" y="6" width="26" height="20" rx="5" stroke="currentColor" stroke-width="2"/><path d="M4 12h24M8 21h7" stroke="currentColor" stroke-width="2"/><path d="m24 1 1 3 3 1-3 1-1 3-1-3-3-1 3-1z" fill="currentColor"/></svg><span></span></button><section id="sakPaymentPanel" hidden><button type="button" id="sakPaymentClose">×</button><p id="sakPaymentLoading"></p><div id="sakPaymentContent"></div></section>';
+ document.body.append(payment);
+ const launch=payment.querySelector('#sakPaymentLaunch'),panel=payment.querySelector('#sakPaymentPanel'),close=payment.querySelector('#sakPaymentClose'),loading=payment.querySelector('#sakPaymentLoading');
+ function mount(){const box=document.querySelector('#emeraldMusicHost .emPayBox');if(box)payment.querySelector('#sakPaymentContent').append(box);loading.hidden=!!payment.querySelector('.emPayBox');}
+ function language(){const ar=document.documentElement.lang!=='en';launch.querySelector('span').textContent=ar?'الدفع':'Pay';launch.title=ar?'الدفع عبر PayPal':'Pay with PayPal';close.setAttribute('aria-label',ar?'إغلاق':'Close');loading.textContent=ar?'جارٍ تجهيز خيارات الدفع…':'Preparing payment options…';panel.dir=ar?'rtl':'ltr';}
+ function raise(){try{
+  if(payment.matches(':popover-open'))payment.hidePopover();
+  const dialogs=Array.from(document.querySelectorAll('dialog[open]'));
+  const parent=dialogs.at(-1)||document.body;
+  if(payment.parentElement!==parent)parent.append(payment);
+  payment.showPopover?.();
+ }catch(e){/* Fixed-position fallback for older browsers. */}}
+ launch.addEventListener('click',()=>{mount();panel.hidden=!panel.hidden;launch.setAttribute('aria-expanded',String(!panel.hidden));if(!panel.hidden)close.focus();});
+ function dismiss(){panel.hidden=true;launch.setAttribute('aria-expanded','false');launch.focus();}
+ close.addEventListener('click',dismiss);
+ payment.addEventListener('keydown',e=>{if(e.key==='Escape'&&!panel.hidden){e.preventDefault();e.stopPropagation();dismiss();}});
+ new MutationObserver(mount).observe(document.getElementById('emeraldMusicHost')||document.body,{childList:true,subtree:true});
+ new MutationObserver(language).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+ document.addEventListener('toggle',e=>{if(e.target!==payment&&e.newState==='open')raise();},true);
+ new MutationObserver(raise).observe(document.body,{attributes:true,attributeFilter:['open'],subtree:true});
+ window.addEventListener('resize',()=>{if(footer)document.body.style.setProperty('--sak-copyright-clearance',Math.ceil(innerHeight-footer.getBoundingClientRect().top+5)+'px');},{passive:true});
+ mount();language();raise();measure();
+})();
+</script>
 </body>
 </html>
