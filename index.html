@@ -38800,6 +38800,8 @@ body.locked #sakakerWorldNews{visibility:hidden!important}
   }
 
   function setNewsText(items, lang){
+    window.sakLatestWorldNews={items:Array.isArray(items)?items.slice():[],lang};
+    window.dispatchEvent(new Event('sak-world-news-updated'));
     const news = ensureWorldNews();
     const track = document.getElementById('sakakerWorldNewsTrack');
     if(!news || !track) return;
@@ -39260,7 +39262,8 @@ html body #sakSecondStreamCorner{top:var(--sak-preview-top,38vh)!important;width
   const header=document.getElementById('sakFestiveHeader')||clock;
   const newsTop=Math.max(68,header?Math.ceil(header.getBoundingClientRect().bottom+8):68);
   body.style.setProperty('--sak-news-top',newsTop+'px');
-  const top=(news?news.getBoundingClientRect().bottom:newsTop)+12;
+  const newsBounds=news?news.getBoundingClientRect():null;
+  const top=(newsBounds&&newsBounds.height!==0?newsBounds.bottom:newsTop)+12;
   const counterTop=counter?counter.getBoundingClientRect().top:h-8;
   body.style.setProperty('--sak-dock-bottom',Math.ceil(h-counterTop+8)+'px');
   body.style.setProperty('--sak-dock-max-height',Math.max(40,Math.floor(counterTop-top-68))+'px');
@@ -39728,6 +39731,64 @@ html body #sakPaymentPanel{position:absolute;left:0;bottom:calc(100% + 8px);widt
  new MutationObserver(raise).observe(document.body,{attributes:true,attributeFilter:['open'],subtree:true});
  window.addEventListener('resize',()=>{if(footer)document.body.style.setProperty('--sak-copyright-clearance',Math.ceil(innerHeight-footer.getBoundingClientRect().top+5)+'px');},{passive:true});
  language();raise();measure();preparePayment();
+})();
+</script>
+<style id="sak-compact-holidays-news">
+html body #sakFestiveHeader{grid-template-columns:118px minmax(240px,370px) minmax(100px,150px)!important;justify-content:space-between!important;align-items:start!important}
+html body #sakFestiveHeader #sakHolidayCountdowns{grid-column:2;grid-row:1;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:4px 7px;align-items:start}
+#sakHolidayCountdowns .sak-festival{padding:3px 5px!important;border-radius:11px!important}
+#sakHolidayCountdowns .sak-festival-title{font-size:10px!important;line-height:1.3!important}
+#sakHolidayCountdowns .sak-festival-unit b{font-size:13px!important}
+#sakHolidayCountdowns .sak-festival-digits{margin-top:2px!important}
+html body #sakFestiveHeader #sakHolidayCountdowns #sakakerWatermarkClock{grid-column:1!important;grid-row:2!important;padding:2px 3px!important;line-height:1.4!important}
+html body #sakFestiveHeader #sakHolidayCountdowns #sakakerWatermarkClock>time{font-size:9px!important}
+html body #sakNewsLaunch{grid-column:2;grid-row:2;justify-self:stretch;min-height:36px;pointer-events:auto!important;cursor:pointer;border:1px solid #dfbade77;border-radius:10px;padding:4px 5px;color:#fff0fb;background:linear-gradient(120deg,#144757b0,#6b3b64a6);font:700 10px/1.4 Tahoma,Arial,sans-serif;box-shadow:inset 0 1px 0 #ffffff33;text-align:center}
+#sakNewsLaunch:focus-visible{outline:2px solid #fff;outline-offset:3px}
+html body #sakakerWorldNews{display:none!important}
+html body #sakGlobalPayment{bottom:max(52px,calc(46px + env(safe-area-inset-bottom)))!important}
+html body #sakPaymentPanel{max-height:calc(100dvh - 145px)!important}
+html body #sakNewsDialog{position:fixed!important;inset:0!important;margin:auto!important;padding:0!important;width:min(680px,calc(100vw - 24px))!important;max-width:calc(100vw - 24px)!important;height:min(640px,calc(100dvh - 120px))!important;max-height:calc(100dvh - 120px)!important;border:1px solid #d6bada!important;border-radius:18px!important;color:#f0faff!important;background:linear-gradient(145deg,#072b3b,#172839 65%,#34233a)!important;box-shadow:0 15px 60px #000a!important;overflow:hidden!important;box-sizing:border-box!important}
+html body #sakNewsDialog:not([open]){display:none!important}
+html body #sakNewsDialog[open]{display:flex!important;flex-direction:column!important}
+#sakNewsDialog::backdrop{background:#00101bd9;backdrop-filter:blur(5px)}
+#sakNewsDialog .sak-news-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 14px;border-bottom:1px solid #c4eaf033;flex:none}
+#sakNewsDialog h2{font:700 18px/1.4 Tahoma,Arial,sans-serif;margin:0;color:#ffcee7}
+#sakNewsClose{background:transparent;color:white;border:1px solid #b8d6df66;border-radius:10px;width:40px;height:40px;font-size:24px;cursor:pointer;flex:none}
+#sakNewsContent{overflow:auto;overscroll-behavior:contain;min-height:0;flex:1;padding:12px;display:grid;gap:10px;align-content:start;touch-action:pan-y}
+#sakNewsContent article{border:1px solid #b6d8e72b;border-radius:12px;padding:12px;background:#edf7ff08;font:400 14px/1.85 Tahoma,Arial,sans-serif;overflow-wrap:anywhere}
+@media(max-width:800px){html body #sakFestiveHeader{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:4px!important}html body #sakFestiveHeader #sakHolidayCountdowns{grid-column:1/-1!important;grid-row:2!important;width:min(370px,100%);justify-self:center}html body #sakFestiveHeader #userProfile{grid-row:1!important;grid-column:2!important}#sakHolidayCountdowns .sak-festival-title{font-size:9px!important}#sakHolidayCountdowns .sak-festival-unit b{font-size:12px!important}}
+</style>
+<script id="sak-compact-holidays-news-js">
+(()=>{
+ const holidays=document.getElementById('sakHolidayCountdowns'),clock=document.getElementById('sakakerWatermarkClock');
+ if(!holidays||!clock)return;
+ holidays.append(clock);
+ const launch=document.createElement('button');launch.id='sakNewsLaunch';launch.type='button';launch.setAttribute('aria-haspopup','dialog');launch.setAttribute('aria-controls','sakNewsDialog');launch.setAttribute('aria-expanded','false');holidays.append(launch);
+ const dialog=document.createElement('dialog');dialog.id='sakNewsDialog';dialog.setAttribute('aria-labelledby','sakNewsTitle');
+ dialog.innerHTML='<div class="sak-news-heading"><h2 id="sakNewsTitle"></h2><button type="button" id="sakNewsClose">×</button></div><div id="sakNewsContent" tabindex="0"></div>';
+ document.body.append(dialog);
+ const content=dialog.querySelector('#sakNewsContent'),title=dialog.querySelector('#sakNewsTitle'),close=dialog.querySelector('#sakNewsClose');
+ function render(){
+  const en=document.documentElement.lang==='en';
+  launch.textContent=en?'📰 News · Click to open ↗':'📰 الأخبار · اضغط للفتح ↗';
+  launch.setAttribute('aria-label',en?'Open news window':'اضغط لفتح نافذة الأخبار');
+  title.textContent=en?'News · Sports · Economy':'الأخبار · الرياضة · الاقتصاد';
+  close.setAttribute('aria-label',en?'Close news':'إغلاق الأخبار');dialog.dir=en?'ltr':'rtl';
+  const latest=window.sakLatestWorldNews;
+  const sameLanguage=latest?.lang===(en?'en':'ar');
+  const items=sameLanguage?latest.items:[];
+  const fallback=sameLanguage?(en?'News is temporarily unavailable. Automatic updates will retry.':'تعذّر تحميل الأخبار مؤقتًا. ستتم إعادة المحاولة تلقائيًا.'):(en?'Loading the latest headlines…':'جارٍ تحميل أحدث الأخبار…');
+  const scroll=content.scrollTop;content.replaceChildren();
+  (items.length?items:[fallback]).forEach(text=>{const card=document.createElement('article');card.textContent=text;content.append(card);});
+  content.scrollTop=scroll;
+ }
+ let previousOverflow='';
+ launch.addEventListener('click',()=>{render();if(dialog.open)return;previousOverflow=document.body.style.overflow;dialog.showModal();document.body.style.overflow='hidden';launch.setAttribute('aria-expanded','true');close.focus();});
+ close.addEventListener('click',()=>dialog.close());
+ dialog.addEventListener('close',()=>{document.body.style.overflow=previousOverflow;launch.setAttribute('aria-expanded','false');launch.focus();});
+ window.addEventListener('sak-world-news-updated',render);
+ new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+ render();window.dispatchEvent(new Event('resize'));
 })();
 </script>
 </body>
