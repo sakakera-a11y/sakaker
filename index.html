@@ -35542,6 +35542,11 @@ html body #sakStudio #studioStatus { min-height:24px; color:#ffdc82; font-size:1
     <div class="studio-row studio-head"><h2 id="studioTitle" data-studio-i18n="title"></h2><div class="studio-row"><button id="studioLang" type="button">English</button><button id="studioClose" type="button" data-studio-i18n="close"></button></div></div>
     <div class="studio-row" id="studioTools">
       <button type="button" data-tool="pen" data-studio-i18n="pen"></button>
+      <button type="button" data-tool="oil" data-studio-i18n="oil"></button>
+      <button type="button" data-tool="watercolor" data-studio-i18n="watercolor"></button>
+      <button type="button" data-tool="spray" data-studio-i18n="spray"></button>
+      <button type="button" data-tool="marker" data-studio-i18n="marker"></button>
+      <button type="button" data-tool="eyedropper" data-studio-i18n="eyedropper"></button>
       <button type="button" data-tool="eraser" data-studio-i18n="eraser"></button>
       <button type="button" data-tool="move" data-studio-i18n="move"></button>
       <button type="button" data-tool="rect" data-studio-i18n="rect"></button>
@@ -35552,6 +35557,7 @@ html body #sakStudio #studioStatus { min-height:24px; color:#ffdc82; font-size:1
     <div class="studio-row">
       <label><span data-studio-i18n="color"></span><input id="studioColor" type="color" value="#126b62"></label>
       <label><span data-studio-i18n="size"></span><input id="studioSize" type="range" min="2" max="50" value="6"><output id="studioSizeValue">6</output></label>
+      <label><span data-studio-i18n="opacity"></span><input id="studioOpacity" type="range" min="5" max="100" value="100"><output id="studioOpacityValue">100%</output></label>
       <label><span data-studio-i18n="background"></span><input id="studioBackground" type="color" value="#ffffff"></label>
       <label><span data-studio-i18n="format"></span><select id="studioFormat"><option value="900,600" data-studio-i18n="landscape"></option><option value="800,800" data-studio-i18n="square"></option><option value="600,900" data-studio-i18n="portrait"></option></select></label>
       <label><span data-studio-i18n="template"></span><select id="studioTemplate"><option value="blank" data-studio-i18n="blank"></option><option value="gold" data-studio-i18n="gold"></option><option value="celebrate" data-studio-i18n="celebrate"></option></select></label>
@@ -35592,6 +35598,11 @@ html body #sakStudio #studioStatus { min-height:24px; color:#ffdc82; font-size:1
   Object.assign(words.ar,{upload:'🖼 رفع صورة',smaller:'− تصغير الصورة',larger:'+ تكبير الصورة',imageLoading:'جاري تجهيز الصورة…',imageReady:'أُضيفت الصورة. حرّكها أو غيّر حجمها، وارسم أو اكتب فوقها.',imageError:'تعذر فتح الصورة. اختر صورة PNG أو JPEG أو WebP أو GIF بحجم أقل من 20 ميجابايت.'});
   Object.assign(words.en,{upload:'🖼 Upload image',smaller:'− Smaller image',larger:'+ Larger image',imageLoading:'Preparing image…',imageReady:'Image added. Move or resize it, then draw or write on top.',imageError:'Could not open the image. Choose a PNG, JPEG, WebP or GIF under 20 MB.'});
   const imageCache=new Map();
+  Object.assign(words.ar,{oil:'🖌 فرشاة زيتية',watercolor:'ألوان مائية',spray:'بخاخ',marker:'ماركر',eyedropper:'قطّارة',opacity:'الشفافية',picked:'تم التقاط اللون؛ اختر فرشاة للرسم.'});
+  Object.assign(words.en,{oil:'🖌 Oil brush',watercolor:'Watercolor',spray:'Spray',marker:'Marker',eyedropper:'Eyedropper',opacity:'Opacity',picked:'Color picked; choose a brush to paint.'});
+  const brushTypes=['pen','eraser','oil','watercolor','spray','marker'];
+  // Avoid page-level keyboard/game handlers intercepting studio interactions.
+  ['click','pointerdown','pointermove','pointerup','keydown','keyup'].forEach(type=>modal.addEventListener(type,e=>e.stopPropagation()));
   function loadImage(src){
     if(imageCache.has(src))return Promise.resolve(imageCache.get(src));
     return new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>{imageCache.set(src,img);resolve(img);};img.onerror=()=>reject(Error('Image decode failed'));img.src=src;});
@@ -35601,7 +35612,7 @@ html body #sakStudio #studioStatus { min-height:24px; color:#ffdc82; font-size:1
   let undo=[],redo=[],tool='pen',selected=-1,gesture=null,lastFocus=null,scrollBefore='';
   const copy = x=>JSON.parse(JSON.stringify(x));
   function say(key){$('studioStatus').textContent=words[lang][key];}
-  function history(){undo.push(copy(state));if(undo.length>35)undo.shift();redo=[];}
+  function history(){undo.push(copy(state));while(undo.length>20||(undo.length>1&&JSON.stringify(undo).length>8000000))undo.shift();redo=[];}
   function language(){
     modal.dir=lang==='ar'?'rtl':'ltr';modal.lang=lang;
     modal.querySelectorAll('[data-studio-i18n]').forEach(el=>el.textContent=words[lang][el.dataset.studioI18n]);
@@ -35627,17 +35638,34 @@ html body #sakStudio #studioStatus { min-height:24px; color:#ffdc82; font-size:1
       const width=ink.measureText(o.text).width;
       return {x:o.x-width/2,y:o.y-o.size/2,w:width,h:o.size*1.3};
     }
-    if(o.points){const xs=o.points.map(p=>p.x),ys=o.points.map(p=>p.y);return{x:Math.min(...xs)-o.size/2,y:Math.min(...ys)-o.size/2,w:Math.max(...xs)-Math.min(...xs)+o.size,h:Math.max(...ys)-Math.min(...ys)+o.size};}
+    if(o.points){let left=Infinity,top=Infinity,right=-Infinity,bottom=-Infinity;for(const p of o.points){left=Math.min(left,p.x);top=Math.min(top,p.y);right=Math.max(right,p.x);bottom=Math.max(bottom,p.y);}return{x:left-o.size/2,y:top-o.size/2,w:right-left+o.size,h:bottom-top+o.size};}
     return{x:Math.min(o.x,o.x2),y:Math.min(o.y,o.y2),w:Math.abs(o.x2-o.x),h:Math.abs(o.y2-o.y)};
   }
   function paintObject(o){
     ink.save();ink.strokeStyle=o.color;ink.fillStyle=o.color;ink.lineWidth=o.size;ink.lineCap='round';ink.lineJoin='round';
+    ink.globalAlpha=o.opacity===undefined?1:o.opacity;
     if(o.type==='image'){
       const img=imageCache.get(o.src);if(img)ink.drawImage(img,o.x,o.y,o.w,o.h);
     }else if(o.type==='pen'||o.type==='eraser'){
       ink.globalCompositeOperation=o.type==='eraser'?'destination-out':'source-over';
       ink.beginPath();o.points.forEach((p,i)=>i?ink.lineTo(p.x,p.y):ink.moveTo(p.x,p.y));
       if(o.points.length===1){ink.arc(o.points[0].x,o.points[0].y,o.size/2,0,Math.PI*2);ink.fill();}else ink.stroke();
+    }else if(['oil','watercolor','spray','marker'].includes(o.type)){
+      const points=o.points,alpha=ink.globalAlpha;
+      if(o.type==='oil'){
+        for(let bristle=0;bristle<7;bristle++){
+          const offset=(bristle-3)*o.size/8;ink.globalAlpha=alpha*(.48+(bristle%3)*.13);ink.lineWidth=Math.max(1,o.size/5);ink.beginPath();
+          points.forEach((p,i)=>i?ink.lineTo(p.x+offset,p.y+offset*.3):ink.moveTo(p.x+offset,p.y+offset*.3));
+          if(points.length===1){ink.arc(points[0].x+offset,points[0].y,o.size/10,0,Math.PI*2);ink.fill()}else ink.stroke();
+        }
+      }else if(o.type==='marker'){
+        ink.globalAlpha=alpha*.45;ink.lineCap='square';ink.lineWidth=o.size;ink.beginPath();points.forEach((p,i)=>i?ink.lineTo(p.x,p.y):ink.moveTo(p.x,p.y));if(points.length===1)ink.fillRect(points[0].x-o.size/2,points[0].y-o.size/2,o.size,o.size);else ink.stroke();
+      }else{
+        points.forEach((p,i)=>{
+          if(o.type==='watercolor'){const r=o.size/2,gradient=ink.createRadialGradient(p.x,p.y,0,p.x,p.y,r);gradient.addColorStop(0,o.color+'60');gradient.addColorStop(1,o.color+'00');ink.globalAlpha=alpha*.3;ink.fillStyle=gradient;ink.beginPath();ink.arc(p.x,p.y,r,0,Math.PI*2);ink.fill();}
+          else{ink.globalAlpha=alpha*.55;ink.fillStyle=o.color;for(let j=0;j<16;j++){const n=(Math.imul(i+1,73856093)^Math.imul(j+1,19349663))>>>0;const angle=(n%6283)/1000,r=Math.sqrt(((n>>>8)%1000)/1000)*o.size/2;ink.fillRect(p.x+Math.cos(angle)*r,p.y+Math.sin(angle)*r,1.2,1.2);}}
+        });
+      }
     }else if(o.type==='text'){
       ink.font='bold '+o.size+'px Tahoma, Arial, sans-serif';ink.textAlign='center';ink.textBaseline='middle';
       ink.direction=/[\u0600-\u06ff]/.test(o.text)?'rtl':'ltr';ink.fillText(o.text,o.x,o.y);
@@ -35649,7 +35677,7 @@ html body #sakStudio #studioStatus { min-height:24px; color:#ffdc82; font-size:1
   }
   function render(selection=true){
     if(canvas.width!==state.w||canvas.height!==state.h){canvas.width=state.w;canvas.height=state.h;}
-    layer.width=state.w;layer.height=state.h;
+    if(layer.width!==state.w||layer.height!==state.h){layer.width=state.w;layer.height=state.h;}else ink.clearRect(0,0,state.w,state.h);
     ctx.fillStyle=state.bg;ctx.fillRect(0,0,state.w,state.h);
     if(state.template==='gold'){
       ctx.strokeStyle='#c59a3b';ctx.lineWidth=5;ctx.strokeRect(25,25,state.w-50,state.h-50);
@@ -35665,9 +35693,10 @@ html body #sakStudio #studioStatus { min-height:24px; color:#ffdc82; font-size:1
   function pick(p){for(let i=state.objects.length-1;i>=0;i--){const o=state.objects[i];if(o.type==='eraser')continue;const b=bounds(o);if(p.x>=b.x-8&&p.x<=b.x+b.w+8&&p.y>=b.y-8&&p.y<=b.y+b.h+8)return i;}return -1;}
   canvas.addEventListener('pointerdown',function(e){
     if(gesture||e.button!==0)return;e.preventDefault();canvas.setPointerCapture(e.pointerId);const p=point(e);
+    if(tool==='eyedropper'){render(false);const pixel=ctx.getImageData(Math.min(state.w-1,Math.floor(p.x)),Math.min(state.h-1,Math.floor(p.y)),1,1).data;$('studioColor').value='#'+Array.from(pixel).slice(0,3).map(v=>v.toString(16).padStart(2,'0')).join('');say('picked');return;}
     if(tool==='move'){selected=pick(p);if(selected>=0){history();gesture={id:e.pointerId,p,original:copy(state.objects[selected]),move:true};}}
-    else{history();selected=-1;const o={type:tool,color:$('studioColor').value,size:Number($('studioSize').value)};
-      if(tool==='pen'||tool==='eraser')o.points=[p];else Object.assign(o,{x:p.x,y:p.y,x2:p.x,y2:p.y});
+    else{history();selected=-1;const o={type:tool,color:$('studioColor').value,size:Number($('studioSize').value),opacity:Number($('studioOpacity').value)/100};
+      if(brushTypes.includes(tool))o.points=[p];else Object.assign(o,{x:p.x,y:p.y,x2:p.x,y2:p.y});
       state.objects.push(o);gesture={id:e.pointerId,index:state.objects.length-1};}
     render();
   });
@@ -35676,13 +35705,14 @@ html body #sakStudio #studioStatus { min-height:24px; color:#ffdc82; font-size:1
     if(gesture.move){const o=copy(gesture.original),dx=p.x-gesture.p.x,dy=p.y-gesture.p.y;
       if(o.points)o.points=o.points.map(q=>({x:q.x+dx,y:q.y+dy}));else{o.x+=dx;o.y+=dy;if(o.x2!==undefined){o.x2+=dx;o.y2+=dy;}}
       state.objects[selected]=o;
-    }else{const o=state.objects[gesture.index];if(o.points)o.points.push(p);else{o.x2=p.x;o.y2=p.y;}}
+    }else{const o=state.objects[gesture.index];if(o.points){const prev=o.points[o.points.length-1],distance=Math.hypot(p.x-prev.x,p.y-prev.y);if(distance<1)return;const steps=Math.min(60,Math.max(1,Math.ceil(distance/Math.max(2,o.size/5))));for(let i=1;i<=steps;i++)o.points.push({x:prev.x+(p.x-prev.x)*i/steps,y:prev.y+(p.y-prev.y)*i/steps});}else{o.x2=p.x;o.y2=p.y;}}
     render();
   });
   function finish(e){if(gesture&&gesture.id===e.pointerId){gesture=null;render();}}
   canvas.addEventListener('pointerup',finish);canvas.addEventListener('pointercancel',finish);canvas.addEventListener('lostpointercapture',finish);
   $('studioTools').addEventListener('click',e=>{const b=e.target.closest('[data-tool]');if(b){tool=b.dataset.tool;selected=-1;render();}});
   $('studioSize').addEventListener('input',()=>{$('studioSizeValue').value=$('studioSize').value;});
+  $('studioOpacity').addEventListener('input',()=>{$('studioOpacityValue').value=$('studioOpacity').value+'%';});
   $('studioBackground').addEventListener('change',()=>{history();state.bg=$('studioBackground').value;render();});
   $('studioTemplate').addEventListener('change',()=>{history();state.template=$('studioTemplate').value;render();});
   $('studioFormat').addEventListener('change',()=>{
@@ -35697,6 +35727,7 @@ html body #sakStudio #studioStatus { min-height:24px; color:#ffdc82; font-size:1
   $('studioDelete').addEventListener('click',()=>{if(selected>=0){history();state.objects.splice(selected,1);selected=-1;render();}});
   $('studioUndo').addEventListener('click',()=>{if(undo.length){redo.push(copy(state));state=undo.pop();selected=-1;render();}});
   $('studioRedo').addEventListener('click',()=>{if(redo.length){undo.push(copy(state));state=redo.pop();selected=-1;render();}});
+  modal.addEventListener('keydown',e=>{if(/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName))return;if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();$(e.shiftKey?'studioRedo':'studioUndo').click();}else if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='y'){e.preventDefault();$('studioRedo').click();}});
   $('studioClear').addEventListener('click',()=>{if(!state.objects.length||confirm(words[lang].confirm)){history();state.objects=[];selected=-1;render();}});
   $('studioSave').addEventListener('click',()=>{try{localStorage.setItem('sak-creative-draft-v1',JSON.stringify(state));say('saved');}catch(e){say('failed');}});
   $('studioUpload').addEventListener('click',()=>{$('studioImageFile').click();});
@@ -35728,7 +35759,7 @@ html body #sakStudio #studioStatus { min-height:24px; color:#ffdc82; font-size:1
     const raw=localStorage.getItem('sak-creative-draft-v1');if(!raw){say('missing');return;}
     const saved=JSON.parse(raw);
     if(!['900,600','800,800','600,900'].includes(saved.w+','+saved.h)||!Array.isArray(saved.objects)||saved.objects.length>10000||!/^#[0-9a-f]{6}$/i.test(saved.bg)||!['blank','gold','celebrate'].includes(saved.template))throw Error('Invalid draft');
-    saved.objects.forEach(o=>{if(o.type==='image'){if(typeof o.src!=='string'||!o.src.startsWith('data:image/png;base64,')||o.src.length>30000000||![o.x,o.y,o.w,o.h].every(Number.isFinite)||o.w<=0||o.h<=0||Math.max(o.w,o.h)>8000)throw Error('Invalid image');return;}if(!['pen','eraser','text','rect','ellipse'].includes(o.type)||!Number.isFinite(o.size)||o.size<1||o.size>100||!/^#[0-9a-f]{6}$/i.test(o.color))throw Error('Invalid object');if(o.type==='pen'||o.type==='eraser'){if(!Array.isArray(o.points)||!o.points.length||o.points.length>100000||o.points.some(p=>!Number.isFinite(p.x)||!Number.isFinite(p.y)))throw Error('Invalid path');}else{if(!Number.isFinite(o.x)||!Number.isFinite(o.y))throw Error('Invalid position');if(o.type==='text'){if(typeof o.text!=='string'||o.text.length>120)throw Error('Invalid text');}else if(!Number.isFinite(o.x2)||!Number.isFinite(o.y2))throw Error('Invalid shape');}});
+    saved.objects.forEach(o=>{if(o.opacity!==undefined&&(!Number.isFinite(o.opacity)||o.opacity<0||o.opacity>1))throw Error('Invalid opacity');if(o.type==='image'){if(typeof o.src!=='string'||!o.src.startsWith('data:image/png;base64,')||o.src.length>30000000||![o.x,o.y,o.w,o.h].every(Number.isFinite)||o.w<=0||o.h<=0||Math.max(o.w,o.h)>8000)throw Error('Invalid image');return;}if(![...brushTypes,'text','rect','ellipse'].includes(o.type)||!Number.isFinite(o.size)||o.size<1||o.size>100||!/^#[0-9a-f]{6}$/i.test(o.color))throw Error('Invalid object');if(brushTypes.includes(o.type)){if(!Array.isArray(o.points)||!o.points.length||o.points.length>100000||o.points.some(p=>!Number.isFinite(p.x)||!Number.isFinite(p.y)))throw Error('Invalid path');}else{if(!Number.isFinite(o.x)||!Number.isFinite(o.y))throw Error('Invalid position');if(o.type==='text'){if(typeof o.text!=='string'||o.text.length>120)throw Error('Invalid text');}else if(!Number.isFinite(o.x2)||!Number.isFinite(o.y2))throw Error('Invalid shape');}});
     if(state.objects.length&&!confirm(words[lang].replace))return;
     await Promise.all(saved.objects.filter(o=>o.type==='image').map(o=>loadImage(o.src)));
     history();state=saved;selected=-1;render();say('loaded');
@@ -39943,13 +39974,23 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock .sak-shor
 <script id="sak-colored-gull-bodies">
 (()=>{
  const dock=document.getElementById('sakakerAllIconsDock');if(!dock)return;
- const palette=['#ffb3d9','#8deaff','#ffdf83','#b5a0ff','#8ce0b4','#ffaf8d','#9bbfff','#e8acfa','#b4e580','#ff99ae','#8bd8d5','#eed0a2'];
+ const palette=['#171717','#ffdf00','#1677ff','#ffffff','#ef2424','#16a34a','#854d27','#9333ea','#b4e580','#ff99ae','#8bd8d5','#eed0a2'];
  const style=document.getElementById('sak-gull-shore-icons')||Array.from(document.querySelectorAll('style')).find(s=>s.textContent.includes('linearGradient%20id%3D%22wing'));
  const match=style?.textContent.match(/url\("data:image\/svg\+xml,([^"]+)"\)/);if(!match)return;
  const original=decodeURIComponent(match[1]);
- function color(){dock.querySelectorAll('.sak-shore-gull').forEach((el,i)=>{if(el.dataset.sakGullColored)return;const shade=palette[i%palette.length];const svg=original.replace(/fill="url\(#(?:body|wing)\)"/g,`fill="${shade}"`).replace('fill="#344855"',`fill="${shade}"`);el.style.setProperty('--sak-colored-gull','url("data:image/svg+xml,'+encodeURIComponent(svg)+'")');el.dataset.sakGullColored='true';});}
+ function color(){dock.querySelectorAll('.sak-shore-gull').forEach((el,i)=>{if(el.dataset.sakGullColored)return;const shade=palette[i%palette.length];const svg=original.replace(/fill="url\(#body\)"/g,`fill="${shade}"`).replace(/fill="url\(#wing\)"/g,'fill="#000000"').replace('fill="#344855"',`fill="${shade}"`);el.style.setProperty('--sak-colored-gull','url("data:image/svg+xml,'+encodeURIComponent(svg)+'")');el.dataset.sakGullColored='true';});}
  color();new MutationObserver(color).observe(dock,{childList:true,subtree:true});
 })();
 </script>
+<style id="sak-studio-interaction-repair">
+html body:not(.locked) #sakStudio[open]{display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;isolation:isolate!important}
+html body #sakStudio .studio-panel{position:relative!important;inset:auto!important;transform:none!important;pointer-events:auto!important;visibility:visible!important;z-index:1!important;min-height:0!important;overflow:auto!important;overscroll-behavior:contain}
+html body #sakStudio .studio-row,html body #sakStudio .studio-workspace{position:relative!important;inset:auto!important;transform:none!important;pointer-events:auto!important;z-index:auto!important}
+html body #sakStudio :is(button,input,select,canvas){pointer-events:auto!important;visibility:visible!important;position:relative!important;inset:auto!important;transform:none!important;z-index:auto!important}
+html body #sakStudio .studio-panel::before,html body #sakStudio .studio-panel::after{pointer-events:none!important}
+html body #sakStudio #studioCanvas{touch-action:none!important;user-select:none!important;position:static!important;cursor:crosshair!important}
+html body #sakStudio #studioTools{padding:8px;border:1px solid #b6d5de44;border-radius:12px;background:#092331}
+html body #sakStudio #studioTools button{font-size:13px!important;min-height:40px;flex:0 1 auto}
+</style>
 </body>
 </html>
