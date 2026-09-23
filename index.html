@@ -39808,7 +39808,7 @@ html body #sakNewsDialog[open]{display:flex!important;flex-direction:column!impo
 #sakPongStatus{min-height:24px;color:#ffe3a8}#sakPongScore{font-size:20px;font-weight:bold;font-variant-numeric:tabular-nums;direction:ltr}#sakPongTimer{font-size:18px;font-variant-numeric:tabular-nums}
 #sakPongAudioFrame{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important;left:0!important;bottom:0!important}
 @media(max-width:720px){#sakPongArena .sp-layout{grid-template-columns:1fr}#sakPongArena aside{max-height:230px}#sakPongMessages{min-height:70px}#sakPongArena{padding:8px!important}#sakPongArena button{font-size:11px}}
-html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock .sak-shore-gull::before{background-image:var(--sak-colored-gull)!important;animation:none!important}
+html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock .sak-shore-gull[data-sak-gull-colored="true"]::before{background-image:var(--sak-colored-gull)!important;animation:none!important}
 </style>
 <script id="sak-pong-arena-js">
 (()=>{
@@ -39851,7 +39851,30 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock .sak-shor
  function move(e){if(!mode||ended)return;const rect=canvas.getBoundingClientRect(),y=clamp((e.clientY-rect.top)/rect.height*500-40,15,405);if(role==='guest')y2=y;else y1=y;}
  canvas.addEventListener('pointerdown',e=>{canvas.setPointerCapture(e.pointerId);canvas.focus();move(e)});canvas.addEventListener('pointermove',e=>{if(e.pointerType==='mouse'||e.buttons)move(e)});
  arena.addEventListener('keydown',e=>{if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;if(['ArrowUp','ArrowDown','w','s'].includes(e.key)){e.preventDefault();e.stopPropagation();keys.add(e.key)}});arena.addEventListener('keyup',e=>{keys.delete(e.key);e.stopPropagation()});window.addEventListener('blur',()=>keys.clear());
- async function connect(){if(!window.firebaseAuth?.currentUser)throw Error('login');if(!api)api=await import('https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js');db=window.firebaseRTDB;uid=window.firebaseAuth.currentUser.uid;if(!db)throw Error('error');}
+ const accountBar=document.createElement('div');accountBar.className='sp-row';accountBar.innerHTML='<span id="sakPongAccount" role="status"></span><button type="button" id="sakPongLogin"></button>';arena.insertBefore(accountBar,arena.children[1]);
+ let authSDK=null,authLoading=null,authListener=null,gameSession=false,authFailure=false;
+ function accountLabel(){const en=lang()==='en',user=window.firebaseAuth?.currentUser;$('sakPongLogin').hidden=!!user;$('sakPongLogin').disabled=!authSDK;$('sakPongLogin').textContent=en?'Sign in with Google':'تسجيل الدخول عبر Google';$('sakPongAccount').textContent=user?(en?'Game account: ':'حساب اللعبة: ')+String(user.displayName||user.email||user.uid).slice(0,70):authFailure?(en?'Sign-in could not load. Reopen the game to retry.':'تعذر تجهيز تسجيل الدخول. أعد فتح اللعبة للمحاولة.'):authSDK?(en?'Sign in here to play online.':'سجّل الدخول هنا للعب أونلاين.'):(en?'Restoring your account…':'جارٍ استعادة حسابك…');}
+ async function ensureGameAccount(){
+  if(authLoading)return authLoading;
+  authLoading=(async()=>{authFailure=false;accountLabel();
+   const until=Date.now()+10000;while(!window.firebaseAuth&&Date.now()<until)await new Promise(r=>setTimeout(r,100));
+   if(!window.firebaseAuth)throw Error('error');
+   authSDK=await import('https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js');
+   await window.firebaseAuth.authStateReady();
+   if(!authListener)authListener=authSDK.onAuthStateChanged(window.firebaseAuth,user=>{gameSession=arena.open&&!!user;if(!user&&mode==='online'){release();status('login')}accountLabel();});
+   gameSession=arena.open&&!!window.firebaseAuth.currentUser;accountLabel();
+  })().catch(e=>{authFailure=true;accountLabel();throw e}).finally(()=>{authLoading=null});
+  return authLoading;
+ }
+ $('sakPongLogin').onclick=async()=>{
+  if(!authSDK)return;
+  $('sakPongLogin').disabled=true;
+  try{await authSDK.signInWithPopup(window.firebaseAuth,new authSDK.GoogleAuthProvider());gameSession=arena.open;accountLabel();status('idle');}
+  catch(e){status(e.code==='auth/popup-closed-by-user'?'login':'error');}
+  finally{accountLabel();}
+ };
+ new MutationObserver(accountLabel).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+ async function connect(){await ensureGameAccount();if(!window.firebaseAuth?.currentUser){$('sakPongLogin').focus();throw Error('login')}if(!arena.open||!gameSession)throw Error('error');if(!api)api=await import('https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js');db=window.firebaseRTDB;uid=window.firebaseAuth.currentUser.uid;if(!db)throw Error('error');}
  const path=p=>api.ref(db,'pongRoomsV1/'+room+(p?'/'+p:''));
  async function sendState(){if(!room||!api)return;const state=role==='host'?{x:ball.x,y:ball.y,left:y1,right:y2,a:scores[0],b:scores[1]}:{y:y2};try{await api.set(path(role==='host'?'state':'paddle'),state)}catch(e){finish('offline')}}
  async function release(){generation++;clearInterval(heartbeat);unsubs.forEach(fn=>fn());unsubs=[];if(disconnectHook){try{await disconnectHook.cancel()}catch(e){}disconnectHook=null}if(room&&api){try{await api.set(path('meta/status'),'closed')}catch(e){}}room='';mode='';role='';endAt=0;roomData=null;keys.clear();controls();}
@@ -39879,8 +39902,8 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock .sak-shor
  const audioFrame=$('pongGame-video');if(audioFrame){audioFrame.id='sakPongAudioFrame';arena.append(audioFrame)}
  $('sakPongAudio').onclick=()=>{audio=!audio;if(audioFrame){if(audio)audioFrame.src=audioFrame.dataset.audioSrc;else audioFrame.removeAttribute('src')}labels()};
  $('sakPongExit').onclick=()=>arena.close();
- arena.addEventListener('close',()=>{cancelAnimationFrame(raf);release();if(audioFrame)audioFrame.removeAttribute('src');audio=false;labels();status('idle');$('pongGame-btn')?.focus()});
- document.addEventListener('click',e=>{if(!e.target.closest('#pongGame-btn'))return;e.preventDefault();e.stopImmediatePropagation();if(!arena.open){arena.showModal();reset();labels();controls();raf=requestAnimationFrame(frame)}},true);
+ arena.addEventListener('close',()=>{gameSession=false;cancelAnimationFrame(raf);release();if(audioFrame)audioFrame.removeAttribute('src');audio=false;labels();status('idle');$('pongGame-btn')?.focus()});
+ document.addEventListener('click',e=>{if(!e.target.closest('#pongGame-btn'))return;e.preventDefault();e.stopImmediatePropagation();if(!arena.open){arena.showModal();reset();labels();controls();ensureGameAccount().catch(()=>status('error'));raf=requestAnimationFrame(frame)}},true);
  new MutationObserver(labels).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
  labels();controls();draw();
 })();
@@ -39890,7 +39913,7 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock .sak-shor
  const dock=document.getElementById('sakakerAllIconsDock');if(!dock)return;
  const palette=['#ffb3d9','#8deaff','#ffdf83','#b5a0ff','#8ce0b4','#ffaf8d','#9bbfff','#e8acfa','#b4e580','#ff99ae','#8bd8d5','#eed0a2'];
  const style=document.getElementById('sak-gull-shore-icons')||Array.from(document.querySelectorAll('style')).find(s=>s.textContent.includes('linearGradient%20id%3D%22wing'));
- const match=style?.textContent.match(/data:image\/svg\+xml,([^"\)]+)/);if(!match)return;
+ const match=style?.textContent.match(/url\("data:image\/svg\+xml,([^"]+)"\)/);if(!match)return;
  const original=decodeURIComponent(match[1]);
  function color(){dock.querySelectorAll('.sak-shore-gull').forEach((el,i)=>{if(el.dataset.sakGullColored)return;const shade=palette[i%palette.length];const svg=original.replace(/fill="url\(#(?:body|wing)\)"/g,`fill="${shade}"`).replace('fill="#344855"',`fill="${shade}"`);el.style.setProperty('--sak-colored-gull','url("data:image/svg+xml,'+encodeURIComponent(svg)+'")');el.dataset.sakGullColored='true';});}
  color();new MutationObserver(color).observe(dock,{childList:true,subtree:true});
