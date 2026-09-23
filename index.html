@@ -39822,7 +39822,7 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock .sak-shor
  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
  function status(key,extra=''){statusKey=key;statusExtra=extra;$('sakPongStatus').textContent=t(key)+extra;}
  function labels(){arena.dir=lang()==='ar'?'rtl':'ltr';$('sakPongTitle').textContent=t('title');arena.querySelectorAll('[data-sp]').forEach(el=>el.textContent=t(el.dataset.sp));$('sakPongCode').placeholder=t('code');$('sakPongCode').setAttribute('aria-label',t('code'));$('sakPongMessage').placeholder=t('message');$('sakPongMessage').setAttribute('aria-label',t('message'));$('sakPongExit').setAttribute('aria-label',lang()==='ar'?'إغلاق اللعبة':'Close game');canvas.setAttribute('aria-label',t('help'));$('sakPongAudio').textContent=t(audio?'mute':'sound');status(statusKey,statusExtra);}
- function controls(){for(const id of ['sakPongCreate','sakPongJoin','sakPongSolo','sakPongDuration'])$(id).disabled=busy||!!mode;$('sakPongLeave').disabled=busy||!mode;$('sakPongCopy').disabled=!room;$('sakPongMessage').disabled=mode!=='online'||ended||!endAt;}
+ function controls(){for(const id of ['sakPongCreate','sakPongJoin','sakPongSolo','sakPongDuration'])$(id).disabled=busy||!!mode;$('sakPongLeave').disabled=busy||!mode;$('sakPongCopy').disabled=!room;$('sakPongMessage').disabled=mode!=='online'||ended||!endAt;updateShare();}
  function reset(){y1=y2=210;ball={x:400,y:250,vx:300,vy:110};scores=[0,0];ended=false;lastFrame=0;lastSend=0;}
  function serve(direction){ball={x:400,y:250,vx:300*direction,vy:(Math.random()-.5)*280};}
  function simulate(dt){
@@ -39897,7 +39897,39 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock .sak-shor
  }
  $('sakPongSolo').onclick=()=>{if(mode)return;reset();mode='solo';role='host';offset=0;endAt=Date.now()+Number($('sakPongDuration').value)*60000;status('playing');controls();canvas.focus()};
  $('sakPongCreate').onclick=()=>online(false);$('sakPongJoin').onclick=()=>online(true);$('sakPongLeave').onclick=async()=>{await release();reset();status('idle')};
- $('sakPongCopy').onclick=async()=>{try{await navigator.clipboard.writeText(room);status('copied')}catch(e){status('copyFail')}};
+ const shareButton=document.createElement('button');shareButton.type='button';shareButton.id='sakPongShare';shareButton.setAttribute('aria-expanded','false');shareButton.setAttribute('aria-controls','sakPongSharePanel');$('sakPongCopy').after(shareButton);
+ const sharePanel=document.createElement('div');sharePanel.id='sakPongSharePanel';sharePanel.hidden=true;sharePanel.style.cssText='padding:10px;border:1px solid #8fc9b6;border-radius:12px;margin-bottom:10px;background:#123b35';
+ sharePanel.innerHTML='<div class="sp-row"><button type="button" data-network="whatsapp">WhatsApp</button><button type="button" data-network="facebook">Facebook</button><button type="button" data-network="x">X / Twitter</button><button type="button" id="sakPongNativeShare"></button><button type="button" id="sakPongCopyLink"></button></div><input id="sakPongInviteURL" readonly dir="ltr" style="width:100%"><p id="sakPongShareNote"></p>';
+ $('sakPongStatus').after(sharePanel);
+ function inviteURL(code){if(!/^[A-F0-9]{12}$/.test(code))return '';const base=location.protocol==='https:'||location.protocol==='http:'?location.origin+location.pathname:'https://sakaker.co/';const url=new URL(base);url.searchParams.set('pongRoom',code);return url.href;}
+ function inviteText(){return lang()==='en'?`Join my Pong match! Room: ${room}. Open the link, sign in and select Join.`:`انضم إلى مباراتي في بونج! رمز الغرفة: ${room}. افتح الرابط وسجّل الدخول ثم اضغط انضمام.`;}
+ function updateShare(){
+  if(!$('sakPongShare'))return;const en=lang()==='en',available=!!room&&!ended&&mode==='online'&&(!roomData||roomData.status==='waiting');
+  shareButton.disabled=!available;shareButton.textContent=en?'↗ Share room':'↗ مشاركة الغرفة';
+  $('sakPongNativeShare').textContent=en?'More apps…':'تطبيقات أخرى…';$('sakPongCopyLink').textContent=en?'Copy invitation link':'نسخ رابط الدعوة';
+  $('sakPongInviteURL').setAttribute('aria-label',en?'Room invitation link':'رابط دعوة الغرفة');$('sakPongInviteURL').value=available?inviteURL(room):'';
+  $('sakPongShareNote').textContent=en?'Keep this game open while your friend joins. Anyone with the invitation can take the second seat; share privately.':'أبقِ اللعبة مفتوحة حتى ينضم صديقك. أي شخص لديه الدعوة يمكنه أخذ المقعد الثاني؛ شاركها بشكل خاص.';
+  if(!available){sharePanel.hidden=true;shareButton.setAttribute('aria-expanded','false');}
+ }
+ function showShare(){updateShare();if(shareButton.disabled)return;sharePanel.hidden=false;shareButton.setAttribute('aria-expanded','true');}
+ shareButton.onclick=()=>{if(sharePanel.hidden)showShare();else{sharePanel.hidden=true;shareButton.setAttribute('aria-expanded','false')}};
+ $('sakPongCopy').onclick=async()=>{showShare();try{await navigator.clipboard.writeText(room);status('copied')}catch(e){status('copyFail')}};
+ $('sakPongCopyLink').onclick=async()=>{if(shareButton.disabled)return;try{await navigator.clipboard.writeText(inviteURL(room));status('copied')}catch(e){$('sakPongInviteURL').focus();$('sakPongInviteURL').select();status('copyFail')}};
+ $('sakPongNativeShare').onclick=async()=>{if(shareButton.disabled)return;if(!navigator.share){$('sakPongCopyLink').click();return}try{await navigator.share({title:'Sakaker Pong',text:inviteText(),url:inviteURL(room)})}catch(e){if(e.name!=='AbortError')$('sakPongCopyLink').click()}};
+ sharePanel.querySelectorAll('[data-network]').forEach(button=>button.onclick=()=>{
+  if(shareButton.disabled)return;const link=inviteURL(room),message=inviteText();let target;
+  if(button.dataset.network==='whatsapp'){target=new URL('https://wa.me/');target.searchParams.set('text',message+'\n'+link)}
+  else if(button.dataset.network==='facebook'){target=new URL('https://www.facebook.com/sharer/sharer.php');target.searchParams.set('u',link)}
+  else{target=new URL('https://twitter.com/intent/tweet');target.searchParams.set('text',message);target.searchParams.set('url',link)}
+  window.open(target.href,'_blank','noopener,noreferrer');
+ });
+ const invitation=(new URL(location.href).searchParams.get('pongRoom')||'').toUpperCase();
+ if(/^[A-F0-9]{12}$/.test(invitation)){
+  $('sakPongCode').value=invitation;
+  const hint=document.createElement('p');hint.id='sakPongInviteHint';$('sakPongCode').parentElement.after(hint);
+  const hintLabel=()=>{hint.textContent=lang()==='en'?'Invitation loaded. Sign in, then select Join.':'تم إدخال رمز الدعوة. سجّل الدخول ثم اضغط انضمام.'};hintLabel();new MutationObserver(hintLabel).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+ }
+ new MutationObserver(updateShare).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
  $('sakPongSendForm').onsubmit=async e=>{e.preventDefault();const message=$('sakPongMessage').value.trim();if(mode!=='online'||ended||!message||Date.now()-lastChat<1000)return;lastChat=Date.now();try{await api.push(path('chat'),{uid,name:String(window.firebaseAuth.currentUser.displayName||'Player').slice(0,40),text:message.slice(0,240),time:api.serverTimestamp()});$('sakPongMessage').value=''}catch(e){status('error')}};
  const audioFrame=$('pongGame-video');if(audioFrame){audioFrame.id='sakPongAudioFrame';arena.append(audioFrame)}
  $('sakPongAudio').onclick=()=>{audio=!audio;if(audioFrame){if(audio)audioFrame.src=audioFrame.dataset.audioSrc;else audioFrame.removeAttribute('src')}labels()};
