@@ -36229,12 +36229,14 @@ html body #sakChatPanel{
         <div id="sakChatIdentity" class="sak-chat-small"></div>
       </div>
       <div class="sak-chat-head-actions">
+        <button id="sakChatPrivacyToggle" type="button" aria-pressed="false"></button>
         <button id="sakChatLang" type="button">English</button>
         <button id="sakChatClose" type="button" aria-label="إغلاق">✕</button>
       </div>
     </header>
 
     <div id="sakChatWarning"></div>
+    <div id="sakChatPrivacyNotice" role="note"></div>
 
     <nav id="sakChatTabs" aria-label="Chat sections">
       <button type="button" data-chat-tab="public" aria-selected="true" id="sakChatTabPublic"></button>
@@ -36416,8 +36418,6 @@ html body #sakChatPanel{
   function safeName(user){
     const name = (user?.displayName || '').trim();
     if(name) return name.slice(0,50);
-    const email = (user?.email || '').trim();
-    if(email) return email.split('@')[0].slice(0,50);
     return lang === 'en' ? 'User' : 'مستخدم';
   }
   function wordCount(text){
@@ -36455,6 +36455,8 @@ html body #sakChatPanel{
     $('sakChatLang').textContent=lang==='ar'?'English':'العربية';
     $('sakChatClose').setAttribute('aria-label',lang==='ar'?'إغلاق':'Close');
     $('sakChatWarning').textContent=t('warning');
+    $('sakChatPrivacyNotice').textContent=lang==='ar'?'العام مرئي للمسجلين. الخاص ليس مشفّراً من طرف إلى طرف؛ تجنب مشاركة البيانات الحساسة. البلاغ يرفق آخر رسالة للطرف الآخر، والإغلاق يمسح المسودات فقط.':'Public chat is visible to signed-in users. Private chat is not end-to-end encrypted; avoid sensitive information. Reports include the other person’s latest message. Closing clears drafts only.';
+    updatePrivacyLabel();
     $('sakChatTabPublic').textContent=t('public');
     $('sakChatTabUsers').textContent=t('users');
     $('sakChatTabRequestsText').textContent=t('requests');
@@ -36482,10 +36484,24 @@ html body #sakChatPanel{
     document.querySelectorAll('#sakChatBody [data-chat-view]').forEach(view=>view.hidden=view.dataset.chatView!==name);
   }
 
+  function updatePrivacyLabel(){
+    const hidden=$('sakChatOverlay').classList.contains('sak-chat-shielded');
+    $('sakChatPrivacyToggle').textContent=lang==='ar'?(hidden?'إظهار المحادثة':'ستر المحادثة'):(hidden?'Reveal chat':'Hide chat');
+    $('sakChatPrivacyToggle').setAttribute('aria-pressed',String(hidden));
+  }
+  function shieldChat(hidden){
+    $('sakChatOverlay').classList.toggle('sak-chat-shielded',hidden);
+    $('sakChatBody').inert=hidden;
+    if(hidden)$('sakChatBody').setAttribute('aria-hidden','true');else $('sakChatBody').removeAttribute('aria-hidden');
+    updatePrivacyLabel();
+  }
+  $('sakChatPrivacyToggle').addEventListener('click',()=>shieldChat(!$('sakChatOverlay').classList.contains('sak-chat-shielded')));
+  document.addEventListener('visibilitychange',()=>{if(document.hidden&&!$('sakChatOverlay').hidden)shieldChat(true);});
   function openOverlay(){
     if(!currentUser){toast(t('loginRequired'));return;}
     const overlay=$('sakChatOverlay');
     overlay.hidden=false;
+    shieldChat(false);
     document.body.style.overflow='hidden';
     setLanguage(document.documentElement.lang==='en'?'en':'ar');
     showTab('public');
@@ -36507,6 +36523,9 @@ html body #sakChatPanel{
     }catch(e){}
     overlay.removeAttribute('open');
     overlay.hidden=true;
+    $('sakChatPublicInput').value='';
+    $('sakChatPrivateInput').value='';
+    shieldChat(true);
     document.body.style.overflow='';
     const icon=$('sakChatIcon');
     if(icon) icon.focus();
@@ -38067,16 +38086,16 @@ html body:not(.locked) #sakakerBusinessAd{
   function addSeo(){const head=document.head;const set=(name,content)=>{let m=head.querySelector('meta[name="'+name+'"]');if(!m){m=document.createElement('meta');m.name=name;head.appendChild(m)}m.content=content};set('description','SAKAKER: منصة عربية للمعرفة والقراءة والكتابة والمحتوى المرئي والتفاعل المجتمعي.');set('robots','index, follow, max-image-preview:large');set('theme-color','#063947');document.title='SAKAKER | منصة القراءة والكتابة والمعرفة';}
   function addMusic(){
     if(document.getElementById('sakMusicIcon'))return;
-    const remote='https://serv100.albumaty.com/dl/alf/om-kalsoum/Albumaty.com.Om.Kalsoum.Mosh.Momkn.Abdn.mp3';
-    const btn=document.createElement('button');btn.id='sakMusicIcon';btn.type='button';btn.className='launcher';btn.innerHTML='<span>🎵 موسيقى</span>';document.body.append(btn);
+    const remote='https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D9%81%D9%87%D8%AF%D8%A8%D9%86%20%D8%B3%D8%B9%D9%8A%D8%AF%20%D9%8A%D8%A7%D8%B5%D8%A7%D8%AD%D8%A8%D9%8A%20%D9%85%D8%A7%D8%AA%D8%AC%D9%8A%20%D8%A8%D8%A7%D9%84%D8%B2%D9%8A%D8%A7%D8%B1%D9%87%20%D8%A8%D8%AE%D9%8A%D9%84_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A0%D9%A4%D9%A1%D9%A3_%D9%A1%D9%A6%D9%A3%D9%A6%D9%A2%D9%A5.mp3';
+    const btn=document.createElement('button');btn.id='sakMusicIcon';btn.type='button';btn.className='launcher';btn.innerHTML='<span>⭐ موسيقى</span>';document.body.append(btn);
     const modal=document.createElement('div');modal.id='sakMusicPlayer';
-    modal.innerHTML='<div class="sak-music-box" role="dialog" aria-modal="true" aria-labelledby="sakMediaTitle"><button type="button" class="sak-close" data-media-label="close">×</button><h2 id="sakMediaTitle" data-media-text="title"></h2><p data-media-text="song"></p><div class="sak-media-actions"><button id="sakRemotePlay" type="button" data-media-text="remote"></button><a href="https://www.albumaty.com/song/204.html" target="_blank" rel="noopener noreferrer" data-media-text="source"></a></div><label for="sakMediaFile" data-media-text="choose"></label><input id="sakMediaFile" type="file" accept="audio/*,video/*,.mp3,.m4a,.aac,.wav,.ogg,.oga,.flac,.mp4,.m4v,.mov,.webm,.ogv"><p data-media-text="privacy"></p><audio id="sakNativeAudio" controls preload="none"></audio><video id="sakNativeVideo" controls playsinline preload="metadata" hidden></video><div class="sak-media-actions"><button id="sakMediaPlay" type="button" data-media-text="play"></button><button id="sakMediaPause" type="button" data-media-text="pause"></button><button id="sakMediaRestart" type="button" data-media-text="restart"></button></div><p id="sakMediaStatus" role="status" aria-live="polite"></p></div>';
+    modal.innerHTML='<div class="sak-music-box" role="dialog" aria-modal="true" aria-labelledby="sakMediaTitle"><button type="button" class="sak-close" data-media-label="close">×</button><h2 id="sakMediaTitle" data-media-text="title"></h2><p data-media-text="song"></p><div class="sak-media-actions"><button id="sakRemotePlay" type="button" data-media-text="remote"></button><a href="https://github.com/sakakera-a11y/sakaker/blob/main/%D9%81%D9%87%D8%AF%D8%A8%D9%86%20%D8%B3%D8%B9%D9%8A%D8%AF%20%D9%8A%D8%A7%D8%B5%D8%A7%D8%AD%D8%A8%D9%8A%20%D9%85%D8%A7%D8%AA%D8%AC%D9%8A%20%D8%A8%D8%A7%D9%84%D8%B2%D9%8A%D8%A7%D8%B1%D9%87%20%D8%A8%D8%AE%D9%8A%D9%84_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A0%D9%A4%D9%A1%D9%A3_%D9%A1%D9%A6%D9%A3%D9%A6%D9%A2%D9%A5.mp3" target="_blank" rel="noopener noreferrer" data-media-text="source"></a></div><label for="sakMediaFile" data-media-text="choose"></label><input id="sakMediaFile" type="file" accept="audio/*,video/*,.mp3,.m4a,.aac,.wav,.ogg,.oga,.flac,.mp4,.m4v,.mov,.webm,.ogv"><p data-media-text="privacy"></p><audio id="sakNativeAudio" controls preload="none"></audio><video id="sakNativeVideo" controls playsinline preload="metadata" hidden></video><div class="sak-media-actions"><button id="sakMediaPlay" type="button" data-media-text="play"></button><button id="sakMediaPause" type="button" data-media-text="pause"></button><button id="sakMediaRestart" type="button" data-media-text="restart"></button></div><p id="sakMediaStatus" role="status" aria-live="polite"></p></div>';
     document.body.append(modal);
     const audio=modal.querySelector('audio'),video=modal.querySelector('video'),picker=modal.querySelector('input');
     let active=audio,objectUrl=null,selectedName='',statusKey='ready',revision=0,previousOverflow='';
     const words={
-      ar:{title:'🎵 مشغّل الصوت والفيديو',song:'مش ممكن أبداً — أم كلثوم',remote:'▶ تشغيل الأغنية',source:'فتح صفحة الأغنية ↗',choose:'اختر ملف صوت أو فيديو من جهازك',privacy:'تشغيل مباشر من جهازك دون رفع الملف أو تثبيت إضافات. دعم الصيغ يعتمد على متصفحك.',play:'▶ تشغيل',pause:'⏸ إيقاف مؤقت',restart:'↺ من البداية',close:'إغلاق المشغّل',ready:'اضغط تشغيل الأغنية أو اختر ملفاً من جهازك.',loading:'جارٍ تجهيز الملف…',playing:'قيد التشغيل',paused:'متوقف مؤقتاً',ended:'انتهى التشغيل',blocked:'اضغط زر التشغيل للبدء.',unsupported:'تعذر تشغيل هذه الصيغة أو الملف تالف. جرّب MP3 للصوت أو MP4 بترميز H.264/AAC للفيديو.',network:'تعذر تحميل الأغنية. تحقق من الإنترنت أو افتح صفحة المصدر.',selected:'الملف المختار: '},
-      en:{title:'🎵 Audio & video player',song:'Mosh Momkn Abdn — Umm Kulthum',remote:'▶ Play song',source:'Open song page ↗',choose:'Choose an audio or video file from your device',privacy:'Plays from your device without uploads or plugins. Format support depends on your browser.',play:'▶ Play',pause:'⏸ Pause',restart:'↺ Restart',close:'Close player',ready:'Play the song or choose a file from your device.',loading:'Preparing media…',playing:'Playing',paused:'Paused',ended:'Playback finished',blocked:'Press Play to start.',unsupported:'This format is unsupported or the file is damaged. Try MP3 audio or MP4 video with H.264/AAC.',network:'Could not load the song. Check your connection or open its source page.',selected:'Selected file: '}
+      ar:{title:'🎵 مشغّل الصوت والفيديو',song:'يا صاحبي ما تجي بالزيارة بخيل — فهد بن سعيد',remote:'▶ تشغيل الأغنية',source:'فتح صفحة الأغنية ↗',choose:'اختر ملف صوت أو فيديو من جهازك',privacy:'تشغيل مباشر من جهازك دون رفع الملف أو تثبيت إضافات. دعم الصيغ يعتمد على متصفحك.',play:'▶ تشغيل',pause:'⏸ إيقاف مؤقت',restart:'↺ من البداية',close:'إغلاق المشغّل',ready:'اضغط تشغيل الأغنية أو اختر ملفاً من جهازك.',loading:'جارٍ تجهيز الملف…',playing:'قيد التشغيل',paused:'متوقف مؤقتاً',ended:'انتهى التشغيل',blocked:'اضغط زر التشغيل للبدء.',unsupported:'تعذر تشغيل هذه الصيغة أو الملف تالف. جرّب MP3 للصوت أو MP4 بترميز H.264/AAC للفيديو.',network:'تعذر تحميل الأغنية. تحقق من الإنترنت أو افتح صفحة المصدر.',selected:'الملف المختار: '},
+      en:{title:'🎵 Audio & video player',song:'Ya Sahbi Ma Tiji Bil Ziyarah Bakheel — Fahad bin Saeed',remote:'▶ Play song',source:'Open song page ↗',choose:'Choose an audio or video file from your device',privacy:'Plays from your device without uploads or plugins. Format support depends on your browser.',play:'▶ Play',pause:'⏸ Pause',restart:'↺ Restart',close:'Close player',ready:'Play the song or choose a file from your device.',loading:'Preparing media…',playing:'Playing',paused:'Paused',ended:'Playback finished',blocked:'Press Play to start.',unsupported:'This format is unsupported or the file is damaged. Try MP3 audio or MP4 video with H.264/AAC.',network:'Could not load the song. Check your connection or open its source page.',selected:'Selected file: '}
     };
     const dict=()=>words[document.documentElement.lang==='en'?'en':'ar'];
     function render(){const t=dict();modal.dir=document.documentElement.lang==='en'?'ltr':'rtl';modal.querySelectorAll('[data-media-text]').forEach(el=>{const value=t[el.dataset.mediaText];if(el.textContent!==value)el.textContent=value});modal.querySelector('.sak-close').setAttribute('aria-label',t.close);audio.setAttribute('aria-label',t.title);video.setAttribute('aria-label',t.title);modal.querySelector('#sakMediaStatus').textContent=t[statusKey]+(selectedName?' — '+t.selected+selectedName:'');}
@@ -38205,7 +38224,7 @@ html body #sakakerWisdomBox{bottom:calc(162px + env(safe-area-inset-bottom))!imp
  function label(el,text){if(el&&el.textContent!==text)el.textContent=text}
  function translate(){pending=false;const en=document.documentElement.lang==='en',index=en?1:0;
  const map=document.querySelector('.launcher:not(#sakMusicIcon)'),music=$('sakMusicIcon'),business=$('sakakerBusinessIcon');
- [[map,en?'Maps':'خرائط','🗺'],[music,en?'Music':'موسيقى','🎵']].forEach(([el,name,symbol])=>{if(!el)return;label(el.querySelector('span'),symbol+' '+name);if(el.title!==name)el.title=name;if(el.getAttribute('aria-label')!==name)el.setAttribute('aria-label',name)});
+ [[map,en?'Maps':'خرائط','🗺'],[music,en?'Music':'موسيقى','⭐']].forEach(([el,name,symbol])=>{if(!el)return;label(el.querySelector('span'),symbol+' '+name);if(el.title!==name)el.title=name;if(el.getAttribute('aria-label')!==name)el.setAttribute('aria-label',name)});
  if(business){const name=en?'Business':'بزنس';label(business.querySelector('.sbIconCore'),name);business.title=en?'Open Sakaker Business':'فتح موقع بزنس';business.setAttribute('aria-label',business.title)}
  if(row)row.setAttribute('aria-label',en?'Maps, business and music':'الخرائط وبزنس والموسيقى');
  const convert=text=>{const trimmed=text.trim();const pair=pairs.find(p=>p.includes(trimmed));if(pair)return text.replace(trimmed,pair[index]);for(const [ar,eng]of [['جاهز للتشغيل: ','Ready to play: '],['رابط المكان: ','Place link: ']]){const from=en?ar:eng,to=en?eng:ar;if(text.startsWith(from))return to+text.slice(from.length)}return text};
@@ -39978,7 +39997,7 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock .sak-shor
  const style=document.getElementById('sak-gull-shore-icons')||Array.from(document.querySelectorAll('style')).find(s=>s.textContent.includes('linearGradient%20id%3D%22wing'));
  const match=style?.textContent.match(/url\("data:image\/svg\+xml,([^"]+)"\)/);if(!match)return;
  const original=decodeURIComponent(match[1]);
- function color(){dock.querySelectorAll('.sak-shore-gull').forEach((el,i)=>{if(el.dataset.sakGullColored)return;const shade=palette[i%palette.length];const svg=original.replace(/fill="url\(#body\)"/g,`fill="${shade}"`).replace(/fill="url\(#wing\)"/g,'fill="#000000"').replace('fill="#344855"',`fill="${shade}"`);el.style.setProperty('--sak-colored-gull','url("data:image/svg+xml,'+encodeURIComponent(svg)+'")');el.dataset.sakGullColored='true';});}
+ function color(){dock.querySelectorAll('.sak-shore-gull').forEach((el,i)=>{if(el.dataset.sakGullColored)return;const shade=el.id==='sakChatIcon'?'#800020':palette[i%palette.length];const svg=original.replace(/fill="url\(#body\)"/g,`fill="${shade}"`).replace(/fill="url\(#wing\)"/g,'fill="#000000"').replace('fill="#344855"',`fill="${shade}"`);el.style.setProperty('--sak-colored-gull','url("data:image/svg+xml,'+encodeURIComponent(svg)+'")');el.dataset.sakGullColored='true';});}
  color();new MutationObserver(color).observe(dock,{childList:true,subtree:true});
 })();
 </script>
@@ -40087,5 +40106,30 @@ html body #sakTemporaryFacebookBackground .sak-national-footer{all:initial;displ
  document.addEventListener('visibilitychange',update);window.addEventListener('pageshow',update);window.addEventListener('resize',resize,{passive:true});resize();update();
 })();
 </script>
+<style id="sak-yellow-music-star">
+html body #sakakerAllIconsDock #sakUtilityRow #sakMusicIcon{background:radial-gradient(circle at 34% 25%,#fffbd5 0 5%,#ffe976 18%,#ffd52a 46%,#e9ad00 78%,#bd8000 100%)!important;clip-path:polygon(50% 0%,61.5% 35.2%,98% 35.2%,68.2% 56.8%,79.4% 91%,50% 70%,20.6% 91%,31.8% 56.8%,2% 35.2%,38.5% 35.2%)!important;border-radius:0!important;}
+html body #sakakerAllIconsDock #sakUtilityRow #sakMusicIcon span{color:#3d2900!important;-webkit-text-fill-color:#3d2900!important;text-shadow:0 1px 2px #fff4ae!important;}
+</style>
+<style id="sak-chat-glass-privacy">
+html body #sakChatOverlay{background:transparent!important;}
+html body #sakChatOverlay::backdrop{background:#02111cb8;backdrop-filter:blur(5px);}
+html body #sakChatPanel{background:linear-gradient(135deg,#123e48ce,#240e29d9)!important;backdrop-filter:blur(24px) saturate(130%)!important;-webkit-backdrop-filter:blur(24px) saturate(130%)!important;border:1px solid #c9f4ef70!important;box-shadow:inset 0 1px 0 #ffffff40,0 18px 70px #0009!important;color:#f5fcff!important;}
+html body #sakChatHeader,html body #sakChatTabs,html body #sakChatPrivateTop{background:#ffffff09!important;border-color:#ffffff25!important;}
+html body #sakChatHeader{gap:8px;flex-wrap:wrap;}
+html body #sakChatHeader .sak-chat-head-actions{display:flex;gap:6px;flex-wrap:wrap;}
+html body #sakChatPrivacyNotice{font:12px/1.7 Tahoma,Arial,sans-serif;color:#e5edf4;padding:8px 12px;background:#00000038;border-bottom:1px solid #ffffff20;flex-shrink:0;}
+html body #sakChatBody{min-height:0;background:transparent!important;}
+html body #sakChatPanel .sak-chat-message{background:#ffffff12!important;border:1px solid #ffffff25;box-shadow:0 3px 12px #0002;overflow-wrap:anywhere;}
+html body #sakChatPanel .sak-chat-message.mine{background:#80002065!important;border-color:#eeb5c254;}
+html body #sakChatPanel .sak-chat-compose{background:#071b2c88!important;}
+html body #sakChatPanel input{background:#071727c9!important;color:#fff!important;border:1px solid #b5dde35c!important;}
+html body #sakChatPanel input::placeholder{color:#c6d9e1!important;opacity:1;}
+html body #sakChatPanel button:focus-visible,html body #sakChatPanel input:focus-visible{outline:2px solid #ffe0a0!important;outline-offset:2px;}
+html body #sakChatPrivacyToggle{background:#800020!important;color:#fff!important;border:1px solid #efc3cb!important;border-radius:10px;padding:7px 10px;cursor:pointer;}
+html body #sakChatOverlay.sak-chat-shielded #sakChatBody{visibility:hidden!important;pointer-events:none!important;}
+html body #sakChatOverlay.sak-chat-shielded #sakChatIdentity{visibility:hidden!important;}
+@supports not (backdrop-filter:blur(1px)){html body #sakChatPanel{background:#112b39!important;}}
+@media(max-width:600px){html body #sakChatPrivacyNotice{font-size:11px;padding:6px 9px;}html body #sakChatWarning{max-height:64px;overflow:auto;flex-shrink:0;}html body #sakChatTabs{overflow-x:auto;flex-shrink:0;}}
+</style>
 </body>
 </html>
