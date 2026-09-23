@@ -38713,7 +38713,7 @@ html body #sakSecondStreamCorner #sakSecondStreamCircleSecure::after{
   }catch(_){failure();}
  }
  /* Capture at window level, before legacy document listeners intercept clicks. */
- function route(e){if(!(e.target instanceof Element))return;const first=e.target.closest('.video-top-container-fixed'),second=e.target.closest('#sakSecondStreamCorner');if(!first&&!second)return;if(e.type==='keydown'&&!['Enter',' '].includes(e.key))return;e.preventDefault();e.stopImmediatePropagation();open(second?'live':'youtube',second?.querySelector('[role=button]')||first?.querySelector('.video-circle'))}
+ function route(e){if(!(e.target instanceof Element))return;if(e.target.closest('.sak-preview-toggle,.sak-preview-collapsed'))return;const first=e.target.closest('.video-top-container-fixed'),second=e.target.closest('#sakSecondStreamCorner');if(!first&&!second)return;if(e.type==='keydown'&&!['Enter',' '].includes(e.key))return;e.preventDefault();e.stopImmediatePropagation();open(second?'live':'youtube',second?.querySelector('[role=button]')||first?.querySelector('.video-circle'))}
  window.addEventListener('click',route,true);window.addEventListener('keydown',route,true);
  const first=document.querySelector('.video-top-container-fixed .video-circle');if(first){first.tabIndex=0;first.setAttribute('role','button');first.setAttribute('aria-label','فتح الفيديو / Open video')}
 })();
@@ -40031,6 +40031,39 @@ html body #sakSecondStreamCorner#sakSecondStreamCorner#sakSecondStreamCorner.sak
  }
  window.addEventListener('click',intercept,true);window.addEventListener('keydown',intercept,true);
  new MutationObserver(()=>entries.forEach(label)).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+})();
+</script>
+<!-- Temporary Facebook background: 2026-09-23 14:16:05 UTC to 2026-09-26 14:16:05 UTC. -->
+<style id="sak-temporary-facebook-background-style">
+html body #sakTemporaryFacebookBackground{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;z-index:0!important;margin:0!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;pointer-events:none!important;overflow:hidden!important;contain:layout paint;}
+html body #sakTemporaryFacebookBackground[hidden],html body.locked #sakTemporaryFacebookBackground{display:none!important}
+html body #sakTemporaryFacebookBackground iframe{position:absolute!important;top:50%!important;left:50%!important;right:auto!important;bottom:auto!important;width:500px!important;height:498px!important;max-width:none!important;max-height:none!important;margin:0!important;padding:0!important;border:0!important;border-radius:12px!important;transform:translate(-50%,-50%) scale(var(--sak-facebook-scale,1))!important;transform-origin:center!important;pointer-events:none!important;box-shadow:0 0 24px #a5e7f133!important;opacity:.8!important;}
+</style>
+<script id="sak-temporary-facebook-background-js">
+(()=>{
+ const START=Date.parse('2026-09-23T14:16:05Z'),END=Date.parse('2026-09-26T14:16:05Z');
+ const VISIBLE=120000,CYCLE=180000;
+ const SRC='https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FAbwAlqmrZmrd%2Fposts%2Fpfbid07Z8PCcMhbXKGZsFMYiT93Prbi3UbhucUq8pn3xWZjTGWqrVUDdSd2BWUaeQ7H5Nal&show_text=true&width=500';
+ function phase(now){
+  if(now>=END)return {expired:true,visible:false,delay:0};
+  if(now<START)return {expired:false,visible:false,delay:Math.min(START-now,60000)};
+  const elapsed=(now-START)%CYCLE,visible=elapsed<VISIBLE;
+  return {expired:false,visible,delay:Math.max(1,Math.min(visible?VISIBLE-elapsed:CYCLE-elapsed,END-now))};
+ }
+ if(Date.now()>=END)return;
+ const layer=document.createElement('div');layer.id='sakTemporaryFacebookBackground';layer.hidden=true;layer.inert=true;layer.setAttribute('aria-hidden','true');
+ const frame=document.createElement('iframe');frame.title='Temporary Facebook post background';frame.width='500';frame.height='498';frame.tabIndex=-1;frame.setAttribute('scrolling','no');frame.setAttribute('allow','autoplay \'none\'; clipboard-write \'none\'');frame.referrerPolicy='strict-origin-when-cross-origin';layer.append(frame);document.body.append(layer);
+ let timer,stopped=false;
+ function resize(){layer.style.setProperty('--sak-facebook-scale',String(Math.max(.1,Math.min(1,(innerWidth-24)/500,(innerHeight-140)/498))));}
+ function update(){
+  if(stopped)return;clearTimeout(timer);const state=phase(Date.now());
+  if(state.expired){stopped=true;frame.removeAttribute('src');layer.remove();observer.disconnect();document.removeEventListener('visibilitychange',update);window.removeEventListener('pageshow',update);window.removeEventListener('resize',resize);return;}
+  const visible=state.visible&&!document.hidden&&!document.body.classList.contains('locked');layer.hidden=!visible;
+  if(visible){if(frame.getAttribute('src')!==SRC)frame.setAttribute('src',SRC);}else frame.removeAttribute('src');
+  if(!document.hidden)timer=setTimeout(update,state.delay);
+ }
+ const observer=new MutationObserver(update);observer.observe(document.body,{attributes:true,attributeFilter:['class']});
+ document.addEventListener('visibilitychange',update);window.addEventListener('pageshow',update);window.addEventListener('resize',resize,{passive:true});resize();update();
 })();
 </script>
 </body>
