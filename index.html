@@ -39992,5 +39992,46 @@ html body #sakStudio #studioCanvas{touch-action:none!important;user-select:none!
 html body #sakStudio #studioTools{padding:8px;border:1px solid #b6d5de44;border-radius:12px;background:#092331}
 html body #sakStudio #studioTools button{font-size:13px!important;min-height:40px;flex:0 1 auto}
 </style>
+<style id="sak-preview-visibility-controls">
+html body :is(.video-top-container-fixed,#sakSecondStreamCorner){overflow:visible!important}
+html body .sak-preview-toggle{position:absolute!important;top:-12px!important;left:50%!important;right:auto!important;bottom:auto!important;transform:translateX(-50%)!important;translate:none!important;width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;padding:0!important;margin:0!important;display:grid!important;place-items:center!important;border:1px solid #c8f3ff!important;border-radius:50%!important;background:linear-gradient(135deg,#134252,#26334f)!important;color:white!important;font:700 24px/1 Arial,sans-serif!important;box-shadow:0 0 10px #a4e8ff66!important;z-index:100!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;cursor:pointer!important;text-shadow:none!important;animation:none!important}
+html body .sak-preview-toggle:focus-visible{outline:3px solid #ffe4a0!important;outline-offset:3px!important}
+html body :is(.video-top-container-fixed,#sakSecondStreamCorner).sak-preview-collapsed{background:transparent!important;border-color:transparent!important;box-shadow:none!important;filter:none!important;backdrop-filter:none!important}
+html body :is(.video-top-container-fixed,#sakSecondStreamCorner).sak-preview-collapsed::before,html body :is(.video-top-container-fixed,#sakSecondStreamCorner).sak-preview-collapsed::after{display:none!important}
+html body .video-top-container-fixed.video-top-container-fixed.video-top-container-fixed.video-top-container-fixed.sak-preview-collapsed > :not(.sak-preview-toggle),
+html body #sakSecondStreamCorner#sakSecondStreamCorner#sakSecondStreamCorner.sak-preview-collapsed > :not(.sak-preview-toggle){visibility:hidden!important;opacity:0!important;pointer-events:none!important}
+</style>
+<script id="sak-preview-visibility-controls-js">
+(()=>{
+ const entries=[];
+ const en=()=>document.documentElement.lang==='en';
+ function label(entry){const hidden=entry.host.classList.contains('sak-preview-collapsed');entry.button.textContent=hidden?'+':'×';entry.button.title=hidden?(en()?'Show video preview':'إظهار معاينة الفيديو'):(en()?'Hide video preview':'إخفاء معاينة الفيديو');entry.button.setAttribute('aria-label',entry.button.title);entry.button.setAttribute('aria-expanded',String(!hidden));}
+ function setHidden(entry,hidden){
+  entry.host.classList.toggle('sak-preview-collapsed',hidden);
+  entry.frame.inert=hidden;
+  if(hidden)entry.frame.setAttribute('aria-hidden','true');else entry.frame.removeAttribute('aria-hidden');
+  entry.host.querySelectorAll('video').forEach(video=>{if(hidden)video.pause();else if(video.autoplay){video.muted=true;video.play().catch(()=>{});}});
+  entry.host.querySelectorAll('iframe').forEach(frame=>{if(hidden){if(!entry.sources.has(frame))entry.sources.set(frame,frame.getAttribute('src'));frame.removeAttribute('src');}else if(entry.sources.has(frame)){const src=entry.sources.get(frame);if(src)frame.setAttribute('src',src);entry.sources.delete(frame);}});
+  label(entry);
+ }
+ document.querySelectorAll('.video-top-container-fixed,#sakSecondStreamCorner').forEach((host,index)=>{
+  const frame=host.querySelector('.video-circle,#sakSecondStreamCircleSecure,#sakSecondStreamCircle');if(!frame)return;
+  if(!frame.id)frame.id='sakPreviewVisibilityFrame'+index;
+  const button=document.createElement('button');button.type='button';button.className='sak-preview-toggle';button.setAttribute('aria-controls',frame.id);host.append(button);
+  const entry={host,frame,button,sources:new Map()};entries.push(entry);label(entry);
+  host.querySelectorAll('video').forEach(video=>video.addEventListener('play',()=>{if(host.classList.contains('sak-preview-collapsed'))video.pause();}));
+ });
+ // Capture before legacy document-level video launchers.
+ function intercept(event){
+  if(!(event.target instanceof Element))return;
+  const entry=entries.find(item=>item.host.contains(event.target));if(!entry)return;
+  const button=event.target.closest('.sak-preview-toggle');
+  if(button){if(event.type==='keydown'&&!['Enter',' '].includes(event.key))return;event.preventDefault();event.stopImmediatePropagation();setHidden(entry,!entry.host.classList.contains('sak-preview-collapsed'));entry.button.focus();}
+  else if(entry.host.classList.contains('sak-preview-collapsed')){event.preventDefault();event.stopImmediatePropagation();}
+ }
+ window.addEventListener('click',intercept,true);window.addEventListener('keydown',intercept,true);
+ new MutationObserver(()=>entries.forEach(label)).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+})();
+</script>
 </body>
 </html>
