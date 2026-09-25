@@ -40053,59 +40053,7 @@ html body #sakSecondStreamCorner#sakSecondStreamCorner#sakSecondStreamCorner.sak
 })();
 </script>
 <!-- Temporary Facebook background: 2026-09-23 14:16:05 UTC to 2026-09-26 14:16:05 UTC. -->
-<style id="sak-temporary-facebook-background-style">
-html body #sakTemporaryFacebookBackground{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;z-index:0!important;margin:0!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;pointer-events:none!important;overflow:hidden!important;contain:layout paint;}
-html body #sakTemporaryFacebookBackground[hidden],html body.locked #sakTemporaryFacebookBackground{display:none!important}
-html body #sakTemporaryFacebookBackground .sak-national-card{all:initial;box-sizing:border-box;position:absolute;top:50%;left:50%;width:540px;height:756px;padding:20px;transform:translate(-50%,-50%) scale(var(--sak-facebook-scale,1));transform-origin:center;border:1px solid #bce7b578;border-radius:26px;background:radial-gradient(ellipse at top right,#479d6655,transparent 60%),linear-gradient(145deg,#083e35ed,#052b29ed);box-shadow:0 0 36px #68d3a32b;color:#fff;font-family:Tahoma,Arial,sans-serif;text-align:center;overflow:hidden;pointer-events:none;}
-html body #sakTemporaryFacebookBackground .sak-national-kicker{all:initial;display:block;color:#d7ecd1;font:14px Tahoma,Arial,sans-serif;text-align:center;letter-spacing:1px;height:24px;}
-html body #sakTemporaryFacebookBackground .sak-national-title{all:initial;display:block;color:#f3f6dc;font:bold 40px/1.5 Tahoma,Arial,sans-serif;text-align:center;height:64px;text-shadow:0 2px 16px #9bebb03b;}
-html body #sakTemporaryFacebookBackground .sak-national-caption{all:initial;display:block;color:#e0eee2;font:14px/1.7 Tahoma,Arial,sans-serif;text-align:center;height:32px;}
-html body #sakTemporaryFacebookBackground .sak-national-values{all:initial;display:flex;justify-content:center;gap:6px;flex-wrap:wrap;height:60px;align-content:center;}
-html body #sakTemporaryFacebookBackground .sak-national-value{all:initial;display:inline-block;padding:5px 9px;border:1px solid #bcdfa750;border-radius:20px;background:#d6f4c70c;color:#e0efb8;font:12px/1.3 Tahoma,Arial,sans-serif;}
-html body #sakTemporaryFacebookBackground iframe{position:relative!important;display:block!important;top:auto!important;left:auto!important;right:auto!important;bottom:auto!important;width:500px!important;height:498px!important;max-width:none!important;max-height:none!important;margin:0!important;padding:0!important;border:0!important;border-radius:12px!important;transform:none!important;pointer-events:none!important;box-shadow:none!important;opacity:.9!important;}
-html body #sakTemporaryFacebookBackground .sak-national-footer{all:initial;display:block;color:#c8dfd0;font:12px/36px Tahoma,Arial,sans-serif;text-align:center;}
-</style>
-<script id="sak-temporary-facebook-background-js">
-(()=>{
- const START=Date.parse('2026-09-23T14:16:05Z'),END=Date.parse('2026-09-26T14:16:05Z');
- const VISIBLE=60000,CYCLE=90000;
- const SRC='https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FAbwAlqmrZmrd%2Fposts%2Fpfbid037PJDFAGm24Hzy5QV2nBeMnSuWab96m3u7ipTNu9p4TTD92ZpdTaBacnB53tL62VVl&show_text=true&width=500';
- function phase(now){
-  if(now>=END)return {expired:true,visible:false,delay:0};
-  if(now<START)return {expired:false,visible:false,delay:Math.min(START-now,60000)};
-  const elapsed=(now-START)%CYCLE,visible=elapsed<VISIBLE;
-  return {expired:false,visible,delay:Math.max(1,Math.min(visible?VISIBLE-elapsed:CYCLE-elapsed,END-now))};
- }
- if(Date.now()>=END)return;
- const layer=document.createElement('div');layer.id='sakTemporaryFacebookBackground';layer.hidden=true;layer.inert=true;layer.setAttribute('aria-hidden','true');
- const card=document.createElement('div');card.className='sak-national-card';layer.append(card);
- function textNode(className){const node=document.createElement('div');node.className=className;card.append(node);return node;}
- const kicker=textNode('sak-national-kicker'),title=textNode('sak-national-title'),caption=textNode('sak-national-caption'),values=textNode('sak-national-values');
- const frame=document.createElement('iframe');frame.title='Temporary Facebook post background';frame.width='500';frame.height='498';frame.tabIndex=-1;frame.setAttribute('scrolling','no');frame.setAttribute('allow','autoplay \'none\'; clipboard-write \'none\'');frame.referrerPolicy='strict-origin-when-cross-origin';card.append(frame);
- const footer=textNode('sak-national-footer');document.body.append(layer);
- function translate(){
-  const english=document.documentElement.lang==='en';card.dir=english?'ltr':'rtl';
-  kicker.textContent=english?'SAUDI NATIONAL DAY · 96':'اليوم الوطني السعودي · ٩٦';
-  title.textContent='عزّنا بطبعنا';title.dir='rtl';
-  caption.textContent=english?'Together, we celebrate our values and our homeland.':'نحتفي بوطننا وقيمنا… وبطبعنا نصنع أمجادنا';
-  values.replaceChildren();
-  (english?['Courage','Vision','Authenticity','Ambition','Giving','Generosity']:['الشجاعة','الرؤية','الأصالة','الهمّة','الجود','الكرم']).forEach(value=>{const chip=document.createElement('span');chip.className='sak-national-value';chip.textContent=value;values.append(chip);});
-  footer.textContent=english?'Greetings from Sakaker · An independent celebration':'تهنئة من موقع سكاكر · تصميم احتفالي مستقل';
- }
- const languageObserver=new MutationObserver(translate);languageObserver.observe(document.documentElement,{attributes:true,attributeFilter:['lang']});translate();
- let timer,stopped=false;
- function resize(){layer.style.setProperty('--sak-facebook-scale',String(Math.max(.1,Math.min(1,(innerWidth-32)/540,(innerHeight-160)/756))));}
- function update(){
-  if(stopped)return;clearTimeout(timer);const state=phase(Date.now());
-  if(state.expired){stopped=true;frame.removeAttribute('src');layer.remove();observer.disconnect();languageObserver.disconnect();document.removeEventListener('visibilitychange',update);window.removeEventListener('pageshow',update);window.removeEventListener('resize',resize);return;}
-  const visible=state.visible&&!document.hidden&&!document.body.classList.contains('locked');layer.hidden=!visible;
-  if(visible){if(frame.getAttribute('src')!==SRC)frame.setAttribute('src',SRC);}else frame.removeAttribute('src');
-  if(!document.hidden)timer=setTimeout(update,state.delay);
- }
- const observer=new MutationObserver(update);observer.observe(document.body,{attributes:true,attributeFilter:['class']});
- document.addEventListener('visibilitychange',update);window.addEventListener('pageshow',update);window.addEventListener('resize',resize,{passive:true});resize();update();
-})();
-</script>
+
 <style id="sak-yellow-music-star">
 html body #sakakerAllIconsDock #sakUtilityRow #sakMusicIcon{background:radial-gradient(circle at 34% 25%,#fffbd5 0 5%,#ffe976 18%,#ffd52a 46%,#e9ad00 78%,#bd8000 100%)!important;clip-path:polygon(50% 0%,61.5% 35.2%,98% 35.2%,68.2% 56.8%,79.4% 91%,50% 70%,20.6% 91%,31.8% 56.8%,2% 35.2%,38.5% 35.2%)!important;border-radius:0!important;}
 html body #sakakerAllIconsDock #sakUtilityRow #sakMusicIcon span{color:#3d2900!important;-webkit-text-fill-color:#3d2900!important;text-shadow:0 1px 2px #fff4ae!important;}
