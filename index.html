@@ -3644,7 +3644,8 @@ body.locked {
     direction:rtl;
 
     box-sizing: border-box;
-padding: 30px 15px;
+padding:30px 15px;
+}
 /* =========================================================
    إجابات قسم «اختبر معلوماتك»
    ========================================================= */
@@ -3738,90 +3739,12 @@ padding: 30px 15px;
 }
 </style>
 <style id="sakaker-login-final-update">
-/* ===== تحديث شاشة الدخول: شفافة + نصف الحجم تقريباً + الخلفية كاملة ===== */
-#loginOverlay{
- #loginOverlay{
-    position:fixed;
-    inset:0;
-    width:100%;
-    height:100%;
-    z-index:999999;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    overflow-y:auto;
-    overflow-x:hidden;
-
-    direction:rtl;
-
-    box-sizing: border-box;
-padding: 30px 15px;
-#loginBox{
-  width:min(360px,46vw) !important;
-  max-width:360px !important;
-  padding:18px 16px 14px !important;
-  border-radius:18px !important;
-  background:rgba(0,0,0,.22) !important;
-  border:1px solid rgba(0,255,204,.45) !important;
-  box-shadow:0 0 14px rgba(0,255,204,.16), inset 0 0 20px rgba(0,255,204,.025) !important;
-  backdrop-filter:blur(5px) !important;
-  -webkit-backdrop-filter:blur(5px) !important;
-}
-#loginTitle{
-  font-size:20px !important;
-  margin:10px 0 14px !important;
-}
-.loginInput{
-  height:38px !important;
-  margin:5px 0 !important;
-  padding:0 11px !important;
-  border-radius:10px !important;
-  background:rgba(255,255,255,.08) !important;
-  font-size:13px !important;
-}
-.loginAction{
-  height:38px !important;
-  margin-top:6px !important;
-  border-radius:10px !important;
-  font-size:13px !important;
-}
-#loginLanguageButton{
-  top:9px !important;
-  left:9px !important;
-  min-width:65px !important;
-  padding:5px 8px !important;
-  font-size:11px !important;
-}
-#loginError{
-  min-height:16px !important;
-  margin:6px 0 2px !important;
-  font-size:11px !important;
-}
-#loginCopyright{
-  margin-top:11px !important;
-  padding-top:9px !important;
-  font-size:10px !important;
-  line-height:1.55 !important;
-}
-@media(max-width:600px){
-  #loginOverlay{
-    padding:10px !important;}
-  #loginBox{
-    width:min(82vw,320px) !important;
-    max-width:320px !important;
-    padding:17px 13px 12px !important;
-  }
-}
-@media(max-width:380px){
-  #loginBox{
-    width:min(86vw,290px) !important;
-    padding:15px 11px 10px !important;
-  }
-  #loginTitle{font-size:18px !important;margin:9px 0 11px !important;}
-  .loginInput,.loginAction{height:35px !important;font-size:12px !important;}
-}
+/* شاشة الدخول: صندوق شفاف صغير ومتوافق مع الجوال */
+#loginOverlay{position:fixed;inset:0;width:100%;height:100%;z-index:999999;display:flex;align-items:center;justify-content:center;overflow:auto;direction:rtl;box-sizing:border-box;padding:30px 15px;}
+#loginBox{width:min(360px,46vw)!important;max-width:360px!important;padding:18px 16px 14px!important;border-radius:18px!important;background:rgba(0,0,0,.22)!important;border:1px solid rgba(0,255,204,.45)!important;box-shadow:0 0 14px rgba(0,255,204,.16),inset 0 0 20px rgba(0,255,204,.025)!important;backdrop-filter:blur(5px)!important;-webkit-backdrop-filter:blur(5px)!important;}
+#loginTitle{font-size:20px!important;margin:10px 0 14px!important}.loginInput{height:38px!important;margin:5px 0!important;padding:0 11px!important;border-radius:10px!important;background:rgba(255,255,255,.08)!important;font-size:13px!important}.loginAction{height:38px!important;margin-top:6px!important;border-radius:10px!important;font-size:13px!important}#loginLanguageButton{top:9px!important;left:9px!important;min-width:65px!important;padding:5px 8px!important;font-size:11px!important}#loginError{min-height:16px!important;margin:6px 0 2px!important;font-size:11px!important}#loginCopyright{margin-top:11px!important;padding-top:9px!important;font-size:10px!important;line-height:1.55!important}
+@media(max-width:600px){#loginOverlay{padding:10px!important}#loginBox{width:min(82vw,320px)!important;max-width:320px!important;padding:17px 13px 12px!important}}
+@media(max-width:380px){#loginBox{width:min(86vw,290px)!important;padding:15px 11px 10px!important}#loginTitle{font-size:18px!important;margin:9px 0 11px!important}.loginInput,.loginAction{height:35px!important;font-size:12px!important}}
 </style>
 
 <style id="sakaker-mobile-final-fix">
@@ -34766,8 +34689,8 @@ const video =
 
     if(loggedIn() && document.visibilityState !== 'hidden'){
       video.classList.add('sak-bg-playing');
-      const soundBtn = document.getElementById('loginVideoSoundButton');
-      const soundOn = soundBtn && soundBtn.getAttribute('aria-pressed') === 'true';
+      const seaBtn = document.getElementById('sakSeaSoundButton');
+      const soundOn = seaBtn && seaBtn.getAttribute('aria-pressed') === 'true';
       video.muted = !soundOn;
       video.defaultMuted = !soundOn;
       video.defaultPlaybackRate = 1.0;
@@ -37726,7 +37649,7 @@ html body:not(.locked) #sakakerBusinessAd{
 <script id="sakaker-mobile-background-recovery-20260918">
 (() => {
   'use strict';
-  const LOGIN_BACKGROUND_URL = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_68aa7fa6.mp4';
+  const LOGIN_BACKGROUND_URL = 'https://contribution.usercontent.google.com/download?c=CgxiYXJkX3N0b3JhZ2USUBINcmVzcG9uc2VfZGF0YRo_CjBiNWIzN2IxNDNlZmM3MTQ5MDAwNjVjNjdkMTg1MWE3ZDA0YTQ3NTVjZDcxOWQ4NTASCxIHEP_4ubnnHBgB&filename=video.mp4&opi=103135050';
   const MAIN_BACKGROUND_URL = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B6%D8%B9_%D8%A7%D9%84%D8%A7%D9%85%D9%88%D8%A7%D8%AC_%D8%AA%D8%AA%D9%84%D8%A7%D8%B7%D9%85_%D9%88%D9%83%D8%B0%D9%84%D9%83_%D8%A7%D9%84%D8%B3%D9%81%D9%8A%D9%86.mp4';
   const ids = ['sakLoginBackgroundVideo','sakakerMainVideoBackground'];
   const retryDelays = [800,2500,6000];
@@ -40073,46 +39996,41 @@ html body #sakChatOverlay.sak-chat-shielded #sakChatIdentity{visibility:hidden!i
 @media(max-width:600px){html body #sakChatPrivacyNotice{font-size:11px;padding:6px 9px;}html body #sakChatWarning{max-height:64px;overflow:auto;flex-shrink:0;}html body #sakChatTabs{overflow-x:auto;flex-shrink:0;}}
 </style>
 
-<script id="sakaker-login-background-authority-v2">
+<script id="sakaker-login-background-authority-v3">
 (function(){
-  'use strict';
-  const LOGIN_URL='https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_68aa7fa6.mp4';
-  const video=document.getElementById('sakLoginBackgroundVideo');
-  const btn=document.getElementById('loginVideoSoundButton');
-  if(!video) return;
+ 'use strict';
+ const LOGIN_URL="https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_68aa7fa6.mp4";
+ const video=document.getElementById('sakLoginBackgroundVideo');
+ const btn=document.getElementById('loginVideoSoundButton');
+ if(!video)return;
+ function soundOn(){return !!btn&&btn.getAttribute('aria-pressed')==='true'}
+ function sync(){
+   if(video.src!==LOGIN_URL){video.src=LOGIN_URL;try{video.load()}catch(_){}}
+   video.loop=true;video.autoplay=true;video.playsInline=true;video.playbackRate=1;
+   video.muted=!soundOn();video.defaultMuted=!soundOn();
+   if(document.body.classList.contains('locked')&&!document.hidden){try{const p=video.play();if(p&&p.catch)p.catch(()=>{})}catch(_){}}
+ }
+ new MutationObserver(sync).observe(document.body,{attributes:true,attributeFilter:['class']});
+ window.addEventListener('pageshow',sync);sync();
+})();
+</script>
 
-  let internal=false;
-  function enforceSource(){
-    if(internal) return;
-    const current=video.getAttribute('src')||'';
-    if(current!==LOGIN_URL){
-      internal=true;
-      video.querySelectorAll('source').forEach(n=>n.remove());
-      video.setAttribute('src',LOGIN_URL);
-      video.preload='auto';
-      try{video.load();}catch(e){}
-      internal=false;
-    }
-  }
-  function soundOn(){return !!btn && btn.getAttribute('aria-pressed')==='true';}
-  function playLogin(){
-    enforceSource();
-    video.loop=true; video.autoplay=true; video.playsInline=true;
-    video.muted=!soundOn(); video.defaultMuted=!soundOn();
-    video.playbackRate=1;
-    if(document.body.classList.contains('locked')&&!document.hidden){
-      try{const p=video.play(); if(p&&p.catch)p.catch(()=>{});}catch(e){}
-    }
-  }
-  new MutationObserver(function(muts){
-    if(muts.some(m=>m.attributeName==='src')) playLogin();
-  }).observe(video,{attributes:true,attributeFilter:['src']});
-  new MutationObserver(playLogin).observe(document.body,{attributes:true,attributeFilter:['class']});
-  video.addEventListener('error',function(){
-    console.error('SAKAKER login background video failed:',video.error);
-  });
-  window.addEventListener('pageshow',playLogin);
-  playLogin();
+
+<style id="sak-sea-sound-style">
+#sakSeaSoundButton{position:fixed;right:18px;bottom:18px;z-index:2147483000;display:none;align-items:center;gap:7px;padding:9px 13px;border:1px solid rgba(0,255,204,.62);border-radius:999px;background:rgba(0,20,24,.28);color:#fff;backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);box-shadow:0 0 14px rgba(0,255,204,.24);cursor:pointer;font:700 13px Tajawal,Tahoma,Arial,sans-serif}body:not(.locked) #sakSeaSoundButton{display:flex}#sakSeaSoundButton:hover{background:rgba(0,45,48,.46);box-shadow:0 0 20px rgba(0,255,204,.42)}#sakSeaSoundButton .sakSeaIcon{font-size:17px;line-height:1}@media(max-width:600px){#sakSeaSoundButton{right:10px;bottom:10px;padding:7px 10px;font-size:12px}}
+</style>
+<audio id="sakSeaAudio" preload="none" loop src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Meeresrauschen.ogg"></audio>
+<button id="sakSeaSoundButton" type="button" aria-pressed="false" aria-label="تشغيل صوت البحر" title="تشغيل صوت البحر"><span class="sakSeaIcon" aria-hidden="true">🌊🔇</span><span class="sakSeaLabel">تشغيل صوت البحر</span></button>
+<script id="sak-sea-sound-controller">
+(function(){
+ 'use strict';
+ const btn=document.getElementById('sakSeaSoundButton'),audio=document.getElementById('sakSeaAudio');if(!btn||!audio)return;
+ const icon=btn.querySelector('.sakSeaIcon'),label=btn.querySelector('.sakSeaLabel');
+ function en(){return document.documentElement.lang==='en'}function on(){return btn.getAttribute('aria-pressed')==='true'}
+ function render(){const active=on();icon.textContent=active?'🌊🔊':'🌊🔇';label.textContent=en()?(active?'Sea sound off':'Sea sound on'):(active?'إيقاف صوت البحر':'تشغيل صوت البحر');const t=en()?(active?'Mute sea sound':'Play sea sound'):(active?'إيقاف صوت البحر':'تشغيل صوت البحر');btn.title=t;btn.setAttribute('aria-label',t)}
+ btn.addEventListener('click',async function(e){e.preventDefault();e.stopPropagation();if(on()){audio.pause();btn.setAttribute('aria-pressed','false')}else{audio.volume=.55;try{await audio.play();btn.setAttribute('aria-pressed','true')}catch(_){btn.setAttribute('aria-pressed','false')}}render()});
+ new MutationObserver(function(){if(document.body.classList.contains('locked')){audio.pause();btn.setAttribute('aria-pressed','false')}render()}).observe(document.body,{attributes:true,attributeFilter:['class']});
+ new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});render();
 })();
 </script>
 
