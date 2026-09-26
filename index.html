@@ -40645,5 +40645,172 @@ html body #loginVideoSoundButton{
 })();
 </script>
 <!-- /SAKAKER FINAL UI AUDIO LAYOUT PATCH 2026-09-27 -->
+
+<!-- =========================================================
+     SAKAKER BOTTOM-PAGE ICONS + LUMINOUS GLASS PATCH
+     2026-09-27
+========================================================= -->
+<style id="sakaker-bottom-page-icons-glass-final">
+:root{
+  --sak-glass-edge:rgba(213,251,255,.86);
+  --sak-glass-cyan:rgba(91,242,255,.82);
+  --sak-glass-violet:rgba(215,186,255,.38);
+  --sak-glass-gold:rgba(255,222,135,.22);
+}
+
+/* الأيقونات في أسفل الصفحة نفسها، بالمنتصف — وليست ثابتة مع الشاشة */
+html body:not(.locked){
+  position:relative !important;
+  min-height:100dvh !important;
+}
+html body #sakakerAllIconsDock{
+  position:absolute !important;
+  left:50% !important;
+  right:auto !important;
+  top:auto !important;
+  bottom:max(8px,env(safe-area-inset-bottom)) !important;
+  transform:translateX(-50%) !important;
+  width:min(96vw,1280px) !important;
+  max-width:min(96vw,1280px) !important;
+  min-height:62px !important;
+  max-height:78px !important;
+  padding:6px 10px !important;
+  box-sizing:border-box !important;
+  display:flex !important;
+  flex-flow:row nowrap !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:8px !important;
+  overflow-x:auto !important;
+  overflow-y:visible !important;
+  scrollbar-width:none !important;
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+  z-index:800500 !important;
+}
+html body #sakakerAllIconsDock.sak-dock-overflow{justify-content:flex-start !important;}
+html body #sakakerAllIconsDock::-webkit-scrollbar{display:none !important;}
+
+/* توهج أقوى ومرآتي لكل عناصر شريط الأيقونات */
+html body #sakakerAllIconsDock .icon-card,
+html body #sakakerAllIconsDock .sakaker-utility-slot > *,
+html body #sakakerAllIconsDock #shipIcon_new,
+html body #sakakerAllIconsDock #sakakerBusinessAd,
+html body #sakakerAllIconsDock #facebookVideoIcon,
+html body #sakakerAllIconsDock #liveFlasher,
+html body #sakakerAllIconsDock #emeraldLibraryButton,
+html body #sakakerAllIconsDock #pongGame-btn,
+html body #sakakerAllIconsDock .launcher,
+html body #sakakerAllIconsDock #emOpenBtn{
+  border:1px solid rgba(218,252,255,.90) !important;
+  background:
+    radial-gradient(circle at 30% 20%,rgba(255,255,255,.42),rgba(117,240,255,.13) 25%,rgba(8,29,40,.50) 60%,rgba(3,8,20,.72) 100%) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.72),
+    inset 0 0 14px rgba(130,246,255,.15),
+    0 0 8px rgba(109,241,255,.82),
+    0 0 18px rgba(109,241,255,.54),
+    0 0 30px rgba(220,187,255,.30),
+    0 0 42px rgba(255,220,125,.13) !important;
+  backdrop-filter:blur(12px) saturate(165%) brightness(1.08) !important;
+  -webkit-backdrop-filter:blur(12px) saturate(165%) brightness(1.08) !important;
+  animation:sakIconDeepGlow 2.45s ease-in-out infinite !important;
+}
+html body #sakakerAllIconsDock .icon-card:hover,
+html body #sakakerAllIconsDock .sakaker-utility-slot > *:hover,
+html body #sakakerAllIconsDock #shipIcon_new:hover,
+html body #sakakerAllIconsDock #sakakerBusinessAd:hover,
+html body #sakakerAllIconsDock #facebookVideoIcon:hover,
+html body #sakakerAllIconsDock #liveFlasher:hover,
+html body #sakakerAllIconsDock #emeraldLibraryButton:hover,
+html body #sakakerAllIconsDock #pongGame-btn:hover,
+html body #sakakerAllIconsDock .launcher:hover,
+html body #sakakerAllIconsDock #emOpenBtn:hover{
+  transform:translateY(-4px) scale(1.07) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.85),
+    0 0 13px rgba(121,246,255,1),
+    0 0 29px rgba(121,246,255,.78),
+    0 0 44px rgba(224,194,255,.52),
+    0 0 62px rgba(255,220,125,.24) !important;
+}
+@keyframes sakIconDeepGlow{
+  0%,100%{filter:drop-shadow(0 0 4px rgba(112,240,255,.55));}
+  50%{filter:drop-shadow(0 0 11px rgba(112,240,255,1)) drop-shadow(0 0 19px rgba(220,188,255,.58));}
+}
+
+/* كل النوافذ الأساسية: زجاج مرآتي مضيء موحد */
+html body .panel,
+html body .modal-content,
+html body .popup-content,
+html body .fbVideoBox,
+html body #shipPopup_new,
+html body #videoBoxFixed,
+html body #emeraldLibraryContent,
+html body #sakChatPanel,
+html body #sakPaymentPanel,
+html body #sakTextLibraryModal .sak-text-library-box,
+html body #sakakerBusinessPopup,
+html body #livePopup,
+html body #emeraldModal > :not(#emeraldModalClose),
+html body #sakakerMapOverlay > div,
+html body #sakMusicPlayer .sak-music-box,
+html body #pongGame-container,
+html body dialog,
+html body [role="dialog"]{
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.105),rgba(15,54,64,.36) 28%,rgba(8,22,39,.58) 68%,rgba(23,8,38,.48)) !important;
+  border:1px solid var(--sak-glass-edge) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.64),
+    inset 0 -1px 0 rgba(201,239,255,.13),
+    inset 0 0 32px rgba(102,237,255,.07),
+    0 0 14px var(--sak-glass-cyan),
+    0 0 34px var(--sak-glass-violet),
+    0 0 58px var(--sak-glass-gold),
+    0 20px 60px rgba(0,0,0,.38) !important;
+  backdrop-filter:blur(24px) saturate(165%) brightness(1.08) !important;
+  -webkit-backdrop-filter:blur(24px) saturate(165%) brightness(1.08) !important;
+}
+html body .panel-head,
+html body .panel-body,
+html body .fbComments,
+html body #sakChatHeader,
+html body #sakChatTabs,
+html body #sakChatBody,
+html body #sakChatPrivateTop{
+  background:rgba(255,255,255,.035) !important;
+  border-color:rgba(214,249,255,.28) !important;
+}
+
+/* طبقة التعتيم خلف النوافذ تصبح شفافة مزرقة بدل الأسود الثقيل */
+html body .modal,
+html body .overlay,
+html body #facebookVideoPopup,
+html body #sakTextLibraryModal,
+html body #sakakerMapOverlay{
+  background:rgba(1,12,20,.44) !important;
+  backdrop-filter:blur(9px) saturate(125%) !important;
+  -webkit-backdrop-filter:blur(9px) saturate(125%) !important;
+}
+
+@media(max-width:700px){
+  html body #sakakerAllIconsDock{
+    width:96vw !important;
+    max-width:96vw !important;
+    bottom:max(5px,env(safe-area-inset-bottom)) !important;
+    min-height:54px !important;
+    max-height:64px !important;
+    gap:6px !important;
+    padding:4px 6px !important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  html body #sakakerAllIconsDock *{animation:none !important;}
+}
+</style>
+<!-- /SAKAKER BOTTOM-PAGE ICONS + LUMINOUS GLASS PATCH -->
+
 </body>
 </html>
