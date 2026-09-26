@@ -590,6 +590,31 @@ body{}
         margin-top:16px;
     }
 }
+
+#loginVideoSoundButton{
+  position:fixed;
+  top:18px;
+  right:18px;
+  z-index:2147483647;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:9px 13px;
+  border:1px solid rgba(255,255,255,.55);
+  border-radius:999px;
+  background:rgba(0,0,0,.20);
+  color:#fff;
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  box-shadow:0 0 14px rgba(255,255,255,.18);
+  cursor:pointer;
+  font:700 13px Tajawal,Tahoma,Arial,sans-serif;
+}
+#loginVideoSoundButton:hover{background:rgba(0,0,0,.34);}
+#loginVideoSoundButton .soundIcon{font-size:17px;line-height:1;}
+@media(max-width:600px){
+  #loginVideoSoundButton{top:10px;right:10px;padding:7px 10px;font-size:12px;}
+}
 </style>
 <style>
 
@@ -4354,54 +4379,42 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
 <body>
 
 <div id="loginOverlay">
-<video id="sakLoginBackgroundVideo" autoplay loop muted playsinline webkit-playsinline preload="auto" aria-hidden="true" src="https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B6%D8%B9_%D8%A7%D9%84%D8%A7%D9%85%D9%88%D8%A7%D8%AC_%D8%AA%D8%AA%D9%84%D8%A7%D8%B7%D9%85_%D9%88%D9%83%D8%B0%D9%84%D9%83_%D8%A7%D9%84%D8%B3%D9%81%D9%8A%D9%86.mp4"></video>
+<video id="sakLoginBackgroundVideo" autoplay loop muted playsinline webkit-playsinline preload="auto" aria-hidden="true" src="https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_68aa7fa6.mp4"></video>
 
-<div id="bird-sound-btn" title="تشغيل/إيقاف صوت البحر والنوارس" style="
-  position: fixed;
-  top: 40px;
-  right: 18px;
-  width: 75px;
-  height: 75px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 34px;
-  color: white;
-  cursor: pointer;
-
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-  background: transparent !important;
-  background-color: transparent !important;
-  background-image: none !important;
-  border: none !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  outline: none !important;
-">
-  🐦
-</div>
-
-<audio id="bird-sound" loop playsinline preload="auto">
-
-  <source src="https://cdn.freesound.org/previews/468/468452_1661766-hq.mp3" type="audio/mpeg">
-  متصفحك لا يدعم تشغيل الصوت.
-</audio>
+<button id="loginVideoSoundButton" type="button" aria-pressed="false" aria-label="تشغيل صوت الخلفية" title="تشغيل صوت الخلفية">
+  <span class="soundIcon" aria-hidden="true">🔇</span>
+  <span class="soundLabel">تشغيل الصوت</span>
+</button>
 
 <script>
-const birdBtn = document.getElementById('bird-sound-btn');
-const birdAudio = document.getElementById('bird-sound');
+(function(){
+  'use strict';
+  const video=document.getElementById('sakLoginBackgroundVideo');
+  const btn=document.getElementById('loginVideoSoundButton');
+  if(!video||!btn) return;
+  const icon=btn.querySelector('.soundIcon');
+  const label=btn.querySelector('.soundLabel');
 
-// One explicit toggle: unrelated page class changes must not stop the sea audio.
-birdBtn.textContent = "🌊";
-let seaWanted=false,seaRequest=0;
-birdBtn.addEventListener('click',async e=>{
-  e.stopPropagation();seaWanted=!seaWanted;const request=++seaRequest;
-  if(!seaWanted){birdAudio.pause();birdBtn.textContent='🌊';birdBtn.setAttribute('aria-pressed','false');return;}
-  try{await birdAudio.play();if(request!==seaRequest){if(!seaWanted)birdAudio.pause();return;}birdBtn.textContent='🔊';birdBtn.setAttribute('aria-pressed','true');}
-  catch(err){if(request!==seaRequest)return;seaWanted=false;birdBtn.textContent='🌊';birdBtn.setAttribute('aria-pressed','false');birdBtn.title=document.documentElement.lang==='en'?'Could not play sea audio. Tap to retry.':'تعذر تشغيل صوت البحر. اضغط للمحاولة مجدداً.';}
-});
+  function lang(){ return document.documentElement.lang==='en'?'en':'ar'; }
+  function render(){
+    const en=lang()==='en';
+    const muted=video.muted;
+    icon.textContent=muted?'🔇':'🔊';
+    label.textContent=muted?(en?'Sound on':'تشغيل الصوت'):(en?'Sound off':'إيقاف الصوت');
+    const title=muted?(en?'Play background sound':'تشغيل صوت الخلفية'):(en?'Mute background sound':'إيقاف صوت الخلفية');
+    btn.title=title; btn.setAttribute('aria-label',title); btn.setAttribute('aria-pressed',muted?'false':'true');
+  }
+
+  btn.addEventListener('click',async function(e){
+    e.preventDefault(); e.stopPropagation();
+    video.muted=!video.muted; video.defaultMuted=video.muted;
+    try{ await video.play(); }catch(_){}
+    render();
+  });
+
+  new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  render();
+})();
 </script>
 
 <div id="loginBox">
@@ -4437,7 +4450,7 @@ birdBtn.addEventListener('click',async e=>{
 </div>
 <div>
                 للتواصل:
-                <a class="email" href="sakaker@outlook.com">
+                <a class="email" href="mailto:sakaker@outlook.com">
                     sakaker@outlook.com
                 </a>
 </div>
@@ -34753,7 +34766,10 @@ const video =
 
     if(loggedIn() && document.visibilityState !== 'hidden'){
       video.classList.add('sak-bg-playing');
-      video.muted = true;
+      const soundBtn = document.getElementById('loginVideoSoundButton');
+      const soundOn = soundBtn && soundBtn.getAttribute('aria-pressed') === 'true';
+      video.muted = !soundOn;
+      video.defaultMuted = !soundOn;
       video.defaultPlaybackRate = 1.0;
       video.playbackRate = 1.0;
       try{
@@ -35461,7 +35477,10 @@ html body #videoBoxFixed.sak-player-open:not(.sak-hls-mode) #sakCircleExternal {
   function syncLoginVideo(){
     if(!video) return;
     if(document.body.classList.contains('locked') && !document.hidden){
-      video.muted = true;
+      const soundBtn = document.getElementById('loginVideoSoundButton');
+      const soundOn = soundBtn && soundBtn.getAttribute('aria-pressed') === 'true';
+      video.muted = !soundOn;
+      video.defaultMuted = !soundOn;
       video.defaultPlaybackRate = 1.0;
       video.playbackRate = 1.0;
       const play = video.play();
@@ -37365,59 +37384,6 @@ html body:not(.locked) #sakakerBusinessAd{
 }
 </style>
 
-<script id="sakaker-clean-login-background-v30-js">
-(function(){
-  'use strict';
-
-  const VIDEO_URL = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B6%D8%B9_%D8%A7%D9%84%D8%A7%D9%85%D9%88%D8%A7%D8%AC_%D8%AA%D8%AA%D9%84%D8%A7%D8%B7%D9%85_%D9%88%D9%83%D8%B0%D9%84%D9%83_%D8%A7%D9%84%D8%B3%D9%81%D9%8A%D9%86.mp4';
-  const video = document.getElementById('sakLoginBackgroundVideo');
-  if(!video) return;
-
-  function prepare(){
-    video.muted = true;
-    video.loop = true;
-    video.autoplay = true;
-    video.playsInline = true;
-    video.preload = 'auto';
-    video.defaultPlaybackRate = 1.0;
-    video.playbackRate = 1.0;
-
-    if(video.getAttribute('src') !== VIDEO_URL){
-      video.setAttribute('src',VIDEO_URL);
-      try{ video.load(); }catch(e){}
-    }
-  }
-
-  function sync(){
-    prepare();
-
-    if(document.body.classList.contains('locked') && !document.hidden){
-      try{
-        const p = video.play();
-        if(p && typeof p.catch === 'function') p.catch(function(){});
-      }catch(e){}
-    }else{
-      try{ video.pause(); }catch(e){}
-    }
-  }
-
-  new MutationObserver(sync).observe(document.body,{
-    attributes:true,
-    attributeFilter:['class']
-  });
-
-  document.addEventListener('visibilitychange',function(){
-    if(!document.hidden) sync();
-  });
-
-  document.getElementById('loginOverlay')?.addEventListener('pointerdown',sync);
-  video.addEventListener('loadedmetadata',sync);
-  window.addEventListener('pageshow',sync);
-
-  sync();
-})();
-</script>
-
 <style id="sakaker-neon-live-and-pong">
 :root{--sak-neon:#35f6b4}button,[role="button"]{border-color:rgba(53,246,180,.7)!important;text-shadow:0 0 8px rgba(53,246,180,.7);box-shadow:0 0 1px 1px rgba(53,246,180,.3),0 0 14px rgba(53,246,180,.3);transition:.18s}button:hover,[role="button"]:hover{filter:brightness(1.18);transform:translateY(-1px);box-shadow:0 0 2px 1px var(--sak-neon),0 0 22px rgba(53,246,180,.7)!important}#facebookVideoClose,#pongGame-close,.live-channels-close,#liveChannelsClose{background:#bd1648!important;color:#fff!important;border-color:#ffb4c6!important;box-shadow:0 0 18px #ff3f70!important}#sakPongLobby{margin-top:8px;width:min(360px,90vw);padding:10px;border:1px solid #54ffd0;border-radius:10px;background:rgba(3,34,38,.9);box-shadow:0 0 18px rgba(52,246,180,.35);font-size:13px;text-align:center}#sakPongLobby button{margin:3px;padding:6px 10px;border-radius:7px;background:#07665e;color:#fff;cursor:pointer}.sak-pong-player{display:flex;justify-content:space-between;gap:8px;padding:5px;border-bottom:1px solid rgba(109,220,255,.18)}.sak-chat-note{font-size:11px;color:#8fffe4;padding:4px}
 </style>
@@ -37467,7 +37433,7 @@ html body:not(.locked) #sakakerBusinessAd{
     try { video.load(); video.play().catch(() => {}); } catch (_) {}
   }
   function refreshBackgrounds(){
-    setVideoSource(document.getElementById('sakLoginBackgroundVideo'));
+    /* صفحة الدخول لها مصدر مستقل؛ لا تغيّره هنا. */
     setVideoSource(document.getElementById('sakakerMainVideoBackground'));
   }
   refreshBackgrounds();
@@ -37760,7 +37726,8 @@ html body:not(.locked) #sakakerBusinessAd{
 <script id="sakaker-mobile-background-recovery-20260918">
 (() => {
   'use strict';
-  const BACKGROUND_URL = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B6%D8%B9_%D8%A7%D9%84%D8%A7%D9%85%D9%88%D8%A7%D8%AC_%D8%AA%D8%AA%D9%84%D8%A7%D8%B7%D9%85_%D9%88%D9%83%D8%B0%D9%84%D9%83_%D8%A7%D9%84%D8%B3%D9%81%D9%8A%D9%86.mp4';
+  const LOGIN_BACKGROUND_URL = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_68aa7fa6.mp4';
+  const MAIN_BACKGROUND_URL = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B6%D8%B9_%D8%A7%D9%84%D8%A7%D9%85%D9%88%D8%A7%D8%AC_%D8%AA%D8%AA%D9%84%D8%A7%D8%B7%D9%85_%D9%88%D9%83%D8%B0%D9%84%D9%83_%D8%A7%D9%84%D8%B3%D9%81%D9%8A%D9%86.mp4';
   const ids = ['sakLoginBackgroundVideo','sakakerMainVideoBackground'];
   const retryDelays = [800,2500,6000];
   let retryTimer = 0;
@@ -37776,20 +37743,23 @@ html body:not(.locked) #sakakerBusinessAd{
   function configure(video){
     if(!video) return;
     let sourceChanged = false;
+    const targetUrl = video.id === 'sakLoginBackgroundVideo' ? LOGIN_BACKGROUND_URL : MAIN_BACKGROUND_URL;
     const source = video.querySelector('source');
     if(source){
-      if(source.getAttribute('src') !== BACKGROUND_URL){
+      if(source.getAttribute('src') !== targetUrl){
         video.removeAttribute('src');
-        source.setAttribute('src',BACKGROUND_URL);
+        source.setAttribute('src',targetUrl);
         source.type = 'video/mp4';
         sourceChanged = true;
       }
-    }else if(video.getAttribute('src') !== BACKGROUND_URL){
-      video.setAttribute('src',BACKGROUND_URL);
+    }else if(video.getAttribute('src') !== targetUrl){
+      video.setAttribute('src',targetUrl);
       sourceChanged = true;
     }
-    video.muted = true;
-    video.defaultMuted = true;
+    if(video.id !== 'sakLoginBackgroundVideo' || !document.getElementById('loginVideoSoundButton')?.getAttribute('aria-pressed')?.includes('true')){
+      video.muted = true;
+      video.defaultMuted = true;
+    }
     video.autoplay = true;
     video.loop = true;
     video.playsInline = true;
@@ -40102,5 +40072,49 @@ html body #sakChatOverlay.sak-chat-shielded #sakChatIdentity{visibility:hidden!i
 @supports not (backdrop-filter:blur(1px)){html body #sakChatPanel{background:#112b39!important;}}
 @media(max-width:600px){html body #sakChatPrivacyNotice{font-size:11px;padding:6px 9px;}html body #sakChatWarning{max-height:64px;overflow:auto;flex-shrink:0;}html body #sakChatTabs{overflow-x:auto;flex-shrink:0;}}
 </style>
+
+<script id="sakaker-login-background-authority-v2">
+(function(){
+  'use strict';
+  const LOGIN_URL='https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_68aa7fa6.mp4';
+  const video=document.getElementById('sakLoginBackgroundVideo');
+  const btn=document.getElementById('loginVideoSoundButton');
+  if(!video) return;
+
+  let internal=false;
+  function enforceSource(){
+    if(internal) return;
+    const current=video.getAttribute('src')||'';
+    if(current!==LOGIN_URL){
+      internal=true;
+      video.querySelectorAll('source').forEach(n=>n.remove());
+      video.setAttribute('src',LOGIN_URL);
+      video.preload='auto';
+      try{video.load();}catch(e){}
+      internal=false;
+    }
+  }
+  function soundOn(){return !!btn && btn.getAttribute('aria-pressed')==='true';}
+  function playLogin(){
+    enforceSource();
+    video.loop=true; video.autoplay=true; video.playsInline=true;
+    video.muted=!soundOn(); video.defaultMuted=!soundOn();
+    video.playbackRate=1;
+    if(document.body.classList.contains('locked')&&!document.hidden){
+      try{const p=video.play(); if(p&&p.catch)p.catch(()=>{});}catch(e){}
+    }
+  }
+  new MutationObserver(function(muts){
+    if(muts.some(m=>m.attributeName==='src')) playLogin();
+  }).observe(video,{attributes:true,attributeFilter:['src']});
+  new MutationObserver(playLogin).observe(document.body,{attributes:true,attributeFilter:['class']});
+  video.addEventListener('error',function(){
+    console.error('SAKAKER login background video failed:',video.error);
+  });
+  window.addEventListener('pageshow',playLogin);
+  playLogin();
+})();
+</script>
+
 </body>
 </html>
