@@ -4302,7 +4302,7 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
 <body>
 
 <div id="loginOverlay">
-<video id="sakLoginBackgroundVideo" autoplay loop muted playsinline webkit-playsinline preload="auto" aria-hidden="true" src="https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_68aa7fa6.mp4"></video>
+<video id="sakLoginBackgroundVideo" autoplay loop muted playsinline webkit-playsinline preload="auto" aria-hidden="true" disablepictureinpicture src="https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_e273a10d.mp4"></video>
 
 <button id="loginVideoSoundButton" type="button" aria-pressed="false" aria-label="تشغيل صوت الخلفية" title="تشغيل صوت الخلفية">
   <span class="soundIcon" aria-hidden="true">🔇</span>
@@ -37649,9 +37649,8 @@ html body:not(.locked) #sakakerBusinessAd{
 <script id="sakaker-mobile-background-recovery-20260918">
 (() => {
   'use strict';
-  const LOGIN_BACKGROUND_URL = 'https://contribution.usercontent.google.com/download?c=CgxiYXJkX3N0b3JhZ2USUBINcmVzcG9uc2VfZGF0YRo_CjBiNWIzN2IxNDNlZmM3MTQ5MDAwNjVjNjdkMTg1MWE3ZDA0YTQ3NTVjZDcxOWQ4NTASCxIHEP_4ubnnHBgB&filename=video.mp4&opi=103135050';
   const MAIN_BACKGROUND_URL = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B6%D8%B9_%D8%A7%D9%84%D8%A7%D9%85%D9%88%D8%A7%D8%AC_%D8%AA%D8%AA%D9%84%D8%A7%D8%B7%D9%85_%D9%88%D9%83%D8%B0%D9%84%D9%83_%D8%A7%D9%84%D8%B3%D9%81%D9%8A%D9%86.mp4';
-  const ids = ['sakLoginBackgroundVideo','sakakerMainVideoBackground'];
+  const ids = ['sakakerMainVideoBackground'];
   const retryDelays = [800,2500,6000];
   let retryTimer = 0;
   let retryIndex = 0;
@@ -37666,7 +37665,7 @@ html body:not(.locked) #sakakerBusinessAd{
   function configure(video){
     if(!video) return;
     let sourceChanged = false;
-    const targetUrl = video.id === 'sakLoginBackgroundVideo' ? LOGIN_BACKGROUND_URL : MAIN_BACKGROUND_URL;
+    const targetUrl = MAIN_BACKGROUND_URL;
     const source = video.querySelector('source');
     if(source){
       if(source.getAttribute('src') !== targetUrl){
@@ -37679,10 +37678,8 @@ html body:not(.locked) #sakakerBusinessAd{
       video.setAttribute('src',targetUrl);
       sourceChanged = true;
     }
-    if(video.id !== 'sakLoginBackgroundVideo' || !document.getElementById('loginVideoSoundButton')?.getAttribute('aria-pressed')?.includes('true')){
-      video.muted = true;
-      video.defaultMuted = true;
-    }
+    video.muted = true;
+    video.defaultMuted = true;
     video.autoplay = true;
     video.loop = true;
     video.playsInline = true;
@@ -39996,24 +39993,6 @@ html body #sakChatOverlay.sak-chat-shielded #sakChatIdentity{visibility:hidden!i
 @media(max-width:600px){html body #sakChatPrivacyNotice{font-size:11px;padding:6px 9px;}html body #sakChatWarning{max-height:64px;overflow:auto;flex-shrink:0;}html body #sakChatTabs{overflow-x:auto;flex-shrink:0;}}
 </style>
 
-<script id="sakaker-login-background-authority-v3">
-(function(){
- 'use strict';
- const LOGIN_URL="https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_68aa7fa6.mp4";
- const video=document.getElementById('sakLoginBackgroundVideo');
- const btn=document.getElementById('loginVideoSoundButton');
- if(!video)return;
- function soundOn(){return !!btn&&btn.getAttribute('aria-pressed')==='true'}
- function sync(){
-   if(video.src!==LOGIN_URL){video.src=LOGIN_URL;try{video.load()}catch(_){}}
-   video.loop=true;video.autoplay=true;video.playsInline=true;video.playbackRate=1;
-   video.muted=!soundOn();video.defaultMuted=!soundOn();
-   if(document.body.classList.contains('locked')&&!document.hidden){try{const p=video.play();if(p&&p.catch)p.catch(()=>{})}catch(_){}}
- }
- new MutationObserver(sync).observe(document.body,{attributes:true,attributeFilter:['class']});
- window.addEventListener('pageshow',sync);sync();
-})();
-</script>
 
 
 <style id="sak-sea-sound-style">
@@ -40034,5 +40013,259 @@ html body #sakChatOverlay.sak-chat-shielded #sakChatIdentity{visibility:hidden!i
 })();
 </script>
 
+
+
+<!-- =========================================================
+     SAKAKER FINAL VISUAL + AUDIO OVERRIDE 2026-09-27
+     - Login background: e273a10d.mp4
+     - Sea sound button: top of site, independent audio
+     - Glass neon modals and glowing icons
+========================================================= -->
+<style id="sakaker-final-glass-neon-override">
+:root{
+  --sak-glass-cyan:#56ffe1;
+  --sak-glass-gold:#ffe082;
+  --sak-glass-blue:#6fdcff;
+  --sak-glass-bg1:rgba(3,28,34,.56);
+  --sak-glass-bg2:rgba(8,13,30,.66);
+}
+
+/* Login background video always wins over legacy sources */
+html body.locked #loginOverlay #sakLoginBackgroundVideo{
+  display:block !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  position:fixed !important;
+  inset:0 !important;
+  width:100vw !important;
+  height:100dvh !important;
+  max-width:none !important;
+  max-height:none !important;
+  object-fit:cover !important;
+  object-position:center center !important;
+  z-index:0 !important;
+  pointer-events:none !important;
+  background:#02090b !important;
+}
+
+/* Login box brighter glass */
+html body.locked #loginBox{
+  background:linear-gradient(145deg,rgba(0,18,25,.48),rgba(2,34,32,.38)) !important;
+  border:1px solid rgba(111,255,226,.76) !important;
+  backdrop-filter:blur(18px) saturate(145%) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(145%) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.28),
+    inset 0 0 28px rgba(75,255,224,.09),
+    0 0 16px rgba(77,255,224,.35),
+    0 0 44px rgba(0,200,255,.20),
+    0 0 72px rgba(255,215,80,.10) !important;
+}
+
+/* Independent sea-sound button: top, not bottom */
+html body #sakSeaSoundButton{
+  position:fixed !important;
+  top:18px !important;
+  right:18px !important;
+  bottom:auto !important;
+  left:auto !important;
+  z-index:2147483000 !important;
+  align-items:center !important;
+  gap:7px !important;
+  padding:9px 13px !important;
+  border:1px solid rgba(86,255,225,.78) !important;
+  border-radius:999px !important;
+  background:linear-gradient(145deg,rgba(5,31,38,.38),rgba(4,12,28,.32)) !important;
+  color:#fff !important;
+  backdrop-filter:blur(12px) saturate(145%) !important;
+  -webkit-backdrop-filter:blur(12px) saturate(145%) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.24),
+    0 0 12px rgba(86,255,225,.48),
+    0 0 28px rgba(111,220,255,.24) !important;
+  animation:sakTopSoundGlow 2.4s ease-in-out infinite !important;
+}
+html body.locked #sakSeaSoundButton{display:none !important;}
+html body:not(.locked) #sakSeaSoundButton{display:flex !important;}
+html body #sakSeaSoundButton:hover{
+  transform:translateY(-1px) scale(1.03) !important;
+  box-shadow:0 0 18px rgba(86,255,225,.8),0 0 42px rgba(111,220,255,.36) !important;
+}
+@keyframes sakTopSoundGlow{
+  0%,100%{filter:drop-shadow(0 0 2px rgba(86,255,225,.4));}
+  50%{filter:drop-shadow(0 0 9px rgba(86,255,225,.95)) drop-shadow(0 0 16px rgba(255,224,130,.45));}
+}
+@media(max-width:600px){
+  html body #sakSeaSoundButton{top:10px !important;right:10px !important;bottom:auto !important;padding:7px 10px !important;font-size:12px !important;}
+}
+
+/* Glass-neon treatment for common windows/panels */
+html body .panel,
+html body .modal-content,
+html body .popup-content,
+html body .sak-music-box,
+html body .fbVideoBox,
+html body #sakChatPanel,
+html body #shipPopup_new,
+html body #livePopup > div,
+html body #videoBoxFixed{
+  background:linear-gradient(145deg,var(--sak-glass-bg1),var(--sak-glass-bg2)) !important;
+  border:1px solid rgba(86,255,225,.62) !important;
+  backdrop-filter:blur(20px) saturate(145%) !important;
+  -webkit-backdrop-filter:blur(20px) saturate(145%) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.20),
+    inset 0 0 24px rgba(86,255,225,.06),
+    0 0 15px rgba(86,255,225,.34),
+    0 0 42px rgba(111,220,255,.18),
+    0 0 72px rgba(255,224,130,.08) !important;
+}
+
+/* Main icons: glowing glass + gentle pulse */
+html body .icon-card,
+html body .launcher,
+html body #emeraldLibraryButton,
+html body #pongGame-btn,
+html body #emOpenBtn,
+html body #facebookVideoIcon .fbIconCircle{
+  filter:drop-shadow(0 0 6px rgba(86,255,225,.85)) drop-shadow(0 0 15px rgba(111,220,255,.52)) drop-shadow(0 0 22px rgba(255,224,130,.28)) !important;
+  animation:sakIconGlowPulse 2.8s ease-in-out infinite !important;
+}
+html body .icon-card{
+  background:radial-gradient(circle at 32% 22%,rgba(255,255,255,.17),rgba(7,35,42,.52) 42%,rgba(3,11,22,.74) 100%) !important;
+  border-color:rgba(86,255,225,.55) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18),inset 0 0 20px rgba(86,255,225,.10),0 0 12px rgba(86,255,225,.34),0 0 28px rgba(111,220,255,.18) !important;
+  backdrop-filter:blur(12px) saturate(135%) !important;
+  -webkit-backdrop-filter:blur(12px) saturate(135%) !important;
+}
+html body .icon-card:hover{
+  transform:translateY(-5px) scale(1.035) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 0 20px rgba(86,255,225,.72),0 0 46px rgba(111,220,255,.38),0 0 64px rgba(255,224,130,.18) !important;
+}
+@keyframes sakIconGlowPulse{
+  0%,100%{filter:drop-shadow(0 0 4px rgba(86,255,225,.55)) drop-shadow(0 0 10px rgba(111,220,255,.35));}
+  50%{filter:drop-shadow(0 0 10px rgba(86,255,225,1)) drop-shadow(0 0 22px rgba(111,220,255,.68)) drop-shadow(0 0 30px rgba(255,224,130,.34));}
+}
+@media(prefers-reduced-motion:reduce){
+  html body #sakSeaSoundButton,
+  html body .icon-card,
+  html body .launcher,
+  html body #emeraldLibraryButton,
+  html body #pongGame-btn,
+  html body #emOpenBtn,
+  html body #facebookVideoIcon .fbIconCircle{animation:none !important;}
+}
+</style>
+
+<script id="sakaker-final-login-and-sea-audio-override">
+(function(){
+  'use strict';
+  const LOGIN_URL='https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_e273a10d.mp4';
+  const loginVideo=document.getElementById('sakLoginBackgroundVideo');
+  const loginBtn=document.getElementById('loginVideoSoundButton');
+  const seaBtn=document.getElementById('sakSeaSoundButton');
+  const seaAudio=document.getElementById('sakSeaAudio');
+
+  function loginSoundOn(){return !!loginBtn && loginBtn.getAttribute('aria-pressed')==='true';}
+  function enforceLoginVideo(){
+    if(!loginVideo) return;
+    if((loginVideo.getAttribute('src')||'')!==LOGIN_URL){
+      loginVideo.setAttribute('src',LOGIN_URL);
+      try{loginVideo.load();}catch(_){ }
+    }
+    loginVideo.autoplay=true;
+    loginVideo.loop=true;
+    loginVideo.playsInline=true;
+    loginVideo.defaultPlaybackRate=1;
+    loginVideo.playbackRate=1;
+    loginVideo.muted=!loginSoundOn();
+    loginVideo.defaultMuted=!loginSoundOn();
+    if(document.body.classList.contains('locked') && !document.hidden){
+      try{const p=loginVideo.play(); if(p&&p.catch)p.catch(function(){});}catch(_){ }
+    }else{
+      try{loginVideo.pause();}catch(_){ }
+    }
+  }
+
+  /* Sea audio is fully independent from the site background video. */
+  if(seaBtn && seaAudio){
+    seaAudio.loop=true;
+    seaAudio.preload='auto';
+    seaAudio.volume=.55;
+    /* Rebind with a capture listener so legacy handlers cannot interfere. */
+    seaBtn.addEventListener('click',function(ev){
+      ev.preventDefault();
+      ev.stopImmediatePropagation();
+      const active=seaBtn.getAttribute('aria-pressed')==='true';
+      if(active){
+        try{seaAudio.pause();}catch(_){ }
+        seaBtn.setAttribute('aria-pressed','false');
+      }else{
+        try{
+          const p=seaAudio.play();
+          if(p&&p.then){
+            p.then(function(){seaBtn.setAttribute('aria-pressed','true');refreshSeaLabel();})
+             .catch(function(){seaBtn.setAttribute('aria-pressed','false');refreshSeaLabel();});
+          }else{
+            seaBtn.setAttribute('aria-pressed','true');
+          }
+        }catch(_){seaBtn.setAttribute('aria-pressed','false');}
+      }
+      refreshSeaLabel();
+    },true);
+  }
+
+  function refreshSeaLabel(){
+    if(!seaBtn) return;
+    const en=document.documentElement.lang==='en';
+    const active=seaBtn.getAttribute('aria-pressed')==='true';
+    const icon=seaBtn.querySelector('.sakSeaIcon');
+    const label=seaBtn.querySelector('.sakSeaLabel');
+    if(icon) icon.textContent=active?'🌊🔊':'🌊🔇';
+    if(label) label.textContent=en?(active?'Sea sound off':'Sea sound on'):(active?'إيقاف صوت البحر':'تشغيل صوت البحر');
+    const title=en?(active?'Mute sea sound':'Play sea sound'):(active?'إيقاف صوت البحر':'تشغيل صوت البحر');
+    seaBtn.title=title;
+    seaBtn.setAttribute('aria-label',title);
+  }
+
+  enforceLoginVideo();
+  refreshSeaLabel();
+  window.addEventListener('pageshow',enforceLoginVideo);
+  document.addEventListener('visibilitychange',enforceLoginVideo);
+  if(loginVideo){
+    loginVideo.addEventListener('loadedmetadata',enforceLoginVideo);
+    loginVideo.addEventListener('error',function(){
+      setTimeout(function(){
+        if(document.body.classList.contains('locked') && !document.hidden){
+          try{const p=loginVideo.play();if(p&&p.catch)p.catch(function(){});}catch(_){ }
+        }
+      },1200);
+    },{once:true});
+  }
+  if(loginBtn){loginBtn.addEventListener('click',function(){setTimeout(enforceLoginVideo,0);},true);}
+  new MutationObserver(function(){
+    enforceLoginVideo();
+    refreshSeaLabel();
+  }).observe(document.body,{attributes:true,attributeFilter:['class']});
+})();
+</script>
+
+<style id="sak-login-no-flicker">
+html body.locked #loginOverlay #sakLoginBackgroundVideo{
+  opacity:1 !important;
+  visibility:visible !important;
+  animation:none !important;
+  transition:none !important;
+  will-change:auto !important;
+  transform:translateZ(0) !important;
+  backface-visibility:hidden !important;
+  -webkit-backface-visibility:hidden !important;
+}
+html body.locked #loginOverlay{
+  animation:none !important;
+  transition:none !important;
+  background:#02090b !important;
+}
+</style>
 </body>
 </html>
