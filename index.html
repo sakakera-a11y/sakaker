@@ -39998,7 +39998,7 @@ html body #sakChatOverlay.sak-chat-shielded #sakChatIdentity{visibility:hidden!i
 <style id="sak-sea-sound-style">
 #sakSeaSoundButton{position:fixed;right:18px;bottom:18px;z-index:2147483000;display:none;align-items:center;gap:7px;padding:9px 13px;border:1px solid rgba(0,255,204,.62);border-radius:999px;background:rgba(0,20,24,.28);color:#fff;backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);box-shadow:0 0 14px rgba(0,255,204,.24);cursor:pointer;font:700 13px Tajawal,Tahoma,Arial,sans-serif}body:not(.locked) #sakSeaSoundButton{display:flex}#sakSeaSoundButton:hover{background:rgba(0,45,48,.46);box-shadow:0 0 20px rgba(0,255,204,.42)}#sakSeaSoundButton .sakSeaIcon{font-size:17px;line-height:1}@media(max-width:600px){#sakSeaSoundButton{right:10px;bottom:10px;padding:7px 10px;font-size:12px}}
 </style>
-<audio id="sakSeaAudio" preload="none" loop src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Meeresrauschen.ogg"></audio>
+<audio id="sakSeaAudio" preload="none" loop src="https://upload.wikimedia.org/wikipedia/commons/0/07/Meeresrauschen.ogg"></audio>
 <button id="sakSeaSoundButton" type="button" aria-pressed="false" aria-label="تشغيل صوت البحر" title="تشغيل صوت البحر"><span class="sakSeaIcon" aria-hidden="true">🌊🔇</span><span class="sakSeaLabel">تشغيل صوت البحر</span></button>
 <script id="sak-sea-sound-controller">
 (function(){
@@ -40267,5 +40267,383 @@ html body.locked #loginOverlay{
   background:#02090b !important;
 }
 </style>
+<!-- SAKAKER FINAL UI AUDIO LAYOUT PATCH 2026-09-27 -->
+<style id="sakaker-final-ui-audio-layout-patch">
+:root{
+  --sak-mirror-line:rgba(199,250,255,.78);
+  --sak-mirror-line2:rgba(233,214,255,.54);
+  --sak-mirror-bg1:rgba(9,27,38,.38);
+  --sak-mirror-bg2:rgba(4,10,24,.50);
+  --sak-mirror-glow:rgba(98,235,255,.48);
+  --sak-mirror-violet:rgba(215,179,255,.28);
+  --sak-mirror-gold:rgba(255,229,145,.18);
+}
+
+/* =========================================================
+   1) زر صوت خلفية الموقع بجانب تبديل اللغة
+========================================================= */
+html body #sakakerTopTools{
+  align-items:center !important;
+  gap:6px !important;
+}
+html body #sakakerTopTools #sakSeaSoundButton{
+  position:relative !important;
+  inset:auto !important;
+  top:auto !important;
+  right:auto !important;
+  bottom:auto !important;
+  left:auto !important;
+  display:flex !important;
+  width:36px !important;
+  min-width:36px !important;
+  max-width:36px !important;
+  height:34px !important;
+  min-height:34px !important;
+  max-height:34px !important;
+  margin:0 !important;
+  padding:0 !important;
+  align-items:center !important;
+  justify-content:center !important;
+  overflow:hidden !important;
+  border:1px solid rgba(211,252,255,.86) !important;
+  border-radius:17px !important;
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.13),rgba(75,226,255,.08) 35%,rgba(7,15,31,.46) 100%) !important;
+  color:#fff !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.52),
+    inset 0 0 12px rgba(105,241,255,.12),
+    0 0 8px rgba(133,241,255,.48),
+    0 0 18px rgba(221,186,255,.23) !important;
+  backdrop-filter:blur(14px) saturate(150%) !important;
+  -webkit-backdrop-filter:blur(14px) saturate(150%) !important;
+  animation:sakMirrorToolPulse 2.6s ease-in-out infinite !important;
+  z-index:auto !important;
+}
+html body #sakakerTopTools #sakSeaSoundButton .sakSeaLabel{display:none !important;}
+html body #sakakerTopTools #sakSeaSoundButton .sakSeaIcon{
+  font-size:17px !important;
+  line-height:1 !important;
+  filter:drop-shadow(0 0 5px rgba(137,242,255,.95)) !important;
+}
+html body.locked #sakakerTopTools #sakSeaSoundButton{display:none !important;}
+html body:not(.locked) #sakakerTopTools #sakSeaSoundButton{display:flex !important;}
+
+@keyframes sakMirrorToolPulse{
+  0%,100%{box-shadow:inset 0 1px 0 rgba(255,255,255,.46),0 0 7px rgba(118,239,255,.42),0 0 15px rgba(213,181,255,.17)}
+  50%{box-shadow:inset 0 1px 0 rgba(255,255,255,.70),0 0 13px rgba(118,239,255,.92),0 0 25px rgba(213,181,255,.36),0 0 32px rgba(255,225,142,.15)}
+}
+
+/* =========================================================
+   2) جميع الأيقونات أسفل الصفحة في المنتصف
+========================================================= */
+html body #sakakerAllIconsDock{
+  left:50% !important;
+  right:auto !important;
+  top:auto !important;
+  bottom:max(2px,env(safe-area-inset-bottom)) !important;
+  transform:translateX(-50%) !important;
+  width:min(97vw,1320px) !important;
+  max-width:min(97vw,1320px) !important;
+  min-height:58px !important;
+  max-height:70px !important;
+  padding:4px 8px !important;
+  display:flex !important;
+  flex-flow:row nowrap !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:7px !important;
+  overflow-x:auto !important;
+  overflow-y:visible !important;
+  scrollbar-width:none !important;
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+  z-index:800500 !important;
+}
+html body #sakakerAllIconsDock.sak-dock-overflow{justify-content:flex-start !important;}
+html body #sakakerAllIconsDock::-webkit-scrollbar{display:none !important;}
+
+/* شكل زجاجي مضيء لكل أيقونات الشريط */
+html body #sakakerAllIconsDock .icon-card,
+html body #sakakerAllIconsDock .sakaker-utility-slot > *,
+html body #sakakerAllIconsDock #shipIcon_new,
+html body #sakakerAllIconsDock #sakakerBusinessAd,
+html body #sakakerAllIconsDock #facebookVideoIcon,
+html body #sakakerAllIconsDock #liveFlasher,
+html body #sakakerAllIconsDock #emeraldLibraryButton,
+html body #sakakerAllIconsDock #pongGame-btn,
+html body #sakakerAllIconsDock .launcher,
+html body #sakakerAllIconsDock #emOpenBtn{
+  border-color:rgba(206,249,255,.78) !important;
+  background:
+    radial-gradient(circle at 31% 20%,rgba(255,255,255,.30),rgba(127,237,255,.09) 25%,rgba(11,30,43,.46) 58%,rgba(4,10,22,.62) 100%) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.55),
+    inset 0 0 12px rgba(125,240,255,.10),
+    0 0 8px rgba(125,240,255,.52),
+    0 0 18px rgba(218,187,255,.24) !important;
+  backdrop-filter:blur(10px) saturate(145%) !important;
+  -webkit-backdrop-filter:blur(10px) saturate(145%) !important;
+  animation:sakBottomIconMirrorGlow 3s ease-in-out infinite !important;
+}
+@keyframes sakBottomIconMirrorGlow{
+  0%,100%{filter:drop-shadow(0 0 4px rgba(128,238,255,.52));}
+  50%{filter:drop-shadow(0 0 10px rgba(128,238,255,.96)) drop-shadow(0 0 17px rgba(226,195,255,.50));}
+}
+
+/* =========================================================
+   3) كل النوافذ: زجاج مرآتي مضيء موحّد
+========================================================= */
+html body .panel,
+html body .modal-content,
+html body .popup-content,
+html body .overlay > .box,
+html body .fbVideoBox,
+html body #shipPopup_new,
+html body #videoBoxFixed,
+html body #emeraldLibraryContent,
+html body #sakChatPanel,
+html body #sakPaymentPanel,
+html body .sak-learning-panel,
+html body #livePopup > div,
+html body #pongGame-container,
+html body [role="dialog"]{
+  background:
+    linear-gradient(145deg,var(--sak-mirror-bg1),var(--sak-mirror-bg2)) !important;
+  border:1px solid var(--sak-mirror-line) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.55),
+    inset 0 -1px 0 rgba(201,239,255,.14),
+    inset 0 0 30px rgba(105,237,255,.055),
+    0 0 13px var(--sak-mirror-glow),
+    0 0 34px var(--sak-mirror-violet),
+    0 0 58px var(--sak-mirror-gold),
+    0 18px 55px rgba(0,0,0,.42) !important;
+  backdrop-filter:blur(22px) saturate(155%) brightness(1.05) !important;
+  -webkit-backdrop-filter:blur(22px) saturate(155%) brightness(1.05) !important;
+}
+
+/* لمعان مرآتي داخلي للعناوين ومناطق المحتوى */
+html body .panel-head,
+html body .panel-body,
+html body .fbComments,
+html body #sakChatHeader,
+html body #sakChatBody,
+html body #sakPaymentPanel .emPayBox{
+  background:rgba(255,255,255,.035) !important;
+  border-color:rgba(207,246,255,.28) !important;
+}
+
+/* تسجيل الدخول نفسه مرآتي واضح دون إخفاء الفيديو */
+html body.locked #loginBox{
+  background:
+    linear-gradient(145deg,rgba(5,20,30,.34),rgba(7,39,42,.24)) !important;
+  border:1px solid rgba(207,250,255,.84) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.56),
+    inset 0 0 28px rgba(123,241,255,.055),
+    0 0 14px rgba(128,240,255,.54),
+    0 0 34px rgba(222,189,255,.28),
+    0 0 60px rgba(255,226,146,.10) !important;
+  backdrop-filter:blur(13px) saturate(145%) !important;
+  -webkit-backdrop-filter:blur(13px) saturate(145%) !important;
+}
+
+/* زر صوت الدخول أوضح وأقوى */
+html body #loginVideoSoundButton{
+  background:linear-gradient(145deg,rgba(255,255,255,.13),rgba(4,20,31,.34)) !important;
+  border:1px solid rgba(210,250,255,.82) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.46),0 0 11px rgba(118,239,255,.62),0 0 23px rgba(218,186,255,.28) !important;
+  backdrop-filter:blur(14px) saturate(150%) !important;
+  -webkit-backdrop-filter:blur(14px) saturate(150%) !important;
+}
+
+@media(max-width:700px){
+  html body #sakakerAllIconsDock{
+    width:96vw !important;
+    max-width:96vw !important;
+    bottom:max(2px,env(safe-area-inset-bottom)) !important;
+    gap:5px !important;
+  }
+  html body #sakakerTopTools #sakSeaSoundButton{
+    width:32px !important;
+    min-width:32px !important;
+    max-width:32px !important;
+    height:32px !important;
+    min-height:32px !important;
+    max-height:32px !important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  html body #sakakerTopTools #sakSeaSoundButton,
+  html body #sakakerAllIconsDock .icon-card,
+  html body #sakakerAllIconsDock .sakaker-utility-slot > *,
+  html body #sakakerAllIconsDock #shipIcon_new,
+  html body #sakakerAllIconsDock #sakakerBusinessAd,
+  html body #sakakerAllIconsDock #facebookVideoIcon,
+  html body #sakakerAllIconsDock #liveFlasher,
+  html body #sakakerAllIconsDock #emeraldLibraryButton,
+  html body #sakakerAllIconsDock #pongGame-btn,
+  html body #sakakerAllIconsDock .launcher,
+  html body #sakakerAllIconsDock #emOpenBtn{animation:none !important;}
+}
+</style>
+<script id="sakaker-final-ui-audio-layout-controller">
+(function(){
+  'use strict';
+
+  const loginVideo=document.getElementById('sakLoginBackgroundVideo');
+  const loginBtn=document.getElementById('loginVideoSoundButton');
+  const seaBtn=document.getElementById('sakSeaSoundButton');
+  const seaAudio=document.getElementById('sakSeaAudio');
+  const langBtn=document.getElementById('siteLangToggle');
+  const topTools=document.getElementById('sakakerTopTools');
+  const dock=document.getElementById('sakakerAllIconsDock');
+
+  function isEnglish(){return document.documentElement.lang==='en';}
+
+  /* ----- صوت فيديو الدخول: نملكه هنا في مستمع capture أخير ----- */
+  function paintLoginSound(on){
+    if(!loginBtn) return;
+    loginBtn.setAttribute('aria-pressed',on?'true':'false');
+    const icon=loginBtn.querySelector('.soundIcon');
+    const label=loginBtn.querySelector('.soundLabel');
+    if(icon) icon.textContent=on?'🔊':'🔇';
+    if(label) label.textContent=isEnglish()?(on?'Sound off':'Sound on'):(on?'إيقاف الصوت':'تشغيل الصوت');
+    const title=isEnglish()?(on?'Mute background sound':'Play background sound'):(on?'إيقاف صوت الخلفية':'تشغيل صوت الخلفية');
+    loginBtn.title=title;
+    loginBtn.setAttribute('aria-label',title);
+  }
+
+  if(loginVideo && loginBtn){
+    loginBtn.addEventListener('click',function(ev){
+      ev.preventDefault();
+      ev.stopImmediatePropagation();
+      const turnOn=loginBtn.getAttribute('aria-pressed')!=='true';
+      loginVideo.volume=1;
+      loginVideo.muted=!turnOn;
+      loginVideo.defaultMuted=!turnOn;
+      if(turnOn){
+        loginVideo.removeAttribute('muted');
+      }else{
+        loginVideo.setAttribute('muted','');
+      }
+      paintLoginSound(turnOn);
+      try{
+        const p=loginVideo.play();
+        if(p&&p.catch){
+          p.catch(function(){
+            if(turnOn){
+              loginVideo.muted=true;
+              loginVideo.defaultMuted=true;
+              loginVideo.setAttribute('muted','');
+              paintLoginSound(false);
+            }
+          });
+        }
+      }catch(_){
+        loginVideo.muted=true;
+        loginVideo.defaultMuted=true;
+        loginVideo.setAttribute('muted','');
+        paintLoginSound(false);
+      }
+    },true);
+    paintLoginSound(loginBtn.getAttribute('aria-pressed')==='true');
+  }
+
+  /* ----- زر صوت البحر بجانب زر اللغة ----- */
+  function placeSeaButton(){
+    if(!seaBtn || !topTools) return;
+    if(seaBtn.parentElement!==topTools){
+      if(langBtn && langBtn.parentElement===topTools){
+        langBtn.insertAdjacentElement('afterend',seaBtn);
+      }else{
+        topTools.appendChild(seaBtn);
+      }
+    }else if(langBtn && langBtn.nextElementSibling!==seaBtn){
+      langBtn.insertAdjacentElement('afterend',seaBtn);
+    }
+  }
+
+  function paintSeaSound(on){
+    if(!seaBtn) return;
+    seaBtn.setAttribute('aria-pressed',on?'true':'false');
+    const icon=seaBtn.querySelector('.sakSeaIcon');
+    const label=seaBtn.querySelector('.sakSeaLabel');
+    if(icon) icon.textContent=on?'🌊🔊':'🌊🔇';
+    if(label) label.textContent=isEnglish()?(on?'Sea sound off':'Sea sound on'):(on?'إيقاف صوت البحر':'تشغيل صوت البحر');
+    const title=isEnglish()?(on?'Mute sea sound':'Play sea sound'):(on?'إيقاف صوت البحر':'تشغيل صوت البحر');
+    seaBtn.title=title;
+    seaBtn.setAttribute('aria-label',title);
+  }
+
+  if(seaBtn && seaAudio){
+    seaAudio.loop=true;
+    seaAudio.preload='auto';
+    seaAudio.volume=.62;
+    seaBtn.addEventListener('click',function(ev){
+      ev.preventDefault();
+      ev.stopImmediatePropagation();
+      const turnOn=seaBtn.getAttribute('aria-pressed')!=='true';
+      if(!turnOn){
+        try{seaAudio.pause();}catch(_){ }
+        paintSeaSound(false);
+        return;
+      }
+      seaAudio.volume=.62;
+      try{
+        const p=seaAudio.play();
+        if(p&&p.then){
+          p.then(function(){paintSeaSound(true);})
+           .catch(function(){paintSeaSound(false);});
+        }else{
+          paintSeaSound(true);
+        }
+      }catch(_){paintSeaSound(false);}
+    },true);
+  }
+
+  /* ----- تمركز الشريط، مع السماح بالسحب عند ضيق الشاشة ----- */
+  function alignDock(){
+    if(!dock) return;
+    requestAnimationFrame(function(){
+      const overflow=dock.scrollWidth>dock.clientWidth+4;
+      dock.classList.toggle('sak-dock-overflow',overflow);
+    });
+  }
+
+  function refresh(){
+    placeSeaButton();
+    paintLoginSound(!!loginVideo && !loginVideo.muted && loginBtn?.getAttribute('aria-pressed')==='true');
+    paintSeaSound(!!seaAudio && !seaAudio.paused && seaBtn?.getAttribute('aria-pressed')==='true');
+    alignDock();
+  }
+
+  placeSeaButton();
+  alignDock();
+  window.addEventListener('resize',alignDock,{passive:true});
+  window.addEventListener('orientationchange',function(){setTimeout(alignDock,120);},{passive:true});
+  if(dock && window.ResizeObserver){new ResizeObserver(alignDock).observe(dock);}
+  new MutationObserver(function(){
+    placeSeaButton();
+    paintLoginSound(!!loginVideo && !loginVideo.muted && loginBtn?.getAttribute('aria-pressed')==='true');
+    paintSeaSound(!!seaAudio && !seaAudio.paused && seaBtn?.getAttribute('aria-pressed')==='true');
+  }).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+
+  new MutationObserver(function(){
+    if(document.body.classList.contains('locked')){
+      try{seaAudio?.pause();}catch(_){ }
+      paintSeaSound(false);
+    }
+    placeSeaButton();
+    alignDock();
+  }).observe(document.body,{attributes:true,attributeFilter:['class']});
+
+  [0,250,900,2200].forEach(function(ms){setTimeout(refresh,ms);});
+})();
+</script>
+<!-- /SAKAKER FINAL UI AUDIO LAYOUT PATCH 2026-09-27 -->
 </body>
 </html>
