@@ -36355,6 +36355,8 @@ html body #sakChatPanel{
   let privateMetaUnsub = null;
   const outgoingUnsubs = new Map();
   let toastTimer = null;
+  let chatPresenceRef = null;
+  let chatSessionActive = false;
 
   function t(key){ return words[lang][key] || key; }
   function safeName(user){
@@ -36439,7 +36441,7 @@ html body #sakChatPanel{
   }
   $('sakChatPrivacyToggle').addEventListener('click',()=>shieldChat(!$('sakChatOverlay').classList.contains('sak-chat-shielded')));
   document.addEventListener('visibilitychange',()=>{if(document.hidden&&!$('sakChatOverlay').hidden)shieldChat(true);});
-  function openOverlay(){
+  async function openOverlay(){
     if(!currentUser){toast(t('loginRequired'));return;}
     const overlay=$('sakChatOverlay');
     overlay.hidden=false;
@@ -36456,9 +36458,22 @@ html body #sakChatPanel{
     }catch(e){
       overlay.setAttribute('open','');
     }
+
+    if(!chatSessionActive){
+      setStatus(t('loading'));
+      try{
+        await startPresence(currentUser);
+        startListeners();
+        chatSessionActive=true;
+        setStatus(t('identity')+' '+currentName);
+      }catch(e){
+        console.warn('SAKAKER chat open:',e);
+        setStatus(t('firebaseError'));
+      }
+    }
     $('sakChatClose').focus();
   }
-  function closeOverlay(){
+  async function closeOverlay(){
     const overlay=$('sakChatOverlay');
     try{
       if(typeof overlay.close==='function' && overlay.open) overlay.close();
@@ -36469,6 +36484,8 @@ html body #sakChatPanel{
     $('sakChatPrivateInput').value='';
     shieldChat(true);
     document.body.style.overflow='';
+    detachChatListeners();
+    await stopPresence();
     const icon=$('sakChatIcon');
     if(icon) icon.focus();
   }
@@ -36654,15 +36671,27 @@ html body #sakChatPanel{
   }
 
   async function startPresence(user){
-    const userRef=ref(rtdb,'onlineUsers/'+user.uid);
+    if(!user) return;
+    chatPresenceRef=ref(rtdb,'onlineUsers/'+user.uid);
     const payload={
       uid:user.uid,
       name:safeName(user),
       status:'available',
       joinedAt:serverTimestamp()
     };
-    await set(userRef,payload);
-    try{await onDisconnect(userRef).remove();}catch(e){}
+    await set(chatPresenceRef,payload);
+    try{await onDisconnect(chatPresenceRef).remove();}catch(e){}
+  }
+
+  async function stopPresence(){
+    const ownRef=chatPresenceRef || (currentUser ? ref(rtdb,'onlineUsers/'+currentUser.uid) : null);
+    chatPresenceRef=null;
+    chatSessionActive=false;
+    if(ownRef){
+      try{await remove(ownRef);}catch(e){console.warn('SAKAKER chat presence cleanup:',e);}
+    }
+    users={};
+    renderUsers();
   }
 
   function detachChatListeners(){
@@ -36935,6 +36964,11 @@ html body #sakChatPanel{
 
   onAuthStateChanged(auth,async user=>{
     detachChatListeners();
+    if(chatPresenceRef){
+      try{await remove(chatPresenceRef);}catch(e){}
+    }
+    chatPresenceRef=null;
+    chatSessionActive=false;
     currentUser=user||null;
     currentPrivate=null;
     users={};blocks={};incoming={};publicData={};
@@ -36947,15 +36981,12 @@ html body #sakChatPanel{
     currentName=safeName(user);
     mountIcon();
     const icon=$('sakChatIcon');if(icon)icon.style.display='';
-    setStatus(t('loading'));
-    try{
-      await startPresence(user);
-      startListeners();
-      setStatus(t('identity')+' '+currentName);
-    }catch(e){
-      console.warn('SAKAKER chat init:',e);
-      setStatus(t('firebaseError'));
-    }
+    setStatus(t('identity')+' '+currentName);
+  });
+
+  /* الحضور مرتبط بفتح نافذة الدردشة فقط. onDisconnect يحذف السجل عند إغلاق الصفحة/انقطاع الاتصال. */
+  window.addEventListener('pagehide',()=>{
+    if(chatPresenceRef){ try{ remove(chatPresenceRef).catch(()=>{}); }catch(e){} }
   });
 
   mountIcon();
@@ -40876,5 +40907,228 @@ html body:not(.locked) #sakakerAllIconsDock.sak-dock-overflow{
 </script>
 <!-- /SAKAKER FINAL BOTTOM-SCREEN DOCK + MAX SEA SOUND -->
 
-</body>
+\n\n<!-- SAKAKER CHAT GLASS + UNIFIED BOTTOM ROW FINAL 2026-09-27 -->
+<style id="sakaker-chat-glass-bottom-row-final">
+/* ===== نافذة الدردشة: زجاج مرآتي مضيء ===== */
+html body #sakChatOverlay{
+  background:
+    radial-gradient(circle at 20% 12%,rgba(94,241,255,.14),transparent 34%),
+    radial-gradient(circle at 82% 82%,rgba(205,174,255,.12),transparent 34%),
+    rgba(0,7,15,.32) !important;
+  backdrop-filter:blur(18px) saturate(155%) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(155%) !important;
+}
+html body #sakChatPanel{
+  width:min(1040px,96vw) !important;
+  height:min(760px,92dvh) !important;
+  border:1px solid rgba(211,250,255,.88) !important;
+  border-radius:28px !important;
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.16),rgba(91,224,255,.08) 38%,rgba(6,22,34,.48) 72%,rgba(10,12,28,.58)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.72),
+    inset 0 0 28px rgba(103,239,255,.10),
+    0 0 12px rgba(105,239,255,.82),
+    0 0 34px rgba(105,239,255,.38),
+    0 0 62px rgba(212,179,255,.24),
+    0 24px 90px rgba(0,0,0,.52) !important;
+  backdrop-filter:blur(24px) saturate(175%) brightness(1.08) !important;
+  -webkit-backdrop-filter:blur(24px) saturate(175%) brightness(1.08) !important;
+  position:relative !important;
+}
+html body #sakChatPanel::before{
+  content:"";
+  position:absolute;
+  inset:1px;
+  border-radius:26px;
+  pointer-events:none;
+  background:linear-gradient(120deg,rgba(255,255,255,.24),transparent 22%,transparent 72%,rgba(119,236,255,.10));
+  mix-blend-mode:screen;
+}
+html body #sakChatHeader,
+html body #sakChatWarning,
+html body #sakChatTabs,
+html body #sakChatPrivateTop,
+html body .sak-chat-compose{
+  background:linear-gradient(135deg,rgba(255,255,255,.10),rgba(63,201,224,.07),rgba(4,17,28,.28)) !important;
+  border-color:rgba(202,248,255,.28) !important;
+  backdrop-filter:blur(14px) saturate(145%) !important;
+  -webkit-backdrop-filter:blur(14px) saturate(145%) !important;
+}
+html body #sakChatTitle{
+  color:#f7feff !important;
+  text-shadow:0 0 7px #fff,0 0 16px rgba(92,239,255,.95),0 0 30px rgba(196,172,255,.65) !important;
+}
+html body .sak-chat-head-actions button,
+html body #sakChatTabs button,
+html body .sak-chat-action,
+html body .sak-chat-btn{
+  border:1px solid rgba(207,248,255,.52) !important;
+  background:linear-gradient(145deg,rgba(255,255,255,.13),rgba(55,186,210,.10),rgba(4,18,29,.40)) !important;
+  color:#f4fdff !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 0 10px rgba(90,231,255,.16) !important;
+  backdrop-filter:blur(9px) !important;
+}
+html body #sakChatClose{
+  background:linear-gradient(145deg,rgba(255,116,136,.35),rgba(75,15,28,.50)) !important;
+  border-color:rgba(255,173,185,.72) !important;
+  box-shadow:0 0 14px rgba(255,97,121,.35) !important;
+}
+html body #sakChatTabs button[aria-selected="true"]{
+  color:#00151b !important;
+  background:linear-gradient(135deg,rgba(236,255,255,.98),rgba(112,242,255,.92),rgba(214,188,255,.88)) !important;
+  border-color:#efffff !important;
+  box-shadow:0 0 16px rgba(106,240,255,.72),0 0 26px rgba(210,181,255,.34) !important;
+}
+html body .sak-chat-message,
+html body .sak-chat-user,
+html body .sak-chat-request{
+  background:linear-gradient(145deg,rgba(255,255,255,.11),rgba(63,191,211,.07),rgba(2,18,28,.34)) !important;
+  border:1px solid rgba(202,247,255,.25) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 0 12px rgba(91,231,255,.09) !important;
+  backdrop-filter:blur(10px) saturate(135%) !important;
+}
+html body .sak-chat-message.mine{
+  background:linear-gradient(145deg,rgba(61,255,205,.16),rgba(5,86,73,.24),rgba(3,22,30,.36)) !important;
+  border-color:rgba(102,255,215,.34) !important;
+}
+html body .sak-chat-compose input{
+  background:rgba(236,252,255,.92) !important;
+  border:1px solid rgba(176,247,255,.88) !important;
+  box-shadow:inset 0 1px 8px rgba(7,51,64,.11),0 0 12px rgba(99,237,255,.16) !important;
+}
+html body .sak-chat-send{
+  background:linear-gradient(135deg,#ebffff,#7df4ff,#d8c4ff) !important;
+  color:#001820 !important;
+  border-color:#f2ffff !important;
+  box-shadow:0 0 15px rgba(104,241,255,.65) !important;
+}
+html body #sakChatIcon{
+  border:1px solid rgba(214,251,255,.92) !important;
+  background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.42),rgba(105,240,255,.16) 28%,rgba(7,30,42,.60) 66%,rgba(4,10,20,.74)) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.72),0 0 10px rgba(103,239,255,.92),0 0 25px rgba(103,239,255,.58),0 0 40px rgba(214,181,255,.26) !important;
+  animation:sakChatCrystalPulse 2.4s ease-in-out infinite !important;
+}
+html body #sakChatIcon .sak-chat-gold-symbol{
+  width:38px !important;height:38px !important;margin:0 auto 3px !important;
+  color:#002430 !important;
+  background:radial-gradient(circle at 32% 26%,#ffffff 0%,#c9fbff 28%,#74ecff 58%,#9e86ff 100%) !important;
+  border-color:#eaffff !important;
+  box-shadow:0 0 9px #dfffff,0 0 22px rgba(101,239,255,.88),0 0 30px rgba(206,173,255,.48) !important;
+}
+@keyframes sakChatCrystalPulse{
+  0%,100%{filter:brightness(1) drop-shadow(0 0 3px rgba(111,238,255,.48));}
+  50%{filter:brightness(1.16) drop-shadow(0 0 13px rgba(111,238,255,.95));}
+}
+
+/* ===== الأيقونات + العداد في صف واحد بأسفل المنتصف ===== */
+html body #sakakerBottomUnifiedRow{
+  position:fixed !important;
+  left:50% !important;
+  right:auto !important;
+  bottom:max(4px,env(safe-area-inset-bottom)) !important;
+  transform:translateX(-50%) !important;
+  width:min(99vw,1540px) !important;
+  max-width:99vw !important;
+  min-height:54px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:8px !important;
+  z-index:2147483000 !important;
+  pointer-events:none !important;
+}
+html body #sakakerBottomUnifiedRow > *{pointer-events:auto !important;}
+html body:not(.locked) #sakakerBottomUnifiedRow #sakakerAllIconsDock{
+  position:static !important;
+  left:auto !important;right:auto !important;top:auto !important;bottom:auto !important;
+  transform:none !important;
+  width:auto !important;
+  max-width:calc(100% - 210px) !important;
+  min-width:0 !important;
+  min-height:50px !important;
+  max-height:58px !important;
+  padding:3px 5px !important;
+  margin:0 !important;
+  flex:0 1 auto !important;
+  align-items:center !important;
+  justify-content:center !important;
+  overflow-x:auto !important;
+  overflow-y:hidden !important;
+}
+html body #sakakerBottomUnifiedRow #sakakerVisitorCounter{
+  position:static !important;
+  left:auto !important;right:auto !important;top:auto !important;bottom:auto !important;
+  transform:none !important;
+  margin:0 !important;
+  flex:0 0 auto !important;
+  z-index:auto !important;
+}
+html body #sakakerBottomUnifiedRow #sakakerAllIconsDock .icon-card,
+html body #sakakerBottomUnifiedRow #sakakerAllIconsDock .sakaker-utility-slot > *,
+html body #sakakerBottomUnifiedRow #sakakerAllIconsDock #shipIcon_new,
+html body #sakakerBottomUnifiedRow #sakakerAllIconsDock #sakakerBusinessAd,
+html body #sakakerBottomUnifiedRow #sakakerAllIconsDock #facebookVideoIcon,
+html body #sakakerBottomUnifiedRow #sakakerAllIconsDock #liveFlasher,
+html body #sakakerBottomUnifiedRow #sakakerAllIconsDock #emeraldLibraryButton,
+html body #sakakerBottomUnifiedRow #sakakerAllIconsDock #pongGame-btn,
+html body #sakakerBottomUnifiedRow #sakakerAllIconsDock .launcher,
+html body #sakakerBottomUnifiedRow #sakakerAllIconsDock #emOpenBtn{
+  width:46px !important;
+  min-width:46px !important;
+  max-width:46px !important;
+  height:46px !important;
+  min-height:46px !important;
+  max-height:46px !important;
+  margin:0 !important;
+  padding:3px !important;
+}
+html body #sakakerBottomUnifiedRow #sakakerAllIconsDock .icon-label{font-size:6px !important;line-height:1 !important;}
+html body #sakakerBottomUnifiedRow #sakakerAllIconsDock .sub{display:none !important;}
+html body.locked #sakakerBottomUnifiedRow{display:none !important;}
+
+@media(max-width:700px){
+  html body #sakakerBottomUnifiedRow{gap:5px !important;width:99vw !important;}
+  html body:not(.locked) #sakakerBottomUnifiedRow #sakakerAllIconsDock{
+    max-width:calc(100% - 118px) !important;
+    justify-content:flex-start !important;
+  }
+  html body #sakakerBottomUnifiedRow #sakakerAllIconsDock .icon-card,
+  html body #sakakerBottomUnifiedRow #sakakerAllIconsDock .sakaker-utility-slot > *,
+  html body #sakakerBottomUnifiedRow #sakakerAllIconsDock #shipIcon_new,
+  html body #sakakerBottomUnifiedRow #sakakerAllIconsDock #sakakerBusinessAd,
+  html body #sakakerBottomUnifiedRow #sakakerAllIconsDock #facebookVideoIcon,
+  html body #sakakerBottomUnifiedRow #sakakerAllIconsDock #liveFlasher,
+  html body #sakakerBottomUnifiedRow #sakakerAllIconsDock #emeraldLibraryButton,
+  html body #sakakerBottomUnifiedRow #sakakerAllIconsDock #pongGame-btn,
+  html body #sakakerBottomUnifiedRow #sakakerAllIconsDock .launcher,
+  html body #sakakerBottomUnifiedRow #sakakerAllIconsDock #emOpenBtn{
+    width:42px !important;min-width:42px !important;max-width:42px !important;
+    height:42px !important;min-height:42px !important;max-height:42px !important;
+  }
+}
+</style>
+<script id="sakaker-unified-bottom-row-controller">
+(function(){
+  'use strict';
+  function mount(){
+    const dock=document.getElementById('sakakerAllIconsDock');
+    const counter=document.getElementById('sakakerVisitorCounter');
+    if(!dock||!counter) return;
+    let row=document.getElementById('sakakerBottomUnifiedRow');
+    if(!row){
+      row=document.createElement('div');
+      row.id='sakakerBottomUnifiedRow';
+      row.setAttribute('aria-label','SAKAKER bottom controls');
+      document.body.appendChild(row);
+    }
+    if(dock.parentNode!==row) row.appendChild(dock);
+    if(counter.parentNode!==row) row.appendChild(counter);
+  }
+  mount();
+  document.addEventListener('DOMContentLoaded',mount,{once:true});
+  [250,900,1800].forEach(ms=>setTimeout(mount,ms));
+})();
+</script>
+<!-- /SAKAKER CHAT GLASS + UNIFIED BOTTOM ROW FINAL -->\n</body>
 </html>
