@@ -36357,6 +36357,7 @@ html body #sakChatPanel{
   let toastTimer = null;
   let chatPresenceRef = null;
   let chatSessionActive = false;
+  let chatPresenceTimer = null;
 
   function t(key){ return words[lang][key] || key; }
   function safeName(user){
@@ -36533,7 +36534,15 @@ html body #sakChatPanel{
     if(!host) return;
     host.innerHTML='';
     if(!currentUser) return;
-    const list=Object.values(users).filter(u=>u&&u.uid&&u.uid!==currentUser.uid);
+    const now=Date.now();
+    const activeWindow=70000;
+    const list=Object.values(users).filter(u=>
+      u &&
+      u.uid &&
+      u.uid!==currentUser.uid &&
+      typeof u.lastSeen==='number' &&
+      u.lastSeen >= now-activeWindow
+    );
     if(!list.length){
       const e=document.createElement('div');e.className='sak-chat-empty';e.textContent=t('noUsers');host.appendChild(e);return;
     }
@@ -36672,19 +36681,30 @@ html body #sakChatPanel{
 
   async function startPresence(user){
     if(!user) return;
+    if(chatPresenceTimer){clearInterval(chatPresenceTimer);chatPresenceTimer=null;}
     chatPresenceRef=ref(rtdb,'onlineUsers/'+user.uid);
-    const payload={
-      uid:user.uid,
-      name:safeName(user),
-      status:'available',
-      joinedAt:serverTimestamp()
+    const writePresence=async()=>{
+      if(!chatPresenceRef) return;
+      await update(chatPresenceRef,{
+        uid:user.uid,
+        name:safeName(user),
+        status:'available',
+        joinedAt:serverTimestamp(),
+        lastSeen:Date.now()
+      });
     };
-    await set(chatPresenceRef,payload);
+    await writePresence();
     try{await onDisconnect(chatPresenceRef).remove();}catch(e){}
+    chatPresenceTimer=setInterval(()=>{
+      if(!chatPresenceRef) return;
+      update(chatPresenceRef,{lastSeen:Date.now()}).catch(()=>{});
+      renderUsers();
+    },25000);
   }
 
   async function stopPresence(){
     const ownRef=chatPresenceRef || (currentUser ? ref(rtdb,'onlineUsers/'+currentUser.uid) : null);
+    if(chatPresenceTimer){clearInterval(chatPresenceTimer);chatPresenceTimer=null;}
     chatPresenceRef=null;
     chatSessionActive=false;
     if(ownRef){
@@ -36967,6 +36987,7 @@ html body #sakChatPanel{
     if(chatPresenceRef){
       try{await remove(chatPresenceRef);}catch(e){}
     }
+    if(chatPresenceTimer){clearInterval(chatPresenceTimer);chatPresenceTimer=null;}
     chatPresenceRef=null;
     chatSessionActive=false;
     currentUser=user||null;
@@ -36986,6 +37007,7 @@ html body #sakChatPanel{
 
   /* الحضور مرتبط بفتح نافذة الدردشة فقط. onDisconnect يحذف السجل عند إغلاق الصفحة/انقطاع الاتصال. */
   window.addEventListener('pagehide',()=>{
+    if(chatPresenceTimer){clearInterval(chatPresenceTimer);chatPresenceTimer=null;}
     if(chatPresenceRef){ try{ remove(chatPresenceRef).catch(()=>{}); }catch(e){} }
   });
 
@@ -40907,7 +40929,7 @@ html body:not(.locked) #sakakerAllIconsDock.sak-dock-overflow{
 </script>
 <!-- /SAKAKER FINAL BOTTOM-SCREEN DOCK + MAX SEA SOUND -->
 
-\n\n<!-- SAKAKER CHAT GLASS + UNIFIED BOTTOM ROW FINAL 2026-09-27 -->
+<!-- SAKAKER CHAT GLASS + UNIFIED BOTTOM ROW FINAL 2026-09-27 -->
 <style id="sakaker-chat-glass-bottom-row-final">
 /* ===== نافذة الدردشة: زجاج مرآتي مضيء ===== */
 html body #sakChatOverlay{
@@ -41130,5 +41152,201 @@ html body.locked #sakakerBottomUnifiedRow{display:none !important;}
   [250,900,1800].forEach(ms=>setTimeout(mount,ms));
 })();
 </script>
-<!-- /SAKAKER CHAT GLASS + UNIFIED BOTTOM ROW FINAL -->\n</body>
+<!-- /SAKAKER CHAT GLASS + UNIFIED BOTTOM ROW FINAL -->
+
+<!-- SAKAKER RIGHT-BOTTOM IDENTITY ROW + ACTIVE CHAT PRESENCE FINAL 2026-09-27 -->
+<style id="sakaker-right-bottom-row-final">
+/* هوية الموقع في الزاوية اليمنى السفلية */
+html body:not(.locked) .sakaker-copyright{
+  position:fixed !important;
+  right:10px !important;
+  left:auto !important;
+  top:auto !important;
+  bottom:max(2px,env(safe-area-inset-bottom)) !important;
+  transform:none !important;
+  width:auto !important;
+  max-width:calc(100vw - 20px) !important;
+  margin:0 !important;
+  padding:0 !important;
+  text-align:right !important;
+  z-index:2147482990 !important;
+  pointer-events:none !important;
+}
+html body:not(.locked) .sakaker-copyright-inner{
+  display:inline-flex !important;
+  flex-wrap:nowrap !important;
+  align-items:center !important;
+  justify-content:flex-end !important;
+  gap:5px !important;
+  padding:2px 5px !important;
+  white-space:nowrap !important;
+  transform:none !important;
+  background:rgba(3,18,25,.14) !important;
+  border:1px solid rgba(190,248,255,.20) !important;
+  border-radius:999px !important;
+  box-shadow:0 0 9px rgba(75,231,255,.18) !important;
+  backdrop-filter:blur(8px) saturate(130%) !important;
+  -webkit-backdrop-filter:blur(8px) saturate(130%) !important;
+}
+
+/* الأيقونات + النجمة (الخريطة) + العداد: صف واحد فوق الهوية مباشرة */
+html body:not(.locked) #sakakerBottomUnifiedRow{
+  position:fixed !important;
+  right:10px !important;
+  left:auto !important;
+  top:auto !important;
+  bottom:38px !important;
+  transform:none !important;
+  width:min(96vw,1500px) !important;
+  max-width:calc(100vw - 20px) !important;
+  min-height:50px !important;
+  display:flex !important;
+  flex-direction:row !important;
+  flex-wrap:nowrap !important;
+  align-items:center !important;
+  justify-content:flex-end !important;
+  gap:8px !important;
+  margin:0 !important;
+  padding:0 !important;
+  z-index:2147483000 !important;
+  pointer-events:none !important;
+}
+html body:not(.locked) #sakakerBottomUnifiedRow > *{pointer-events:auto !important;}
+html body:not(.locked) #sakakerBottomUnifiedRow #sakakerAllIconsDock{
+  position:static !important;
+  inset:auto !important;
+  transform:none !important;
+  width:auto !important;
+  max-width:calc(100% - 300px) !important;
+  min-width:0 !important;
+  min-height:48px !important;
+  max-height:54px !important;
+  flex:0 1 auto !important;
+  display:flex !important;
+  flex-flow:row nowrap !important;
+  align-items:center !important;
+  justify-content:flex-end !important;
+  gap:7px !important;
+  overflow-x:auto !important;
+  overflow-y:hidden !important;
+  margin:0 !important;
+  padding:2px 4px !important;
+  scrollbar-width:none !important;
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+}
+html body:not(.locked) #sakakerBottomUnifiedRow #sakakerAllIconsDock::-webkit-scrollbar{display:none !important;}
+html body:not(.locked) #sakakerBottomUnifiedRow #sakakerVisitorCounter{
+  position:static !important;
+  inset:auto !important;
+  transform:none !important;
+  flex:0 0 auto !important;
+  margin:0 !important;
+  padding:5px 9px !important;
+  z-index:auto !important;
+}
+/* إبقاء النجمة واضحة داخل الصف */
+html body:not(.locked) #sakakerBottomUnifiedRow #sakakerAllIconsDock .launcher{
+  position:relative !important;
+  inset:auto !important;
+  flex:0 0 46px !important;
+  width:46px !important;
+  height:46px !important;
+  min-width:46px !important;
+  min-height:46px !important;
+  max-width:46px !important;
+  max-height:46px !important;
+  margin:0 !important;
+  clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%) !important;
+  border-radius:0 !important;
+  box-shadow:0 0 12px #fff,0 0 23px rgba(0,255,255,.92),0 0 38px rgba(0,255,204,.62) !important;
+}
+
+/* منع الأكواد القديمة من إعادة Business/النجمة إلى موضع منفصل */
+html body:not(.locked) #sakakerAllIconsDock #sakakerBusinessAd,
+html body:not(.locked) #sakakerAllIconsDock #sakakerBusinessIcon{
+  position:relative !important;
+  inset:auto !important;
+  transform:none !important;
+  margin:0 !important;
+}
+
+@media(max-width:700px){
+  html body:not(.locked) .sakaker-copyright{
+    right:6px !important;
+    bottom:max(2px,env(safe-area-inset-bottom)) !important;
+    max-width:calc(100vw - 12px) !important;
+  }
+  html body:not(.locked) .sakaker-copyright-inner{
+    gap:3px !important;
+    padding:1px 4px !important;
+    transform:scale(.82) !important;
+    transform-origin:right bottom !important;
+  }
+  html body:not(.locked) #sakakerBottomUnifiedRow{
+    right:6px !important;
+    bottom:35px !important;
+    width:calc(100vw - 12px) !important;
+    max-width:calc(100vw - 12px) !important;
+    gap:5px !important;
+  }
+  html body:not(.locked) #sakakerBottomUnifiedRow #sakakerAllIconsDock{
+    max-width:calc(100% - 122px) !important;
+    justify-content:flex-end !important;
+    gap:5px !important;
+  }
+  html body:not(.locked) #sakakerBottomUnifiedRow #sakakerVisitorCounter{
+    padding:4px 6px !important;
+    gap:5px !important;
+  }
+  html body:not(.locked) #sakakerBottomUnifiedRow #sakakerVisitorCounter .svc-label{display:none !important;}
+  html body:not(.locked) #sakakerBottomUnifiedRow #sakakerVisitorCounter .svc-sep{height:15px !important;}
+  html body:not(.locked) #sakakerBottomUnifiedRow #sakakerAllIconsDock .launcher{
+    flex-basis:42px !important;
+    width:42px !important;height:42px !important;
+    min-width:42px !important;min-height:42px !important;
+    max-width:42px !important;max-height:42px !important;
+  }
+}
+html body.locked #sakakerBottomUnifiedRow,
+html body.locked .sakaker-copyright{visibility:hidden !important;opacity:0 !important;pointer-events:none !important;}
+</style>
+<script id="sakaker-right-bottom-row-controller-final">
+(function(){
+  'use strict';
+  function mountFinalBottomRow(){
+    const dock=document.getElementById('sakakerAllIconsDock');
+    const counter=document.getElementById('sakakerVisitorCounter');
+    if(!dock||!counter) return;
+    let row=document.getElementById('sakakerBottomUnifiedRow');
+    if(!row){
+      row=document.createElement('div');
+      row.id='sakakerBottomUnifiedRow';
+      document.body.appendChild(row);
+    }
+    if(dock.parentNode!==row) row.appendChild(dock);
+    if(counter.parentNode!==row) row.appendChild(counter);
+
+    /* Business قد تنقله أكواد أقدم بعد التحميل؛ نعيده إلى صف الأيقونات. */
+    const business=document.getElementById('sakakerBusinessAd');
+    if(business && business.parentNode!==dock){dock.appendChild(business);}
+
+    /* النجمة هي زر الخرائط .launcher؛ نتأكد أنها داخل شريط الأيقونات. */
+    const star=document.querySelector('.launcher');
+    if(star && !dock.contains(star)){
+      const slot=document.querySelector('#sakakerUtilityDock [data-sakaker-util="map"]');
+      if(slot) slot.appendChild(star); else dock.appendChild(star);
+    }
+  }
+  mountFinalBottomRow();
+  document.addEventListener('DOMContentLoaded',mountFinalBottomRow,{once:true});
+  [150,450,900,1800,4200,7000].forEach(ms=>setTimeout(mountFinalBottomRow,ms));
+  window.addEventListener('resize',mountFinalBottomRow,{passive:true});
+  window.addEventListener('orientationchange',()=>setTimeout(mountFinalBottomRow,120),{passive:true});
+})();
+</script>
+<!-- /SAKAKER RIGHT-BOTTOM IDENTITY ROW + ACTIVE CHAT PRESENCE FINAL -->
+
+</body>
 </html>
