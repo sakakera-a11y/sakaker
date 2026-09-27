@@ -41348,5 +41348,281 @@ html body.locked .sakaker-copyright{visibility:hidden !important;opacity:0 !impo
 </script>
 <!-- /SAKAKER RIGHT-BOTTOM IDENTITY ROW + ACTIVE CHAT PRESENCE FINAL -->
 
+
+<!-- SAKAKER LANGUAGE-INDEPENDENT FIXED BOTTOM LAYOUT FINAL 2026-09-27 -->
+<style id="sakaker-language-independent-bottom-layout-final">
+/*
+   تثبيت العناصر السفلية بإحداثيات فعلية لا تتأثر بـ RTL/LTR:
+   - شريط الأيقونات يبدأ بعد زر الدفع ويسير من اليسار إلى اليمين.
+   - نجمة الخرائط + العداد مجموعة مستقلة يمين الصفحة فوق هوية الموقع.
+*/
+html body:not(.locked) #sakakerAllIconsDock{
+  position:fixed !important;
+  left:96px !important;
+  right:auto !important;
+  top:auto !important;
+  bottom:max(7px,env(safe-area-inset-bottom)) !important;
+  transform:none !important;
+  translate:none !important;
+  direction:ltr !important;
+  flex-direction:row !important;
+  flex-wrap:nowrap !important;
+  justify-content:flex-start !important;
+  align-items:center !important;
+  width:max-content !important;
+  max-width:calc(100vw - 520px) !important;
+  min-height:50px !important;
+  max-height:56px !important;
+  margin:0 !important;
+  padding:2px 5px !important;
+  gap:6px !important;
+  overflow-x:auto !important;
+  overflow-y:hidden !important;
+  scrollbar-width:none !important;
+  z-index:2147483010 !important;
+  box-sizing:border-box !important;
+}
+html body:not(.locked) #sakakerAllIconsDock::-webkit-scrollbar{display:none !important;}
+html body:not(.locked) #sakakerAllIconsDock > *,
+html body:not(.locked) #sakakerAllIconsDock .cards,
+html body:not(.locked) #sakakerAllIconsDock #sakakerUtilityDock,
+html body:not(.locked) #sakakerAllIconsDock #sakakerCenterFeatureDock{
+  direction:ltr !important;
+}
+/* لا تسمح لأي قاعدة RTL بعكس ترتيب الأيقونات أو نقلها */
+html[dir="rtl"] body:not(.locked) #sakakerAllIconsDock,
+html[dir="ltr"] body:not(.locked) #sakakerAllIconsDock,
+html[lang="ar"] body:not(.locked) #sakakerAllIconsDock,
+html[lang="en"] body:not(.locked) #sakakerAllIconsDock{
+  left:96px !important;
+  right:auto !important;
+  transform:none !important;
+  direction:ltr !important;
+}
+/* المحافظة على نفس حجم وشكل الأيقونات الحالي */
+html body:not(.locked) #sakakerAllIconsDock .icon-card,
+html body:not(.locked) #sakakerAllIconsDock .sakaker-utility-slot,
+html body:not(.locked) #sakakerAllIconsDock #shipIcon_new,
+html body:not(.locked) #sakakerAllIconsDock #sakakerBusinessAd{
+  flex:0 0 46px !important;
+  width:46px !important;
+  min-width:46px !important;
+  max-width:46px !important;
+  height:46px !important;
+  min-height:46px !important;
+  max-height:46px !important;
+  margin:0 !important;
+}
+html body:not(.locked) #sakakerAllIconsDock #facebookVideoIcon,
+html body:not(.locked) #sakakerAllIconsDock #liveFlasher,
+html body:not(.locked) #sakakerAllIconsDock #emeraldLibraryButton,
+html body:not(.locked) #sakakerAllIconsDock #pongGame-btn,
+html body:not(.locked) #sakakerAllIconsDock #emeraldMusicHost,
+html body:not(.locked) #sakakerAllIconsDock #emeraldMusicHost #emOpenBtn{
+  width:44px !important;
+  min-width:44px !important;
+  max-width:44px !important;
+  height:44px !important;
+  min-height:44px !important;
+  max-height:44px !important;
+}
+
+/* مجموعة مستقلة وثابتة للنجمة والعداد في اليمين */
+html body:not(.locked) #sakakerRightFixedCluster{
+  position:fixed !important;
+  right:10px !important;
+  left:auto !important;
+  top:auto !important;
+  bottom:36px !important;
+  transform:none !important;
+  translate:none !important;
+  direction:ltr !important;
+  display:flex !important;
+  flex-flow:row nowrap !important;
+  align-items:center !important;
+  justify-content:flex-end !important;
+  gap:7px !important;
+  width:max-content !important;
+  max-width:calc(100vw - 20px) !important;
+  margin:0 !important;
+  padding:0 !important;
+  z-index:2147483020 !important;
+  pointer-events:none !important;
+}
+html body:not(.locked) #sakakerRightFixedCluster > *{pointer-events:auto !important;}
+html body:not(.locked) #sakakerRightFixedCluster .launcher{
+  position:relative !important;
+  inset:auto !important;
+  left:auto !important;
+  right:auto !important;
+  top:auto !important;
+  bottom:auto !important;
+  transform:none !important;
+  translate:none !important;
+  flex:0 0 46px !important;
+  width:46px !important;
+  min-width:46px !important;
+  max-width:46px !important;
+  height:46px !important;
+  min-height:46px !important;
+  max-height:46px !important;
+  margin:0 !important;
+  z-index:auto !important;
+}
+html body:not(.locked) #sakakerRightFixedCluster #sakakerVisitorCounter{
+  position:relative !important;
+  inset:auto !important;
+  left:auto !important;
+  right:auto !important;
+  top:auto !important;
+  bottom:auto !important;
+  transform:none !important;
+  translate:none !important;
+  direction:ltr !important;
+  flex:0 0 auto !important;
+  width:max-content !important;
+  max-width:min(74vw,430px) !important;
+  margin:0 !important;
+  padding:4px 7px !important;
+  gap:7px !important;
+  z-index:auto !important;
+}
+html body:not(.locked) #sakakerRightFixedCluster #sakakerVisitorCounter .svc-item{
+  direction:rtl !important;
+}
+html[dir="rtl"] body:not(.locked) #sakakerRightFixedCluster,
+html[dir="ltr"] body:not(.locked) #sakakerRightFixedCluster,
+html[lang="ar"] body:not(.locked) #sakakerRightFixedCluster,
+html[lang="en"] body:not(.locked) #sakakerRightFixedCluster{
+  right:10px !important;
+  left:auto !important;
+  transform:none !important;
+  direction:ltr !important;
+}
+
+/* الحاوية القديمة لا تتحكم بالمواضع بعد الآن */
+html body:not(.locked) #sakakerBottomUnifiedRow{
+  position:static !important;
+  inset:auto !important;
+  transform:none !important;
+  width:0 !important;
+  height:0 !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  overflow:visible !important;
+  pointer-events:none !important;
+}
+
+@media(max-width:900px){
+  html body:not(.locked) #sakakerAllIconsDock,
+  html[dir="rtl"] body:not(.locked) #sakakerAllIconsDock,
+  html[dir="ltr"] body:not(.locked) #sakakerAllIconsDock{
+    left:92px !important;
+    max-width:calc(100vw - 390px) !important;
+    gap:5px !important;
+  }
+  html body:not(.locked) #sakakerRightFixedCluster{
+    right:6px !important;
+    bottom:34px !important;
+    gap:5px !important;
+  }
+  html body:not(.locked) #sakakerRightFixedCluster #sakakerVisitorCounter .svc-label{display:none !important;}
+  html body:not(.locked) #sakakerRightFixedCluster #sakakerVisitorCounter{max-width:235px !important;}
+}
+
+@media(max-width:620px){
+  /* على الجوال: لا تدخل الأيقونات تحت زر الدفع، وتبقى قابلة للتمرير أفقيًا */
+  html body:not(.locked) #sakakerAllIconsDock,
+  html[dir="rtl"] body:not(.locked) #sakakerAllIconsDock,
+  html[dir="ltr"] body:not(.locked) #sakakerAllIconsDock{
+    left:86px !important;
+    right:auto !important;
+    bottom:max(7px,env(safe-area-inset-bottom)) !important;
+    width:calc(100vw - 250px) !important;
+    max-width:calc(100vw - 250px) !important;
+    min-width:120px !important;
+    justify-content:flex-start !important;
+  }
+  html body:not(.locked) #sakakerAllIconsDock .icon-card,
+  html body:not(.locked) #sakakerAllIconsDock .sakaker-utility-slot,
+  html body:not(.locked) #sakakerAllIconsDock #shipIcon_new,
+  html body:not(.locked) #sakakerAllIconsDock #sakakerBusinessAd{
+    flex-basis:42px !important;
+    width:42px !important;min-width:42px !important;max-width:42px !important;
+    height:42px !important;min-height:42px !important;max-height:42px !important;
+  }
+  html body:not(.locked) #sakakerRightFixedCluster{
+    right:5px !important;
+    bottom:34px !important;
+  }
+  html body:not(.locked) #sakakerRightFixedCluster .launcher{
+    flex-basis:40px !important;
+    width:40px !important;min-width:40px !important;max-width:40px !important;
+    height:40px !important;min-height:40px !important;max-height:40px !important;
+  }
+  html body:not(.locked) #sakakerRightFixedCluster #sakakerVisitorCounter{
+    max-width:150px !important;
+    gap:4px !important;
+    padding:3px 5px !important;
+  }
+  html body:not(.locked) #sakakerRightFixedCluster #sakakerVisitorCounter .svc-sep{height:14px !important;}
+}
+
+html body.locked #sakakerAllIconsDock,
+html body.locked #sakakerRightFixedCluster{display:none !important;}
+</style>
+<script id="sakaker-language-independent-bottom-layout-controller-final">
+(function(){
+  'use strict';
+  let busy=false;
+  function ensureFixedBottomLayout(){
+    if(busy) return;
+    busy=true;
+    try{
+      const body=document.body;
+      const dock=document.getElementById('sakakerAllIconsDock');
+      const counter=document.getElementById('sakakerVisitorCounter');
+      const mapStar=document.querySelector('.launcher');
+      if(!body||!dock||!counter) return;
+
+      /* شريط الأيقونات مستقل عن RTL/LTR ومباشرة داخل body */
+      if(dock.parentNode!==body) body.appendChild(dock);
+      dock.setAttribute('dir','ltr');
+
+      /* Business يبقى ضمن شريط الأيقونات وبنفس شكله الحالي */
+      const business=document.getElementById('sakakerBusinessAd');
+      if(business && business.parentNode!==dock) dock.appendChild(business);
+
+      /* نجمة الخرائط + العداد في مجموعة مستقلة يمين الصفحة */
+      let cluster=document.getElementById('sakakerRightFixedCluster');
+      if(!cluster){
+        cluster=document.createElement('div');
+        cluster.id='sakakerRightFixedCluster';
+        cluster.setAttribute('dir','ltr');
+        cluster.setAttribute('aria-label','Map and visitor counter');
+        body.appendChild(cluster);
+      }
+      if(mapStar && mapStar.parentNode!==cluster) cluster.appendChild(mapStar);
+      if(counter.parentNode!==cluster) cluster.appendChild(counter);
+
+      /* إبقاء المجموعة في body حتى لو حاول كود قديم إرجاعها إلى صف آخر */
+      if(cluster.parentNode!==body) body.appendChild(cluster);
+    } finally {
+      busy=false;
+    }
+  }
+
+  ensureFixedBottomLayout();
+  document.addEventListener('DOMContentLoaded',ensureFixedBottomLayout,{once:true});
+  window.addEventListener('resize',ensureFixedBottomLayout,{passive:true});
+  window.addEventListener('orientationchange',()=>setTimeout(ensureFixedBottomLayout,100),{passive:true});
+  new MutationObserver(ensureFixedBottomLayout).observe(document.documentElement,{attributes:true,attributeFilter:['lang','dir']});
+  new MutationObserver(ensureFixedBottomLayout).observe(document.body,{childList:true,subtree:true});
+  [120,350,800,1500,3000,5200,7600].forEach(ms=>setTimeout(ensureFixedBottomLayout,ms));
+})();
+</script>
+
 </body>
 </html>
