@@ -4364,20 +4364,16 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
 
 <div id="loginError"></div>
 
-<div id="loginCopyright">
-<div>
-                جميع الحقوق محفوظة
-                <span class="siteName">
-                    sakaker.co
-                </span>
 </div>
-<div>
-                للتواصل:
-                <a class="email" href="mailto:sakaker@outlook.com">
-                    sakaker@outlook.com
-                </a>
-</div>
-</div>
+
+<div id="sakLoginIdentity" aria-label="هوية الموقع">
+  <div class="sak-login-identity-brand">
+    <span class="sak-login-identity-gem" aria-hidden="true">©</span>
+    <span class="sak-login-identity-ar">أبوالقمر زمرد</span>
+    <span class="sak-login-identity-sep" aria-hidden="true">•</span>
+    <span class="sak-login-identity-en">SAKAKER</span>
+  </div>
+  <a class="sak-login-identity-email" href="mailto:sakaker@outlook.com">sakaker@outlook.com</a>
 </div>
 </div>
 
@@ -9175,38 +9171,6 @@ body.sakaker-pong-open #pongGame-container{
   }
 
 </style>
-
-<footer
-  class="sakaker-copyright"
-  aria-label="حقوق موقع سكاكر">
-
-  <div class="sakaker-copyright-inner">
-
-    <span class="sakaker-copyright-symbol">
-      ©
-    </span>
-
-    <span class="sakaker-year">
-      2026
-    </span>
-
-    <span class="sakaker-name">
-      أبو القمر زمرد
-    </span>
-
-    <span class="sakaker-dash">
-      —
-    </span>
-
-    <span class="sakaker-site-dot"></span>
-
-    <span class="sakaker-site">
-      sakaker
-    </span>
-
-  </div>
-
-</footer>
 
 <div id="emeraldMusicHost">
 
@@ -41713,6 +41677,120 @@ html body.locked #sakakerRightFixedCluster{display:none !important;}
 })();
 </script>
 
+
+<style id="sakaker-login-identity-final-20260927">
+/* إزالة أي حقوق/عنوان موقع قديم قد تعيده أكواد سابقة */
+html body #loginCopyright,
+html body .sakaker-copyright{display:none !important;visibility:hidden !important;opacity:0 !important;pointer-events:none !important;}
+
+/* هوية صفحة الدخول فقط — أسفل زر الدفع */
+html body #sakLoginIdentity{display:none;}
+html body.locked #loginOverlay #sakLoginIdentity{
+  position:fixed !important;
+  left:max(8px,env(safe-area-inset-left)) !important;
+  right:auto !important;
+  bottom:max(6px,env(safe-area-inset-bottom)) !important;
+  z-index:2147483646 !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:flex-start !important;
+  justify-content:center !important;
+  gap:3px !important;
+  max-width:min(310px,calc(100vw - 16px)) !important;
+  min-width:190px !important;
+  padding:7px 11px !important;
+  box-sizing:border-box !important;
+  border:1px solid rgba(220,250,255,.55) !important;
+  border-radius:15px !important;
+  background:
+    linear-gradient(135deg,rgba(235,250,255,.16),rgba(40,115,145,.18) 46%,rgba(95,45,120,.20)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.72),
+    0 0 12px rgba(94,230,255,.38),
+    0 0 28px rgba(220,115,255,.18) !important;
+  backdrop-filter:blur(12px) saturate(165%) !important;
+  -webkit-backdrop-filter:blur(12px) saturate(165%) !important;
+  color:#f5fdff !important;
+  pointer-events:auto !important;
+  overflow:hidden !important;
+}
+html body.locked #loginOverlay #sakLoginIdentity::before{
+  content:"";
+  position:absolute;
+  inset:-45% auto -45% -35%;
+  width:48%;
+  transform:rotate(18deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.26),transparent);
+  animation:sakLoginIdentityShine 5.5s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes sakLoginIdentityShine{
+  0%,68%{left:-45%;opacity:0}
+  74%{opacity:.7}
+  92%{left:118%;opacity:.15}
+  100%{left:118%;opacity:0}
+}
+html body.locked #loginOverlay #sakLoginIdentity .sak-login-identity-brand{
+  position:relative;
+  z-index:1;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  white-space:nowrap;
+  font:800 12px/1.35 Tahoma,Arial,sans-serif;
+  letter-spacing:.15px;
+  color:#ffffff;
+  text-shadow:0 0 7px rgba(127,239,255,.8),0 0 14px rgba(230,165,255,.35);
+}
+html body.locked #loginOverlay #sakLoginIdentity .sak-login-identity-gem{
+  font-size:13px;
+  color:#ffffff;
+  text-shadow:none !important;
+  animation:none !important;
+  filter:none !important;
+  transform:none !important;
+}
+html body.locked #loginOverlay #sakLoginIdentity .sak-login-identity-sep{opacity:.55}
+html body.locked #loginOverlay #sakLoginIdentity .sak-login-identity-en{font-size:10px;letter-spacing:1.6px;color:#dffbff}
+html body.locked #loginOverlay #sakLoginIdentity .sak-login-identity-email{
+  position:relative;
+  z-index:1;
+  color:#dff8ff !important;
+  text-decoration:none !important;
+  font:600 10px/1.35 Tahoma,Arial,sans-serif;
+  direction:ltr !important;
+  unicode-bidi:isolate !important;
+  opacity:.94;
+  text-shadow:0 0 6px rgba(108,226,255,.48);
+}
+html body.locked #loginOverlay #sakLoginIdentity .sak-login-identity-email:hover,
+html body.locked #loginOverlay #sakLoginIdentity .sak-login-identity-email:focus-visible{
+  color:#fff !important;
+  text-decoration:underline !important;
+  outline:none;
+}
+/* الدفع فوق الهوية مباشرة */
+html body.locked #sakGlobalPayment{
+  left:max(8px,env(safe-area-inset-left)) !important;
+  right:auto !important;
+  bottom:max(67px,calc(67px + env(safe-area-inset-bottom))) !important;
+}
+@media(max-width:520px){
+  html body.locked #loginOverlay #sakLoginIdentity{
+    min-width:170px !important;
+    max-width:calc(100vw - 16px) !important;
+    padding:6px 9px !important;
+  }
+  html body.locked #loginOverlay #sakLoginIdentity .sak-login-identity-brand{font-size:10.5px !important;gap:5px !important;}
+  html body.locked #loginOverlay #sakLoginIdentity .sak-login-identity-en{font-size:8.5px !important;letter-spacing:1.2px !important;}
+  html body.locked #loginOverlay #sakLoginIdentity .sak-login-identity-email{font-size:9px !important;}
+  html body.locked #sakGlobalPayment{bottom:max(61px,calc(61px + env(safe-area-inset-bottom))) !important;}
+}
+@media(prefers-reduced-motion:reduce){
+  html body.locked #loginOverlay #sakLoginIdentity::before,
+  html body.locked #loginOverlay #sakLoginIdentity .sak-login-identity-gem{animation:none !important;}
+}
+</style>
 </body>
 </html>
 <!-- SAKAKER TEXT LIBRARY ABSOLUTE TOP LAYER FIX 2026-09-27 -->
