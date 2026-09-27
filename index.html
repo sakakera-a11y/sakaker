@@ -41715,3 +41715,339 @@ html body.locked #sakakerRightFixedCluster{display:none !important;}
 
 </body>
 </html>
+<!-- SAKAKER TEXT LIBRARY ABSOLUTE TOP LAYER FIX 2026-09-27 -->
+<style id="sakaker-text-library-absolute-top-layer">
+/* =========================================================
+   المكتبة النصية — جميع نوافذها فوق كل محتوى الموقع
+   ========================================================= */
+html body #sakTextLibraryModal,
+html body #folderModal,
+html body #quizModal,
+html body #puzzleModal,
+html body #sakakerSiteNewsModal{
+  position:fixed !important;
+  inset:0 !important;
+  width:100vw !important;
+  height:100dvh !important;
+  max-width:none !important;
+  max-height:none !important;
+  box-sizing:border-box !important;
+  z-index:2147483647 !important;
+  isolation:isolate !important;
+  overscroll-behavior:contain !important;
+}
+
+/* النوافذ الأصلية المفتوحة من المكتبة النصية */
+html body #folderModal[style*="display: block"],
+html body #folderModal[style*="display:block"],
+html body #quizModal[style*="display: block"],
+html body #quizModal[style*="display:block"],
+html body #puzzleModal[style*="display: block"],
+html body #puzzleModal[style*="display:block"],
+html body #folderModal[style*="display: flex"],
+html body #folderModal[style*="display:flex"],
+html body #quizModal[style*="display: flex"],
+html body #quizModal[style*="display:flex"],
+html body #puzzleModal[style*="display: flex"],
+html body #puzzleModal[style*="display:flex"]{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:clamp(7px,2vw,18px) !important;
+  overflow:auto !important;
+  background:rgba(1,8,12,.72) !important;
+  backdrop-filter:blur(12px) saturate(145%) !important;
+  -webkit-backdrop-filter:blur(12px) saturate(145%) !important;
+}
+
+html body #folderModal .panel,
+html body #quizModal .panel,
+html body #puzzleModal .panel{
+  position:relative !important;
+  z-index:2147483647 !important;
+  width:min(950px,calc(100vw - 20px)) !important;
+  height:auto !important;
+  max-height:calc(100dvh - 20px) !important;
+  margin:auto !important;
+  display:flex !important;
+  flex-direction:column !important;
+  overflow:hidden !important;
+}
+
+html body #folderModal .panel-body,
+html body #quizModal .panel-body,
+html body #puzzleModal .panel-body{
+  flex:1 1 auto !important;
+  min-height:0 !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  -webkit-overflow-scrolling:touch !important;
+  overscroll-behavior:contain !important;
+  scrollbar-gutter:stable !important;
+}
+
+html body #folderModal .close,
+html body #quizModal .close,
+html body #puzzleModal .close{
+  z-index:2147483647 !important;
+}
+
+/* =========================================================
+   نافذة اختيار أقسام المكتبة النصية
+   ========================================================= */
+html body #sakTextLibraryModal{
+  padding:clamp(7px,2vw,16px) !important;
+  overflow:auto !important;
+  background:rgba(1,8,12,.76) !important;
+  backdrop-filter:blur(13px) saturate(150%) !important;
+  -webkit-backdrop-filter:blur(13px) saturate(150%) !important;
+}
+
+html body #sakTextLibraryModal.sak-open{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+
+html body #sakTextLibraryModal .sak-text-library-box{
+  position:relative !important;
+  z-index:2147483647 !important;
+  width:min(760px,calc(100vw - 18px)) !important;
+  max-height:calc(100dvh - 18px) !important;
+  margin:auto !important;
+  display:flex !important;
+  flex-direction:column !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+  background:
+    radial-gradient(circle at 18% 12%,rgba(255,255,255,.20),transparent 31%),
+    radial-gradient(circle at 86% 10%,rgba(0,255,213,.17),transparent 28%),
+    linear-gradient(145deg,rgba(21,41,59,.82),rgba(7,21,31,.91)) !important;
+  border:1px solid rgba(220,250,255,.80) !important;
+  box-shadow:
+    0 0 18px rgba(255,255,255,.44),
+    0 0 42px rgba(0,255,213,.30),
+    0 0 84px rgba(196,168,255,.20),
+    inset 0 0 34px rgba(255,255,255,.08) !important;
+  backdrop-filter:blur(22px) saturate(160%) !important;
+  -webkit-backdrop-filter:blur(22px) saturate(160%) !important;
+}
+
+html body #sakTextLibraryModal .sak-text-library-head{
+  flex:0 0 auto !important;
+  position:sticky !important;
+  top:0 !important;
+  z-index:4 !important;
+  margin:0 0 10px !important;
+  padding:2px 0 10px !important;
+}
+
+html body #sakTextLibraryModal .sak-text-library-grid{
+  flex:1 1 auto !important;
+  min-height:0 !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  padding:3px 4px 8px !important;
+  -webkit-overflow-scrolling:touch !important;
+  overscroll-behavior:contain !important;
+  scrollbar-gutter:stable !important;
+}
+
+html body #sakTextLibraryModal .sak-text-library-close{
+  position:sticky !important;
+  top:0 !important;
+  z-index:10 !important;
+  flex:0 0 auto !important;
+}
+
+/* =========================================================
+   أخبار الموقع — نافذة مرنة، زر إغلاق ظاهر، تمرير داخلي
+   ========================================================= */
+html body #sakakerSiteNewsModal{
+  padding:clamp(7px,2vw,18px) !important;
+  overflow:auto !important;
+  align-items:center !important;
+  justify-content:center !important;
+  background:rgba(1,7,12,.73) !important;
+  backdrop-filter:blur(13px) saturate(150%) !important;
+  -webkit-backdrop-filter:blur(13px) saturate(150%) !important;
+}
+
+html body #sakakerSiteNewsModal.active{
+  display:flex !important;
+}
+
+html body #sakakerSiteNewsModal .sakaker-site-news-box{
+  position:relative !important;
+  z-index:2147483647 !important;
+  width:min(720px,calc(100vw - 18px)) !important;
+  min-width:0 !important;
+  min-height:0 !important;
+  max-height:calc(100dvh - 18px) !important;
+  margin:auto !important;
+  padding:54px clamp(14px,3vw,28px) 20px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+  text-align:start !important;
+  background:
+    radial-gradient(circle at 16% 12%,rgba(255,255,255,.19),transparent 31%),
+    radial-gradient(circle at 86% 12%,rgba(0,255,213,.15),transparent 28%),
+    linear-gradient(145deg,rgba(30,29,45,.86),rgba(7,13,20,.94)) !important;
+  border:1px solid rgba(242,248,255,.84) !important;
+  box-shadow:
+    0 0 17px rgba(255,255,255,.48),
+    0 0 42px rgba(0,255,213,.25),
+    0 0 90px rgba(208,174,255,.18),
+    inset 0 0 35px rgba(255,255,255,.07) !important;
+  backdrop-filter:blur(24px) saturate(160%) !important;
+  -webkit-backdrop-filter:blur(24px) saturate(160%) !important;
+}
+
+html body #sakakerSiteNewsTitle{
+  flex:0 0 auto !important;
+  margin:0 42px 12px !important;
+  text-align:center !important;
+}
+
+html body #sakakerSiteNewsText{
+  flex:1 1 auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  padding:4px 8px 8px !important;
+  -webkit-overflow-scrolling:touch !important;
+  overscroll-behavior:contain !important;
+  scrollbar-gutter:stable !important;
+  touch-action:pan-y !important;
+  text-align:start !important;
+}
+
+html body #sakakerSiteNewsClose{
+  position:absolute !important;
+  top:10px !important;
+  right:10px !important;
+  left:auto !important;
+  z-index:2147483647 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  pointer-events:auto !important;
+  touch-action:manipulation !important;
+}
+
+html[dir="ltr"] body #sakakerSiteNewsClose{
+  right:10px !important;
+  left:auto !important;
+}
+
+/* أثناء فتح إحدى نوافذ المكتبة النصية، امنع الأزرار العائمة من اعتراض النقرات */
+body.sak-text-library-layer-open :is(
+  #siteLangToggle,
+  #facebookVideoIcon,
+  #liveFlasher,
+  #sakakerPongDock,
+  #pongGame-btn,
+  #sakakerBusinessAd,
+  #emeraldLibraryButton,
+  #emeraldMusicHost #emOpenBtn,
+  #shipIcon_new,
+  #bird-sound-btn,
+  #sakakerVisitorCounter,
+  #sakakerRightStats,
+  #sakakerStableIconsRail,
+  .cards,
+  .video-top-container-fixed,
+  .launcher
+){
+  pointer-events:none !important;
+}
+
+@media(max-width:700px){
+  html body #sakTextLibraryModal,
+  html body #sakakerSiteNewsModal,
+  html body #folderModal,
+  html body #quizModal,
+  html body #puzzleModal{
+    padding:6px !important;
+  }
+  html body #sakTextLibraryModal .sak-text-library-box,
+  html body #sakakerSiteNewsModal .sakaker-site-news-box,
+  html body #folderModal .panel,
+  html body #quizModal .panel,
+  html body #puzzleModal .panel{
+    width:calc(100vw - 12px) !important;
+    max-height:calc(100dvh - 12px) !important;
+    border-radius:18px !important;
+  }
+  html body #sakTextLibraryModal .sak-text-library-grid{
+    grid-template-columns:1fr !important;
+  }
+  html body #sakakerSiteNewsModal .sakaker-site-news-box{
+    padding:50px 12px 14px !important;
+  }
+  html body #sakakerSiteNewsText{
+    font-size:14px !important;
+    line-height:1.75 !important;
+    padding-inline:4px !important;
+  }
+}
+</style>
+
+<script id="sakaker-text-library-absolute-top-layer-js">
+(function(){
+  'use strict';
+  const IDS=['sakTextLibraryModal','folderModal','quizModal','puzzleModal','sakakerSiteNewsModal'];
+  let queued=false;
+
+  function isVisible(el){
+    if(!el) return false;
+    if(el.id==='sakTextLibraryModal') return el.classList.contains('sak-open');
+    if(el.id==='sakakerSiteNewsModal') return el.classList.contains('active');
+    const inline=(el.style && el.style.display) || '';
+    if(inline && inline!=='none') return true;
+    const cs=getComputedStyle(el);
+    return cs.display!=='none' && cs.visibility!=='hidden';
+  }
+
+  function sync(){
+    queued=false;
+    const body=document.body;
+    if(!body) return;
+    const open=IDS.map(id=>document.getElementById(id)).filter(isVisible);
+    body.classList.toggle('sak-text-library-layer-open',open.length>0);
+    if(!open.length) return;
+
+    /* النافذة المفتوحة توضع فعليًا في آخر body لضمان أنها أعلى من أي عنصر له نفس z-index */
+    const top=open[open.length-1];
+    if(top && top.parentElement===body && body.lastElementChild!==top){
+      body.appendChild(top);
+    }
+    if(top){
+      top.style.setProperty('z-index','2147483647','important');
+      top.style.setProperty('isolation','isolate','important');
+    }
+  }
+
+  function queue(){
+    if(queued) return;
+    queued=true;
+    requestAnimationFrame(sync);
+  }
+
+  function init(){
+    sync();
+    const obs=new MutationObserver(queue);
+    obs.observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['style','class']});
+    document.addEventListener('click',function(){setTimeout(queue,0);},true);
+    document.addEventListener('keydown',function(e){if(e.key==='Escape') setTimeout(queue,0);},true);
+    window.addEventListener('resize',queue,{passive:true});
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true});
+  else init();
+})();
+</script>
+
