@@ -5512,164 +5512,10 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
   <span class="pong-spark pong-spark-1">✦</span><span class="pong-spark pong-spark-2">✧</span><span class="pong-spark pong-spark-3">✦</span>
 </button>
 
-<script>
-// 🎨 تغيير ألوان الخلفية كل ثانية
-const pongBtn = document.getElementById('pongGame-btn');
-setInterval(() => {
-  const colors = [
-    'linear-gradient(45deg, #ff1493, #ff69b4)',
-    'linear-gradient(45deg, #007bff, #00ffff)',
-    'linear-gradient(45deg, #00ffcc, #0066ff)',
-    'linear-gradient(45deg, #ff9900, #ff6600)',
-    'linear-gradient(45deg, #00ff00, #009933)',
-  ];
-  const color = colors[Math.floor(Math.random() * colors.length)];
-  pongBtn.style.background = color;
-  pongBtn.style.boxShadow = `0 0 25px ${color.split(',')[1] || '#fff'}`;
-}, 1000);
-
-// ✨ تأثير عند المرور بالماوس
-pongBtn.addEventListener('mouseenter', () => {
-  pongBtn.style.transform = 'scale(1.1)';
-});
-pongBtn.addEventListener('mouseleave', () => {
-  pongBtn.style.transform = 'scale(1)';
-});
-</script>
-
-<div id="pongGame-container" style="display:none;position:fixed;top:2px;left:2px;width:100vw;height:100vh;background:black;z-index:10000;overflow:hidden;">
-
-  <iframe loading="lazy" id="pongGame-video"
-    data-audio-src="https://www.youtube.com/embed/bG4NtWR2e88?autoplay=1&mute=0&loop=1&playlist=bG4NtWR2e88&enablejsapi=1"
-    frameborder="0" allow="autoplay;encrypted-media" allowfullscreen
-    style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;"></iframe>
-
-  <div id="pongGame-menu" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:8px;background:rgba(0,0,0,0.6);padding:15px 25px;border-radius:12px;color:#fff;font-family:'Tajawal',sans-serif;z-index:3;">
-    <label>🎨 المضرب 1: <input id="pongGame-p1Color" type="color" value="#FFD700"/></label>
-    <label>🎨 المضرب 2: <input id="pongGame-p2Color" type="color" value="#00BFFF"/></label>
-    <label>⚪ الكرة: <input id="pongGame-ballColor" type="color" value="#FFFFFF"/></label>
-    <label>🎯 المستوى:
-      <select id="pongGame-level">
-        <option value="easy">سهل</option>
-        <option value="hard">صعب</option>
-        <option value="harder">أصعب</option>
-        <option value="impossible">مستحيل</option>
-      </select>
-    </label>
-    <div style="margin-top:6px;">
-      <button onclick="pongGame.start('player')" style="padding:6px 14px;border:none;border-radius:6px;background:#FFD700;cursor:pointer;">🎮 لاعب</button>
-      <button onclick="pongGame.start('computer')" style="padding:6px 14px;border:none;border-radius:6px;background:#00BFFF;cursor:pointer;">🤖 كمبيوتر</button>
-    </div>
-    <button id="pongGame-back" style="margin-top:6px;padding:6px 14px;border:none;border-radius:6px;background:#555;color:#fff;cursor:pointer;">🔙 رجوع</button>
-  </div>
-
-  <canvas id="pongGame-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;cursor:none;"></canvas>
-
-  <button id="pongGame-close" style="position:absolute;top:20px;right:205px;font-size:24px;background:rgba(0,0,0,0.4);border:none;border-radius:50%;width:40px;height:40px;color:#fff;cursor:pointer;z-index:3;">✖</button>
-
-  <div style="position:absolute;bottom:10px;right:10px;display:flex;gap:8px;z-index:3;">
-    <button id="pongGame-play" style="padding:6px 10px;border:none;border-radius:6px;background:#333;color:#fff;cursor:pointer;">⏸</button>
-    <button id="pongGame-mute" style="padding:6px 10px;border:none;border-radius:6px;background:#333;color:#fff;cursor:pointer;">🔇</button>
-  </div>
-</div>
-
-<script>
-(() => {
-  const btn=document.getElementById('pongGame-btn'),
-        cont=document.getElementById('pongGame-container'),
-        cvs=document.getElementById('pongGame-canvas'),
-        ctx=cvs.getContext('2d'),
-        menu=document.getElementById('pongGame-menu'),
-        close=document.getElementById('pongGame-close'),
-        back=document.getElementById('pongGame-back'),
-        vid=document.getElementById('pongGame-video'),
-        play=document.getElementById('pongGame-play'),
-        mute=document.getElementById('pongGame-mute');
-
-  let anim, p1, p2, b, w=false,s=false,up=false,down=false;
-  let onlineRole='', onlineRemotePaddle=null, onlineRemoteState=null, onlineSendPaddle=()=>{}, onlineSendState=()=>{};
-  let mode='player', playing=true, muted=true;
-
-  function resize(){ cvs.width=innerWidth; cvs.height=innerHeight; }
-  addEventListener('resize',resize);
-
-  const pongGame={
-    init(){
-      resize();
-      p1={x:20,y:cvs.height/2-50,w:15,h:100,color:document.getElementById('pongGame-p1Color').value,score:0};
-      p2={x:cvs.width-35,y:cvs.height/2-50,w:15,h:100,color:document.getElementById('pongGame-p2Color').value,score:0};
-      b={x:cvs.width/2,y:cvs.height/2,r:10,speed:6,dx:6,dy:6,color:document.getElementById('pongGame-ballColor').value};
-    },
-    start(m){mode=m;menu.style.display='none';this.init();this.loop();},
-    loop(){if(mode==='online'&&onlineRole==='p2'&&onlineRemoteState){if(up)p2.y=Math.max(0,p2.y-7);if(down)p2.y=Math.min(cvs.height-p2.h,p2.y+7);onlineSendPaddle(p2.y);p1.y=Math.max(0,Math.min(cvs.height-p1.h,Number(onlineRemoteState.p1y)||p1.y));b.x=Number(onlineRemoteState.bx)||b.x;b.y=Number(onlineRemoteState.by)||b.y;p1.score=Number(onlineRemoteState.p1score)||0;p2.score=Number(onlineRemoteState.p2score)||0;this.draw();}else{this.move();this.draw();if(mode==='online'&&onlineRole==='p1')onlineSendState({p1y:p1.y,bx:b.x,by:b.y,p1score:p1.score,p2score:p2.score});}anim=requestAnimationFrame(()=>this.loop());},
-    move(){
-      if(mode==='online'){
-        if(onlineRole==='p2'){if(Number.isFinite(onlineRemotePaddle))p1.y=Math.max(0,Math.min(cvs.height-p1.h,onlineRemotePaddle));}
-        else{if(w)p1.y=Math.max(0,p1.y-7);if(s)p1.y=Math.min(cvs.height-p1.h,p1.y+7);if(Number.isFinite(onlineRemotePaddle))p2.y=Math.max(0,Math.min(cvs.height-p2.h,onlineRemotePaddle));onlineSendPaddle(p1.y);}
-      }else if(mode==='player'){
-        if(w)p1.y=Math.max(0,p1.y-7);
-        if(s)p1.y=Math.min(cvs.height-p1.h,p1.y+7);
-        if(up)p2.y=Math.max(0,p2.y-7);
-        if(down)p2.y=Math.min(cvs.height-p2.h,p2.y+7);
-      }else{
-        const lvl=document.getElementById('pongGame-level').value;
-        const sp=lvl==='easy'?3:lvl==='hard'?6:lvl==='harder'?10:15;
-        if(b.y>p2.y+p2.h/2)p2.y+=sp;else p2.y-=sp;
-        p2.y=Math.max(0,Math.min(cvs.height-p2.h,p2.y));
-      }
-      b.x+=b.dx;b.y+=b.dy;
-      if(b.y-b.r<0||b.y+b.r>cvs.height)b.dy*=-1;
-      if(hit(b,p1)){b.dx=Math.abs(b.dx);b.dy=(b.y-(p1.y+p1.h/2))/2;}
-      if(hit(b,p2)){b.dx=-Math.abs(b.dx);b.dy=(b.y-(p2.y+p2.h/2))/2;}
-      if(b.x-b.r<0){p2.score++;reset();}
-      if(b.x+b.r>cvs.width){p1.score++;reset();}
-    },
-    draw(){
-      ctx.clearRect(0,0,cvs.width,cvs.height);
-      ctx.fillStyle='rgba(0,0,0,0.3)';ctx.fillRect(0,0,cvs.width,cvs.height);
-      ctx.fillStyle=p1.color;ctx.fillRect(p1.x,p1.y,p1.w,p1.h);
-      ctx.fillStyle=p2.color;ctx.fillRect(p2.x,p2.y,p2.w,p2.h);
-      ctx.fillStyle=b.color;ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);ctx.fill();
-      ctx.fillStyle='#fff';ctx.font='24px Tajawal';
-      ctx.fillText(p1.score,cvs.width/4,40);
-      ctx.fillText(p2.score,3*cvs.width/4,40);
-    }
-  };
-
-  function hit(b,p){return b.x-b.r<p.x+p.w&&b.x+b.r>p.x&&b.y+b.r>p.y&&b.y-b.r<p.y+p.h;}
-  function reset(){b.x=cvs.width/2;b.y=cvs.height/2;b.dx=(Math.random()<.5?-1:1)*b.speed;b.dy=(Math.random()<.5?-1:1)*b.speed;}
-
-  onkeydown=e=>{if(e.key==='w')w=true;if(e.key==='s')s=true;if(e.key==='ArrowUp')up=true;if(e.key==='ArrowDown')down=true;}
-  onkeyup=e=>{if(e.key==='w')w=false;if(e.key==='s')s=false;if(e.key==='ArrowUp')up=false;if(e.key==='ArrowDown')down=false;}
-
-  /* 🖱️ تحريك المضرب بالفأرة */
-  cvs.addEventListener('mousemove', e => {
-    const rect = cvs.getBoundingClientRect();
-    const paddle=mode==='online'&&onlineRole==='p2'?p2:p1;
-    paddle.y = e.clientY - rect.top - paddle.h/2;
-    paddle.y = Math.max(0, Math.min(cvs.height - paddle.h, paddle.y));
-  });
-
-  /* 📱 دعم اللمس للجوال */
-  cvs.addEventListener('touchmove', e => {
-    e.preventDefault();
-    const rect = cvs.getBoundingClientRect();
-    const touchY = e.touches[0].clientY - rect.top;
-    const paddle=mode==='online'&&onlineRole==='p2'?p2:p1;
-    paddle.y = touchY - paddle.h/2;
-    paddle.y = Math.max(0, Math.min(cvs.height - paddle.h, paddle.y));
-  }, { passive: false });
-
-  btn.onclick=()=>{document.body.classList.add('sakaker-pong-open');cont.style.display='block';document.body.style.overflow='hidden';resize();};
-  close.onclick=back.onclick=()=>{document.body.classList.remove('sakaker-pong-open');cont.style.display='none';document.body.style.overflow='auto';cancelAnimationFrame(anim);menu.style.display='flex';};
-
-  play.onclick=()=>{playing=!playing;play.textContent=playing?'⏸':'▶️';vid.contentWindow.postMessage(`{"event":"command","func":"${playing?'playVideo':'pauseVideo'}","args":""}`,'*');};
-  mute.onclick=()=>{muted=!muted;mute.textContent=muted?'🔇':'🔊';vid.contentWindow.postMessage(`{"event":"command","func":"${muted?'mute':'unMute'}","args":""}`,'*');};
-
-  window.pongGame=pongGame;
-  window.sakakerPongOnlineBridge={start(role){onlineRole=role;onlineRemotePaddle=null;onlineRemoteState=null;pongGame.start('online');},setRemotePaddle(y){onlineRemotePaddle=Number(y);},setRemoteState(s){onlineRemoteState=s||null;},setPaddleSender(fn){onlineSendPaddle=typeof fn==='function'?fn:()=>{};},setStateSender(fn){onlineSendState=typeof fn==='function'?fn:()=>{};},stop(){onlineRole='';onlineRemotePaddle=null;onlineRemoteState=null;onlineSendPaddle=()=>{};onlineSendState=()=>{};}};
-})();
-</script>
+<iframe id="pongGame-video" loading="lazy" title="Pong background audio"
+  data-audio-src="https://www.youtube.com/embed/bG4NtWR2e88?autoplay=1&mute=0&loop=1&playlist=bG4NtWR2e88&enablejsapi=1"
+  frameborder="0" allow="autoplay; encrypted-media" aria-hidden="true" tabindex="-1"
+  style="position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;border:0;left:-9999px;top:-9999px;"></iframe>
 
 <div id="sakakerWatermarkMask" aria-hidden="true"></div>
 
@@ -39874,7 +39720,7 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock .sak-shor
  document.body.append(arena);
  const text={ar:{title:'🏓 بونج',duration:'المدة بالدقائق',solo:'ضد الكمبيوتر',create:'إنشاء غرفة',join:'انضمام',copy:'نسخ الرمز',leave:'إنهاء / مغادرة',chat:'محادثة المباراة الخاصة',publicRooms:'الغرف العامة المتاحة',publishRoom:'نشر رقم الغرفة',publicHint:'هذه الخانة لأرقام الغرف فقط بدون محادثة عامة. أنشئ غرفتك ثم انسخ رقمها والصقه هنا ليظهر للجميع، وتبقى محادثة كل غرفة خاصة باللاعبين داخلها.',publicCode:'الصق رقم الغرفة هنا',publicEmpty:'لا توجد غرف منشورة حاليًا',copyPublic:'نسخ',roomPublished:'تم نشر رقم الغرفة للعامة',ownRoomOnly:'يمكنك نشر غرفة أنشأتها أنت وهي بانتظار لاعب فقط.',lobbyError:'تعذر تحديث الغرف العامة.',send:'إرسال',help:'حرّك المضرب بالسحب أو الفأرة أو ↑ ↓ / W S. صاحب الغرفة يسار، والضيف يمين. تنتهي المباراة حسب التوقيت حتى عند إخفاء الصفحة.',idle:'اختر التدريب أو أنشئ غرفة، ويمكنك نشر رقمها في الغرف العامة.',waiting:'بانتظار لاعب — رمز الغرفة: ',playing:'المباراة جارية',ended:'انتهت المباراة',offline:'انقطع اتصال أحد اللاعبين. أُوقفت المباراة.',error:'تعذر الاتصال. تحقق من تسجيل الدخول والإنترنت وقواعد غرف البونج في Firebase.',login:'سجّل الدخول أولًا ثم أعد المحاولة.',invalid:'الرمز غير صالح أو الغرفة ممتلئة أو منتهية.',busy:'جارٍ الاتصال…',copied:'تم نسخ الرمز',copyFail:'انسخ رمز الغرفة من الحقل يدويًا.',sound:'🔊 تشغيل صوت الخلفية',mute:'🔇 إيقاف الصوت',code:'رمز الغرفة',message:'اكتب رسالة…',draw:'تعادل',left:'فاز اللاعب الأيسر',right:'فاز اللاعب الأيمن'},en:{title:'🏓 Pong',duration:'Minutes',solo:'Vs computer',create:'Create room',join:'Join',copy:'Copy code',leave:'End / leave',chat:'Private match chat',publicRooms:'Public rooms available',publishRoom:'Publish room number',publicHint:'Room numbers only — no public chat. Create your room, copy its number and paste it here so everyone can see it; each room chat stays private to its two players.',publicCode:'Paste room number here',publicEmpty:'No rooms are published right now',copyPublic:'Copy',roomPublished:'Room number published publicly',ownRoomOnly:'You can publish only a room you created that is waiting for a player.',lobbyError:'Could not update public rooms.',send:'Send',help:'Drag, move the mouse, or use ↑ ↓ / W S. Host plays left; guest plays right. The match clock continues in background tabs.',idle:'Practice or create a room; you can publish its number in the public rooms board.',waiting:'Waiting for a player — room: ',playing:'Match in progress',ended:'Match ended',offline:'A player disconnected. The match has stopped.',error:'Connection failed. Check sign-in, internet and Firebase Pong room rules.',login:'Sign in first, then try again.',invalid:'Invalid code, or the room is full or closed.',busy:'Connecting…',copied:'Code copied',copyFail:'Copy the code manually from the field.',sound:'🔊 Play background audio',mute:'🔇 Stop audio',code:'Room code',message:'Type a message…',draw:'Draw',left:'Left player wins',right:'Right player wins'}};
  const lang=()=>document.documentElement.lang==='en'?'en':'ar',t=k=>text[lang()][k];
- const canvas=$('sakPongCourt'),ctx=canvas.getContext('2d');let statusKey='idle',statusExtra='',mode='',role='',room='',api,db,uid,unsubs=[],disconnectHook,lobbyDisconnectHook,lobbyUnsub=null,lobbyRooms={},chatCache={},heartbeat,offset=0,roomData=null,busy=false,generation=0,ended=false,endAt=0,lastFrame=0,lastSend=0,raf=0,lastChat=0;
+ const canvas=$('sakPongCourt'),ctx=canvas.getContext('2d');let statusKey='idle',statusExtra='',mode='',role='',room='',api,db,uid,unsubs=[],disconnectHook,lobbyDisconnectHook,lobbyUnsub=null,lobbyRooms={},chatCache={},heartbeat,offset=0,roomData=null,busy=false,generation=0,ended=false,endAt=0,lastFrame=0,lastSend=0,raf=0,lastChat=0,stateWritePending=false;
  const keys=new Set();const BALL_BASE_SPEED=500,BALL_MAX_SPEED=900,STATE_INTERVAL=45;let y1=210,y2=210,ball={x:400,y:250,vx:BALL_BASE_SPEED,vy:180},scores=[0,0],audio=false;
  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
  function status(key,extra=''){statusKey=key;statusExtra=extra;$('sakPongStatus').textContent=t(key)+extra;}
@@ -39894,7 +39740,7 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock .sak-shor
   ctx.strokeStyle='#ffd400';ctx.lineWidth=4;ctx.strokeRect(12,12,776,476);ctx.beginPath();ctx.moveTo(400,12);ctx.lineTo(400,488);ctx.stroke();ctx.lineWidth=2;for(let y=18;y<488;y+=18){ctx.beginPath();ctx.moveTo(394,y);ctx.lineTo(406,y);ctx.stroke()}
   ctx.shadowBlur=10;ctx.shadowColor='#ffffffaa';ctx.fillStyle='#050505';ctx.fillRect(36,y1,14,80);ctx.strokeStyle='#ffffff';ctx.lineWidth=1;ctx.strokeRect(36,y1,14,80);
   ctx.shadowColor='#000000aa';ctx.fillStyle='#ffffff';ctx.fillRect(750,y2,14,80);ctx.strokeStyle='#050505';ctx.strokeRect(750,y2,14,80);
-  ctx.shadowBlur=14;ctx.shadowColor='#ff2a2acc';ctx.fillStyle='#ff2020';ctx.beginPath();ctx.arc(ball.x,ball.y,8,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+  ctx.shadowBlur=16;ctx.shadowColor='#00ffbfcc';ctx.fillStyle='#00d9a3';ctx.beginPath();ctx.arc(ball.x,ball.y,8,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
   $('sakPongScore').textContent=scores[0]+' : '+scores[1];const seconds=Math.max(0,Math.ceil((endAt-(Date.now()+offset))/1000));$('sakPongTimer').textContent=mode?`${Math.floor(seconds/60).toString().padStart(2,'0')}:${(seconds%60).toString().padStart(2,'0')}`:$('sakPongDuration').value+':00';
  }
  function finish(reason='ended'){if(ended)return;ended=true;status(reason,reason==='ended'?' — '+t(scores[0]===scores[1]?'draw':scores[0]>scores[1]?'left':'right'):'');controls();}
@@ -39942,8 +39788,8 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock .sak-shor
  function renderPrivateChat(){const box=$('sakPongMessages');if(!box)return;box.replaceChildren();const allowed=new Set([roomData?.host,roomData?.guest].filter(Boolean));Object.values(chatCache||{}).forEach(m=>{if(!allowed.has(m.uid))return;const p=document.createElement('p');p.textContent=String(m.name||'Player').slice(0,40)+': '+String(m.text||'').slice(0,240);box.append(p)});box.scrollTop=box.scrollHeight;}
  async function startLobby(){await connect();if(lobbyUnsub)return;lobbyUnsub=api.onValue(api.query(lobbyRoot(),api.limitToLast(50)),snap=>{lobbyRooms=snap.val()||{};renderLobby()},()=>{lobbyRooms={};renderLobby();status('lobbyError')});}
  async function removeLobbyCode(code){if(!api||!db||!/^[A-F0-9]{12}$/.test(code))return;try{await api.remove(lobbyPath(code))}catch(e){}}
- async function sendState(){if(!room||!api)return;const state=role==='host'?{x:ball.x,y:ball.y,left:y1,right:y2,a:scores[0],b:scores[1]}:{y:y2};try{await api.set(path(role==='host'?'state':'paddle'),state)}catch(e){finish('offline')}}
- async function release(closeRemote=true){generation++;clearInterval(heartbeat);unsubs.forEach(fn=>fn());unsubs=[];const leavingRoom=room,leavingRole=role;if(disconnectHook){try{await disconnectHook.cancel()}catch(e){}disconnectHook=null}if(lobbyDisconnectHook){try{await lobbyDisconnectHook.cancel()}catch(e){}lobbyDisconnectHook=null}if(closeRemote&&leavingRoom&&api){if(leavingRole==='host')await removeLobbyCode(leavingRoom);try{await api.set(api.ref(db,'pongRoomsV1/'+leavingRoom+'/meta/status'),'closed')}catch(e){}}room='';mode='';role='';endAt=0;roomData=null;chatCache={};$('sakPongMessages').replaceChildren();keys.clear();controls();}
+ async function sendState(){if(!room||!api||stateWritePending)return;stateWritePending=true;const state=role==='host'?{x:ball.x,y:ball.y,left:y1,right:y2,a:scores[0],b:scores[1]}:{y:y2};try{await api.set(path(role==='host'?'state':'paddle'),state)}catch(e){finish('offline')}finally{stateWritePending=false}}
+ async function release(closeRemote=true){generation++;clearInterval(heartbeat);unsubs.forEach(fn=>fn());unsubs=[];const leavingRoom=room,leavingRole=role;if(disconnectHook){try{await disconnectHook.cancel()}catch(e){}disconnectHook=null}if(lobbyDisconnectHook){try{await lobbyDisconnectHook.cancel()}catch(e){}lobbyDisconnectHook=null}if(closeRemote&&leavingRoom&&api){if(leavingRole==='host')await removeLobbyCode(leavingRoom);try{await api.set(api.ref(db,'pongRoomsV1/'+leavingRoom+'/meta/status'),'closed')}catch(e){}}room='';mode='';role='';endAt=0;roomData=null;chatCache={};stateWritePending=false;$('sakPongMessages').replaceChildren();keys.clear();controls();}
  async function watch(token){
   unsubs.push(api.onValue(api.ref(db,'.info/serverTimeOffset'),s=>{offset=Number(s.val())||0}));
   disconnectHook=api.onDisconnect(path('meta/status'));await disconnectHook.set('closed');
@@ -40304,7 +40150,7 @@ html body .icon-card:hover{
   /* Sea audio is fully independent from the site background video. */
   if(seaBtn && seaAudio){
     seaAudio.loop=true;
-    seaAudio.preload='auto';
+    seaAudio.preload='none';
     seaAudio.volume=1;
     /* Rebind with a capture listener so legacy handlers cannot interfere. */
     seaBtn.addEventListener('click',function(ev){
@@ -40695,7 +40541,7 @@ html body #loginVideoSoundButton{
 
   if(seaBtn && seaAudio){
     seaAudio.loop=true;
-    seaAudio.preload='auto';
+    seaAudio.preload='none';
     seaAudio.volume=1;
     seaBtn.addEventListener('click',function(ev){
       ev.preventDefault();
@@ -40975,7 +40821,7 @@ html body:not(.locked) #sakakerAllIconsDock.sak-dock-overflow{
     if(!sea) return;
     sea.volume=1;
     sea.loop=true;
-    sea.preload='auto';
+    sea.preload='none';
   }
   maxSea();
   if(btn){
@@ -41799,6 +41645,214 @@ html body.locked #sakGlobalPayment{
   html body.locked #loginOverlay #sakLoginIdentity .sak-login-identity-gem{animation:none !important;}
 }
 </style>
+
+<!-- SAKAKER FINAL VIDEO LIBRARY LAYER + PERFORMANCE 2026-09-28 -->
+<style id="sakaker-video-library-top-layer-final">
+/* مكتبة الفيديو فوق كل محتوى الموقع */
+html body #sakVideoLibraryBackdrop{
+  position:fixed !important;
+  inset:0 !important;
+  display:none !important;
+  z-index:2147483600 !important;
+  background:rgba(0,7,14,.70) !important;
+  backdrop-filter:blur(8px) saturate(120%) !important;
+  -webkit-backdrop-filter:blur(8px) saturate(120%) !important;
+  pointer-events:auto !important;
+}
+html body.sak-video-library-open #sakVideoLibraryBackdrop{display:block !important;}
+
+html body #emeraldLibraryContent{
+  position:fixed !important;
+  z-index:2147483646 !important;
+  isolation:isolate !important;
+  left:50% !important;
+  right:auto !important;
+  top:max(2dvh,env(safe-area-inset-top)) !important;
+  bottom:auto !important;
+  transform:translateX(-50%) !important;
+  width:min(980px,calc(100vw - 14px)) !important;
+  max-width:calc(100vw - 14px) !important;
+  height:min(94dvh,900px) !important;
+  max-height:94dvh !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  overscroll-behavior:contain !important;
+  -webkit-overflow-scrolling:touch !important;
+  pointer-events:auto !important;
+}
+
+/* مشغّل الفيديو أعلى المكتبة نفسها وأعلى كل عناصر الموقع */
+html body #emeraldModal{
+  position:fixed !important;
+  inset:0 !important;
+  width:100vw !important;
+  height:100dvh !important;
+  margin:0 !important;
+  padding:clamp(10px,2vw,22px) !important;
+  box-sizing:border-box !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  z-index:2147483647 !important;
+  isolation:isolate !important;
+  background:rgba(0,0,0,.92) !important;
+  backdrop-filter:blur(10px) saturate(120%) !important;
+  -webkit-backdrop-filter:blur(10px) saturate(120%) !important;
+  overflow:hidden !important;
+  pointer-events:auto !important;
+}
+html body #emeraldModal iframe{
+  display:block !important;
+  width:min(1100px,95vw) !important;
+  height:min(82dvh,618px) !important;
+  max-width:95vw !important;
+  max-height:82dvh !important;
+  aspect-ratio:16/9 !important;
+  border:1px solid rgba(157,255,230,.72) !important;
+  border-radius:18px !important;
+  background:#000 !important;
+  box-shadow:0 0 24px rgba(0,255,190,.40),0 0 64px rgba(142,211,255,.22) !important;
+}
+html body #emeraldModalClose{
+  position:fixed !important;
+  top:max(10px,env(safe-area-inset-top)) !important;
+  right:max(10px,env(safe-area-inset-right)) !important;
+  left:auto !important;
+  z-index:2147483647 !important;
+  min-width:44px !important;
+  min-height:44px !important;
+  padding:8px 12px !important;
+  border-radius:999px !important;
+  pointer-events:auto !important;
+  touch-action:manipulation !important;
+}
+
+/* أثناء فتح المكتبة لا تسمح للأيقونات الثابتة باعتراض النقرات */
+body.sak-video-library-open :is(
+  #sakGlobalPayment,
+  #sakakerAllIconsDock,
+  #sakakerRightStats,
+  #sakakerStableIconsRail,
+  #sakakerVisitorCounter,
+  .video-top-container-fixed,
+  #sakSecondStreamCorner,
+  #sakSeaSoundButton,
+  #siteLangToggle
+){
+  z-index:2147483000 !important;
+  pointer-events:none !important;
+}
+body.sak-emerald-video-open #emeraldLibraryContent{
+  z-index:2147483605 !important;
+  pointer-events:none !important;
+}
+body.sak-emerald-video-open #sakVideoLibraryBackdrop{
+  z-index:2147483600 !important;
+}
+
+/* تحسين رسم القوائم الكبيرة على الخطة المجانية والأجهزة الضعيفة */
+#emeraldLibraryContent .sak-catalog-video,
+#emeraldLibraryContent .sak-catalog-v2-card{
+  content-visibility:auto;
+  contain-intrinsic-size:150px 125px;
+}
+
+@media(max-width:700px){
+  html body #emeraldLibraryContent{
+    top:max(4px,env(safe-area-inset-top)) !important;
+    width:calc(100vw - 8px) !important;
+    max-width:calc(100vw - 8px) !important;
+    height:calc(100dvh - 8px) !important;
+    max-height:calc(100dvh - 8px) !important;
+  }
+  html body #emeraldModal{padding:8px !important;}
+  html body #emeraldModal iframe{
+    width:calc(100vw - 16px) !important;
+    max-width:calc(100vw - 16px) !important;
+    height:min(74dvh,calc((100vw - 16px) * .5625)) !important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  #emeraldLibraryContent *,#emeraldModal *{scroll-behavior:auto !important;animation:none !important;}
+}
+</style>
+<script id="sakaker-video-library-top-layer-final-js">
+(function(){
+  'use strict';
+  const body=document.body;
+  const lib=document.getElementById('emeraldLibraryContent');
+  const libButton=document.getElementById('emeraldLibraryButton');
+  if(!body||!lib) return;
+
+  let backdrop=document.getElementById('sakVideoLibraryBackdrop');
+  if(!backdrop){
+    backdrop=document.createElement('div');
+    backdrop.id='sakVideoLibraryBackdrop';
+    backdrop.setAttribute('aria-hidden','true');
+    body.appendChild(backdrop);
+  }
+
+  function libOpen(){
+    const cs=getComputedStyle(lib);
+    return cs.display!=='none' && cs.visibility!=='hidden';
+  }
+  function modal(){return document.getElementById('emeraldModal');}
+  function sync(){
+    const open=libOpen();
+    const player=modal();
+    body.classList.toggle('sak-video-library-open',open);
+    body.classList.toggle('sak-emerald-video-open',!!player);
+
+    if(open && !player && lib.parentElement===body && body.lastElementChild!==lib){
+      body.appendChild(lib);
+    }
+    if(player && player.parentElement===body && body.lastElementChild!==player){
+      body.appendChild(player);
+    }
+
+    const close=document.getElementById('emeraldModalClose');
+    if(close){
+      const en=document.documentElement.lang==='en';
+      close.textContent=en?'Close ✕':'إغلاق ✕';
+      close.setAttribute('aria-label',en?'Close video':'إغلاق الفيديو');
+    }
+  }
+
+  backdrop.addEventListener('click',function(){
+    if(modal()) return;
+    lib.style.display='none';
+    sync();
+    if(libButton) libButton.focus({preventScroll:true});
+  });
+
+  document.addEventListener('keydown',function(e){
+    if(e.key!=='Escape') return;
+    const player=modal();
+    if(player){
+      const frame=player.querySelector('iframe');
+      if(frame) frame.src='about:blank';
+      player.remove();
+      sync();
+      return;
+    }
+    if(libOpen()){
+      lib.style.display='none';
+      sync();
+      if(libButton) libButton.focus({preventScroll:true});
+    }
+  },true);
+
+  const observer=new MutationObserver(function(){requestAnimationFrame(sync);});
+  observer.observe(body,{childList:true});
+  observer.observe(lib,{attributes:true,attributeFilter:['style','class']});
+  new MutationObserver(sync).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  if(libButton) libButton.addEventListener('click',function(){setTimeout(sync,0);},true);
+  sync();
+})();
+</script>
+<!-- /SAKAKER FINAL VIDEO LIBRARY LAYER + PERFORMANCE -->
+
 </body>
 </html>
 <!-- SAKAKER TEXT LIBRARY ABSOLUTE TOP LAYER FIX 2026-09-27 -->
