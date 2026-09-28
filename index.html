@@ -317,7 +317,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape') closeTextLi
 <body>
 
 <div id="loginOverlay">
-<video id="sakLoginBackgroundVideo" autoplay loop muted playsinline webkit-playsinline preload="auto" aria-hidden="true" disablepictureinpicture src="https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_97a5d57e.mp4"></video>
+<video id="sakLoginBackgroundVideo" loop muted playsinline webkit-playsinline preload="metadata" aria-hidden="true" disablepictureinpicture src="https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_97a5d57e.mp4"></video>
 
 <button id="loginVideoSoundButton" type="button" aria-pressed="false" aria-label="تشغيل صوت الخلفية" title="تشغيل صوت الخلفية">
   <span class="soundIcon" aria-hidden="true">🔇</span>
@@ -19414,6 +19414,38 @@ window.openSakakerEbooks=openShelf;
 })();
 </script>
 
+\n<!-- SAKAKER EBOOK TOP LAYER + SPEED FIX 2026-09-29 -->
+<style id="sakaker-ebook-layer-speed-fix">
+html body.sak-ebook-layer-open{overflow:hidden!important;touch-action:none!important}
+html body.sak-ebook-layer-open>*:not(#sakEbooksShelfModal):not(#sakEbookReaderModal):not(script):not(style){visibility:hidden!important;pointer-events:none!important}
+html body.sak-ebook-layer-open #sakEbooksShelfModal,html body.sak-ebook-layer-open #sakEbookReaderModal{visibility:visible!important;opacity:1!important;pointer-events:auto!important;z-index:2147483647!important;isolation:isolate!important;transform:none!important}
+html body #sakEbooksShelfModal.sak-open,html body #sakEbookReaderModal.sak-open{display:flex!important;z-index:2147483647!important}
+html body #sakEbooksShelfModal .sak-ebooks-head,html body #sakEbookReaderModal .sak-ebook-reader-head{position:sticky!important;top:0!important;z-index:2147483647!important;background:rgba(5,22,27,.98)!important}
+html body #sakEbooksShelfClose,html body #sakEbookReaderClose{position:fixed!important;top:max(10px,env(safe-area-inset-top))!important;left:max(10px,env(safe-area-inset-left))!important;right:auto!important;z-index:2147483647!important;pointer-events:auto!important;touch-action:manipulation!important;visibility:visible!important;opacity:1!important;box-shadow:0 0 0 2px rgba(255,255,255,.2),0 0 22px rgba(0,255,213,.8)!important}
+html[dir="ltr"] body #sakEbooksShelfClose,html[dir="ltr"] body #sakEbookReaderClose{left:auto!important;right:max(10px,env(safe-area-inset-right))!important}
+html body:not(.locked) #sakakerAllIconsDock *,html body:not(.locked) #sakakerResponsiveDock *,html body:not(.locked) #sakakerPongDock *,html body:not(.locked) #facebookVideoIcon,html body:not(.locked) #liveFlasher,html body:not(.locked) #emeraldLibraryButton,html body:not(.locked) #sakakerBusinessAd,html body:not(.locked) #shipIcon_new{will-change:auto!important}
+@media(max-width:900px){html body:not(.locked) #sakakerAllIconsDock *,html body:not(.locked) #sakakerResponsiveDock *,html body:not(.locked) #sakakerPongDock *,html body:not(.locked) #facebookVideoIcon,html body:not(.locked) #liveFlasher,html body:not(.locked) #emeraldLibraryButton,html body:not(.locked) #sakakerBusinessAd,html body:not(.locked) #shipIcon_new,html body:not(.locked) .icon-card{animation:none!important}html body:not(.locked) .icon-card,html body:not(.locked) #sakakerAllIconsDock,html body:not(.locked) #sakakerResponsiveDock{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+</style>
+<script id="sakaker-runtime-speed-fix">
+(()=>{
+'use strict';
+if(window.__sakakerRuntimeSpeedFix)return;window.__sakakerRuntimeSpeedFix=true;
+const q=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const visible=el=>{if(!el||!el.isConnected)return false;if(el.getClientRects().length===0)return false;const cs=getComputedStyle(el);return cs.display!=='none'&&cs.visibility!=='hidden'&&cs.opacity!=='0'};
+const frames=q('iframe');
+function parkHiddenFrames(){frames.forEach(frame=>{if(frame.id==='sakEbookReaderFrame')return;const src=frame.getAttribute('src');if(src&&!visible(frame)){frame.dataset.sakDeferredSrc=src;frame.removeAttribute('src')}})}
+function wakeVisibleFrames(){frames.forEach(frame=>{const src=frame.dataset.sakDeferredSrc;if(src&&visible(frame)){frame.setAttribute('src',src);delete frame.dataset.sakDeferredSrc}});q('video').forEach(video=>{if(video.id==='sakLoginBackgroundVideo')return;if(!visible(video)&&!video.paused)video.pause()})}
+let queued=false;function queueWake(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;wakeVisibleFrames()})}
+document.addEventListener('click',()=>setTimeout(queueWake,0),true);
+document.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '||e.key==='Escape')setTimeout(queueWake,0)},true);
+new MutationObserver(queueWake).observe(document.body,{subtree:true,attributes:true,attributeFilter:['class','style','open','aria-hidden']});
+parkHiddenFrames();
+const loginVideo=document.getElementById('sakLoginBackgroundVideo');if(loginVideo){loginVideo.preload='metadata';loginVideo.muted=true;const start=()=>{if(!document.body.classList.contains('locked'))return;loginVideo.play().catch(()=>{})};if('requestIdleCallback' in window)requestIdleCallback(start,{timeout:1200});else setTimeout(start,650)}
+const shelf=document.getElementById('sakEbooksShelfModal'),reader=document.getElementById('sakEbookReaderModal');
+function lift(){const open=reader?.classList.contains('sak-open')?reader:shelf?.classList.contains('sak-open')?shelf:null;if(open&&document.body.lastElementChild!==open)document.body.appendChild(open)}
+document.addEventListener('click',()=>setTimeout(lift,0),true);new MutationObserver(lift).observe(document.body,{subtree:true,attributes:true,attributeFilter:['class']});
+})();
+</script>\n
 </body>
 </html>
 
