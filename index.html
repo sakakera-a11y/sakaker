@@ -39875,17 +39875,17 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock .sak-shor
  const text={ar:{title:'🏓 بونج',duration:'المدة بالدقائق',solo:'ضد الكمبيوتر',create:'إنشاء غرفة',join:'انضمام',copy:'نسخ الرمز',leave:'إنهاء / مغادرة',chat:'محادثة المباراة الخاصة',publicRooms:'الغرف العامة المتاحة',publishRoom:'نشر رقم الغرفة',publicHint:'هذه الخانة لأرقام الغرف فقط بدون محادثة عامة. أنشئ غرفتك ثم انسخ رقمها والصقه هنا ليظهر للجميع، وتبقى محادثة كل غرفة خاصة باللاعبين داخلها.',publicCode:'الصق رقم الغرفة هنا',publicEmpty:'لا توجد غرف منشورة حاليًا',copyPublic:'نسخ',roomPublished:'تم نشر رقم الغرفة للعامة',ownRoomOnly:'يمكنك نشر غرفة أنشأتها أنت وهي بانتظار لاعب فقط.',lobbyError:'تعذر تحديث الغرف العامة.',send:'إرسال',help:'حرّك المضرب بالسحب أو الفأرة أو ↑ ↓ / W S. صاحب الغرفة يسار، والضيف يمين. تنتهي المباراة حسب التوقيت حتى عند إخفاء الصفحة.',idle:'اختر التدريب أو أنشئ غرفة، ويمكنك نشر رقمها في الغرف العامة.',waiting:'بانتظار لاعب — رمز الغرفة: ',playing:'المباراة جارية',ended:'انتهت المباراة',offline:'انقطع اتصال أحد اللاعبين. أُوقفت المباراة.',error:'تعذر الاتصال. تحقق من تسجيل الدخول والإنترنت وقواعد غرف البونج في Firebase.',login:'سجّل الدخول أولًا ثم أعد المحاولة.',invalid:'الرمز غير صالح أو الغرفة ممتلئة أو منتهية.',busy:'جارٍ الاتصال…',copied:'تم نسخ الرمز',copyFail:'انسخ رمز الغرفة من الحقل يدويًا.',sound:'🔊 تشغيل صوت الخلفية',mute:'🔇 إيقاف الصوت',code:'رمز الغرفة',message:'اكتب رسالة…',draw:'تعادل',left:'فاز اللاعب الأيسر',right:'فاز اللاعب الأيمن'},en:{title:'🏓 Pong',duration:'Minutes',solo:'Vs computer',create:'Create room',join:'Join',copy:'Copy code',leave:'End / leave',chat:'Private match chat',publicRooms:'Public rooms available',publishRoom:'Publish room number',publicHint:'Room numbers only — no public chat. Create your room, copy its number and paste it here so everyone can see it; each room chat stays private to its two players.',publicCode:'Paste room number here',publicEmpty:'No rooms are published right now',copyPublic:'Copy',roomPublished:'Room number published publicly',ownRoomOnly:'You can publish only a room you created that is waiting for a player.',lobbyError:'Could not update public rooms.',send:'Send',help:'Drag, move the mouse, or use ↑ ↓ / W S. Host plays left; guest plays right. The match clock continues in background tabs.',idle:'Practice or create a room; you can publish its number in the public rooms board.',waiting:'Waiting for a player — room: ',playing:'Match in progress',ended:'Match ended',offline:'A player disconnected. The match has stopped.',error:'Connection failed. Check sign-in, internet and Firebase Pong room rules.',login:'Sign in first, then try again.',invalid:'Invalid code, or the room is full or closed.',busy:'Connecting…',copied:'Code copied',copyFail:'Copy the code manually from the field.',sound:'🔊 Play background audio',mute:'🔇 Stop audio',code:'Room code',message:'Type a message…',draw:'Draw',left:'Left player wins',right:'Right player wins'}};
  const lang=()=>document.documentElement.lang==='en'?'en':'ar',t=k=>text[lang()][k];
  const canvas=$('sakPongCourt'),ctx=canvas.getContext('2d');let statusKey='idle',statusExtra='',mode='',role='',room='',api,db,uid,unsubs=[],disconnectHook,lobbyDisconnectHook,lobbyUnsub=null,lobbyRooms={},chatCache={},heartbeat,offset=0,roomData=null,busy=false,generation=0,ended=false,endAt=0,lastFrame=0,lastSend=0,raf=0,lastChat=0;
- const keys=new Set();let y1=210,y2=210,ball={x:400,y:250,vx:300,vy:110},scores=[0,0],audio=false;
+ const keys=new Set();const BALL_BASE_SPEED=500,BALL_MAX_SPEED=900,STATE_INTERVAL=45;let y1=210,y2=210,ball={x:400,y:250,vx:BALL_BASE_SPEED,vy:180},scores=[0,0],audio=false;
  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
  function status(key,extra=''){statusKey=key;statusExtra=extra;$('sakPongStatus').textContent=t(key)+extra;}
  function labels(){arena.dir=lang()==='ar'?'rtl':'ltr';$('sakPongTitle').textContent=t('title');arena.querySelectorAll('[data-sp]').forEach(el=>el.textContent=t(el.dataset.sp));$('sakPongCode').placeholder=t('code');$('sakPongCode').setAttribute('aria-label',t('code'));$('sakPongPublicCode').placeholder=t('publicCode');$('sakPongPublicCode').setAttribute('aria-label',t('publicCode'));$('sakPongMessage').placeholder=t('message');$('sakPongMessage').setAttribute('aria-label',t('message'));$('sakPongExit').setAttribute('aria-label',lang()==='ar'?'إغلاق اللعبة':'Close game');canvas.setAttribute('aria-label',t('help'));$('sakPongAudio').textContent=t(audio?'mute':'sound');renderLobby();status(statusKey,statusExtra);}
  function controls(){for(const id of ['sakPongCreate','sakPongJoin','sakPongSolo','sakPongDuration'])$(id).disabled=busy||!!mode;$('sakPongLeave').disabled=busy||!mode;$('sakPongCopy').disabled=!room;$('sakPongMessage').disabled=mode!=='online'||ended||!endAt;updateShare();}
- function reset(){y1=y2=210;ball={x:400,y:250,vx:300,vy:110};scores=[0,0];ended=false;lastFrame=0;lastSend=0;}
- function serve(direction){ball={x:400,y:250,vx:300*direction,vy:(Math.random()-.5)*280};}
+ function reset(){y1=y2=210;ball={x:400,y:250,vx:BALL_BASE_SPEED,vy:180};scores=[0,0];ended=false;lastFrame=0;lastSend=0;}
+ function serve(direction){ball={x:400,y:250,vx:BALL_BASE_SPEED*direction,vy:(Math.random()-.5)*380};}
  function simulate(dt){
   ball.x+=ball.vx*dt;ball.y+=ball.vy*dt;
   if(ball.y<19){ball.y=19;ball.vy=Math.abs(ball.vy)}if(ball.y>481){ball.y=481;ball.vy=-Math.abs(ball.vy)}
-  for(const [x,y,dir] of [[36,y1,1],[750,y2,-1]])if(ball.vx*dir<0&&ball.x+7>x&&ball.x-7<x+14&&ball.y+7>y&&ball.y-7<y+80){const angle=clamp((ball.y-y-40)/40,-1,1)*1.05,speed=Math.min(650,Math.hypot(ball.vx,ball.vy)*1.045);ball.vx=Math.cos(angle)*speed*dir;ball.vy=Math.sin(angle)*speed;ball.x=dir===1?x+22:x-8;}
+  for(const [x,y,dir] of [[36,y1,1],[750,y2,-1]])if(ball.vx*dir<0&&ball.x+7>x&&ball.x-7<x+14&&ball.y+7>y&&ball.y-7<y+80){const angle=clamp((ball.y-y-40)/40,-1,1)*1.05,speed=Math.min(BALL_MAX_SPEED,Math.max(BALL_BASE_SPEED,Math.hypot(ball.vx,ball.vy)*1.035));ball.vx=Math.cos(angle)*speed*dir;ball.vy=Math.sin(angle)*speed;ball.x=dir===1?x+22:x-8;}
   if(ball.x<0){scores[1]++;serve(1)}if(ball.x>800){scores[0]++;serve(-1)}
  }
  function draw(){
@@ -39900,11 +39900,11 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock .sak-shor
  function finish(reason='ended'){if(ended)return;ended=true;status(reason,reason==='ended'?' — '+t(scores[0]===scores[1]?'draw':scores[0]>scores[1]?'left':'right'):'');controls();}
  function frame(now){if(!arena.open)return;const dt=Math.min(.025,(now-lastFrame)/1000||0);lastFrame=now;
   if(mode&&!ended&&endAt){
-   const dy=((keys.has('ArrowDown')||keys.has('s')?1:0)-(keys.has('ArrowUp')||keys.has('w')?1:0))*370*dt;
+   const dy=((keys.has('ArrowDown')||keys.has('s')?1:0)-(keys.has('ArrowUp')||keys.has('w')?1:0))*430*dt;
    if(role==='guest')y2=clamp(y2+dy,15,405);else y1=clamp(y1+dy,15,405);
    if(Date.now()+offset>=endAt)finish();
-   else if(mode==='solo'||role==='host'){if(mode==='solo')y2=clamp(y2+clamp(ball.y-40-y2,-230*dt,230*dt),15,405);simulate(dt);}
-   if(mode==='online'&&now-lastSend>66){lastSend=now;sendState();}
+   else if(mode==='solo'||role==='host'){if(mode==='solo')y2=clamp(y2+clamp(ball.y-40-y2,-310*dt,310*dt),15,405);simulate(dt);}
+   if(mode==='online'&&now-lastSend>STATE_INTERVAL){lastSend=now;sendState();}
   }draw();raf=requestAnimationFrame(frame);
  }
  function move(e){if(!mode||ended)return;const rect=canvas.getBoundingClientRect(),y=clamp((e.clientY-rect.top)/rect.height*500-40,15,405);if(role==='guest')y2=y;else y1=y;}
@@ -39920,7 +39920,7 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock .sak-shor
    if(!window.firebaseAuth)throw Error('error');
    authSDK=await import('https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js');
    await window.firebaseAuth.authStateReady();
-   if(!authListener)authListener=authSDK.onAuthStateChanged(window.firebaseAuth,user=>{gameSession=arena.open&&!!user;if(!user){stopLobby();if(mode==='online'){release();status('login')}}else if(arena.open){startLobby().catch(()=>{})}accountLabel();});
+   if(!authListener)authListener=authSDK.onAuthStateChanged(window.firebaseAuth,user=>{gameSession=arena.open&&!!user;if(!user){stopLobby();if(mode==='online'){release(true);status('login')}}else if(arena.open){startLobby().catch(()=>{})}accountLabel();});
    gameSession=arena.open&&!!window.firebaseAuth.currentUser;accountLabel();
   })().catch(e=>{authFailure=true;accountLabel();throw e}).finally(()=>{authLoading=null});
   return authLoading;
@@ -39943,7 +39943,7 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock .sak-shor
  async function startLobby(){await connect();if(lobbyUnsub)return;lobbyUnsub=api.onValue(api.query(lobbyRoot(),api.limitToLast(50)),snap=>{lobbyRooms=snap.val()||{};renderLobby()},()=>{lobbyRooms={};renderLobby();status('lobbyError')});}
  async function removeLobbyCode(code){if(!api||!db||!/^[A-F0-9]{12}$/.test(code))return;try{await api.remove(lobbyPath(code))}catch(e){}}
  async function sendState(){if(!room||!api)return;const state=role==='host'?{x:ball.x,y:ball.y,left:y1,right:y2,a:scores[0],b:scores[1]}:{y:y2};try{await api.set(path(role==='host'?'state':'paddle'),state)}catch(e){finish('offline')}}
- async function release(){generation++;clearInterval(heartbeat);unsubs.forEach(fn=>fn());unsubs=[];const leavingRoom=room,leavingRole=role;if(disconnectHook){try{await disconnectHook.cancel()}catch(e){}disconnectHook=null}if(lobbyDisconnectHook){try{await lobbyDisconnectHook.cancel()}catch(e){}lobbyDisconnectHook=null}if(leavingRoom&&api){if(leavingRole==='host')await removeLobbyCode(leavingRoom);try{await api.set(api.ref(db,'pongRoomsV1/'+leavingRoom+'/meta/status'),'closed')}catch(e){}}room='';mode='';role='';endAt=0;roomData=null;chatCache={};$('sakPongMessages').replaceChildren();keys.clear();controls();}
+ async function release(closeRemote=true){generation++;clearInterval(heartbeat);unsubs.forEach(fn=>fn());unsubs=[];const leavingRoom=room,leavingRole=role;if(disconnectHook){try{await disconnectHook.cancel()}catch(e){}disconnectHook=null}if(lobbyDisconnectHook){try{await lobbyDisconnectHook.cancel()}catch(e){}lobbyDisconnectHook=null}if(closeRemote&&leavingRoom&&api){if(leavingRole==='host')await removeLobbyCode(leavingRoom);try{await api.set(api.ref(db,'pongRoomsV1/'+leavingRoom+'/meta/status'),'closed')}catch(e){}}room='';mode='';role='';endAt=0;roomData=null;chatCache={};$('sakPongMessages').replaceChildren();keys.clear();controls();}
  async function watch(token){
   unsubs.push(api.onValue(api.ref(db,'.info/serverTimeOffset'),s=>{offset=Number(s.val())||0}));
   disconnectHook=api.onDisconnect(path('meta/status'));await disconnectHook.set('closed');
@@ -39953,55 +39953,42 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock .sak-shor
   unsubs.push(api.onValue(api.query(path('chat'),api.limitToLast(50)),snap=>{chatCache=snap.val()||{};renderPrivateChat()},()=>status('error')));
   unsubs.push(api.onValue(api.ref(db,'.info/connected'),s=>{if(s.val()===false&&endAt)finish('offline')}));
  }
- async function online(join){if(busy||mode)return;busy=true;controls();status('busy');let token=++generation;
+ async function online(join){if(busy||mode)return;busy=true;controls();status('busy');let token=++generation,remoteSession=false;
   try{await connect();if(token!==generation)return;reset();
-   if(join){room=$('sakPongCode').value.trim().toUpperCase();if(!/^[A-F0-9]{12}$/.test(room))throw Error('invalid');role='guest';const result=await api.runTransaction(path('meta'),m=>{if(!m)return m;if(m.status!=='waiting'||m.guest||m.host===uid)return;return {...m,guest:uid,status:'playing',start:api.serverTimestamp()};});if(!result.committed||result.snapshot.val()?.guest!==uid){room='';throw Error('invalid')}}
-   else{room=Array.from(crypto.getRandomValues(new Uint8Array(6)),n=>n.toString(16).padStart(2,'0')).join('').toUpperCase();role='host';await api.set(path('meta'),{host:uid,status:'waiting',minutes:Number($('sakPongDuration').value),created:api.serverTimestamp()});$('sakPongCode').value=room;$('sakPongPublicCode').value='';}
-   if(token!==generation){await release();return;}
-   mode='online';$('sakPongMessages').replaceChildren();await watch(token);
-  }catch(e){await release();status(['login','invalid'].includes(e.message)?e.message:'error')}finally{busy=false;controls()}
+   if(join){
+    const candidate=$('sakPongCode').value.replace(/[^A-Fa-f0-9]/g,'').slice(0,12).toUpperCase();
+    $('sakPongCode').value=candidate;
+    if(!/^[A-F0-9]{12}$/.test(candidate))throw Error('invalid');
+    const metaRef=api.ref(db,'pongRoomsV1/'+candidate+'/meta');
+    const result=await api.runTransaction(metaRef,m=>{if(!m||m.status!=='waiting'||m.guest||m.host===uid)return;return {...m,guest:uid,status:'playing',start:api.serverTimestamp()};});
+    if(!result.committed||result.snapshot.val()?.guest!==uid)throw Error('invalid');
+    room=candidate;role='guest';remoteSession=true;
+   }else{
+    const candidate=Array.from(crypto.getRandomValues(new Uint8Array(6)),n=>n.toString(16).padStart(2,'0')).join('').toUpperCase();
+    const metaRef=api.ref(db,'pongRoomsV1/'+candidate+'/meta');
+    await api.set(metaRef,{host:uid,status:'waiting',minutes:Number($('sakPongDuration').value),created:api.serverTimestamp()});
+    room=candidate;role='host';remoteSession=true;$('sakPongCode').value=room;$('sakPongPublicCode').value='';
+   }
+   if(token!==generation){await release(true);return;}
+   mode='online';$('sakPongMessages').replaceChildren();await watch(token);canvas.focus();
+  }catch(e){await release(remoteSession);status(['login','invalid'].includes(e.message)?e.message:'error')}finally{busy=false;controls()}
  }
  $('sakPongSolo').onclick=()=>{if(mode)return;reset();mode='solo';role='host';offset=0;endAt=Date.now()+Number($('sakPongDuration').value)*60000;status('playing');controls();canvas.focus()};
- $('sakPongCreate').onclick=()=>online(false);$('sakPongJoin').onclick=()=>online(true);$('sakPongLeave').onclick=async()=>{await release();reset();status('idle')};
+ $('sakPongCreate').onclick=()=>online(false);$('sakPongJoin').onclick=()=>online(true);$('sakPongLeave').onclick=async()=>{await release(true);reset();status('idle')};
+ const normalizeRoomCode=input=>{input.value=input.value.replace(/[^A-Fa-f0-9]/g,'').slice(0,12).toUpperCase();};
+ $('sakPongCode').addEventListener('input',()=>normalizeRoomCode($('sakPongCode')));
+ $('sakPongPublicCode').addEventListener('input',()=>normalizeRoomCode($('sakPongPublicCode')));
+ $('sakPongCode').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();if(!busy&&!mode)online(true)}});
  $('sakPongPublicForm').onsubmit=async e=>{e.preventDefault();const code=$('sakPongPublicCode').value.trim().toUpperCase();if(!/^[A-F0-9]{12}$/.test(code)){status('invalid');return}try{await connect();const metaSnap=await api.get(api.ref(db,'pongRoomsV1/'+code+'/meta'));const meta=metaSnap.val();if(!meta||meta.host!==uid||meta.status!=='waiting'||meta.guest){status('ownRoomOnly');return}await api.set(lobbyPath(code),{code,status:'waiting',created:api.serverTimestamp()});if(room===code&&role==='host'){if(lobbyDisconnectHook){try{await lobbyDisconnectHook.cancel()}catch(err){}}lobbyDisconnectHook=api.onDisconnect(lobbyPath(code));await lobbyDisconnectHook.remove()}$('sakPongPublicCode').value='';status('roomPublished')}catch(err){status('lobbyError')}};
- const shareButton=document.createElement('button');shareButton.type='button';shareButton.id='sakPongShare';shareButton.setAttribute('aria-expanded','false');shareButton.setAttribute('aria-controls','sakPongSharePanel');$('sakPongCopy').after(shareButton);
- const sharePanel=document.createElement('div');sharePanel.id='sakPongSharePanel';sharePanel.hidden=true;sharePanel.style.cssText='padding:10px;border:1px solid #8fc9b6;border-radius:12px;margin-bottom:10px;background:#123b35';
- sharePanel.innerHTML='<div class="sp-row"><button type="button" data-network="whatsapp">WhatsApp</button><button type="button" data-network="facebook">Facebook</button><button type="button" data-network="x">X / Twitter</button><button type="button" id="sakPongNativeShare"></button><button type="button" id="sakPongCopyLink"></button></div><input id="sakPongInviteURL" readonly dir="ltr" style="width:100%"><p id="sakPongShareNote"></p>';
- $('sakPongStatus').after(sharePanel);
- function inviteURL(code){if(!/^[A-F0-9]{12}$/.test(code))return '';const base=location.protocol==='https:'||location.protocol==='http:'?location.origin+location.pathname:'https://sakaker.co/';const url=new URL(base);url.searchParams.set('pongRoom',code);return url.href;}
- function inviteText(){return lang()==='en'?`Join my Pong match! Room: ${room}. Open the link, sign in and select Join.`:`انضم إلى مباراتي في بونج! رمز الغرفة: ${room}. افتح الرابط وسجّل الدخول ثم اضغط انضمام.`;}
- function updateShare(){
-  if(!$('sakPongShare'))return;const en=lang()==='en',available=!!room&&!ended&&mode==='online'&&(!roomData||roomData.status==='waiting');
-  shareButton.disabled=!available;shareButton.textContent=en?'↗ Share room':'↗ مشاركة الغرفة';
-  $('sakPongNativeShare').textContent=en?'More apps…':'تطبيقات أخرى…';$('sakPongCopyLink').textContent=en?'Copy invitation link':'نسخ رابط الدعوة';
-  $('sakPongInviteURL').setAttribute('aria-label',en?'Room invitation link':'رابط دعوة الغرفة');$('sakPongInviteURL').value=available?inviteURL(room):'';
-  $('sakPongShareNote').textContent=en?'Keep this game open while your friend joins. Anyone with the invitation can take the second seat; share privately.':'أبقِ اللعبة مفتوحة حتى ينضم صديقك. أي شخص لديه الدعوة يمكنه أخذ المقعد الثاني؛ شاركها بشكل خاص.';
-  if(!available){sharePanel.hidden=true;shareButton.setAttribute('aria-expanded','false');}
- }
- function showShare(){updateShare();if(shareButton.disabled)return;sharePanel.hidden=false;shareButton.setAttribute('aria-expanded','true');}
- shareButton.onclick=()=>{if(sharePanel.hidden)showShare();else{sharePanel.hidden=true;shareButton.setAttribute('aria-expanded','false')}};
- $('sakPongCopy').onclick=async()=>{showShare();try{await navigator.clipboard.writeText(room);status('copied')}catch(e){status('copyFail')}};
- $('sakPongCopyLink').onclick=async()=>{if(shareButton.disabled)return;try{await navigator.clipboard.writeText(inviteURL(room));status('copied')}catch(e){$('sakPongInviteURL').focus();$('sakPongInviteURL').select();status('copyFail')}};
- $('sakPongNativeShare').onclick=async()=>{if(shareButton.disabled)return;if(!navigator.share){$('sakPongCopyLink').click();return}try{await navigator.share({title:'Sakaker Pong',text:inviteText(),url:inviteURL(room)})}catch(e){if(e.name!=='AbortError')$('sakPongCopyLink').click()}};
- sharePanel.querySelectorAll('[data-network]').forEach(button=>button.onclick=()=>{
-  if(shareButton.disabled)return;const link=inviteURL(room),message=inviteText();let target;
-  if(button.dataset.network==='whatsapp'){target=new URL('https://wa.me/');target.searchParams.set('text',message+'\n'+link)}
-  else if(button.dataset.network==='facebook'){target=new URL('https://www.facebook.com/sharer/sharer.php');target.searchParams.set('u',link)}
-  else{target=new URL('https://twitter.com/intent/tweet');target.searchParams.set('text',message);target.searchParams.set('url',link)}
-  window.open(target.href,'_blank','noopener,noreferrer');
- });
- const invitation=(new URL(location.href).searchParams.get('pongRoom')||'').toUpperCase();
- if(/^[A-F0-9]{12}$/.test(invitation)){
-  $('sakPongCode').value=invitation;
-  const hint=document.createElement('p');hint.id='sakPongInviteHint';$('sakPongCode').parentElement.after(hint);
-  const hintLabel=()=>{hint.textContent=lang()==='en'?'Invitation loaded. Sign in, then select Join.':'تم إدخال رمز الدعوة. سجّل الدخول ثم اضغط انضمام.'};hintLabel();new MutationObserver(hintLabel).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
- }
- new MutationObserver(updateShare).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+ $('sakPongCopy').onclick=async()=>{if(!room)return;try{await navigator.clipboard.writeText(room);$('sakPongCode').value=room;status('copied')}catch(e){$('sakPongCode').value=room;$('sakPongCode').focus();$('sakPongCode').select();status('copyFail')}};
+ const updateShare=()=>{};
+ const invitation=(new URL(location.href).searchParams.get('pongRoom')||'').replace(/[^A-Fa-f0-9]/g,'').slice(0,12).toUpperCase();
+ if(/^[A-F0-9]{12}$/.test(invitation)){$('sakPongCode').value=invitation;}
  $('sakPongSendForm').onsubmit=async e=>{e.preventDefault();const message=$('sakPongMessage').value.trim();const me=window.firebaseAuth?.currentUser?.uid,allowed=me&&(me===roomData?.host||me===roomData?.guest);if(mode!=='online'||ended||!endAt||!allowed||!message||Date.now()-lastChat<1000)return;lastChat=Date.now();try{await api.push(path('chat'),{uid:me,name:String(window.firebaseAuth.currentUser.displayName||'Player').slice(0,40),text:message.slice(0,240),time:api.serverTimestamp()});$('sakPongMessage').value=''}catch(e){status('error')}};
  const audioFrame=$('pongGame-video');if(audioFrame){audioFrame.id='sakPongAudioFrame';arena.append(audioFrame)}
  $('sakPongAudio').onclick=()=>{audio=!audio;if(audioFrame){if(audio)audioFrame.src=audioFrame.dataset.audioSrc;else audioFrame.removeAttribute('src')}labels()};
  $('sakPongExit').onclick=()=>arena.close();
- arena.addEventListener('close',()=>{gameSession=false;cancelAnimationFrame(raf);stopLobby();release();if(audioFrame)audioFrame.removeAttribute('src');audio=false;labels();status('idle');$('pongGame-btn')?.focus()});
+ arena.addEventListener('close',()=>{gameSession=false;cancelAnimationFrame(raf);stopLobby();release(true);if(audioFrame)audioFrame.removeAttribute('src');audio=false;labels();status('idle');$('pongGame-btn')?.focus()});
  document.addEventListener('click',e=>{if(!e.target.closest('#pongGame-btn'))return;e.preventDefault();e.stopImmediatePropagation();if(!arena.open){arena.showModal();reset();labels();controls();ensureGameAccount().then(()=>{if(window.firebaseAuth?.currentUser)return startLobby()}).catch(()=>status('error'));raf=requestAnimationFrame(frame)}},true);
  new MutationObserver(labels).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
  labels();controls();draw();
