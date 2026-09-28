@@ -1,0 +1,43 @@
+name: Sync index from Drive
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sync-index-from-drive.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  sync-index:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Download latest encyclopedia index from Google Drive
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL='https://drive.google.com/uc?export=download&id=1xAtWOB6E0rdTIpFKiE7Au-ZHfpit6hGQ'
+          curl -L --fail --retry 3 --retry-delay 2 "$URL" -o index.html.new
+          test -s index.html.new
+          grep -q 'موسوعة ابوالقمرزمرد' index.html.new
+          mv index.html.new index.html
+
+      - name: Commit index.html only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          if git diff --cached --quiet; then
+            echo 'index.html is already current.'
+            exit 0
+          fi
+          git commit -m 'Publish latest Abu al-Qamar Zumurrud encyclopedia index'
+          git push origin main
