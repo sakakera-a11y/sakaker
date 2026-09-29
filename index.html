@@ -23831,11 +23831,1262 @@ html body #sakGlobalStreamDetails{
 })();
 </script>
 
+<style id="sakaker-video-library-expanded-final">
 
+/* =========================================================
+   أيقونة مكتبة الفيديو — تصميم سينمائي زمردي مميز
+========================================================= */
+html body #emeraldLibraryButton{
+  position:relative !important;
 
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
 
+  gap:1px !important;
 
+  overflow:visible !important;
 
+  border:1.5px solid rgba(255,255,255,.94) !important;
+  border-radius:50% !important;
+
+  color:#fff !important;
+
+  box-shadow:
+    0 0 8px rgba(255,255,255,.92),
+    0 0 18px rgba(0,255,213,.65),
+    0 0 28px rgba(88,154,255,.53),
+    0 0 40px rgba(187,105,255,.38),
+    inset 0 0 13px rgba(255,255,255,.34) !important;
+
+  filter:
+    drop-shadow(0 0 6px rgba(255,255,255,.75))
+    drop-shadow(0 0 13px rgba(0,255,213,.42)) !important;
+
+  animation:sakLibraryGlow 2s ease-in-out infinite !important;
+
+  isolation:isolate !important;}
+
+html body #emeraldLibraryButton::before{
+  content:"🎞️" !important;
+
+  display:block !important;
+
+  font-size:18px !important;
+  line-height:18px !important;
+
+  filter:
+    drop-shadow(0 0 4px rgba(255,255,255,1))
+    drop-shadow(0 0 9px rgba(255,224,105,.70)) !important;
+
+  z-index:2 !important;}
+
+html body #emeraldLibraryButton::after{
+  content:"✦" !important;
+
+  position:absolute !important;
+  top:-7px !important;
+  right:-7px !important;
+
+  color:#fff !important;
+
+  font-size:13px !important;
+  line-height:1 !important;
+
+  text-shadow:
+    0 0 4px #fff,
+    0 0 9px #00ffd5,
+    0 0 16px #c476ff !important;
+
+  animation:sakLibrarySparkle 1.2s ease-in-out infinite !important;
+
+  pointer-events:none !important;}
+
+html body #emeraldLibraryButton .sak-library-icon-title{
+  position:relative !important;
+  z-index:2 !important;
+
+  max-width:92% !important;
+
+  color:#fff !important;
+
+  font-size:6.3px !important;
+  line-height:1.05 !important;
+  font-weight:1000 !important;
+
+  text-align:center !important;
+
+  text-shadow:
+    0 1px 2px rgba(0,0,0,.95),
+    0 0 5px rgba(255,255,255,.88),
+    0 0 10px rgba(0,255,213,.50) !important;
+}
+
+html body #emeraldLibraryButton .sak-library-icon-sub{
+  position:relative !important;
+  z-index:2 !important;
+
+  color:rgba(255,255,255,.82) !important;
+
+  font-size:4.8px !important;
+  line-height:1 !important;
+  font-weight:900 !important;
+}
+
+@keyframes sakLibraryGlow{
+  0%,100%{
+    transform:scale(1);
+    filter:
+      brightness(.96)
+      drop-shadow(0 0 5px rgba(255,255,255,.72))
+      drop-shadow(0 0 11px rgba(0,255,213,.38));
+  }
+  50%{
+    transform:scale(1.08);
+    filter:
+      brightness(1.16)
+      drop-shadow(0 0 8px rgba(255,255,255,.92))
+      drop-shadow(0 0 18px rgba(0,255,213,.62));
+  }
+}
+
+@keyframes sakLibrarySparkle{
+  0%,100%{opacity:.28;transform:scale(.70) rotate(0deg)}
+  50%{opacity:1;transform:scale(1.32) rotate(70deg)}
+}
+
+/* =========================================================
+   صندوق المكتبة
+========================================================= */
+html body #emeraldLibraryContent{
+  padding:10px !important;
+  box-sizing:border-box !important;
+
+  border:1px solid rgba(255,255,255,.28) !important;
+  border-radius:22px !important;
+
+  box-shadow:
+    0 0 16px rgba(255,255,255,.08),
+    0 0 34px rgba(0,220,190,.10),
+    0 24px 65px rgba(0,0,0,.65) !important;}
+
+/* =========================================================
+   رؤوس الأقسام — عربي + English في نفس التصميم
+========================================================= */
+html body #emeraldLibraryContent .emeraldSectionHeader{
+  position:relative !important;
+
+  min-height:48px !important;
+
+  padding:7px 12px !important;
+  margin:6px 0 !important;
+
+  display:grid !important;
+  grid-template-columns:auto 1fr auto !important;
+  align-items:center !important;
+
+  gap:8px !important;
+
+  border:1px solid rgba(255,255,255,.28) !important;
+  border-radius:15px !important;
+
+  overflow:hidden !important;
+
+  color:#fff !important;
+
+  font-family:Tajawal,Cairo,Tahoma,Arial,sans-serif !important;
+
+  box-shadow:
+    0 0 10px rgba(255,255,255,.07),
+    inset 0 0 13px rgba(255,255,255,.035) !important;
+
+  cursor:pointer !important;
+
+  transition:
+    transform .20s ease,
+    border-color .20s ease,
+    box-shadow .20s ease !important;
+}
+
+html body #emeraldLibraryContent .emeraldSectionHeader:hover{
+  transform:translateY(-1px) !important;
+
+  border-color:rgba(255,255,255,.65) !important;
+
+  box-shadow:
+    0 0 12px rgba(255,255,255,.11),
+    0 0 22px rgba(171,126,229,.11) !important;
+}
+
+html body #emeraldLibraryContent .sak-lib-head-icon{
+  font-size:21px !important;
+
+  filter:drop-shadow(0 0 6px rgba(255,255,255,.45)) !important;
+}
+
+html body #emeraldLibraryContent .sak-lib-head-text{
+  min-width:0 !important;
+
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:flex-start !important;
+
+  gap:1px !important;
+}
+
+html[dir="rtl"] body #emeraldLibraryContent .sak-lib-head-text{
+  align-items:flex-end !important;
+}
+
+html body #emeraldLibraryContent .sak-lib-head-ar{
+  font-size:12px !important;
+  line-height:1.15 !important;
+  font-weight:1000 !important;
+}
+
+html body #emeraldLibraryContent .sak-lib-head-en{
+  font-size:8px !important;
+  line-height:1.1 !important;
+  font-weight:800 !important;
+
+  color:rgba(255,255,255,.70) !important;
+}
+
+html body #emeraldLibraryContent .sak-lib-head-count{
+  min-width:42px !important;
+
+  padding:3px 6px !important;
+
+  border:1px solid rgba(255,255,255,.16) !important;
+  border-radius:10px !important;
+
+  background:rgba(255,255,255,.05) !important;
+
+  color:rgba(255,255,255,.72) !important;
+
+  font-size:6px !important;
+  font-weight:900 !important;
+
+  text-align:center !important;
+}
+
+/* ألوان الأقسام */
+html body #emeraldLibraryContent .emeraldSectionHeader[data-sak-theme="music"]{
+  background:linear-gradient(135deg,rgba(255,64,156,.58),rgba(126,70,222,.60)) !important;
+}
+html body #emeraldLibraryContent .emeraldSectionHeader[data-sak-theme="doc"]{
+  background:linear-gradient(135deg,rgba(255,180,30,.55),rgba(116,74,22,.58)) !important;
+}
+html body #emeraldLibraryContent .emeraldSectionHeader[data-sak-theme="cartoon"]{
+  background:linear-gradient(135deg,rgba(38,195,255,.50),rgba(255,85,179,.50)) !important;
+}
+html body #emeraldLibraryContent .emeraldSectionHeader[data-sak-theme="movies"]{
+  background:linear-gradient(135deg,rgba(76,82,98,.72),rgba(26,27,36,.83)) !important;
+}
+html body #emeraldLibraryContent .emeraldSectionHeader[data-sak-theme="sports"]{
+  background:linear-gradient(135deg,rgba(184,45,45,.66),rgba(76,22,42,.69)) !important;
+}
+html body #emeraldLibraryContent .emeraldSectionHeader[data-sak-theme="education"]{
+  background:linear-gradient(135deg,rgba(39,96,238,.53),rgba(74,48,189,.58)) !important;
+}
+html body #emeraldLibraryContent .emeraldSectionHeader[data-sak-theme="religious"]{
+  background:linear-gradient(135deg,rgba(0,137,87,.64),rgba(4,75,61,.72)) !important;
+}
+html body #emeraldLibraryContent .emeraldSectionHeader[data-sak-theme="general"]{
+  background:linear-gradient(135deg,rgba(0,125,176,.61),rgba(30,64,126,.64)) !important;
+}
+
+/* =========================================================
+   شبكة الفيديوهات — نفس وظيفة المكتبة لكن أوضح وأكثر كثافة
+========================================================= */
+html body #emeraldLibraryContent
+:is(#musicSection,#docSection,#cartoonSection,#moviesSection,#sportsSection,#educationSection,#religiousSection,#generalInfoSection){
+  width:100% !important;
+
+  align-items:stretch !important;
+
+  gap:7px !important;
+
+  padding:7px !important;
+  box-sizing:border-box !important;
+
+  border-radius:13px !important;
+
+  background:rgba(255,255,255,.018) !important;
+}
+
+html body #emeraldLibraryContent .emeraldVideoCircle{
+  position:relative !important;
+
+  flex:0 0 78px !important;
+
+  width:78px !important;
+  min-width:78px !important;
+  max-width:78px !important;
+
+  min-height:58px !important;
+
+  padding:6px !important;
+  margin:0 !important;
+
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  gap:2px !important;
+
+  border:1px solid rgba(255,255,255,.23) !important;
+  border-radius:13px !important;
+
+  background:
+    radial-gradient(circle at 32% 20%,rgba(255,255,255,.10),transparent 28%),
+    linear-gradient(145deg,rgba(26,22,36,.78),rgba(8,9,15,.89)) !important;
+
+  color:#fff !important;
+
+  box-shadow:
+    0 0 7px rgba(0,0,0,.52),
+    0 0 13px rgba(182,139,232,.055) !important;
+
+  font-family:Tajawal,Cairo,Tahoma,Arial,sans-serif !important;
+  font-size:7px !important;
+  font-weight:900 !important;
+  line-height:1.15 !important;
+
+  text-align:center !important;
+
+  cursor:pointer !important;
+
+  overflow:hidden !important;
+
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease !important;
+}
+
+html body #emeraldLibraryContent .emeraldVideoCircle:hover{
+  transform:translateY(-2px) scale(1.025) !important;
+
+  border-color:rgba(255,255,255,.67) !important;
+
+  box-shadow:
+    0 0 9px rgba(255,255,255,.10),
+    0 0 17px rgba(0,226,197,.11) !important;
+}
+
+html body #emeraldLibraryContent .sak-lib-source{
+  border-color:rgba(0,255,213,.30) !important;
+
+  background:
+    radial-gradient(circle at 30% 20%,rgba(255,255,255,.12),transparent 28%),
+    linear-gradient(145deg,rgba(0,125,110,.25),rgba(76,49,133,.32)) !important;
+}
+
+html body #emeraldLibraryContent .sak-lib-source::before{
+  content:"∞" !important;
+
+  position:absolute !important;
+  top:3px !important;
+  right:5px !important;
+
+  color:#7affdf !important;
+
+  font-size:9px !important;
+  font-weight:1000 !important;
+
+  text-shadow:0 0 7px rgba(0,255,213,.70) !important;
+}
+
+html body #emeraldLibraryContent .sak-lib-auto{
+  border-color:rgba(255,215,90,.19) !important;
+}
+
+html body #emeraldLibraryContent .sak-lib-card-icon{
+  font-size:14px !important;
+  line-height:1 !important;
+}
+
+html body #emeraldLibraryContent .sak-lib-card-ar{
+  max-width:100% !important;
+
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+
+  font-size:6.8px !important;
+  line-height:1.1 !important;
+
+  display:-webkit-box !important;
+  -webkit-line-clamp:2 !important;
+  -webkit-box-orient:vertical !important;
+}
+
+html body #emeraldLibraryContent .sak-lib-card-en{
+  max-width:100% !important;
+
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  white-space:nowrap !important;
+
+  font-size:5.3px !important;
+  line-height:1 !important;
+
+  color:rgba(255,255,255,.61) !important;
+}
+
+html body #emeraldLibraryContent .sak-library-loader{
+  flex:1 1 100% !important;
+
+  min-height:28px !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  color:rgba(255,255,255,.65) !important;
+
+  font-size:7px !important;
+  font-weight:800 !important;
+
+  text-align:center !important;
+}
+
+/* =========================================================
+   نافذة الفيديو المنبثقة — تحسين بسيط دون تغيير آلية التشغيل
+========================================================= */
+html body #emeraldModal{
+  z-index:2147483647 !important;}
+
+html body #emeraldModal iframe{
+  border-radius:18px !important;
+
+  box-shadow:
+    0 0 14px rgba(255,255,255,.11),
+    0 0 32px rgba(0,223,194,.12),
+    0 24px 70px rgba(0,0,0,.72) !important;
+}
+
+/* =========================================================
+   الجوال
+========================================================= */
+@media(max-width:700px){
+
+  html body #emeraldLibraryContent{
+    width:calc(100vw - 12px) !important;
+    max-width:calc(100vw - 12px) !important;
+
+    padding:7px !important;
+
+    border-radius:17px !important;}
+
+  html body #emeraldLibraryContent .emeraldSectionHeader{
+    min-height:42px !important;
+
+    padding:6px 8px !important;
+
+    border-radius:12px !important;
+  }
+
+  html body #emeraldLibraryContent .sak-lib-head-icon{
+    font-size:17px !important;
+  }
+
+  html body #emeraldLibraryContent .sak-lib-head-ar{
+    font-size:10px !important;
+  }
+
+  html body #emeraldLibraryContent .sak-lib-head-en{
+    font-size:6.8px !important;
+  }
+
+  html body #emeraldLibraryContent .emeraldVideoCircle{
+    flex-basis:66px !important;
+
+    width:66px !important;
+    min-width:66px !important;
+    max-width:66px !important;
+
+    min-height:53px !important;
+
+    padding:5px !important;
+
+    border-radius:11px !important;
+  }
+
+  html body #emeraldLibraryContent .sak-lib-card-icon{
+    font-size:12px !important;
+  }
+
+  html body #emeraldLibraryContent .sak-lib-card-ar{
+    font-size:6.1px !important;
+  }
+
+  html body #emeraldLibraryContent .sak-lib-card-en{
+    font-size:4.8px !important;
+  }
+}
+
+@media(max-width:390px){
+  html body #emeraldLibraryContent .emeraldVideoCircle{
+    flex-basis:61px !important;
+
+    width:61px !important;
+    min-width:61px !important;
+    max-width:61px !important;
+
+    min-height:50px !important;
+  }
+}
+
+</style>
+
+<script id="sakaker-video-library-expanded-js">
+(function(){
+  'use strict';
+
+  const CONFIG = {"musicSection": {"icon": "🎵", "ar": "موسيقى", "en": "Music", "theme": "music", "channels": [{"id": "UCNhqvQMXIgRfjAGmxQqdNRw", "ar": "روتانا", "en": "Rotana Music"}], "extras": [{"type": "video", "id": "Ze9L4mQ0fHA", "ar": "أغاني عربية 2026", "en": "Arabic Songs 2026"}, {"type": "playlist", "id": "PL4jf7vNATp4FSrkXaN_XeIscrSQtS-7XS", "ar": "مختارات عربية ومغربية", "en": "Arabic & Moroccan Playlist"}]}, "docSection": {"icon": "📼", "ar": "وثائقية", "en": "Documentaries", "theme": "doc", "channels": [{"id": "UCwmZiChSryoWQCZMIQezgTg", "ar": "BBC Earth", "en": "BBC Earth"}, {"id": "UCpVm7bg6pXKo1Pr6k5kxG9A", "ar": "ناشيونال جيوغرافيك", "en": "National Geographic"}, {"id": "UCW39zufHfsuGgpLviKh297Q", "ar": "DW وثائقية", "en": "DW Documentary"}, {"id": "UC_aP7p621ATY_yAa8jMqUVA", "ar": "ناسا فيديو", "en": "NASA Video"}], "extras": []}, "cartoonSection": {"icon": "🎨", "ar": "كرتون", "en": "Cartoons", "theme": "cartoon", "channels": [{"id": "UCFeUyPY6W8qX8w2o6oSiRmw", "ar": "النمر الوردي الرسمي", "en": "Official Pink Panther"}], "extras": [{"type": "video", "id": "aJjc_JtOrUA", "ar": "النمر الوردي - مجموعة", "en": "Pink Panther Compilation"}, {"type": "video", "id": "W-qZA4FhHLs", "ar": "النمر الوردي الكلاسيكي", "en": "Classic Pink Panther"}, {"type": "video", "id": "waQOOARtBaY", "ar": "مغامرات النمر الوردي", "en": "Pink Panther Adventures"}, {"type": "video", "id": "i038g5f0Pzc", "ar": "كرتون كلاسيكي طويل", "en": "Classic Cartoons Collection"}]}, "moviesSection": {"icon": "🎬", "ar": "أفلام", "en": "Movies", "theme": "movies", "channels": [{"id": "UCLnmODaMpikcFaB5FIXSevw", "ar": "Movies Central", "en": "Movies Central"}, {"id": "UCSUMyPPmunaDKk0YHxCK-cw", "ar": "أفلام Cineverse المجانية", "en": "Free Movies By Cineverse"}], "extras": []}, "sportsSection": {"icon": "⚽", "ar": "رياضة", "en": "Sports", "theme": "sports", "channels": [{"id": "UCEQEtxwmnNwCL4mra5G4KtQ", "ar": "FIFA", "en": "FIFA"}, {"id": "UCqZQlzSHbVJrwrn5XvzrzcA", "ar": "NBC Sports", "en": "NBC Sports"}], "extras": []}, "educationSection": {"icon": "📘", "ar": "تعليمية", "en": "Educational", "theme": "education", "channels": [{"id": "UC4a-Gbdw7vOaccHmFo40b9g", "ar": "أكاديمية خان", "en": "Khan Academy"}, {"id": "UCsooa4yRKGN_zEE8iknghZA", "ar": "TED-Ed", "en": "TED-Ed"}, {"id": "UCX6b17PVsYBQ0ip5gyeme-Q", "ar": "CrashCourse", "en": "CrashCourse"}, {"id": "UCHnyfMqiRRG1u-2MsSQLbXA", "ar": "Veritasium", "en": "Veritasium"}, {"id": "UC_aP7p621ATY_yAa8jMqUVA", "ar": "ناسا فيديو", "en": "NASA Video"}], "extras": []}, "religiousSection": {"icon": "📿", "ar": "دينية", "en": "Islamic", "theme": "religious", "channels": [{"id": "UC3vHW2h22WE-pNi5WJtRIjg", "ar": "معهد يقين", "en": "Yaqeen Institute"}, {"id": "UCNB_OaI4524fASt8h0IL8dw", "ar": "مفتي منك", "en": "Mufti Menk"}], "extras": [{"type": "video", "id": "VUdSVx3mJqU", "ar": "القرآن كامل - مشاري العفاسي", "en": "Full Quran - Mishary Alafasy"}, {"type": "video", "id": "jq_I140CTM8", "ar": "تلاوة القرآن كاملة", "en": "Complete Quran Recitation"}]}, "generalInfoSection": {"icon": "🌍", "ar": "معلومات عامة", "en": "General Information", "theme": "general", "channels": [{"id": "UCpVm7bg6pXKo1Pr6k5kxG9A", "ar": "ناشيونال جيوغرافيك", "en": "National Geographic"}, {"id": "UCwmZiChSryoWQCZMIQezgTg", "ar": "BBC Earth", "en": "BBC Earth"}, {"id": "UC_aP7p621ATY_yAa8jMqUVA", "ar": "ناسا فيديو", "en": "NASA Video"}, {"id": "UCsooa4yRKGN_zEE8iknghZA", "ar": "TED-Ed", "en": "TED-Ed"}, {"id": "UCHnyfMqiRRG1u-2MsSQLbXA", "ar": "Veritasium", "en": "Veritasium"}], "extras": []}};
+
+  const CACHE_HOURS = 6;
+  const PER_CHANNEL = 12;
+
+  const sectionIds =
+    Object.keys(CONFIG);
+
+  /* =======================================================
+     زر المكتبة
+  ======================================================= */
+  const libraryBtn =
+    document.getElementById(
+      'emeraldLibraryButton'
+    );
+
+  if(libraryBtn){
+    libraryBtn.innerHTML =
+      '<span class="sak-library-icon-title">' +
+        'مكتبة الفيديو' +
+      '</span>' +
+      '<span class="sak-library-icon-sub">' +
+        'VIDEO LIBRARY' +
+      '</span>';
+
+    libraryBtn.setAttribute(
+      'aria-label',
+      'مكتبة الفيديو / Video Library'
+    );
+  }
+
+  /* =======================================================
+     رأس كل قسم عربي + إنجليزي
+  ======================================================= */
+  function findHeader(sectionId){
+    return document.querySelector(
+      '.emeraldSectionHeader' +
+      '[onclick*="' +
+      sectionId +
+      '"]'
+    );
+  }
+
+  function decorateHeaders(){
+    sectionIds.forEach(function(id){
+      const cfg =
+        CONFIG[id];
+
+      const header =
+        findHeader(id);
+
+      if(!header) return;
+
+      header.dataset.sakTheme =
+        cfg.theme || '';
+
+      header.dataset.sakSection =
+        id;
+
+      if(
+        !header.querySelector(
+          '.sak-lib-head-text'
+        )
+      ){
+        header.innerHTML =
+          '<span class="sak-lib-head-icon">' +
+            cfg.icon +
+          '</span>' +
+          '<span class="sak-lib-head-text">' +
+            '<span class="sak-lib-head-ar">' +
+              cfg.ar +
+            '</span>' +
+            '<span class="sak-lib-head-en">' +
+              cfg.en +
+            '</span>' +
+          '</span>' +
+          '<span class="sak-lib-head-count" ' +
+            'data-sak-count="' +
+            id +
+          '">—</span>';
+      }
+
+      updateSectionCount(id);
+    });
+  }
+
+  function updateSectionCount(id){
+    const section =
+      document.getElementById(id);
+
+    const count =
+      document.querySelector(
+        '[data-sak-count="' +
+        id +
+        '"]'
+      );
+
+    if(!section || !count) return;
+
+    const current =
+      section.querySelectorAll(
+        '.emeraldVideoCircle'
+      ).length;
+
+    count.textContent =
+      current + '+';
+  }
+
+  /* =======================================================
+     بطاقة فيديو ثنائية اللغة
+  ======================================================= */
+  function makeCard(opts){
+    const card =
+      document.createElement('div');
+
+    card.className =
+      'emeraldVideoCircle ' +
+      (opts.className || '');
+
+    if(opts.videoId){
+      card.dataset.sakVideoId =
+        opts.videoId;
+
+      card.onclick =
+        function(){
+          openEmeraldVideo(
+            'https://www.youtube.com/embed/' +
+            encodeURIComponent(
+              opts.videoId
+            )
+          );
+        };
+    }else if(opts.url){
+      card.onclick =
+        function(){
+          openEmeraldVideo(
+            opts.url
+          );
+        };
+    }
+
+    const icon =
+      document.createElement('span');
+
+    icon.className =
+      'sak-lib-card-icon';
+
+    icon.textContent =
+      opts.icon || '▶';
+
+    const ar =
+      document.createElement('span');
+
+    ar.className =
+      'sak-lib-card-ar';
+
+    ar.textContent =
+      opts.ar || opts.en || '';
+
+    const en =
+      document.createElement('span');
+
+    en.className =
+      'sak-lib-card-en';
+
+    en.textContent =
+      opts.en || opts.ar || '';
+
+    card.appendChild(icon);
+    card.appendChild(ar);
+    card.appendChild(en);
+
+    return card;
+  }
+
+  function existingVideoIds(section){
+    const set =
+      new Set();
+
+    section
+      .querySelectorAll(
+        '.emeraldVideoCircle'
+      )
+      .forEach(function(el){
+        const own =
+          el.dataset.sakVideoId;
+
+        if(own){
+          set.add(own);
+          return;
+        }
+
+        const click =
+          el.getAttribute(
+            'onclick'
+          ) || '';
+
+        const m =
+          click.match(
+            /youtube\.com\/embed\/([A-Za-z0-9_-]{11})/
+          );
+
+        if(m){
+          set.add(m[1]);
+        }
+      });
+
+    return set;
+  }
+
+  /* =======================================================
+     بطاقة "كل فيديوهات القناة" عبر Uploads Playlist
+     هذه البطاقة وحدها تعطي وصولاً لعدد ضخم من فيديوهات المصدر
+  ======================================================= */
+  function uploadsPlaylist(channelId){
+    if(
+      !channelId ||
+      !channelId.startsWith('UC')
+    ){
+      return null;
+    }
+
+    return (
+      'UU' +
+      channelId.slice(2)
+    );
+  }
+
+  function addSourceLibraries(id){
+    const section =
+      document.getElementById(id);
+
+    const cfg =
+      CONFIG[id];
+
+    if(!section || !cfg) return;
+
+    if(
+      section.dataset.sakSourcesAdded ===
+      '1'
+    ){
+      return;
+    }
+
+    section.dataset.sakSourcesAdded =
+      '1';
+
+    (cfg.channels || [])
+      .forEach(function(source){
+        const playlist =
+          uploadsPlaylist(
+            source.id
+          );
+
+        if(!playlist) return;
+
+        const card =
+          makeCard({
+            className:'sak-lib-source',
+            icon:'📚',
+            ar:
+              'كل فيديوهات ' +
+              source.ar,
+            en:
+              'All ' +
+              source.en +
+              ' videos',
+            url:
+              'https://www.youtube.com/embed/videoseries?list=' +
+              encodeURIComponent(
+                playlist
+              )
+          });
+
+        card.dataset.sakSource =
+          source.id;
+
+        section.appendChild(
+          card
+        );
+      });
+
+    (cfg.extras || [])
+      .forEach(function(extra){
+        if(extra.type === 'video'){
+          const ids =
+            existingVideoIds(
+              section
+            );
+
+          if(ids.has(extra.id)){
+            return;
+          }
+
+          section.appendChild(
+            makeCard({
+              className:'sak-lib-auto',
+              icon:'▶️',
+              ar:extra.ar,
+              en:extra.en,
+              videoId:extra.id
+            })
+          );
+        }
+
+        if(extra.type === 'playlist'){
+          section.appendChild(
+            makeCard({
+              className:'sak-lib-source',
+              icon:'🎞️',
+              ar:extra.ar,
+              en:extra.en,
+              url:
+                'https://www.youtube.com/embed/videoseries?list=' +
+                encodeURIComponent(
+                  extra.id
+                )
+            })
+          );
+        }
+      });
+
+    updateSectionCount(id);
+  }
+
+  /* =======================================================
+     RSS لأحدث فيديوهات القنوات — يحمّل عند فتح القسم فقط
+  ======================================================= */
+  function cacheKey(channelId){
+    return (
+      'sakLibFeedV1-' +
+      channelId
+    );
+  }
+
+  function readCache(channelId){
+    try{
+      const raw =
+        localStorage.getItem(
+          cacheKey(channelId)
+        );
+
+      if(!raw) return null;
+
+      const data =
+        JSON.parse(raw);
+
+      if(
+        !data ||
+        !Array.isArray(data.items)
+      ){
+        return null;
+      }
+
+      if(
+        Date.now() -
+        Number(data.time || 0) >
+        CACHE_HOURS *
+        60 * 60 * 1000
+      ){
+        return null;
+      }
+
+      return data.items;
+    }catch(e){
+      return null;
+    }
+  }
+
+  function writeCache(channelId,items){
+    try{
+      localStorage.setItem(
+        cacheKey(channelId),
+        JSON.stringify({
+          time:Date.now(),
+          items:items
+        })
+      );
+    }catch(e){}
+  }
+
+  async function fetchWithTimeout(
+    url,
+    timeoutMs
+  ){
+    const controller =
+      new AbortController();
+
+    const timer =
+      setTimeout(
+        function(){
+          controller.abort();
+        },
+        timeoutMs
+      );
+
+    try{
+      const response =
+        await fetch(
+          url,
+          {
+            signal:controller.signal,
+            cache:'no-store'
+          }
+        );
+
+      if(!response.ok){
+        throw new Error(
+          'HTTP ' +
+          response.status
+        );
+      }
+
+      return await response.text();
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  function parseFeed(xmlText){
+    const xml =
+      new DOMParser()
+        .parseFromString(
+          xmlText,
+          'text/xml'
+        );
+
+    if(
+      xml.querySelector(
+        'parsererror'
+      )
+    ){
+      return [];
+    }
+
+    const entries =
+      Array.from(
+        xml.getElementsByTagName(
+          'entry'
+        )
+      );
+
+    return entries
+      .map(function(entry){
+        const idNode =
+          entry.getElementsByTagNameNS(
+            '*',
+            'videoId'
+          )[0] ||
+          entry.getElementsByTagName(
+            'yt:videoId'
+          )[0];
+
+        const titleNode =
+          entry.getElementsByTagName(
+            'title'
+          )[0];
+
+        if(!idNode) return null;
+
+        const videoId =
+          String(
+            idNode.textContent || ''
+          ).trim();
+
+        if(
+          !/^[A-Za-z0-9_-]{11}$/
+            .test(videoId)
+        ){
+          return null;
+        }
+
+        return {
+          id:videoId,
+          title:
+            titleNode
+              ? String(
+                  titleNode.textContent ||
+                  ''
+                )
+                  .replace(/\s+/g,' ')
+                  .trim()
+              : 'YouTube'
+        };
+      })
+      .filter(Boolean)
+      .slice(0,PER_CHANNEL);
+  }
+
+  async function channelFeed(
+    channelId
+  ){
+    const cached =
+      readCache(channelId);
+
+    if(cached){
+      return cached;
+    }
+
+    const feed =
+      'https://www.youtube.com/feeds/videos.xml?channel_id=' +
+      encodeURIComponent(
+        channelId
+      );
+
+    /*
+      نحاول المصدر المباشر أولاً، ثم AllOrigins عند منع CORS.
+    */
+    try{
+      const direct =
+        await fetchWithTimeout(
+          feed,
+          7000
+        );
+
+      const items =
+        parseFeed(direct);
+
+      if(items.length){
+        writeCache(
+          channelId,
+          items
+        );
+
+        return items;
+      }
+    }catch(e){}
+
+    try{
+      const proxy =
+        'https://api.allorigins.win/raw?url=' +
+        encodeURIComponent(
+          feed
+        );
+
+      const text =
+        await fetchWithTimeout(
+          proxy,
+          9000
+        );
+
+      const items =
+        parseFeed(text);
+
+      if(items.length){
+        writeCache(
+          channelId,
+          items
+        );
+      }
+
+      return items;
+    }catch(e){
+      return [];
+    }
+  }
+
+  async function enrichSection(id){
+    const section =
+      document.getElementById(id);
+
+    const cfg =
+      CONFIG[id];
+
+    if(!section || !cfg) return;
+
+    addSourceLibraries(id);
+
+    if(
+      section.dataset.sakFeedLoaded ===
+      '1' ||
+      section.dataset.sakFeedLoading ===
+      '1'
+    ){
+      return;
+    }
+
+    section.dataset.sakFeedLoading =
+      '1';
+
+    const loader =
+      document.createElement('div');
+
+    loader.className =
+      'sak-library-loader';
+
+    loader.textContent =
+      document.documentElement.lang ===
+      'en'
+        ? 'Loading more videos from the selected sources…'
+        : 'جاري إضافة المزيد من الفيديوهات من المصادر المختارة…';
+
+    section.appendChild(loader);
+
+    const known =
+      existingVideoIds(section);
+
+    try{
+      const feeds =
+        await Promise.all(
+          (cfg.channels || [])
+            .map(async function(source){
+              const items =
+                await channelFeed(
+                  source.id
+                );
+
+              return {
+                source:source,
+                items:items
+              };
+            })
+        );
+
+      feeds.forEach(function(group){
+        (group.items || [])
+          .forEach(function(item){
+            if(
+              known.has(item.id)
+            ){
+              return;
+            }
+
+            known.add(item.id);
+
+            const title =
+              item.title ||
+              group.source.en;
+
+            section.appendChild(
+              makeCard({
+                className:
+                  'sak-lib-auto',
+                icon:'▶',
+                ar:title,
+                en:
+                  group.source.en,
+                videoId:item.id
+              })
+            );
+          });
+      });
+
+      section.dataset.sakFeedLoaded =
+        '1';
+
+    } finally {
+      section.dataset.sakFeedLoading =
+        '0';
+
+      loader.remove();
+
+      updateSectionCount(id);
+    }
+  }
+
+  /* =======================================================
+     ربط التحميل بفتح الأقسام بدون تغيير الوظيفة الأصلية
+  ======================================================= */
+  const originalToggle =
+    window.toggleEmeraldSection;
+
+  if(
+    typeof originalToggle ===
+    'function'
+  ){
+    window.toggleEmeraldSection =
+      function(id){
+        originalToggle(id);
+
+        const section =
+          document.getElementById(id);
+
+        if(
+          section &&
+          getComputedStyle(section)
+            .display !== 'none'
+        ){
+          enrichSection(id);
+        }
+      };
+  }
+
+  /*
+    عند فتح المكتبة نخفي المعلومات العامة مثل بقية الأقسام.
+  */
+  if(libraryBtn){
+    libraryBtn.addEventListener(
+      'click',
+      function(){
+        const content =
+          document.getElementById(
+            'emeraldLibraryContent'
+          );
+
+        const general =
+          document.getElementById(
+            'generalInfoSection'
+          );
+
+        if(
+          content &&
+          getComputedStyle(content)
+            .display !== 'none' &&
+          general
+        ){
+          general.style.display =
+            'none';
+        }
+      }
+    );
+  }
+
+  decorateHeaders();
+
+  /*
+    نضيف بطاقات المكتبات الكاملة مباشرة،
+    أما عشرات الفيديوهات الحديثة فتُحمّل فقط عند فتح القسم
+    حتى يبقى الموقع سريعاً.
+  */
+  sectionIds.forEach(
+    addSourceLibraries
+  );
+
+  new MutationObserver(
+    function(){
+      decorateHeaders();
+    }
+  ).observe(
+    document.documentElement,
+    {
+      attributes:true,
+      attributeFilter:[
+        'lang',
+        'dir'
+      ]
+    }
+  );
+
+})();
+</script>
 
 <style id="sakaker-library-smart-uploads-full-view-final">
 
@@ -34045,12 +35296,306 @@ html body #videoBoxFixed.sak-player-open:not(.sak-hls-mode) #sakCircleExternal {
   }
 })();
 </script>
-
-
-
-
-
-
+<style id="sak-creative-studio-style">
+html body #sakCreativeIcon { cursor:pointer; font-family:inherit; }
+html body.locked #sakCreativeIcon,
+html body.locked #sakStudio { display:none !important; visibility:hidden !important; pointer-events:none !important; }
+html body #sakCreativeIcon .icon-label { white-space:normal !important; }
+html body #sakStudio[hidden] { display:none !important; }
+html body #sakStudio {
+  position:fixed !important; inset:0 !important; z-index:2147483647 !important;
+  display:flex; align-items:center; justify-content:center; padding:12px;
+  background:rgba(1,10,15,.92); color:#eef8ff; box-sizing:border-box;
+  font-family:Tahoma,Arial,sans-serif; text-align:start;
+  margin:0 !important; width:100vw !important; height:100dvh !important;
+  max-width:none !important; max-height:none !important; border:0 !important;
+}
+html body #sakStudio::backdrop { background:rgba(1,10,15,.85); }
+html body #sakStudio * { box-sizing:border-box; }
+html body #sakStudio .studio-panel {
+  width:min(1100px,100%); max-height:calc(100dvh - 24px); overflow:auto;
+  border:1px solid #adc5d1; border-radius:22px; padding:18px;
+  background:linear-gradient(135deg,#172934,#081923); box-shadow:0 0 28px #81b8c84d;
+}
+html body #sakStudio h2 { margin:0; font-size:22px; color:#f2dfab; }
+html body #sakStudio .studio-row { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:12px; }
+html body #sakStudio .studio-head { justify-content:space-between; }
+html body #sakStudio button,html body #sakStudio select,html body #sakStudio input {
+  font:inherit; font-size:15px; border:1px solid #7298a9; border-radius:9px;
+  min-height:40px; padding:8px 12px; background:#eff8fc; color:#102d3b;
+  text-shadow:none; max-width:100%;
+}
+html body #sakStudio button { cursor:pointer; }
+html body #sakStudio button:disabled { opacity:.45; cursor:default; }
+html body #sakStudio button[aria-pressed="true"] { background:#ffdc82; border-color:#ffdc82; }
+html body #sakStudio :focus-visible { outline:3px solid #5de2bf; outline-offset:2px; }
+html body #sakStudio label { display:flex; align-items:center; flex-wrap:wrap; gap:6px; font-size:13px; }
+html body #sakStudio input[type="color"] { width:46px; padding:3px; }
+html body #sakStudio input[type="range"] { width:105px; padding:0; }
+html body #sakStudio input[type="text"] { flex:1; min-width:160px; }
+html body #sakStudio .studio-workspace { overflow:auto; padding:12px; border-radius:12px; background:#071019; }
+html body #sakStudio canvas {
+  display:block; position:static; width:100% !important; max-width:900px !important;
+  height:auto !important; margin:auto; touch-action:none; cursor:crosshair;
+  border-radius:0; box-shadow:0 4px 24px #0006;
+}
+html body #sakStudio .studio-help { color:#bfd1dc; font-size:13px; line-height:1.7; margin:8px 0; }
+html body #sakStudio #studioStatus { min-height:24px; color:#ffdc82; font-size:13px; }
+@media(max-width:600px){
+  html body #sakStudio { padding:5px; }
+  html body #sakStudio .studio-panel { padding:10px; border-radius:14px; max-height:calc(100dvh - 10px); }
+  html body #sakStudio h2 { font-size:18px; }
+  html body #sakStudio .studio-workspace { padding:4px; }
+}
+</style>
+<dialog id="sakStudio" hidden aria-modal="true" aria-labelledby="studioTitle">
+  <div class="studio-panel">
+    <div class="studio-row studio-head"><h2 id="studioTitle" data-studio-i18n="title"></h2><div class="studio-row"><button id="studioLang" type="button">English</button><button id="studioClose" type="button" data-studio-i18n="close"></button></div></div>
+    <div class="studio-row" id="studioTools">
+      <button type="button" data-tool="pen" data-studio-i18n="pen"></button>
+      <button type="button" data-tool="oil" data-studio-i18n="oil"></button>
+      <button type="button" data-tool="watercolor" data-studio-i18n="watercolor"></button>
+      <button type="button" data-tool="spray" data-studio-i18n="spray"></button>
+      <button type="button" data-tool="marker" data-studio-i18n="marker"></button>
+      <button type="button" data-tool="eyedropper" data-studio-i18n="eyedropper"></button>
+      <button type="button" data-tool="eraser" data-studio-i18n="eraser"></button>
+      <button type="button" data-tool="move" data-studio-i18n="move"></button>
+      <button type="button" data-tool="rect" data-studio-i18n="rect"></button>
+      <button type="button" data-tool="ellipse" data-studio-i18n="ellipse"></button>
+      <button type="button" id="studioUndo" data-studio-i18n="undo"></button>
+      <button type="button" id="studioRedo" data-studio-i18n="redo"></button>
+    </div>
+    <div class="studio-row">
+      <label><span data-studio-i18n="color"></span><input id="studioColor" type="color" value="#126b62"></label>
+      <label><span data-studio-i18n="size"></span><input id="studioSize" type="range" min="2" max="50" value="6"><output id="studioSizeValue">6</output></label>
+      <label><span data-studio-i18n="opacity"></span><input id="studioOpacity" type="range" min="5" max="100" value="100"><output id="studioOpacityValue">100%</output></label>
+      <label><span data-studio-i18n="background"></span><input id="studioBackground" type="color" value="#ffffff"></label>
+      <label><span data-studio-i18n="format"></span><select id="studioFormat"><option value="900,600" data-studio-i18n="landscape"></option><option value="800,800" data-studio-i18n="square"></option><option value="600,900" data-studio-i18n="portrait"></option></select></label>
+      <label><span data-studio-i18n="template"></span><select id="studioTemplate"><option value="blank" data-studio-i18n="blank"></option><option value="gold" data-studio-i18n="gold"></option><option value="celebrate" data-studio-i18n="celebrate"></option></select></label>
+    </div>
+    <div class="studio-row">
+      <input id="studioText" type="text" maxlength="120" dir="auto">
+      <label><span data-studio-i18n="textSize"></span><select id="studioTextSize"><option>24</option><option selected>40</option><option>60</option><option>80</option></select></label>
+      <button id="studioAddText" type="button" data-studio-i18n="addText"></button>
+      <button id="studioDelete" type="button" data-studio-i18n="delete"></button>
+    </div>
+    <div class="studio-row">
+      <button id="studioUpload" type="button" data-studio-i18n="upload"></button>
+      <input id="studioImageFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden style="display:none">
+      <button id="studioImageSmaller" type="button" data-studio-i18n="smaller"></button>
+      <button id="studioImageLarger" type="button" data-studio-i18n="larger"></button>
+    </div>
+    <p class="studio-help" data-studio-i18n="help"></p>
+    <div class="studio-workspace"><canvas id="studioCanvas" width="900" height="600" tabindex="0"></canvas></div>
+    <div class="studio-row" style="margin-top:12px">
+      <button id="studioExport" type="button" data-studio-i18n="export"></button>
+      <button id="studioSave" type="button" data-studio-i18n="save"></button>
+      <button id="studioLoad" type="button" data-studio-i18n="load"></button>
+      <button id="studioClear" type="button" data-studio-i18n="clear"></button>
+    </div>
+    <div id="studioStatus" role="status" aria-live="polite"></div>
+  </div>
+</dialog>
+<script id="sak-creative-studio-script">
+(function(){
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const modal=$('sakStudio'), canvas=$('studioCanvas'), ctx=canvas.getContext('2d');
+  const layer=document.createElement('canvas'), ink=layer.getContext('2d');
+  const words={
+    ar:{title:'🎨 الاستديو الابداعي',close:'إغلاق ✕',pen:'✎ رسم',eraser:'ممحاة',move:'↔ تحريك',rect:'▭ مستطيل',ellipse:'◯ دائرة',undo:'تراجع',redo:'إعادة',color:'اللون',size:'حجم الفرشاة',background:'الخلفية',format:'المقاس',landscape:'بطاقة أفقية',square:'مربع',portrait:'بطاقة عمودية',template:'القالب',blank:'بسيط',gold:'إطار ذهبي',celebrate:'احتفال',textSize:'حجم النص',addText:'إضافة النص',delete:'حذف المحدد',help:'ارسم باللمس أو الماوس. اسحب لرسم الأشكال. أضف نصًا ثم اختر «تحريك» واسحبه لمكانه. اختر عنصرًا لتحريكه أو حذفه. الممحاة تمسح الآثار الموجودة قبلها.',export:'⬇ حفظ صورة PNG',save:'حفظ مسودة',load:'استعادة المسودة',clear:'لوحة جديدة',placeholder:'اكتب عبارتك بالعربية أو الإنجليزية…',saved:'تم حفظ المسودة على هذا المتصفح.',loaded:'تمت استعادة المسودة.',missing:'لا توجد مسودة محفوظة.',failed:'تعذر الحفظ أو الاستعادة. تحقق من مساحة المتصفح وإذن التخزين.',downloaded:'الصورة جاهزة للحفظ. راجع التنزيلات.',confirm:'بدء لوحة جديدة ومسح العمل الحالي؟ يمكنك التراجع بعد ذلك.',replace:'استبدال العمل الحالي بالمسودة المحفوظة؟',empty:'اكتب النص أولًا.',canvas:'مساحة الرسم وتصميم البطاقات',icon:'الاستديو الابداعي',sub:'رسم وبطاقات',downloadError:'تعذر تصدير الصورة. حاول مجددًا.'},
+    en:{title:'🎨 Creative Studio',close:'Close ✕',pen:'✎ Draw',eraser:'Eraser',move:'↔ Move',rect:'▭ Rectangle',ellipse:'◯ Circle',undo:'Undo',redo:'Redo',color:'Color',size:'Brush size',background:'Background',format:'Size',landscape:'Landscape card',square:'Square',portrait:'Portrait card',template:'Template',blank:'Plain',gold:'Gold frame',celebrate:'Celebration',textSize:'Text size',addText:'Add text',delete:'Delete selected',help:'Draw with touch or mouse. Drag to draw shapes. Add text, then choose Move and drag it into place. Select an item to move or delete it. The eraser removes marks drawn before it.',export:'⬇ Save PNG image',save:'Save draft',load:'Restore draft',clear:'New canvas',placeholder:'Type your message in Arabic or English…',saved:'Draft saved in this browser.',loaded:'Draft restored.',missing:'No saved draft found.',failed:'Could not save or restore. Check browser storage permissions and space.',downloaded:'Image ready to save. Check your downloads.',confirm:'Start a new canvas and clear this work? You can undo this action.',replace:'Replace this work with your saved draft?',empty:'Type your text first.',canvas:'Drawing and card design canvas',icon:'Creative Studio',sub:'Draw & cards',downloadError:'Could not export the image. Please try again.'}
+  };
+  Object.assign(words.ar,{upload:'🖼 رفع صورة',smaller:'− تصغير الصورة',larger:'+ تكبير الصورة',imageLoading:'جاري تجهيز الصورة…',imageReady:'أُضيفت الصورة. حرّكها أو غيّر حجمها، وارسم أو اكتب فوقها.',imageError:'تعذر فتح الصورة. اختر صورة PNG أو JPEG أو WebP أو GIF بحجم أقل من 20 ميجابايت.'});
+  Object.assign(words.en,{upload:'🖼 Upload image',smaller:'− Smaller image',larger:'+ Larger image',imageLoading:'Preparing image…',imageReady:'Image added. Move or resize it, then draw or write on top.',imageError:'Could not open the image. Choose a PNG, JPEG, WebP or GIF under 20 MB.'});
+  const imageCache=new Map();
+  Object.assign(words.ar,{oil:'🖌 فرشاة زيتية',watercolor:'ألوان مائية',spray:'بخاخ',marker:'ماركر',eyedropper:'قطّارة',opacity:'الشفافية',picked:'تم التقاط اللون؛ اختر فرشاة للرسم.'});
+  Object.assign(words.en,{oil:'🖌 Oil brush',watercolor:'Watercolor',spray:'Spray',marker:'Marker',eyedropper:'Eyedropper',opacity:'Opacity',picked:'Color picked; choose a brush to paint.'});
+  const brushTypes=['pen','eraser','oil','watercolor','spray','marker'];
+  // Avoid page-level keyboard/game handlers intercepting studio interactions.
+  ['click','pointerdown','pointermove','pointerup','keydown','keyup'].forEach(type=>modal.addEventListener(type,e=>e.stopPropagation()));
+  function loadImage(src){
+    if(imageCache.has(src))return Promise.resolve(imageCache.get(src));
+    return new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>{imageCache.set(src,img);resolve(img);};img.onerror=()=>reject(Error('Image decode failed'));img.src=src;});
+  }
+  let lang=document.documentElement.lang==='en'?'en':'ar';
+  let state={w:900,h:600,bg:'#ffffff',template:'blank',objects:[]};
+  let undo=[],redo=[],tool='pen',selected=-1,gesture=null,lastFocus=null,scrollBefore='';
+  const copy = x=>JSON.parse(JSON.stringify(x));
+  function say(key){$('studioStatus').textContent=words[lang][key];}
+  function history(){undo.push(copy(state));while(undo.length>20||(undo.length>1&&JSON.stringify(undo).length>8000000))undo.shift();redo=[];}
+  function language(){
+    modal.dir=lang==='ar'?'rtl':'ltr';modal.lang=lang;
+    modal.querySelectorAll('[data-studio-i18n]').forEach(el=>el.textContent=words[lang][el.dataset.studioI18n]);
+    $('studioText').placeholder=words[lang].placeholder;
+    $('studioText').setAttribute('aria-label',words[lang].placeholder);
+    canvas.setAttribute('aria-label',words[lang].canvas);
+    $('studioLang').textContent=lang==='ar'?'English':'العربية';
+    $('studioStatus').textContent='';
+  }
+  function controls(){
+    $('studioUndo').disabled=!undo.length;$('studioRedo').disabled=!redo.length;
+    $('studioDelete').disabled=selected<0;
+    const imageSelected=selected>=0&&state.objects[selected]?.type==='image';
+    $('studioImageSmaller').disabled=!imageSelected;$('studioImageLarger').disabled=!imageSelected;
+    $('studioBackground').value=state.bg;$('studioTemplate').value=state.template;
+    $('studioFormat').value=state.w+','+state.h;
+    modal.querySelectorAll('[data-tool]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tool===tool)));
+  }
+  function bounds(o){
+    if(o.type==='image')return{x:o.x,y:o.y,w:o.w,h:o.h};
+    if(o.type==='text'){
+      ink.font='bold '+o.size+'px Tahoma, Arial, sans-serif';
+      const width=ink.measureText(o.text).width;
+      return {x:o.x-width/2,y:o.y-o.size/2,w:width,h:o.size*1.3};
+    }
+    if(o.points){let left=Infinity,top=Infinity,right=-Infinity,bottom=-Infinity;for(const p of o.points){left=Math.min(left,p.x);top=Math.min(top,p.y);right=Math.max(right,p.x);bottom=Math.max(bottom,p.y);}return{x:left-o.size/2,y:top-o.size/2,w:right-left+o.size,h:bottom-top+o.size};}
+    return{x:Math.min(o.x,o.x2),y:Math.min(o.y,o.y2),w:Math.abs(o.x2-o.x),h:Math.abs(o.y2-o.y)};
+  }
+  function paintObject(o){
+    ink.save();ink.strokeStyle=o.color;ink.fillStyle=o.color;ink.lineWidth=o.size;ink.lineCap='round';ink.lineJoin='round';
+    ink.globalAlpha=o.opacity===undefined?1:o.opacity;
+    if(o.type==='image'){
+      const img=imageCache.get(o.src);if(img)ink.drawImage(img,o.x,o.y,o.w,o.h);
+    }else if(o.type==='pen'||o.type==='eraser'){
+      ink.globalCompositeOperation=o.type==='eraser'?'destination-out':'source-over';
+      ink.beginPath();o.points.forEach((p,i)=>i?ink.lineTo(p.x,p.y):ink.moveTo(p.x,p.y));
+      if(o.points.length===1){ink.arc(o.points[0].x,o.points[0].y,o.size/2,0,Math.PI*2);ink.fill();}else ink.stroke();
+    }else if(['oil','watercolor','spray','marker'].includes(o.type)){
+      const points=o.points,alpha=ink.globalAlpha;
+      if(o.type==='oil'){
+        for(let bristle=0;bristle<7;bristle++){
+          const offset=(bristle-3)*o.size/8;ink.globalAlpha=alpha*(.48+(bristle%3)*.13);ink.lineWidth=Math.max(1,o.size/5);ink.beginPath();
+          points.forEach((p,i)=>i?ink.lineTo(p.x+offset,p.y+offset*.3):ink.moveTo(p.x+offset,p.y+offset*.3));
+          if(points.length===1){ink.arc(points[0].x+offset,points[0].y,o.size/10,0,Math.PI*2);ink.fill()}else ink.stroke();
+        }
+      }else if(o.type==='marker'){
+        ink.globalAlpha=alpha*.45;ink.lineCap='square';ink.lineWidth=o.size;ink.beginPath();points.forEach((p,i)=>i?ink.lineTo(p.x,p.y):ink.moveTo(p.x,p.y));if(points.length===1)ink.fillRect(points[0].x-o.size/2,points[0].y-o.size/2,o.size,o.size);else ink.stroke();
+      }else{
+        points.forEach((p,i)=>{
+          if(o.type==='watercolor'){const r=o.size/2,gradient=ink.createRadialGradient(p.x,p.y,0,p.x,p.y,r);gradient.addColorStop(0,o.color+'60');gradient.addColorStop(1,o.color+'00');ink.globalAlpha=alpha*.3;ink.fillStyle=gradient;ink.beginPath();ink.arc(p.x,p.y,r,0,Math.PI*2);ink.fill();}
+          else{ink.globalAlpha=alpha*.55;ink.fillStyle=o.color;for(let j=0;j<16;j++){const n=(Math.imul(i+1,73856093)^Math.imul(j+1,19349663))>>>0;const angle=(n%6283)/1000,r=Math.sqrt(((n>>>8)%1000)/1000)*o.size/2;ink.fillRect(p.x+Math.cos(angle)*r,p.y+Math.sin(angle)*r,1.2,1.2);}}
+        });
+      }
+    }else if(o.type==='text'){
+      ink.font='bold '+o.size+'px Tahoma, Arial, sans-serif';ink.textAlign='center';ink.textBaseline='middle';
+      ink.direction=/[\u0600-\u06ff]/.test(o.text)?'rtl':'ltr';ink.fillText(o.text,o.x,o.y);
+    }else{
+      const b=bounds(o);ink.beginPath();
+      if(o.type==='rect')ink.rect(b.x,b.y,b.w,b.h);else ink.ellipse(b.x+b.w/2,b.y+b.h/2,b.w/2,b.h/2,0,0,Math.PI*2);
+      ink.stroke();
+    }ink.restore();
+  }
+  function render(selection=true){
+    if(canvas.width!==state.w||canvas.height!==state.h){canvas.width=state.w;canvas.height=state.h;}
+    if(layer.width!==state.w||layer.height!==state.h){layer.width=state.w;layer.height=state.h;}else ink.clearRect(0,0,state.w,state.h);
+    ctx.fillStyle=state.bg;ctx.fillRect(0,0,state.w,state.h);
+    if(state.template==='gold'){
+      ctx.strokeStyle='#c59a3b';ctx.lineWidth=5;ctx.strokeRect(25,25,state.w-50,state.h-50);
+      ctx.lineWidth=1;ctx.strokeRect(36,36,state.w-72,state.h-72);
+    }else if(state.template==='celebrate'){
+      for(let i=0;i<48;i++){ctx.fillStyle=['#e9ae46','#d46391','#3a9f94','#7995d2'][i%4];const x=(i*137+21)%state.w,y=i%2?state.h-45-(i*7)%40:18+(i*11)%60;ctx.beginPath();ctx.arc(x,y,4+i%5,0,Math.PI*2);ctx.fill();}
+    }
+    state.objects.forEach(paintObject);ctx.drawImage(layer,0,0);
+    if(selection&&selected>=0&&state.objects[selected]){const b=bounds(state.objects[selected]);ctx.save();ctx.strokeStyle='#267bed';ctx.lineWidth=2;ctx.setLineDash([7,5]);ctx.strokeRect(b.x-5,b.y-5,b.w+10,b.h+10);ctx.restore();}
+    controls();
+  }
+  function point(e){const b=canvas.getBoundingClientRect();return{x:Math.max(0,Math.min(state.w,(e.clientX-b.left)*state.w/b.width)),y:Math.max(0,Math.min(state.h,(e.clientY-b.top)*state.h/b.height))};}
+  function pick(p){for(let i=state.objects.length-1;i>=0;i--){const o=state.objects[i];if(o.type==='eraser')continue;const b=bounds(o);if(p.x>=b.x-8&&p.x<=b.x+b.w+8&&p.y>=b.y-8&&p.y<=b.y+b.h+8)return i;}return -1;}
+  canvas.addEventListener('pointerdown',function(e){
+    if(gesture||e.button!==0)return;e.preventDefault();canvas.setPointerCapture(e.pointerId);const p=point(e);
+    if(tool==='eyedropper'){render(false);const pixel=ctx.getImageData(Math.min(state.w-1,Math.floor(p.x)),Math.min(state.h-1,Math.floor(p.y)),1,1).data;$('studioColor').value='#'+Array.from(pixel).slice(0,3).map(v=>v.toString(16).padStart(2,'0')).join('');say('picked');return;}
+    if(tool==='move'){selected=pick(p);if(selected>=0){history();gesture={id:e.pointerId,p,original:copy(state.objects[selected]),move:true};}}
+    else{history();selected=-1;const o={type:tool,color:$('studioColor').value,size:Number($('studioSize').value),opacity:Number($('studioOpacity').value)/100};
+      if(brushTypes.includes(tool))o.points=[p];else Object.assign(o,{x:p.x,y:p.y,x2:p.x,y2:p.y});
+      state.objects.push(o);gesture={id:e.pointerId,index:state.objects.length-1};}
+    render();
+  });
+  canvas.addEventListener('pointermove',function(e){
+    if(!gesture||gesture.id!==e.pointerId)return;e.preventDefault();const p=point(e);
+    if(gesture.move){const o=copy(gesture.original),dx=p.x-gesture.p.x,dy=p.y-gesture.p.y;
+      if(o.points)o.points=o.points.map(q=>({x:q.x+dx,y:q.y+dy}));else{o.x+=dx;o.y+=dy;if(o.x2!==undefined){o.x2+=dx;o.y2+=dy;}}
+      state.objects[selected]=o;
+    }else{const o=state.objects[gesture.index];if(o.points){const prev=o.points[o.points.length-1],distance=Math.hypot(p.x-prev.x,p.y-prev.y);if(distance<1)return;const steps=Math.min(60,Math.max(1,Math.ceil(distance/Math.max(2,o.size/5))));for(let i=1;i<=steps;i++)o.points.push({x:prev.x+(p.x-prev.x)*i/steps,y:prev.y+(p.y-prev.y)*i/steps});}else{o.x2=p.x;o.y2=p.y;}}
+    render();
+  });
+  function finish(e){if(gesture&&gesture.id===e.pointerId){gesture=null;render();}}
+  canvas.addEventListener('pointerup',finish);canvas.addEventListener('pointercancel',finish);canvas.addEventListener('lostpointercapture',finish);
+  $('studioTools').addEventListener('click',e=>{const b=e.target.closest('[data-tool]');if(b){tool=b.dataset.tool;selected=-1;render();}});
+  $('studioSize').addEventListener('input',()=>{$('studioSizeValue').value=$('studioSize').value;});
+  $('studioOpacity').addEventListener('input',()=>{$('studioOpacityValue').value=$('studioOpacity').value+'%';});
+  $('studioBackground').addEventListener('change',()=>{history();state.bg=$('studioBackground').value;render();});
+  $('studioTemplate').addEventListener('change',()=>{history();state.template=$('studioTemplate').value;render();});
+  $('studioFormat').addEventListener('change',()=>{
+    history();const [w,h]=$('studioFormat').value.split(',').map(Number),sx=w/state.w,sy=h/state.h;
+    state.objects.forEach(o=>{if(o.points)o.points.forEach(p=>{p.x*=sx;p.y*=sy;});else{o.x*=sx;o.y*=sy;if(o.type==='image'){const scale=Math.min(sx,sy);o.w*=scale;o.h*=scale;}if(o.x2!==undefined){o.x2*=sx;o.y2*=sy;}}});
+    state.w=w;state.h=h;selected=-1;render();
+  });
+  $('studioAddText').addEventListener('click',()=>{const text=$('studioText').value.trim();if(!text){say('empty');return;}
+    history();state.objects.push({type:'text',text,size:Number($('studioTextSize').value),color:$('studioColor').value,x:state.w/2,y:state.h/2});
+    selected=state.objects.length-1;tool='move';render();
+  });
+  $('studioDelete').addEventListener('click',()=>{if(selected>=0){history();state.objects.splice(selected,1);selected=-1;render();}});
+  $('studioUndo').addEventListener('click',()=>{if(undo.length){redo.push(copy(state));state=undo.pop();selected=-1;render();}});
+  $('studioRedo').addEventListener('click',()=>{if(redo.length){undo.push(copy(state));state=redo.pop();selected=-1;render();}});
+  modal.addEventListener('keydown',e=>{if(/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName))return;if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();$(e.shiftKey?'studioRedo':'studioUndo').click();}else if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='y'){e.preventDefault();$('studioRedo').click();}});
+  $('studioClear').addEventListener('click',()=>{if(!state.objects.length||confirm(words[lang].confirm)){history();state.objects=[];selected=-1;render();}});
+  $('studioSave').addEventListener('click',()=>{try{localStorage.setItem('sak-creative-draft-v1',JSON.stringify(state));say('saved');}catch(e){say('failed');}});
+  $('studioUpload').addEventListener('click',()=>{$('studioImageFile').click();});
+  $('studioImageFile').addEventListener('change',async()=>{
+    const file=$('studioImageFile').files[0];$('studioImageFile').value='';if(!file)return;
+    if(!/^image\/(png|jpeg|webp|gif)$/.test(file.type)||file.size>20*1024*1024){say('imageError');return;}
+    $('studioUpload').disabled=true;say('imageLoading');
+    const url=URL.createObjectURL(file);
+    try{
+      const original=await loadImage(url);
+      const scale=Math.min(1,1600/original.naturalWidth,1600/original.naturalHeight);
+      const resized=document.createElement('canvas');resized.width=Math.max(1,Math.round(original.naturalWidth*scale));resized.height=Math.max(1,Math.round(original.naturalHeight*scale));
+      resized.getContext('2d').drawImage(original,0,0,resized.width,resized.height);
+      const src=resized.toDataURL('image/png');await loadImage(src);
+      const fit=Math.min(state.w/resized.width,state.h/resized.height,1),w=resized.width*fit,h=resized.height*fit;
+      history();state.objects.unshift({type:'image',src,x:(state.w-w)/2,y:(state.h-h)/2,w,h});
+      selected=0;tool='move';render();say('imageReady');
+    }catch(e){say('imageError');}
+    finally{URL.revokeObjectURL(url);imageCache.delete(url);$('studioUpload').disabled=false;}
+  });
+  function resizeImage(factor){
+    const o=state.objects[selected];if(!o||o.type!=='image')return;
+    if(Math.min(o.w,o.h)*factor<10||Math.max(o.w,o.h)*factor>8000)return;
+    history();const w=o.w*factor,h=o.h*factor;o.x-=(w-o.w)/2;o.y-=(h-o.h)/2;o.w=w;o.h=h;render();
+  }
+  $('studioImageSmaller').addEventListener('click',()=>resizeImage(.9));
+  $('studioImageLarger').addEventListener('click',()=>resizeImage(1.1));
+  $('studioLoad').addEventListener('click',async()=>{try{
+    const raw=localStorage.getItem('sak-creative-draft-v1');if(!raw){say('missing');return;}
+    const saved=JSON.parse(raw);
+    if(!['900,600','800,800','600,900'].includes(saved.w+','+saved.h)||!Array.isArray(saved.objects)||saved.objects.length>10000||!/^#[0-9a-f]{6}$/i.test(saved.bg)||!['blank','gold','celebrate'].includes(saved.template))throw Error('Invalid draft');
+    saved.objects.forEach(o=>{if(o.opacity!==undefined&&(!Number.isFinite(o.opacity)||o.opacity<0||o.opacity>1))throw Error('Invalid opacity');if(o.type==='image'){if(typeof o.src!=='string'||!o.src.startsWith('data:image/png;base64,')||o.src.length>30000000||![o.x,o.y,o.w,o.h].every(Number.isFinite)||o.w<=0||o.h<=0||Math.max(o.w,o.h)>8000)throw Error('Invalid image');return;}if(![...brushTypes,'text','rect','ellipse'].includes(o.type)||!Number.isFinite(o.size)||o.size<1||o.size>100||!/^#[0-9a-f]{6}$/i.test(o.color))throw Error('Invalid object');if(brushTypes.includes(o.type)){if(!Array.isArray(o.points)||!o.points.length||o.points.length>100000||o.points.some(p=>!Number.isFinite(p.x)||!Number.isFinite(p.y)))throw Error('Invalid path');}else{if(!Number.isFinite(o.x)||!Number.isFinite(o.y))throw Error('Invalid position');if(o.type==='text'){if(typeof o.text!=='string'||o.text.length>120)throw Error('Invalid text');}else if(!Number.isFinite(o.x2)||!Number.isFinite(o.y2))throw Error('Invalid shape');}});
+    if(state.objects.length&&!confirm(words[lang].replace))return;
+    await Promise.all(saved.objects.filter(o=>o.type==='image').map(o=>loadImage(o.src)));
+    history();state=saved;selected=-1;render();say('loaded');
+  }catch(e){say('failed');}});
+  $('studioExport').addEventListener('click',()=>{
+    render(false);canvas.toBlob(blob=>{if(!blob){say('downloadError');return;}const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='SAKAKER-creative-'+Date.now()+'.png';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);say('downloaded');},'image/png');render();
+  });
+  function close(){if(modal.open)modal.close();modal.hidden=true;gesture=null;document.body.style.overflow=scrollBefore;if(lastFocus&&lastFocus.isConnected)lastFocus.focus();}
+  function open(){if(document.body.classList.contains('locked')||!modal.hidden)return;lastFocus=document.activeElement;scrollBefore=document.body.style.overflow;document.body.style.overflow='hidden';lang=document.documentElement.lang==='en'?'en':'ar';language();modal.hidden=false;if(typeof modal.showModal==='function')modal.showModal();render();$('studioClose').focus();}
+  modal.addEventListener('cancel',e=>{e.preventDefault();close();});
+  $('studioClose').addEventListener('click',close);
+  $('studioLang').addEventListener('click',()=>{lang=lang==='ar'?'en':'ar';language();});
+  modal.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();close();}if(e.key==='Tab'){const list=[...modal.querySelectorAll('button:not(:disabled),input:not([hidden]),select,canvas')];const first=list[0],last=list[list.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}});
+  function mount(){
+    const host=document.querySelector('.cards')||$('sakakerAllIconsDock');if(!host||$('sakCreativeIcon'))return;
+    const button=document.createElement('button');button.id='sakCreativeIcon';button.type='button';button.className='icon-card';
+    button.innerHTML='<span class="icon-svg" aria-hidden="true" style="font-size:25px">🎨</span><span class="icon-label"></span><span class="sub"></span>';
+    button.addEventListener('click',open);host.appendChild(button);labelIcon();
+  }
+  function labelIcon(){const b=$('sakCreativeIcon'),l=document.documentElement.lang==='en'?'en':'ar';if(b){b.querySelector('.icon-label').textContent=words[l].icon;b.querySelector('.sub').textContent=words[l].sub;b.title=words[l].icon;b.setAttribute('aria-label',words[l].icon);}}
+  new MutationObserver(()=>{labelIcon();if(!modal.hidden){lang=document.documentElement.lang==='en'?'en':'ar';language();}}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  new MutationObserver(()=>{if(document.body.classList.contains('locked')&&!modal.hidden)close();}).observe(document.body,{attributes:true,attributeFilter:['class']});
+  mount();document.addEventListener('DOMContentLoaded',mount,{once:true});language();render();
+})();
+</script>
 
 <style id="sakaker-firebase-social-chat-style">
 
@@ -40369,80 +41914,223 @@ body.sak-emerald-video-open #sakVideoLibraryBackdrop{
 
 
 
-<!-- SAKAKER EBOOKS — split app launcher -->
-<style id="sakaker-books-split-style">
-#sakBooksAppLayer{display:none;position:fixed;inset:0;width:100vw;height:100dvh;z-index:2147483647;background:rgba(1,7,12,.88);isolation:isolate}
-#sakBooksAppLayer.sak-open{display:block!important}
-#sakBooksAppFrame{display:block;width:100%;height:100%;border:0;background:transparent}
-</style>
-<div id="sakBooksAppLayer" aria-hidden="true"><iframe id="sakBooksAppFrame" title="كتب إلكترونية" loading="eager"></iframe></div>
-<script id="sakaker-books-split-js">
-(()=>{'use strict';const layer=document.getElementById('sakBooksAppLayer'),frame=document.getElementById('sakBooksAppFrame');
-window.openSakakerEbooks=function(){if(!frame.src||frame.src==='about:blank')frame.src='books.html';layer.classList.add('sak-open');layer.setAttribute('aria-hidden','false');document.documentElement.style.overflow='hidden';};
-window.closeSakakerEbooks=function(){layer.classList.remove('sak-open');layer.setAttribute('aria-hidden','true');document.documentElement.style.overflow='';frame.src='about:blank';};
-window.addEventListener('message',e=>{if(e.data&&e.data.type==='sakaker-close-app'&&e.data.app==='books')window.closeSakakerEbooks();});
-})();
-</script>
+<!-- SAKAKER EBOOKS LIBRARY FINAL -->
+<style id="sakaker-ebooks-library-style">
+html body #sakEbooksShelfModal,
+html body #sakEbookReaderModal{
+  position:fixed!important;inset:0!important;
+  z-index:2147483647!important;
+  display:none;align-items:center!important;justify-content:center!important;
+  box-sizing:border-box!important;padding:clamp(6px,1.5vw,16px)!important;
+  background:rgba(1,7,12,.86)!important;
+  backdrop-filter:blur(15px) saturate(150%)!important;
+  -webkit-backdrop-filter:blur(15px) saturate(150%)!important;
+  isolation:isolate!important;
+}
+html body #sakEbooksShelfModal.sak-open,
+html body #sakEbookReaderModal.sak-open{display:flex!important}
 
-<style id="sakaker-split-app-bridge-style">
-#sakSplitAppLayer{display:none;position:fixed;inset:0;width:100vw;height:100dvh;
-z-index:2147483647;background:#02090d;isolation:isolate}
-#sakSplitAppLayer.sak-open{display:flex;flex-direction:column}
-#sakSplitAppBar{height:52px;flex:0 0 52px;display:flex;align-items:center;
-justify-content:space-between;gap:10px;padding:max(6px,env(safe-area-inset-top)) 10px 6px;
-background:linear-gradient(145deg,rgba(4,35,39,.98),rgba(1,10,14,.99));
-border-bottom:1px solid rgba(185,255,238,.38);color:#fff}
-#sakSplitAppTitle{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#sakSplitAppClose{width:40px;height:40px;min-width:40px;border-radius:50%;
-border:1px solid rgba(255,255,255,.8);background:#76152d;color:#fff;font-size:25px;line-height:1}
-#sakSplitAppFrame{display:block;width:100%;height:calc(100dvh - 52px);border:0;background:#071216}
+html body #sakEbooksShelfModal .sak-ebooks-box{
+  width:min(980px,calc(100vw - 16px))!important;
+  max-height:calc(100dvh - 16px)!important;
+  display:flex!important;flex-direction:column!important;overflow:hidden!important;
+  border:1px solid rgba(218,255,247,.82)!important;border-radius:24px!important;
+  background:radial-gradient(circle at 16% 7%,rgba(130,255,223,.17),transparent 28%),linear-gradient(145deg,rgba(19,49,58,.94),rgba(5,17,24,.97))!important;
+  box-shadow:0 0 24px rgba(75,255,205,.34),0 28px 90px rgba(0,0,0,.72),inset 0 0 34px rgba(255,255,255,.06)!important;
+  color:#f5fffd!important;
+}
+html body #sakEbooksShelfModal .sak-ebooks-head,
+html body #sakEbookReaderModal .sak-ebook-reader-head{
+  flex:0 0 auto!important;display:flex!important;align-items:center!important;justify-content:space-between!important;
+  gap:10px!important;padding:12px 14px!important;border-bottom:1px solid rgba(210,255,244,.22)!important;
+}
+html body #sakEbooksShelfTitle,
+html body #sakEbookReaderTitle{margin:0!important;font-size:clamp(17px,3vw,25px)!important;color:#eafff8!important;text-shadow:0 0 12px rgba(68,255,203,.55)!important}
+html body .sak-ebook-close{
+  width:40px!important;height:40px!important;min-width:40px!important;border-radius:50%!important;
+  border:1px solid rgba(230,255,249,.76)!important;background:rgba(235,255,250,.13)!important;color:#fff!important;
+  font:700 27px/1 Arial,sans-serif!important;cursor:pointer!important;display:grid!important;place-items:center!important;
+}
+html body #sakEbooksGrid{
+  flex:1 1 auto!important;min-height:0!important;overflow:auto!important;-webkit-overflow-scrolling:touch!important;
+  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px!important;padding:14px!important;
+  overscroll-behavior:contain!important;
+}
+html body .sak-ebook-card{
+  position:relative!important;min-height:148px!important;padding:18px 14px!important;border-radius:18px!important;
+  border:1px solid rgba(216,255,245,.34)!important;background:linear-gradient(145deg,rgba(255,255,255,.13),rgba(0,205,160,.11))!important;
+  box-shadow:inset 0 0 22px rgba(255,255,255,.035),0 8px 24px rgba(0,0,0,.23)!important;
+  color:#f7fffd!important;text-align:start!important;cursor:pointer!important;font:inherit!important;
+  transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease!important;
+}
+html body .sak-ebook-card:hover,
+html body .sak-ebook-card:focus-visible{transform:translateY(-3px)!important;border-color:#72ffd8!important;box-shadow:0 0 20px rgba(58,255,201,.27),0 10px 28px rgba(0,0,0,.28)!important;outline:none!important}
+html body .sak-ebook-card .sak-book-icon{display:block!important;font-size:34px!important;margin-bottom:8px!important}
+html body .sak-ebook-card b{display:block!important;font-size:16px!important;line-height:1.5!important;margin-bottom:6px!important}
+html body .sak-ebook-card small{display:block!important;opacity:.78!important;font-size:12px!important;line-height:1.45!important}
+html body .sak-ebook-card .sak-book-actions{display:block!important;margin-top:9px!important;color:#78ffdc!important;font-size:11px!important;font-weight:800!important}
+
+html body #sakEbookReaderModal{padding:4px!important;background:rgba(0,4,8,.96)!important}
+html body #sakEbookReaderModal .sak-ebook-reader-box{
+  width:min(1500px,100vw)!important;height:min(980px,100dvh)!important;max-width:100vw!important;max-height:100dvh!important;
+  display:flex!important;flex-direction:column!important;overflow:hidden!important;border:1px solid rgba(206,255,244,.55)!important;
+  border-radius:18px!important;background:#071116!important;box-shadow:0 0 28px rgba(48,255,198,.30)!important;
+}
+html body #sakEbookReaderModal .sak-ebook-reader-head{padding:8px 10px!important;background:rgba(6,22,27,.98)!important}
+html body #sakEbookReaderTitle{flex:1 1 auto!important;min-width:0!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;font-size:15px!important}
+html body #sakEbookReaderActions{display:flex!important;gap:7px!important;align-items:center!important;flex:0 0 auto!important}
+html body #sakEbookReaderActions a{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:36px!important;padding:6px 11px!important;
+  border-radius:10px!important;border:1px solid rgba(132,255,220,.56)!important;background:rgba(0,195,151,.14)!important;color:#ecfff9!important;
+  text-decoration:none!important;font-size:12px!important;font-weight:800!important;white-space:nowrap!important;
+}
+html body #sakEbookReaderFrame{
+  flex:1 1 auto!important;width:100%!important;min-height:0!important;border:0!important;background:#e8e8e8!important;
+}
+html body #sakEbookReaderFallback{display:none!important;padding:18px!important;text-align:center!important;color:#fff!important}
+body.sak-ebook-layer-open :is(#siteLangToggle,#facebookVideoIcon,#liveFlasher,#sakakerPongDock,#pongGame-btn,#sakakerBusinessAd,#emeraldLibraryButton,#emeraldMusicHost,#shipIcon_new,#sakakerVisitorCounter,#sakakerRightStats,#sakakerStableIconsRail,.cards,.video-top-container-fixed,.launcher){pointer-events:none!important}
+
+@media(max-width:760px){
+  html body #sakEbooksGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;padding:9px!important;gap:8px!important}
+  html body .sak-ebook-card{min-height:122px!important;padding:12px!important}
+  html body #sakEbookReaderModal .sak-ebook-reader-box{border-radius:10px!important}
+  html body #sakEbookReaderActions a{padding:5px 8px!important;font-size:10px!important}
+}
+@media(max-width:480px){
+  html body #sakEbooksGrid{grid-template-columns:1fr!important}
+  html body #sakEbookReaderTitle{font-size:12px!important}
+  html body #sakEbookReaderActions a span.sak-action-word{display:none!important}
+}
 </style>
-<div id="sakSplitAppLayer" aria-hidden="true">
-  <div id="sakSplitAppBar">
-    <strong id="sakSplitAppTitle">SAKAKER</strong>
-    <button id="sakSplitAppClose" type="button" aria-label="إغلاق">×</button>
-  </div>
-  <iframe id="sakSplitAppFrame" title="SAKAKER application" src="about:blank"
-          allow="autoplay; fullscreen; clipboard-read; clipboard-write"></iframe>
+
+<div id="sakEbooksShelfModal" aria-hidden="true">
+  <section class="sak-ebooks-box" role="dialog" aria-modal="true" aria-labelledby="sakEbooksShelfTitle">
+    <header class="sak-ebooks-head">
+      <h2 id="sakEbooksShelfTitle">📚 كتب إلكترونية</h2>
+      <button id="sakEbooksShelfClose" class="sak-ebook-close" type="button" aria-label="إغلاق">×</button>
+    </header>
+    <div id="sakEbooksGrid"></div>
+  </section>
 </div>
-<script id="sakaker-split-app-bridge-js">
-(()=>{
-'use strict';
-const layer=document.getElementById('sakSplitAppLayer');
-const frame=document.getElementById('sakSplitAppFrame');
-const title=document.getElementById('sakSplitAppTitle');
-const close=document.getElementById('sakSplitAppClose');
-const isEn=()=>document.documentElement.lang==='en';
-function openApp(file,ar,en){
-  title.textContent=isEn()?en:ar;
-  frame.src=file;
-  layer.classList.add('sak-open');
-  layer.setAttribute('aria-hidden','false');
-  document.documentElement.style.overflow='hidden';
-}
-function closeApp(){
-  layer.classList.remove('sak-open');
-  layer.setAttribute('aria-hidden','true');
-  frame.src='about:blank';
-  document.documentElement.style.overflow='';
-}
-close.addEventListener('click',closeApp);
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&layer.classList.contains('sak-open'))closeApp()},true);
 
-const routes=[
- ['sakCreativeIcon','draw.html','🎨 الرسم الإبداعي','🎨 Creative Studio'],
- ['liveFlasher','live.html','📺 القنوات المباشرة','📺 Live Channels'],
- ['emeraldLibraryButton','videos.html','🎥 مكتبة الفيديو','🎥 Video Library'],
- ['pongGame-btn','pong.html','🏓 لعبة بونج','🏓 Pong']
-];
-routes.forEach(([id,file,ar,en])=>{
- const el=document.getElementById(id);
- if(!el)return;
- el.addEventListener('click',ev=>{ev.preventDefault();ev.stopImmediatePropagation();openApp(file,ar,en)},true);
-});
-window.openSakakerSplitApp=openApp;
+<div id="sakEbookReaderModal" aria-hidden="true">
+  <section class="sak-ebook-reader-box" role="dialog" aria-modal="true" aria-labelledby="sakEbookReaderTitle">
+    <header class="sak-ebook-reader-head">
+      <strong id="sakEbookReaderTitle">كتاب إلكتروني</strong>
+      <nav id="sakEbookReaderActions" aria-label="Book actions">
+        <a id="sakEbookOpenNew" href="#" target="_blank" rel="noopener">↗ <span class="sak-action-word">فتح</span></a>
+        <a id="sakEbookDownload" href="#" download>⬇ <span class="sak-action-word">تحميل</span></a>
+        <button id="sakEbookReaderClose" class="sak-ebook-close" type="button" aria-label="إغلاق">×</button>
+      </nav>
+    </header>
+    <iframe id="sakEbookReaderFrame" title="PDF reader" loading="eager"></iframe>
+    <div id="sakEbookReaderFallback"></div>
+  </section>
+</div>
+
+<script id="sakaker-ebooks-library-js">
+(function(){
+  'use strict';
+  const books=[
+    {id:'1gwOaOxZe75ADi4lQbjxfvDS-qP4qGEhv',name:'01-moghamara-fi-al-sahraa.pdf',ar:'مغامرة في الصحراء',en:'Adventure in the Desert',authorAr:'مصطفى محمود',authorEn:'Mostafa Mahmoud'},
+    {id:'1vXtFhdd_6B_1H7TiSmZ_BufboGYQf7f5',name:'02-anta-li.pdf',ar:'أنت لي',en:'Anta Li',authorAr:'منى المرشود',authorEn:'Mona Al-Mershoud'},
+    {id:'1QNTci94vrzoUWO1yZFZdZ5RlM1vOqH2d',name:'03-ikadoli.pdf',ar:'إيكادولي',en:'Ikadoli',authorAr:'حنان لاشين',authorEn:'Hanan Lashin'},
+    {id:'1z1iQDVvxcj49D664-wkCi-H3r2lBpkMs',name:'04-qadiyat-zaeem-al-isaba.pdf',ar:'قضية زعيم العصابة',en:'The Gang Leader Case',authorAr:'روايات مصرية للجيب',authorEn:'Egyptian Pocket Novels'},
+    {id:'1LdhTXBaSSHwOI6XBreWwCd8QqOjy3beu',name:'05-fann-al-hayat.pdf',ar:'فن الحياة',en:'The Art of Life',authorAr:'سلامة موسى',authorEn:'Salama Moussa'},
+    {id:'1svg6UMe1yq7d62iola4DHAMkT2dKWfPN',name:'06-alf-layla-wa-layla.pdf',ar:'ألف ليلة وليلة',en:'One Thousand and One Nights',authorAr:'المجلد الأول',authorEn:'Volume One'},
+    {id:'1X8LuHDx06ZjSG1TH-Y065i0yVXUUoebu',name:'07-qawaed-jartin.pdf',ar:'قواعد جارتين',en:'Qawaed Jartin',authorAr:'عمرو عبد الحميد',authorEn:'Amr Abdel Hamid'}
+  ];
+  const shelf=document.getElementById('sakEbooksShelfModal');
+  const reader=document.getElementById('sakEbookReaderModal');
+  const grid=document.getElementById('sakEbooksGrid');
+  const frame=document.getElementById('sakEbookReaderFrame');
+  const title=document.getElementById('sakEbookReaderTitle');
+  const download=document.getElementById('sakEbookDownload');
+  const openNew=document.getElementById('sakEbookOpenNew');
+  const isEn=()=>document.documentElement.lang==='en';
+  const txt=(ar,en)=>isEn()?en:ar;
+  let current=null;
+
+  function setLayer(open){
+    document.body.classList.toggle('sak-ebook-layer-open',!!open);
+  }
+  function bringToFront(el){
+    if(el && el.parentElement===document.body && document.body.lastElementChild!==el) document.body.appendChild(el);
+  }
+  function renderShelf(){
+    document.getElementById('sakEbooksShelfTitle').textContent=txt('📚 كتب إلكترونية','📚 E-Books');
+    document.getElementById('sakEbooksShelfClose').setAttribute('aria-label',txt('إغلاق','Close'));
+    grid.replaceChildren();
+    books.forEach((book,index)=>{
+      const b=document.createElement('button');
+      b.type='button'; b.className='sak-ebook-card';
+      b.innerHTML='<span class="sak-book-icon">📖</span><b>'+txt(book.ar,book.en)+'</b><small>'+txt(book.authorAr,book.authorEn)+'</small><span class="sak-book-actions">'+txt('قراءة • تحميل','Read • Download')+'</span>';
+      b.addEventListener('click',()=>openBook(index));
+      grid.appendChild(b);
+    });
+  }
+  function openShelf(){
+    renderShelf(); bringToFront(shelf); shelf.classList.add('sak-open'); shelf.setAttribute('aria-hidden','false'); setLayer(true);
+  }
+  function closeShelf(){
+    shelf.classList.remove('sak-open'); shelf.setAttribute('aria-hidden','true'); if(!reader.classList.contains('sak-open'))setLayer(false);
+  }
+  function openBook(index){
+    const book=books[index]; if(!book)return; current=book;
+    const preview='https://drive.google.com/file/d/'+book.id+'/preview';
+    const view='https://drive.google.com/file/d/'+book.id+'/view?usp=sharing';
+    const directDownload='https://drive.google.com/uc?export=download&id='+book.id;
+    title.textContent='📖 '+txt(book.ar,book.en);
+    download.href=directDownload;
+    download.removeAttribute('download');
+    download.target='_blank';
+    download.rel='noopener';
+    openNew.href=view;
+    download.innerHTML='⬇ <span class="sak-action-word">'+txt('تحميل','Download')+'</span>';
+    openNew.innerHTML='↗ <span class="sak-action-word">'+txt('فتح','Open')+'</span>';
+    document.getElementById('sakEbookReaderClose').setAttribute('aria-label',txt('إغلاق','Close'));
+    frame.title=txt('قارئ الكتاب','Book reader')+' - '+txt(book.ar,book.en);
+    frame.src=preview;
+    closeShelf(); bringToFront(reader); reader.classList.add('sak-open'); reader.setAttribute('aria-hidden','false'); setLayer(true);
+  }
+  function closeReader(backToShelf){
+    reader.classList.remove('sak-open'); reader.setAttribute('aria-hidden','true'); frame.src='about:blank'; current=null;
+    if(backToShelf){openShelf();}else{setLayer(false);}
+  }
+  function addLibraryButton(){
+    const grid0=document.querySelector('#sakTextLibraryModal .sak-text-library-grid');
+    if(!grid0 || grid0.querySelector('#sakEbooksLibraryItem'))return;
+    const b=document.createElement('button'); b.type='button'; b.id='sakEbooksLibraryItem'; b.className='sak-text-library-item';
+    b.innerHTML='<b>📚 '+txt('كتب إلكترونية','E-Books')+'</b><small>'+txt('قراءة وتحميل الكتب','Read and download books')+'</small>';
+    b.addEventListener('click',()=>{document.getElementById('sakTextLibraryModal')?.classList.remove('sak-open');openShelf();});
+    grid0.appendChild(b);
+  }
+
+  document.getElementById('sakEbooksShelfClose').addEventListener('click',closeShelf);
+  document.getElementById('sakEbookReaderClose').addEventListener('click',()=>closeReader(true));
+  shelf.addEventListener('click',e=>{if(e.target===shelf)closeShelf();});
+  reader.addEventListener('click',e=>{if(e.target===reader)closeReader(false);});
+  document.addEventListener('keydown',e=>{
+    if(e.key!=='Escape')return;
+    if(reader.classList.contains('sak-open')){e.preventDefault();closeReader(true);}
+    else if(shelf.classList.contains('sak-open')){e.preventDefault();closeShelf();}
+  },true);
+
+  const previousOpen=window.openSakakerTextLibrary;
+  window.openSakakerTextLibrary=function(){
+    if(typeof previousOpen==='function')previousOpen.apply(this,arguments);
+    setTimeout(addLibraryButton,0);
+  };
+  new MutationObserver(()=>{
+    if(document.getElementById('sakTextLibraryModal')?.classList.contains('sak-open')) addLibraryButton();
+    if(shelf.classList.contains('sak-open'))renderShelf();
+    if(reader.classList.contains('sak-open')&&current) title.textContent='📖 '+txt(current.ar,current.en);
+  }).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+
+  window.openSakakerEbooks=openShelf;
 })();
 </script>
+
 </body>
 </html>
 <!-- SAKAKER TEXT LIBRARY ABSOLUTE TOP LAYER FIX 2026-09-27 -->
@@ -40781,120 +42469,3 @@ body.sak-text-library-layer-open :is(
 })();
 </script>
 
-
-
-<!-- =========================================================
-     SAKAKER FINAL MOBILE / ICON REPAIR — 2026-09-29
-     Keeps apps inside the site and restores compact Live Channels UI.
-========================================================= -->
-<style id="sakaker-final-mobile-icon-repair">
-/* Creative Studio icon: keep the palette visible inside its card. */
-#sakCreativeIcon{overflow:hidden!important;min-width:0!important}
-#sakCreativeIcon .icon-svg{
-  display:flex!important;align-items:center!important;justify-content:center!important;
-  width:46px!important;height:46px!important;margin:0 auto 7px!important;
-  font-size:30px!important;line-height:1!important;color:initial!important;
-  visibility:visible!important;opacity:1!important;text-indent:0!important;
-}
-#sakCreativeIcon .icon-svg::before{content:"🎨"!important;display:block!important}
-#sakCreativeIcon .icon-svg{font-size:0!important}
-
-/* E-books card uses the same visual language as the main content cards. */
-#sakEbooksHomeIcon{min-width:0!important;overflow:hidden!important}
-#sakEbooksHomeIcon .sak-ebook-home-symbol{
-  display:flex;align-items:center;justify-content:center;width:46px;height:46px;
-  margin:0 auto 7px;font-size:30px;line-height:1;
-}
-
-/* Restore the older compact Live Channels window instead of a full-screen takeover. */
-html body #livePopup{
-  display:none;
-  position:fixed!important;
-  inset:auto!important;
-  top:50%!important;left:50%!important;right:auto!important;bottom:auto!important;
-  transform:translate(-50%,-50%)!important;
-  width:min(760px,92vw)!important;height:auto!important;
-  max-width:760px!important;max-height:86dvh!important;
-  margin:0!important;padding:18px 12px 16px!important;
-  overflow:auto!important;
-  border-radius:26px!important;
-  background:linear-gradient(145deg,rgba(1,28,30,.96),rgba(0,8,13,.97))!important;
-  border:1px solid rgba(0,255,210,.58)!important;
-  box-shadow:0 0 24px rgba(0,255,205,.34),0 24px 70px rgba(0,0,0,.76)!important;
-  backdrop-filter:blur(12px) saturate(130%)!important;
-  -webkit-backdrop-filter:blur(12px) saturate(130%)!important;
-  z-index:2147483647!important;
-}
-html body #livePopup #closePopup{
-  position:sticky!important;top:0!important;right:auto!important;float:right!important;
-  width:40px!important;height:40px!important;border-radius:50%!important;z-index:5!important;
-}
-html body #livePopup #liveVideosContainer{
-  width:100%!important;max-width:none!important;max-height:none!important;
-  margin:0!important;padding:10px 4px 4px!important;
-  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
-  gap:12px!important;overflow:visible!important;border:0!important;background:transparent!important;
-  box-shadow:none!important;
-}
-html body #livePopup .live-video{
-  width:100%!important;height:auto!important;aspect-ratio:16/9!important;margin:0!important;
-  border-radius:14px!important;overflow:hidden!important;background:#000!important;
-}
-html body #livePopup .live-video iframe{width:100%!important;height:100%!important;display:block!important}
-
-/* Main icon grid: predictable mobile layout, no overlap or horizontal overflow. */
-.cards{width:min(1050px,100%)!important;box-sizing:border-box!important}
-.cards>.icon-card{min-width:0!important;max-width:100%!important;box-sizing:border-box!important}
-@media(max-width:600px){
-  .cards{
-    display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
-    gap:10px!important;padding:0 10px!important;margin-left:auto!important;margin-right:auto!important;
-  }
-  .cards>.icon-card{
-    width:100%!important;min-height:112px!important;height:auto!important;margin:0!important;
-    padding:10px 6px!important;border-radius:17px!important;transform:none!important;
-  }
-  .cards>.icon-card .icon-label{font-size:13px!important;line-height:1.45!important;overflow-wrap:anywhere!important}
-  .cards>.icon-card .sub{font-size:11px!important;line-height:1.35!important;overflow-wrap:anywhere!important}
-  html body #livePopup{width:94vw!important;max-width:94vw!important;max-height:88dvh!important;padding:12px 8px!important;border-radius:20px!important}
-  html body #livePopup #liveVideosContainer{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;padding:8px 2px 2px!important}
-}
-@media(max-width:360px){
-  .cards{gap:7px!important;padding:0 7px!important}
-  .cards>.icon-card{min-height:104px!important;padding:8px 4px!important}
-  html body #livePopup #liveVideosContainer{grid-template-columns:1fr!important}
-}
-</style>
-<script id="sakaker-final-mobile-icon-repair-js">
-(()=>{
-  'use strict';
-  function isEn(){return document.documentElement.lang==='en'}
-  function ensureEbooksIcon(){
-    const host=document.querySelector('.cards');
-    if(!host || document.getElementById('sakEbooksHomeIcon')) return;
-    const b=document.createElement('button');
-    b.type='button';b.id='sakEbooksHomeIcon';b.className='icon-card';
-    b.innerHTML='<span class="sak-ebook-home-symbol" aria-hidden="true">📚</span><span class="icon-label"></span><span class="sub"></span>';
-    b.addEventListener('click',e=>{
-      e.preventDefault();e.stopPropagation();
-      if(typeof window.openSakakerEbooks==='function') window.openSakakerEbooks();
-      else if(typeof window.openSakakerTextLibrary==='function') window.openSakakerTextLibrary();
-    });
-    host.appendChild(b);labelEbooks();
-  }
-  function labelEbooks(){
-    const b=document.getElementById('sakEbooksHomeIcon');if(!b)return;
-    const title=isEn()?'E-Books':'كتب إلكترونية';
-    const sub=isEn()?'Read & download':'قراءة وتحميل الكتب';
-    b.querySelector('.icon-label').textContent=title;b.querySelector('.sub').textContent=sub;
-    b.title=title;b.setAttribute('aria-label',title);
-  }
-  function repairCreative(){
-    const b=document.getElementById('sakCreativeIcon');if(!b)return;
-    const icon=b.querySelector('.icon-svg');if(icon){icon.textContent='';icon.setAttribute('aria-hidden','true')}
-  }
-  function init(){ensureEbooksIcon();repairCreative();labelEbooks()}
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
-  new MutationObserver(()=>{init()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
-})();
-</script>
