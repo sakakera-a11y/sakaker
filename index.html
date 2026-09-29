@@ -4339,6 +4339,31 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
 @media(max-width:700px){html,body{max-width:100%;overflow-x:hidden}button,[role="button"],.icon-card{touch-action:manipulation}#shipPopup_new{border-radius:16px!important}#closeShip_new{position:sticky!important;top:0!important;float:inline-end!important;z-index:2!important}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
+
+<style id="sakaker-text-library-top-layer-fix">
+/* Text-library child windows must always be above every dock/icon/window. */
+html body .modal,
+html body #folderModal,
+html body #quizModal,
+html body #puzzleModal {
+  position:fixed !important;
+  inset:0 !important;
+  z-index:2147483646 !important;
+  isolation:isolate !important;
+}
+html body .modal .panel,
+html body #folderModal .panel,
+html body #quizModal .panel,
+html body #puzzleModal .panel {
+  position:relative !important;
+  z-index:2147483647 !important;
+}
+html body #sakTextLibraryModal {
+  position:fixed !important;
+  inset:0 !important;
+  z-index:2147483645 !important;
+}
+</style>
 </head>
 <body>
 
