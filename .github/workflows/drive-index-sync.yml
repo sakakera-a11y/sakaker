@@ -74,6 +74,10 @@ jobs:
         if: env.SKIP_SYNC != '1'
         run: python .github/scripts/ensure_text_library_layer.py index.html
 
+      - name: Preserve mobile dialog layout
+        if: env.SKIP_SYNC != '1'
+        run: python .github/scripts/ensure_responsive_dialog_layer.py index.html
+
       - name: Commit index.html only
         if: env.SKIP_SYNC != '1'
         shell: bash
