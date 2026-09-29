@@ -1,0 +1,466 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SAKAKER — Video Library</title><style>
+/* 🌟 أيقونة فليشر القنوات المباشرة */
+#liveFlasher {
+  position: fixed;
+  top: 300px;
+  right: 470px;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(0,255,200,0.18);
+  color: #000;
+  font-weight: bold;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 40px rgba(255,255,255,0.9), 0 0 80px rgba(255,255,255,0.7);
+  cursor: pointer;
+  z-index: 10000;
+  transition: transform 0.3s ease;
+  font-family: "Cairo", sans-serif;
+  animation: flashGlow 2s infinite ease-in-out;
+}
+@keyframes flashGlow {
+  0%, 100% { box-shadow: 0 0 30px rgba(255,255,255,0.7), 0 0 80px rgba(255,255,255,0.5); }
+  50% { box-shadow: 0 0 70px rgba(255,255,255,1), 0 0 120px rgba(255,255,255,0.9); }
+}
+#liveFlasher:hover {
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* نافذة القنوات المباشرة */
+#livePopup {
+  display: none;
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -30%);
+  width: 80vw;
+  max-width: 420px;
+  background: rgba(255,255,255,0.97);
+  border-radius: 30px;
+  box-shadow: 0 0 40px rgba(255,255,255,0.9);
+  padding: 15px 10px 25px;
+  z-index: 10001;
+  text-align: center;
+  animation: fadeIn 0.4s ease;
+  backdrop-filter: blur(10px);
+  color: #000;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -40%); }
+  to { opacity: 1; transform: translate(-50%, -30%); }
+}
+#closePopup {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: crimson;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s;
+}
+#closePopup:hover {
+  background: #ff5555;
+}
+#liveVideosContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 35px;
+}
+.live-video {
+  width: 130px;
+  height: 80px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+.live-video:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0,0,0,0.7);
+}
+.live-video iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  pointer-events: none;
+}
+
+/* الإطار المنبثق الكبير للفيديو */
+#videoOverlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(4px);
+  z-index: 10002;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 60px;
+}
+#videoBox {
+  position: relative;
+  width: 80%;
+  max-width: 600px;
+  aspect-ratio: 16/9;
+  background: #000;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(255,255,255,0.8);
+}
+#videoBox iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+#closeVideo {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: crimson;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 16px;
+  cursor: pointer;
+}
+#closeVideo:hover {
+  background: #ff5555;
+}
+
+/* زر مكتبة الفيديو الزمردية */
+#emeraldLibraryButton {
+  position: fixed;
+  right:1150px;
+  top: 390px;
+  z-index: 9500;
+  cursor: pointer;
+  padding: 2px 2px;
+  background: rgba(0,255,200,0.18);
+  color: #00ffff;
+  font-weight: bold;
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid rgba(0,55,55,0.4);
+}
+
+#emeraldLibraryContent {
+  display: none;
+  position: fixed;
+  right: 40px;
+  top:200px;
+  max-height: 70%;
+  overflow-y: auto;
+  background: rgba(0,0,0,0.85);
+  padding: 10px;
+  border-radius: 12px;
+  z-index: 9500;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid rgba(0,255,255,0.4);
+}
+
+.emeraldSectionHeader {
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.emeraldVideoCircle {
+  display: inline-block;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #00ffff;
+  box-shadow: 0 0 50px #00ffff;
+  margin: 5px;
+  cursor: pointer;
+  text-align: center;
+  line-height: 120px;
+  font-weight: bold;
+  color: #fff;
+  background: #000;
+  transition: 0.3s;
+  font-size: 13px;
+}
+.emeraldVideoCircle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 70px #00ffff;
+}
+
+/* مودال خاص بمكتبة الفيديو الزمردية */
+#emeraldModal {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.9);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+#emeraldModal iframe {
+  width:70%;
+  height:70%;
+  border-radius:12px;
+  box-shadow:0 0 70px #00ffff;
+  border:none;
+}
+#emeraldModalClose {
+  position:fixed;
+  top:10px;
+  right:510px;
+  padding:8px 12px;
+  background:rgba(0,255,255,0.3);
+  border:1px solid #00ffff;
+  color:#fff;
+  cursor:pointer;
+  z-index:10000;
+  border-radius:8px;
+}
+
+/* للجوال */
+@media (max-width: 768px) {
+  #liveFlasher {
+    width: 110px;
+    height: 110px;
+    right: 15px;
+    font-size: 13px;
+  }
+  #livePopup {
+    width: 90vw;
+    max-width: 340px;
+    top: 25%;
+    transform: translate(-50%, -25%);
+  }
+  .live-video {
+    width: 110px;
+    height: 65px;
+  }
+  #emeraldLibraryButton {
+    right: 10px;
+    top: 18%;
+  }
+  #pongButton {
+    right: 10px;
+  }
+}
+</style><style>body{background:#031218;color:#fff;padding:70px 12px}#emeraldLibraryButton{position:static!important;margin:0 auto 18px!important;width:max-content;max-width:90vw;padding:14px!important}#emeraldLibraryContent{position:static!important;display:flex!important;max-height:none!important;width:min(1000px,94vw);margin:auto;box-sizing:border-box}#emeraldModal{inset:0!important;width:100%!important;height:100%!important;z-index:2147483646!important}#emeraldModalClose{top:12px!important;right:50%!important;transform:translateX(50%);z-index:2147483647!important}</style></head><body><style>html,body{margin:0;min-height:100%;background:#041016;color:#fff;font-family:Tahoma,Arial,sans-serif}#back{position:fixed;top:10px;left:10px;z-index:2147483647;padding:10px 14px;border-radius:12px;border:1px solid #7fffd4;background:#092a2d;color:#fff;cursor:pointer}</style><button id="back" onclick="location.href='../index.html'">↩ الرئيسية / Home</button>id="emeraldLibraryButton">
+  🎥 مكتبة الفيديو الزمردية<br/>Emerald Video Library
+</div>
+
+<div id="emeraldLibraryContent">
+
+<div>
+<div class="emeraldSectionHeader" onclick="toggleEmeraldSection('musicSection')" style="background:rgba(255,105,180,0.85);color:#000;">
+      🎵 music موسيقى
+    </div>
+<div id="musicSection" style="display:none;flex-wrap:wrap;">
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/KKGQrOL6e7Y')">عربي</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/vPg67r76hAA')">أجنبي</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/o3PqK4ANeLU')">شرقية</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/Rp1gppNGmRo')">غربية</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/2U0RjjiBorY')">فهد السعيد</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/FDyB8dcSptk')">عيسى الأحسائي</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/l8CGuJzyiR8')">بشير</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/r-m2wwJy2cQ')">طلال</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/kEIWBDqovoI')">محمد عبده</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/kLXlntMZ-lc?si=qscrkusqTPWkdnVc')">حجاب</div>
+</div>
+</div>
+
+<div>
+<div class="emeraldSectionHeader" onclick="toggleEmeraldSection('docSection')" style="background:#FFD700;color:#000;">
+      📼 documentary وثائقية
+    </div>
+<div id="docSection" style="display:none;flex-wrap:wrap;">
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/R62QVvz1Aso')">نيرون صبيا</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/23jGQdwSRJs')">الحرب العالمية الثانية</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/DNE6YbGO6-M')">زواج كاترين دي</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/zh2HwG8fYFo')">الحضارات الإنسانية</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/hvJSvGslOl8')">صدام حسين</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/RO0xx5oeTA8')">كوريا الشمالية</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/4F-47lqOHDU')">جريمة في المنازل</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/EB6-ZDBF0hM')">سرقة القرن</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/uvjMiLxNLnk')">تاريخ اليهود</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/3HmOr-as-TA')">منغوليا</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/7nCjajfhY5o?si=jnu6LwdhTVUPhY5I')">فيلم 1</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/LDi6-iC1j8A?si=ZdyC0y5eG_Nl7brf')">فيلم 2</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/7lo81AX8siE?si=lqWG8WfGe4HRKJwZ')">فيلم 3</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/fjed1u7A9wM?si=3OPczpybVbdBQWFW')">فيلم 4</div>
+</div>
+</div>
+
+<div>
+<div class="emeraldSectionHeader" onclick="toggleEmeraldSection('cartoonSection')" style="background:#000;color:#fff;">
+      cartoon 🎨 كرتون
+    </div>
+<div id="cartoonSection" style="display:none;flex-wrap:wrap;">
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/U5sBC9Fr0fA')">كرتون</div>
+<div class="emeraldVideoCircle sak-moved-picks-video" data-sak-video-id="jtT5Ifr-3VA" onclick="openEmeraldVideo('https://www.youtube.com/embed/jtT5Ifr-3VA')">مختارات سابقة — Previous Selection</div>
+</div>
+</div>
+
+<div>
+<div class="emeraldSectionHeader" onclick="toggleEmeraldSection('moviesSection')" style="background:#333;color:#fff;">
+      films 🎬 أفلام
+    </div>
+<div id="moviesSection" style="display:none;flex-wrap:wrap;">
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/R4TZ6r_af8A')">أجنبي</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/qxAXFYcbOpU')">عربي</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/LqHLkqqIukQ')">شاهد ما شفش حاجة</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/2p55ymDVH5Y')">فلم الحدود</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/anMBqlPFCwU')">الرجل السكير</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/aznfIFN7cyo')">كينج فو</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/fqOALQ3pehE')">Sisters with Secrets</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/kJqW_xsMuh8')">جاكي شان</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/0go3k0frmjc')">فلم هندي</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/D3oO_9S6TVM')">Faster</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/Hf0-8kV-6E4')">Comedy 1</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/rnJ6k-hjsqM?si=KXJu7um4Ru3Kq7p2')">فيلم 1</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/r0qVH647sI4?si=hg7u6f3H-pqMxwvw')">فيلم 2</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/cwSoWCJGe9Y?si=06FFz92rA8AtLk2E')">فيلم 3</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/VmUE1nSUwcU?si=FmkLKUWELKlCJ5eQ')">فيلم 4</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/TXimDjSatvk?si=HPcV4Di6svQ0YmYv')">فيلم 5</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/pFLinegONA4?si=jWVb_7MeXUeOhKNz')">فيلم 6</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/ThFxdmLCh6A?si=2K3mEf0KxV-shOuf')">فيلم 7</div>
+</div>
+</div>
+
+<div>
+<div class="emeraldSectionHeader" onclick="toggleEmeraldSection('sportsSection')" style="background:rgba(165,42,42,0.85);color:#fff;">
+      sports ⚽ رياضة
+    </div>
+<div id="sportsSection" style="display:none;flex-wrap:wrap;">
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/X7ByhZIGEjI')">رياضة</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/NYTo6KB7IqQ')">كرة القدم نساء</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/yMb_7VEhyNQ')">كرة قدم رجال</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/s3qWsdWfK24')">تشلسي</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/6J4JEFwm63o')">التعاون 5 الرائد 1</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/bbmoXwaSpGY?si=-02ni4PZ9DpKFzUF')">طائرة نسائية</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/WYtC7nuChPA?si=Jw4hFD5kWubGKJm3')">تشلسي أخرى</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/x8xdEOnv0Dk?si=yzn4J5NkCCtqc1q9')">تشلسي رجال</div>
+</div>
+</div>
+
+<div>
+<div class="emeraldSectionHeader" onclick="toggleEmeraldSection('educationSection')" style="background:rgba(0,0,255,0.25);color:#fff;">
+      Educational 📘 تعليمية
+    </div>
+<div id="educationSection" style="display:none;flex-wrap:wrap;">
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/hOH7ZLE-ZN8')">إبراهيم الفقي</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/sJ5ib2Gbfy8')">مصطفى محمود</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/fMlF99erfHw')">سقراط</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/_KXmZKW_cag?si=YAmKW4EOx-IREgGP&amp;mute=1')">تعلم الإنجليزية</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/v5zol69e02o?si=SE4tX2T8BL38trob&amp;mute=1')">تعلم العود</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/uEWJkk6X8fg?si=PW2Dh_O9fE9bzCxF&amp;mute=1')">SATC</div>
+</div>
+</div>
+
+<div>
+<div class="emeraldSectionHeader" onclick="toggleEmeraldSection('religiousSection')" style="background:rgba(0,128,0,0.85);color:#fff;">
+      Islamic religion 📿 دينية
+    </div>
+<div id="religiousSection" style="display:none;flex-wrap:wrap;">
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/myYiNE3HpKc')">قصص الأنبياء</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/kIj0E3Pl1kY')">تفسير القرآن</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/UR6vcevAi5o')">قرآن</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/s-KsCr4VjMo')">تلبيس إبليس</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/q_V_Xbq4S64?si=ZueNfoqOkNrSxrRm')">الشيخ كشك</div>
+</div>
+</div>
+
+<div>
+<div class="emeraldSectionHeader" onclick="toggleEmeraldSection('generalInfoSection')" style="background:rgba(0,102,153,0.85);color:#fff;">
+    General Information 🌍 معلومات عامة
+  </div>
+<div id="generalInfoSection" style="display:none;flex-wrap:wrap;">
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/oQKFrM_mm9c?si=3gqHYt6etLej26tn')">
+      معلومات عامة 1
+    </div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/eomvD-Kt6Es?si=9ZzWd-YfxVWnF-fl')">
+      معلومات عامة 2
+    </div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/oHtlsniSb_Y?si=OLv0mDakO25w7jpS')">
+      معلومات عامة 3
+    </div>
+</div>
+</div>
+
+st iframe = document.getElementById("mainVideo");
+    if (!overlay || !iframe) return;
+    iframe.src = "";
+    overlay.style.display = "none";
+  }
+</script>
+<script>
+// فتح / إغلاق المكتبة
+  document.getElementById('emeraldLibraryButton').addEventListener('click', function() {
+    const content = document.getElementById('emeraldLibraryContent');
+    if (!content) return;
+    content.style.display = (content.style.display === 'block') ? 'none' : 'block';
+
+    if (content.style.display === 'block') {
+      const sections = ['musicSection','docSection','cartoonSection','moviesSection',
+                        'sportsSection','educationSection','religiousSection','gamesSection'];
+      sections.forEach(id => {
+        const sec = document.getElementById(id);
+        if (sec) sec.style.display = 'none';
+      });
+    }
+  });
+
+  function toggleEmeraldSection(id) {
+    const section = document.getElementById(id);
+    if (!section) return;
+    section.style.display = (section.style.display === 'flex' || section.style.display === 'block')
+      ? 'none'
+      : 'flex';
+  }
+
+  function openEmeraldVideo(url) {
+    // إزالة مودال قديم
+    const old = document.getElementById('emeraldModal');
+    if (old) old.remove();
+
+    const modal = document.createElement('div');
+    modal.id = 'emeraldModal';
+
+    const iframe = document.createElement('iframe');
+    iframe.src = url + (url.includes("?") ? "&" : "?") + "autoplay=1";
+    iframe.allow = "autoplay; encrypted-media; picture-in-picture";
+    iframe.allowFullscreen = true;
+
+    const closeBtn = document.createElement('button');
+    closeBtn.id = 'emeraldModalClose';
+    closeBtn.textContent = 'إغلاق ✖';
+    closeBtn.onclick = () => modal.remove();
+
+    modal.appendChild(iframe);
+    modal.appendChild(closeBtn);
+    document.body.appendChild(modal);
+  }
+<script>document.getElementById('emeraldLibraryContent').style.display='flex';document.getElementById('emeraldLibraryButton').style.display='none';</script></body></html>
