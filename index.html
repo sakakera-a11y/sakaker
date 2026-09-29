@@ -313,6 +313,16 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape') closeTextLi
 </script>
 
 <style id="sakaker-optimized-final">#sakakerTopDateTime,#sakakerTopTime,#sakakerTopDate,#sakHeaderClock,#clock,#date,.clock-box,#sakakerClockSlot{display:none!important}.sakaker-news-clock{grid-template-columns:1fr!important}#shipPopup_new{width:min(860px,calc(100vw - 18px))!important;max-height:calc(100dvh - 18px)!important;padding:48px clamp(14px,3vw,30px) 22px!important;overflow:auto!important;overscroll-behavior:contain!important}#shipPopup_new .ship-anniversary{max-width:720px;margin:auto;text-align:start;line-height:1.9}#shipPopup_new h2{text-align:center;margin:0 0 18px;color:#d4af37!important}#shipPopup_new h3{color:#9fffe8;margin:24px 0 8px;text-align:center}#shipPopup_new p{font-size:clamp(15px,2.2vw,18px)!important;text-align:start!important;color:#d9fff8!important;margin:0 0 14px}#shipPopup_new .ship-lead{text-align:center!important;color:#9ffff0!important}#shipPopup_new .ship-word{padding:16px;border-inline:3px solid #d4af37;border-radius:14px;background:rgba(0,255,200,.05)}#shipPopup_new footer{display:grid;gap:6px;text-align:center;margin-top:26px;color:#00ffd5}#shipPopup_new footer strong{font-size:24px;color:#d4af37}#shipPopup_new footer small{color:#aaa}@media(max-width:700px){html,body{max-width:100%;overflow-x:hidden}button,[role="button"],.icon-card{touch-action:manipulation}#shipPopup_new{border-radius:16px!important}#closeShip_new{position:sticky!important;top:0!important;float:inline-end!important;z-index:2!important}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}</style>
+<!-- SAKAKER FREE HOSTING PERFORMANCE HINTS -->
+<style id="sakaker-free-hosting-performance">
+@media (max-width:900px){
+  html body *{-webkit-tap-highlight-color:transparent}
+  html body [style*="backdrop-filter"],html body [class*="glass"]{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+}
+@media (prefers-reduced-motion:reduce){
+  html body *,html body *::before,html body *::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+}
+</style>
 </head>
 <body>
 
@@ -4065,7 +4075,7 @@ p.innerHTML=`
               autoplay
               muted
               playsinline
-            ></video>
+             preload="metadata"></video>
 
           </div>
 
@@ -8633,7 +8643,7 @@ isEn()
 
 /*
 بعض الروابط تحتاج Referrer أو User-Agent مخصص.
-المتصفح لا يستطيع ضبط هذه الرؤوس لـ <video>.
+المتصفح لا يستطيع ضبط هذه الرؤوس لـ <video preload="metadata">.
 */
 if(
 stream.referrer ||
