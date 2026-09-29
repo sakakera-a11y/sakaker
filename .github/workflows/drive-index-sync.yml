@@ -70,9 +70,9 @@ jobs:
           PY
           mv index.html.new index.html
 
-      - name: Apply safe performance optimizations
+      - name: Preserve text library window layer
         if: env.SKIP_SYNC != '1'
-        run: python .github/scripts/optimize_index.py index.html
+        run: python .github/scripts/ensure_text_library_layer.py index.html
 
       - name: Commit index.html only
         if: env.SKIP_SYNC != '1'
@@ -86,5 +86,5 @@ jobs:
             echo 'index.html is already current.'
             exit 0
           fi
-          git commit -m 'Sync optimized index.html from Google Drive'
+          git commit -m 'Sync index.html from Google Drive'
           git push origin HEAD:main
