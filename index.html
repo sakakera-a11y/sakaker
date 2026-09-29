@@ -4230,11 +4230,6 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
     {icon:'🧩', ar:'ألغاز', en:'Riddles', run:function(){window.openPuzzle();}},
     {icon:'ℹ️', ar:'تعريف بالموقع', en:'About the Site', run:function(){window.openFolder(5);}},
     {icon:'📰', ar:'أخبار الموقع', en:'Site News', run:function(){window.openSiteNewsModal();}},
-    {icon:'📚', ar:'كتب إلكترونية', en:'E-Books', run:function(){
-      if(typeof window.closeTextLibrary==='function') window.closeTextLibrary();
-      else document.getElementById('sakTextLibraryModal')?.classList.remove('sak-open');
-      if(typeof window.openSakakerEbooks==='function') window.openSakakerEbooks();
-    }},
     {icon:'📜', ar:'حكم وأمثال', en:'Wisdom & Proverbs', run:function(){window.openWisdomLibrary();}}
   ];
   const isEnglish = function(){return document.documentElement.lang === 'en';};
@@ -40383,15 +40378,7 @@ body.sak-emerald-video-open #sakVideoLibraryBackdrop{
 <div id="sakBooksAppLayer" aria-hidden="true"><iframe id="sakBooksAppFrame" title="كتب إلكترونية" loading="eager"></iframe></div>
 <script id="sakaker-books-split-js">
 (()=>{'use strict';const layer=document.getElementById('sakBooksAppLayer'),frame=document.getElementById('sakBooksAppFrame');
-window.openSakakerEbooks=function(){
-  const textLibrary=document.getElementById('sakTextLibraryModal');
-  if(textLibrary) textLibrary.classList.remove('sak-open');
-  if(!frame.src||frame.src==='about:blank')frame.src='books.html';
-  layer.classList.add('sak-open');
-  layer.setAttribute('aria-hidden','false');
-  layer.style.setProperty('z-index','2147483647','important');
-  document.documentElement.style.overflow='hidden';
-};
+window.openSakakerEbooks=function(){if(!frame.src||frame.src==='about:blank')frame.src='books.html';layer.classList.add('sak-open');layer.setAttribute('aria-hidden','false');document.documentElement.style.overflow='hidden';};
 window.closeSakakerEbooks=function(){layer.classList.remove('sak-open');layer.setAttribute('aria-hidden','true');document.documentElement.style.overflow='';frame.src='about:blank';};
 window.addEventListener('message',e=>{if(e.data&&e.data.type==='sakaker-close-app'&&e.data.app==='books')window.closeSakakerEbooks();});
 })();
@@ -40444,6 +40431,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&layer.classList.con
 
 const routes=[
  ['sakCreativeIcon','draw.html','🎨 الرسم الإبداعي','🎨 Creative Studio'],
+ ['liveFlasher','live.html','📺 القنوات المباشرة','📺 Live Channels'],
  ['emeraldLibraryButton','videos.html','🎥 مكتبة الفيديو','🎥 Video Library'],
  ['pongGame-btn','pong.html','🏓 لعبة بونج','🏓 Pong']
 ];
@@ -40811,6 +40799,13 @@ body.sak-text-library-layer-open :is(
 #sakCreativeIcon .icon-svg::before{content:"🎨"!important;display:block!important}
 #sakCreativeIcon .icon-svg{font-size:0!important}
 
+/* E-books card uses the same visual language as the main content cards. */
+#sakEbooksHomeIcon{min-width:0!important;overflow:hidden!important}
+#sakEbooksHomeIcon .sak-ebook-home-symbol{
+  display:flex;align-items:center;justify-content:center;width:46px;height:46px;
+  margin:0 auto 7px;font-size:30px;line-height:1;
+}
+
 /* Restore the older compact Live Channels window instead of a full-screen takeover. */
 html body #livePopup{
   display:none;
@@ -40873,11 +40868,33 @@ html body #livePopup .live-video iframe{width:100%!important;height:100%!importa
 <script id="sakaker-final-mobile-icon-repair-js">
 (()=>{
   'use strict';
+  function isEn(){return document.documentElement.lang==='en'}
+  function ensureEbooksIcon(){
+    const host=document.querySelector('.cards');
+    if(!host || document.getElementById('sakEbooksHomeIcon')) return;
+    const b=document.createElement('button');
+    b.type='button';b.id='sakEbooksHomeIcon';b.className='icon-card';
+    b.innerHTML='<span class="sak-ebook-home-symbol" aria-hidden="true">📚</span><span class="icon-label"></span><span class="sub"></span>';
+    b.addEventListener('click',e=>{
+      e.preventDefault();e.stopPropagation();
+      if(typeof window.openSakakerEbooks==='function') window.openSakakerEbooks();
+      else if(typeof window.openSakakerTextLibrary==='function') window.openSakakerTextLibrary();
+    });
+    host.appendChild(b);labelEbooks();
+  }
+  function labelEbooks(){
+    const b=document.getElementById('sakEbooksHomeIcon');if(!b)return;
+    const title=isEn()?'E-Books':'كتب إلكترونية';
+    const sub=isEn()?'Read & download':'قراءة وتحميل الكتب';
+    b.querySelector('.icon-label').textContent=title;b.querySelector('.sub').textContent=sub;
+    b.title=title;b.setAttribute('aria-label',title);
+  }
   function repairCreative(){
     const b=document.getElementById('sakCreativeIcon');if(!b)return;
     const icon=b.querySelector('.icon-svg');if(icon){icon.textContent='';icon.setAttribute('aria-hidden','true')}
   }
-  function init(){repairCreative()}
+  function init(){ensureEbooksIcon();repairCreative();labelEbooks()}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+  new MutationObserver(()=>{init()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 })();
 </script>
