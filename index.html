@@ -42469,3 +42469,89 @@ body.sak-text-library-layer-open :is(
 })();
 </script>
 
+
+<!-- SAKAKER RESPONSIVE DIALOG LAYER 2026-09-29 -->
+<style id="sakaker-responsive-dialog-layer">
+/* Keep each active dialog above the fixed icon dock and within the visual viewport. */
+html body :is(#facebookVideoPopup,#livePopup,#videoOverlay,#emeraldModal,#sakakerBusinessPopup,#emeraldLibraryContent,#sakakerMapOverlay,#sakMusicPlayer,#sakLearningModal,#sakTextLibraryModal,#sakakerSiteNewsModal,.modal){
+  box-sizing:border-box !important;
+  z-index:2147483646 !important;
+}
+html body #facebookVideoPopup{
+  position:fixed !important;
+  inset:0 !important;
+  width:100% !important;
+  max-width:none !important;
+  height:100dvh !important;
+  max-height:none !important;
+  padding:max(8px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left)) !important;
+  overflow:hidden !important;
+}
+html body #facebookVideoPopup .fbVideoBox{
+  width:min(720px,100%) !important;
+  min-width:0 !important;
+  max-width:100% !important;
+  max-height:100% !important;
+  overflow-x:hidden !important;
+  overflow-y:auto !important;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+}
+html body #facebookVideoPopup :is(.fbFeaturedReelSection,.fbPostSection,.fbVideoFrame,.fbComments){min-width:0 !important;max-width:100% !important;box-sizing:border-box !important}
+html body #facebookVideoPopup :is(.fbFeaturedReelFrame,.fbPostFrame,.fbVideoFrame){max-width:100% !important;box-sizing:border-box !important}
+html body #facebookVideoPopup .fbPostFrame{justify-content:flex-start !important;overflow-x:auto !important;-webkit-overflow-scrolling:touch}
+html body #facebookVideoPopup .fbPostFrame iframe{flex:0 0 auto !important;max-width:none !important;min-width:350px !important}
+html body #facebookVideoPopup .fbVideoFrame iframe{width:100% !important;max-width:100% !important;min-width:0 !important}
+html body #facebookVideoPopup #facebookVideoClose{position:sticky !important;top:0 !important;z-index:2 !important;min-width:38px !important;min-height:38px !important}
+html body :is(#livePopup,#videoOverlay,#emeraldModal,#sakakerBusinessPopup,#sakakerMapOverlay,#sakMusicPlayer,#sakLearningModal,#sakTextLibraryModal,#sakakerSiteNewsModal){max-height:100dvh !important;overflow-y:auto !important;overscroll-behavior:contain !important}
+html body #emeraldModal{inset:0 !important;width:100% !important;height:100dvh !important;padding:clamp(8px,3vw,20px) !important}
+html body #emeraldModal iframe{width:min(900px,100%) !important;height:min(70dvh,600px) !important;max-width:100% !important}
+html body #emeraldModalClose{position:fixed !important;top:max(10px,env(safe-area-inset-top)) !important;right:max(10px,env(safe-area-inset-right)) !important;left:auto !important;z-index:2147483647 !important}
+html body #shipPopup_new{z-index:2147483646 !important;max-width:calc(100vw - 16px) !important;max-height:calc(100dvh - 16px) !important;overflow:auto !important}
+html body #sakakerBusinessPopup{position:fixed !important;inset:0 !important;width:100% !important;height:100dvh !important;max-width:none !important;padding:10px !important;overflow-y:auto !important}
+html body #sakakerBusinessPopup .sbPopupBox{max-width:100% !important;max-height:calc(100dvh - 20px) !important;overflow:auto !important}
+html body .modal{height:100dvh !important;max-height:100dvh !important;overflow-y:auto !important}
+html body .modal .panel{max-width:100% !important;max-height:calc(100dvh - 20px) !important;min-width:0 !important}
+@media(max-width:700px){
+  html body #facebookVideoPopup .fbVideoBox{width:100% !important;padding:10px !important;border-radius:16px !important}
+  html body #facebookVideoPopup .fbFeaturedReelFrame iframe{max-height:62dvh !important;min-height:0 !important}
+  html body #facebookVideoPopup .fbPostFrame iframe{height: min(330px,43dvh) !important;min-height:185px !important}
+  html body #facebookVideoPopup .fbVideoFrame iframe{height:min(410px,48dvh) !important;min-height:190px !important}
+  html body #livePopup #liveVideosContainer{width:100% !important;max-width:100% !important;grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+  html body #videoOverlay #videoBox{width:100% !important;max-width:100% !important}
+  html body .modal{padding:8px !important}
+  html body .modal .panel{width:100% !important;height:auto !important;max-height:calc(100dvh - 16px) !important}
+}
+@media(max-width:360px){html body #livePopup #liveVideosContainer{grid-template-columns:1fr !important}}
+</style>
+<script id="sakaker-responsive-dialog-layer-js">
+(function(){
+  'use strict';
+  const ids=['facebookVideoPopup','livePopup','videoOverlay','emeraldModal','shipPopup_new','sakakerBusinessPopup','emeraldLibraryContent','sakakerMapOverlay','sakMusicPlayer','sakLearningModal','sakTextLibraryModal','sakakerSiteNewsModal','folderModal','quizModal','puzzleModal'];
+  let busy=false;
+  function active(el){
+    if(!el || getComputedStyle(el).display==='none' || getComputedStyle(el).visibility==='hidden')return false;
+    if(el.id==='facebookVideoPopup')return el.classList.contains('active');
+    return true;
+  }
+  function sync(){
+    busy=false;
+    const open=ids.map(id=>document.getElementById(id)).filter(active);
+    const top=open.at(-1);
+    for(const el of open){
+      if(el.parentElement!==document.body)document.body.appendChild(el);
+      const desired=el===top?'2147483647':'2147483646';
+      if(el.style.getPropertyValue('z-index')!==desired || el.style.getPropertyPriority('z-index')!=='important'){
+        el.style.setProperty('z-index',desired,'important');
+      }
+    }
+    if(top && document.body.lastElementChild!==top)document.body.appendChild(top);
+  }
+  function queue(){if(!busy){busy=true;requestAnimationFrame(sync)}}
+  const observer=new MutationObserver(queue);
+  observer.observe(document.body,{subtree:true,attributes:true,attributeFilter:['class','style'],childList:true});
+  document.addEventListener('click',queue,true);
+  window.addEventListener('resize',queue,{passive:true});
+  queue();
+})();
+</script>
