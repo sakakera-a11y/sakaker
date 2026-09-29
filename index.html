@@ -3238,9 +3238,277 @@ body{
 
 }
 </style>
+<style>
+/* 🌟 أيقونة فليشر القنوات المباشرة */
+#liveFlasher {
+  position: fixed;
+  top: 300px;
+  right: 470px;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(0,255,200,0.18);
+  color: #000;
+  font-weight: bold;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 40px rgba(255,255,255,0.9), 0 0 80px rgba(255,255,255,0.7);
+  cursor: pointer;
+  z-index: 10000;
+  transition: transform 0.3s ease;
+  font-family: "Cairo", sans-serif;
+  animation: flashGlow 2s infinite ease-in-out;
+}
+@keyframes flashGlow {
+  0%, 100% { box-shadow: 0 0 30px rgba(255,255,255,0.7), 0 0 80px rgba(255,255,255,0.5); }
+  50% { box-shadow: 0 0 70px rgba(255,255,255,1), 0 0 120px rgba(255,255,255,0.9); }
+}
+#liveFlasher:hover {
+  transform: translateY(-50%) scale(1.1);
+}
 
-<!-- SAKAKER SPLIT: moved module 44975-50233 to /apps -->
+/* نافذة القنوات المباشرة */
+#livePopup {
+  display: none;
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -30%);
+  width: 80vw;
+  max-width: 420px;
+  background: rgba(255,255,255,0.97);
+  border-radius: 30px;
+  box-shadow: 0 0 40px rgba(255,255,255,0.9);
+  padding: 15px 10px 25px;
+  z-index: 10001;
+  text-align: center;
+  animation: fadeIn 0.4s ease;
+  backdrop-filter: blur(10px);
+  color: #000;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -40%); }
+  to { opacity: 1; transform: translate(-50%, -30%); }
+}
+#closePopup {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: crimson;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s;
+}
+#closePopup:hover {
+  background: #ff5555;
+}
+#liveVideosContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 35px;
+}
+.live-video {
+  width: 130px;
+  height: 80px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+.live-video:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0,0,0,0.7);
+}
+.live-video iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  pointer-events: none;
+}
 
+/* الإطار المنبثق الكبير للفيديو */
+#videoOverlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(4px);
+  z-index: 10002;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 60px;
+}
+#videoBox {
+  position: relative;
+  width: 80%;
+  max-width: 600px;
+  aspect-ratio: 16/9;
+  background: #000;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(255,255,255,0.8);
+}
+#videoBox iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+#closeVideo {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: crimson;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 16px;
+  cursor: pointer;
+}
+#closeVideo:hover {
+  background: #ff5555;
+}
+
+/* زر مكتبة الفيديو الزمردية */
+#emeraldLibraryButton {
+  position: fixed;
+  right:1150px;
+  top: 390px;
+  z-index: 9500;
+  cursor: pointer;
+  padding: 2px 2px;
+  background: rgba(0,255,200,0.18);
+  color: #00ffff;
+  font-weight: bold;
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid rgba(0,55,55,0.4);
+}
+
+#emeraldLibraryContent {
+  display: none;
+  position: fixed;
+  right: 40px;
+  top:200px;
+  max-height: 70%;
+  overflow-y: auto;
+  background: rgba(0,0,0,0.85);
+  padding: 10px;
+  border-radius: 12px;
+  z-index: 9500;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid rgba(0,255,255,0.4);
+}
+
+.emeraldSectionHeader {
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.emeraldVideoCircle {
+  display: inline-block;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #00ffff;
+  box-shadow: 0 0 50px #00ffff;
+  margin: 5px;
+  cursor: pointer;
+  text-align: center;
+  line-height: 120px;
+  font-weight: bold;
+  color: #fff;
+  background: #000;
+  transition: 0.3s;
+  font-size: 13px;
+}
+.emeraldVideoCircle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 70px #00ffff;
+}
+
+/* مودال خاص بمكتبة الفيديو الزمردية */
+#emeraldModal {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.9);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+#emeraldModal iframe {
+  width:70%;
+  height:70%;
+  border-radius:12px;
+  box-shadow:0 0 70px #00ffff;
+  border:none;
+}
+#emeraldModalClose {
+  position:fixed;
+  top:10px;
+  right:510px;
+  padding:8px 12px;
+  background:rgba(0,255,255,0.3);
+  border:1px solid #00ffff;
+  color:#fff;
+  cursor:pointer;
+  z-index:10000;
+  border-radius:8px;
+}
+
+/* للجوال */
+@media (max-width: 768px) {
+  #liveFlasher {
+    width: 110px;
+    height: 110px;
+    right: 15px;
+    font-size: 13px;
+  }
+  #livePopup {
+    width: 90vw;
+    max-width: 340px;
+    top: 25%;
+    transform: translate(-50%, -25%);
+  }
+  .live-video {
+    width: 110px;
+    height: 65px;
+  }
+  #emeraldLibraryButton {
+    right: 10px;
+    top: 18%;
+  }
+  #pongButton {
+    right: 10px;
+  }
+}
+</style>
 <style>
 @media screen and (max-width:768px){
 
@@ -5369,8 +5637,195 @@ html body #loginBox #loginCopyright{
 
 </style>
 
-<div 
-<!-- SAKAKER SPLIT: moved module 111716-125068 to /apps -->
+<div id="liveFlasher" onclick="toggleLivePopup()">
+<span>قنوات مباشرة<br/>Live Channels</span>
+</div>
+
+<div id="livePopup">
+<button id="closePopup" onclick="toggleLivePopup()">❌</button>
+<div id="liveVideosContainer">
+<div class="live-video" onclick="openVideo('https://www.youtube.com/embed/AGkp2AL8e7o')">
+<iframe loading="lazy" allowfullscreen="" data-src="https://www.youtube.com/embed/AGkp2AL8e7o?mute=1" src="about:blank"></iframe>
+</div>
+<div class="live-video" onclick="openVideo('https://www.youtube.com/embed/0FBiyFpV__g')">
+<iframe loading="lazy" allowfullscreen="" data-src="https://www.youtube.com/embed/0FBiyFpV__g?mute=1" src="about:blank"></iframe>
+</div>
+<div class="live-video" onclick="openVideo('https://www.youtube.com/embed/HfgIFGbdGJ0')">
+<iframe loading="lazy" allowfullscreen="" data-src="https://www.youtube.com/embed/HfgIFGbdGJ0?mute=1" src="about:blank"></iframe>
+</div>
+<div class="live-video" onclick="openVideo('https://www.youtube.com/embed/LuKwFajn37U')">
+<iframe loading="lazy" allowfullscreen="" data-src="https://www.youtube.com/embed/LuKwFajn37U?mute=1" src="about:blank"></iframe>
+</div>
+<div class="live-video" onclick="openVideo('https://www.youtube.com/embed/n7eQejkXbnM')">
+<iframe loading="lazy" allowfullscreen="" data-src="https://www.youtube.com/embed/n7eQejkXbnM?mute=1" src="about:blank"></iframe>
+</div>
+<div class="live-video" onclick="openVideo('https://www.youtube.com/embed/J2TXKYeBUi4')">
+<iframe loading="lazy" allowfullscreen="" data-src="https://www.youtube.com/embed/J2TXKYeBUi4?mute=1" src="about:blank"></iframe>
+</div>
+<div class="live-video" onclick="openVideo('https://www.youtube.com/embed/GNi0keWY1io')">
+<iframe loading="lazy" allowfullscreen="" data-src="https://www.youtube.com/embed/GNi0keWY1io?mute=1" src="about:blank"></iframe>
+</div>
+<div class="live-video" onclick="openVideo('https://www.youtube.com/embed/Va6QU9n3q18')">
+<iframe loading="lazy" allowfullscreen="" data-src="https://www.youtube.com/embed/Va6QU9n3q18?mute=1" src="about:blank"></iframe>
+</div>
+<div class="live-video" onclick="openVideo('https://www.youtube.com/embed/MiQe9ob9aDc')">
+<iframe loading="lazy" allowfullscreen="" data-src="https://www.youtube.com/embed/MiQe9ob9aDc?mute=1" src="about:blank"></iframe>
+</div>
+<div class="live-video" onclick="openVideo('https://www.youtube.com/embed/TLRlAlyiT7Y')">
+<iframe loading="lazy" allowfullscreen="" data-src="https://www.youtube.com/embed/TLRlAlyiT7Y?mute=1" src="about:blank"></iframe>
+</div>
+</div>
+</div>
+
+<div id="videoOverlay">
+<div id="videoBox">
+<button id="closeVideo" onclick="closeVideo()">❌</button>
+<iframe loading="lazy" allowfullscreen="" id="mainVideo" src=""></iframe>
+</div>
+</div>
+
+<div id="emeraldLibraryButton">
+  🎥 مكتبة الفيديو الزمردية<br/>Emerald Video Library
+</div>
+
+<div id="emeraldLibraryContent">
+
+<div>
+<div class="emeraldSectionHeader" onclick="toggleEmeraldSection('musicSection')" style="background:rgba(255,105,180,0.85);color:#000;">
+      🎵 music موسيقى
+    </div>
+<div id="musicSection" style="display:none;flex-wrap:wrap;">
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/KKGQrOL6e7Y')">عربي</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/vPg67r76hAA')">أجنبي</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/o3PqK4ANeLU')">شرقية</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/Rp1gppNGmRo')">غربية</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/2U0RjjiBorY')">فهد السعيد</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/FDyB8dcSptk')">عيسى الأحسائي</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/l8CGuJzyiR8')">بشير</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/r-m2wwJy2cQ')">طلال</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/kEIWBDqovoI')">محمد عبده</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/kLXlntMZ-lc?si=qscrkusqTPWkdnVc')">حجاب</div>
+</div>
+</div>
+
+<div>
+<div class="emeraldSectionHeader" onclick="toggleEmeraldSection('docSection')" style="background:#FFD700;color:#000;">
+      📼 documentary وثائقية
+    </div>
+<div id="docSection" style="display:none;flex-wrap:wrap;">
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/R62QVvz1Aso')">نيرون صبيا</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/23jGQdwSRJs')">الحرب العالمية الثانية</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/DNE6YbGO6-M')">زواج كاترين دي</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/zh2HwG8fYFo')">الحضارات الإنسانية</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/hvJSvGslOl8')">صدام حسين</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/RO0xx5oeTA8')">كوريا الشمالية</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/4F-47lqOHDU')">جريمة في المنازل</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/EB6-ZDBF0hM')">سرقة القرن</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/uvjMiLxNLnk')">تاريخ اليهود</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/3HmOr-as-TA')">منغوليا</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/7nCjajfhY5o?si=jnu6LwdhTVUPhY5I')">فيلم 1</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/LDi6-iC1j8A?si=ZdyC0y5eG_Nl7brf')">فيلم 2</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/7lo81AX8siE?si=lqWG8WfGe4HRKJwZ')">فيلم 3</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/fjed1u7A9wM?si=3OPczpybVbdBQWFW')">فيلم 4</div>
+</div>
+</div>
+
+<div>
+<div class="emeraldSectionHeader" onclick="toggleEmeraldSection('cartoonSection')" style="background:#000;color:#fff;">
+      cartoon 🎨 كرتون
+    </div>
+<div id="cartoonSection" style="display:none;flex-wrap:wrap;">
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/U5sBC9Fr0fA')">كرتون</div>
+<div class="emeraldVideoCircle sak-moved-picks-video" data-sak-video-id="jtT5Ifr-3VA" onclick="openEmeraldVideo('https://www.youtube.com/embed/jtT5Ifr-3VA')">مختارات سابقة — Previous Selection</div>
+</div>
+</div>
+
+<div>
+<div class="emeraldSectionHeader" onclick="toggleEmeraldSection('moviesSection')" style="background:#333;color:#fff;">
+      films 🎬 أفلام
+    </div>
+<div id="moviesSection" style="display:none;flex-wrap:wrap;">
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/R4TZ6r_af8A')">أجنبي</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/qxAXFYcbOpU')">عربي</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/LqHLkqqIukQ')">شاهد ما شفش حاجة</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/2p55ymDVH5Y')">فلم الحدود</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/anMBqlPFCwU')">الرجل السكير</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/aznfIFN7cyo')">كينج فو</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/fqOALQ3pehE')">Sisters with Secrets</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/kJqW_xsMuh8')">جاكي شان</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/0go3k0frmjc')">فلم هندي</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/D3oO_9S6TVM')">Faster</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/Hf0-8kV-6E4')">Comedy 1</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/rnJ6k-hjsqM?si=KXJu7um4Ru3Kq7p2')">فيلم 1</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/r0qVH647sI4?si=hg7u6f3H-pqMxwvw')">فيلم 2</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/cwSoWCJGe9Y?si=06FFz92rA8AtLk2E')">فيلم 3</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/VmUE1nSUwcU?si=FmkLKUWELKlCJ5eQ')">فيلم 4</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/TXimDjSatvk?si=HPcV4Di6svQ0YmYv')">فيلم 5</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/pFLinegONA4?si=jWVb_7MeXUeOhKNz')">فيلم 6</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/ThFxdmLCh6A?si=2K3mEf0KxV-shOuf')">فيلم 7</div>
+</div>
+</div>
+
+<div>
+<div class="emeraldSectionHeader" onclick="toggleEmeraldSection('sportsSection')" style="background:rgba(165,42,42,0.85);color:#fff;">
+      sports ⚽ رياضة
+    </div>
+<div id="sportsSection" style="display:none;flex-wrap:wrap;">
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/X7ByhZIGEjI')">رياضة</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/NYTo6KB7IqQ')">كرة القدم نساء</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/yMb_7VEhyNQ')">كرة قدم رجال</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/s3qWsdWfK24')">تشلسي</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/6J4JEFwm63o')">التعاون 5 الرائد 1</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/bbmoXwaSpGY?si=-02ni4PZ9DpKFzUF')">طائرة نسائية</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/WYtC7nuChPA?si=Jw4hFD5kWubGKJm3')">تشلسي أخرى</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/x8xdEOnv0Dk?si=yzn4J5NkCCtqc1q9')">تشلسي رجال</div>
+</div>
+</div>
+
+<div>
+<div class="emeraldSectionHeader" onclick="toggleEmeraldSection('educationSection')" style="background:rgba(0,0,255,0.25);color:#fff;">
+      Educational 📘 تعليمية
+    </div>
+<div id="educationSection" style="display:none;flex-wrap:wrap;">
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/hOH7ZLE-ZN8')">إبراهيم الفقي</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/sJ5ib2Gbfy8')">مصطفى محمود</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/fMlF99erfHw')">سقراط</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/_KXmZKW_cag?si=YAmKW4EOx-IREgGP&amp;mute=1')">تعلم الإنجليزية</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/v5zol69e02o?si=SE4tX2T8BL38trob&amp;mute=1')">تعلم العود</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/uEWJkk6X8fg?si=PW2Dh_O9fE9bzCxF&amp;mute=1')">SATC</div>
+</div>
+</div>
+
+<div>
+<div class="emeraldSectionHeader" onclick="toggleEmeraldSection('religiousSection')" style="background:rgba(0,128,0,0.85);color:#fff;">
+      Islamic religion 📿 دينية
+    </div>
+<div id="religiousSection" style="display:none;flex-wrap:wrap;">
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/myYiNE3HpKc')">قصص الأنبياء</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/kIj0E3Pl1kY')">تفسير القرآن</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/UR6vcevAi5o')">قرآن</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/s-KsCr4VjMo')">تلبيس إبليس</div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/q_V_Xbq4S64?si=ZueNfoqOkNrSxrRm')">الشيخ كشك</div>
+</div>
+</div>
+
+<div>
+<div class="emeraldSectionHeader" onclick="toggleEmeraldSection('generalInfoSection')" style="background:rgba(0,102,153,0.85);color:#fff;">
+    General Information 🌍 معلومات عامة
+  </div>
+<div id="generalInfoSection" style="display:none;flex-wrap:wrap;">
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/oQKFrM_mm9c?si=3gqHYt6etLej26tn')">
+      معلومات عامة 1
+    </div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/eomvD-Kt6Es?si=9ZzWd-YfxVWnF-fl')">
+      معلومات عامة 2
+    </div>
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/oHtlsniSb_Y?si=OLv0mDakO25w7jpS')">
+      معلومات عامة 3
+    </div>
+</div>
+</div>
+
 <script>
 /* 🔒 قفل الموقع قبل تسجيل الدخول */
 document.body.classList.add("locked");
@@ -7141,8 +7596,76 @@ document.addEventListener('keydown', function(event){
   if(event.key === 'Escape') closeMap();
 });
 </script>
+<script>
+function toggleLivePopup() {
+    const popup = document.getElementById("livePopup");
+    if (!popup) return;
+    popup.style.display = (popup.style.display === "block") ? "none" : "block";
+  }
 
-<!-- SAKAKER SPLIT: moved module 174108-176520 to /apps -->
+  function openVideo(url) {
+    const overlay = document.getElementById("videoOverlay");
+    const iframe = document.getElementById("mainVideo");
+    if (!overlay || !iframe) return;
+    iframe.src = url + (url.includes("?") ? "&" : "?") + "autoplay=1";
+    overlay.style.display = "flex";
+  }
+
+  function closeVideo() {
+    const overlay = document.getElementById("videoOverlay");
+    const iframe = document.getElementById("mainVideo");
+    if (!overlay || !iframe) return;
+    iframe.src = "";
+    overlay.style.display = "none";
+  }
+</script>
+<script>
+// فتح / إغلاق المكتبة
+  document.getElementById('emeraldLibraryButton').addEventListener('click', function() {
+    const content = document.getElementById('emeraldLibraryContent');
+    if (!content) return;
+    content.style.display = (content.style.display === 'block') ? 'none' : 'block';
+
+    if (content.style.display === 'block') {
+      const sections = ['musicSection','docSection','cartoonSection','moviesSection',
+                        'sportsSection','educationSection','religiousSection','gamesSection'];
+      sections.forEach(id => {
+        const sec = document.getElementById(id);
+        if (sec) sec.style.display = 'none';
+      });
+    }
+  });
+
+  function toggleEmeraldSection(id) {
+    const section = document.getElementById(id);
+    if (!section) return;
+    section.style.display = (section.style.display === 'flex' || section.style.display === 'block')
+      ? 'none'
+      : 'flex';
+  }
+
+  function openEmeraldVideo(url) {
+    // إزالة مودال قديم
+    const old = document.getElementById('emeraldModal');
+    if (old) old.remove();
+
+    const modal = document.createElement('div');
+    modal.id = 'emeraldModal';
+
+    const iframe = document.createElement('iframe');
+    iframe.src = url + (url.includes("?") ? "&" : "?") + "autoplay=1";
+    iframe.allow = "autoplay; encrypted-media; picture-in-picture";
+    iframe.allowFullscreen = true;
+
+    const closeBtn = document.createElement('button');
+    closeBtn.id = 'emeraldModalClose';
+    closeBtn.textContent = 'إغلاق ✖';
+    closeBtn.onclick = () => modal.remove();
+
+    modal.appendChild(iframe);
+    modal.appendChild(closeBtn);
+    document.body.appendChild(modal);
+  }
 </script>
 
 <script>
@@ -34773,9 +35296,306 @@ html body #videoBoxFixed.sak-player-open:not(.sak-hls-mode) #sakCircleExternal {
   }
 })();
 </script>
-
-<!-- SAKAKER SPLIT: moved module 791802-820469 to /apps -->
-
+<style id="sak-creative-studio-style">
+html body #sakCreativeIcon { cursor:pointer; font-family:inherit; }
+html body.locked #sakCreativeIcon,
+html body.locked #sakStudio { display:none !important; visibility:hidden !important; pointer-events:none !important; }
+html body #sakCreativeIcon .icon-label { white-space:normal !important; }
+html body #sakStudio[hidden] { display:none !important; }
+html body #sakStudio {
+  position:fixed !important; inset:0 !important; z-index:2147483647 !important;
+  display:flex; align-items:center; justify-content:center; padding:12px;
+  background:rgba(1,10,15,.92); color:#eef8ff; box-sizing:border-box;
+  font-family:Tahoma,Arial,sans-serif; text-align:start;
+  margin:0 !important; width:100vw !important; height:100dvh !important;
+  max-width:none !important; max-height:none !important; border:0 !important;
+}
+html body #sakStudio::backdrop { background:rgba(1,10,15,.85); }
+html body #sakStudio * { box-sizing:border-box; }
+html body #sakStudio .studio-panel {
+  width:min(1100px,100%); max-height:calc(100dvh - 24px); overflow:auto;
+  border:1px solid #adc5d1; border-radius:22px; padding:18px;
+  background:linear-gradient(135deg,#172934,#081923); box-shadow:0 0 28px #81b8c84d;
+}
+html body #sakStudio h2 { margin:0; font-size:22px; color:#f2dfab; }
+html body #sakStudio .studio-row { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:12px; }
+html body #sakStudio .studio-head { justify-content:space-between; }
+html body #sakStudio button,html body #sakStudio select,html body #sakStudio input {
+  font:inherit; font-size:15px; border:1px solid #7298a9; border-radius:9px;
+  min-height:40px; padding:8px 12px; background:#eff8fc; color:#102d3b;
+  text-shadow:none; max-width:100%;
+}
+html body #sakStudio button { cursor:pointer; }
+html body #sakStudio button:disabled { opacity:.45; cursor:default; }
+html body #sakStudio button[aria-pressed="true"] { background:#ffdc82; border-color:#ffdc82; }
+html body #sakStudio :focus-visible { outline:3px solid #5de2bf; outline-offset:2px; }
+html body #sakStudio label { display:flex; align-items:center; flex-wrap:wrap; gap:6px; font-size:13px; }
+html body #sakStudio input[type="color"] { width:46px; padding:3px; }
+html body #sakStudio input[type="range"] { width:105px; padding:0; }
+html body #sakStudio input[type="text"] { flex:1; min-width:160px; }
+html body #sakStudio .studio-workspace { overflow:auto; padding:12px; border-radius:12px; background:#071019; }
+html body #sakStudio canvas {
+  display:block; position:static; width:100% !important; max-width:900px !important;
+  height:auto !important; margin:auto; touch-action:none; cursor:crosshair;
+  border-radius:0; box-shadow:0 4px 24px #0006;
+}
+html body #sakStudio .studio-help { color:#bfd1dc; font-size:13px; line-height:1.7; margin:8px 0; }
+html body #sakStudio #studioStatus { min-height:24px; color:#ffdc82; font-size:13px; }
+@media(max-width:600px){
+  html body #sakStudio { padding:5px; }
+  html body #sakStudio .studio-panel { padding:10px; border-radius:14px; max-height:calc(100dvh - 10px); }
+  html body #sakStudio h2 { font-size:18px; }
+  html body #sakStudio .studio-workspace { padding:4px; }
+}
+</style>
+<dialog id="sakStudio" hidden aria-modal="true" aria-labelledby="studioTitle">
+  <div class="studio-panel">
+    <div class="studio-row studio-head"><h2 id="studioTitle" data-studio-i18n="title"></h2><div class="studio-row"><button id="studioLang" type="button">English</button><button id="studioClose" type="button" data-studio-i18n="close"></button></div></div>
+    <div class="studio-row" id="studioTools">
+      <button type="button" data-tool="pen" data-studio-i18n="pen"></button>
+      <button type="button" data-tool="oil" data-studio-i18n="oil"></button>
+      <button type="button" data-tool="watercolor" data-studio-i18n="watercolor"></button>
+      <button type="button" data-tool="spray" data-studio-i18n="spray"></button>
+      <button type="button" data-tool="marker" data-studio-i18n="marker"></button>
+      <button type="button" data-tool="eyedropper" data-studio-i18n="eyedropper"></button>
+      <button type="button" data-tool="eraser" data-studio-i18n="eraser"></button>
+      <button type="button" data-tool="move" data-studio-i18n="move"></button>
+      <button type="button" data-tool="rect" data-studio-i18n="rect"></button>
+      <button type="button" data-tool="ellipse" data-studio-i18n="ellipse"></button>
+      <button type="button" id="studioUndo" data-studio-i18n="undo"></button>
+      <button type="button" id="studioRedo" data-studio-i18n="redo"></button>
+    </div>
+    <div class="studio-row">
+      <label><span data-studio-i18n="color"></span><input id="studioColor" type="color" value="#126b62"></label>
+      <label><span data-studio-i18n="size"></span><input id="studioSize" type="range" min="2" max="50" value="6"><output id="studioSizeValue">6</output></label>
+      <label><span data-studio-i18n="opacity"></span><input id="studioOpacity" type="range" min="5" max="100" value="100"><output id="studioOpacityValue">100%</output></label>
+      <label><span data-studio-i18n="background"></span><input id="studioBackground" type="color" value="#ffffff"></label>
+      <label><span data-studio-i18n="format"></span><select id="studioFormat"><option value="900,600" data-studio-i18n="landscape"></option><option value="800,800" data-studio-i18n="square"></option><option value="600,900" data-studio-i18n="portrait"></option></select></label>
+      <label><span data-studio-i18n="template"></span><select id="studioTemplate"><option value="blank" data-studio-i18n="blank"></option><option value="gold" data-studio-i18n="gold"></option><option value="celebrate" data-studio-i18n="celebrate"></option></select></label>
+    </div>
+    <div class="studio-row">
+      <input id="studioText" type="text" maxlength="120" dir="auto">
+      <label><span data-studio-i18n="textSize"></span><select id="studioTextSize"><option>24</option><option selected>40</option><option>60</option><option>80</option></select></label>
+      <button id="studioAddText" type="button" data-studio-i18n="addText"></button>
+      <button id="studioDelete" type="button" data-studio-i18n="delete"></button>
+    </div>
+    <div class="studio-row">
+      <button id="studioUpload" type="button" data-studio-i18n="upload"></button>
+      <input id="studioImageFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden style="display:none">
+      <button id="studioImageSmaller" type="button" data-studio-i18n="smaller"></button>
+      <button id="studioImageLarger" type="button" data-studio-i18n="larger"></button>
+    </div>
+    <p class="studio-help" data-studio-i18n="help"></p>
+    <div class="studio-workspace"><canvas id="studioCanvas" width="900" height="600" tabindex="0"></canvas></div>
+    <div class="studio-row" style="margin-top:12px">
+      <button id="studioExport" type="button" data-studio-i18n="export"></button>
+      <button id="studioSave" type="button" data-studio-i18n="save"></button>
+      <button id="studioLoad" type="button" data-studio-i18n="load"></button>
+      <button id="studioClear" type="button" data-studio-i18n="clear"></button>
+    </div>
+    <div id="studioStatus" role="status" aria-live="polite"></div>
+  </div>
+</dialog>
+<script id="sak-creative-studio-script">
+(function(){
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const modal=$('sakStudio'), canvas=$('studioCanvas'), ctx=canvas.getContext('2d');
+  const layer=document.createElement('canvas'), ink=layer.getContext('2d');
+  const words={
+    ar:{title:'🎨 الاستديو الابداعي',close:'إغلاق ✕',pen:'✎ رسم',eraser:'ممحاة',move:'↔ تحريك',rect:'▭ مستطيل',ellipse:'◯ دائرة',undo:'تراجع',redo:'إعادة',color:'اللون',size:'حجم الفرشاة',background:'الخلفية',format:'المقاس',landscape:'بطاقة أفقية',square:'مربع',portrait:'بطاقة عمودية',template:'القالب',blank:'بسيط',gold:'إطار ذهبي',celebrate:'احتفال',textSize:'حجم النص',addText:'إضافة النص',delete:'حذف المحدد',help:'ارسم باللمس أو الماوس. اسحب لرسم الأشكال. أضف نصًا ثم اختر «تحريك» واسحبه لمكانه. اختر عنصرًا لتحريكه أو حذفه. الممحاة تمسح الآثار الموجودة قبلها.',export:'⬇ حفظ صورة PNG',save:'حفظ مسودة',load:'استعادة المسودة',clear:'لوحة جديدة',placeholder:'اكتب عبارتك بالعربية أو الإنجليزية…',saved:'تم حفظ المسودة على هذا المتصفح.',loaded:'تمت استعادة المسودة.',missing:'لا توجد مسودة محفوظة.',failed:'تعذر الحفظ أو الاستعادة. تحقق من مساحة المتصفح وإذن التخزين.',downloaded:'الصورة جاهزة للحفظ. راجع التنزيلات.',confirm:'بدء لوحة جديدة ومسح العمل الحالي؟ يمكنك التراجع بعد ذلك.',replace:'استبدال العمل الحالي بالمسودة المحفوظة؟',empty:'اكتب النص أولًا.',canvas:'مساحة الرسم وتصميم البطاقات',icon:'الاستديو الابداعي',sub:'رسم وبطاقات',downloadError:'تعذر تصدير الصورة. حاول مجددًا.'},
+    en:{title:'🎨 Creative Studio',close:'Close ✕',pen:'✎ Draw',eraser:'Eraser',move:'↔ Move',rect:'▭ Rectangle',ellipse:'◯ Circle',undo:'Undo',redo:'Redo',color:'Color',size:'Brush size',background:'Background',format:'Size',landscape:'Landscape card',square:'Square',portrait:'Portrait card',template:'Template',blank:'Plain',gold:'Gold frame',celebrate:'Celebration',textSize:'Text size',addText:'Add text',delete:'Delete selected',help:'Draw with touch or mouse. Drag to draw shapes. Add text, then choose Move and drag it into place. Select an item to move or delete it. The eraser removes marks drawn before it.',export:'⬇ Save PNG image',save:'Save draft',load:'Restore draft',clear:'New canvas',placeholder:'Type your message in Arabic or English…',saved:'Draft saved in this browser.',loaded:'Draft restored.',missing:'No saved draft found.',failed:'Could not save or restore. Check browser storage permissions and space.',downloaded:'Image ready to save. Check your downloads.',confirm:'Start a new canvas and clear this work? You can undo this action.',replace:'Replace this work with your saved draft?',empty:'Type your text first.',canvas:'Drawing and card design canvas',icon:'Creative Studio',sub:'Draw & cards',downloadError:'Could not export the image. Please try again.'}
+  };
+  Object.assign(words.ar,{upload:'🖼 رفع صورة',smaller:'− تصغير الصورة',larger:'+ تكبير الصورة',imageLoading:'جاري تجهيز الصورة…',imageReady:'أُضيفت الصورة. حرّكها أو غيّر حجمها، وارسم أو اكتب فوقها.',imageError:'تعذر فتح الصورة. اختر صورة PNG أو JPEG أو WebP أو GIF بحجم أقل من 20 ميجابايت.'});
+  Object.assign(words.en,{upload:'🖼 Upload image',smaller:'− Smaller image',larger:'+ Larger image',imageLoading:'Preparing image…',imageReady:'Image added. Move or resize it, then draw or write on top.',imageError:'Could not open the image. Choose a PNG, JPEG, WebP or GIF under 20 MB.'});
+  const imageCache=new Map();
+  Object.assign(words.ar,{oil:'🖌 فرشاة زيتية',watercolor:'ألوان مائية',spray:'بخاخ',marker:'ماركر',eyedropper:'قطّارة',opacity:'الشفافية',picked:'تم التقاط اللون؛ اختر فرشاة للرسم.'});
+  Object.assign(words.en,{oil:'🖌 Oil brush',watercolor:'Watercolor',spray:'Spray',marker:'Marker',eyedropper:'Eyedropper',opacity:'Opacity',picked:'Color picked; choose a brush to paint.'});
+  const brushTypes=['pen','eraser','oil','watercolor','spray','marker'];
+  // Avoid page-level keyboard/game handlers intercepting studio interactions.
+  ['click','pointerdown','pointermove','pointerup','keydown','keyup'].forEach(type=>modal.addEventListener(type,e=>e.stopPropagation()));
+  function loadImage(src){
+    if(imageCache.has(src))return Promise.resolve(imageCache.get(src));
+    return new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>{imageCache.set(src,img);resolve(img);};img.onerror=()=>reject(Error('Image decode failed'));img.src=src;});
+  }
+  let lang=document.documentElement.lang==='en'?'en':'ar';
+  let state={w:900,h:600,bg:'#ffffff',template:'blank',objects:[]};
+  let undo=[],redo=[],tool='pen',selected=-1,gesture=null,lastFocus=null,scrollBefore='';
+  const copy = x=>JSON.parse(JSON.stringify(x));
+  function say(key){$('studioStatus').textContent=words[lang][key];}
+  function history(){undo.push(copy(state));while(undo.length>20||(undo.length>1&&JSON.stringify(undo).length>8000000))undo.shift();redo=[];}
+  function language(){
+    modal.dir=lang==='ar'?'rtl':'ltr';modal.lang=lang;
+    modal.querySelectorAll('[data-studio-i18n]').forEach(el=>el.textContent=words[lang][el.dataset.studioI18n]);
+    $('studioText').placeholder=words[lang].placeholder;
+    $('studioText').setAttribute('aria-label',words[lang].placeholder);
+    canvas.setAttribute('aria-label',words[lang].canvas);
+    $('studioLang').textContent=lang==='ar'?'English':'العربية';
+    $('studioStatus').textContent='';
+  }
+  function controls(){
+    $('studioUndo').disabled=!undo.length;$('studioRedo').disabled=!redo.length;
+    $('studioDelete').disabled=selected<0;
+    const imageSelected=selected>=0&&state.objects[selected]?.type==='image';
+    $('studioImageSmaller').disabled=!imageSelected;$('studioImageLarger').disabled=!imageSelected;
+    $('studioBackground').value=state.bg;$('studioTemplate').value=state.template;
+    $('studioFormat').value=state.w+','+state.h;
+    modal.querySelectorAll('[data-tool]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tool===tool)));
+  }
+  function bounds(o){
+    if(o.type==='image')return{x:o.x,y:o.y,w:o.w,h:o.h};
+    if(o.type==='text'){
+      ink.font='bold '+o.size+'px Tahoma, Arial, sans-serif';
+      const width=ink.measureText(o.text).width;
+      return {x:o.x-width/2,y:o.y-o.size/2,w:width,h:o.size*1.3};
+    }
+    if(o.points){let left=Infinity,top=Infinity,right=-Infinity,bottom=-Infinity;for(const p of o.points){left=Math.min(left,p.x);top=Math.min(top,p.y);right=Math.max(right,p.x);bottom=Math.max(bottom,p.y);}return{x:left-o.size/2,y:top-o.size/2,w:right-left+o.size,h:bottom-top+o.size};}
+    return{x:Math.min(o.x,o.x2),y:Math.min(o.y,o.y2),w:Math.abs(o.x2-o.x),h:Math.abs(o.y2-o.y)};
+  }
+  function paintObject(o){
+    ink.save();ink.strokeStyle=o.color;ink.fillStyle=o.color;ink.lineWidth=o.size;ink.lineCap='round';ink.lineJoin='round';
+    ink.globalAlpha=o.opacity===undefined?1:o.opacity;
+    if(o.type==='image'){
+      const img=imageCache.get(o.src);if(img)ink.drawImage(img,o.x,o.y,o.w,o.h);
+    }else if(o.type==='pen'||o.type==='eraser'){
+      ink.globalCompositeOperation=o.type==='eraser'?'destination-out':'source-over';
+      ink.beginPath();o.points.forEach((p,i)=>i?ink.lineTo(p.x,p.y):ink.moveTo(p.x,p.y));
+      if(o.points.length===1){ink.arc(o.points[0].x,o.points[0].y,o.size/2,0,Math.PI*2);ink.fill();}else ink.stroke();
+    }else if(['oil','watercolor','spray','marker'].includes(o.type)){
+      const points=o.points,alpha=ink.globalAlpha;
+      if(o.type==='oil'){
+        for(let bristle=0;bristle<7;bristle++){
+          const offset=(bristle-3)*o.size/8;ink.globalAlpha=alpha*(.48+(bristle%3)*.13);ink.lineWidth=Math.max(1,o.size/5);ink.beginPath();
+          points.forEach((p,i)=>i?ink.lineTo(p.x+offset,p.y+offset*.3):ink.moveTo(p.x+offset,p.y+offset*.3));
+          if(points.length===1){ink.arc(points[0].x+offset,points[0].y,o.size/10,0,Math.PI*2);ink.fill()}else ink.stroke();
+        }
+      }else if(o.type==='marker'){
+        ink.globalAlpha=alpha*.45;ink.lineCap='square';ink.lineWidth=o.size;ink.beginPath();points.forEach((p,i)=>i?ink.lineTo(p.x,p.y):ink.moveTo(p.x,p.y));if(points.length===1)ink.fillRect(points[0].x-o.size/2,points[0].y-o.size/2,o.size,o.size);else ink.stroke();
+      }else{
+        points.forEach((p,i)=>{
+          if(o.type==='watercolor'){const r=o.size/2,gradient=ink.createRadialGradient(p.x,p.y,0,p.x,p.y,r);gradient.addColorStop(0,o.color+'60');gradient.addColorStop(1,o.color+'00');ink.globalAlpha=alpha*.3;ink.fillStyle=gradient;ink.beginPath();ink.arc(p.x,p.y,r,0,Math.PI*2);ink.fill();}
+          else{ink.globalAlpha=alpha*.55;ink.fillStyle=o.color;for(let j=0;j<16;j++){const n=(Math.imul(i+1,73856093)^Math.imul(j+1,19349663))>>>0;const angle=(n%6283)/1000,r=Math.sqrt(((n>>>8)%1000)/1000)*o.size/2;ink.fillRect(p.x+Math.cos(angle)*r,p.y+Math.sin(angle)*r,1.2,1.2);}}
+        });
+      }
+    }else if(o.type==='text'){
+      ink.font='bold '+o.size+'px Tahoma, Arial, sans-serif';ink.textAlign='center';ink.textBaseline='middle';
+      ink.direction=/[\u0600-\u06ff]/.test(o.text)?'rtl':'ltr';ink.fillText(o.text,o.x,o.y);
+    }else{
+      const b=bounds(o);ink.beginPath();
+      if(o.type==='rect')ink.rect(b.x,b.y,b.w,b.h);else ink.ellipse(b.x+b.w/2,b.y+b.h/2,b.w/2,b.h/2,0,0,Math.PI*2);
+      ink.stroke();
+    }ink.restore();
+  }
+  function render(selection=true){
+    if(canvas.width!==state.w||canvas.height!==state.h){canvas.width=state.w;canvas.height=state.h;}
+    if(layer.width!==state.w||layer.height!==state.h){layer.width=state.w;layer.height=state.h;}else ink.clearRect(0,0,state.w,state.h);
+    ctx.fillStyle=state.bg;ctx.fillRect(0,0,state.w,state.h);
+    if(state.template==='gold'){
+      ctx.strokeStyle='#c59a3b';ctx.lineWidth=5;ctx.strokeRect(25,25,state.w-50,state.h-50);
+      ctx.lineWidth=1;ctx.strokeRect(36,36,state.w-72,state.h-72);
+    }else if(state.template==='celebrate'){
+      for(let i=0;i<48;i++){ctx.fillStyle=['#e9ae46','#d46391','#3a9f94','#7995d2'][i%4];const x=(i*137+21)%state.w,y=i%2?state.h-45-(i*7)%40:18+(i*11)%60;ctx.beginPath();ctx.arc(x,y,4+i%5,0,Math.PI*2);ctx.fill();}
+    }
+    state.objects.forEach(paintObject);ctx.drawImage(layer,0,0);
+    if(selection&&selected>=0&&state.objects[selected]){const b=bounds(state.objects[selected]);ctx.save();ctx.strokeStyle='#267bed';ctx.lineWidth=2;ctx.setLineDash([7,5]);ctx.strokeRect(b.x-5,b.y-5,b.w+10,b.h+10);ctx.restore();}
+    controls();
+  }
+  function point(e){const b=canvas.getBoundingClientRect();return{x:Math.max(0,Math.min(state.w,(e.clientX-b.left)*state.w/b.width)),y:Math.max(0,Math.min(state.h,(e.clientY-b.top)*state.h/b.height))};}
+  function pick(p){for(let i=state.objects.length-1;i>=0;i--){const o=state.objects[i];if(o.type==='eraser')continue;const b=bounds(o);if(p.x>=b.x-8&&p.x<=b.x+b.w+8&&p.y>=b.y-8&&p.y<=b.y+b.h+8)return i;}return -1;}
+  canvas.addEventListener('pointerdown',function(e){
+    if(gesture||e.button!==0)return;e.preventDefault();canvas.setPointerCapture(e.pointerId);const p=point(e);
+    if(tool==='eyedropper'){render(false);const pixel=ctx.getImageData(Math.min(state.w-1,Math.floor(p.x)),Math.min(state.h-1,Math.floor(p.y)),1,1).data;$('studioColor').value='#'+Array.from(pixel).slice(0,3).map(v=>v.toString(16).padStart(2,'0')).join('');say('picked');return;}
+    if(tool==='move'){selected=pick(p);if(selected>=0){history();gesture={id:e.pointerId,p,original:copy(state.objects[selected]),move:true};}}
+    else{history();selected=-1;const o={type:tool,color:$('studioColor').value,size:Number($('studioSize').value),opacity:Number($('studioOpacity').value)/100};
+      if(brushTypes.includes(tool))o.points=[p];else Object.assign(o,{x:p.x,y:p.y,x2:p.x,y2:p.y});
+      state.objects.push(o);gesture={id:e.pointerId,index:state.objects.length-1};}
+    render();
+  });
+  canvas.addEventListener('pointermove',function(e){
+    if(!gesture||gesture.id!==e.pointerId)return;e.preventDefault();const p=point(e);
+    if(gesture.move){const o=copy(gesture.original),dx=p.x-gesture.p.x,dy=p.y-gesture.p.y;
+      if(o.points)o.points=o.points.map(q=>({x:q.x+dx,y:q.y+dy}));else{o.x+=dx;o.y+=dy;if(o.x2!==undefined){o.x2+=dx;o.y2+=dy;}}
+      state.objects[selected]=o;
+    }else{const o=state.objects[gesture.index];if(o.points){const prev=o.points[o.points.length-1],distance=Math.hypot(p.x-prev.x,p.y-prev.y);if(distance<1)return;const steps=Math.min(60,Math.max(1,Math.ceil(distance/Math.max(2,o.size/5))));for(let i=1;i<=steps;i++)o.points.push({x:prev.x+(p.x-prev.x)*i/steps,y:prev.y+(p.y-prev.y)*i/steps});}else{o.x2=p.x;o.y2=p.y;}}
+    render();
+  });
+  function finish(e){if(gesture&&gesture.id===e.pointerId){gesture=null;render();}}
+  canvas.addEventListener('pointerup',finish);canvas.addEventListener('pointercancel',finish);canvas.addEventListener('lostpointercapture',finish);
+  $('studioTools').addEventListener('click',e=>{const b=e.target.closest('[data-tool]');if(b){tool=b.dataset.tool;selected=-1;render();}});
+  $('studioSize').addEventListener('input',()=>{$('studioSizeValue').value=$('studioSize').value;});
+  $('studioOpacity').addEventListener('input',()=>{$('studioOpacityValue').value=$('studioOpacity').value+'%';});
+  $('studioBackground').addEventListener('change',()=>{history();state.bg=$('studioBackground').value;render();});
+  $('studioTemplate').addEventListener('change',()=>{history();state.template=$('studioTemplate').value;render();});
+  $('studioFormat').addEventListener('change',()=>{
+    history();const [w,h]=$('studioFormat').value.split(',').map(Number),sx=w/state.w,sy=h/state.h;
+    state.objects.forEach(o=>{if(o.points)o.points.forEach(p=>{p.x*=sx;p.y*=sy;});else{o.x*=sx;o.y*=sy;if(o.type==='image'){const scale=Math.min(sx,sy);o.w*=scale;o.h*=scale;}if(o.x2!==undefined){o.x2*=sx;o.y2*=sy;}}});
+    state.w=w;state.h=h;selected=-1;render();
+  });
+  $('studioAddText').addEventListener('click',()=>{const text=$('studioText').value.trim();if(!text){say('empty');return;}
+    history();state.objects.push({type:'text',text,size:Number($('studioTextSize').value),color:$('studioColor').value,x:state.w/2,y:state.h/2});
+    selected=state.objects.length-1;tool='move';render();
+  });
+  $('studioDelete').addEventListener('click',()=>{if(selected>=0){history();state.objects.splice(selected,1);selected=-1;render();}});
+  $('studioUndo').addEventListener('click',()=>{if(undo.length){redo.push(copy(state));state=undo.pop();selected=-1;render();}});
+  $('studioRedo').addEventListener('click',()=>{if(redo.length){undo.push(copy(state));state=redo.pop();selected=-1;render();}});
+  modal.addEventListener('keydown',e=>{if(/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName))return;if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();$(e.shiftKey?'studioRedo':'studioUndo').click();}else if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='y'){e.preventDefault();$('studioRedo').click();}});
+  $('studioClear').addEventListener('click',()=>{if(!state.objects.length||confirm(words[lang].confirm)){history();state.objects=[];selected=-1;render();}});
+  $('studioSave').addEventListener('click',()=>{try{localStorage.setItem('sak-creative-draft-v1',JSON.stringify(state));say('saved');}catch(e){say('failed');}});
+  $('studioUpload').addEventListener('click',()=>{$('studioImageFile').click();});
+  $('studioImageFile').addEventListener('change',async()=>{
+    const file=$('studioImageFile').files[0];$('studioImageFile').value='';if(!file)return;
+    if(!/^image\/(png|jpeg|webp|gif)$/.test(file.type)||file.size>20*1024*1024){say('imageError');return;}
+    $('studioUpload').disabled=true;say('imageLoading');
+    const url=URL.createObjectURL(file);
+    try{
+      const original=await loadImage(url);
+      const scale=Math.min(1,1600/original.naturalWidth,1600/original.naturalHeight);
+      const resized=document.createElement('canvas');resized.width=Math.max(1,Math.round(original.naturalWidth*scale));resized.height=Math.max(1,Math.round(original.naturalHeight*scale));
+      resized.getContext('2d').drawImage(original,0,0,resized.width,resized.height);
+      const src=resized.toDataURL('image/png');await loadImage(src);
+      const fit=Math.min(state.w/resized.width,state.h/resized.height,1),w=resized.width*fit,h=resized.height*fit;
+      history();state.objects.unshift({type:'image',src,x:(state.w-w)/2,y:(state.h-h)/2,w,h});
+      selected=0;tool='move';render();say('imageReady');
+    }catch(e){say('imageError');}
+    finally{URL.revokeObjectURL(url);imageCache.delete(url);$('studioUpload').disabled=false;}
+  });
+  function resizeImage(factor){
+    const o=state.objects[selected];if(!o||o.type!=='image')return;
+    if(Math.min(o.w,o.h)*factor<10||Math.max(o.w,o.h)*factor>8000)return;
+    history();const w=o.w*factor,h=o.h*factor;o.x-=(w-o.w)/2;o.y-=(h-o.h)/2;o.w=w;o.h=h;render();
+  }
+  $('studioImageSmaller').addEventListener('click',()=>resizeImage(.9));
+  $('studioImageLarger').addEventListener('click',()=>resizeImage(1.1));
+  $('studioLoad').addEventListener('click',async()=>{try{
+    const raw=localStorage.getItem('sak-creative-draft-v1');if(!raw){say('missing');return;}
+    const saved=JSON.parse(raw);
+    if(!['900,600','800,800','600,900'].includes(saved.w+','+saved.h)||!Array.isArray(saved.objects)||saved.objects.length>10000||!/^#[0-9a-f]{6}$/i.test(saved.bg)||!['blank','gold','celebrate'].includes(saved.template))throw Error('Invalid draft');
+    saved.objects.forEach(o=>{if(o.opacity!==undefined&&(!Number.isFinite(o.opacity)||o.opacity<0||o.opacity>1))throw Error('Invalid opacity');if(o.type==='image'){if(typeof o.src!=='string'||!o.src.startsWith('data:image/png;base64,')||o.src.length>30000000||![o.x,o.y,o.w,o.h].every(Number.isFinite)||o.w<=0||o.h<=0||Math.max(o.w,o.h)>8000)throw Error('Invalid image');return;}if(![...brushTypes,'text','rect','ellipse'].includes(o.type)||!Number.isFinite(o.size)||o.size<1||o.size>100||!/^#[0-9a-f]{6}$/i.test(o.color))throw Error('Invalid object');if(brushTypes.includes(o.type)){if(!Array.isArray(o.points)||!o.points.length||o.points.length>100000||o.points.some(p=>!Number.isFinite(p.x)||!Number.isFinite(p.y)))throw Error('Invalid path');}else{if(!Number.isFinite(o.x)||!Number.isFinite(o.y))throw Error('Invalid position');if(o.type==='text'){if(typeof o.text!=='string'||o.text.length>120)throw Error('Invalid text');}else if(!Number.isFinite(o.x2)||!Number.isFinite(o.y2))throw Error('Invalid shape');}});
+    if(state.objects.length&&!confirm(words[lang].replace))return;
+    await Promise.all(saved.objects.filter(o=>o.type==='image').map(o=>loadImage(o.src)));
+    history();state=saved;selected=-1;render();say('loaded');
+  }catch(e){say('failed');}});
+  $('studioExport').addEventListener('click',()=>{
+    render(false);canvas.toBlob(blob=>{if(!blob){say('downloadError');return;}const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='SAKAKER-creative-'+Date.now()+'.png';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);say('downloaded');},'image/png');render();
+  });
+  function close(){if(modal.open)modal.close();modal.hidden=true;gesture=null;document.body.style.overflow=scrollBefore;if(lastFocus&&lastFocus.isConnected)lastFocus.focus();}
+  function open(){if(document.body.classList.contains('locked')||!modal.hidden)return;lastFocus=document.activeElement;scrollBefore=document.body.style.overflow;document.body.style.overflow='hidden';lang=document.documentElement.lang==='en'?'en':'ar';language();modal.hidden=false;if(typeof modal.showModal==='function')modal.showModal();render();$('studioClose').focus();}
+  modal.addEventListener('cancel',e=>{e.preventDefault();close();});
+  $('studioClose').addEventListener('click',close);
+  $('studioLang').addEventListener('click',()=>{lang=lang==='ar'?'en':'ar';language();});
+  modal.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();e.stopPropagation();close();}if(e.key==='Tab'){const list=[...modal.querySelectorAll('button:not(:disabled),input:not([hidden]),select,canvas')];const first=list[0],last=list[list.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}});
+  function mount(){
+    const host=document.querySelector('.cards')||$('sakakerAllIconsDock');if(!host||$('sakCreativeIcon'))return;
+    const button=document.createElement('button');button.id='sakCreativeIcon';button.type='button';button.className='icon-card';
+    button.innerHTML='<span class="icon-svg" aria-hidden="true" style="font-size:25px">🎨</span><span class="icon-label"></span><span class="sub"></span>';
+    button.addEventListener('click',open);host.appendChild(button);labelIcon();
+  }
+  function labelIcon(){const b=$('sakCreativeIcon'),l=document.documentElement.lang==='en'?'en':'ar';if(b){b.querySelector('.icon-label').textContent=words[l].icon;b.querySelector('.sub').textContent=words[l].sub;b.title=words[l].icon;b.setAttribute('aria-label',words[l].icon);}}
+  new MutationObserver(()=>{labelIcon();if(!modal.hidden){lang=document.documentElement.lang==='en'?'en':'ar';language();}}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  new MutationObserver(()=>{if(document.body.classList.contains('locked')&&!modal.hidden)close();}).observe(document.body,{attributes:true,attributeFilter:['class']});
+  mount();document.addEventListener('DOMContentLoaded',mount,{once:true});language();render();
+})();
+</script>
 
 <style id="sakaker-firebase-social-chat-style">
 
@@ -38922,9 +39742,163 @@ html body #sakNewsDialog[open]{display:flex!important;flex-direction:column!impo
  render();window.dispatchEvent(new Event('resize'));
 })();
 </script>
-
-<!-- SAKAKER SPLIT: moved module 1224709-1251167 to /apps -->
-
+<style id="sak-pong-arena-style">
+#sakPongArena{position:fixed!important;inset:0!important;margin:auto!important;width:min(1180px,96vw)!important;height:min(840px,94dvh)!important;max-width:96vw!important;max-height:94dvh!important;padding:12px!important;box-sizing:border-box!important;border:1px solid #8fdba9!important;border-radius:18px!important;background:linear-gradient(145deg,#09261d,#102e36)!important;color:#ecfff1!important;overflow:auto!important;font:13px/1.6 Tahoma,Arial,sans-serif}
+#sakPongArena::backdrop{background:#00110ee8;backdrop-filter:blur(5px)}
+#sakPongArena:not([open]){display:none!important}
+#sakPongArena button,#sakPongArena input,#sakPongArena select{font:inherit;padding:8px;border:1px solid #81cbaa;border-radius:8px;background:#133d36;color:white;box-sizing:border-box;min-height:40px;max-width:100%}
+#sakPongArena button{cursor:pointer}#sakPongArena button:disabled{opacity:.45;cursor:default}
+#sakPongArena .sp-row{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-bottom:8px}
+#sakPongArena h2{font-size:18px;margin:0;flex:1}
+#sakPongArena .sp-layout{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:12px;direction:ltr}
+#sakPongCourt{width:100%;height:auto;aspect-ratio:8/5;display:block;touch-action:none;border-radius:12px;box-shadow:0 8px 25px #0007;outline-offset:3px}
+#sakPongArena aside{min-width:0;display:flex;flex-direction:column;gap:6px;max-height:520px}
+#sakPongMessages{flex:1;min-height:120px;max-height:320px;overflow:auto;overscroll-behavior:contain;background:#031c1e88;border:1px solid #a6cfbf44;border-radius:10px;padding:8px;overflow-wrap:anywhere}
+#sakPongMessages p{margin:0 0 8px;border-bottom:1px solid #ffffff18;padding-bottom:6px}
+#sakPongSendForm{display:flex;gap:4px}#sakPongMessage{min-width:0;flex:1}
+#sakPongStatus{min-height:24px;color:#ffe3a8}#sakPongScore{font-size:20px;font-weight:bold;font-variant-numeric:tabular-nums;direction:ltr}#sakPongTimer{font-size:18px;font-variant-numeric:tabular-nums}
+#sakPongPublicLobby{margin:10px 0 12px;padding:10px;border:1px solid #ffd54f99;border-radius:14px;background:linear-gradient(145deg,#082f63dd,#0b3f82dd);box-shadow:inset 0 0 20px #ffd54f18,0 0 16px #0d6efd22}
+#sakPongPublicLobby .sp-public-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px;color:#fff7bf}
+#sakPongPublicCount{min-width:28px;text-align:center;padding:2px 8px;border:1px solid #ffd54faa;border-radius:999px;background:#072b59;font-variant-numeric:tabular-nums;color:#fff}
+#sakPongPublicForm{display:flex;gap:6px;align-items:center;margin-bottom:7px}
+#sakPongPublicCode{flex:1;min-width:0;text-transform:uppercase;letter-spacing:.08em}
+#sakPongPublicList{display:flex;flex-wrap:wrap;gap:6px;min-height:42px;max-height:120px;overflow:auto;padding:6px;border:1px solid #ffd54f33;border-radius:10px;background:#061d3f99}
+#sakPongPublicList .sp-public-room{display:inline-flex;align-items:center;gap:5px;padding:4px 6px;border:1px solid #ffd54f66;border-radius:9px;background:#0b356d;direction:ltr}
+#sakPongPublicList code{font:700 12px/1.2 ui-monospace,Consolas,monospace;color:#fff29a;letter-spacing:.05em}
+#sakPongPublicList button{min-height:30px!important;padding:4px 7px!important;font-size:11px!important}
+#sakPongPublicEmpty{width:100%;text-align:center;color:#cde2ff;padding:6px}
+#sakPongPublicLobby>p{margin:7px 0 0;color:#dbeaff;font-size:11px}
+#sakPongAudioFrame{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important;left:0!important;bottom:0!important}
+@media(max-width:720px){#sakPongArena .sp-layout{grid-template-columns:1fr}#sakPongArena aside{max-height:230px}#sakPongMessages{min-height:70px}#sakPongArena{padding:8px!important}#sakPongArena button{font-size:11px}#sakPongPublicForm{flex-wrap:wrap}#sakPongPublicCode{flex:1 1 180px}#sakPongPublicList{max-height:96px}}
+html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock .sak-shore-gull[data-sak-gull-colored="true"]::before{background-image:var(--sak-colored-gull)!important;animation:none!important}
+</style>
+<script id="sak-pong-arena-js">
+(()=>{
+ const $=id=>document.getElementById(id),arena=document.createElement('dialog');arena.id='sakPongArena';arena.setAttribute('aria-labelledby','sakPongTitle');
+ arena.innerHTML='<div class="sp-row"><h2 id="sakPongTitle"></h2><button id="sakPongAudio" type="button"></button><button id="sakPongExit" type="button">×</button></div><div class="sp-row"><label><span data-sp="duration"></span> <select id="sakPongDuration"><option value="10">10</option><option value="20">20</option></select></label><button id="sakPongSolo" data-sp="solo"></button><button id="sakPongCreate" data-sp="create"></button><input id="sakPongCode" maxlength="12" autocomplete="off" spellcheck="false" dir="ltr"><button id="sakPongJoin" data-sp="join"></button><button id="sakPongCopy" data-sp="copy"></button><button id="sakPongLeave" data-sp="leave"></button></div><div class="sp-row"><span id="sakPongScore">0 : 0</span><span id="sakPongTimer">10:00</span></div><div id="sakPongStatus" role="status"></div><section id="sakPongPublicLobby"><div class="sp-public-head"><b data-sp="publicRooms"></b><span id="sakPongPublicCount">0</span></div><form id="sakPongPublicForm"><input id="sakPongPublicCode" maxlength="12" autocomplete="off" spellcheck="false" dir="ltr"><button type="submit" data-sp="publishRoom"></button></form><div id="sakPongPublicList" aria-live="polite"></div><p data-sp="publicHint"></p></section><div class="sp-layout"><div><canvas id="sakPongCourt" width="800" height="500" tabindex="0"></canvas><p data-sp="help"></p></div><aside><b data-sp="chat"></b><div id="sakPongMessages" role="log" aria-live="polite"></div><form id="sakPongSendForm"><input id="sakPongMessage" maxlength="240" autocomplete="off"><button type="submit" data-sp="send"></button></form></aside></div>';
+ document.body.append(arena);
+ const text={ar:{title:'🏓 بونج',duration:'المدة بالدقائق',solo:'ضد الكمبيوتر',create:'إنشاء غرفة',join:'انضمام',copy:'نسخ الرمز',leave:'إنهاء / مغادرة',chat:'محادثة المباراة الخاصة',publicRooms:'الغرف العامة المتاحة',publishRoom:'نشر رقم الغرفة',publicHint:'هذه الخانة لأرقام الغرف فقط بدون محادثة عامة. أنشئ غرفتك ثم انسخ رقمها والصقه هنا ليظهر للجميع، وتبقى محادثة كل غرفة خاصة باللاعبين داخلها.',publicCode:'الصق رقم الغرفة هنا',publicEmpty:'لا توجد غرف منشورة حاليًا',copyPublic:'نسخ',roomPublished:'تم نشر رقم الغرفة للعامة',ownRoomOnly:'يمكنك نشر غرفة أنشأتها أنت وهي بانتظار لاعب فقط.',lobbyError:'تعذر تحديث الغرف العامة.',send:'إرسال',help:'حرّك المضرب بالسحب أو الفأرة أو ↑ ↓ / W S. صاحب الغرفة يسار، والضيف يمين. تنتهي المباراة حسب التوقيت حتى عند إخفاء الصفحة.',idle:'اختر التدريب أو أنشئ غرفة، ويمكنك نشر رقمها في الغرف العامة.',waiting:'بانتظار لاعب — رمز الغرفة: ',playing:'المباراة جارية',ended:'انتهت المباراة',offline:'انقطع اتصال أحد اللاعبين. أُوقفت المباراة.',error:'تعذر الاتصال. تحقق من تسجيل الدخول والإنترنت وقواعد غرف البونج في Firebase.',login:'سجّل الدخول أولًا ثم أعد المحاولة.',invalid:'الرمز غير صالح أو الغرفة ممتلئة أو منتهية.',busy:'جارٍ الاتصال…',copied:'تم نسخ الرمز',copyFail:'انسخ رمز الغرفة من الحقل يدويًا.',sound:'🔊 تشغيل صوت الخلفية',mute:'🔇 إيقاف الصوت',code:'رمز الغرفة',message:'اكتب رسالة…',draw:'تعادل',left:'فاز اللاعب الأيسر',right:'فاز اللاعب الأيمن'},en:{title:'🏓 Pong',duration:'Minutes',solo:'Vs computer',create:'Create room',join:'Join',copy:'Copy code',leave:'End / leave',chat:'Private match chat',publicRooms:'Public rooms available',publishRoom:'Publish room number',publicHint:'Room numbers only — no public chat. Create your room, copy its number and paste it here so everyone can see it; each room chat stays private to its two players.',publicCode:'Paste room number here',publicEmpty:'No rooms are published right now',copyPublic:'Copy',roomPublished:'Room number published publicly',ownRoomOnly:'You can publish only a room you created that is waiting for a player.',lobbyError:'Could not update public rooms.',send:'Send',help:'Drag, move the mouse, or use ↑ ↓ / W S. Host plays left; guest plays right. The match clock continues in background tabs.',idle:'Practice or create a room; you can publish its number in the public rooms board.',waiting:'Waiting for a player — room: ',playing:'Match in progress',ended:'Match ended',offline:'A player disconnected. The match has stopped.',error:'Connection failed. Check sign-in, internet and Firebase Pong room rules.',login:'Sign in first, then try again.',invalid:'Invalid code, or the room is full or closed.',busy:'Connecting…',copied:'Code copied',copyFail:'Copy the code manually from the field.',sound:'🔊 Play background audio',mute:'🔇 Stop audio',code:'Room code',message:'Type a message…',draw:'Draw',left:'Left player wins',right:'Right player wins'}};
+ const lang=()=>document.documentElement.lang==='en'?'en':'ar',t=k=>text[lang()][k];
+ const canvas=$('sakPongCourt'),ctx=canvas.getContext('2d');let statusKey='idle',statusExtra='',mode='',role='',room='',api,db,uid,unsubs=[],disconnectHook,lobbyDisconnectHook,lobbyUnsub=null,lobbyRooms={},chatCache={},heartbeat,offset=0,roomData=null,busy=false,generation=0,ended=false,endAt=0,lastFrame=0,lastSend=0,raf=0,lastChat=0,stateWritePending=false;
+ const keys=new Set();const BALL_BASE_SPEED=500,BALL_MAX_SPEED=900,STATE_INTERVAL=45;let y1=210,y2=210,ball={x:400,y:250,vx:BALL_BASE_SPEED,vy:180},scores=[0,0],audio=false;
+ const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+ function status(key,extra=''){statusKey=key;statusExtra=extra;$('sakPongStatus').textContent=t(key)+extra;}
+ function labels(){arena.dir=lang()==='ar'?'rtl':'ltr';$('sakPongTitle').textContent=t('title');arena.querySelectorAll('[data-sp]').forEach(el=>el.textContent=t(el.dataset.sp));$('sakPongCode').placeholder=t('code');$('sakPongCode').setAttribute('aria-label',t('code'));$('sakPongPublicCode').placeholder=t('publicCode');$('sakPongPublicCode').setAttribute('aria-label',t('publicCode'));$('sakPongMessage').placeholder=t('message');$('sakPongMessage').setAttribute('aria-label',t('message'));$('sakPongExit').setAttribute('aria-label',lang()==='ar'?'إغلاق اللعبة':'Close game');canvas.setAttribute('aria-label',t('help'));$('sakPongAudio').textContent=t(audio?'mute':'sound');renderLobby();status(statusKey,statusExtra);}
+ function controls(){for(const id of ['sakPongCreate','sakPongJoin','sakPongSolo','sakPongDuration'])$(id).disabled=busy||!!mode;$('sakPongLeave').disabled=busy||!mode;$('sakPongCopy').disabled=!room;$('sakPongMessage').disabled=mode!=='online'||ended||!endAt;updateShare();}
+ function reset(){y1=y2=210;ball={x:400,y:250,vx:BALL_BASE_SPEED,vy:180};scores=[0,0];ended=false;lastFrame=0;lastSend=0;}
+ function serve(direction){ball={x:400,y:250,vx:BALL_BASE_SPEED*direction,vy:(Math.random()-.5)*380};}
+ function simulate(dt){
+  ball.x+=ball.vx*dt;ball.y+=ball.vy*dt;
+  if(ball.y<19){ball.y=19;ball.vy=Math.abs(ball.vy)}if(ball.y>481){ball.y=481;ball.vy=-Math.abs(ball.vy)}
+  for(const [x,y,dir] of [[36,y1,1],[750,y2,-1]])if(ball.vx*dir<0&&ball.x+7>x&&ball.x-7<x+14&&ball.y+7>y&&ball.y-7<y+80){const angle=clamp((ball.y-y-40)/40,-1,1)*1.05,speed=Math.min(BALL_MAX_SPEED,Math.max(BALL_BASE_SPEED,Math.hypot(ball.vx,ball.vy)*1.035));ball.vx=Math.cos(angle)*speed*dir;ball.vy=Math.sin(angle)*speed;ball.x=dir===1?x+22:x-8;}
+  if(ball.x<0){scores[1]++;serve(1)}if(ball.x>800){scores[0]++;serve(-1)}
+ }
+ function draw(){
+  const gradient=ctx.createLinearGradient(0,0,0,500);gradient.addColorStop(0,'#0b5ed7');gradient.addColorStop(1,'#063b8c');ctx.fillStyle=gradient;ctx.fillRect(0,0,800,500);
+  for(let i=0;i<10;i++){ctx.fillStyle=i%2?'#ffffff05':'#00000008';ctx.fillRect(i*80,0,80,500)}
+  ctx.strokeStyle='#ffd400';ctx.lineWidth=4;ctx.strokeRect(12,12,776,476);ctx.beginPath();ctx.moveTo(400,12);ctx.lineTo(400,488);ctx.stroke();ctx.lineWidth=2;for(let y=18;y<488;y+=18){ctx.beginPath();ctx.moveTo(394,y);ctx.lineTo(406,y);ctx.stroke()}
+  ctx.shadowBlur=10;ctx.shadowColor='#ffffffaa';ctx.fillStyle='#050505';ctx.fillRect(36,y1,14,80);ctx.strokeStyle='#ffffff';ctx.lineWidth=1;ctx.strokeRect(36,y1,14,80);
+  ctx.shadowColor='#000000aa';ctx.fillStyle='#ffffff';ctx.fillRect(750,y2,14,80);ctx.strokeStyle='#050505';ctx.strokeRect(750,y2,14,80);
+  ctx.shadowBlur=16;ctx.shadowColor='#00ffbfcc';ctx.fillStyle='#00d9a3';ctx.beginPath();ctx.arc(ball.x,ball.y,8,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+  $('sakPongScore').textContent=scores[0]+' : '+scores[1];const seconds=Math.max(0,Math.ceil((endAt-(Date.now()+offset))/1000));$('sakPongTimer').textContent=mode?`${Math.floor(seconds/60).toString().padStart(2,'0')}:${(seconds%60).toString().padStart(2,'0')}`:$('sakPongDuration').value+':00';
+ }
+ function finish(reason='ended'){if(ended)return;ended=true;status(reason,reason==='ended'?' — '+t(scores[0]===scores[1]?'draw':scores[0]>scores[1]?'left':'right'):'');controls();}
+ function frame(now){if(!arena.open)return;const dt=Math.min(.025,(now-lastFrame)/1000||0);lastFrame=now;
+  if(mode&&!ended&&endAt){
+   const dy=((keys.has('ArrowDown')||keys.has('s')?1:0)-(keys.has('ArrowUp')||keys.has('w')?1:0))*430*dt;
+   if(role==='guest')y2=clamp(y2+dy,15,405);else y1=clamp(y1+dy,15,405);
+   if(Date.now()+offset>=endAt)finish();
+   else if(mode==='solo'||role==='host'){if(mode==='solo')y2=clamp(y2+clamp(ball.y-40-y2,-310*dt,310*dt),15,405);simulate(dt);}
+   if(mode==='online'&&now-lastSend>STATE_INTERVAL){lastSend=now;sendState();}
+  }draw();raf=requestAnimationFrame(frame);
+ }
+ function move(e){if(!mode||ended)return;const rect=canvas.getBoundingClientRect(),y=clamp((e.clientY-rect.top)/rect.height*500-40,15,405);if(role==='guest')y2=y;else y1=y;}
+ canvas.addEventListener('pointerdown',e=>{canvas.setPointerCapture(e.pointerId);canvas.focus();move(e)});canvas.addEventListener('pointermove',e=>{if(e.pointerType==='mouse'||e.buttons)move(e)});
+ arena.addEventListener('keydown',e=>{if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;if(['ArrowUp','ArrowDown','w','s'].includes(e.key)){e.preventDefault();e.stopPropagation();keys.add(e.key)}});arena.addEventListener('keyup',e=>{keys.delete(e.key);e.stopPropagation()});window.addEventListener('blur',()=>keys.clear());
+ const accountBar=document.createElement('div');accountBar.className='sp-row';accountBar.innerHTML='<span id="sakPongAccount" role="status"></span><button type="button" id="sakPongLogin"></button>';arena.insertBefore(accountBar,arena.children[1]);
+ let authSDK=null,authLoading=null,authListener=null,gameSession=false,authFailure=false;
+ function accountLabel(){const en=lang()==='en',user=window.firebaseAuth?.currentUser;$('sakPongLogin').hidden=!!user;$('sakPongLogin').disabled=!authSDK;$('sakPongLogin').textContent=en?'Sign in with Google':'تسجيل الدخول عبر Google';$('sakPongAccount').textContent=user?(en?'Game account: ':'حساب اللعبة: ')+String(user.displayName||user.email||user.uid).slice(0,70):authFailure?(en?'Sign-in could not load. Reopen the game to retry.':'تعذر تجهيز تسجيل الدخول. أعد فتح اللعبة للمحاولة.'):authSDK?(en?'Sign in here to play online.':'سجّل الدخول هنا للعب أونلاين.'):(en?'Restoring your account…':'جارٍ استعادة حسابك…');}
+ async function ensureGameAccount(){
+  if(authLoading)return authLoading;
+  authLoading=(async()=>{authFailure=false;accountLabel();
+   const until=Date.now()+10000;while(!window.firebaseAuth&&Date.now()<until)await new Promise(r=>setTimeout(r,100));
+   if(!window.firebaseAuth)throw Error('error');
+   authSDK=await import('https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js');
+   await window.firebaseAuth.authStateReady();
+   if(!authListener)authListener=authSDK.onAuthStateChanged(window.firebaseAuth,user=>{gameSession=arena.open&&!!user;if(!user){stopLobby();if(mode==='online'){release(true);status('login')}}else if(arena.open){startLobby().catch(()=>{})}accountLabel();});
+   gameSession=arena.open&&!!window.firebaseAuth.currentUser;accountLabel();
+  })().catch(e=>{authFailure=true;accountLabel();throw e}).finally(()=>{authLoading=null});
+  return authLoading;
+ }
+ $('sakPongLogin').onclick=async()=>{
+  if(!authSDK)return;
+  $('sakPongLogin').disabled=true;
+  try{await authSDK.signInWithPopup(window.firebaseAuth,new authSDK.GoogleAuthProvider());gameSession=arena.open;accountLabel();await startLobby();status('idle');}
+  catch(e){status(e.code==='auth/popup-closed-by-user'?'login':'error');}
+  finally{accountLabel();}
+ };
+ new MutationObserver(accountLabel).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+ async function connect(){await ensureGameAccount();if(!window.firebaseAuth?.currentUser){$('sakPongLogin').focus();throw Error('login')}if(!arena.open||!gameSession)throw Error('error');if(!api)api=await import('https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js');db=window.firebaseRTDB;uid=window.firebaseAuth.currentUser.uid;if(!db)throw Error('error');}
+ const path=p=>api.ref(db,'pongRoomsV1/'+room+(p?'/'+p:''));
+ const lobbyRoot=()=>api.ref(db,'pongLobbyV1');
+ const lobbyPath=code=>api.ref(db,'pongLobbyV1/'+code);
+ function renderLobby(){const box=$('sakPongPublicList');if(!box)return;box.replaceChildren();const rooms=Object.entries(lobbyRooms||{}).filter(([code,data])=>/^[A-F0-9]{12}$/.test(code)&&data&&data.status==='waiting').sort((a,b)=>(Number(b[1].created)||0)-(Number(a[1].created)||0)).slice(0,40);$('sakPongPublicCount').textContent=String(rooms.length);if(!rooms.length){const empty=document.createElement('div');empty.id='sakPongPublicEmpty';empty.textContent=t('publicEmpty');box.append(empty);return}for(const [code] of rooms){const item=document.createElement('div');item.className='sp-public-room';const value=document.createElement('code');value.textContent=code;const copy=document.createElement('button');copy.type='button';copy.textContent=t('copyPublic');copy.onclick=async()=>{try{await navigator.clipboard.writeText(code);$('sakPongCode').value=code;status('copied')}catch(e){$('sakPongCode').value=code;$('sakPongCode').focus();$('sakPongCode').select();status('copyFail')}};item.append(value,copy);box.append(item)}}
+ function stopLobby(){if(lobbyUnsub){try{lobbyUnsub()}catch(e){}lobbyUnsub=null}lobbyRooms={};renderLobby();}
+ function renderPrivateChat(){const box=$('sakPongMessages');if(!box)return;box.replaceChildren();const allowed=new Set([roomData?.host,roomData?.guest].filter(Boolean));Object.values(chatCache||{}).forEach(m=>{if(!allowed.has(m.uid))return;const p=document.createElement('p');p.textContent=String(m.name||'Player').slice(0,40)+': '+String(m.text||'').slice(0,240);box.append(p)});box.scrollTop=box.scrollHeight;}
+ async function startLobby(){await connect();if(lobbyUnsub)return;lobbyUnsub=api.onValue(api.query(lobbyRoot(),api.limitToLast(50)),snap=>{lobbyRooms=snap.val()||{};renderLobby()},()=>{lobbyRooms={};renderLobby();status('lobbyError')});}
+ async function removeLobbyCode(code){if(!api||!db||!/^[A-F0-9]{12}$/.test(code))return;try{await api.remove(lobbyPath(code))}catch(e){}}
+ async function sendState(){if(!room||!api||stateWritePending)return;stateWritePending=true;const state=role==='host'?{x:ball.x,y:ball.y,left:y1,right:y2,a:scores[0],b:scores[1]}:{y:y2};try{await api.set(path(role==='host'?'state':'paddle'),state)}catch(e){finish('offline')}finally{stateWritePending=false}}
+ async function release(closeRemote=true){generation++;clearInterval(heartbeat);unsubs.forEach(fn=>fn());unsubs=[];const leavingRoom=room,leavingRole=role;if(disconnectHook){try{await disconnectHook.cancel()}catch(e){}disconnectHook=null}if(lobbyDisconnectHook){try{await lobbyDisconnectHook.cancel()}catch(e){}lobbyDisconnectHook=null}if(closeRemote&&leavingRoom&&api){if(leavingRole==='host')await removeLobbyCode(leavingRoom);try{await api.set(api.ref(db,'pongRoomsV1/'+leavingRoom+'/meta/status'),'closed')}catch(e){}}room='';mode='';role='';endAt=0;roomData=null;chatCache={};stateWritePending=false;$('sakPongMessages').replaceChildren();keys.clear();controls();}
+ async function watch(token){
+  unsubs.push(api.onValue(api.ref(db,'.info/serverTimeOffset'),s=>{offset=Number(s.val())||0}));
+  disconnectHook=api.onDisconnect(path('meta/status'));await disconnectHook.set('closed');
+  if(token!==generation)return;
+  unsubs.push(api.onValue(path('meta'),snap=>{if(token!==generation)return;const data=snap.val();if(!data){finish('offline');return}roomData=data;if(data.status==='closed'){finish('offline');return}if(data.guest&&data.start){endAt=data.start+data.minutes*60000;$('sakPongDuration').value=String(data.minutes);if(role==='host')removeLobbyCode(room);status('playing')}else status('waiting',room);renderPrivateChat();controls();},()=>finish('offline')));
+  unsubs.push(api.onValue(path(role==='host'?'paddle':'state'),snap=>{const s=snap.val();if(!s||token!==generation)return;if(role==='host'){if(Number.isFinite(s.y))y2=clamp(s.y,15,405)}else if([s.x,s.y,s.left,s.a,s.b].every(Number.isFinite)){ball.x=clamp(s.x,-10,810);ball.y=clamp(s.y,0,500);y1=clamp(s.left,15,405);scores=[Math.max(0,s.a),Math.max(0,s.b)];}},()=>finish('offline')));
+  unsubs.push(api.onValue(api.query(path('chat'),api.limitToLast(50)),snap=>{chatCache=snap.val()||{};renderPrivateChat()},()=>status('error')));
+  unsubs.push(api.onValue(api.ref(db,'.info/connected'),s=>{if(s.val()===false&&endAt)finish('offline')}));
+ }
+ async function online(join){if(busy||mode)return;busy=true;controls();status('busy');let token=++generation,remoteSession=false;
+  try{await connect();if(token!==generation)return;reset();
+   if(join){
+    const candidate=$('sakPongCode').value.replace(/[^A-Fa-f0-9]/g,'').slice(0,12).toUpperCase();
+    $('sakPongCode').value=candidate;
+    if(!/^[A-F0-9]{12}$/.test(candidate))throw Error('invalid');
+    const metaRef=api.ref(db,'pongRoomsV1/'+candidate+'/meta');
+    const result=await api.runTransaction(metaRef,m=>{if(!m||m.status!=='waiting'||m.guest||m.host===uid)return;return {...m,guest:uid,status:'playing',start:api.serverTimestamp()};});
+    if(!result.committed||result.snapshot.val()?.guest!==uid)throw Error('invalid');
+    room=candidate;role='guest';remoteSession=true;
+   }else{
+    const candidate=Array.from(crypto.getRandomValues(new Uint8Array(6)),n=>n.toString(16).padStart(2,'0')).join('').toUpperCase();
+    const metaRef=api.ref(db,'pongRoomsV1/'+candidate+'/meta');
+    await api.set(metaRef,{host:uid,status:'waiting',minutes:Number($('sakPongDuration').value),created:api.serverTimestamp()});
+    room=candidate;role='host';remoteSession=true;$('sakPongCode').value=room;$('sakPongPublicCode').value='';
+   }
+   if(token!==generation){await release(true);return;}
+   mode='online';$('sakPongMessages').replaceChildren();await watch(token);canvas.focus();
+  }catch(e){await release(remoteSession);status(['login','invalid'].includes(e.message)?e.message:'error')}finally{busy=false;controls()}
+ }
+ $('sakPongSolo').onclick=()=>{if(mode)return;reset();mode='solo';role='host';offset=0;endAt=Date.now()+Number($('sakPongDuration').value)*60000;status('playing');controls();canvas.focus()};
+ $('sakPongCreate').onclick=()=>online(false);$('sakPongJoin').onclick=()=>online(true);$('sakPongLeave').onclick=async()=>{await release(true);reset();status('idle')};
+ const normalizeRoomCode=input=>{input.value=input.value.replace(/[^A-Fa-f0-9]/g,'').slice(0,12).toUpperCase();};
+ $('sakPongCode').addEventListener('input',()=>normalizeRoomCode($('sakPongCode')));
+ $('sakPongPublicCode').addEventListener('input',()=>normalizeRoomCode($('sakPongPublicCode')));
+ $('sakPongCode').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();if(!busy&&!mode)online(true)}});
+ $('sakPongPublicForm').onsubmit=async e=>{e.preventDefault();const code=$('sakPongPublicCode').value.trim().toUpperCase();if(!/^[A-F0-9]{12}$/.test(code)){status('invalid');return}try{await connect();const metaSnap=await api.get(api.ref(db,'pongRoomsV1/'+code+'/meta'));const meta=metaSnap.val();if(!meta||meta.host!==uid||meta.status!=='waiting'||meta.guest){status('ownRoomOnly');return}await api.set(lobbyPath(code),{code,status:'waiting',created:api.serverTimestamp()});if(room===code&&role==='host'){if(lobbyDisconnectHook){try{await lobbyDisconnectHook.cancel()}catch(err){}}lobbyDisconnectHook=api.onDisconnect(lobbyPath(code));await lobbyDisconnectHook.remove()}$('sakPongPublicCode').value='';status('roomPublished')}catch(err){status('lobbyError')}};
+ $('sakPongCopy').onclick=async()=>{if(!room)return;try{await navigator.clipboard.writeText(room);$('sakPongCode').value=room;status('copied')}catch(e){$('sakPongCode').value=room;$('sakPongCode').focus();$('sakPongCode').select();status('copyFail')}};
+ const updateShare=()=>{};
+ const invitation=(new URL(location.href).searchParams.get('pongRoom')||'').replace(/[^A-Fa-f0-9]/g,'').slice(0,12).toUpperCase();
+ if(/^[A-F0-9]{12}$/.test(invitation)){$('sakPongCode').value=invitation;}
+ $('sakPongSendForm').onsubmit=async e=>{e.preventDefault();const message=$('sakPongMessage').value.trim();const me=window.firebaseAuth?.currentUser?.uid,allowed=me&&(me===roomData?.host||me===roomData?.guest);if(mode!=='online'||ended||!endAt||!allowed||!message||Date.now()-lastChat<1000)return;lastChat=Date.now();try{await api.push(path('chat'),{uid:me,name:String(window.firebaseAuth.currentUser.displayName||'Player').slice(0,40),text:message.slice(0,240),time:api.serverTimestamp()});$('sakPongMessage').value=''}catch(e){status('error')}};
+ const audioFrame=$('pongGame-video');if(audioFrame){audioFrame.id='sakPongAudioFrame';arena.append(audioFrame)}
+ $('sakPongAudio').onclick=()=>{audio=!audio;if(audioFrame){if(audio)audioFrame.src=audioFrame.dataset.audioSrc;else audioFrame.removeAttribute('src')}labels()};
+ $('sakPongExit').onclick=()=>arena.close();
+ arena.addEventListener('close',()=>{gameSession=false;cancelAnimationFrame(raf);stopLobby();release(true);if(audioFrame)audioFrame.removeAttribute('src');audio=false;labels();status('idle');$('pongGame-btn')?.focus()});
+ document.addEventListener('click',e=>{if(!e.target.closest('#pongGame-btn'))return;e.preventDefault();e.stopImmediatePropagation();if(!arena.open){arena.showModal();reset();labels();controls();ensureGameAccount().then(()=>{if(window.firebaseAuth?.currentUser)return startLobby()}).catch(()=>status('error'));raf=requestAnimationFrame(frame)}},true);
+ new MutationObserver(labels).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+ labels();controls();draw();
+})();
+</script>
 <script id="sak-colored-gull-bodies">
 (()=>{
  const dock=document.getElementById('sakakerAllIconsDock');if(!dock)return;
@@ -41157,7 +42131,7 @@ body.sak-ebook-layer-open :is(#siteLangToggle,#facebookVideoIcon,#liveFlasher,#s
 })();
 </script>
 
-<style id="sak-split-launchers">.sak-split-link{display:flex;align-items:center;justify-content:center;min-width:62px;min-height:62px;padding:7px;border-radius:18px;border:1px solid #9fffe0;background:linear-gradient(145deg,#123b42,#071b25);color:#fff;text-decoration:none;font:700 11px/1.25 Tahoma,Arial,sans-serif;text-align:center;box-shadow:0 0 15px #4fffc955;cursor:pointer}.sak-split-links{position:fixed;left:92px;bottom:14px;z-index:2147483000;display:flex;gap:7px;flex-wrap:wrap;max-width:calc(100vw - 105px)}@media(max-width:700px){.sak-split-links{left:74px;bottom:8px;gap:4px}.sak-split-link{min-width:48px;min-height:48px;font-size:9px;padding:4px}}</style><script id="sak-split-navigation">(()=>{const go=p=>location.href=p;document.addEventListener('click',e=>{if(e.target.closest('#pongGame-btn')){e.preventDefault();e.stopImmediatePropagation();go('apps/pong.html');return}if(e.target.closest('.sak-text-library-card')){e.preventDefault();e.stopImmediatePropagation();go('apps/books.html')}},true);function add(){if(document.getElementById('sakSplitLinks'))return;const h=document.createElement('nav');h.id='sakSplitLinks';h.className='sak-split-links';h.innerHTML='<a class="sak-split-link" href="apps/draw.html">🎨<br>الرسم</a><a class="sak-split-link" href="apps/live.html">📺<br>مباشر</a><a class="sak-split-link" href="apps/videos.html">🎥<br>الفيديو</a>';document.body.appendChild(h)};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add);else add()})();</script></body>
+</body>
 </html>
 <!-- SAKAKER TEXT LIBRARY ABSOLUTE TOP LAYER FIX 2026-09-27 -->
 <style id="sakaker-text-library-absolute-top-layer">
@@ -41494,5 +42468,121 @@ body.sak-text-library-layer-open :is(
   else init();
 })();
 </script>
-</body>
-</html>
+
+
+
+<!-- =========================================================
+     SAKAKER FINAL MOBILE / ICON REPAIR — 2026-09-29
+     Keeps apps inside the site and restores compact Live Channels UI.
+========================================================= -->
+<style id="sakaker-final-mobile-icon-repair">
+/* Creative Studio icon: keep the palette visible inside its card. */
+#sakCreativeIcon{overflow:hidden!important;min-width:0!important}
+#sakCreativeIcon .icon-svg{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  width:46px!important;height:46px!important;margin:0 auto 7px!important;
+  font-size:30px!important;line-height:1!important;color:initial!important;
+  visibility:visible!important;opacity:1!important;text-indent:0!important;
+}
+#sakCreativeIcon .icon-svg::before{content:"🎨"!important;display:block!important}
+#sakCreativeIcon .icon-svg{font-size:0!important}
+
+/* E-books card uses the same visual language as the main content cards. */
+#sakEbooksHomeIcon{min-width:0!important;overflow:hidden!important}
+#sakEbooksHomeIcon .sak-ebook-home-symbol{
+  display:flex;align-items:center;justify-content:center;width:46px;height:46px;
+  margin:0 auto 7px;font-size:30px;line-height:1;
+}
+
+/* Restore the older compact Live Channels window instead of a full-screen takeover. */
+html body #livePopup{
+  display:none;
+  position:fixed!important;
+  inset:auto!important;
+  top:50%!important;left:50%!important;right:auto!important;bottom:auto!important;
+  transform:translate(-50%,-50%)!important;
+  width:min(760px,92vw)!important;height:auto!important;
+  max-width:760px!important;max-height:86dvh!important;
+  margin:0!important;padding:18px 12px 16px!important;
+  overflow:auto!important;
+  border-radius:26px!important;
+  background:linear-gradient(145deg,rgba(1,28,30,.96),rgba(0,8,13,.97))!important;
+  border:1px solid rgba(0,255,210,.58)!important;
+  box-shadow:0 0 24px rgba(0,255,205,.34),0 24px 70px rgba(0,0,0,.76)!important;
+  backdrop-filter:blur(12px) saturate(130%)!important;
+  -webkit-backdrop-filter:blur(12px) saturate(130%)!important;
+  z-index:2147483647!important;
+}
+html body #livePopup #closePopup{
+  position:sticky!important;top:0!important;right:auto!important;float:right!important;
+  width:40px!important;height:40px!important;border-radius:50%!important;z-index:5!important;
+}
+html body #livePopup #liveVideosContainer{
+  width:100%!important;max-width:none!important;max-height:none!important;
+  margin:0!important;padding:10px 4px 4px!important;
+  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:12px!important;overflow:visible!important;border:0!important;background:transparent!important;
+  box-shadow:none!important;
+}
+html body #livePopup .live-video{
+  width:100%!important;height:auto!important;aspect-ratio:16/9!important;margin:0!important;
+  border-radius:14px!important;overflow:hidden!important;background:#000!important;
+}
+html body #livePopup .live-video iframe{width:100%!important;height:100%!important;display:block!important}
+
+/* Main icon grid: predictable mobile layout, no overlap or horizontal overflow. */
+.cards{width:min(1050px,100%)!important;box-sizing:border-box!important}
+.cards>.icon-card{min-width:0!important;max-width:100%!important;box-sizing:border-box!important}
+@media(max-width:600px){
+  .cards{
+    display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:10px!important;padding:0 10px!important;margin-left:auto!important;margin-right:auto!important;
+  }
+  .cards>.icon-card{
+    width:100%!important;min-height:112px!important;height:auto!important;margin:0!important;
+    padding:10px 6px!important;border-radius:17px!important;transform:none!important;
+  }
+  .cards>.icon-card .icon-label{font-size:13px!important;line-height:1.45!important;overflow-wrap:anywhere!important}
+  .cards>.icon-card .sub{font-size:11px!important;line-height:1.35!important;overflow-wrap:anywhere!important}
+  html body #livePopup{width:94vw!important;max-width:94vw!important;max-height:88dvh!important;padding:12px 8px!important;border-radius:20px!important}
+  html body #livePopup #liveVideosContainer{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;padding:8px 2px 2px!important}
+}
+@media(max-width:360px){
+  .cards{gap:7px!important;padding:0 7px!important}
+  .cards>.icon-card{min-height:104px!important;padding:8px 4px!important}
+  html body #livePopup #liveVideosContainer{grid-template-columns:1fr!important}
+}
+</style>
+<script id="sakaker-final-mobile-icon-repair-js">
+(()=>{
+  'use strict';
+  function isEn(){return document.documentElement.lang==='en'}
+  function ensureEbooksIcon(){
+    const host=document.querySelector('.cards');
+    if(!host || document.getElementById('sakEbooksHomeIcon')) return;
+    const b=document.createElement('button');
+    b.type='button';b.id='sakEbooksHomeIcon';b.className='icon-card';
+    b.innerHTML='<span class="sak-ebook-home-symbol" aria-hidden="true">📚</span><span class="icon-label"></span><span class="sub"></span>';
+    b.addEventListener('click',e=>{
+      e.preventDefault();e.stopPropagation();
+      if(typeof window.openSakakerEbooks==='function') window.openSakakerEbooks();
+      else if(typeof window.openSakakerTextLibrary==='function') window.openSakakerTextLibrary();
+    });
+    host.appendChild(b);labelEbooks();
+  }
+  function labelEbooks(){
+    const b=document.getElementById('sakEbooksHomeIcon');if(!b)return;
+    const title=isEn()?'E-Books':'كتب إلكترونية';
+    const sub=isEn()?'Read & download':'قراءة وتحميل الكتب';
+    b.querySelector('.icon-label').textContent=title;b.querySelector('.sub').textContent=sub;
+    b.title=title;b.setAttribute('aria-label',title);
+  }
+  function repairCreative(){
+    const b=document.getElementById('sakCreativeIcon');if(!b)return;
+    const icon=b.querySelector('.icon-svg');if(icon){icon.textContent='';icon.setAttribute('aria-hidden','true')}
+  }
+  function init(){ensureEbooksIcon();repairCreative();labelEbooks()}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+  new MutationObserver(()=>{init()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+})();
+</script>
