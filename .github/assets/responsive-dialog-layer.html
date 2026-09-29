@@ -143,3 +143,57 @@ html body #facebookVideoPopup .fbPostFrame{max-width:100% !important;overflow-x:
   lift();
 })();
 </script>
+
+<!-- SAKAKER FACEBOOK POST MOBILE FIT 2026-09-29 -->
+<style id="sakaker-facebook-post-mobile-fit">
+@media(max-width:700px){
+  html body #facebookVideoPopup .fbPostFrame{
+    display:block !important;
+    width:100% !important;
+    max-width:100% !important;
+    overflow:hidden !important;
+    direction:ltr !important;
+    height:calc(500px * var(--sak-fb-post-scale,1)) !important;
+    min-height:0 !important;
+    border-radius:12px !important;
+  }
+  html body #facebookVideoPopup .fbPostFrame iframe{
+    display:block !important;
+    width:350px !important;
+    min-width:350px !important;
+    max-width:none !important;
+    height:500px !important;
+    min-height:500px !important;
+    max-height:none !important;
+    margin:0 !important;
+    transform:scale(var(--sak-fb-post-scale,1)) !important;
+    transform-origin:top left !important;
+  }
+}
+</style>
+<script id="sakaker-facebook-post-mobile-fit-js">
+(function(){
+  'use strict';
+  const frame=document.querySelector('#facebookVideoPopup .fbPostFrame');
+  const embed=frame?.querySelector('iframe');
+  if(!frame || !embed)return;
+  function fit(){
+    if(window.innerWidth>700)return;
+    const width=frame.clientWidth;
+    if(width<1)return;
+    const scale=Math.min(1,width/350).toFixed(4);
+    if(frame.style.getPropertyValue('--sak-fb-post-scale')!==scale){
+      frame.style.setProperty('--sak-fb-post-scale',scale);
+    }
+    const url=new URL(embed.src,location.href);
+    if(url.searchParams.get('width')!=='350'){
+      url.searchParams.set('width','350');
+      embed.src=url.href;
+    }
+  }
+  const observer=new ResizeObserver(fit);
+  observer.observe(frame);
+  window.addEventListener('resize',fit,{passive:true});
+  fit();
+})();
+</script>
