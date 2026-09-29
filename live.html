@@ -1,0 +1,341 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SAKAKER — Live Channels</title><style>
+/* 🌟 أيقونة فليشر القنوات المباشرة */
+#liveFlasher {
+  position: fixed;
+  top: 300px;
+  right: 470px;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(0,255,200,0.18);
+  color: #000;
+  font-weight: bold;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 40px rgba(255,255,255,0.9), 0 0 80px rgba(255,255,255,0.7);
+  cursor: pointer;
+  z-index: 10000;
+  transition: transform 0.3s ease;
+  font-family: "Cairo", sans-serif;
+  animation: flashGlow 2s infinite ease-in-out;
+}
+@keyframes flashGlow {
+  0%, 100% { box-shadow: 0 0 30px rgba(255,255,255,0.7), 0 0 80px rgba(255,255,255,0.5); }
+  50% { box-shadow: 0 0 70px rgba(255,255,255,1), 0 0 120px rgba(255,255,255,0.9); }
+}
+#liveFlasher:hover {
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* نافذة القنوات المباشرة */
+#livePopup {
+  display: none;
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -30%);
+  width: 80vw;
+  max-width: 420px;
+  background: rgba(255,255,255,0.97);
+  border-radius: 30px;
+  box-shadow: 0 0 40px rgba(255,255,255,0.9);
+  padding: 15px 10px 25px;
+  z-index: 10001;
+  text-align: center;
+  animation: fadeIn 0.4s ease;
+  backdrop-filter: blur(10px);
+  color: #000;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -40%); }
+  to { opacity: 1; transform: translate(-50%, -30%); }
+}
+#closePopup {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: crimson;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s;
+}
+#closePopup:hover {
+  background: #ff5555;
+}
+#liveVideosContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 35px;
+}
+.live-video {
+  width: 130px;
+  height: 80px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+.live-video:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0,0,0,0.7);
+}
+.live-video iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  pointer-events: none;
+}
+
+/* الإطار المنبثق الكبير للفيديو */
+#videoOverlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(4px);
+  z-index: 10002;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 60px;
+}
+#videoBox {
+  position: relative;
+  width: 80%;
+  max-width: 600px;
+  aspect-ratio: 16/9;
+  background: #000;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(255,255,255,0.8);
+}
+#videoBox iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+#closeVideo {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: crimson;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 16px;
+  cursor: pointer;
+}
+#closeVideo:hover {
+  background: #ff5555;
+}
+
+/* زر مكتبة الفيديو الزمردية */
+#emeraldLibraryButton {
+  position: fixed;
+  right:1150px;
+  top: 390px;
+  z-index: 9500;
+  cursor: pointer;
+  padding: 2px 2px;
+  background: rgba(0,255,200,0.18);
+  color: #00ffff;
+  font-weight: bold;
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid rgba(0,55,55,0.4);
+}
+
+#emeraldLibraryContent {
+  display: none;
+  position: fixed;
+  right: 40px;
+  top:200px;
+  max-height: 70%;
+  overflow-y: auto;
+  background: rgba(0,0,0,0.85);
+  padding: 10px;
+  border-radius: 12px;
+  z-index: 9500;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid rgba(0,255,255,0.4);
+}
+
+.emeraldSectionHeader {
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.emeraldVideoCircle {
+  display: inline-block;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #00ffff;
+  box-shadow: 0 0 50px #00ffff;
+  margin: 5px;
+  cursor: pointer;
+  text-align: center;
+  line-height: 120px;
+  font-weight: bold;
+  color: #fff;
+  background: #000;
+  transition: 0.3s;
+  font-size: 13px;
+}
+.emeraldVideoCircle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 70px #00ffff;
+}
+
+/* مودال خاص بمكتبة الفيديو الزمردية */
+#emeraldModal {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.9);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+#emeraldModal iframe {
+  width:70%;
+  height:70%;
+  border-radius:12px;
+  box-shadow:0 0 70px #00ffff;
+  border:none;
+}
+#emeraldModalClose {
+  position:fixed;
+  top:10px;
+  right:510px;
+  padding:8px 12px;
+  background:rgba(0,255,255,0.3);
+  border:1px solid #00ffff;
+  color:#fff;
+  cursor:pointer;
+  z-index:10000;
+  border-radius:8px;
+}
+
+/* للجوال */
+@media (max-width: 768px) {
+  #liveFlasher {
+    width: 110px;
+    height: 110px;
+    right: 15px;
+    font-size: 13px;
+  }
+  #livePopup {
+    width: 90vw;
+    max-width: 340px;
+    top: 25%;
+    transform: translate(-50%, -25%);
+  }
+  .live-video {
+    width: 110px;
+    height: 65px;
+  }
+  #emeraldLibraryButton {
+    right: 10px;
+    top: 18%;
+  }
+  #pongButton {
+    right: 10px;
+  }
+}
+</style><style>body{margin:0;background:#031218;color:#fff;font-family:Tahoma,Arial,sans-serif;padding:70px 10px}#liveFlasher{display:none!important}#livePopup{display:block!important;position:static!important;transform:none!important;width:min(1000px,96vw)!important;max-width:none!important;margin:auto!important}#liveVideosContainer{display:flex!important;flex-wrap:wrap!important;justify-content:center!important;gap:12px!important}#closePopup{display:none!important}#videoOverlay{z-index:2147483646!important}</style></head><body><button onclick="location.href='../index.html'" style="position:fixed;top:10px;left:10px;z-index:2147483647;padding:10px">↩ الرئيسية / Home</button><h1 style="text-align:center">📺 قنوات مباشرة / Live Channels</h1>id="liveFlasher" onclick="toggleLivePopup()">
+<span>قنوات مباشرة<br/>Live Channels</span>
+</div>
+
+<div id="livePopup">
+<button id="closePopup" onclick="toggleLivePopup()">❌</button>
+<div id="liveVideosContainer">
+<div class="live-video" onclick="openVideo('https://www.youtube.com/embed/AGkp2AL8e7o')">
+<iframe loading="lazy" allowfullscreen="" data-src="https://www.youtube.com/embed/AGkp2AL8e7o?mute=1" src="about:blank"></iframe>
+</div>
+<div class="live-video" onclick="openVideo('https://www.youtube.com/embed/0FBiyFpV__g')">
+<iframe loading="lazy" allowfullscreen="" data-src="https://www.youtube.com/embed/0FBiyFpV__g?mute=1" src="about:blank"></iframe>
+</div>
+<div class="live-video" onclick="openVideo('https://www.youtube.com/embed/HfgIFGbdGJ0')">
+<iframe loading="lazy" allowfullscreen="" data-src="https://www.youtube.com/embed/HfgIFGbdGJ0?mute=1" src="about:blank"></iframe>
+</div>
+<div class="live-video" onclick="openVideo('https://www.youtube.com/embed/LuKwFajn37U')">
+<iframe loading="lazy" allowfullscreen="" data-src="https://www.youtube.com/embed/LuKwFajn37U?mute=1" src="about:blank"></iframe>
+</div>
+<div class="live-video" onclick="openVideo('https://www.youtube.com/embed/n7eQejkXbnM')">
+<iframe loading="lazy" allowfullscreen="" data-src="https://www.youtube.com/embed/n7eQejkXbnM?mute=1" src="about:blank"></iframe>
+</div>
+<div class="live-video" onclick="openVideo('https://www.youtube.com/embed/J2TXKYeBUi4')">
+<iframe loading="lazy" allowfullscreen="" data-src="https://www.youtube.com/embed/J2TXKYeBUi4?mute=1" src="about:blank"></iframe>
+</div>
+<div class="live-video" onclick="openVideo('https://www.youtube.com/embed/GNi0keWY1io')">
+<iframe loading="lazy" allowfullscreen="" data-src="https://www.youtube.com/embed/GNi0keWY1io?mute=1" src="about:blank"></iframe>
+</div>
+<div class="live-video" onclick="openVideo('https://www.youtube.com/embed/Va6QU9n3q18')">
+<iframe loading="lazy" allowfullscreen="" data-src="https://www.youtube.com/embed/Va6QU9n3q18?mute=1" src="about:blank"></iframe>
+</div>
+<div class="live-video" onclick="openVideo('https://www.youtube.com/embed/MiQe9ob9aDc')">
+<iframe loading="lazy" allowfullscreen="" data-src="https://www.youtube.com/embed/MiQe9ob9aDc?mute=1" src="about:blank"></iframe>
+</div>
+<div class="live-video" onclick="openVideo('https://www.youtube.com/embed/TLRlAlyiT7Y')">
+<iframe loading="lazy" allowfullscreen="" data-src="https://www.youtube.com/embed/TLRlAlyiT7Y?mute=1" src="about:blank"></iframe>
+</div>
+</div>
+</div>
+
+<div id="videoOverlay">
+<div id="videoBox">
+<button id="closeVideo" onclick="closeVideo()">❌</button>
+<iframe loading="lazy" allowfullscreen="" id="mainVideo" src=""></iframe>
+</div>
+</div>
+
+<div <script>
+function toggleLivePopup() {
+    const popup = document.getElementById("livePopup");
+    if (!popup) return;
+    popup.style.display = (popup.style.display === "block") ? "none" : "block";
+  }
+
+  function openVideo(url) {
+    const overlay = document.getElementById("videoOverlay");
+    const iframe = document.getElementById("mainVideo");
+    if (!overlay || !iframe) return;
+    iframe.src = url + (url.includes("?") ? "&" : "?") + "autoplay=1";
+    overlay.style.display = "flex";
+  }
+
+  function closeVideo() {
+    const overlay = document.getElementById("videoOverlay");
+    const iframe = document.getElementById("mainVideo");
+    if (!overlay || !iframe) return;
+    iframe.src = "";
+    overlay.style.display = "none";
+  }
+</script>
+<script>document.querySelectorAll('#liveVideosContainer iframe').forEach(f=>{if(f.dataset.src)f.src=f.dataset.src});</script></body></html>
