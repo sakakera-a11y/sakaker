@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>SAKAKER Apps</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Arial,sans-serif;background:#031116;color:#fff}
+body{padding:16px;background:radial-gradient(circle at top,#0b3d42,#031116 55%)}
+h1{text-align:center;font-size:clamp(20px,5vw,32px);margin:8px 0 18px}
+.grid{width:min(900px,100%);margin:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.app-card{min-height:130px;border:1px solid rgba(173,255,236,.65);border-radius:22px;background:rgba(8,38,45,.76);color:#fff;box-shadow:0 0 18px rgba(0,255,210,.18);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;cursor:pointer}
+.app-card span{font-size:42px}.app-card b{font-size:16px}.app-card small{opacity:.78}
+#viewer{display:none;position:fixed;inset:0;z-index:2147483647;background:#02080c}
+#viewer.open{display:flex;flex-direction:column}
+.bar{height:54px;flex:0 0 54px;display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:rgba(3,23,28,.98);border-bottom:1px solid rgba(173,255,236,.35)}
+.bar button{width:40px;height:40px;border-radius:50%;border:1px solid #fff;background:#7a1830;color:#fff;font-size:23px}
+iframe{width:100%;height:calc(100dvh - 54px);border:0;background:#071216}
+@media(max-width:480px){body{padding:10px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.app-card{min-height:105px;border-radius:17px}.app-card span{font-size:34px}}
+</style>
+</head>
+<body>
+<h1>💎 تطبيقات SAKAKER</h1>
+<div class="grid"><button class="app-card" onclick="openApp('books.html','الكتب الإلكترونية')"><span>📚</span><b>الكتب الإلكترونية</b><small>E-Books</small></button>
+<button class="app-card" onclick="openApp('draw.html','الرسم الإبداعي')"><span>🎨</span><b>الرسم الإبداعي</b><small>Creative Studio</small></button>
+<button class="app-card" onclick="openApp('live.html','القنوات المباشرة')"><span>📺</span><b>القنوات المباشرة</b><small>Live Channels</small></button>
+<button class="app-card" onclick="openApp('videos.html','مكتبة الفيديو')"><span>🎥</span><b>مكتبة الفيديو</b><small>Video Library</small></button>
+<button class="app-card" onclick="openApp('pong.html','بونج')"><span>🏓</span><b>بونج</b><small>Pong</small></button></div>
+<div id="viewer"><div class="bar"><strong id="appTitle">SAKAKER</strong><button onclick="closeApp()" aria-label="إغلاق">×</button></div><iframe id="appFrame" title="SAKAKER App"></iframe></div>
+<script>
+const viewer=document.getElementById('viewer'), frame=document.getElementById('appFrame'), title=document.getElementById('appTitle');
+function openApp(url,name){title.textContent=name;frame.src=url;viewer.classList.add('open');document.body.style.overflow='hidden'}
+function closeApp(){viewer.classList.remove('open');frame.src='about:blank';document.body.style.overflow=''}
+addEventListener('keydown',e=>{if(e.key==='Escape'&&viewer.classList.contains('open'))closeApp()})
+</script>
+</body></html>
