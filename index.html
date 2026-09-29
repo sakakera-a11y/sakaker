@@ -42527,7 +42527,7 @@ html body .modal .panel{max-width:100% !important;max-height:calc(100dvh - 20px)
 <script id="sakaker-responsive-dialog-layer-js">
 (function(){
   'use strict';
-  const ids=['facebookVideoPopup','livePopup','videoOverlay','emeraldModal','shipPopup_new','sakakerBusinessPopup','emeraldLibraryContent','sakakerMapOverlay','sakMusicPlayer','sakLearningModal','sakTextLibraryModal','sakakerSiteNewsModal','folderModal','quizModal','puzzleModal'];
+  const ids=['facebookVideoPopup','livePopup','videoOverlay','emeraldModal','shipPopup_new','sakakerBusinessPopup','emeraldLibraryContent','sakakerMapOverlay','sakMusicPlayer','sakLearningModal','sakTextLibraryModal','sakakerSiteNewsModal','folderModal','quizModal','puzzleModal','sakEbooksShelfModal','sakEbookReaderModal'];
   let busy=false;
   function active(el){
     if(!el || getComputedStyle(el).display==='none' || getComputedStyle(el).visibility==='hidden')return false;
@@ -42553,5 +42553,65 @@ html body .modal .panel{max-width:100% !important;max-height:calc(100dvh - 20px)
   document.addEventListener('click',queue,true);
   window.addEventListener('resize',queue,{passive:true});
   queue();
+})();
+</script>
+
+<!-- SAKAKER MOBILE DIALOG CORRECTION 2026-09-29 -->
+<style id="sakaker-mobile-dialog-correction">
+/* The book modals are nested in the original markup; the active one must be a body child. */
+html body #sakEbooksShelfModal,
+html body #sakEbookReaderModal{
+  position:fixed !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100dvh !important;
+  max-width:none !important;
+  max-height:none !important;
+  padding:max(8px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left)) !important;
+  box-sizing:border-box !important;
+  z-index:2147483647 !important;
+}
+html body #sakEbooksShelfModal .sak-ebooks-box,
+html body #sakEbookReaderModal .sak-ebook-reader-box{
+  width:min(980px,100%) !important;
+  min-width:0 !important;
+  max-width:100% !important;
+  max-height:100% !important;
+  box-sizing:border-box !important;
+}
+body.sak-ebook-layer-open :is(#sakakerAllIconsDock,#sakGlobalPayment,#sakakerRightStats,#sakakerVisitorCounter),
+body.sakaker-fb-popup-open :is(#sakakerAllIconsDock,#sakGlobalPayment,#sakakerRightStats,#sakakerVisitorCounter){
+  visibility:hidden !important;
+  pointer-events:none !important;
+}
+html body #facebookVideoPopup{
+  left:0 !important;
+  right:0 !important;
+  width:100vw !important;
+  max-width:100vw !important;
+  transform:none !important;
+}
+html body #facebookVideoPopup .fbPostFrame{max-width:100% !important;overflow-x:auto !important}
+@media(max-width:700px){
+  html body #facebookVideoPopup .fbVideoBox{width:100% !important;max-width:100% !important;margin-inline:auto !important}
+  html body #facebookVideoPopup :is(.fbPostFrame,.fbVideoFrame,.fbFeaturedReelFrame){width:100% !important;max-width:100% !important}
+  html body #sakEbooksShelfModal #sakEbooksGrid{min-width:0 !important;overflow-x:hidden !important}
+}
+</style>
+<script id="sakaker-mobile-dialog-correction-js">
+(function(){
+  'use strict';
+  const shelf=document.getElementById('sakEbooksShelfModal');
+  const reader=document.getElementById('sakEbookReaderModal');
+  function lift(){
+    for(const el of [shelf,reader]){
+      if(el && el.classList.contains('sak-open') && el.parentElement!==document.body){
+        document.body.appendChild(el);
+      }
+    }
+  }
+  new MutationObserver(lift).observe(document.body,{subtree:true,attributes:true,attributeFilter:['class'],childList:true});
+  document.addEventListener('click',function(){requestAnimationFrame(lift)},true);
+  lift();
 })();
 </script>
