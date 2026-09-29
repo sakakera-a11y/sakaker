@@ -929,9 +929,7 @@ card.click();
 
 <div class="video-box-inner"></div>
 
-<div class="video-box-title">
-    ✦ VIDEO ✦
-  </div>
+<div class="video-box-title"></div>
 
 <button type="button" id="videoCloseBtn" onclick="closeFixedVideo()">
 ✕ </button>
@@ -6331,61 +6329,6 @@ window.closeVideo();
 }
 
 syncFacebookState();
-})();
-</script>
-
-<style id="sakaker-business-center-final">html body #sakakerBusinessCenterHost{position:fixed !important;top:50% !important;left:50% !important;right:auto !important;bottom:auto !important;transform:translate(-50%,-50%) !important;width:72px !important;height:72px !important;display:flex !important;align-items:center !important;justify-content:center !important;margin:0 !important;padding:0 !important;border:0 !important;box-shadow:none !important;z-index:805000 !important;pointer-events:none !important}html body #sakakerBusinessCenterHost #sakakerBusinessAd{position:relative !important;inset:auto !important;top:auto !important;left:auto !important;right:auto !important;bottom:auto !important;width:68px !important;height:68px !important;min-width:68px !important;max-width:68px !important;min-height:68px !important;max-height:68px !important;margin:0 !important;padding:0 !important;transform:none !important;z-index:auto !important;pointer-events:auto !important}html body #sakakerBusinessCenterHost #sakakerBusinessIcon{position:relative !important;inset:auto !important;width:100% !important;height:100% !important;margin:0 !important}@media(max-width:700px){html body #sakakerBusinessCenterHost{width:58px !important;height:58px !important}html body #sakakerBusinessCenterHost #sakakerBusinessAd{width:56px !important;height:56px !important;min-width:56px !important;max-width:56px !important;min-height:56px !important;max-height:56px !important}}@media(max-width:390px){html body #sakakerBusinessCenterHost{width:52px !important;height:52px !important}html body #sakakerBusinessCenterHost #sakakerBusinessAd{width:50px !important;height:50px !important;min-width:50px !important;max-width:50px !important;min-height:50px !important;max-height:50px !important}}body.locked #sakakerBusinessCenterHost{visibility:hidden !important}body.sakaker-fb-popup-open #sakakerBusinessCenterHost,body.sakaker-live-popup-open #sakakerBusinessCenterHost,body.sakaker-live-video-open #sakakerBusinessCenterHost,body.sakaker-ship-open #sakakerBusinessCenterHost,body.sakaker-music-open #sakakerBusinessCenterHost{visibility:hidden !important;opacity:0 !important;pointer-events:none !important}</style>
-
-<script id="sakaker-business-center-final-js">
-(function(){
-'use strict';
-
-function placeBusinessCenter(){
-let host = document.getElementById('sakakerBusinessCenterHost');
-
-if(!host){
-host = document.createElement('div');
-host.id = 'sakakerBusinessCenterHost';
-host.setAttribute('aria-label','Sakaker Business');
-document.body.appendChild(host);
-}
-
-const business = document.getElementById('sakakerBusinessAd');
-
-if(business && business.parentElement !== host){
-host.appendChild(business);
-}
-
-/* حذف أي خانة فارغة بقيت في شريط الأيقونات */
-document
-.querySelectorAll('.sakaker-utility-slot')
-.forEach(function(slot){
-if(!slot.children.length){
-slot.remove();
-}
-});
-}
-
-placeBusinessCenter();
-
-if(document.readyState === 'loading'){
-document.addEventListener('DOMContentLoaded',placeBusinessCenter);
-}
-
-/*
-بعض أكواد الترتيب القديمة تعمل بتأخير،
-لذلك نؤكد مكان Sakaker Business بعد انتهائها.
-*/
-[300,900,1800,3300,4300,5200].forEach(function(ms){
-setTimeout(placeBusinessCenter,ms);
-});
-
-const langBtn = document.getElementById('siteLangToggle');
-if(langBtn){
-langBtn.addEventListener('click',function(){
-setTimeout(placeBusinessCenter,180);
-});
-}
 })();
 </script>
 
@@ -13518,533 +13461,6 @@ fixVideoCorner,
 })();
 </script>
 
-<style id="sakaker-second-stream-business-center-final">html body #sakSecondStreamCorner{position:fixed !important;top:auto !important;left:max(16px,env(safe-area-inset-left)) !important;right:auto !important;bottom:max(91px,calc(env(safe-area-inset-bottom) + 85px)) !important;width:96px !important;height:96px !important;margin:0 !important;padding:0 !important;display:flex !important;align-items:center !important;justify-content:center !important;transform:none !important;overflow:visible !important;z-index:812000 !important;pointer-events:none !important}html body #sakSecondStreamCorner::before{content:"" !important;position:absolute !important;inset:-10px !important;border-radius:50% !important;filter:blur(4px) drop-shadow(0 0 8px rgba(255,255,255,.95)) drop-shadow(0 0 18px rgba(158,230,255,.58)) drop-shadow(0 0 28px rgba(205,178,255,.40)) !important;opacity:.90 !important;animation:sakSecondStreamSpin 5.5s linear infinite !important;pointer-events:none !important;z-index:0 !important}html body #sakSecondStreamCorner::after{content:"" !important;position:absolute !important;inset:-5px !important;border:1px solid rgba(255,255,255,.93) !important;border-radius:50% !important;box-shadow:0 0 8px rgba(255,255,255,.95),0 0 18px rgba(177,228,255,.54),inset 0 0 11px rgba(255,255,255,.18) !important;animation:sakSecondStreamPulse 1.9s ease-in-out infinite alternate !important;pointer-events:none !important;z-index:1 !important}html body #sakSecondStreamCircle{position:relative !important;width:86px !important;height:86px !important;min-width:86px !important;max-width:86px !important;min-height:86px !important;max-height:86px !important;margin:0 !important;padding:4px !important;box-sizing:border-box !important;overflow:hidden !important;border:1.5px solid rgba(255,255,255,.98) !important;border-radius:50% !important;clip-path:circle(50% at 50% 50%) !important;box-shadow:0 0 9px rgba(255,255,255,.95),0 0 21px rgba(177,224,255,.55),0 0 34px rgba(205,179,255,.34),inset 0 0 8px rgba(255,255,255,.44) !important;pointer-events:auto !important;cursor:pointer !important;z-index:2 !important;transition:transform .18s ease,box-shadow .18s ease !important}html body #sakSecondStreamCircle:hover{transform:scale(1.08) !important;box-shadow:0 0 12px rgba(255,255,255,1),0 0 28px rgba(173,224,255,.72),0 0 44px rgba(207,177,255,.48),inset 0 0 10px rgba(255,255,255,.48) !important}html body #sakSecondStreamPreview{position:absolute !important;inset:4px !important;width:calc(100% - 8px) !important;height:calc(100% - 8px) !important;border:0 !important;border-radius:50% !important;clip-path:circle(50% at 50% 50%) !important;object-fit:cover !important;z-index:2 !important}html body #sakSecondStreamPlay{position:absolute !important;inset:50% auto auto 50% !important;transform:translate(-50%,-50%) !important;width:28px !important;height:28px !important;display:flex !important;align-items:center !important;justify-content:center !important;border:1px solid rgba(255,255,255,.88) !important;border-radius:50% !important;color:#fff !important;font-size:12px !important;box-shadow:0 0 8px rgba(255,255,255,.72),0 0 16px rgba(174,223,255,.44) !important;pointer-events:none !important;z-index:5 !important}html body #sakSecondStreamBadge{position:absolute !important;left:50% !important;bottom:7px !important;transform:translateX(-50%) !important;min-width:34px !important;padding:2px 5px !important;border:1px solid rgba(255,255,255,.76) !important;border-radius:8px !important;color:#fff !important;font-size:5.5px !important;font-weight:1000 !important;text-align:center !important;box-shadow:0 0 8px rgba(255,255,255,.24) !important;pointer-events:none !important;z-index:6 !important}@keyframes sakSecondStreamSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes sakSecondStreamPulse{from{transform:scale(.98);opacity:.58}to{transform:scale(1.05);opacity:1}}html body #sakFixedHlsVideo{position:absolute !important;inset:0 !important;width:100% !important;height:100% !important;display:none;border:0 !important;object-fit:contain !important;z-index:10 !important}html body #videoBoxFixed.sak-hls-mode #fixedVideo{display:none !important}html body #videoBoxFixed.sak-hls-mode #sakFixedHlsVideo{display:block !important}html body #videoBoxFixed.sak-hls-mode .video-box-title{z-index:20 !important}html body #videoBoxFixed.sak-hls-mode #videoCloseBtn{z-index:30 !important}html body #sakakerBusinessCenterHost{position:fixed !important;top:50% !important;left:50% !important;right:auto !important;bottom:auto !important;transform:translate(-50%,-50%) !important;width:68px !important;height:68px !important;margin:0 !important;padding:0 !important;display:flex !important;align-items:center !important;justify-content:center !important;z-index:805000 !important;pointer-events:none !important}html body #sakakerBusinessCenterHost #sakakerBusinessAd{position:relative !important;inset:auto !important;width:66px !important;height:66px !important;min-width:66px !important;max-width:66px !important;min-height:66px !important;max-height:66px !important;margin:0 !important;padding:0 !important;transform:none !important;pointer-events:auto !important}html body #sakakerBusinessCenterHost #sakakerBusinessIcon{width:100% !important;height:100% !important;margin:0 !important;pointer-events:auto !important}@media(max-width:700px){html body #sakSecondStreamCorner{left:max(8px,env(safe-area-inset-left)) !important;bottom:max(70px,calc(env(safe-area-inset-bottom) + 66px)) !important;width:76px !important;height:76px !important}html body #sakSecondStreamCorner::before{inset:-7px !important}html body #sakSecondStreamCorner::after{inset:-4px !important}html body #sakSecondStreamCircle{width:68px !important;height:68px !important;min-width:68px !important;max-width:68px !important;min-height:68px !important;max-height:68px !important}html body #sakakerBusinessCenterHost{width:56px !important;height:56px !important}html body #sakakerBusinessCenterHost #sakakerBusinessAd{width:54px !important;height:54px !important;min-width:54px !important;max-width:54px !important;min-height:54px !important;max-height:54px !important}}@media(max-width:390px){html body #sakSecondStreamCorner{left:max(6px,env(safe-area-inset-left)) !important;bottom:max(63px,calc(env(safe-area-inset-bottom) + 60px)) !important;width:70px !important;height:70px !important}html body #sakSecondStreamCircle{width:62px !important;height:62px !important;min-width:62px !important;max-width:62px !important;min-height:62px !important;max-height:62px !important}html body #sakakerBusinessCenterHost{width:50px !important;height:50px !important}html body #sakakerBusinessCenterHost #sakakerBusinessAd{width:48px !important;height:48px !important;min-width:48px !important;max-width:48px !important;min-height:48px !important;max-height:48px !important}}body.locked #sakSecondStreamCorner,body.sakaker-fb-popup-open #sakSecondStreamCorner,body.sakaker-live-popup-open #sakSecondStreamCorner,body.sakaker-live-video-open #sakSecondStreamCorner,body.sakaker-music-open #sakSecondStreamCorner{visibility:hidden !important;opacity:0 !important;pointer-events:none !important}</style>
-
-<script id="sakaker-second-stream-business-center-js">
-(function(){
-'use strict';
-
-const STREAM_URL =
-'https://cityeden.catcast.tv/content/41333/index.m3u8';
-
-let previewHls = null;
-let fullHls = null;
-
-function ensureHls(){
-if(window.Hls){
-return Promise.resolve(
-window.Hls
-);
-}
-
-return new Promise(
-function(resolve,reject){
-const old =
-document.querySelector(
-'script[data-sak-second-hls="1"]'
-);
-
-if(old){
-old.addEventListener(
-'load',
-function(){
-resolve(window.Hls);
-},
-{once:true}
-);
-
-old.addEventListener(
-'error',
-reject,
-{once:true}
-);
-
-return;
-}
-
-const s =
-document.createElement(
-'script'
-);
-
-s.src =
-'https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js';
-
-s.async = true;
-s.dataset.sakSecondHls =
-'1';
-
-s.onload =
-function(){
-resolve(window.Hls);
-};
-
-s.onerror =
-reject;
-
-document.head.appendChild(s);
-}
-);
-}
-
-/* =======================================================
-إنشاء دائرة البث
-======================================================= */
-function createStreamCircle(){
-if(
-document.getElementById(
-'sakSecondStreamCorner'
-)
-){
-return;
-}
-
-const host =
-document.createElement(
-'div'
-);
-
-host.id =
-'sakSecondStreamCorner';
-
-host.innerHTML = `
-      <div id="sakSecondStreamCircle"
-           role="button"
-           tabindex="0"
-           aria-label="بث مباشر إضافي">
-        <span class="sak-dazn-preview">DAZN<br><small>FIFA+ ▶</small></span>
-        <div id="sakSecondStreamPlay">▶</div>
-        <div id="sakSecondStreamBadge">LIVE</div>
-      </div>
-    `;
-
-document.body.appendChild(host);
-
-const circle =
-document.getElementById(
-'sakSecondStreamCircle'
-);
-
-circle.addEventListener(
-'click',
-openSecondStream
-);
-
-circle.addEventListener(
-'keydown',
-function(e){
-if(
-e.key === 'Enter' ||
-e.key === ' '
-){
-e.preventDefault();
-openSecondStream();
-}
-}
-);
-
-/* المعاينة الحية أوقفت لتخفيف الحمل؛ البث يبدأ عند الضغط فقط */
-}
-
-/* =======================================================
-معاينة صامتة داخل الدائرة
-======================================================= */
-async function startPreview(){
-const video =
-document.getElementById(
-'sakSecondStreamPreview'
-);
-
-if(!video) return;
-
-try{
-if(
-video.canPlayType(
-'application/vnd.apple.mpegurl'
-)
-){
-video.src = STREAM_URL;
-
-await video.play()
-.catch(function(){});
-
-return;
-}
-
-const Hls =
-await ensureHls();
-
-if(
-Hls &&
-Hls.isSupported()
-){
-previewHls =
-new Hls({
-enableWorker:true,
-lowLatencyMode:true,
-backBufferLength:20
-});
-
-previewHls.loadSource(
-STREAM_URL
-);
-
-previewHls.attachMedia(
-video
-);
-
-previewHls.on(
-Hls.Events.MANIFEST_PARSED,
-function(){
-video.play()
-.catch(function(){});
-}
-);
-}
-}catch(e){}
-}
-
-/* =======================================================
-فيديو HLS داخل نفس نافذة الفيديو الأصلية
-======================================================= */
-function ensureFullVideo(){
-const box =
-document.getElementById(
-'videoBoxFixed'
-);
-
-if(!box) return null;
-
-let video =
-document.getElementById(
-'sakFixedHlsVideo'
-);
-
-if(!video){
-video =
-document.createElement(
-'video'
-);
-
-video.id =
-'sakFixedHlsVideo';
-
-video.controls = true;
-video.autoplay = true;
-video.playsInline = true;
-
-box.appendChild(video);
-}
-
-return video;
-}
-
-function stopFullStream(){
-if(fullHls){
-try{
-fullHls.destroy();
-}catch(e){}
-
-fullHls = null;
-}
-
-const video =
-document.getElementById(
-'sakFixedHlsVideo'
-);
-
-if(video){
-try{
-video.pause();
-}catch(e){}
-
-video.removeAttribute(
-'src'
-);
-
-video.load();
-}
-
-const box =
-document.getElementById(
-'videoBoxFixed'
-);
-
-if(box){
-box.classList.remove(
-'sak-hls-mode'
-);
-}
-}
-
-async function openSecondStream(){
-const box =
-document.getElementById(
-'videoBoxFixed'
-);
-
-const iframe =
-document.getElementById(
-'fixedVideo'
-);
-
-const title =
-box
-? box.querySelector(
-'.video-box-title'
-)
-: null;
-
-if(!box) return;
-
-/*
-إذا كان نفس البث مفتوحاً، الضغط مرة ثانية يغلقه.
-*/
-if(
-box.style.display ===
-'block' &&
-box.classList.contains(
-'sak-hls-mode'
-)
-){
-stopFullStream();
-box.style.display =
-'none';
-
-if(title){
-title.textContent =
-'✦ VIDEO ✦';
-}
-
-return;
-}
-
-if(iframe){
-iframe.src = '';
-}
-
-stopFullStream();
-
-const video =
-ensureFullVideo();
-
-if(!video) return;
-
-box.classList.add(
-'sak-hls-mode'
-);
-
-box.style.display =
-'block';
-
-if(title){
-title.textContent =
-'✦ LIVE STREAM ✦';
-}
-
-try{
-if(
-video.canPlayType(
-'application/vnd.apple.mpegurl'
-)
-){
-video.src =
-STREAM_URL;
-
-await video.play()
-.catch(function(){});
-
-return;
-}
-
-const Hls =
-await ensureHls();
-
-if(
-Hls &&
-Hls.isSupported()
-){
-fullHls =
-new Hls({
-enableWorker:true,
-lowLatencyMode:false,
-backBufferLength:8,
-maxBufferLength:18,
-maxMaxBufferLength:30,
-capLevelToPlayerSize:true,
-startLevel:0
-});
-
-fullHls.loadSource(
-STREAM_URL
-);
-
-fullHls.attachMedia(
-video
-);
-
-fullHls.on(
-Hls.Events.MANIFEST_PARSED,
-function(){
-video.play()
-.catch(function(){});
-}
-);
-}
-}catch(e){}
-}
-
-/* =======================================================
-إغلاق موحد لنفس نافذة الفيديو
-======================================================= */
-const oldCloseFixedVideo =
-window.closeFixedVideo;
-
-window.closeFixedVideo =
-function(){
-stopFullStream();
-
-if(
-typeof oldCloseFixedVideo ===
-'function'
-){
-oldCloseFixedVideo();
-}else{
-const box =
-document.getElementById(
-'videoBoxFixed'
-);
-
-if(box){
-box.style.display =
-'none';
-}
-}
-
-const title =
-document.querySelector(
-'#videoBoxFixed .video-box-title'
-);
-
-if(title){
-title.textContent =
-'✦ VIDEO ✦';
-}
-};
-
-/*
-عند النقر على دائرة YouTube الأصلية أثناء بث HLS،
-نوقف HLS أولاً حتى لا يبقى الصوت بالخلفية.
-*/
-const originalCircle =
-document.querySelector(
-'.video-top-container-fixed .video-circle'
-);
-
-if(originalCircle){
-originalCircle.addEventListener(
-'click',
-function(){
-const box =
-document.getElementById(
-'videoBoxFixed'
-);
-
-if(
-box &&
-box.classList.contains(
-'sak-hls-mode'
-)
-){
-stopFullStream();
-
-const title =
-box.querySelector(
-'.video-box-title'
-);
-
-if(title){
-title.textContent =
-'✦ VIDEO ✦';
-}
-}
-},
-true
-);
-}
-
-/* =======================================================
-بزنس في منتصف الصفحة
-======================================================= */
-function centerBusiness(){
-let host =
-document.getElementById(
-'sakakerBusinessCenterHost'
-);
-
-const business =
-document.getElementById(
-'sakakerBusinessAd'
-);
-
-if(!business) return;
-
-if(!host){
-host =
-document.createElement(
-'div'
-);
-
-host.id =
-'sakakerBusinessCenterHost';
-
-document.body.appendChild(
-host
-);
-}
-
-if(
-business.parentElement !==
-host
-){
-host.appendChild(
-business
-);
-}
-}
-
-function apply(){
-createStreamCircle();
-centerBusiness();
-}
-
-apply();
-
-if(
-document.readyState ===
-'loading'
-){
-document.addEventListener(
-'DOMContentLoaded',
-apply
-);
-}
-
-/*
-لأن الموقع يحتوي أكواد ترتيب قديمة مؤجلة،
-نعيد تثبيت مكان بزنس والدائرة الجديدة بعد انتهائها.
-*/
-[300,900,1800,3300,5200].forEach(
-function(ms){
-setTimeout(
-apply,
-ms
-);
-}
-);
-
-})();
-</script>
 <script>
 /* The document is complete here; this makes the requested organization resilient
 to the older delayed layout code above. */
@@ -19447,6 +18863,7 @@ document.addEventListener('click',()=>setTimeout(lift,0),true);new MutationObser
 })();
 </script>\n
 
+
 <style id="sakaker-text-library-absolute-top-layer">html body #sakTextLibraryModal,html body #folderModal,html body #quizModal,html body #puzzleModal,html body #sakakerSiteNewsModal{position:fixed !important;inset:0 !important;width:100vw !important;height:100dvh !important;max-width:none !important;max-height:none !important;box-sizing:border-box !important;z-index:2147483647 !important;isolation:isolate !important;overscroll-behavior:contain !important}html body #folderModal[style*="display: block"],html body #folderModal[style*="display:block"],html body #quizModal[style*="display: block"],html body #quizModal[style*="display:block"],html body #puzzleModal[style*="display: block"],html body #puzzleModal[style*="display:block"],html body #folderModal[style*="display: flex"],html body #folderModal[style*="display:flex"],html body #quizModal[style*="display: flex"],html body #quizModal[style*="display:flex"],html body #puzzleModal[style*="display: flex"],html body #puzzleModal[style*="display:flex"]{display:flex !important;align-items:center !important;justify-content:center !important;padding:clamp(7px,2vw,18px) !important;overflow:auto !important;background:rgba(1,8,12,.72) !important;backdrop-filter:blur(12px) saturate(145%) !important;-webkit-backdrop-filter:blur(12px) saturate(145%) !important}html body #folderModal .panel,html body #quizModal .panel,html body #puzzleModal .panel{position:relative !important;z-index:2147483647 !important;width:min(950px,calc(100vw - 20px)) !important;height:auto !important;max-height:calc(100dvh - 20px) !important;margin:auto !important;display:flex !important;flex-direction:column !important;overflow:hidden !important}html body #folderModal .panel-body,html body #quizModal .panel-body,html body #puzzleModal .panel-body{flex:1 1 auto !important;min-height:0 !important;overflow-y:auto !important;overflow-x:hidden !important;-webkit-overflow-scrolling:touch !important;overscroll-behavior:contain !important;scrollbar-gutter:stable !important}html body #folderModal .close,html body #quizModal .close,html body #puzzleModal .close{z-index:2147483647 !important}html body #sakTextLibraryModal{padding:clamp(7px,2vw,16px) !important;overflow:auto !important;background:rgba(1,8,12,.76) !important;backdrop-filter:blur(13px) saturate(150%) !important;-webkit-backdrop-filter:blur(13px) saturate(150%) !important}html body #sakTextLibraryModal.sak-open{display:flex !important;align-items:center !important;justify-content:center !important}html body #sakTextLibraryModal .sak-text-library-box{position:relative !important;z-index:2147483647 !important;width:min(760px,calc(100vw - 18px)) !important;max-height:calc(100dvh - 18px) !important;margin:auto !important;display:flex !important;flex-direction:column !important;overflow:hidden !important;box-sizing:border-box !important;background:radial-gradient(circle at 18% 12%,rgba(255,255,255,.20),transparent 31%),radial-gradient(circle at 86% 10%,rgba(0,255,213,.17),transparent 28%),linear-gradient(145deg,rgba(21,41,59,.82),rgba(7,21,31,.91)) !important;border:1px solid rgba(220,250,255,.80) !important;box-shadow:0 0 18px rgba(255,255,255,.44),0 0 42px rgba(0,255,213,.30),0 0 84px rgba(196,168,255,.20),inset 0 0 34px rgba(255,255,255,.08) !important;backdrop-filter:blur(22px) saturate(160%) !important;-webkit-backdrop-filter:blur(22px) saturate(160%) !important}html body #sakTextLibraryModal .sak-text-library-head{flex:0 0 auto !important;position:sticky !important;top:0 !important;z-index:4 !important;margin:0 0 10px !important;padding:2px 0 10px !important}html body #sakTextLibraryModal .sak-text-library-grid{flex:1 1 auto !important;min-height:0 !important;overflow-y:auto !important;overflow-x:hidden !important;padding:3px 4px 8px !important;-webkit-overflow-scrolling:touch !important;overscroll-behavior:contain !important;scrollbar-gutter:stable !important}html body #sakTextLibraryModal .sak-text-library-close{position:sticky !important;top:0 !important;z-index:10 !important;flex:0 0 auto !important}html body #sakakerSiteNewsModal{padding:clamp(7px,2vw,18px) !important;overflow:auto !important;align-items:center !important;justify-content:center !important;background:rgba(1,7,12,.73) !important;backdrop-filter:blur(13px) saturate(150%) !important;-webkit-backdrop-filter:blur(13px) saturate(150%) !important}html body #sakakerSiteNewsModal.active{display:flex !important}html body #sakakerSiteNewsModal .sakaker-site-news-box{position:relative !important;z-index:2147483647 !important;width:min(720px,calc(100vw - 18px)) !important;min-width:0 !important;min-height:0 !important;max-height:calc(100dvh - 18px) !important;margin:auto !important;padding:54px clamp(14px,3vw,28px) 20px !important;display:flex !important;flex-direction:column !important;overflow:hidden !important;box-sizing:border-box !important;text-align:start !important;background:radial-gradient(circle at 16% 12%,rgba(255,255,255,.19),transparent 31%),radial-gradient(circle at 86% 12%,rgba(0,255,213,.15),transparent 28%),linear-gradient(145deg,rgba(30,29,45,.86),rgba(7,13,20,.94)) !important;border:1px solid rgba(242,248,255,.84) !important;box-shadow:0 0 17px rgba(255,255,255,.48),0 0 42px rgba(0,255,213,.25),0 0 90px rgba(208,174,255,.18),inset 0 0 35px rgba(255,255,255,.07) !important;backdrop-filter:blur(24px) saturate(160%) !important;-webkit-backdrop-filter:blur(24px) saturate(160%) !important}html body #sakakerSiteNewsTitle{flex:0 0 auto !important;margin:0 42px 12px !important;text-align:center !important}html body #sakakerSiteNewsText{flex:1 1 auto !important;min-height:0 !important;max-height:none !important;overflow-y:auto !important;overflow-x:hidden !important;padding:4px 8px 8px !important;-webkit-overflow-scrolling:touch !important;overscroll-behavior:contain !important;scrollbar-gutter:stable !important;touch-action:pan-y !important;text-align:start !important}html body #sakakerSiteNewsClose{position:absolute !important;top:10px !important;right:10px !important;left:auto !important;z-index:2147483647 !important;display:flex !important;align-items:center !important;justify-content:center !important;pointer-events:auto !important;touch-action:manipulation !important}html[dir="ltr"] body #sakakerSiteNewsClose{right:10px !important;left:auto !important}body.sak-text-library-layer-open:is(#siteLangToggle,#facebookVideoIcon,#liveFlasher,#sakakerPongDock,#pongGame-btn,#sakakerBusinessAd,#emeraldLibraryButton,#emeraldMusicHost #emOpenBtn,#shipIcon_new,#bird-sound-btn,#sakakerVisitorCounter,#sakakerRightStats,#sakakerStableIconsRail,.cards,.video-top-container-fixed,.launcher ){pointer-events:none !important}@media(max-width:700px){html body #sakTextLibraryModal,html body #sakakerSiteNewsModal,html body #folderModal,html body #quizModal,html body #puzzleModal{padding:6px !important}html body #sakTextLibraryModal .sak-text-library-box,html body #sakakerSiteNewsModal .sakaker-site-news-box,html body #folderModal .panel,html body #quizModal .panel,html body #puzzleModal .panel{width:calc(100vw - 12px) !important;max-height:calc(100dvh - 12px) !important;border-radius:18px !important}html body #sakTextLibraryModal .sak-text-library-grid{grid-template-columns:1fr !important}html body #sakakerSiteNewsModal .sakaker-site-news-box{padding:50px 12px 14px !important}html body #sakakerSiteNewsText{font-size:14px !important;line-height:1.75 !important;padding-inline:4px !important}}</style>
 
 <script id="sakaker-text-library-absolute-top-layer-js">
@@ -19504,378 +18921,103 @@ else init();
 })();
 </script>
 
-<style id="sakaker-final-media-chat-stability">
-/* =========================================================
-   SAKAKER — Final media/chat stability layer
-   يمنع تعارض الأكواد القديمة ويضمن الفتح والإغلاق الصحيح
-========================================================= */
 
-/* الفيديو الدائري */
-html body #videoBoxFixed{
-  z-index:2147483000 !important;
-  pointer-events:auto !important;
-}
-html body #videoBoxFixed .video-box-title{
-  display:none !important;
-}
-html body #videoBoxFixed #videoCloseBtn{
-  z-index:2147483647 !important;
-  pointer-events:auto !important;
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-}
 
-/* نافذة فيديو فيسبوك */
-html body #facebookVideoPopup{
-  z-index:2147483001 !important;
-  pointer-events:auto !important;
-}
-html body #facebookVideoPopup .fbVideoBox{
-  pointer-events:auto !important;
-}
-html body #facebookVideoPopup #facebookVideoClose{
-  z-index:2147483647 !important;
-  pointer-events:auto !important;
-  cursor:pointer !important;
-}
-
-/* الدردشة */
-html body #sakChatOverlay{
-  z-index:2147483646 !important;
-  pointer-events:auto !important;
-  isolation:isolate !important;
-}
-html body #sakChatOverlay[hidden]{
-  display:none !important;
-}
-html body #sakChatOverlay:not([hidden]){
-  display:flex !important;
-  visibility:visible !important;
-  opacity:1 !important;
-}
-html body #sakChatPanel{
-  position:relative !important;
-  z-index:1 !important;
-  pointer-events:auto !important;
-}
-html body #sakChatClose,
-html body #sakChatLang,
-html body #sakChatPrivacyToggle{
-  position:relative !important;
-  z-index:2147483647 !important;
-  pointer-events:auto !important;
-  cursor:pointer !important;
-}
-html body #sakChatBody{
-  pointer-events:auto !important;
-}
-html body #sakChatOverlay.sak-chat-shielded #sakChatBody{
-  pointer-events:none !important;
-}
-
-/* لا تسمح لأي طبقة عامة بإخفاء أزرار الإغلاق */
-html body #videoBoxFixed #videoCloseBtn,
-html body #facebookVideoPopup #facebookVideoClose,
-html body #sakChatOverlay #sakChatClose{
-  visibility:visible !important;
-  opacity:1 !important;
-}
-
-/* الجوال */
+<!-- =========================================================
+     SAKAKER FINAL STABILITY / PERFORMANCE LAYER
+     - one final controller for the fixed video and chat overlay
+     - removes accidental middle-page video text
+     - prevents old click handlers from fighting the close buttons
+     - avoids native dialog quirks on mobile
+     ========================================================= -->
+<style id="sakaker-final-stability-layer">
+/* Fixed media windows must never leak their labels into the page. */
+html body #videoBoxFixed .video-box-title{display:none !important}
+html body #videoBoxFixed{z-index:2147483000 !important}
+html body #videoCloseBtn{z-index:2147483647 !important;pointer-events:auto !important;touch-action:manipulation !important}
+html body #fixedVideo{max-width:100%;max-height:100%}
+html body #sakChatOverlay{z-index:2147482000 !important}
+html body #sakChatOverlay[hidden]{display:none !important}
+html body #sakChatClose{z-index:2147483647 !important;pointer-events:auto !important;touch-action:manipulation !important}
 @media(max-width:700px){
-  html body #videoBoxFixed{
-    width:min(92vw,390px) !important;
-    height:min(58vw,220px) !important;
-    max-height:220px !important;
-  }
-  html body #videoBoxFixed #videoCloseBtn{
-    width:38px !important;
-    height:38px !important;
-    top:7px !important;
-    right:7px !important;
-  }
-  html body #facebookVideoPopup{
-    padding:6px !important;
-  }
-  html body #facebookVideoPopup .fbVideoBox{
-    width:96vw !important;
-    max-width:96vw !important;
-    max-height:96dvh !important;
-  }
-  html body #facebookVideoPopup #facebookVideoClose{
-    width:38px !important;
-    height:38px !important;
-  }
-  html body #sakChatOverlay{
-    padding:4px !important;
-  }
-  html body #sakChatPanel{
-    width:calc(100vw - 8px) !important;
-    max-width:calc(100vw - 8px) !important;
-    height:calc(100dvh - 8px) !important;
-    max-height:calc(100dvh - 8px) !important;
-    border-radius:14px !important;
-  }
+  html body #videoBoxFixed{width:calc(100vw - 18px) !important;height:min(70dvh,420px) !important}
+  html body #sakChatOverlay .sak-chat-modal,html body #sakChatOverlay .sak-chat-box{max-width:calc(100vw - 16px) !important;max-height:calc(100dvh - 16px) !important}
 }
 </style>
-
-<script id="sakaker-final-media-chat-stability-js">
+<script id="sakaker-final-stability-layer-js">
 (function(){
-  'use strict';
-
-  if(window.__sakakerFinalMediaChatStability) return;
-  window.__sakakerFinalMediaChatStability = true;
-
-  const $ = id => document.getElementById(id);
-
-  /* ---------- Video: one reliable open/close path ---------- */
-  function stopVideoMedia(){
-    const box = $('videoBoxFixed');
-    if(!box) return;
-
-    const hlsVideo = $('sakFixedHlsVideo');
-    if(hlsVideo){
-      try{ hlsVideo.pause(); }catch(e){}
-      try{ hlsVideo.removeAttribute('src'); hlsVideo.load(); }catch(e){}
-    }
-
-    if(window.fullHls){
-      try{ window.fullHls.destroy(); }catch(e){}
-      window.fullHls = null;
-    }
-
-    const iframe = $('fixedVideo');
-    if(iframe){
-      try{ iframe.src=''; }catch(e){}
-    }
-  }
-
-  function finalCloseVideo(){
-    stopVideoMedia();
-    const box = $('videoBoxFixed');
-    if(box){
-      box.classList.remove('sak-player-open','sak-hls-mode');
-      box.style.setProperty('display','none','important');
-      box.style.setProperty('visibility','hidden','important');
-      box.style.setProperty('opacity','0','important');
-    }
-    document.body.classList.remove('sak-fixed-video-open');
-  }
-
-  function finalOpenVideo(){
-    const box = $('videoBoxFixed');
-    const iframe = $('fixedVideo');
-    if(!box || !iframe) return;
-
-    /* أغلق أي نسخة سابقة أولاً */
-    stopVideoMedia();
-
-    const hlsVideo = $('sakFixedHlsVideo');
-    if(hlsVideo) hlsVideo.style.display='none';
-
-    box.classList.remove('sak-hls-mode');
-    box.classList.add('sak-player-open');
-    box.style.setProperty('display','block','important');
-    box.style.setProperty('visibility','visible','important');
-    box.style.setProperty('opacity','1','important');
-
-    iframe.style.display='block';
-    iframe.title='مشغل الفيديو';
-    iframe.src='https://www.youtube.com/embed/n7eQejkXbnM?autoplay=1&rel=0';
-    document.body.classList.add('sak-fixed-video-open');
-  }
-
-  window.closeFixedVideo = finalCloseVideo;
-
-  /* capture: يمنع أي listener قديم من تعطيل الإغلاق */
-  document.addEventListener('click',function(e){
-    const target=e.target;
-    if(!(target instanceof Element)) return;
-
-    const close=target.closest('#videoCloseBtn');
-    if(close){
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      finalCloseVideo();
-      return;
-    }
-
-    const circle=target.closest('.video-top-container-fixed .video-circle');
-    if(circle){
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      finalOpenVideo();
-      return;
-    }
-  },true);
-
-  /* ---------- Facebook popup ---------- */
-  function closeFacebook(){
-    const popup=$('facebookVideoPopup');
-    if(!popup) return;
-
-    popup.classList.remove('active');
-    popup.style.setProperty('display','none','important');
-
-    const frames=popup.querySelectorAll('iframe');
-    frames.forEach(f=>{
-      try{ f.src='about:blank'; }catch(e){}
-    });
-
-    if(!document.getElementById('sakChatOverlay')?.matches(':not([hidden])')){
-      document.body.style.overflow='';
-    }
-    document.body.classList.remove('sakaker-fb-popup-open');
-  }
-
-  function openFacebook(){
-    const popup=$('facebookVideoPopup');
-    if(!popup) return;
-
-    popup.classList.add('active');
-    popup.style.setProperty('display','flex','important');
-    popup.style.setProperty('visibility','visible','important');
-    document.body.classList.add('sakaker-fb-popup-open');
-    document.body.style.overflow='hidden';
-  }
-
-  document.addEventListener('click',function(e){
-    const target=e.target;
-    if(!(target instanceof Element)) return;
-
-    if(target.closest('#facebookVideoClose')){
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      closeFacebook();
-      return;
-    }
-
-    if(target.closest('#facebookVideoIcon')){
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      openFacebook();
-      return;
-    }
-
-    const popup=$('facebookVideoPopup');
-    if(popup && target===popup){
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      closeFacebook();
-    }
-  },true);
-
-  /* ---------- Chat: works even if native <dialog> behavior is inconsistent ---------- */
-  function chatOpen(){
-    const overlay=$('sakChatOverlay');
-    if(!overlay) return;
-
-    /* إذا كان نظام الدردشة الأصلي لم ينهِ Firebase بعد، لا نخفي النافذة */
-    overlay.hidden=false;
-    overlay.removeAttribute('aria-hidden');
-    overlay.style.setProperty('display','flex','important');
-    overlay.style.setProperty('visibility','visible','important');
-    overlay.style.setProperty('opacity','1','important');
-    overlay.style.setProperty('pointer-events','auto','important');
-    document.body.style.overflow='hidden';
-
-    /* لا نعتمد على showModal؛ نستخدم طبقة ثابتة متوافقة مع الجوال */
-    try{
-      if(overlay.open) overlay.close();
-    }catch(e){}
-    overlay.removeAttribute('open');
-
-    const body=$('sakChatBody');
-    if(body) body.inert=false;
-    overlay.classList.remove('sak-chat-shielded');
-
-    const close=$('sakChatClose');
-    if(close) setTimeout(()=>{try{close.focus();}catch(e){}},0);
-  }
-
-  function chatClose(){
-    const overlay=$('sakChatOverlay');
-    if(!overlay) return;
-
-    try{
-      if(overlay.open) overlay.close();
-    }catch(e){}
-
-    overlay.removeAttribute('open');
-    overlay.hidden=true;
-    overlay.style.setProperty('display','none','important');
-    overlay.style.setProperty('visibility','hidden','important');
-    overlay.style.setProperty('pointer-events','none','important');
-
-    const body=$('sakChatBody');
-    if(body) body.inert=false;
-
-    document.body.style.overflow='';
-  }
-
-  document.addEventListener('click',function(e){
-    const target=e.target;
-    if(!(target instanceof Element)) return;
-
-    if(target.closest('#sakChatClose')){
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      chatClose();
-      return;
-    }
-
-    if(target.closest('#sakChatIcon')){
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      chatOpen();
-      return;
-    }
-
-    const overlay=$('sakChatOverlay');
-    if(overlay && target===overlay){
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      chatClose();
-    }
-  },true);
-
-  document.addEventListener('keydown',function(e){
-    if(e.key!=='Escape') return;
-
-    const chat=$('sakChatOverlay');
-    if(chat && !chat.hidden){
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      chatClose();
-      return;
-    }
-
-    const fb=$('facebookVideoPopup');
-    if(fb && fb.classList.contains('active')){
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      closeFacebook();
-      return;
-    }
-
-    const video=$('videoBoxFixed');
-    if(video && getComputedStyle(video).display!=='none'){
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      finalCloseVideo();
-    }
-  },true);
-
-  /* إذا كان نظامًا قديمًا قد ترك النافذة مفتوحة، لا نسمح له بالبقاء فوق الصفحة */
-  window.addEventListener('beforeunload',function(){
-    try{ finalCloseVideo(); }catch(e){}
-    try{ closeFacebook(); }catch(e){}
-    try{ chatClose(); }catch(e){}
-  });
-
+'use strict';
+var videoBox=document.getElementById('videoBoxFixed');
+var videoFrame=document.getElementById('fixedVideo');
+var videoClose=document.getElementById('videoCloseBtn');
+var videoCircle=document.querySelector('.video-top-container-fixed .video-circle');
+var chat=document.getElementById('sakChatOverlay');
+var chatClose=document.getElementById('sakChatClose');
+var chatIcon=document.getElementById('sakChatIcon');
+var YT='https://www.youtube.com/embed/n7eQejkXbnM?autoplay=1&controls=1&playsinline=1&rel=0&modestbranding=1';
+function stopMedia(){
+  document.querySelectorAll('#videoBoxFixed video').forEach(function(v){try{v.pause();}catch(e){};try{v.removeAttribute('src');v.load();}catch(e){}});
+  if(window.fullHls&&typeof window.fullHls.destroy==='function'){try{window.fullHls.destroy();}catch(e){};window.fullHls=null;}
+  if(window.directHls&&typeof window.directHls.destroy==='function'){try{window.directHls.destroy();}catch(e){};window.directHls=null;}
+}
+function closeVideo(e){
+  if(e){e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();}
+  stopMedia();
+  if(videoFrame) videoFrame.src='about:blank';
+  if(videoBox){videoBox.style.display='none';videoBox.classList.remove('sak-hls-mode');videoBox.setAttribute('aria-hidden','true');}
+  document.body.classList.remove('sak-fixed-video-open','sakaker-live-video-open','sakaker-live-popup-open');
+}
+function openVideo(e){
+  if(e){e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();}
+  if(!videoBox||!videoFrame)return;
+  stopMedia();
+  videoBox.classList.remove('sak-hls-mode');
+  videoFrame.style.display='block';
+  videoFrame.src=YT;
+  videoBox.style.display='block';
+  videoBox.setAttribute('aria-hidden','false');
+  document.body.classList.add('sak-fixed-video-open');
+}
+if(videoClose) videoClose.addEventListener('click',closeVideo,true);
+if(videoCircle) videoCircle.addEventListener('click',openVideo,true);
+if(videoBox) videoBox.addEventListener('click',function(e){if(e.target===videoBox)closeVideo(e);},true);
+function chatOpen(e){
+  if(e){e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();}
+  if(!chat)return;
+  chat.hidden=false;chat.removeAttribute('hidden');
+  chat.style.setProperty('display','flex','important');
+  chat.style.setProperty('visibility','visible','important');
+  chat.style.setProperty('opacity','1','important');
+  chat.style.setProperty('pointer-events','auto','important');
+  document.body.style.overflow='hidden';
+  /* Re-run the existing chat initializer when the page exposes it. */
+  try{if(typeof window.startPresence==='function')window.startPresence();}catch(e){}
+  try{if(typeof window.startListeners==='function')window.startListeners();}catch(e){}
+}
+function chatCloseFn(e){
+  if(e){e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();}
+  if(!chat)return;
+  chat.hidden=true;chat.setAttribute('hidden','');
+  chat.style.setProperty('display','none','important');
+  chat.style.setProperty('visibility','hidden','important');
+  chat.style.setProperty('opacity','0','important');
+  chat.style.setProperty('pointer-events','none','important');
+  document.body.style.overflow='';
+  try{if(typeof window.stopPresence==='function')window.stopPresence();}catch(e){}
+}
+if(chatIcon)chatIcon.addEventListener('click',chatOpen,true);
+if(chatClose)chatClose.addEventListener('click',chatCloseFn,true);
+if(chat)chat.addEventListener('click',function(e){if(e.target===chat)chatCloseFn(e);},true);
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){chatCloseFn(e);closeVideo(e);}},true);
+window.addEventListener('beforeunload',function(){stopMedia();});
+/* Keep hidden media from continuing to consume resources after another controller closes it. */
+if(videoBox){new MutationObserver(function(){if(getComputedStyle(videoBox).display==='none'){try{stopMedia();}catch(e){}}}).observe(videoBox,{attributes:true,attributeFilter:['style','class']});}
 })();
 </script>
+
+
+
+
 
 </body>
 </html>
