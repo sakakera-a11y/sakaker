@@ -78,6 +78,10 @@ jobs:
         if: env.SKIP_SYNC != '1'
         run: python .github/scripts/ensure_responsive_dialog_layer.py index.html
 
+      - name: Preserve chess launcher
+        if: env.SKIP_SYNC != '1'
+        run: python .github/scripts/ensure_chess_launcher.py index.html
+
       - name: Commit index.html only
         if: env.SKIP_SYNC != '1'
         shell: bash
