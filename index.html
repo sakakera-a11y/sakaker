@@ -41600,8 +41600,8 @@ html body .sakaker-copyright{display:none !important;visibility:hidden !importan
 html body #sakLoginIdentity{display:none;}
 html body.locked #loginOverlay #sakLoginIdentity{
   position:fixed !important;
-  left:max(8px,env(safe-area-inset-left)) !important;
-  right:auto !important;
+  left:auto !important;
+  right:max(8px,env(safe-area-inset-right)) !important;
   bottom:max(6px,env(safe-area-inset-bottom)) !important;
   z-index:2147483646 !important;
   display:flex !important;
@@ -41682,10 +41682,11 @@ html body.locked #loginOverlay #sakLoginIdentity .sak-login-identity-email:focus
   text-decoration:underline !important;
   outline:none;
 }
-/* الدفع فوق الهوية مباشرة */
+/* الدفع فوق الهوية في الجهة اليمنى من شاشة الدخول */
+html body.locked #sakPaymentPanel{left:auto;right:0;}
 html body.locked #sakGlobalPayment{
-  left:max(8px,env(safe-area-inset-left)) !important;
-  right:auto !important;
+  left:auto !important;
+  right:max(8px,env(safe-area-inset-right)) !important;
   bottom:max(67px,calc(67px + env(safe-area-inset-bottom))) !important;
 }
 @media(max-width:520px){
