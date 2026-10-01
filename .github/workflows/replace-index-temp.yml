@@ -1,0 +1,50 @@
+name: Replace final index temporary
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/replace-index-temp.yml'
+      - '.tmp/index_updated_optimized_ostrich.html.gz.b64'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  replace-index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Decode and replace index
+        shell: bash
+        run: |
+          set -euo pipefail
+          PAYLOAD='.tmp/index_updated_optimized_ostrich.html.gz.b64'
+          if [ ! -f "$PAYLOAD" ]; then
+            echo 'Payload already consumed; nothing to do.'
+            exit 0
+          fi
+          base64 -d "$PAYLOAD" | gzip -d > index.html.new
+          grep -q 'SAKAKER FINAL OSTRICH TRIO OVERRIDE 2026-10-01' index.html.new
+          grep -q 'sak-final-ostrich-trio-v4' index.html.new
+          grep -q 'sak-text-library-card' index.html.new
+          test "$(wc -c < index.html.new)" -gt 1000000
+          mv index.html.new index.html
+          rm -f "$PAYLOAD"
+      - name: Commit replacement
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html .tmp/index_updated_optimized_ostrich.html.gz.b64 || true
+          if git diff --cached --quiet; then
+            echo 'No changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Replace index with optimized ostrich edition'
+          git push origin HEAD:main
