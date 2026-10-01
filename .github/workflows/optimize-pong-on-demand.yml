@@ -25,22 +25,12 @@ jobs:
           p = Path('pong.html')
           text = p.read_text(encoding='utf-8')
 
-          # Remove the legacy delayed auto-click that opens Pong without user action.
           text, n = re.subn(
               r'<script>\s*setTimeout\(\(\)=>document\.getElementById\(["\']pongGame-btn["\']\)\?\.click\(\),\s*600\s*\)\s*</script>',
               '',
               text,
               count=1,
               flags=re.S
-          )
-
-          # Safety: ensure the background/audio iframe has no live src before user interaction.
-          text = re.sub(
-              r'(<iframe\s+id=["\']pongGame-video["\'][^>]*?)\s+src=(["\']).*?\2',
-              r'\1',
-              text,
-              count=1,
-              flags=re.S|re.I
           )
 
           p.write_text(text, encoding='utf-8')
@@ -55,7 +45,7 @@ jobs:
           assert 'setTimeout(()=>document.getElementById("pongGame-btn")?.click(),600)' not in text
           m = re.search(r'<iframe\s+id=["\']pongGame-video["\'][^>]*>', text, re.S|re.I)
           assert m, 'pongGame-video iframe not found'
-          assert not re.search(r'\bsrc=', m.group(0), re.I), 'pongGame-video still has an eager src'
+          assert not re.search(r'\ssrc\s*=', m.group(0), re.I), 'pongGame-video still has an eager src'
           assert 'data-audio-src=' in m.group(0), 'lazy audio source missing'
           print('Pong now waits for a real user click')
 
