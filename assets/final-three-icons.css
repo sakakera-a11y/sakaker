@@ -170,4 +170,9 @@ html body #sakFinalTrioDock#sakFinalTrioDock .sak-final-ostrich:hover .sak-ostri
     font-size:6.5px!important;
     bottom:-8px!important;
   }
+
+  /* Keep payment clear of the bottom icon row on phones. */
+  html body #paymentSideBtn{
+    bottom:25vh!important;
+  }
 }
