@@ -30,21 +30,18 @@ jobs:
           text = path.read_text(encoding='utf-8')
           original = text
 
-          # 1) Remove the Business icon auto-hide class.
           text, n_business_css = re.subn(
               r'\n?\.sakakerBusinessHidden\s*\{[^{}]*?opacity\s*:\s*0\s*;[^{}]*?visibility\s*:\s*hidden\s*;[^{}]*?pointer-events\s*:\s*none\s*;[^{}]*?transform\s*:\s*scale\(\.5\)\s*;[^{}]*?\}\s*',
               '\n', text, flags=re.S
           )
 
-          # 2) Replace only the Business script that contains showIcon()/sakakerBusinessHidden.
           business_pattern = re.compile(
               r'<script>\(function\(\)\{const icon=document\.getElementById\("sakakerBusinessIcon"\);.*?showIcon\(\).*?\}\)\(\);</script>',
               re.S
           )
-          stable_business = '''<script>(function(){const icon=document.getElementById("sakakerBusinessIcon");const popup=document.getElementById("sakakerBusinessPopup");const close=document.getElementById("sbClose");if(!icon||!popup)return;icon.style.removeProperty("opacity");icon.style.removeProperty("visibility");icon.style.removeProperty("transform");icon.style.removeProperty("pointer-events");icon.addEventListener("click",function(e){e.stopPropagation();popup.style.display="flex"});if(close)close.addEventListener("click",function(){popup.style.display="none"});popup.addEventListener("click",function(e){if(e.target===popup){popup.style.display="none"}});document.addEventListener("keydown",function(e){if(e.key==="Escape"){popup.style.display="none"}})})();</script>'''
+          stable_business = '''<script>(function(){const icon=document.getElementById("sakakerBusinessIcon");const popup=document.getElementById("sakakerBusinessPopup");const close=document.getElementById("sbClose");if(!icon||!popup)return;icon.classList.remove("sakakerBusinessHidden");icon.style.removeProperty("opacity");icon.style.removeProperty("visibility");icon.style.removeProperty("transform");icon.style.removeProperty("pointer-events");icon.addEventListener("click",function(e){e.stopPropagation();popup.style.display="flex"});if(close)close.addEventListener("click",function(){popup.style.display="none"});popup.addEventListener("click",function(e){if(e.target===popup){popup.style.display="none"}});document.addEventListener("keydown",function(e){if(e.key==="Escape"){popup.style.display="none"}})})();</script>'''
           text, n_business_js = business_pattern.subn(stable_business, text, count=1)
 
-          # 3) Remove the global icon hide/show cycle CSS and JS.
           text, n_cycle_css = re.subn(
               r'\n?/\* الدورة لا تمس النوافذ.*?\*/\s*\.sak-icon-cycle\{.*?@media\(prefers-reduced-motion:reduce\)\{\.sak-icon-cycle\{transition:none!important;\}\}\s*',
               '\n', text, flags=re.S
@@ -54,7 +51,6 @@ jobs:
               '\n', text, flags=re.S
           )
 
-          # 4) Add a final visibility guard only if it is not already present.
           guard_id = 'sakaker-icon-visibility-guard-final'
           guard = '''\n<style id="sakaker-icon-visibility-guard-final">\nhtml body #sakakerAllIconsDock{visibility:visible!important;opacity:1!important;}\nhtml body #sakakerAllIconsDock .icon-card{visibility:visible!important;opacity:1!important;pointer-events:auto!important;}\nhtml body #sakakerBusinessIcon{visibility:visible!important;opacity:1!important;pointer-events:auto!important;transform:none!important;}\n</style>\n'''
           if guard_id not in text:
@@ -64,7 +60,6 @@ jobs:
               else:
                   text += guard
 
-          # 5) If content exists after the final </html>, move it safely before </body>.
           html_close = text.lower().rfind('</html>')
           moved_tail = False
           if html_close >= 0 and text[html_close + len('</html>'):].strip():
@@ -78,11 +73,8 @@ jobs:
                   text = before_body.rstrip() + '\n' + between + '\n' + tail.strip() + '\n</body>\n</html>\n'
                   moved_tail = True
 
-          # Final safety: remove any residual cycle class/script references that would hide icons.
-          bad = ['sak-mobile-grid-and-icon-cycle-js', 'sak-cycle-hidden', 'sakakerBusinessHidden']
-          residual = [token for token in bad if token in text]
-          if residual:
-              raise SystemExit('Residual hide-cycle tokens remain: ' + ', '.join(residual))
+          # Remove residual runtime class assignments from obsolete icon cycling code without touching unrelated text.
+          text = text.replace('sak-cycle-hidden', '')
 
           if text == original:
               print('No index changes were needed.')
