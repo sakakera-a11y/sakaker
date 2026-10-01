@@ -16,11 +16,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Optimize login background and circle videos
+      - name: Optimize video loading
         shell: python
         run: |
           from pathlib import Path
           import re
+          import textwrap
 
           p = Path('index.html')
           text = p.read_text(encoding='utf-8')
@@ -28,7 +29,6 @@ jobs:
           new_url = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_be58b3bc.mp4'
           old_url = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/sea-birds-compatible.mp4'
 
-          # Keep the requested login background everywhere.
           text = text.replace(old_url, new_url)
           text = re.sub(
               r"const\s+LOGIN_URL\s*=\s*['\"][^'\"]+['\"]\s*;",
@@ -44,7 +44,6 @@ jobs:
               flags=re.S
           )
 
-          # Convert mini YouTube circles to true lazy loading before the browser requests them.
           iframe_re = re.compile(r'<iframe\b[^>]*\bclass=["\'][^"\']*\bminiVideo\b[^"\']*["\'][^>]*>', re.I | re.S)
           def lazy_iframe(match):
               tag = match.group(0)
@@ -66,79 +65,72 @@ jobs:
 
           marker = 'id="sakaker-performance-video-override"'
           if marker not in text:
-              script = r'''
-<script id="sakaker-performance-video-override">
-(function(){
-  'use strict';
-  const login=document.getElementById('sakLoginBackgroundVideo');
-  const main=document.getElementById('sakakerMainVideoBackground');
-  const LOGIN_SRC='https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_be58b3bc.mp4';
+              script = textwrap.dedent("""
+              <script id="sakaker-performance-video-override">
+              (function(){
+                'use strict';
+                const login=document.getElementById('sakLoginBackgroundVideo');
+                const main=document.getElementById('sakakerMainVideoBackground');
+                const LOGIN_SRC='https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_be58b3bc.mp4';
 
-  function safePlay(v){ if(v){ const p=v.play(); if(p&&p.catch) p.catch(()=>{}); } }
-  function stopAndRelease(v){
-    if(!v) return;
-    try{v.pause();}catch(_){ }
-    v.preload='none';
-    v.removeAttribute('fetchpriority');
-  }
-
-  function syncBackgrounds(){
-    const locked=document.body.classList.contains('locked');
-    if(locked){
-      if(login){
-        if(!login.getAttribute('src')){ login.src=LOGIN_SRC; try{login.load();}catch(_){ } }
-        login.preload='auto';
-        login.setAttribute('fetchpriority','high');
-        login.muted=true;
-        safePlay(login);
-      }
-      stopAndRelease(main);
-    }else{
-      stopAndRelease(login);
-      if(main){
-        main.preload='auto';
-        main.setAttribute('fetchpriority','high');
-        main.muted=true;
-        safePlay(main);
-      }
-    }
-  }
-
-  function loadMini(frame){
-    if(!frame || frame.src) return;
-    const src=frame.dataset.src;
-    if(src){ frame.src=src; }
-  }
-
-  const minis=[...document.querySelectorAll('iframe.miniVideo[data-src]')];
-  if('IntersectionObserver' in window){
-    const io=new IntersectionObserver((entries)=>{
-      entries.forEach(entry=>{
-        if(entry.isIntersecting){ loadMini(entry.target); io.unobserve(entry.target); }
-      });
-    },{rootMargin:'180px 0px',threshold:0.01});
-    minis.forEach(f=>io.observe(f));
-  }else{
-    minis.slice(0,1).forEach(loadMini);
-  }
-
-  const mo=new MutationObserver(syncBackgrounds);
-  mo.observe(document.body,{attributes:true,attributeFilter:['class']});
-  document.addEventListener('visibilitychange',()=>{
-    if(document.hidden){
-      try{login&&login.pause();}catch(_){ }
-      try{main&&main.pause();}catch(_){ }
-    }else{
-      syncBackgrounds();
-    }
-  });
-  window.addEventListener('load',syncBackgrounds,{once:true});
-  syncBackgrounds();
-})();
-</script>
-'''
-              i = text.lower().rfind('</body>')
-              text = text[:i] + script + text[i:] if i != -1 else text + script
+                function safePlay(v){ if(v){ const p=v.play(); if(p&&p.catch) p.catch(()=>{}); } }
+                function stopVideo(v){
+                  if(!v) return;
+                  try{v.pause();}catch(_){ }
+                  v.preload='none';
+                  v.removeAttribute('fetchpriority');
+                }
+                function syncBackgrounds(){
+                  const locked=document.body.classList.contains('locked');
+                  if(locked){
+                    if(login){
+                      if(!login.getAttribute('src')){ login.src=LOGIN_SRC; try{login.load();}catch(_){ } }
+                      login.preload='auto';
+                      login.setAttribute('fetchpriority','high');
+                      login.muted=true;
+                      safePlay(login);
+                    }
+                    stopVideo(main);
+                  }else{
+                    stopVideo(login);
+                    if(main){
+                      main.preload='auto';
+                      main.setAttribute('fetchpriority','high');
+                      main.muted=true;
+                      safePlay(main);
+                    }
+                  }
+                }
+                function loadMini(frame){
+                  if(!frame || frame.getAttribute('src')) return;
+                  const src=frame.dataset.src;
+                  if(src) frame.src=src;
+                }
+                const minis=[...document.querySelectorAll('iframe.miniVideo[data-src]')];
+                if('IntersectionObserver' in window){
+                  const io=new IntersectionObserver((entries)=>{
+                    entries.forEach(entry=>{
+                      if(entry.isIntersecting){ loadMini(entry.target); io.unobserve(entry.target); }
+                    });
+                  },{rootMargin:'180px 0px',threshold:0.01});
+                  minis.forEach(f=>io.observe(f));
+                }else{
+                  minis.slice(0,1).forEach(loadMini);
+                }
+                new MutationObserver(syncBackgrounds).observe(document.body,{attributes:true,attributeFilter:['class']});
+                document.addEventListener('visibilitychange',()=>{
+                  if(document.hidden){
+                    try{login&&login.pause();}catch(_){ }
+                    try{main&&main.pause();}catch(_){ }
+                  }else syncBackgrounds();
+                });
+                window.addEventListener('load',syncBackgrounds,{once:true});
+                syncBackgrounds();
+              })();
+              </script>
+              """)
+              pos = text.lower().rfind('</body>')
+              text = text[:pos] + script + text[pos:] if pos != -1 else text + script
 
           p.write_text(text, encoding='utf-8')
 
@@ -151,7 +143,7 @@ jobs:
           assert 'sea-birds-compatible.mp4' not in text
           assert 'sakaker-performance-video-override' in text
           assert 'data-sak-lazy="1"' in text
-          print('Video optimization verified')
+          print('Optimization verified')
 
       - name: Commit update
         run: |
