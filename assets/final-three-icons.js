@@ -8,6 +8,8 @@ if(!document.querySelector('script[data-sakaker-login-rescue]')){
 }
 const $=id=>document.getElementById(id);
 let dock=null;
+let layoutReady=false;
+let retryTimer=null;
 const NS='http://www.w3.org/2000/svg';
 function findMap(){
   const nodes=[...document.querySelectorAll('.launcher,[title],[aria-label]')];
@@ -88,7 +90,7 @@ function styleBase(el){
     position:'relative',inset:'auto',left:'auto',right:'auto',top:'auto',bottom:'auto',margin:'0',
     width:'72px',height:'86px','min-width':'72px','min-height':'86px','max-width':'72px','max-height':'86px',
     overflow:'visible','pointer-events':'auto','z-index':'2',background:'transparent','background-image':'none',
-    'border-radius':'0',border:'0','box-shadow':'none','clip-path':'none',filter:'none',padding:'0'
+    'border-radius':'0',border:'0','box-shadow':'none','clip-path':'none',filter:'none',padding:'0',transition:'none'
   };
   for(const [p,v] of Object.entries(reset))el.style.setProperty(p,v,'important');
 }
@@ -97,6 +99,13 @@ function decorateTextLibrary(){
   el.classList.add('sak-text-library-gold-star');
   let star=el.querySelector(':scope > .sak-text-star-art');
   if(!star){star=document.createElement('span');star.className='sak-text-star-art';star.textContent='★';el.prepend(star)}
+}
+function revealStableLayout(){
+  if(layoutReady)return;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    document.body.classList.add('sak-icons-layout-ready');
+    layoutReady=true;
+  }));
 }
 function decorate(){
   removeVisitorCounters();
@@ -113,15 +122,34 @@ function decorate(){
   const core=business.querySelector('.sbIconCore');if(core)core.style.setProperty('display','none','important');
   [...business.querySelectorAll(':scope > .sak-final-symbol'),...map.querySelectorAll(':scope > .sak-final-symbol'),...music.querySelectorAll(':scope > .sak-final-symbol')].forEach(n=>n.remove());
   map.title=en?'Maps':'الخرائط';map.setAttribute('aria-label',map.title);music.title=en?'Audio to Video':'تحويل الصوت لفيديو';music.setAttribute('aria-label',music.title);business.title=en?'Open Sakaker Business':'فتح سكاكر بزنس';business.setAttribute('aria-label',business.title);
-  d.append(business,map,music);decorateTextLibrary();return true;
+  d.append(business,map,music);decorateTextLibrary();revealStableLayout();return true;
 }
-function run(){removeVisitorCounters();if(document.body.classList.contains('locked'))return;decorate()}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
-[300,900,1800,3500,7000].forEach(ms=>setTimeout(run,ms));
-new MutationObserver(run).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+function run(){
+  removeVisitorCounters();
+  if(document.body.classList.contains('locked'))return false;
+  const ok=decorate();
+  if(ok&&retryTimer){clearInterval(retryTimer);retryTimer=null}
+  return ok;
+}
+function start(){
+  if(run())return;
+  let tries=0;
+  retryTimer=setInterval(()=>{
+    tries++;
+    if(run()||tries>=12){clearInterval(retryTimer);retryTimer=null;if(!layoutReady)revealStableLayout()}
+  },250);
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+new MutationObserver(()=>{if(layoutReady&&!document.body.classList.contains('locked'))decorate()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 function watchLoginState(){
   if(!document.body)return;
-  new MutationObserver(()=>{if(!document.body.classList.contains('locked'))run()}).observe(document.body,{attributes:true,attributeFilter:['class']});
+  new MutationObserver(()=>{
+    if(!document.body.classList.contains('locked')){
+      document.body.classList.remove('sak-icons-layout-ready');
+      layoutReady=false;
+      start();
+    }
+  }).observe(document.body,{attributes:true,attributeFilter:['class']});
 }
 if(document.body)watchLoginState();else document.addEventListener('DOMContentLoaded',watchLoginState,{once:true});
 })();
