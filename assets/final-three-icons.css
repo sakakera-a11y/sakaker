@@ -1,40 +1,48 @@
-/* SAKAKER FINAL OSTRICH TRIO — 2026-10-01 */
-html body #sakakerAllIconsDock #sakUtilityRow{display:contents!important}
-
-html body #sakakerAllIconsDock #sakUtilityRow .sak-final-trio-icon{
+/* SAKAKER FINAL OSTRICH TRIO — direct in gull dock — 2026-10-01 */
+html body #sakakerAllIconsDock{
+  display:flex!important;flex-wrap:wrap!important;align-items:flex-end!important;justify-content:center!important;gap:10px!important;overflow:visible!important
+}
+html body #sakakerAllIconsDock > .sak-final-trio-icon{
   position:relative!important;inset:auto!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;
   flex:0 0 62px!important;width:62px!important;height:72px!important;min-width:62px!important;min-height:72px!important;max-width:62px!important;max-height:72px!important;
   margin:0!important;padding:0!important;border:0!important;border-radius:0!important;clip-path:none!important;background:none!important;background-image:none!important;
   box-shadow:none!important;filter:none!important;transform:none!important;translate:none!important;animation:none!important;overflow:visible!important;isolation:isolate!important;
-  cursor:pointer!important;font-size:0!important;color:transparent!important;text-shadow:none!important;pointer-events:auto!important
+  cursor:pointer!important;font-size:0!important;color:transparent!important;text-shadow:none!important;pointer-events:auto!important;z-index:auto!important
 }
-html body #sakakerAllIconsDock #sakUtilityRow .sak-final-trio-icon>:not(.sak-final-ostrich-art):not(.sak-final-ostrich-label){display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
-html body #sakakerAllIconsDock #sakUtilityRow .sak-final-trio-icon::before,
-html body #sakakerAllIconsDock #sakUtilityRow .sak-final-trio-icon::after{content:none!important;display:none!important}
-
-html body #sakUtilityRow .sak-final-ostrich-art{display:block!important;visibility:visible!important;opacity:1!important;width:58px!important;height:58px!important;margin:0 auto!important;pointer-events:none!important;overflow:visible!important;transform-origin:50% 72%!important;animation:sakFinalOstrichFloat 3s ease-in-out infinite!important}
-html body #sakUtilityRow .sak-final-ostrich-svg{display:block!important;width:100%!important;height:100%!important;overflow:visible!important}
-html body #sakUtilityRow .sak-final-ostrich-label{display:block!important;visibility:visible!important;opacity:1!important;position:absolute!important;left:50%!important;top:59px!important;transform:translateX(-50%)!important;width:86px!important;color:#fff!important;-webkit-text-fill-color:#fff!important;font:800 8px/1.15 Tahoma,Arial,sans-serif!important;text-align:center!important;white-space:nowrap!important;text-shadow:0 1px 3px #001018,0 0 5px #001018!important;pointer-events:none!important;z-index:5!important}
-
-html body #sakUtilityRow .sak-final-business .sak-final-ostrich-art{filter:drop-shadow(0 0 4px #fff7c8) drop-shadow(0 0 11px #ffd426) drop-shadow(0 0 20px rgba(255,164,0,.88))!important}
-html body #sakUtilityRow .sak-final-map .sak-final-ostrich-art{filter:grayscale(.10) drop-shadow(0 0 4px #fff) drop-shadow(0 0 12px #dff5ff) drop-shadow(0 0 21px rgba(115,203,255,.86))!important}
-html body #sakUtilityRow .sak-final-audio .sak-final-ostrich-art{filter:drop-shadow(0 0 4px #edf5ff) drop-shadow(0 0 11px #66788d) drop-shadow(0 0 21px rgba(8,18,30,.96))!important}
-html body #sakUtilityRow .sak-final-trio-icon:hover .sak-final-ostrich-art,html body #sakUtilityRow .sak-final-trio-icon:focus-visible .sak-final-ostrich-art{transform:translateY(-4px) scale(1.09)!important}
+html body #sakakerAllIconsDock > .sak-final-trio-icon > :not(.sak-final-ostrich-art):not(.sak-final-ostrich-label){display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
+html body #sakakerAllIconsDock > .sak-final-trio-icon::before,
+html body #sakakerAllIconsDock > .sak-final-trio-icon::after{content:none!important;display:none!important}
+html body #sakakerAllIconsDock .sak-final-ostrich-art{display:block!important;visibility:visible!important;opacity:1!important;width:58px!important;height:58px!important;margin:0 auto!important;pointer-events:none!important;overflow:visible!important;transform-origin:50% 72%!important;animation:sakFinalOstrichFloat 3s ease-in-out infinite!important}
+html body #sakakerAllIconsDock .sak-final-ostrich-svg{display:block!important;width:100%!important;height:100%!important;overflow:visible!important}
+html body #sakakerAllIconsDock .sak-final-ostrich-label{display:block!important;visibility:visible!important;opacity:1!important;position:absolute!important;left:50%!important;top:59px!important;transform:translateX(-50%)!important;width:86px!important;color:#fff!important;-webkit-text-fill-color:#fff!important;font:800 8px/1.15 Tahoma,Arial,sans-serif!important;text-align:center!important;white-space:nowrap!important;text-shadow:0 1px 3px #001018,0 0 5px #001018!important;pointer-events:none!important;z-index:5!important}
+html body #sakakerAllIconsDock .sak-final-business .sak-final-ostrich-art{filter:drop-shadow(0 0 4px #fff7c8) drop-shadow(0 0 11px #ffd426) drop-shadow(0 0 20px rgba(255,164,0,.88))!important}
+html body #sakakerAllIconsDock .sak-final-map .sak-final-ostrich-art{filter:grayscale(.10) drop-shadow(0 0 4px #fff) drop-shadow(0 0 12px #dff5ff) drop-shadow(0 0 21px rgba(115,203,255,.86))!important}
+html body #sakakerAllIconsDock .sak-final-audio .sak-final-ostrich-art{filter:drop-shadow(0 0 4px #edf5ff) drop-shadow(0 0 11px #66788d) drop-shadow(0 0 21px rgba(8,18,30,.96))!important}
+html body #sakakerAllIconsDock .sak-final-trio-icon:hover .sak-final-ostrich-art,html body #sakakerAllIconsDock .sak-final-trio-icon:focus-visible .sak-final-ostrich-art{transform:translateY(-4px) scale(1.09)!important}
 
 /* Text Library = luminous gold star */
-html body .sak-text-library-card{position:relative!important;clip-path:polygon(50% 0%,61.5% 35.2%,98% 35.2%,68.2% 56.8%,79.4% 91%,50% 70%,20.6% 91%,31.8% 56.8%,2% 35.2%,38.5% 35.2%)!important;border:0!important;border-radius:0!important;background:radial-gradient(circle at 34% 24%,#fffbd7 0 5%,#ffed7d 17%,#ffd426 45%,#dc9800 78%,#704400 100%)!important;box-shadow:0 0 8px #fff,0 0 18px #ffe05a,0 0 32px rgba(255,183,0,.82)!important;filter:drop-shadow(0 0 6px rgba(255,224,90,.95))!important;overflow:visible!important;color:transparent!important;text-shadow:none!important}
+html body #sakakerAllIconsDock .sak-text-library-card,
+html body .sak-text-library-card{
+  position:relative!important;width:58px!important;height:58px!important;min-width:58px!important;min-height:58px!important;max-width:58px!important;max-height:58px!important;
+  clip-path:polygon(50% 0%,61.5% 35.2%,98% 35.2%,68.2% 56.8%,79.4% 91%,50% 70%,20.6% 91%,31.8% 56.8%,2% 35.2%,38.5% 35.2%)!important;
+  border:0!important;border-radius:0!important;background:radial-gradient(circle at 34% 24%,#fffbd7 0 5%,#ffed7d 17%,#ffd426 45%,#dc9800 78%,#704400 100%)!important;
+  box-shadow:0 0 8px #fff,0 0 18px #ffe05a,0 0 32px rgba(255,183,0,.82)!important;filter:drop-shadow(0 0 6px rgba(255,224,90,.95))!important;overflow:visible!important;color:transparent!important;text-shadow:none!important;margin:0!important;padding:0!important
+}
 html body .sak-text-library-card::before{content:'★'!important;display:grid!important;place-items:center!important;position:absolute!important;inset:0!important;color:#fff3a5!important;-webkit-text-fill-color:#fff3a5!important;font:900 25px/1 Arial,sans-serif!important;text-shadow:0 0 5px #fff,0 0 11px #ffd426,0 0 18px #ffb300!important;background:none!important;z-index:3!important;pointer-events:none!important;animation:sakTextStarPulse 2.2s ease-in-out infinite!important}
 html body .sak-text-library-card>*{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+html body .sak-text-library-card::after{content:attr(aria-label)!important;display:block!important;position:absolute!important;left:50%!important;top:100%!important;transform:translateX(-50%)!important;width:84px!important;color:#fff!important;-webkit-text-fill-color:#fff!important;font:800 8px/1.15 Tahoma,Arial,sans-serif!important;text-align:center!important;white-space:nowrap!important;text-shadow:0 1px 3px #001018!important;clip-path:none!important;background:none!important;pointer-events:none!important}
 
 html body #sakBusinessGoldAnchor,html body .sak-text-star-art,html body .sak-final-symbol{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
 
 @keyframes sakFinalOstrichFloat{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-3px) rotate(1deg)}}
 @keyframes sakTextStarPulse{0%,100%{transform:scale(.96);filter:brightness(1)}50%{transform:scale(1.08);filter:brightness(1.18)}}
-
 @media(max-width:700px){
-  html body #sakakerAllIconsDock #sakUtilityRow .sak-final-trio-icon{flex-basis:54px!important;width:54px!important;height:64px!important;min-width:54px!important;min-height:64px!important;max-width:54px!important;max-height:64px!important}
-  html body #sakUtilityRow .sak-final-ostrich-art{width:50px!important;height:50px!important}
-  html body #sakUtilityRow .sak-final-ostrich-label{top:51px!important;width:68px!important;font-size:7px!important}
+  html body #sakakerAllIconsDock{gap:7px!important}
+  html body #sakakerAllIconsDock > .sak-final-trio-icon{flex-basis:54px!important;width:54px!important;height:64px!important;min-width:54px!important;min-height:64px!important;max-width:54px!important;max-height:64px!important}
+  html body #sakakerAllIconsDock .sak-final-ostrich-art{width:50px!important;height:50px!important}
+  html body #sakakerAllIconsDock .sak-final-ostrich-label{top:51px!important;width:68px!important;font-size:7px!important}
+  html body .sak-text-library-card{width:50px!important;height:50px!important;min-width:50px!important;min-height:50px!important;max-width:50px!important;max-height:50px!important}
   html body .sak-text-library-card::before{font-size:22px!important}
+  html body .sak-text-library-card::after{font-size:7px!important;width:64px!important}
 }
-@media(prefers-reduced-motion:reduce){html body #sakUtilityRow .sak-final-ostrich-art,html body .sak-text-library-card::before{animation:none!important}}
+@media(prefers-reduced-motion:reduce){html body #sakakerAllIconsDock .sak-final-ostrich-art,html body .sak-text-library-card::before{animation:none!important}}
