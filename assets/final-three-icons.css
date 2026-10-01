@@ -146,7 +146,7 @@ html body #sakFinalTrioDock#sakFinalTrioDock .sak-final-ostrich:hover .sak-ostri
 @media(max-width:700px){
   html body #sakFinalTrioDock#sakFinalTrioDock#sakFinalTrioDock{
     right:14px!important;
-    bottom:58px!important;
+    bottom:150px!important;
     gap:7px!important;
     padding:5px!important;
   }
@@ -170,9 +170,41 @@ html body #sakFinalTrioDock#sakFinalTrioDock .sak-final-ostrich:hover .sak-ostri
     font-size:6.5px!important;
     bottom:-8px!important;
   }
+}
 
-  /* Place payment near mid-screen, slightly below center on phones. */
-  html body #paymentSideBtn{
-    bottom:44vh!important;
+/* =========================================================
+   Global layout correction: desktop + mobile
+========================================================= */
+html body #sakGlobalPayment,
+html body.locked #sakGlobalPayment{
+  bottom:44vh!important;
+}
+
+html body #sakakerAllIconsDock{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  justify-content:center!important;
+  align-items:flex-end!important;
+  align-content:flex-end!important;
+  width:min(680px,96vw)!important;
+  max-width:96vw!important;
+  height:auto!important;
+  row-gap:8px!important;
+  column-gap:8px!important;
+  overflow:visible!important;
+}
+
+@media(min-width:701px){
+  html body #sakFinalTrioDock#sakFinalTrioDock#sakFinalTrioDock{
+    bottom:145px!important;
+  }
+}
+
+@media(max-width:700px){
+  html body #sakakerAllIconsDock{
+    width:96vw!important;
+    max-width:96vw!important;
+    row-gap:6px!important;
+    column-gap:5px!important;
   }
 }
