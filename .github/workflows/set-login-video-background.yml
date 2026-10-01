@@ -1,4 +1,4 @@
-name: Force new login video background
+name: Optimize Sakaker video loading
 
 on:
   push:
@@ -10,13 +10,13 @@ permissions:
   contents: write
 
 jobs:
-  patch-login:
+  optimize-video-loading:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Force requested login video everywhere it can be overridden
+      - name: Optimize login background and circle videos
         shell: python
         run: |
           from pathlib import Path
@@ -28,39 +28,130 @@ jobs:
           new_url = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_be58b3bc.mp4'
           old_url = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/sea-birds-compatible.mp4'
 
-          # 1) Ensure the original login video element points to the requested video.
-          pattern = r'(<video\s+id="sakLoginBackgroundVideo"[^>]*\bsrc=")[^"]*("[^>]*></video>)'
-          text, n1 = re.subn(pattern, r'\1' + new_url + r'\2', text, count=1, flags=re.S)
-          if n1 != 1:
-              raise SystemExit('sakLoginBackgroundVideo element not found')
-
-          # 2) Fix the late final override that was forcing the old video back after page load.
-          text, n2 = re.subn(
+          # Keep the requested login background everywhere.
+          text = text.replace(old_url, new_url)
+          text = re.sub(
               r"const\s+LOGIN_URL\s*=\s*['\"][^'\"]+['\"]\s*;",
               "const LOGIN_URL='" + new_url + "';",
               text,
               count=1
           )
-          if n2 != 1:
-              raise SystemExit('Final LOGIN_URL override not found')
+          text = re.sub(
+              r'(<video\s+id="sakLoginBackgroundVideo"[^>]*\bsrc=")[^"]*("[^>]*></video>)',
+              r'\1' + new_url + r'\2',
+              text,
+              count=1,
+              flags=re.S
+          )
 
-          # 3) Remove any remaining references to the old login video URL from index.html.
-          text = text.replace(old_url, new_url)
+          # Convert mini YouTube circles to true lazy loading before the browser requests them.
+          iframe_re = re.compile(r'<iframe\b[^>]*\bclass=["\'][^"\']*\bminiVideo\b[^"\']*["\'][^>]*>', re.I | re.S)
+          def lazy_iframe(match):
+              tag = match.group(0)
+              if 'data-sak-lazy="1"' in tag:
+                  return tag
+              m = re.search(r'\bsrc=(["\'])(.*?)\1', tag, re.I | re.S)
+              if not m:
+                  return tag
+              src = m.group(2)
+              if 'youtube.com/embed/' not in src and 'youtube-nocookie.com/embed/' not in src:
+                  return tag
+              tag = tag[:m.start()] + f'data-src="{src}"' + tag[m.end():]
+              if not re.search(r'\bloading=', tag, re.I):
+                  tag = tag[:-1] + ' loading="lazy" data-sak-lazy="1">'
+              else:
+                  tag = tag[:-1] + ' data-sak-lazy="1">'
+              return tag
+          text = iframe_re.sub(lazy_iframe, text)
 
-          # Keep the legacy descriptive comment accurate too.
-          text = text.replace('Login background: sea-birds-compatible.mp4', 'Login background: gemini_generated_video_be58b3bc.mp4')
+          marker = 'id="sakaker-performance-video-override"'
+          if marker not in text:
+              script = r'''
+<script id="sakaker-performance-video-override">
+(function(){
+  'use strict';
+  const login=document.getElementById('sakLoginBackgroundVideo');
+  const main=document.getElementById('sakakerMainVideoBackground');
+  const LOGIN_SRC='https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_be58b3bc.mp4';
+
+  function safePlay(v){ if(v){ const p=v.play(); if(p&&p.catch) p.catch(()=>{}); } }
+  function stopAndRelease(v){
+    if(!v) return;
+    try{v.pause();}catch(_){ }
+    v.preload='none';
+    v.removeAttribute('fetchpriority');
+  }
+
+  function syncBackgrounds(){
+    const locked=document.body.classList.contains('locked');
+    if(locked){
+      if(login){
+        if(!login.getAttribute('src')){ login.src=LOGIN_SRC; try{login.load();}catch(_){ } }
+        login.preload='auto';
+        login.setAttribute('fetchpriority','high');
+        login.muted=true;
+        safePlay(login);
+      }
+      stopAndRelease(main);
+    }else{
+      stopAndRelease(login);
+      if(main){
+        main.preload='auto';
+        main.setAttribute('fetchpriority','high');
+        main.muted=true;
+        safePlay(main);
+      }
+    }
+  }
+
+  function loadMini(frame){
+    if(!frame || frame.src) return;
+    const src=frame.dataset.src;
+    if(src){ frame.src=src; }
+  }
+
+  const minis=[...document.querySelectorAll('iframe.miniVideo[data-src]')];
+  if('IntersectionObserver' in window){
+    const io=new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){ loadMini(entry.target); io.unobserve(entry.target); }
+      });
+    },{rootMargin:'180px 0px',threshold:0.01});
+    minis.forEach(f=>io.observe(f));
+  }else{
+    minis.slice(0,1).forEach(loadMini);
+  }
+
+  const mo=new MutationObserver(syncBackgrounds);
+  mo.observe(document.body,{attributes:true,attributeFilter:['class']});
+  document.addEventListener('visibilitychange',()=>{
+    if(document.hidden){
+      try{login&&login.pause();}catch(_){ }
+      try{main&&main.pause();}catch(_){ }
+    }else{
+      syncBackgrounds();
+    }
+  });
+  window.addEventListener('load',syncBackgrounds,{once:true});
+  syncBackgrounds();
+})();
+</script>
+'''
+              i = text.lower().rfind('</body>')
+              text = text[:i] + script + text[i:] if i != -1 else text + script
 
           p.write_text(text, encoding='utf-8')
 
-      - name: Verify requested video and absence of old override
+      - name: Verify optimization
         shell: python
         run: |
           from pathlib import Path
           text = Path('index.html').read_text(encoding='utf-8')
           assert 'gemini_generated_video_be58b3bc.mp4' in text
           assert 'sea-birds-compatible.mp4' not in text
-          assert "const LOGIN_URL='https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_be58b3bc.mp4';" in text
-          print('Login background verified')
+          assert 'sakaker-performance-video-override' in text
+          assert 'data-sak-lazy="1"' in text
+          print('Video optimization verified')
 
       - name: Commit update
         run: |
@@ -71,5 +162,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git commit -m "Force new Sakaker login video background"
+          git commit -m "Optimize Sakaker video loading"
           git push
