@@ -5,7 +5,7 @@
 
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>abwalqmrzmrd encylopedia</title>
+<title>موسوعة ابوالقمرزمرد | abwalqmrzmrd encylopedia</title>
 <style>
 body.locked > *:not(#loginOverlay){
     visibility:hidden !important;
@@ -6066,9 +6066,16 @@ html body #loginBox #loginCopyright{
    إخفاء الأيقونة
 ========================= */
 
+.sakakerBusinessHidden{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transform:scale(.5);
+}
+
 </style>
 
-<script>(function(){const icon=document.getElementById("sakakerBusinessIcon");const popup=document.getElementById("sakakerBusinessPopup");const close=document.getElementById("sbClose");if(!icon||!popup)return;icon.classList.remove("sakakerBusinessHidden");icon.style.removeProperty("opacity");icon.style.removeProperty("visibility");icon.style.removeProperty("transform");icon.style.removeProperty("pointer-events");icon.addEventListener("click",function(e){e.stopPropagation();popup.style.display="flex"});if(close)close.addEventListener("click",function(){popup.style.display="none"});popup.addEventListener("click",function(e){if(e.target===popup){popup.style.display="none"}});document.addEventListener("keydown",function(e){if(e.key==="Escape"){popup.style.display="none"}})})();</script>
+<script>(function(){const icon=document.getElementById("sakakerBusinessIcon");const popup=document.getElementById("sakakerBusinessPopup");const close=document.getElementById("sbClose");if(!icon||!popup)return;icon.addEventListener("click",function(e){e.stopPropagation();popup.style.display="flex"});close.addEventListener("click",function(){popup.style.display="none"});popup.addEventListener("click",function(e){if(e.target===popup){popup.style.display="none"}});document.addEventListener("keydown",function(e){if(e.key==="Escape"){popup.style.display="none"}});function showIcon(){icon.classList.remove("sakakerBusinessHidden");setTimeout(function(){icon.classList.add("sakakerBusinessHidden");setTimeout(function(){showIcon()},12e4)},2e4)}showIcon()})();</script>
 <style>
 
 /* =========================================================
@@ -21750,7 +21757,14 @@ html body #sakUtilityRow :is(.launcher span,#sakMusicIcon *,#emeraldMusicHost #e
   html body #sakakerAllIconsDock :is(.icon-label,.sub,.fbIconText,.pong-label,.emOpenText,.sbIconCore,.launcher span){font-size:7px!important;max-width:44px!important;}
 }
 
+/* الدورة لا تمس النوافذ، الساعة، العداد أو شريط الأخبار؛ تُطبّق على أزرار الأيقونات فقط. */
+.sak-icon-cycle{transition:opacity .55s ease,visibility .55s ease!important;}
+.sak-icon-cycle:not(.sak-cycle-hidden){visibility:visible!important;opacity:1!important;pointer-events:auto!important;}
+.sak-icon-cycle.sak-cycle-hidden{visibility:hidden!important;opacity:0!important;pointer-events:none!important;}
+@media(prefers-reduced-motion:reduce){.sak-icon-cycle{transition:none!important;}}
 </style>
+<script id="sak-mobile-grid-and-icon-cycle-js">(()=>{"use strict";const selectors=["#sakakerAllIconsDock .icon-card","#facebookVideoIcon","#liveFlasher","#emeraldLibraryButton","#pongGame-btn","#shipIcon_new","#emeraldMusicHost #emOpenBtn","#sakakerBusinessIcon",".launcher","#sakMusicIcon",".video-top-container-fixed","#sakSecondStreamCorner","#sakCreativeIcon","#sakChatIcon"];const findIcons=()=>[...new Set(selectors.flatMap(s=>[...document.querySelectorAll(s)]))].filter(el=>!el.closest("#facebookVideoPopup,#livePopup,#shipPopup_new,#sakakerBusinessPopup,#emeraldLibraryContent,#sakMusicPlayer"));function mark(){findIcons().forEach(el=>el.classList.add("sak-icon-cycle"))}let shown=true,timer=null;function phase(show){shown=show;mark();findIcons().forEach(el=>el.classList.toggle("sak-cycle-hidden",!show));clearTimeout(timer);timer=setTimeout(()=>phase(!show),show?12e4:3e4)}mark();phase(true);[300,1200,3e3,7e3].forEach(ms=>setTimeout(()=>{mark();findIcons().forEach(el=>el.classList.toggle("sak-cycle-hidden",!shown))},ms));const dock=document.getElementById("sakakerAllIconsDock");if(dock)new MutationObserver(()=>{mark();findIcons().forEach(el=>el.classList.toggle("sak-cycle-hidden",!shown))}).observe(dock,{childList:true,subtree:true})})();</script>
+
 <style id="sak-realistic-video-eyes">
 /* الدائرتان تتحولان إلى عينين واضحتين، بينما يبقى الضغط لفتح الفيديو نفسه. */
 html body .video-top-container-fixed,
@@ -21928,8 +21942,8 @@ html body #sakSecondStreamCorner #sakSecondStreamCircleSecure::after{
 </style>
 <script id="sak-shell-crystal-player">(()=>{"use strict";const stream="https://cffda8ff.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/U2Ftc3VuZy1nYl9GSUZBUGx1c3dvbWVuX0hMUw/playlist.m3u8";const dialog=document.createElement("dialog");dialog.id="sakCrystalDialog";dialog.setAttribute("aria-labelledby","sakCrystalTitle");dialog.innerHTML='<div class="crystal-head"><span id="sakCrystalTitle"></span><button class="crystal-close" type="button" aria-label="إغلاق / Close">×</button></div><div id="sakCrystalStage"></div><p id="sakCrystalStatus" role="status"></p>';document.body.append(dialog);const stage=dialog.querySelector("#sakCrystalStage"),status=dialog.querySelector("#sakCrystalStatus");let hls=null,ticket=0,focusBefore=null,scrollBefore="",hlsPromise=null;const en=()=>document.documentElement.lang==="en";function loader(){if(window.Hls)return Promise.resolve(window.Hls);if(hlsPromise)return hlsPromise;hlsPromise=new Promise((resolve,reject)=>{const s=document.createElement("script");s.src="https://cdn.jsdelivr.net/npm/hls.js@1.5.18/dist/hls.min.js";s.onload=()=>resolve(window.Hls);s.onerror=()=>{hlsPromise=null;reject(Error("load"))};document.head.append(s)});return hlsPromise}function stop(){ticket++;if(hls){hls.destroy();hls=null}stage.querySelector("video")?.pause();stage.replaceChildren();status.textContent=""}function close(){if(dialog.open)dialog.close()}dialog.addEventListener("close",()=>{stop();document.body.style.overflow=scrollBefore;focusBefore?.focus?.()});dialog.querySelector("button").onclick=close;dialog.addEventListener("click",e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)close()}});async function open(kind,trigger){stop();const current=ticket;focusBefore=trigger;scrollBefore=document.body.style.overflow;document.body.style.overflow="hidden";dialog.dir=en()?"ltr":"rtl";dialog.querySelector("#sakCrystalTitle").textContent=kind==="live"?en()?"✧ Live stream":"✧ البث المباشر":en()?"✧ Video":"✧ الفيديو";dialog.showModal();dialog.querySelector("button").focus();if(kind==="youtube"){const f=document.createElement("iframe");const id=document.querySelector(".video-top-container-fixed .video-circle")?.dataset.video||"n7eQejkXbnM";f.src="https://www.youtube-nocookie.com/embed/"+encodeURIComponent(id)+"?autoplay=1&playsinline=1&rel=0";f.allow="autoplay; encrypted-media; fullscreen; picture-in-picture";f.allowFullscreen=true;f.title=en()?"Video":"الفيديو";stage.append(f);return}dialog.querySelector("#sakCrystalTitle").textContent="FIFA+ · LIVE";const video=document.createElement("video");video.controls=true;video.autoplay=true;video.playsInline=true;stage.append(video);status.textContent=en()?"Loading stream…":"جارٍ تحميل البث…";video.addEventListener("playing",()=>{status.textContent=""});const failure=()=>{if(current===ticket&&dialog.open)status.textContent=en()?"Stream unavailable. Please try again.":"تعذر تحميل البث، حاول مرة أخرى."};const play=()=>video.play().catch(()=>{if(current===ticket)status.textContent=en()?"Press play to watch.":"اضغط تشغيل للمشاهدة."});try{if(video.canPlayType("application/vnd.apple.mpegurl")){video.src=stream;video.addEventListener("error",failure);play();return}const H=await loader();if(current!==ticket||!dialog.open)return;if(!H?.isSupported()){failure();return}hls=new H({enableWorker:true,backBufferLength:15,maxBufferLength:20});hls.loadSource(stream);hls.attachMedia(video);hls.on(H.Events.MANIFEST_PARSED,play);hls.on(H.Events.ERROR,(_,data)=>{if(data.fatal)failure()})}catch(_){failure()}}function route(e){if(!(e.target instanceof Element))return;if(e.target.closest(".sak-preview-toggle,.sak-preview-collapsed"))return;const first=e.target.closest(".video-top-container-fixed"),second=e.target.closest("#sakSecondStreamCorner");if(!first&&!second)return;if(e.type==="keydown"&&!["Enter"," "].includes(e.key))return;e.preventDefault();e.stopImmediatePropagation();open(second?"live":"youtube",second?.querySelector("[role=button]")||first?.querySelector(".video-circle"))}window.addEventListener("click",route,true);window.addEventListener("keydown",route,true);const first=document.querySelector(".video-top-container-fixed .video-circle");if(first){first.tabIndex=0;first.setAttribute("role","button");first.setAttribute("aria-label","فتح الفيديو / Open video")}})();</script>
 <style id="sak-shell-hit-target-fix">
-html body:not(.locked) #sakSecondStreamCorner:not(.),html body:not(.locked) #sakSecondStreamCorner:not(.) #sakSecondStreamCircleSecure{pointer-events:auto!important}
-html body #sakSecondStreamCorner.{pointer-events:none!important}
+html body:not(.locked) #sakSecondStreamCorner:not(.sak-cycle-hidden),html body:not(.locked) #sakSecondStreamCorner:not(.sak-cycle-hidden) #sakSecondStreamCircleSecure{pointer-events:auto!important}
+html body #sakSecondStreamCorner.sak-cycle-hidden{pointer-events:none!important}
 html body #sakakerSequentialTop{pointer-events:none!important}
 html body #sakakerSequentialTop :is(button,a,input,[role="button"]){pointer-events:auto!important}
 html body .video-top-container-fixed,html body #sakSecondStreamCorner{z-index:2147482000!important;isolation:isolate!important}
@@ -22073,8 +22087,8 @@ html body #sakSecondStreamCorner .sak-dazn-preview iframe{position:absolute!impo
 #sakCrystalStage .sak-dazn-card a:focus-visible{outline:3px solid white;outline-offset:4px}
 </style>
 <style id="sak-two-previews-visible">
-html body:not(.locked) .video-top-container-fixed.,
-html body:not(.locked) #sakSecondStreamCorner.{opacity:1!important;visibility:visible!important;pointer-events:auto!important}
+html body:not(.locked) .video-top-container-fixed.sak-cycle-hidden,
+html body:not(.locked) #sakSecondStreamCorner.sak-cycle-hidden{opacity:1!important;visibility:visible!important;pointer-events:auto!important}
 html body .video-top-container-fixed .video-circle .miniVideo{display:block!important;visibility:visible!important;opacity:1!important;pointer-events:none!important}
 </style>
 <script id="sak-left-preview-ready">(()=>{const preview=document.querySelector(".video-top-container-fixed .miniVideo");if(!preview)return;const id=document.querySelector(".video-top-container-fixed .video-circle")?.dataset.video||"n7eQejkXbnM";const src="https://www.youtube-nocookie.com/embed/"+encodeURIComponent(id)+"?autoplay=1&mute=1&loop=1&playlist="+encodeURIComponent(id)+"&controls=0&playsinline=1&rel=0";preview.loading="eager";preview.removeAttribute("data-src");preview.setAttribute("allow","autoplay; encrypted-media; picture-in-picture");if(preview.src!==src)preview.src=src})();</script>
@@ -23986,13 +24000,8 @@ body.sak-ebook-layer-open :is(#siteLangToggle,#facebookVideoIcon,#liveFlasher,#s
 
 <script id="sakaker-performance-video-override">(function(){"use strict";const login=document.getElementById("sakLoginBackgroundVideo");const main=null;const LOGIN_SRC="https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_be58b3bc.mp4";function safePlay(v){if(v){const p=v.play();if(p&&p.catch)p.catch(()=>{})}}function stopVideo(v){if(!v)return;try{v.pause()}catch(_){}v.preload="none";v.removeAttribute("fetchpriority")}function syncBackgrounds(){const locked=document.body.classList.contains("locked");if(locked){if(login){if(!login.getAttribute("src")){login.src=LOGIN_SRC;try{login.load()}catch(_){}}login.preload="auto";login.setAttribute("fetchpriority","high");login.muted=true;safePlay(login)}stopVideo(main)}else{stopVideo(login);if(main){main.preload="auto";main.setAttribute("fetchpriority","high");main.muted=true;safePlay(main)}}}function loadMini(frame){if(!frame||frame.getAttribute("src"))return;const src=frame.dataset.src;if(src)frame.src=src}const minis=[...document.querySelectorAll("iframe.miniVideo[data-src]")];if("IntersectionObserver"in window){const io=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){loadMini(entry.target);io.unobserve(entry.target)}})},{rootMargin:"180px 0px",threshold:.01});minis.forEach(f=>io.observe(f))}else{minis.slice(0,1).forEach(loadMini)}new MutationObserver(syncBackgrounds).observe(document.body,{attributes:true,attributeFilter:["class"]});document.addEventListener("visibilitychange",()=>{if(document.hidden){try{login&&login.pause()}catch(_){}try{main&&main.pause()}catch(_){}}else syncBackgrounds()});window.addEventListener("load",syncBackgrounds,{once:true});syncBackgrounds()})();</script>
 <script id="sak-final-business-map-audio-icons-js-v1" src="/assets/final-three-icons.js"></script>
-
-<style id="sakaker-icon-visibility-guard-final">
-html body #sakakerAllIconsDock{visibility:visible!important;opacity:1!important;}
-html body #sakakerAllIconsDock .icon-card{visibility:visible!important;opacity:1!important;pointer-events:auto!important;}
-html body #sakakerBusinessIcon{visibility:visible!important;opacity:1!important;pointer-events:auto!important;transform:none!important;}
-</style>
-
+</body>
+</html>
 
 <style id="sakaker-text-library-absolute-top-layer">
 /* =========================================================
@@ -24434,5 +24443,3 @@ html body:not(.locked) #sakakerMainVideoBackground{
   }).observe(document.body,{attributes:true,attributeFilter:["class"],childList:true});
 })();
 </script>
-</body>
-</html>
