@@ -54,3 +54,5 @@ jobs:
           fi
           git commit -m 'Restore optimized ostrich audio-converter index'
           git push origin HEAD:main
+
+# retrigger 2026-10-01
