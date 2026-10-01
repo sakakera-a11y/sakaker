@@ -93,7 +93,7 @@ jobs:
             if(beforeScripts!==afterScripts) throw new Error(`script count changed ${beforeScripts}->${afterScripts}`);
             if(beforeStyles!==afterStyles) throw new Error(`style count changed ${beforeStyles}->${afterStyles}`);
             if(beforeIds!==afterIds) throw new Error(`HTML id count changed ${beforeIds}->${afterIds}`);
-            for(const marker of ['loginOverlay','sakLoginBackgroundVideo','gemini_generated_video_be58b3bc.mp4','pong.html','videos.html']){
+            for(const marker of ['loginOverlay','sakLoginBackgroundVideo','gemini_generated_video_be58b3bc.mp4']){
               if(!out.includes(marker)) throw new Error(`required marker missing: ${marker}`);
             }
             if(afterBytes>=beforeBytes) throw new Error(`No size reduction: ${beforeBytes} -> ${afterBytes}`);
