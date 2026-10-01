@@ -23999,7 +23999,31 @@ body.sak-ebook-layer-open :is(#siteLangToggle,#facebookVideoIcon,#liveFlasher,#s
 
 <script id="sakaker-performance-video-override">(function(){"use strict";const login=document.getElementById("sakLoginBackgroundVideo");const main=null;const LOGIN_SRC="https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_be58b3bc.mp4";function safePlay(v){if(v){const p=v.play();if(p&&p.catch)p.catch(()=>{})}}function stopVideo(v){if(!v)return;try{v.pause()}catch(_){}v.preload="none";v.removeAttribute("fetchpriority")}function syncBackgrounds(){const locked=document.body.classList.contains("locked");if(locked){if(login){if(!login.getAttribute("src")){login.src=LOGIN_SRC;try{login.load()}catch(_){}}login.preload="auto";login.setAttribute("fetchpriority","high");login.muted=true;safePlay(login)}stopVideo(main)}else{stopVideo(login);if(main){main.preload="auto";main.setAttribute("fetchpriority","high");main.muted=true;safePlay(main)}}}function loadMini(frame){if(!frame||frame.getAttribute("src"))return;const src=frame.dataset.src;if(src)frame.src=src}const minis=[...document.querySelectorAll("iframe.miniVideo[data-src]")];if("IntersectionObserver"in window){const io=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){loadMini(entry.target);io.unobserve(entry.target)}})},{rootMargin:"180px 0px",threshold:.01});minis.forEach(f=>io.observe(f))}else{minis.slice(0,1).forEach(loadMini)}new MutationObserver(syncBackgrounds).observe(document.body,{attributes:true,attributeFilter:["class"]});document.addEventListener("visibilitychange",()=>{if(document.hidden){try{login&&login.pause()}catch(_){}try{main&&main.pause()}catch(_){}}else syncBackgrounds()});window.addEventListener("load",syncBackgrounds,{once:true});syncBackgrounds()})();</script>
 
-<script src="/assets/audio-video-maker.js" defer></script>
+
+
+<script id="sakaker-audio-video-lazy-loader">
+(function(){
+  "use strict";
+  let loading=false,loaded=false;
+  function loadTool(){
+    if(loaded||loading||document.body.classList.contains("locked")) return;
+    loading=true;
+    const sc=document.createElement("script");
+    sc.src="/assets/audio-video-maker.js";
+    sc.async=true;
+    sc.onload=function(){loaded=true;loading=false};
+    sc.onerror=function(){loading=false};
+    document.head.appendChild(sc);
+  }
+  document.addEventListener("click",function(e){
+    const t=e.target instanceof Element?e.target.closest("#sakMusicIcon"):null;
+    if(!t) return;
+    if(document.body.classList.contains("locked")) return;
+    loadTool();
+  },true);
+})();
+</script>
+
 </body>
 </html>
 
