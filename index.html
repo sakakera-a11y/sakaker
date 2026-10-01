@@ -4958,25 +4958,7 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
 
 <script>(function(){function updateModalState(){const anyOpen=document.querySelector('.modal.show, .modal.active, .modal[style*="display: flex"], .modal[style*="display:flex"]');document.body.classList.toggle("modal-open",!!anyOpen)}const observer=new MutationObserver(function(){updateModalState()});document.querySelectorAll(".modal").forEach(function(modal){observer.observe(modal,{attributes:true,attributeFilter:["style","class"]})});updateModalState();document.addEventListener("keydown",function(event){if(event.key!=="Escape"){return}const folder=document.getElementById("folderModal");const quiz=document.getElementById("quizModal");const puzzle=document.getElementById("puzzleModal");if(folder&&(folder.classList.contains("show")||folder.classList.contains("active")||folder.style.display==="flex")){if(typeof closeFolder==="function"){closeFolder()}return}if(quiz&&(quiz.classList.contains("show")||quiz.classList.contains("active")||quiz.style.display==="flex")){if(typeof closeQuiz==="function"){closeQuiz()}return}if(puzzle&&(puzzle.classList.contains("show")||puzzle.classList.contains("active")||puzzle.style.display==="flex")){if(typeof closePuzzle==="function"){closePuzzle()}}});document.querySelectorAll(".icon-card").forEach(function(card){card.addEventListener("keydown",function(event){if(event.key==="Enter"||event.key===" "){event.preventDefault();card.click()}})})})();</script>
 
-<div id="sakakerVisitorCounter" aria-label="عداد زوار موقع ساككر">
-  <div class="svc-item">
-    <span class="svc-icon">🟢</span>
-    <span class="svc-label" data-ar="المتواجدون الآن" data-en="Online Now">المتواجدون الآن</span>
-    <strong id="svcOnline">0</strong>
-  </div>
-  <div class="svc-sep"></div>
-  <div class="svc-item">
-    <span class="svc-icon">👁️</span>
-    <span class="svc-label" data-ar="إجمالي الزيارات" data-en="Total Visits">إجمالي الزيارات</span>
-    <strong id="svcTotal">0</strong>
-  </div>
-  <div class="svc-sep"></div>
-  <div class="svc-item">
-    <span class="svc-icon">📅</span>
-    <span class="svc-label" data-ar="زيارات اليوم" data-en="Today's Visits">زيارات اليوم</span>
-    <strong id="svcToday">0</strong>
-  </div>
-</div>
+
 
 <style>
 #sakakerVisitorCounter{
