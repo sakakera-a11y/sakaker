@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>SAKAKER Audio to Video Studio</title>
+<meta name="theme-color" content="#061a25">
+<style>
+:root{--c1:#071a27;--c2:#0d5262;--a:#6dffe9;--g:#ffe28a;--txt:#f5ffff;--mut:#bdd8dc}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Tajawal,Arial,sans-serif;color:var(--txt);background:radial-gradient(circle at 15% 10%,#123c50 0,#06111b 34%,#02070c 100%);padding:18px}
+.wrap{width:min(1180px,100%);margin:auto}.head{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px}.brand{font-weight:900;font-size:clamp(24px,4vw,42px);letter-spacing:.5px;text-shadow:0 0 18px #4df8e8}.brand small{display:block;font-size:12px;color:var(--mut);font-weight:700}.glass{background:linear-gradient(145deg,rgba(9,46,58,.78),rgba(3,18,28,.74));border:1px solid rgba(130,255,235,.34);border-radius:24px;box-shadow:0 14px 44px rgba(0,0,0,.35),inset 0 0 24px rgba(95,255,226,.05);backdrop-filter:blur(14px)}
+.grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(320px,.65fr);gap:16px}.preview{padding:14px}.stage{position:relative;aspect-ratio:16/9;border-radius:18px;overflow:hidden;background:#000;border:1px solid #57d8d0}.stage canvas{width:100%;height:100%;display:block}.watermark{position:absolute;left:18px;bottom:16px;font-weight:900;color:white;text-shadow:0 0 9px #00ffe0,0 2px 6px #000;font-size:clamp(18px,2.3vw,30px);pointer-events:none}.side{padding:16px}.side h2{margin:0 0 10px;font-size:20px}.control{margin:11px 0}.control label{display:block;margin-bottom:6px;color:#dffffa;font-weight:800}.control input,.control select{width:100%;padding:11px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);color:#fff}.control input[type=range]{padding:0}.row{display:flex;gap:8px;flex-wrap:wrap}.btn,a.btn{border:1px solid #bafff0;border-radius:13px;padding:11px 15px;background:linear-gradient(145deg,#0a7f77,#0ca28f);color:#fff;font-weight:900;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}.btn.alt{background:linear-gradient(145deg,#765c17,#b08517);border-color:#ffe99e}.btn.stop{background:linear-gradient(145deg,#7e2345,#a92e58);border-color:#ffc0d8}.btn:disabled{opacity:.45;cursor:not-allowed}.help{color:var(--mut);font-size:12px;line-height:1.7}.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;margin-top:10px}.thumb{aspect-ratio:16/10;border-radius:12px;overflow:hidden;border:1px solid #316d72;background:#07121a}.thumb img{width:100%;height:100%;object-fit:cover}.progress{height:10px;background:#ffffff18;border-radius:999px;overflow:hidden;margin-top:10px}.progress i{display:block;width:0;height:100%;background:linear-gradient(90deg,#54ffe2,#ffe78d)}#status{min-height:22px;margin-top:7px;color:#fff0a6;font-weight:800;font-size:13px}.topbtn{padding:9px 13px}.note{margin-top:14px;padding:12px 14px;font-size:12px;line-height:1.7;color:#d7f4f1}
+@media(max-width:860px){.grid{grid-template-columns:1fr}.side{order:2}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div class="brand">sakaker.co<small>Audio to Video Studio</small></div>
+    <div class="row"><button id="langBtn" class="btn topbtn">EN</button><a class="btn topbtn" href="/">العودة للموقع</a></div>
+  </div>
+  <div class="grid">
+    <section class="preview glass">
+      <div class="stage"><canvas id="canvas" width="1280" height="720"></canvas><div class="watermark">sakaker.co</div></div>
+      <div class="progress"><i id="bar"></i></div><div id="status">جاهز</div>
+      <div id="thumbs" class="thumbs"></div>
+    </section>
+    <aside class="side glass">
+      <h2 id="title">🎬 تحويل الصوت إلى فيديو</h2>
+      <div class="control"><label id="laudio">ملف الصوت</label><input id="audioFile" type="file" accept="audio/*,.mp3,.m4a,.aac,.wav,.ogg,.flac"></div>
+      <div class="control"><label id="limgs">الصور</label><input id="imageFiles" type="file" accept="image/*" multiple></div>
+      <div class="control"><label id="lmotion">الحركة السينمائية</label><select id="motion"><option value="cinematic">Cinematic</option><option value="slowzoom">Slow Zoom</option><option value="pan">Pan</option><option value="float">Floating</option></select></div>
+      <div class="control"><label id="ldur">مدة كل صورة عند تعدد الصور</label><input id="seconds" type="range" min="3" max="12" value="6"><div class="help"><span id="secondsValue">6</span>s</div></div>
+      <div class="row"><button id="previewBtn" class="btn">▶ معاينة</button><button id="exportBtn" class="btn alt">⬇ إنشاء الفيديو</button><button id="stopBtn" class="btn stop" disabled>■ إيقاف</button></div>
+      <p id="help" class="help">يتم العمل داخل جهازك. لا تُرفع ملفاتك إلى خادم الموقع.</p>
+      <div class="note">يدعم Chrome وEdge بصورة أفضل. يختار المتصفح MP4 إن كان تسجيله مدعومًا، وإلا يستخدم WebM.</div>
+    </aside>
+  </div>
+</div>
+<script>
+(()=>{'use strict';
+const C=document.getElementById('canvas'),X=C.getContext('2d',{alpha:false}),A=document.getElementById('audioFile'),I=document.getElementById('imageFiles'),M=document.getElementById('motion'),S=document.getElementById('seconds'),SV=document.getElementById('secondsValue'),B=document.getElementById('bar'),ST=document.getElementById('status'),P=document.getElementById('previewBtn'),E=document.getElementById('exportBtn'),STOP=document.getElementById('stopBtn'),TH=document.getElementById('thumbs');
+let imgs=[],audioBlob=null,active=null,recording=false,cancel=false,dlUrl='';let lang='ar';
+const T={ar:{title:'🎬 تحويل الصوت إلى فيديو',audio:'ملف الصوت',imgs:'الصور',motion:'الحركة السينمائية',dur:'مدة كل صورة عند تعدد الصور',preview:'▶ معاينة',export:'⬇ إنشاء الفيديو',stop:'■ إيقاف',ready:'جاهز',need:'اختر ملف صوت وصورة واحدة على الأقل',working:'جارٍ إنشاء الفيديو… أبقِ الصفحة مفتوحة',done:'تم تجهيز الفيديو',help:'يتم العمل داخل جهازك. لا تُرفع ملفاتك إلى خادم الموقع.',back:'العودة للموقع'},en:{title:'🎬 Audio to Video',audio:'Audio file',imgs:'Images',motion:'Cinematic motion',dur:'Seconds per image',preview:'▶ Preview',export:'⬇ Create video',stop:'■ Stop',ready:'Ready',need:'Choose an audio file and at least one image',working:'Creating video… keep this tab open',done:'Video ready',help:'Processing stays on your device. Files are not uploaded to the site.',back:'Back to site'}};
+function tr(){const t=T[lang];document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';title.textContent=t.title;laudio.textContent=t.audio;limgs.textContent=t.imgs;lmotion.textContent=t.motion;ldur.textContent=t.dur;P.textContent=t.preview;E.textContent=t.export;STOP.textContent=t.stop;help.textContent=t.help;langBtn.textContent=lang==='ar'?'EN':'عربي';document.querySelector('a[href="/"]').textContent=t.back;if(!recording)ST.textContent=t.ready}
+langBtn.onclick=()=>{lang=lang==='ar'?'en':'ar';tr()};S.oninput=()=>SV.textContent=S.value;
+function fit(img,t){const w=C.width,h=C.height,ir=img.width/img.height,cr=w/h;let sw,sh,sx,sy;if(ir>cr){sh=img.height;sw=sh*cr;sx=(img.width-sw)/2;sy=0}else{sw=img.width;sh=sw/cr;sx=0;sy=(img.height-sh)/2}let z=1,ox=0,oy=0;const mode=M.value;if(mode==='slowzoom'||mode==='cinematic')z=1+.11*t;if(mode==='pan'||mode==='cinematic')ox=(t-.5)*sw*.08;if(mode==='float')oy=Math.sin(t*Math.PI*2)*sh*.025;const zw=sw/z,zh=sh/z;X.drawImage(img,sx+(sw-zw)/2+ox,sy+(sh-zh)/2+oy,zw,zh,0,0,w,h);const g=X.createLinearGradient(0,0,0,h);g.addColorStop(0,'rgba(0,10,24,.05)');g.addColorStop(.72,'rgba(0,8,18,.08)');g.addColorStop(1,'rgba(0,0,10,.48)');X.fillStyle=g;X.fillRect(0,0,w,h);X.textAlign='center';X.shadowColor='rgba(50,255,230,.9)';X.shadowBlur=18;X.fillStyle='#fff';X.font='900 44px Arial';X.fillText('sakaker.co',w/2,h-42);X.shadowBlur=0}
+function drawStatic(){X.fillStyle='#02070d';X.fillRect(0,0,C.width,C.height);if(imgs[0])fit(imgs[0],0)}
+I.onchange=async()=>{imgs=[];TH.innerHTML='';for(const f of [...I.files]){const u=URL.createObjectURL(f);const img=new Image;img.src=u;await img.decode();imgs.push(img);const d=document.createElement('div');d.className='thumb';d.innerHTML='<img>';d.firstChild.src=u;TH.appendChild(d)}drawStatic()};A.onchange=()=>{audioBlob=A.files&&A.files[0]||null};
+function pickMime(){if(!window.MediaRecorder)return'';for(const m of ['video/mp4;codecs=avc1.42E01E,mp4a.40.2','video/mp4','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm']){try{if(MediaRecorder.isTypeSupported(m))return m}catch(_){}}return'video/webm'}
+async function run(exporting){const t=T[lang];if(!audioBlob||!imgs.length){ST.textContent=t.need;return}cancel=false;recording=true;P.disabled=true;E.disabled=true;STOP.disabled=false;ST.textContent=exporting?t.working:'Preview';B.style.width='0%';let au=new Audio(URL.createObjectURL(audioBlob)),ac=null,rec=null,tracks=[],raf=0;try{await new Promise((r,j)=>{au.onloadedmetadata=r;au.onerror=j});const duration=au.duration||1;ac=new (window.AudioContext||window.webkitAudioContext)();await ac.resume();const src=ac.createMediaElementSource(au),dest=ac.createMediaStreamDestination();src.connect(dest);src.connect(ac.destination);const vs=C.captureStream(30);tracks=[...vs.getVideoTracks(),...dest.stream.getAudioTracks()];let chunks=[];if(exporting){const mt=pickMime();rec=new MediaRecorder(new MediaStream(tracks),{mimeType:mt,videoBitsPerSecond:3500000});rec.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};rec.start(1000)}const paint=()=>{const p=Math.min(1,au.currentTime/duration),span=Number(S.value),idx=Math.min(imgs.length-1,Math.floor(au.currentTime/span)%imgs.length),local=(au.currentTime%span)/span;fit(imgs[idx],local);B.style.width=(p*100)+'%';if(!au.paused&&!au.ended&&!cancel)raf=requestAnimationFrame(paint)};await au.play();paint();await new Promise(r=>{au.onended=r;const q=setInterval(()=>{if(cancel){clearInterval(q);r()}},150)});cancelAnimationFrame(raf);au.pause();if(exporting&&rec&&rec.state!=='inactive'){const done=new Promise(r=>rec.onstop=r);rec.stop();await done;if(!cancel){if(dlUrl)URL.revokeObjectURL(dlUrl);const type=rec.mimeType||pickMime(),blob=new Blob(chunks,{type});dlUrl=URL.createObjectURL(blob);const a=document.createElement('a');a.href=dlUrl;a.download='sakaker-video.'+(type.includes('mp4')?'mp4':'webm');a.click();ST.textContent=t.done;B.style.width='100%'}}else if(!exporting&&!cancel){ST.textContent=t.ready}}
+catch(e){console.error(e);ST.textContent='Error'}finally{tracks.forEach(x=>{try{x.stop()}catch(_){}});try{ac&&await ac.close()}catch(_){}recording=false;P.disabled=false;E.disabled=false;STOP.disabled=true}}
+P.onclick=()=>run(false);E.onclick=()=>run(true);STOP.onclick=()=>{cancel=true};drawStatic();tr();
+})();
+</script>
+</body></html>
