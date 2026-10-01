@@ -15,115 +15,56 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Restore music source and add browser audio-to-video converter
+      - name: Keep existing media player and load converter
         shell: python
         run: |
           from pathlib import Path
           import re
 
           p = Path('index.html')
-          text = p.read_text(encoding='utf-8')
+          s = p.read_text(encoding='utf-8')
 
           music_url = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D9%81%D9%87%D8%AF%D8%A8%D9%86%20%D8%B3%D8%B9%D9%8A%D8%AF%20%D9%8A%D8%A7%D8%B5%D8%A7%D8%AD%D8%A8%D9%8A%20%D9%85%D8%A7%D8%AA%D8%AC%D9%8A%20%D8%A8%D8%A7%D9%84%D8%B2%D9%8A%D8%A7%D8%B1%D9%87%20%D8%A8%D8%AE%D9%8A%D9%84_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A0%D9%A4%D9%A1%D9%A3_%D9%A1%D9%A6%D9%A3%D9%A6%D9%A2%D9%A5.mp3'
-
-          # Keep the built-in music icon pointed at the restored file.
-          text, count = re.subn(
+          s, n = re.subn(
               r'const remote="https://raw\.githubusercontent\.com/sakakera-a11y/sakaker/main/[^\"]+\.mp3";',
               'const remote="' + music_url + '";',
-              text,
+              s,
               count=1
           )
-          print('music source replacements:', count)
+          print('restored music source refs:', n)
 
-          marker = 'sakaker-audio-to-video-upgrade-v1'
-          if marker not in text:
-              block = r'''
-<style id="sakaker-audio-to-video-upgrade-v1">
-#sakAudioVideoMaker{margin-top:14px;padding:14px;border:1px solid rgba(120,255,235,.55);border-radius:18px;background:rgba(1,22,30,.42);box-shadow:inset 0 0 18px rgba(64,255,228,.08);text-align:center}
-#sakAudioVideoMaker h3{margin:0 0 8px;color:#8dffe9;font:800 16px Tajawal,Tahoma,Arial,sans-serif}
-#sakAudioVideoMaker p{margin:6px 0 10px;color:#e8fffb;font:600 12px/1.65 Tajawal,Tahoma,Arial,sans-serif}
-#sakAudioVideoMaker input[type=file]{display:block;width:100%;margin:8px 0;padding:9px;border:1px solid rgba(255,255,255,.25);border-radius:12px;background:rgba(255,255,255,.07);color:#fff}
-#sakAudioVideoMaker .sak-av-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:8px}
-#sakAudioVideoMaker button,#sakAudioVideoMaker a{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:9px 13px;border:1px solid #b9fff2;border-radius:12px;background:linear-gradient(145deg,#08766e,#0ba28c);color:#fff;text-decoration:none;font:800 13px Tajawal,Tahoma,Arial,sans-serif;cursor:pointer}
-#sakAudioVideoMaker button:disabled{opacity:.45;cursor:not-allowed}
-#sakAudioVideoMaker .sak-av-cancel{background:#7d294a;border-color:#ffb7d1}
-#sakAudioVideoMaker .sak-av-download{background:#806315;border-color:#ffe597}
-#sakAvProgress{width:100%;height:8px;margin:10px 0 5px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.12)}
-#sakAvProgress>i{display:block;width:0%;height:100%;background:linear-gradient(90deg,#5df7e7,#ffe486);transition:width .2s linear}
-#sakAvStatus{min-height:20px;color:#fff4b8;font:700 12px Tajawal,Tahoma,Arial,sans-serif}
-</style>
-<script id="sakaker-audio-to-video-controller-v1">
-(function(){
-  'use strict';
-  const MUSIC_URL='https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D9%81%D9%87%D8%AF%D8%A8%D9%86%20%D8%B3%D8%B9%D9%8A%D8%AF%20%D9%8A%D8%A7%D8%B5%D8%A7%D8%AD%D8%A8%D9%8A%20%D9%85%D8%A7%D8%AA%D8%AC%D9%8A%20%D8%A8%D8%A7%D9%84%D8%B2%D9%8A%D8%A7%D8%B1%D9%87%20%D8%A8%D8%AE%D9%8A%D9%84_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A0%D9%A4%D9%A1%D9%A3_%D9%A1%D9%A6%D9%A3%D9%A2%D9%A5.mp3';
-  const COVER_URL='/%D8%B3%D9%81%D9%8A%D9%86%D8%A9%20%D8%A7%D9%84%D9%82%D9%85%D8%B1%20%D9%81%D9%88%D9%82%20%D8%A7%D9%84%D9%85%D8%AD%D9%8A%D8%B7%E0%B8%AD%E0%B8%B1%E0%B8%99%E0%B8%A7%E0%B9%88%E0%B8%B2%E0%B8%87%E0%B9%80%E0%B8%9B%E0%B8%A5%E0%B9%88%E0%B8%B2.png';
-  let selectedFile=null, cancelRequested=false, recording=false, downloadUrl='';
-
-  function isEn(){return document.documentElement.lang==='en'}
-  function words(){return isEn()?{
-    title:'🎬 Audio to video',desc:'Choose any audio file, or use the site song. The video uses the current site image and Sakaker name.',choose:'Choose audio file',convert:'Convert selected audio',siteSong:'Convert site song',cancel:'Cancel',working:'Creating video… keep this tab open.',ready:'Ready.',done:'Video ready to download.',noFile:'Choose an audio file first.',unsupported:'This browser cannot create video from Canvas/MediaRecorder.',failed:'Conversion failed.',download:'⬇ Download video'
-  }:{title:'🎬 تحويل الصوت إلى فيديو',desc:'اختر أي ملف صوتي، أو استخدم أغنية الموقع. يوضع الصوت على صورة الموقع الحالية مع اسم أبو القمر زمرد — sakaker.co.',choose:'اختر ملفًا صوتيًا',convert:'تحويل الصوت المختار',siteSong:'تحويل أغنية الموقع',cancel:'إلغاء',working:'جارٍ إنشاء الفيديو… أبقِ هذه الصفحة مفتوحة.',ready:'جاهز.',done:'تم تجهيز الفيديو للتنزيل.',noFile:'اختر ملفًا صوتيًا أولًا.',unsupported:'هذا المتصفح لا يدعم إنشاء الفيديو بهذه الطريقة.',failed:'تعذر إنشاء الفيديو.',download:'⬇ تنزيل الفيديو'})}
-  function status(msg){const el=document.getElementById('sakAvStatus');if(el)el.textContent=msg}
-  function setProgress(v){const bar=document.querySelector('#sakAvProgress>i');if(bar)bar.style.width=Math.max(0,Math.min(100,v))+'%'}
-  function setBusy(v){recording=v;document.querySelectorAll('#sakAudioVideoMaker button').forEach(b=>{if(!b.classList.contains('sak-av-cancel'))b.disabled=v});const c=document.querySelector('#sakAudioVideoMaker .sak-av-cancel');if(c)c.disabled=!v}
-  function bestMime(){if(!window.MediaRecorder)return'';const types=['video/mp4;codecs=avc1.42E01E,mp4a.40.2','video/mp4','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'];return types.find(t=>MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(t))||'video/webm'}
-  function waitEvent(el,name){return new Promise((resolve,reject)=>{const ok=()=>{cleanup();resolve()};const bad=()=>{cleanup();reject(new Error(name+' failed'))};const cleanup=()=>{el.removeEventListener(name,ok);el.removeEventListener('error',bad)};el.addEventListener(name,ok,{once:true});el.addEventListener('error',bad,{once:true})})}
-  async function getBlob(useSiteSong){
-    if(!useSiteSong){if(!selectedFile)throw new Error('NO_FILE');return selectedFile}
-    const res=await fetch(MUSIC_URL,{cache:'no-store'});if(!res.ok)throw new Error('MUSIC_HTTP_'+res.status);return await res.blob()
-  }
-  async function loadCover(){const img=new Image;img.decoding='async';img.src=COVER_URL;if(!img.complete)await waitEvent(img,'load');return img}
-  function drawCover(ctx,canvas,img,title,progress){
-    const W=canvas.width,H=canvas.height,ir=img.naturalWidth/img.naturalHeight,cr=W/H;let sx=0,sy=0,sw=img.naturalWidth,sh=img.naturalHeight;if(ir>cr){sw=img.naturalHeight*cr;sx=(img.naturalWidth-sw)/2}else{sh=img.naturalWidth/cr;sy=(img.naturalHeight-sh)/2}ctx.drawImage(img,sx,sy,sw,sh,0,0,W,H);const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'rgba(0,15,35,.08)');g.addColorStop(.7,'rgba(0,7,18,.14)');g.addColorStop(1,'rgba(0,0,10,.72)');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);ctx.textAlign='center';ctx.shadowColor='rgba(65,255,235,.9)';ctx.shadowBlur=18;ctx.fillStyle='#f4ffff';ctx.font='800 52px Tahoma, Arial, sans-serif';ctx.fillText('أبو القمر زمرد',W/2,H-105);ctx.shadowColor='rgba(255,220,110,.9)';ctx.shadowBlur=14;ctx.fillStyle='#ffe9a3';ctx.font='700 30px Arial, sans-serif';ctx.fillText('sakaker.co',W/2,H-60);if(title){ctx.shadowBlur=8;ctx.fillStyle='rgba(255,255,255,.94)';ctx.font='600 23px Tahoma,Arial,sans-serif';const cut=title.length>58?title.slice(0,55)+'…':title;ctx.fillText(cut,W/2,54)}ctx.shadowBlur=0;ctx.fillStyle='rgba(255,255,255,.18)';ctx.fillRect(100,H-25,W-200,7);ctx.fillStyle='#76ffe5';ctx.fillRect(100,H-25,(W-200)*progress,7)}
-  async function convert(useSiteSong){
-    if(recording)return;const w=words();if(!HTMLCanvasElement.prototype.captureStream||!window.MediaRecorder){status(w.unsupported);return}if(!useSiteSong&&!selectedFile){status(w.noFile);return}cancelRequested=false;setBusy(true);setProgress(0);status(w.working);if(downloadUrl){URL.revokeObjectURL(downloadUrl);downloadUrl=''}const dl=document.getElementById('sakAvDownload');if(dl){dl.hidden=true;dl.removeAttribute('href')}
-    let objectUrl='',audio=null,ctxAudio=null,raf=0,recorder=null;
-    try{
-      const [blob,img]=await Promise.all([getBlob(useSiteSong),loadCover()]);if(cancelRequested)throw new Error('CANCELLED');objectUrl=URL.createObjectURL(blob);audio=new Audio;audio.preload='auto';audio.src=objectUrl;audio.playsInline=true;await waitEvent(audio,'loadedmetadata');
-      const canvas=document.createElement('canvas');canvas.width=1280;canvas.height=720;const ctx=canvas.getContext('2d',{alpha:false});const canvasStream=canvas.captureStream(30);
-      ctxAudio=new (window.AudioContext||window.webkitAudioContext)();await ctxAudio.resume();const src=ctxAudio.createMediaElementSource(audio);const dest=ctxAudio.createMediaStreamDestination();src.connect(dest);src.connect(ctxAudio.destination);
-      const tracks=[...canvasStream.getVideoTracks(),...dest.stream.getAudioTracks()];const combined=new MediaStream(tracks);const mime=bestMime();const chunks=[];recorder=new MediaRecorder(combined,mime?{mimeType:mime,videoBitsPerSecond:3500000}:undefined);recorder.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
-      const title=useSiteSong?'فهد بن سعيد — يا صاحبي ما تجي بالزيارة بخيل':(selectedFile?.name||'SAKAKER Audio');
-      const render=()=>{if(!audio)return;const p=audio.duration?audio.currentTime/audio.duration:0;drawCover(ctx,canvas,img,title,p);setProgress(p*100);if(!audio.paused&&!audio.ended&&!cancelRequested)raf=requestAnimationFrame(render)};drawCover(ctx,canvas,img,title,0);
-      const stopped=new Promise(resolve=>recorder.addEventListener('stop',resolve,{once:true}));recorder.start(1000);await audio.play();render();await new Promise(resolve=>{audio.addEventListener('ended',resolve,{once:true});const timer=setInterval(()=>{if(cancelRequested){clearInterval(timer);resolve()}},200)});cancelAnimationFrame(raf);try{audio.pause()}catch(_){}if(recorder.state!=='inactive')recorder.stop();await stopped;tracks.forEach(t=>t.stop());if(cancelRequested)throw new Error('CANCELLED');const outType=recorder.mimeType||mime||'video/webm';const outBlob=new Blob(chunks,{type:outType});downloadUrl=URL.createObjectURL(outBlob);const ext=outType.includes('mp4')?'mp4':'webm';if(dl){dl.href=downloadUrl;dl.download='sakaker-audio-video.'+ext;dl.textContent=w.download+' ('+ext.toUpperCase()+')';dl.hidden=false}setProgress(100);status(w.done)
-    }catch(err){if(String(err&&err.message)==='CANCELLED'){status(w.ready);setProgress(0)}else{console.error('SAKAKER audio-video:',err);status(err&&err.message==='NO_FILE'?w.noFile:w.failed)}}finally{try{if(audio)audio.pause()}catch(_){}try{if(ctxAudio)await ctxAudio.close()}catch(_){}if(objectUrl)URL.revokeObjectURL(objectUrl);setBusy(false)}
-  }
-  function mount(){const box=document.querySelector('#sakMusicPlayer .sak-music-box');if(!box||document.getElementById('sakAudioVideoMaker'))return;const w=words();const panel=document.createElement('section');panel.id='sakAudioVideoMaker';panel.innerHTML='<h3></h3><p></p><input id="sakAvFile" type="file" accept="audio/*,.mp3,.m4a,.aac,.wav,.ogg,.oga,.flac"><div class="sak-av-actions"><button type="button" id="sakAvConvertFile"></button><button type="button" id="sakAvConvertSite"></button><button type="button" class="sak-av-cancel" id="sakAvCancel" disabled></button></div><div id="sakAvProgress"><i></i></div><div id="sakAvStatus" role="status" aria-live="polite"></div><a id="sakAvDownload" class="sak-av-download" hidden></a>';box.appendChild(panel);const file=document.getElementById('sakAvFile');file.addEventListener('change',()=>{selectedFile=file.files&&file.files[0]||null;status(selectedFile?selectedFile.name:w.ready)});document.getElementById('sakAvConvertFile').onclick=()=>convert(false);document.getElementById('sakAvConvertSite').onclick=()=>convert(true);document.getElementById('sakAvCancel').onclick=()=>{cancelRequested=true};paint()}
-  function paint(){const panel=document.getElementById('sakAudioVideoMaker');if(!panel)return;const w=words();panel.querySelector('h3').textContent=w.title;panel.querySelector('p').textContent=w.desc;const file=panel.querySelector('#sakAvFile');file.setAttribute('aria-label',w.choose);panel.querySelector('#sakAvConvertFile').textContent=w.convert;panel.querySelector('#sakAvConvertSite').textContent=w.siteSong;panel.querySelector('#sakAvCancel').textContent=w.cancel;if(!recording&&!selectedFile)status(w.ready);const dl=panel.querySelector('#sakAvDownload');if(dl&&!dl.hidden)dl.textContent=w.download}
-  const mo=new MutationObserver(()=>{mount()});mo.observe(document.body,{childList:true,subtree:true});new MutationObserver(paint).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();[300,900,1800].forEach(ms=>setTimeout(mount,ms));
-})();
-</script>
-'''
-              pos = text.lower().rfind('</body>')
+          tag = '<script src="/assets/audio-video-maker.js" defer></script>'
+          if tag not in s:
+              pos = s.lower().rfind('</body>')
               if pos >= 0:
-                  text = text[:pos] + block + '\n' + text[pos:]
+                  s = s[:pos] + '\n' + tag + '\n' + s[pos:]
               else:
-                  text += block
+                  s += '\n' + tag + '\n'
 
-          p.write_text(text, encoding='utf-8')
+          p.write_text(s, encoding='utf-8')
 
-      - name: Verify music and converter markers
+      - name: Verify old player and new converter coexist
         shell: python
         run: |
           from pathlib import Path
           s = Path('index.html').read_text(encoding='utf-8')
-          assert 'فهدبن%20%D8%B3%D8%B9%D9%8A%D8%AF' not in s or True
-          assert 'sakaker-audio-to-video-upgrade-v1' in s
-          assert 'sakaker-audio-to-video-controller-v1' in s
-          assert 'sakAvConvertFile' in s
-          assert 'sakAvConvertSite' in s
-          assert 'gemini_generated_video_be58b3bc.mp4' in s
-          assert 'sakaker-static-main-background-final' in s
-          print('MUSIC_VIDEO_UPGRADE_VERIFY_OK', len(s.encode('utf-8')))
+          assert 'sakMusicPlayer' in s
+          assert 'sakNativeAudio' in s
+          assert 'sakNativeVideo' in s
+          assert 'sakMediaPlay' in s
+          assert 'sakMediaPause' in s
+          assert '/assets/audio-video-maker.js' in s
+          assert 'فهدبن%20' in s or '%D9%81%D9%87%D8%AF%D8%A8%D9%86' in s
+          print('MEDIA_AND_CONVERTER_VERIFY_OK')
 
       - name: Commit update
         run: |
           if git diff --quiet -- index.html; then
-            echo "No index change"
+            echo "No index changes needed"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git commit -m "Restore site song and add audio-to-video maker"
+          git commit -m "Keep media player and add audio video converter"
           git push
