@@ -1,10 +1,11 @@
-/* Final trio: preserve original Business icon; Maps and Audio copy its shape */
+/* Final trio: original Business + silver Maps + dark Audio, positioned below gull row */
 html body #sakFinalTrioDock#sakFinalTrioDock#sakFinalTrioDock{
   position:fixed!important;
-  right:42px!important;
-  left:auto!important;
-  bottom:136px!important;
+  left:50%!important;
+  right:auto!important;
   top:auto!important;
+  bottom:118px!important;
+  transform:translateX(-50%)!important;
   display:flex!important;
   flex-direction:row!important;
   align-items:flex-end!important;
@@ -23,6 +24,14 @@ html body #sakFinalTrioDock#sakFinalTrioDock#sakFinalTrioDock{
   box-shadow:none!important;
 }
 
+html body #sakFinalTrioDock.sak-under-gulls{
+  left:var(--sak-trio-left)!important;
+  top:var(--sak-trio-top)!important;
+  right:auto!important;
+  bottom:auto!important;
+  transform:translateX(-50%)!important;
+}
+
 html body #sakFinalTrioDock > #sakakerBusinessIcon,
 html body #sakFinalTrioDock > .sak-business-copy{
   pointer-events:auto!important;
@@ -32,7 +41,6 @@ html body #sakFinalTrioDock > .sak-business-copy{
   flex:0 0 auto!important;
 }
 
-/* Copies of the actual Sakaker Business visual */
 html body #sakFinalTrioDock .sak-business-copy{
   width:82px!important;
   height:92px!important;
@@ -56,7 +64,6 @@ html body #sakFinalTrioDock .sak-business-copy{
   cursor:pointer!important;
 }
 
-/* Hide every old visual layer from map/audio, keep only cloned business shape + label. */
 html body #sakFinalTrioDock .sak-business-copy > :not(.sak-business-shape):not(.sak-final-label){
   display:none!important;
   visibility:hidden!important;
@@ -87,12 +94,10 @@ html body #sakFinalTrioDock .sak-business-shape > *{
   pointer-events:none!important;
 }
 
-/* Maps: same shape, silver */
 html body #sakFinalTrioDock .sak-copy-silver .sak-business-shape{
   filter:grayscale(1) brightness(1.85) contrast(.88) drop-shadow(0 0 5px #fff) drop-shadow(0 0 14px #dcefff) drop-shadow(0 0 26px #8fcfff)!important;
 }
 
-/* Audio to Video: same shape, dark/black */
 html body #sakFinalTrioDock .sak-copy-dark .sak-business-shape{
   filter:grayscale(1) brightness(.48) contrast(1.7) drop-shadow(0 0 5px #fff) drop-shadow(0 0 13px #72829a) drop-shadow(0 0 25px #121820)!important;
 }
@@ -121,14 +126,11 @@ html body #sakFinalTrioDock .sak-business-copy:hover .sak-business-shape{
   transform:translateY(-3px) scale(1.08)!important;
 }
 
-/* Remove the large extra star completely. */
 html body .sak-text-star-art{display:none!important;visibility:hidden!important;opacity:0!important}
 html body .sak-text-library-gold-star{background:initial!important;box-shadow:initial!important}
 
 @media(max-width:700px){
   html body #sakFinalTrioDock#sakFinalTrioDock#sakFinalTrioDock{
-    right:14px!important;
-    bottom:124px!important;
     gap:8px!important;
     padding:4px!important;
   }
