@@ -62,8 +62,14 @@ function ensureOstrich(el,kind){
 }
 function labelFor(el,text){let lab=el.querySelector(':scope > .sak-final-label');if(!lab){lab=document.createElement('span');lab.className='sak-final-label';el.appendChild(lab)}lab.textContent=text}
 function styleBase(el){
-  ['position','inset','left','right','top','bottom','margin','overflow','pointer-events','z-index'].forEach(()=>{});
-  el.style.setProperty('position','relative','important');el.style.setProperty('inset','auto','important');el.style.setProperty('left','auto','important');el.style.setProperty('right','auto','important');el.style.setProperty('top','auto','important');el.style.setProperty('bottom','auto','important');el.style.setProperty('margin','0','important');el.style.setProperty('width','82px','important');el.style.setProperty('height','96px','important');el.style.setProperty('min-width','82px','important');el.style.setProperty('min-height','96px','important');el.style.setProperty('max-width','82px','important');el.style.setProperty('max-height','96px','important');el.style.setProperty('overflow','visible','important');el.style.setProperty('pointer-events','auto','important');el.style.setProperty('z-index','2','important');
+  el.classList.remove('sak-final-star','sak-final-moon','sak-final-sun','sak-music-icon-face','sak-music-icon-label');
+  const reset={
+    position:'relative',inset:'auto',left:'auto',right:'auto',top:'auto',bottom:'auto',margin:'0',
+    width:'72px',height:'86px','min-width':'72px','min-height':'86px','max-width':'72px','max-height':'86px',
+    overflow:'visible','pointer-events':'auto','z-index':'2',background:'transparent','background-image':'none',
+    'border-radius':'0',border:'0','box-shadow':'none','clip-path':'none',filter:'none',padding:'0'
+  };
+  for(const [p,v] of Object.entries(reset))el.style.setProperty(p,v,'important');
 }
 function decorateTextLibrary(){
   const el=findTextLibrary();if(!el)return;
