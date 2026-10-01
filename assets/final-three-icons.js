@@ -15,22 +15,14 @@ function findTextLibrary(){
     return /المكتبة\s*النصية|Text\s*Library/i.test(s);
   })||null;
 }
-function keepTextLibraryStar(){
+function removeEmptyTextLibrary(){
   const el=findTextLibrary();
-  if(!el)return;
-  el.classList.add('sak-text-library-gold-star');
-  let star=el.querySelector(':scope > .sak-text-star-art');
-  if(!star){
-    star=document.createElement('span');
-    star.className='sak-text-star-art';
-    star.textContent='★';
-    el.prepend(star);
-  }
+  if(el)el.remove();
 }
 function run(){
   removeVisitorCounters();
-  keepTextLibraryStar();
+  removeEmptyTextLibrary();
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
-new MutationObserver(keepTextLibraryStar).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+new MutationObserver(removeEmptyTextLibrary).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 })();
