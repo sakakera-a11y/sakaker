@@ -171,8 +171,8 @@ html body #sakFinalTrioDock#sakFinalTrioDock .sak-final-ostrich:hover .sak-ostri
     bottom:-8px!important;
   }
 
-  /* Keep payment clear of the bottom icon row on phones. */
+  /* Place payment near mid-screen, slightly below center on phones. */
   html body #paymentSideBtn{
-    bottom:25vh!important;
+    bottom:44vh!important;
   }
 }
