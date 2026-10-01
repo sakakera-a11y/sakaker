@@ -11,7 +11,12 @@ function findMap(){
 }
 function ensureDock(){
   if(!dock)dock=$('sakFinalTrioDock');
-  if(!dock){dock=document.createElement('nav');dock.id='sakFinalTrioDock';dock.setAttribute('aria-label','سكاكر بزنس والخرائط وتحويل الصوت');document.body.appendChild(dock)}
+  if(!dock){
+    dock=document.createElement('nav');
+    dock.id='sakFinalTrioDock';
+    dock.setAttribute('aria-label','سكاكر بزنس والخرائط وتحويل الصوت');
+    document.body.appendChild(dock);
+  }
   return dock;
 }
 function removeGenerated(el){
@@ -45,12 +50,57 @@ function copyBusinessShape(el,business,tone){
   el.classList.add('sak-business-copy',tone==='silver'?'sak-copy-silver':'sak-copy-dark');
   const host=document.createElement('span');host.className='sak-business-shape';
   const shape=businessShape(business);
-  if(shape)host.appendChild(shape);else host.textContent='★';
+  if(shape)host.appendChild(shape);else host.textContent='◆';
   el.prepend(host);
 }
 function removeExtraStar(){
   document.querySelectorAll('.sak-text-star-art').forEach(n=>n.remove());
   document.querySelectorAll('.sak-text-library-gold-star').forEach(el=>el.classList.remove('sak-text-library-gold-star'));
+  [...document.querySelectorAll('body *')].forEach(el=>{
+    if(el.closest('#sakFinalTrioDock,.sak-shore-gull,#sakakerBusinessIcon'))return;
+    const t=(el.textContent||'').trim();
+    if(!/^(?:★|⭐|✦)$/.test(t))return;
+    if(el.matches('button,a,input,[role="button"]')||el.closest('button,a,[role="button"]'))return;
+    if(el.querySelector('button,a,input,video,iframe,img,canvas,svg'))return;
+    const cs=getComputedStyle(el);
+    if(cs.position==='fixed'||cs.position==='absolute')el.remove();
+  });
+}
+function removeEmptyGreenBoxes(){
+  [...document.body.children].forEach(el=>{
+    if(el.id==='sakFinalTrioDock'||el.id==='loginOverlay'||el.id==='sakakerAllIconsDock')return;
+    if((el.textContent||'').trim())return;
+    if(el.querySelector('button,a,input,textarea,select,video,audio,iframe,img,canvas,svg'))return;
+    const r=el.getBoundingClientRect();
+    if(r.width<18||r.height<18||r.width>180||r.height>180)return;
+    const cs=getComputedStyle(el);
+    if(cs.position!=='fixed'&&cs.position!=='absolute')return;
+    const m=cs.backgroundColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
+    if(!m)return;
+    const rr=+m[1],gg=+m[2],bb=+m[3];
+    const greenish=gg>90&&gg>rr*1.25&&gg>bb*1.08;
+    if(greenish)el.remove();
+  });
+}
+function placeBelowGulls(){
+  const d=ensureDock();
+  const gulls=[...document.querySelectorAll('.sak-shore-gull')].filter(el=>{
+    const r=el.getBoundingClientRect(),cs=getComputedStyle(el);
+    return cs.display!=='none'&&cs.visibility!=='hidden'&&r.width>8&&r.height>8;
+  });
+  if(!gulls.length){
+    d.classList.remove('sak-under-gulls');
+    return;
+  }
+  const rects=gulls.map(el=>el.getBoundingClientRect());
+  const left=Math.min(...rects.map(r=>r.left));
+  const right=Math.max(...rects.map(r=>r.right));
+  const bottom=Math.max(...rects.map(r=>r.bottom));
+  const center=Math.max(110,Math.min(innerWidth-110,(left+right)/2));
+  const top=Math.min(innerHeight-92,bottom+8);
+  d.classList.add('sak-under-gulls');
+  d.style.setProperty('--sak-trio-left',`${center}px`);
+  d.style.setProperty('--sak-trio-top',`${top}px`);
 }
 function decorate(){
   if(document.body.classList.contains('locked'))return false;
@@ -67,10 +117,14 @@ function decorate(){
   business.title=en?'Open Sakaker Business':'فتح سكاكر بزنس';business.setAttribute('aria-label',business.title);
   const d=ensureDock();d.replaceChildren(business,map,music);
   removeExtraStar();
+  removeEmptyGreenBoxes();
+  requestAnimationFrame(placeBelowGulls);
   return true;
 }
 function run(){decorate()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
 [250,700,1500,3000,6000].forEach(ms=>setTimeout(run,ms));
+addEventListener('resize',()=>requestAnimationFrame(placeBelowGulls),{passive:true});
+addEventListener('orientationchange',()=>setTimeout(placeBelowGulls,180),{passive:true});
 new MutationObserver(()=>{if(!document.body.classList.contains('locked'))decorate()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 })();
