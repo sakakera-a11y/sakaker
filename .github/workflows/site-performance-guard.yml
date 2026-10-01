@@ -1,0 +1,159 @@
+name: Sakaker Site Performance Guard
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 2 * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'assets/**'
+      - 'videos.html'
+      - 'books.html'
+      - 'live.html'
+      - 'pong.html'
+      - '.github/workflows/site-performance-guard.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-performance-guard-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  asset-budget:
+    name: Asset size budget
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Report large files and page weight
+        shell: python
+        run: |
+          from pathlib import Path
+          import os
+
+          root = Path('.')
+          files = []
+          for p in root.rglob('*'):
+              if not p.is_file() or '.git' in p.parts:
+                  continue
+              try:
+                  size = p.stat().st_size
+              except OSError:
+                  continue
+              files.append((size, str(p)))
+
+          files.sort(reverse=True)
+          print('Largest repository files:')
+          for size, path in files[:30]:
+              print(f'{size/1024/1024:8.2f} MB  {path}')
+
+          index = Path('index.html')
+          if index.exists():
+              size = index.stat().st_size
+              print(f'\nindex.html: {size/1024:.1f} KB')
+              if size > 2_000_000:
+                  raise SystemExit('index.html exceeded the 2 MB safety budget')
+
+          media_total = sum(size for size, path in files if path.lower().endswith(('.mp4','.webm','.mp3','.png','.jpg','.jpeg','.webp','.gif')))
+          print(f'Total media in repository: {media_total/1024/1024:.2f} MB')
+
+          large = [(s,p) for s,p in files if s > 15_000_000]
+          if large:
+              print('\nWarning: files above 15 MB:')
+              for s,p in large:
+                  print(f'{s/1024/1024:.2f} MB  {p}')
+
+  live-domain-health:
+    name: Live domain health
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check HTTPS, redirects and response timing
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo '=== HTTPS headers ==='
+          curl --fail --silent --show-error --location --max-time 25 \
+            --output /tmp/sakaker-home.html \
+            --write-out 'HTTP %{http_code}\nDNS %{time_namelookup}s\nConnect %{time_connect}s\nTLS %{time_appconnect}s\nTTFB %{time_starttransfer}s\nTotal %{time_total}s\nDownloaded %{size_download} bytes\nFinal %{url_effective}\n' \
+            https://sakaker.co/
+
+          test -s /tmp/sakaker-home.html
+          grep -qi '<html\|<!doctype' /tmp/sakaker-home.html
+
+          echo '=== HTTP redirect ==='
+          curl --silent --show-error --head --max-time 20 http://sakaker.co/ | head -n 12
+
+      - name: Check key public files
+        shell: bash
+        run: |
+          set -euo pipefail
+          for url in \
+            'https://sakaker.co/' \
+            'https://sakaker.co/robots.txt' \
+            'https://sakaker.co/sitemap.xml' \
+            'https://sakaker.co/CNAME'; do
+            code=$(curl -L -s -o /dev/null -w '%{http_code}' --max-time 20 "$url")
+            echo "$code  $url"
+            if [ "$url" = 'https://sakaker.co/' ] && [ "$code" != '200' ]; then
+              exit 1
+            fi
+          done
+
+  lighthouse-live:
+    name: Lighthouse live domain
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Lighthouse
+        run: npm install --global lighthouse@12
+
+      - name: Audit live site
+        shell: bash
+        run: |
+          mkdir -p lighthouse-live
+          lighthouse https://sakaker.co/ \
+            --chrome-flags='--headless --no-sandbox --disable-dev-shm-usage' \
+            --output=json \
+            --output=html \
+            --output-path=./lighthouse-live/report \
+            --only-categories=performance,accessibility,best-practices,seo \
+            --quiet || true
+
+          node <<'NODE'
+          const fs = require('fs');
+          const path = './lighthouse-live/report.report.json';
+          if (!fs.existsSync(path)) {
+            console.log('Lighthouse JSON report was not produced.');
+            process.exit(0);
+          }
+          const r = JSON.parse(fs.readFileSync(path, 'utf8'));
+          for (const k of ['performance','accessibility','best-practices','seo']) {
+            const s = r.categories?.[k]?.score;
+            console.log(`${k}: ${s == null ? 'n/a' : Math.round(s*100)}`);
+          }
+          const a = r.audits || {};
+          for (const id of ['first-contentful-paint','largest-contentful-paint','speed-index','total-blocking-time','cumulative-layout-shift']) {
+            if (a[id]) console.log(`${id}: ${a[id].displayValue || a[id].numericValue}`);
+          }
+          NODE
+
+      - name: Save Lighthouse live report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-live-report
+          path: lighthouse-live
+          if-no-files-found: ignore
+          retention-days: 7
