@@ -2,7 +2,15 @@
 const $=id=>document.getElementById(id);
 let dock=null;
 const NS='http://www.w3.org/2000/svg';
-function findMap(){return document.querySelector('.launcher:not(#sakMusicIcon)')}
+function findMap(){
+  const nodes=[...document.querySelectorAll('.launcher,[title],[aria-label]')];
+  const exact=nodes.find(el=>{
+    if(el.id==='sakMusicIcon'||el.id==='sakakerBusinessIcon'||el.closest('#sakTextLibraryModal'))return false;
+    const s=((el.getAttribute('title')||'')+' '+(el.getAttribute('aria-label')||'')+' '+(el.textContent||'')).replace(/\s+/g,' ').trim();
+    return /(^|\s)(الخرائط|خرائط|الخريطة|Map|Maps)(\s|$)/i.test(s);
+  });
+  return exact||document.querySelector('.launcher:not(#sakMusicIcon):not(#sakakerBusinessIcon)');
+}
 function findMusic(){return $('sakMusicIcon')}
 function findBusiness(){return $('sakakerBusinessIcon')}
 function findTextLibrary(){
@@ -60,6 +68,12 @@ function ensureOstrich(el,kind){
   if(!host){host=document.createElement('span');host.className='sak-ostrich-art';el.prepend(host)}
   if(host.dataset.kind!==kind){host.replaceChildren(ostrichSVG(kind));host.dataset.kind=kind}
 }
+function hideLegacyMapVisuals(el){
+  [...el.children].forEach(ch=>{
+    if(ch.classList.contains('sak-ostrich-art')||ch.classList.contains('sak-final-label'))return;
+    ch.style.setProperty('display','none','important');
+  });
+}
 function labelFor(el,text){let lab=el.querySelector(':scope > .sak-final-label');if(!lab){lab=document.createElement('span');lab.className='sak-final-label';el.appendChild(lab)}lab.textContent=text}
 function styleBase(el){
   el.classList.remove('sak-final-star','sak-final-moon','sak-final-sun','sak-music-icon-face','sak-music-icon-label');
@@ -88,6 +102,7 @@ function decorate(){
   const en=document.documentElement.lang==='en';
   ensureOstrich(business,'business');ensureOstrich(map,'map');ensureOstrich(music,'music');
   labelFor(business,en?'Sakaker Business':'سكاكر بزنس');labelFor(map,en?'Maps':'خرائط');labelFor(music,en?'Audio to Video':'تحويل الصوت لفيديو');
+  hideLegacyMapVisuals(map);
   const core=business.querySelector('.sbIconCore');if(core)core.style.setProperty('display','none','important');
   [...business.querySelectorAll(':scope > .sak-final-symbol'),...map.querySelectorAll(':scope > .sak-final-symbol'),...music.querySelectorAll(':scope > .sak-final-symbol')].forEach(n=>n.remove());
   map.title=en?'Maps':'الخرائط';map.setAttribute('aria-label',map.title);music.title=en?'Audio to Video':'تحويل الصوت لفيديو';music.setAttribute('aria-label',music.title);business.title=en?'Open Sakaker Business':'فتح سكاكر بزنس';business.setAttribute('aria-label',business.title);
