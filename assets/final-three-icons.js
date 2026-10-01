@@ -1,4 +1,11 @@
 (()=>{'use strict';
+if(!document.querySelector('script[data-sakaker-login-rescue]')){
+  const rescue=document.createElement('script');
+  rescue.src='/assets/login-rescue.js';
+  rescue.dataset.sakakerLoginRescue='1';
+  rescue.async=true;
+  (document.head||document.documentElement).appendChild(rescue);
+}
 const $=id=>document.getElementById(id);
 let dock=null;
 const NS='http://www.w3.org/2000/svg';
