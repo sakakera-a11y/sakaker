@@ -5,7 +5,7 @@
 
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>موسوعة ابوالقمرزمرد | abwalqmrzmrd encylopedia</title>
+<title>abwalqmrzmrd encylopedia</title>
 <style>
 body.locked > *:not(#loginOverlay){
     visibility:hidden !important;
@@ -21958,7 +21958,7 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock .sak-shor
 html body #sakakerAllIconsDock{grid-auto-rows:62px!important;padding-bottom:14px!important}
 @media(max-width:700px){html body #sakakerAllIconsDock{grid-auto-rows:58px!important;row-gap:6px!important}html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock .sak-shore-gull::after{font-size:8px!important;width:49px!important}}
 </style>
-<script id="sak-shore-gulls-js">(()=>{"use strict";const labels={facebookVideoIcon:["فيس بوك","Facebook"],liveFlasher:["بث مباشر","Live"],emeraldLibraryButton:["مكتبة الفيديو","Videos"],"pongGame-btn":["بونج","Pong"],shipIcon_new:["السفينة","Ship"],emOpenBtn:["استوديو الموسيقى","Music Studio"]};function apply(){const dock=document.getElementById("sakakerAllIconsDock");if(!dock)return;const en=document.documentElement.lang==="en";dock.querySelectorAll(".icon-card,#facebookVideoIcon,#liveFlasher,#emeraldLibraryButton,#pongGame-btn,#shipIcon_new,#emOpenBtn").forEach(el=>{if(el.id==="sakNotebookCard")return;el.classList.add("sak-shore-gull");const pair=labels[el.id];const label=pair?pair[en?1:0]:el.matches(".launcher")?en?"Maps":"خرائط":el.querySelector(".icon-label")?.textContent.trim()||el.getAttribute("aria-label")||"";if(el.dataset.gullLabel!==label)el.dataset.gullLabel=label})}apply();[500,1600,4e3,7e3].forEach(ms=>setTimeout(apply,ms));new MutationObserver(apply).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]})})();</script>
+<script id="sak-shore-gulls-js">(()=>{"use strict";const labels={facebookVideoIcon:["فيس بوك","Facebook"],liveFlasher:["بث مباشر","Live"],emeraldLibraryButton:["مكتبة الفيديو","Videos"],"pongGame-btn":["بونج","Pong"],shipIcon_new:["السفينة","Ship"],emOpenBtn:["استوديو الموسيقى","Music Studio"]};function apply(){const dock=document.getElementById("sakakerAllIconsDock");if(!dock)return;const en=document.documentElement.lang==="en";dock.querySelectorAll(".icon-card,#facebookVideoIcon,#liveFlasher,#emeraldLibraryButton,#pongGame-btn,#shipIcon_new,#emOpenBtn").forEach(el=>{if(el.id==="sakNotebookCard"||el.classList.contains("sak-text-library-card"))return;el.classList.add("sak-shore-gull");const pair=labels[el.id];const label=pair?pair[en?1:0]:el.matches(".launcher")?en?"Maps":"خرائط":el.querySelector(".icon-label")?.textContent.trim()||el.getAttribute("aria-label")||"";if(el.dataset.gullLabel!==label)el.dataset.gullLabel=label})}apply();[500,1600,4e3,7e3].forEach(ms=>setTimeout(apply,ms));new MutationObserver(apply).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]})})();</script>
 <style id="sakaker-gulls-stars-final">
 html body #sakakerAllIconsDock .sak-shore-gull{width:58px!important;height:58px!important;min-width:58px!important;min-height:58px!important;max-width:58px!important;max-height:58px!important}
 html body #sakUtilityRow :is(.launcher,#sakMusicIcon,#emeraldMusicHost #emOpenBtn,#sakakerBusinessIcon){clip-path:polygon(50% 0%,61.5% 35.2%,98% 35.2%,68.2% 56.8%,79.4% 91%,50% 70%,20.6% 91%,31.8% 56.8%,2% 35.2%,38.5% 35.2%)!important;background:radial-gradient(circle at 34% 25%,#eafffa 0 5%,#6cffdd 12%,#08b993 38%,#006b5f 68%,#00352f 100%)!important;border-radius:0!important;border:0!important}
@@ -22425,21 +22425,6 @@ html body .video-top-container-fixed.video-top-container-fixed.video-top-contain
 html body #sakSecondStreamCorner#sakSecondStreamCorner#sakSecondStreamCorner.sak-preview-collapsed > :not(.sak-preview-toggle){visibility:hidden!important;opacity:0!important;pointer-events:none!important}
 </style>
 <script id="sak-preview-visibility-controls-js">(()=>{const entries=[];const en=()=>document.documentElement.lang==="en";function label(entry){const hidden=entry.host.classList.contains("sak-preview-collapsed");entry.button.textContent=hidden?"+":"×";entry.button.title=hidden?en()?"Show video preview":"إظهار معاينة الفيديو":en()?"Hide video preview":"إخفاء معاينة الفيديو";entry.button.setAttribute("aria-label",entry.button.title);entry.button.setAttribute("aria-expanded",String(!hidden))}function setHidden(entry,hidden){entry.host.classList.toggle("sak-preview-collapsed",hidden);entry.frame.inert=hidden;if(hidden)entry.frame.setAttribute("aria-hidden","true");else entry.frame.removeAttribute("aria-hidden");entry.host.querySelectorAll("video").forEach(video=>{if(hidden)video.pause();else if(video.autoplay){video.muted=true;video.play().catch(()=>{})}});entry.host.querySelectorAll("iframe").forEach(frame=>{if(hidden){if(!entry.sources.has(frame))entry.sources.set(frame,frame.getAttribute("src"));frame.removeAttribute("src")}else if(entry.sources.has(frame)){const src=entry.sources.get(frame);if(src)frame.setAttribute("src",src);entry.sources.delete(frame)}});label(entry)}document.querySelectorAll(".video-top-container-fixed,#sakSecondStreamCorner").forEach((host,index)=>{const frame=host.querySelector(".video-circle,#sakSecondStreamCircleSecure,#sakSecondStreamCircle");if(!frame)return;if(!frame.id)frame.id="sakPreviewVisibilityFrame"+index;const button=document.createElement("button");button.type="button";button.className="sak-preview-toggle";button.setAttribute("aria-controls",frame.id);host.append(button);const entry={host:host,frame:frame,button:button,sources:new Map};entries.push(entry);label(entry);host.querySelectorAll("video").forEach(video=>video.addEventListener("play",()=>{if(host.classList.contains("sak-preview-collapsed"))video.pause()}))});function intercept(event){if(!(event.target instanceof Element))return;const entry=entries.find(item=>item.host.contains(event.target));if(!entry)return;const button=event.target.closest(".sak-preview-toggle");if(button){if(event.type==="keydown"&&!["Enter"," "].includes(event.key))return;event.preventDefault();event.stopImmediatePropagation();setHidden(entry,!entry.host.classList.contains("sak-preview-collapsed"));entry.button.focus()}else if(entry.host.classList.contains("sak-preview-collapsed")){event.preventDefault();event.stopImmediatePropagation()}}window.addEventListener("click",intercept,true);window.addEventListener("keydown",intercept,true);new MutationObserver(()=>entries.forEach(label)).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]})})();</script>
-
-<style id="sak-yellow-music-star">
-html body #sakakerAllIconsDock #sakUtilityRow #sakMusicIcon{background:radial-gradient(circle at 34% 25%,#fffbd5 0 5%,#ffe976 18%,#ffd52a 46%,#e9ad00 78%,#bd8000 100%)!important;clip-path:polygon(50% 0%,61.5% 35.2%,98% 35.2%,68.2% 56.8%,79.4% 91%,50% 70%,20.6% 91%,31.8% 56.8%,2% 35.2%,38.5% 35.2%)!important;border-radius:0!important;}
-html body #sakakerAllIconsDock #sakUtilityRow #sakMusicIcon span{color:#3d2900!important;-webkit-text-fill-color:#3d2900!important;text-shadow:0 1px 2px #fff4ae!important;}
-</style>
-<style id="sak-business-gold-above-counter">
-html body #sakBusinessGoldAnchor{position:fixed!important;inset:auto!important;left:var(--gold-left,8px)!important;top:var(--gold-top,70vh)!important;width:62px!important;height:62px!important;z-index:800550!important;pointer-events:none!important;filter:drop-shadow(0 0 5px #ffe477) drop-shadow(0 0 12px #ffbe1699)!important;}
-html body #sakBusinessGoldAnchor #sakakerBusinessIcon{display:flex!important;align-items:center!important;justify-content:center!important;position:relative!important;inset:auto!important;transform:none!important;translate:none!important;width:100%!important;height:100%!important;min-width:0!important;max-width:none!important;min-height:0!important;max-height:none!important;margin:0!important;padding:0!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;animation:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:radial-gradient(circle at 35% 25%,#fff9c4 0%,#ffe77a 22%,#ffd426 48%,#da9600 85%,#fff09e 100%)!important;clip-path:polygon(50% 0%,62% 34%,98% 36%,70% 58%,80% 94%,50% 73%,20% 94%,30% 58%,2% 36%,38% 34%)!important;cursor:pointer!important;}
-html body #sakBusinessGoldAnchor #sakakerBusinessIcon .sbIconCore{position:static!important;inset:auto!important;transform:none!important;font:700 10px/1.3 Tahoma,Arial,sans-serif!important;color:#382500!important;-webkit-text-fill-color:#382500!important;text-shadow:none!important;background:none!important;}
-html body #sakBusinessGoldAnchor #sakakerBusinessIcon :is(.sbShine,.sbSpark),html body #sakBusinessGoldAnchor #sakakerBusinessIcon::before,html body #sakBusinessGoldAnchor #sakakerBusinessIcon::after{display:none!important;}
-html body #sakBusinessGoldAnchor:focus-within{filter:drop-shadow(0 0 4px white) drop-shadow(0 0 12px #ffd426)!important;}
-html body.locked #sakBusinessGoldAnchor{display:none!important;}
-@media(max-width:600px){html body #sakBusinessGoldAnchor{width:52px!important;height:52px!important;}}
-</style>
-<script id="sak-business-gold-position">(()=>{const icon=document.getElementById("sakakerBusinessIcon"),counter=document.getElementById("sakakerVisitorCounter");if(!icon||!counter)return;const anchor=document.createElement("div");anchor.id="sakBusinessGoldAnchor";anchor.append(icon);document.body.append(anchor);let pending=false;function place(){pending=false;const r=counter.getBoundingClientRect(),size=innerWidth<=600?52:62;anchor.style.setProperty("--gold-left",Math.max(8,Math.min(innerWidth-size-8,r.left+(r.width-size)/2))+"px");anchor.style.setProperty("--gold-top",Math.max(8,r.top-size-12)+"px")}function queue(){if(!pending){pending=true;requestAnimationFrame(place)}}const resize=new ResizeObserver(queue);resize.observe(counter);resize.observe(document.body);new MutationObserver(queue).observe(counter,{attributes:true,childList:true,subtree:true,characterData:true});window.addEventListener("resize",queue,{passive:true});window.addEventListener("load",queue,{once:true});window.visualViewport?.addEventListener("resize",queue,{passive:true});document.fonts?.ready.then(queue);queue()})();</script>
 <style id="sak-chat-glass-privacy">
 html body #sakChatOverlay{background:transparent!important;}
 html body #sakChatOverlay::backdrop{background:#02111cb8;backdrop-filter:blur(5px);}
@@ -24000,6 +23985,206 @@ body.sak-ebook-layer-open :is(#siteLangToggle,#facebookVideoIcon,#liveFlasher,#s
 
 <script id="sakaker-performance-video-override">(function(){"use strict";const login=document.getElementById("sakLoginBackgroundVideo");const main=null;const LOGIN_SRC="https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_be58b3bc.mp4";function safePlay(v){if(v){const p=v.play();if(p&&p.catch)p.catch(()=>{})}}function stopVideo(v){if(!v)return;try{v.pause()}catch(_){}v.preload="none";v.removeAttribute("fetchpriority")}function syncBackgrounds(){const locked=document.body.classList.contains("locked");if(locked){if(login){if(!login.getAttribute("src")){login.src=LOGIN_SRC;try{login.load()}catch(_){}}login.preload="auto";login.setAttribute("fetchpriority","high");login.muted=true;safePlay(login)}stopVideo(main)}else{stopVideo(login);if(main){main.preload="auto";main.setAttribute("fetchpriority","high");main.muted=true;safePlay(main)}}}function loadMini(frame){if(!frame||frame.getAttribute("src"))return;const src=frame.dataset.src;if(src)frame.src=src}const minis=[...document.querySelectorAll("iframe.miniVideo[data-src]")];if("IntersectionObserver"in window){const io=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){loadMini(entry.target);io.unobserve(entry.target)}})},{rootMargin:"180px 0px",threshold:.01});minis.forEach(f=>io.observe(f))}else{minis.slice(0,1).forEach(loadMini)}new MutationObserver(syncBackgrounds).observe(document.body,{attributes:true,attributeFilter:["class"]});document.addEventListener("visibilitychange",()=>{if(document.hidden){try{login&&login.pause()}catch(_){}try{main&&main.pause()}catch(_){}}else syncBackgrounds()});window.addEventListener("load",syncBackgrounds,{once:true});syncBackgrounds()})();</script>
 <script id="sak-final-business-map-audio-icons-js-v1" src="/assets/final-three-icons.js"></script>
+
+<!-- =========================================================
+a11y/performance/icon final reconciliation — 2026-10-01
+========================================================= -->
+<style id="sak-final-icon-reconciliation-v3">
+/* Keep the three requested utilities in the SAME bottom icon dock as the gulls. */
+html body #sakakerAllIconsDock #sakUtilityRow{
+  display:contents!important;
+}
+html body #sakakerAllIconsDock :is(#sakakerBusinessCenterHost,#sakakerBusinessAd){
+  display:contents!important;
+  position:static!important;
+  inset:auto!important;
+  width:auto!important;height:auto!important;
+  min-width:0!important;min-height:0!important;
+  max-width:none!important;max-height:none!important;
+  margin:0!important;padding:0!important;
+  background:none!important;background-image:none!important;
+  border:0!important;box-shadow:none!important;filter:none!important;
+  transform:none!important;translate:none!important;
+}
+html body #sakakerAllIconsDock #sakUtilityRow .sak-final-trio-icon{
+  position:relative!important;
+  inset:auto!important;
+  left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;
+  flex:0 0 58px!important;
+  width:58px!important;height:58px!important;
+  min-width:58px!important;min-height:58px!important;
+  max-width:58px!important;max-height:58px!important;
+  margin:0!important;padding:0!important;
+  border:0!important;border-radius:0!important;
+  transform:none!important;translate:none!important;
+  animation:none!important;
+  cursor:pointer!important;
+  overflow:visible!important;
+  isolation:isolate!important;
+  color:transparent!important;
+  text-shadow:none!important;
+  font-size:0!important;
+  clip-path:polygon(50% 0%,61.5% 35.2%,98% 35.2%,68.2% 56.8%,79.4% 91%,50% 70%,20.6% 91%,31.8% 56.8%,2% 35.2%,38.5% 35.2%)!important;
+}
+html body #sakakerAllIconsDock #sakUtilityRow .sak-final-trio-icon>*{
+  opacity:0!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+html body #sakakerAllIconsDock #sakUtilityRow .sak-final-trio-icon::before{
+  content:''!important;
+  position:absolute!important;
+  inset:0!important;
+  display:block!important;
+  clip-path:inherit!important;
+  z-index:1!important;
+  pointer-events:none!important;
+}
+html body #sakakerAllIconsDock #sakUtilityRow .sak-final-trio-icon::after{
+  content:attr(data-sak-final-label)!important;
+  position:absolute!important;
+  left:50%!important;top:100%!important;bottom:auto!important;right:auto!important;
+  transform:translateX(-50%)!important;
+  width:76px!important;
+  margin-top:2px!important;
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+  font:800 8px/1.15 Tahoma,Arial,sans-serif!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+  text-shadow:0 1px 3px #001018,0 0 5px #001018!important;
+  clip-path:none!important;
+  background:none!important;
+  pointer-events:none!important;
+  z-index:4!important;
+}
+html body #sakUtilityRow #sakakerBusinessIcon.sak-final-business::before{
+  background:radial-gradient(circle at 34% 24%,#fffbd7 0 6%,#ffe86a 19%,#ffd321 48%,#d89300 78%,#6e4300 100%)!important;
+  box-shadow:0 0 7px #fff,0 0 17px #ffd84d,0 0 28px rgba(255,179,0,.78)!important;
+}
+html body #sakUtilityRow .sak-final-map::before{
+  background:radial-gradient(circle at 34% 24%,#fff 0 7%,#edf5fa 20%,#c8d4dd 48%,#778998 78%,#364550 100%)!important;
+  box-shadow:0 0 7px #fff,0 0 16px #dff5ff,0 0 28px rgba(120,207,255,.72)!important;
+}
+html body #sakUtilityRow #sakMusicIcon.sak-final-audio::before{
+  background:radial-gradient(circle at 34% 24%,#f2f5fa 0 5%,#596675 18%,#26313d 46%,#101820 76%,#05080c 100%)!important;
+  box-shadow:0 0 6px #fff,0 0 15px #71859a,0 0 28px rgba(20,40,60,.95)!important;
+}
+html body #sakakerAllIconsDock #sakUtilityRow .sak-final-trio-icon:hover::before,
+html body #sakakerAllIconsDock #sakUtilityRow .sak-final-trio-icon:focus-visible::before{
+  filter:brightness(1.14)!important;
+}
+html body #sakakerAllIconsDock #sakUtilityRow .sak-final-trio-icon:focus-visible{
+  outline:2px solid #fff7bd!important;outline-offset:4px!important;
+}
+
+/* Text Library: full golden luminous star, never a gull. */
+html body #sakakerAllIconsDock .sak-text-library-card,
+html body .cards .sak-text-library-card{
+  position:relative!important;
+  clip-path:polygon(50% 0%,61.5% 35.2%,98% 35.2%,68.2% 56.8%,79.4% 91%,50% 70%,20.6% 91%,31.8% 56.8%,2% 35.2%,38.5% 35.2%)!important;
+  border:0!important;border-radius:0!important;
+  background:radial-gradient(circle at 34% 24%,#fffbd7 0 5%,#ffed7d 17%,#ffd426 45%,#dc9800 78%,#704400 100%)!important;
+  box-shadow:0 0 8px #fff,0 0 17px #ffe05a,0 0 31px rgba(255,183,0,.78)!important;
+  filter:drop-shadow(0 0 5px rgba(255,224,90,.9))!important;
+  overflow:visible!important;
+  color:transparent!important;
+  text-shadow:none!important;
+}
+html body .sak-text-library-card.sak-shore-gull{clip-path:polygon(50% 0%,61.5% 35.2%,98% 35.2%,68.2% 56.8%,79.4% 91%,50% 70%,20.6% 91%,31.8% 56.8%,2% 35.2%,38.5% 35.2%)!important}
+html body .sak-text-library-card::before{
+  content:'★'!important;
+  display:grid!important;place-items:center!important;
+  position:absolute!important;inset:0!important;
+  color:#fff2a3!important;-webkit-text-fill-color:#fff2a3!important;
+  font:900 24px/1 Arial,sans-serif!important;
+  text-shadow:0 0 5px #fff,0 0 10px #ffd426!important;
+  background:none!important;
+  filter:none!important;
+  z-index:2!important;
+  pointer-events:none!important;
+}
+html body .sak-text-library-card::after{
+  content:attr(aria-label)!important;
+  display:block!important;
+  position:absolute!important;
+  left:50%!important;top:100%!important;
+  transform:translateX(-50%)!important;
+  width:82px!important;
+  color:#fff!important;-webkit-text-fill-color:#fff!important;
+  font:800 8px/1.15 Tahoma,Arial,sans-serif!important;
+  text-align:center!important;white-space:nowrap!important;
+  text-shadow:0 1px 3px #001018!important;
+  clip-path:none!important;background:none!important;
+  pointer-events:none!important;
+}
+html body .sak-text-library-card>*{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+
+/* Remove visual traces of the legacy empty gold anchor / square. */
+html body #sakBusinessGoldAnchor{display:none!important}
+html body #sakakerBusinessCenterHost:empty,
+html body #sakakerBusinessAd:empty{display:none!important}
+
+/* Safe compatibility/performance layer. */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+img,video{max-width:100%}
+iframe{max-width:100%}
+html body #sakakerAllIconsDock{contain:layout style!important}
+@supports not (height:100dvh){
+  html body :is(#sakMusicPlayer,#sakakerMapOverlay,#sakTextLibraryModal,#sakLearningModal,#facebookVideoPopup){height:100vh!important}
+}
+@media(max-width:700px){
+  html body #sakakerAllIconsDock #sakUtilityRow .sak-final-trio-icon{flex-basis:50px!important;width:50px!important;height:50px!important;min-width:50px!important;min-height:50px!important;max-width:50px!important;max-height:50px!important}
+  html body #sakakerAllIconsDock #sakUtilityRow .sak-final-trio-icon::after,
+  html body .sak-text-library-card::after{font-size:7px!important;width:62px!important}
+  html body .sak-text-library-card::before{font-size:21px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  html body *,html body *::before,html body *::after{scroll-behavior:auto!important}
+}
+</style>
+<script id="sak-final-icon-reconciliation-v3-js">
+(()=>{"use strict";
+ const $=id=>document.getElementById(id);
+ const en=()=>document.documentElement.lang==="en";
+ function reconcile(){
+   if(document.body.classList.contains("locked"))return;
+   const dock=$("sakakerAllIconsDock"),row=$("sakUtilityRow");
+   const map=document.querySelector(".launcher:not(#sakMusicIcon)");
+   const music=$("sakMusicIcon"),business=$("sakakerBusinessIcon");
+   if(!dock||!row||!map||!music||!business)return;
+   if(row.parentElement!==dock)dock.append(row);
+   const legacy=$("sakBusinessGoldAnchor");
+   if(legacy&&legacy.contains(business))row.append(business);
+   [map,business,music].forEach(el=>{if(el.parentElement!==row)row.append(el)});
+   legacy?.remove();
+   $("sakakerBusinessCenterHost")?.style.setProperty("display","contents","important");
+   $("sakakerBusinessAd")?.style.setProperty("display","contents","important");
+   map.classList.add("sak-final-trio-icon","sak-final-map");
+   business.classList.add("sak-final-trio-icon","sak-final-business");
+   music.classList.add("sak-final-trio-icon","sak-final-audio");
+   map.dataset.sakFinalLabel=en()?"Maps":"خرائط";
+   business.dataset.sakFinalLabel=en()?"Business":"سكاكر بزنس";
+   music.dataset.sakFinalLabel=en()?"Audio to Video":"تحويل الصوت";
+   map.title=en()?"Maps":"الخرائط";map.setAttribute("aria-label",map.title);
+   business.title=en()?"Open Sakaker Business":"فتح سكاكر بزنس";business.setAttribute("aria-label",business.title);
+   music.title=en()?"Audio to Video":"تحويل الصوت لفيديو";music.setAttribute("aria-label",music.title);
+   const lib=document.querySelector(".sak-text-library-card");
+   if(lib){lib.classList.remove("sak-shore-gull");lib.removeAttribute("data-gull-label");lib.setAttribute("aria-label",en()?"Text Library":"المكتبة النصية")}
+   document.querySelectorAll(".sak-text-star-art").forEach(n=>n.remove());
+ }
+ function idleOptimize(){
+   document.querySelectorAll("img").forEach((img,i)=>{if(i>1&&!img.hasAttribute("loading"))img.loading="lazy";if(!img.hasAttribute("decoding"))img.decoding="async"});
+   document.querySelectorAll("iframe").forEach((frame,i)=>{if(i>0&&!frame.hasAttribute("loading"))frame.loading="lazy";if(!frame.hasAttribute("referrerpolicy"))frame.referrerPolicy="strict-origin-when-cross-origin"});
+ }
+ reconcile();
+ [250,900,2200,5000,8000].forEach(ms=>setTimeout(reconcile,ms));
+ new MutationObserver(reconcile).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});
+ window.addEventListener("resize",()=>requestAnimationFrame(reconcile),{passive:true});
+ if("requestIdleCallback" in window)requestIdleCallback(idleOptimize,{timeout:1800});else setTimeout(idleOptimize,900);
+})();
+</script>
+
 </body>
 </html>
 
@@ -24441,5 +24626,368 @@ html body:not(.locked) #sakakerMainVideoBackground{
   new MutationObserver(function(){
     if(!document.body.classList.contains("locked")) stopOldMainVideo();
   }).observe(document.body,{attributes:true,attributeFilter:["class"],childList:true});
+})();
+</script>
+
+<!-- SAKAKER FINAL OSTRICH TRIO OVERRIDE 2026-10-01 -->
+<style id="sak-final-ostrich-trio-v4">
+/* =========================================================
+   Final trio with the gull icons:
+   Business = gold ostrich
+   Maps = silver ostrich
+   Audio-to-Video = dark/black ostrich
+   Text Library = luminous golden star
+   ========================================================= */
+
+/* Keep utility row integrated with the main icon dock. */
+html body #sakakerAllIconsDock #sakUtilityRow{
+  display:contents!important;
+}
+
+/* Neutralize all old star/square skins on the three utility icons. */
+html body #sakakerAllIconsDock #sakUtilityRow .sak-final-trio-icon{
+  position:relative!important;
+  inset:auto!important;
+  left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;
+  flex:0 0 62px!important;
+  width:62px!important;height:72px!important;
+  min-width:62px!important;min-height:72px!important;
+  max-width:62px!important;max-height:72px!important;
+  margin:0!important;padding:0!important;
+  border:0!important;border-radius:0!important;
+  clip-path:none!important;
+  background:none!important;background-image:none!important;
+  box-shadow:none!important;filter:none!important;
+  transform:none!important;translate:none!important;
+  animation:none!important;
+  overflow:visible!important;
+  isolation:isolate!important;
+  cursor:pointer!important;
+  font-size:0!important;
+  color:transparent!important;
+  text-shadow:none!important;
+}
+
+/* Hide every legacy visual child; only final ostrich + final label remain. */
+html body #sakakerAllIconsDock #sakUtilityRow .sak-final-trio-icon >
+:not(.sak-final-ostrich-art):not(.sak-final-ostrich-label){
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+html body #sakakerAllIconsDock #sakUtilityRow .sak-final-trio-icon::before,
+html body #sakakerAllIconsDock #sakUtilityRow .sak-final-trio-icon::after{
+  content:none!important;
+  display:none!important;
+}
+
+/* Ostrich art */
+html body #sakUtilityRow .sak-final-ostrich-art{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  width:58px!important;
+  height:58px!important;
+  margin:0 auto!important;
+  pointer-events:none!important;
+  overflow:visible!important;
+  transform-origin:50% 72%!important;
+  animation:sakFinalOstrichFloat 3s ease-in-out infinite!important;
+}
+html body #sakUtilityRow .sak-final-ostrich-svg{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  overflow:visible!important;
+}
+html body #sakUtilityRow .sak-final-ostrich-label{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:absolute!important;
+  left:50%!important;
+  top:59px!important;
+  transform:translateX(-50%)!important;
+  width:86px!important;
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+  font:800 8px/1.15 Tahoma,Arial,sans-serif!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+  text-shadow:0 1px 3px #001018,0 0 5px #001018!important;
+  pointer-events:none!important;
+  z-index:5!important;
+}
+
+/* Glows by role */
+html body #sakUtilityRow .sak-final-business .sak-final-ostrich-art{
+  filter:drop-shadow(0 0 4px #fff7c8)
+         drop-shadow(0 0 11px #ffd426)
+         drop-shadow(0 0 20px rgba(255,164,0,.88))!important;
+}
+html body #sakUtilityRow .sak-final-map .sak-final-ostrich-art{
+  filter:grayscale(.10)
+         drop-shadow(0 0 4px #fff)
+         drop-shadow(0 0 12px #dff5ff)
+         drop-shadow(0 0 21px rgba(115,203,255,.86))!important;
+}
+html body #sakUtilityRow .sak-final-audio .sak-final-ostrich-art{
+  filter:drop-shadow(0 0 4px #edf5ff)
+         drop-shadow(0 0 11px #66788d)
+         drop-shadow(0 0 21px rgba(8,18,30,.96))!important;
+}
+html body #sakUtilityRow .sak-final-trio-icon:hover .sak-final-ostrich-art,
+html body #sakUtilityRow .sak-final-trio-icon:focus-visible .sak-final-ostrich-art{
+  transform:translateY(-4px) scale(1.09)!important;
+}
+html body #sakUtilityRow .sak-final-trio-icon:focus-visible{
+  outline:2px solid #fff4a8!important;
+  outline-offset:4px!important;
+}
+
+/* Text Library: gold luminous star and NEVER a gull. */
+html body #sakakerAllIconsDock .sak-text-library-card,
+html body .cards .sak-text-library-card{
+  position:relative!important;
+  clip-path:polygon(50% 0%,61.5% 35.2%,98% 35.2%,68.2% 56.8%,79.4% 91%,50% 70%,20.6% 91%,31.8% 56.8%,2% 35.2%,38.5% 35.2%)!important;
+  border:0!important;border-radius:0!important;
+  background:radial-gradient(circle at 34% 24%,#fffbd7 0 5%,#ffed7d 17%,#ffd426 45%,#dc9800 78%,#704400 100%)!important;
+  box-shadow:0 0 8px #fff,0 0 18px #ffe05a,0 0 32px rgba(255,183,0,.82)!important;
+  filter:drop-shadow(0 0 6px rgba(255,224,90,.95))!important;
+  overflow:visible!important;
+  color:transparent!important;
+  text-shadow:none!important;
+}
+html body .sak-text-library-card.sak-shore-gull{
+  clip-path:polygon(50% 0%,61.5% 35.2%,98% 35.2%,68.2% 56.8%,79.4% 91%,50% 70%,20.6% 91%,31.8% 56.8%,2% 35.2%,38.5% 35.2%)!important;
+}
+html body .sak-text-library-card::before{
+  content:'★'!important;
+  display:grid!important;place-items:center!important;
+  position:absolute!important;inset:0!important;
+  color:#fff3a5!important;-webkit-text-fill-color:#fff3a5!important;
+  font:900 25px/1 Arial,sans-serif!important;
+  text-shadow:0 0 5px #fff,0 0 11px #ffd426,0 0 18px #ffb300!important;
+  background:none!important;
+  filter:none!important;
+  z-index:3!important;
+  pointer-events:none!important;
+  animation:sakTextStarPulse 2.2s ease-in-out infinite!important;
+}
+html body .sak-text-library-card::after{
+  content:attr(aria-label)!important;
+  display:block!important;
+  position:absolute!important;
+  left:50%!important;top:100%!important;
+  transform:translateX(-50%)!important;
+  width:84px!important;
+  color:#fff!important;-webkit-text-fill-color:#fff!important;
+  font:800 8px/1.15 Tahoma,Arial,sans-serif!important;
+  text-align:center!important;white-space:nowrap!important;
+  text-shadow:0 1px 3px #001018!important;
+  clip-path:none!important;background:none!important;
+  pointer-events:none!important;
+}
+html body .sak-text-library-card>*{
+  opacity:0!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+
+/* Remove legacy empty yellow star / green square remnants permanently. */
+html body #sakBusinessGoldAnchor,
+html body .sak-text-star-art,
+html body .sak-final-symbol,
+html body #sakakerBusinessCenterHost:empty,
+html body #sakakerBusinessAd:empty{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+html body .sak-text-library-gold-star{
+  background:none!important;
+  box-shadow:none!important;
+}
+
+/* Small safe performance layer. */
+html body #sakakerAllIconsDock{contain:layout style!important}
+img[loading="lazy"]{content-visibility:auto}
+@supports not (height:100dvh){
+  html body :is(#sakMusicPlayer,#sakakerMapOverlay,#sakTextLibraryModal,#sakLearningModal,#facebookVideoPopup){height:100vh!important}
+}
+
+@keyframes sakFinalOstrichFloat{
+  0%,100%{transform:translateY(0) rotate(-1deg)}
+  50%{transform:translateY(-3px) rotate(1deg)}
+}
+@keyframes sakTextStarPulse{
+  0%,100%{transform:scale(.96);filter:brightness(1)}
+  50%{transform:scale(1.08);filter:brightness(1.18)}
+}
+
+@media(max-width:700px){
+  html body #sakakerAllIconsDock #sakUtilityRow .sak-final-trio-icon{
+    flex-basis:54px!important;
+    width:54px!important;height:64px!important;
+    min-width:54px!important;min-height:64px!important;
+    max-width:54px!important;max-height:64px!important;
+  }
+  html body #sakUtilityRow .sak-final-ostrich-art{
+    width:50px!important;height:50px!important;
+  }
+  html body #sakUtilityRow .sak-final-ostrich-label{
+    top:51px!important;width:68px!important;font-size:7px!important;
+  }
+  html body .sak-text-library-card::before{font-size:22px!important}
+  html body .sak-text-library-card::after{font-size:7px!important;width:64px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  html body #sakUtilityRow .sak-final-ostrich-art,
+  html body .sak-text-library-card::before{
+    animation:none!important;
+  }
+}
+</style>
+
+<script id="sak-final-ostrich-trio-v4-js">
+(()=>{"use strict";
+ const $=id=>document.getElementById(id);
+ const en=()=>document.documentElement.lang==="en";
+ const NS="http://www.w3.org/2000/svg";
+
+ function svgEl(tag,attrs={}){
+   const n=document.createElementNS(NS,tag);
+   Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,String(v)));
+   return n;
+ }
+
+ function makeOstrich(kind){
+   const svg=svgEl("svg",{viewBox:"0 0 100 112","aria-hidden":"true",focusable:"false",class:"sak-final-ostrich-svg"});
+   const defs=svgEl("defs");
+   const grad=svgEl("linearGradient",{id:"sakOstrichGrad-"+kind,x1:"0",y1:"0",x2:"1",y2:"1"});
+   const palette =
+     kind==="business" ? ["#fff8bc","#ffd426","#d68c00"] :
+     kind==="map"      ? ["#ffffff","#dce8ef","#758896"] :
+                         ["#dfe7ef","#3d4856","#0a0f16"];
+   grad.append(
+     svgEl("stop",{offset:"0","stop-color":palette[0]}),
+     svgEl("stop",{offset:".48","stop-color":palette[1]}),
+     svgEl("stop",{offset:"1","stop-color":palette[2]})
+   );
+   defs.appendChild(grad);
+   svg.appendChild(defs);
+
+   const fill=`url(#sakOstrichGrad-${kind})`;
+   const stroke = kind==="audio" ? "#b8c6d6" : "#fff9d7";
+
+   const body=svgEl("g",{class:"sak-final-ostrich-body"});
+   body.append(
+     svgEl("ellipse",{cx:"46",cy:"64",rx:"28",ry:"20",fill,stroke,"stroke-width":"2"}),
+     svgEl("path",{d:"M58 56 C69 45 70 31 68 21 C67 15 70 10 75 10 C81 10 84 16 82 22 C79 31 77 42 78 53",fill:"none",stroke:fill,"stroke-width":"8","stroke-linecap":"round"}),
+     svgEl("circle",{cx:"77",cy:"15",r:"8",fill,stroke,"stroke-width":"1.4"}),
+     svgEl("circle",{cx:"79",cy:"13",r:"1.7",fill:"#07131b"}),
+     svgEl("path",{d:"M84 16 L95 19 L84 22 Z",fill:kind==="audio"?"#8896a5":"#ffbf3f"}),
+     svgEl("path",{d:"M29 62 Q12 52 19 42 Q34 47 41 58",fill,opacity:".95"}),
+     svgEl("path",{d:"M39 81 L36 106 M56 81 L60 106",stroke:kind==="audio"?"#9ba9b7":"#fff0a8","stroke-width":"4","stroke-linecap":"round"}),
+     svgEl("path",{d:"M32 107 L42 107 M56 107 L67 107",stroke:kind==="audio"?"#7d8995":"#ffd95a","stroke-width":"4","stroke-linecap":"round"})
+   );
+
+   // Small identifying badge on the bird itself.
+   if(kind==="map"){
+     body.append(svgEl("path",{d:"M42 49 A10 10 0 1 0 54 37 A8 8 0 1 1 42 49Z",fill:"#f7fdff",stroke:"#9bdfff","stroke-width":"1.4"}));
+   } else if(kind==="audio"){
+     body.append(svgEl("circle",{cx:"48",cy:"47",r:"8",fill:"#1b2732",stroke:"#d8e5ef","stroke-width":"1.5"}));
+     body.append(svgEl("path",{d:"M45 43 L54 47 L45 51 Z",fill:"#d8e5ef"}));
+   } else {
+     body.append(svgEl("path",{d:"M48 36 L52 44 L61 45 L54 51 L56 60 L48 56 L40 60 L42 51 L35 45 L44 44 Z",fill:"#fff1a0",stroke:"#ffd426","stroke-width":"1.3"}));
+   }
+
+   svg.appendChild(body);
+   return svg;
+ }
+
+ function ensureArt(el,kind,label){
+   let art=el.querySelector(":scope > .sak-final-ostrich-art");
+   if(!art){
+     art=document.createElement("span");
+     art.className="sak-final-ostrich-art";
+     el.prepend(art);
+   }
+   if(art.dataset.kind!==kind){
+     art.replaceChildren(makeOstrich(kind));
+     art.dataset.kind=kind;
+   }
+   let lab=el.querySelector(":scope > .sak-final-ostrich-label");
+   if(!lab){
+     lab=document.createElement("span");
+     lab.className="sak-final-ostrich-label";
+     el.appendChild(lab);
+   }
+   lab.textContent=label;
+ }
+
+ function reconcile(){
+   if(document.body.classList.contains("locked"))return;
+   const dock=$("sakakerAllIconsDock"),row=$("sakUtilityRow");
+   const map=document.querySelector(".launcher:not(#sakMusicIcon)");
+   const music=$("sakMusicIcon"),business=$("sakakerBusinessIcon");
+   if(!dock||!row||!map||!music||!business)return;
+
+   if(row.parentElement!==dock)dock.append(row);
+   [business,map,music].forEach(el=>{if(el.parentElement!==row)row.append(el)});
+
+   const labels={
+     business:en()?"Business":"سكاكر بزنس",
+     map:en()?"Maps":"خرائط",
+     audio:en()?"Audio to Video":"تحويل الصوت"
+   };
+
+   business.classList.add("sak-final-trio-icon","sak-final-business");
+   map.classList.add("sak-final-trio-icon","sak-final-map");
+   music.classList.add("sak-final-trio-icon","sak-final-audio");
+
+   ensureArt(business,"business",labels.business);
+   ensureArt(map,"map",labels.map);
+   ensureArt(music,"audio",labels.audio);
+
+   business.title=en()?"Open Sakaker Business":"فتح سكاكر بزنس";
+   business.setAttribute("aria-label",business.title);
+   map.title=en()?"Maps":"الخرائط";
+   map.setAttribute("aria-label",map.title);
+   music.title=en()?"Audio to Video":"تحويل الصوت لفيديو";
+   music.setAttribute("aria-label",music.title);
+
+   // Text Library is always a luminous gold star.
+   const lib=document.querySelector(".sak-text-library-card");
+   if(lib){
+     lib.classList.remove("sak-shore-gull","sak-text-library-gold-star");
+     lib.removeAttribute("data-gull-label");
+     lib.setAttribute("aria-label",en()?"Text Library":"المكتبة النصية");
+   }
+
+   // Remove legacy remnants that previously produced empty square / yellow star.
+   $("sakBusinessGoldAnchor")?.remove();
+   document.querySelectorAll(".sak-text-star-art,.sak-final-symbol").forEach(n=>n.remove());
+ }
+
+ function idleOptimize(){
+   document.querySelectorAll("img").forEach((img,i)=>{
+     if(i>1&&!img.hasAttribute("loading"))img.loading="lazy";
+     if(!img.hasAttribute("decoding"))img.decoding="async";
+   });
+   document.querySelectorAll("iframe").forEach((frame,i)=>{
+     if(i>0&&!frame.hasAttribute("loading"))frame.loading="lazy";
+     if(!frame.hasAttribute("referrerpolicy"))frame.referrerPolicy="strict-origin-when-cross-origin";
+   });
+ }
+
+ reconcile();
+ [250,900,2200,5000,8000].forEach(ms=>setTimeout(reconcile,ms));
+ new MutationObserver(reconcile).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});
+ window.addEventListener("resize",()=>requestAnimationFrame(reconcile),{passive:true});
+ if("requestIdleCallback" in window)requestIdleCallback(idleOptimize,{timeout:1800});
+ else setTimeout(idleOptimize,900);
 })();
 </script>
