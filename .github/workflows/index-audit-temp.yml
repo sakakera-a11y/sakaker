@@ -1,0 +1,81 @@
+name: Index Audit Temp
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/index-audit-temp.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Audit index.html
+        shell: python
+        run: |
+          from pathlib import Path
+          import re, hashlib, collections
+
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8', errors='ignore')
+          b=s.encode('utf-8')
+          print(f'INDEX|bytes={len(b)}|chars={len(s)}|lines={s.count(chr(10))+1}')
+
+          comments=re.findall(r'<!--.*?-->', s, flags=re.S)
+          print(f'HTML_COMMENTS|count={len(comments)}|bytes={sum(len(x.encode("utf-8")) for x in comments)}')
+
+          blank_bytes=sum(len(x.encode('utf-8'))+1 for x in s.splitlines() if not x.strip())
+          print(f'BLANK_LINES|bytes~={blank_bytes}')
+
+          scripts=re.findall(r'<script\b[^>]*>(.*?)</script>', s, flags=re.S|re.I)
+          styles=re.findall(r'<style\b[^>]*>(.*?)</style>', s, flags=re.S|re.I)
+          print(f'INLINE|scripts={len(scripts)}|script_bytes={sum(len(x.encode("utf-8")) for x in scripts)}|styles={len(styles)}|style_bytes={sum(len(x.encode("utf-8")) for x in styles)}')
+
+          def dups(blocks,label):
+              c=collections.defaultdict(list)
+              for i,x in enumerate(blocks):
+                  norm=x.strip()
+                  if len(norm)<80: continue
+                  h=hashlib.sha256(norm.encode('utf-8')).hexdigest()
+                  c[h].append((i,len(norm.encode('utf-8'))))
+              groups=[v for v in c.values() if len(v)>1]
+              saved=sum(v[0][1]*(len(v)-1) for v in groups)
+              print(f'DUP_{label}|groups={len(groups)}|potential_bytes={saved}')
+              for g in sorted(groups,key=lambda v:v[0][1]*(len(v)-1), reverse=True)[:20]:
+                  print(f'DUP_{label}_GROUP|count={len(g)}|bytes_each={g[0][1]}|indexes={",".join(str(i) for i,_ in g)}')
+          dups(scripts,'SCRIPT')
+          dups(styles,'STYLE')
+
+          ids=re.findall(r'\bid\s*=\s*["\']([^"\']+)["\']',s,re.I)
+          cnt=collections.Counter(ids)
+          dupids=[(k,v) for k,v in cnt.items() if v>1]
+          print(f'DUP_IDS|count={len(dupids)}')
+          for k,v in sorted(dupids,key=lambda x:x[1],reverse=True)[:50]: print(f'DUP_ID|{v}|{k}')
+
+          funcs=re.findall(r'\bfunction\s+([A-Za-z_$][\w$]*)\s*\(',s)
+          fcnt=collections.Counter(funcs)
+          dupfunc=[(k,v) for k,v in fcnt.items() if v>1]
+          print(f'DUP_FUNCTION_NAMES|count={len(dupfunc)}')
+          for k,v in sorted(dupfunc,key=lambda x:x[1],reverse=True)[:80]: print(f'DUP_FUNC|{v}|{k}')
+
+          old_markers=['FINAL OVERRIDE','override','legacy','old','backup','deprecated','temporary','temp','FIX','PATCH']
+          low=s.lower()
+          for m in old_markers:
+              print(f'MARKER|{m}|count={low.count(m.lower())}')
+
+          urls=re.findall(r'https?://[^\s"\'<>]+',s)
+          ucnt=collections.Counter(urls)
+          reps=[(u,n) for u,n in ucnt.items() if n>1]
+          print(f'REPEATED_URLS|count={len(reps)}')
+          for u,n in sorted(reps,key=lambda x:x[1],reverse=True)[:50]: print(f'URL|{n}|{u[:220]}')
+
+          # Conservative estimate: only HTML comments + blank lines outside scripts/styles are easy wins.
+          masked=re.sub(r'(<script\b[^>]*>.*?</script>|<style\b[^>]*>.*?</style>)', lambda m:'X'*len(m.group(0)), s, flags=re.S|re.I)
+          outer_comments=re.findall(r'<!--.*?-->', masked, flags=re.S)
+          outer_blank=sum(len(line.encode('utf-8'))+1 for line in masked.splitlines() if not line.strip())
+          print(f'SAFE_ESTIMATE|html_comments_bytes={sum(len(x.encode("utf-8")) for x in outer_comments)}|blank_bytes~={outer_blank}')
