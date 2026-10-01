@@ -21,16 +21,25 @@ jobs:
           fetch-depth: 0
 
       - name: Restore optimized ostrich index
-        shell: bash
+        shell: python
         run: |
-          set -euo pipefail
-          git show 2c05c2d3ace385db96f7daf29b781d31bd791b96:.tmp/index_updated_optimized_ostrich.html.gz.b64 > /tmp/index.b64
-          base64 -d /tmp/index.b64 > /tmp/index.html.gz
-          gzip -dc /tmp/index.html.gz > index.html
-          grep -q 'sak-final-ostrich-art' index.html
-          grep -q 'Audio to Video' index.html
-          grep -q 'تحويل الصوت' index.html
-          echo "Restored index size: $(wc -c < index.html) bytes"
+          from pathlib import Path
+          import subprocess, base64, gzip, re
+
+          ref='2c05c2d3ace385db96f7daf29b781d31bd791b96:.tmp/index_updated_optimized_ostrich.html.gz.b64'
+          raw=subprocess.check_output(['git','show',ref], text=True)
+          data_text=''.join(raw.split())
+          data_text=re.sub(r'[^A-Za-z0-9+/=]','',data_text)
+          data_text += '=' * (-len(data_text) % 4)
+          packed=base64.b64decode(data_text, validate=False)
+          html=gzip.decompress(packed)
+          text=html.decode('utf-8')
+          required=['sak-final-ostrich-art','Audio to Video','تحويل الصوت']
+          missing=[x for x in required if x not in text]
+          if missing:
+              raise SystemExit('Missing expected markers: '+', '.join(missing))
+          Path('index.html').write_text(text, encoding='utf-8')
+          print('Restored index size:', Path('index.html').stat().st_size)
 
       - name: Commit restored index
         shell: bash
