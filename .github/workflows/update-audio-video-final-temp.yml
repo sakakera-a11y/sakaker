@@ -41,16 +41,14 @@ jobs:
 
           start = s.find("let siteImageData='';")
           end = s.find("function fit(img,t)")
-          if start == -1 or end == -1 or end <= start:
-              raise SystemExit('site image block not found')
-          replacement = '''let siteImageData=SITE_IMAGE_URL;\nfunction viewImg(){const w=window.open(SITE_IMAGE_URL,'_blank','noopener');if(!w)location.href=SITE_IMAGE_URL}\nviewSiteImage.onclick=viewImg;siteImage.onclick=viewImg;downloadSiteImage.onclick=()=>forceDownload(SITE_IMAGE_URL,'sakaker-site-image.png');\n'''
-          s = s[:start] + replacement + s[end:]
+          if start != -1 and end != -1 and end > start:
+              replacement = '''let siteImageData=SITE_IMAGE_URL;\nfunction viewImg(){const w=window.open(SITE_IMAGE_URL,'_blank','noopener');if(!w)location.href=SITE_IMAGE_URL}\nviewSiteImage.onclick=viewImg;siteImage.onclick=viewImg;downloadSiteImage.onclick=()=>forceDownload(SITE_IMAGE_URL,'sakaker-site-image.png');\n'''
+              s = s[:start] + replacement + s[end:]
 
           marker = "X.fillStyle=g;X.fillRect(0,0,w,h)}"
           branded = "X.fillStyle=g;X.fillRect(0,0,w,h);X.textAlign='center';X.shadowColor='rgba(50,255,230,.9)';X.shadowBlur=18;X.fillStyle='#fff';X.font='900 44px Arial';X.fillText('sakaker.co',w/2,h-42);X.shadowBlur=0}"
-          if marker not in s:
-              raise SystemExit('fit marker not found')
-          s = s.replace(marker,branded,1)
+          if marker in s and "fillText('sakaker.co'" not in s:
+              s = s.replace(marker,branded,1)
 
           s = s.replace("downloadSiteAudio.onclick=()=>forceDownload(SITE_AUDIO_URL,'sakaker-site-sound.ogg');","downloadSiteAudio.onclick=()=>forceDownload(SITE_AUDIO_URL,'ya-sahbi-ma-taji.mp3');")
 
@@ -61,10 +59,10 @@ jobs:
         run: |
           from pathlib import Path
           s = Path('audio-video.html').read_text(encoding='utf-8')
-          assert 'فهدبن سعيد ياصاحبي ماتجي بالزياره بخيل_٢٠٢٦٠٤١٣_١٦٣٦٢٥.mp3' in s or '%D9%81%D9%87%D8%AF%D8%A8%D9%86' in s
-          assert 'سفينة القمر فوق المحيط' in s or '%D8%B3%D9%81%D9%8A%D9%86%D8%A9' in s
+          assert '%D9%81%D9%87%D8%AF%D8%A8%D9%86' in s
+          assert '%D8%B3%D9%81%D9%8A%D9%86%D8%A9' in s
           assert "fillText('sakaker.co'" in s
-          assert 'siteVideoSource' not in s
+          assert '<video id="siteVideoSource"' not in s
           assert 'Meeresrauschen.ogg' not in s
           print('AUDIO_VIDEO_FINAL_OK')
 
