@@ -111,5 +111,10 @@ function decorate(){
 function run(){removeVisitorCounters();if(document.body.classList.contains('locked'))return;decorate()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
 [300,900,1800,3500,7000].forEach(ms=>setTimeout(run,ms));
-new MutationObserver(()=>{removeVisitorCounters();if(!document.body.classList.contains('locked'))decorate()}).observe(document.documentElement,{attributes:true,childList:true,subtree:true,attributeFilter:['lang']});
+new MutationObserver(run).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+function watchLoginState(){
+  if(!document.body)return;
+  new MutationObserver(()=>{if(!document.body.classList.contains('locked'))run()}).observe(document.body,{attributes:true,attributeFilter:['class']});
+}
+if(document.body)watchLoginState();else document.addEventListener('DOMContentLoaded',watchLoginState,{once:true});
 })();
