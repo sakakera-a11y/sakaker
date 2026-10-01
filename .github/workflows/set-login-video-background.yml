@@ -1,4 +1,4 @@
-name: Fix login video background
+name: Force new login video background
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Replace old login video with requested video
+      - name: Force requested login video everywhere it can be overridden
         shell: python
         run: |
           from pathlib import Path
@@ -25,33 +25,42 @@ jobs:
           p = Path('index.html')
           text = p.read_text(encoding='utf-8')
 
-          # Remove the duplicate video element added by the previous patch.
-          text = re.sub(
-              r'\s*<video id="sakakerLoginBgVideo"[^>]*>\s*<source[^>]*>\s*</video>',
-              '',
-              text,
-              count=1,
-              flags=re.S
-          )
+          new_url = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_be58b3bc.mp4'
+          old_url = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/sea-birds-compatible.mp4'
 
-          # Remove the extra CSS block added by the previous patch.
-          text = re.sub(
-              r'\s*<style>\s*/\* SAKAKER LOGIN VIDEO BACKGROUND \*/.*?</style>\s*',
-              '\n',
-              text,
-              count=1,
-              flags=re.S
-          )
-
-          # Replace the source of the site's original login background video.
+          # 1) Ensure the original login video element points to the requested video.
           pattern = r'(<video\s+id="sakLoginBackgroundVideo"[^>]*\bsrc=")[^"]*("[^>]*></video>)'
-          replacement = r'\1https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_be58b3bc.mp4\2'
-          text2, n = re.subn(pattern, replacement, text, count=1, flags=re.S)
+          text, n1 = re.subn(pattern, r'\1' + new_url + r'\2', text, count=1, flags=re.S)
+          if n1 != 1:
+              raise SystemExit('sakLoginBackgroundVideo element not found')
 
-          if n != 1:
-              raise SystemExit('Original sakLoginBackgroundVideo element not found or could not be updated')
+          # 2) Fix the late final override that was forcing the old video back after page load.
+          text, n2 = re.subn(
+              r"const\s+LOGIN_URL\s*=\s*['\"][^'\"]+['\"]\s*;",
+              "const LOGIN_URL='" + new_url + "';",
+              text,
+              count=1
+          )
+          if n2 != 1:
+              raise SystemExit('Final LOGIN_URL override not found')
 
-          p.write_text(text2, encoding='utf-8')
+          # 3) Remove any remaining references to the old login video URL from index.html.
+          text = text.replace(old_url, new_url)
+
+          # Keep the legacy descriptive comment accurate too.
+          text = text.replace('Login background: sea-birds-compatible.mp4', 'Login background: gemini_generated_video_be58b3bc.mp4')
+
+          p.write_text(text, encoding='utf-8')
+
+      - name: Verify requested video and absence of old override
+        shell: python
+        run: |
+          from pathlib import Path
+          text = Path('index.html').read_text(encoding='utf-8')
+          assert 'gemini_generated_video_be58b3bc.mp4' in text
+          assert 'sea-birds-compatible.mp4' not in text
+          assert "const LOGIN_URL='https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_be58b3bc.mp4';" in text
+          print('Login background verified')
 
       - name: Commit update
         run: |
@@ -62,5 +71,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git commit -m "Fix Sakaker login video background"
+          git commit -m "Force new Sakaker login video background"
           git push
