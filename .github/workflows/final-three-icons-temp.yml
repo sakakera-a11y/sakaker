@@ -1,0 +1,90 @@
+name: Final Three Icons Temp
+
+on:
+  push:
+    paths:
+      - '.github/workflows/final-three-icons-temp.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch final trio icons
+        shell: python
+        run: |
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          marker='sak-final-business-map-audio-icons-v1'
+          if marker in s:
+              print('already present')
+              raise SystemExit(0)
+          block=r'''
+<style id="sak-final-business-map-audio-icons-v1">
+html body #sakUtilityRow{display:flex!important;flex-wrap:nowrap!important;align-items:center!important;justify-content:center!important;gap:16px!important;width:max-content!important;max-width:96vw!important;margin:12px auto 24px!important;padding:12px 16px!important;overflow:visible!important;isolation:isolate!important}
+html body #sakUtilityRow #sakakerBusinessCenterHost,html body #sakUtilityRow #sakakerBusinessAd{position:relative!important;inset:auto!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;width:86px!important;height:86px!important;min-width:86px!important;min-height:86px!important;margin:0!important;pointer-events:auto!important;filter:none!important}
+html body #sakUtilityRow #sakakerBusinessIcon,html body #sakUtilityRow .launcher:not(#sakMusicIcon),html body #sakUtilityRow #sakMusicIcon{position:relative!important;inset:auto!important;width:86px!important;height:86px!important;min-width:86px!important;min-height:86px!important;margin:0!important;padding:0!important;overflow:visible!important;border:0!important;cursor:pointer!important;isolation:isolate!important;transition:transform .22s ease,filter .22s ease!important}
+html body #sakUtilityRow #sakakerBusinessIcon{filter:drop-shadow(0 0 6px #fff) drop-shadow(0 0 15px #ffe27a) drop-shadow(0 0 28px #00ffd0)!important;animation:sakTrioFloat 2.8s ease-in-out infinite,sakTrioPulse 1.9s ease-in-out infinite!important}
+html body #sakUtilityRow .launcher:not(#sakMusicIcon){clip-path:none!important;border-radius:50%!important;background:radial-gradient(circle at 45% 40%,rgba(255,255,255,.18),rgba(0,205,255,.07) 58%,transparent 74%)!important;box-shadow:none!important;filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 14px #d7f8ff) drop-shadow(0 0 28px #6be8ff) drop-shadow(0 0 42px #00bfae)!important;animation:sakTrioFloat 2.9s ease-in-out infinite .12s,sakMoonGlow 1.8s ease-in-out infinite!important}
+html body #sakUtilityRow #sakMusicIcon{clip-path:none!important;border-radius:50%!important;background:radial-gradient(circle at 50% 50%,rgba(255,248,175,.24),rgba(255,193,0,.08) 58%,transparent 74%)!important;box-shadow:none!important;filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 14px #fff0a0) drop-shadow(0 0 28px #ffd31f) drop-shadow(0 0 44px #ff9f00)!important;animation:sakTrioFloat 2.7s ease-in-out infinite .2s,sakSunGlow 1.65s ease-in-out infinite!important}
+html body #sakUtilityRow .launcher:not(#sakMusicIcon)::before,html body #sakUtilityRow #sakMusicIcon::before{position:absolute!important;inset:0!important;display:flex!important;align-items:center!important;justify-content:center!important;pointer-events:none!important;z-index:1!important;font-size:54px!important;line-height:1!important;text-shadow:0 0 5px #fff,0 0 12px currentColor,0 0 24px currentColor!important}
+html body #sakUtilityRow .launcher:not(#sakMusicIcon)::before{content:'🌙'!important;color:#d9f8ff!important;filter:saturate(.75) brightness(1.35)!important}
+html body #sakUtilityRow #sakMusicIcon::before{content:'☀️'!important;color:#ffd52f!important;filter:saturate(1.2) brightness(1.15)!important}
+html body #sakUtilityRow .launcher:not(#sakMusicIcon)::after,html body #sakUtilityRow #sakMusicIcon::after,html body #sakUtilityRow #sakakerBusinessIcon::after{content:'✦'!important;position:absolute!important;top:-8px!important;right:-7px!important;display:block!important;color:#fff!important;font-size:18px!important;line-height:1!important;pointer-events:none!important;z-index:7!important;text-shadow:0 0 4px #fff,0 0 10px #fff,0 0 18px #ffe173!important;animation:sakTrioSpark 1.15s ease-in-out infinite!important}
+html body #sakUtilityRow .launcher:not(#sakMusicIcon) span,html body #sakUtilityRow #sakMusicIcon span{position:absolute!important;left:50%!important;bottom:7px!important;transform:translateX(-50%)!important;z-index:5!important;max-width:80px!important;width:80px!important;text-align:center!important;white-space:normal!important;font-size:7px!important;line-height:1.05!important;font-weight:1000!important;color:#fff!important;-webkit-text-fill-color:#fff!important;text-shadow:0 1px 3px #000,0 0 5px #000!important}
+html body #sakUtilityRow :is(#sakakerBusinessIcon,.launcher:not(#sakMusicIcon),#sakMusicIcon):hover{transform:translateY(-4px) scale(1.09)!important;filter:brightness(1.18) drop-shadow(0 0 10px #fff) drop-shadow(0 0 26px #dff)!important}
+@keyframes sakTrioFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes sakTrioPulse{0%,100%{filter:drop-shadow(0 0 6px #fff) drop-shadow(0 0 14px #ffe27a) drop-shadow(0 0 28px #00ffd0)}50%{filter:drop-shadow(0 0 10px #fff) drop-shadow(0 0 23px #ffe27a) drop-shadow(0 0 40px #00ffd0)}}
+@keyframes sakMoonGlow{0%,100%{opacity:.94}50%{opacity:1;filter:brightness(1.2)}}
+@keyframes sakSunGlow{0%,100%{opacity:.96}50%{opacity:1;filter:brightness(1.28)}}
+@keyframes sakTrioSpark{0%,100%{opacity:.45;transform:scale(.7) rotate(0)}50%{opacity:1;transform:scale(1.28) rotate(45deg)}}
+@media(max-width:700px){html body #sakUtilityRow{gap:8px!important;padding:8px 6px!important}html body #sakUtilityRow #sakakerBusinessCenterHost,html body #sakUtilityRow #sakakerBusinessAd,html body #sakUtilityRow #sakakerBusinessIcon,html body #sakUtilityRow .launcher:not(#sakMusicIcon),html body #sakUtilityRow #sakMusicIcon{width:54px!important;height:54px!important;min-width:54px!important;min-height:54px!important;max-width:54px!important;max-height:54px!important}html body #sakUtilityRow .launcher:not(#sakMusicIcon)::before,html body #sakUtilityRow #sakMusicIcon::before{font-size:35px!important}html body #sakUtilityRow .launcher:not(#sakMusicIcon) span,html body #sakUtilityRow #sakMusicIcon span{width:52px!important;max-width:52px!important;font-size:5.5px!important;bottom:3px!important}}
+</style>
+<script id="sak-final-business-map-audio-icons-js-v1">
+(()=>{'use strict';
+ const row=document.getElementById('sakUtilityRow'); if(!row)return;
+ const map=document.querySelector('.launcher:not(#sakMusicIcon)');
+ const music=document.getElementById('sakMusicIcon');
+ const host=document.getElementById('sakakerBusinessCenterHost')||document.getElementById('sakakerBusinessAd');
+ function arrange(){
+   if(host&&host.parentElement!==row) row.append(host);
+   if(map&&map.parentElement!==row) row.append(map);
+   if(music&&music.parentElement!==row) row.append(music);
+   if(host&&map&&music){row.append(host,map,music)}
+ }
+ function labels(){
+   const en=document.documentElement.lang==='en';
+   if(map){const s=map.querySelector('span');if(s)s.textContent=en?'🌙 Maps':'🌙 خرائط';map.title=en?'Maps':'الخرائط';map.setAttribute('aria-label',map.title)}
+   if(music){const s=music.querySelector('span');if(s)s.textContent=en?'☀️ Audio to Video':'☀️ تحويل الصوت لفيديو';music.title=en?'Audio to Video':'تحويل الصوت لفيديو';music.setAttribute('aria-label',music.title)}
+ }
+ arrange();labels();[300,1200,3000,6000].forEach(ms=>setTimeout(()=>{arrange();labels()},ms));
+ new MutationObserver(labels).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+})();
+</script>
+'''
+          s=s.replace('</body>',block+'\n</body>',1) if '</body>' in s else s+block
+          p.write_text(s,encoding='utf-8')
+      - name: Verify final trio
+        shell: python
+        run: |
+          from pathlib import Path
+          s=Path('index.html').read_text(encoding='utf-8')
+          assert 'sak-final-business-map-audio-icons-v1' in s
+          assert "content:'🌙'" in s
+          assert "content:'☀️'" in s
+          assert 'sakakerBusinessIcon' in s
+          assert 'sakMusicIcon' in s
+          print('FINAL_TRIO_OK')
+      - name: Commit update
+        run: |
+          if git diff --quiet -- index.html; then echo "No changes"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Style business maps and audio icons as glowing star moon sun"
+          git push
