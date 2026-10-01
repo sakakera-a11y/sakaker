@@ -1,0 +1,37 @@
+name: Inspect Icon Dock Temp
+
+on:
+  push:
+    paths:
+      - '.github/workflows/inspect-icon-dock-temp.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect target icon snippets
+        shell: python
+        run: |
+          from pathlib import Path
+          s=Path('index.html').read_text(encoding='utf-8')
+          keys=['sakMusicIcon','audio-video.html','خرائط','Maps','business.sakaker.co','sakakerBusiness','Business','⭐']
+          seen=set()
+          for key in keys:
+              start=0
+              while True:
+                  i=s.find(key,start)
+                  if i<0: break
+                  a=max(0,i-450); b=min(len(s),i+650)
+                  sig=(a,b)
+                  if sig not in seen:
+                      seen.add(sig)
+                      print('\n===== KEY:',key,'AT',i,'=====')
+                      print(s[a:b].replace('\n',' '))
+                  start=i+len(key)
+                  if len(seen)>40: break
+          print('\nTOTAL_SNIPPETS',len(seen))
