@@ -13,6 +13,14 @@ function findTextLibrary(){
     return /المكتبة\s*النصية|Text\s*Library/i.test(s);
   })||null;
 }
+function removeVisitorCounters(){
+  const selectors=[
+    '#sakakerVisitorCounter','#sakakerRightStats','#visitorCounter','#visitCounter',
+    '[id*="VisitorCounter"]','[id*="visitorCounter"]',
+    '[class*="visitor-counter"]','[class*="visitorCounter"]'
+  ];
+  document.querySelectorAll(selectors.join(',')).forEach(el=>el.remove());
+}
 function ensureDock(){
   if(!dock)dock=$('sakFinalTrioDock');
   if(!dock){dock=document.createElement('nav');dock.id='sakFinalTrioDock';dock.setAttribute('aria-label','سكاكر بزنس والخرائط وتحويل الصوت');document.body.appendChild(dock)}
@@ -64,6 +72,7 @@ function decorateTextLibrary(){
   if(!star){star=document.createElement('span');star.className='sak-text-star-art';star.textContent='★';el.prepend(star)}
 }
 function decorate(){
+  removeVisitorCounters();
   const d=ensureDock(),business=findBusiness(),map=findMap(),music=findMusic();
   if(!business||!map||!music)return false;
   [business,map,music].forEach(styleBase);
@@ -78,8 +87,8 @@ function decorate(){
   map.title=en?'Maps':'الخرائط';map.setAttribute('aria-label',map.title);music.title=en?'Audio to Video':'تحويل الصوت لفيديو';music.setAttribute('aria-label',music.title);business.title=en?'Open Sakaker Business':'فتح سكاكر بزنس';business.setAttribute('aria-label',business.title);
   d.append(business,map,music);decorateTextLibrary();return true;
 }
-function run(){if(document.body.classList.contains('locked'))return;decorate()}
+function run(){removeVisitorCounters();if(document.body.classList.contains('locked'))return;decorate()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
 [300,900,1800,3500,7000].forEach(ms=>setTimeout(run,ms));
-new MutationObserver(()=>{if(!document.body.classList.contains('locked'))decorate()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+new MutationObserver(()=>{removeVisitorCounters();if(!document.body.classList.contains('locked'))decorate()}).observe(document.documentElement,{attributes:true,childList:true,subtree:true,attributeFilter:['lang']});
 })();
