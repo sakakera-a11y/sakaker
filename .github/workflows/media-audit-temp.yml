@@ -28,7 +28,7 @@ jobs:
           for p in root.rglob('*'):
               if '.git' in p.parts or not p.is_file():
                   continue
-              if p.suffix.lower() in media_ext:
+              if p.suffix.lower() in media_ext or (not p.suffix and p.stat().st_size > 500000):
                   media.append(p)
 
           texts=[]
@@ -53,8 +53,9 @@ jobs:
                   if any(c and c in s for c in candidates):
                       refs.append(p.as_posix())
               size=m.stat().st_size
+              sig=m.read_bytes()[:16].hex()
               status='USED' if refs else 'UNUSED'
               if not refs: unused.append(rel)
-              print(f'MEDIA|{status}|{size}|{rel}|REFS={";".join(refs[:20])}')
+              print(f'MEDIA|{status}|{size}|{rel}|SIG={sig}|REFS={";".join(refs[:20])}')
           print(f'SUMMARY|media={len(media)}|unused={len(unused)}|unused_bytes={sum(Path(x).stat().st_size for x in unused)}')
           print('MEDIA_AUDIT_END')
