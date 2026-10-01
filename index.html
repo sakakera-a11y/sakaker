@@ -6066,16 +6066,10 @@ html body #loginBox #loginCopyright{
    إخفاء الأيقونة
 ========================= */
 
-.sakakerBusinessHidden{
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-  transform:scale(.5);
-}
 
 </style>
 
-<script>(function(){const icon=document.getElementById("sakakerBusinessIcon");const popup=document.getElementById("sakakerBusinessPopup");const close=document.getElementById("sbClose");if(!icon||!popup)return;icon.addEventListener("click",function(e){e.stopPropagation();popup.style.display="flex"});close.addEventListener("click",function(){popup.style.display="none"});popup.addEventListener("click",function(e){if(e.target===popup){popup.style.display="none"}});document.addEventListener("keydown",function(e){if(e.key==="Escape"){popup.style.display="none"}});function showIcon(){icon.classList.remove("sakakerBusinessHidden");setTimeout(function(){icon.classList.add("sakakerBusinessHidden");setTimeout(function(){showIcon()},12e4)},2e4)}showIcon()})();</script>
+<script>(function(){const icon=document.getElementById("sakakerBusinessIcon");const popup=document.getElementById("sakakerBusinessPopup");const close=document.getElementById("sbClose");if(!icon||!popup)return;icon.style.removeProperty("opacity");icon.style.removeProperty("visibility");icon.style.removeProperty("transform");icon.style.removeProperty("pointer-events");icon.addEventListener("click",function(e){e.stopPropagation();popup.style.display="flex"});if(close)close.addEventListener("click",function(){popup.style.display="none"});popup.addEventListener("click",function(e){if(e.target===popup){popup.style.display="none"}});document.addEventListener("keydown",function(e){if(e.key==="Escape"){popup.style.display="none"}})})();</script>
 <style>
 
 /* =========================================================
@@ -21757,13 +21751,8 @@ html body #sakUtilityRow :is(.launcher span,#sakMusicIcon *,#emeraldMusicHost #e
   html body #sakakerAllIconsDock :is(.icon-label,.sub,.fbIconText,.pong-label,.emOpenText,.sbIconCore,.launcher span){font-size:7px!important;max-width:44px!important;}
 }
 
-/* الدورة لا تمس النوافذ، الساعة، العداد أو شريط الأخبار؛ تُطبّق على أزرار الأيقونات فقط. */
-.sak-icon-cycle{transition:opacity .55s ease,visibility .55s ease!important;}
-.sak-icon-cycle:not(.sak-cycle-hidden){visibility:visible!important;opacity:1!important;pointer-events:auto!important;}
-.sak-icon-cycle.sak-cycle-hidden{visibility:hidden!important;opacity:0!important;pointer-events:none!important;}
-@media(prefers-reduced-motion:reduce){.sak-icon-cycle{transition:none!important;}}
 </style>
-<script id="sak-mobile-grid-and-icon-cycle-js">(()=>{"use strict";const selectors=["#sakakerAllIconsDock .icon-card","#facebookVideoIcon","#liveFlasher","#emeraldLibraryButton","#pongGame-btn","#shipIcon_new","#emeraldMusicHost #emOpenBtn","#sakakerBusinessIcon",".launcher","#sakMusicIcon",".video-top-container-fixed","#sakSecondStreamCorner","#sakCreativeIcon","#sakChatIcon"];const findIcons=()=>[...new Set(selectors.flatMap(s=>[...document.querySelectorAll(s)]))].filter(el=>!el.closest("#facebookVideoPopup,#livePopup,#shipPopup_new,#sakakerBusinessPopup,#emeraldLibraryContent,#sakMusicPlayer"));function mark(){findIcons().forEach(el=>el.classList.add("sak-icon-cycle"))}let shown=true,timer=null;function phase(show){shown=show;mark();findIcons().forEach(el=>el.classList.toggle("sak-cycle-hidden",!show));clearTimeout(timer);timer=setTimeout(()=>phase(!show),show?12e4:3e4)}mark();phase(true);[300,1200,3e3,7e3].forEach(ms=>setTimeout(()=>{mark();findIcons().forEach(el=>el.classList.toggle("sak-cycle-hidden",!shown))},ms));const dock=document.getElementById("sakakerAllIconsDock");if(dock)new MutationObserver(()=>{mark();findIcons().forEach(el=>el.classList.toggle("sak-cycle-hidden",!shown))}).observe(dock,{childList:true,subtree:true})})();</script>
+
 
 <style id="sak-realistic-video-eyes">
 /* الدائرتان تتحولان إلى عينين واضحتين، بينما يبقى الضغط لفتح الفيديو نفسه. */
@@ -24186,6 +24175,43 @@ html body #sakakerAllIconsDock{contain:layout style!important}
 </script>
 
 </body>
+
+<style id="sakaker-stable-icon-layout-final">
+/* SAKAKER — تثبيت مقاسات الأيقونات ومنع اختفائها أو انكماشها بعد التحميل */
+html,body{box-sizing:border-box;width:100%;max-width:100%;overflow-x:hidden;}
+*,*::before,*::after{box-sizing:border-box;}
+
+/* الدوائر الرئيسية: مقاس ثابت على الكمبيوتر، بدون تغير بعد التحميل */
+html body .cards{display:flex!important;flex-wrap:wrap!important;justify-content:center!important;align-items:center!important;gap:14px!important;width:100%!important;max-width:1050px!important;margin-left:auto!important;margin-right:auto!important;}
+html body .cards .icon-card{flex:0 0 105px!important;width:105px!important;height:105px!important;min-width:105px!important;max-width:105px!important;min-height:105px!important;max-height:105px!important;border-radius:50%!important;transform:none!important;}
+
+/* لا تستخدم hover لتغيير حجم الدائرة */
+html body .cards .icon-card:hover{transform:none!important;}
+
+/* الهاتف: حجم ثابت مناسب لا يتغير بعد ظهور الصفحة */
+@media (max-width:700px){
+  html body .cards{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;width:100%!important;max-width:460px!important;padding:12px 14px!important;gap:16px 12px!important;margin:120px auto 120px!important;}
+  html body .cards .icon-card{flex:none!important;width:132px!important;height:132px!important;min-width:132px!important;max-width:132px!important;min-height:132px!important;max-height:132px!important;border-radius:50%!important;}
+  html body .cards .icon-card:last-child{grid-column:1/-1!important;justify-self:center!important;}
+}
+@media (max-width:420px){
+  html body .cards{gap:12px 8px!important;padding-left:8px!important;padding-right:8px!important;}
+  html body .cards .icon-card{width:118px!important;height:118px!important;min-width:118px!important;max-width:118px!important;min-height:118px!important;max-height:118px!important;}
+}
+@media (max-width:360px){
+  html body .cards .icon-card{width:108px!important;height:108px!important;min-width:108px!important;max-width:108px!important;min-height:108px!important;max-height:108px!important;}
+}
+
+/* شريط الأيقونات السفلي: لا يختفي ولا يتغير حجمه */
+html body #sakakerAllIconsDock{visibility:visible!important;opacity:1!important;}
+html body #sakakerAllIconsDock .icon-card{visibility:visible!important;opacity:1!important;pointer-events:auto!important;}
+
+/* أيقونة سكاكر بزنس تبقى ظاهرة */
+html body #sakakerBusinessIcon{visibility:visible!important;opacity:1!important;pointer-events:auto!important;transform:none!important;}
+
+/* تقليل الحركات التي قد توهم بانكماش العنصر */
+@media (prefers-reduced-motion:reduce){html body .cards .icon-card{animation:none!important;transition:none!important;}}
+</style>
 </html>
 
 <style id="sakaker-text-library-absolute-top-layer">
