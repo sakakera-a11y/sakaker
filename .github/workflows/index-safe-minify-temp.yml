@@ -26,13 +26,20 @@ jobs:
           const pathmod = require('path');
           const terser = require(pathmod.join(process.env.GITHUB_WORKSPACE,'node_modules','terser'));
 
+          function countHtmlIdsOutsideCode(html){
+            const masked=html
+              .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,'')
+              .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi,'');
+            return (masked.match(/\bid\s*=\s*["'][^"']+["']/gi)||[]).length;
+          }
+
           (async()=>{
             const path='index.html';
             let html=fs.readFileSync(path,'utf8');
             const beforeBytes=Buffer.byteLength(html,'utf8');
             const beforeScripts=(html.match(/<script\b/gi)||[]).length;
             const beforeStyles=(html.match(/<style\b/gi)||[]).length;
-            const beforeIds=(html.match(/\bid\s*=\s*["'][^"']+["']/gi)||[]).length;
+            const beforeIds=countHtmlIdsOutsideCode(html);
 
             let processed=0, skipped=0, jsonDone=0, jsDone=0;
             const re=/<script\b([^>]*)>([\s\S]*?)<\/script>/gi;
@@ -81,11 +88,11 @@ jobs:
             const afterBytes=Buffer.byteLength(out,'utf8');
             const afterScripts=(out.match(/<script\b/gi)||[]).length;
             const afterStyles=(out.match(/<style\b/gi)||[]).length;
-            const afterIds=(out.match(/\bid\s*=\s*["'][^"']+["']/gi)||[]).length;
+            const afterIds=countHtmlIdsOutsideCode(out);
 
             if(beforeScripts!==afterScripts) throw new Error(`script count changed ${beforeScripts}->${afterScripts}`);
             if(beforeStyles!==afterStyles) throw new Error(`style count changed ${beforeStyles}->${afterStyles}`);
-            if(beforeIds!==afterIds) throw new Error(`id count changed ${beforeIds}->${afterIds}`);
+            if(beforeIds!==afterIds) throw new Error(`HTML id count changed ${beforeIds}->${afterIds}`);
             for(const marker of ['loginOverlay','sakLoginBackgroundVideo','gemini_generated_video_be58b3bc.mp4','pong.html','videos.html']){
               if(!out.includes(marker)) throw new Error(`required marker missing: ${marker}`);
             }
