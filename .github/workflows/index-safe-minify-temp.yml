@@ -23,7 +23,8 @@ jobs:
         shell: node {0}
         run: |
           const fs = require('fs');
-          const terser = require('terser');
+          const pathmod = require('path');
+          const terser = require(pathmod.join(process.env.GITHUB_WORKSPACE,'node_modules','terser'));
 
           (async()=>{
             const path='index.html';
@@ -73,9 +74,7 @@ jobs:
             }
             out += html.slice(last);
 
-            // Remove ordinary HTML comments only (keep conditional comments if any).
             out=out.replace(/<!--(?!\[if)[\s\S]*?-->/gi,'');
-            // Trim trailing whitespace and collapse fully blank HTML-only lines conservatively.
             out=out.split('\n').map(x=>x.replace(/[ \t]+$/,'')).join('\n');
             out=out.replace(/\n{3,}/g,'\n\n');
 
