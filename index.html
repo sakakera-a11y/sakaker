@@ -4339,39 +4339,11 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
 @media(max-width:700px){html,body{max-width:100%;overflow-x:hidden}button,[role="button"],.icon-card{touch-action:manipulation}#shipPopup_new{border-radius:16px!important}#closeShip_new{position:sticky!important;top:0!important;float:inline-end!important;z-index:2!important}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
-
-<style>
-/* SAKAKER LOGIN VIDEO BACKGROUND */
-#loginOverlay{
-  overflow:hidden !important;
-  isolation:isolate;
-}
-#sakakerLoginBgVideo{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  object-position:center center;
-  z-index:0;
-  pointer-events:none;
-}
-#loginOverlay > *:not(#sakakerLoginBgVideo){
-  position:relative;
-  z-index:1;
-}
-@media (max-width:768px){
-  #sakakerLoginBgVideo{object-position:center center;}
-}
-</style>
 </head>
 <body>
 
 <div id="loginOverlay">
-  <video id="sakakerLoginBgVideo" autoplay muted loop playsinline preload="auto" aria-hidden="true">
-    <source src="gemini_generated_video_be58b3bc.mp4" type="video/mp4">
-  </video>
-<video id="sakLoginBackgroundVideo" autoplay loop muted playsinline webkit-playsinline preload="auto" aria-hidden="true" disablepictureinpicture src="https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/sea-birds-compatible.mp4"></video>
+<video id="sakLoginBackgroundVideo" autoplay loop muted playsinline webkit-playsinline preload="auto" aria-hidden="true" disablepictureinpicture src="https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_be58b3bc.mp4"></video>
 
 <button id="loginVideoSoundButton" type="button" aria-pressed="false" aria-label="تشغيل صوت الخلفية" title="تشغيل صوت الخلفية">
   <span class="soundIcon" aria-hidden="true">🔇</span>
