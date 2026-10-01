@@ -1,0 +1,59 @@
+name: Fix Audio Video Login Impact Temp
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-audio-video-login-impact-temp.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Isolate converter from login page
+        shell: python
+        run: |
+          from pathlib import Path
+          p=Path('assets/audio-video-maker.js')
+          s=p.read_text(encoding='utf-8')
+
+          old="function renameIcon(){const b=document.getElementById('sakMusicIcon');if(!b)return;const t=T();b.innerHTML='<span>🎬 '+t.icon+'</span>';b.title=t.icon;b.setAttribute('aria-label',t.icon)}"
+          new="function renameIcon(){const b=document.getElementById('sakMusicIcon');if(!b)return;const t=T();const label='🎬 '+t.icon;const span=b.querySelector('span');if(span){if(span.textContent!==label)span.textContent=label}else if(b.textContent!==label){b.textContent=label}if(b.title!==t.icon)b.title=t.icon;if(b.getAttribute('aria-label')!==t.icon)b.setAttribute('aria-label',t.icon)}"
+          if old not in s:
+              raise SystemExit('renameIcon pattern not found')
+          s=s.replace(old,new,1)
+
+          old2="new MutationObserver(mount).observe(document.body,{childList:true,subtree:true});new MutationObserver(paintText).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();[250,800,1800].forEach(x=>setTimeout(mount,x));"
+          new2="function initAfterLogin(){if(document.body.classList.contains('locked'))return;renameIcon();mount()}new MutationObserver(function(){if(!document.body.classList.contains('locked'))initAfterLogin()}).observe(document.body,{attributes:true,attributeFilter:['class']});new MutationObserver(function(){if(!document.body.classList.contains('locked'))paintText()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initAfterLogin,{once:true});else initAfterLogin();"
+          if old2 not in s:
+              raise SystemExit('global observer pattern not found')
+          s=s.replace(old2,new2,1)
+
+          p.write_text(s,encoding='utf-8')
+
+      - name: Verify isolation
+        shell: python
+        run: |
+          from pathlib import Path
+          s=Path('assets/audio-video-maker.js').read_text(encoding='utf-8')
+          assert "childList:true,subtree:true" not in s
+          assert "function initAfterLogin()" in s
+          assert "classList.contains('locked')" in s
+          assert "تحويل الصوت لفيديو" in s
+          print('CONVERTER_LOGIN_ISOLATION_OK')
+
+      - name: Commit fix
+        run: |
+          if git diff --quiet -- assets/audio-video-maker.js; then
+            echo "No changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/audio-video-maker.js
+          git commit -m "Isolate audio video converter from login page"
+          git push
