@@ -1,4 +1,23 @@
 /* Final trio: full ostrich icons */
+
+/* Prevent layout flash while icons are being moved into their final docks. */
+html body:not(.sak-icons-layout-ready) #sakakerAllIconsDock,
+html body:not(.sak-icons-layout-ready) #sakFinalTrioDock{
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+html body.sak-icons-layout-ready #sakakerAllIconsDock,
+html body.sak-icons-layout-ready #sakFinalTrioDock{
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+html body #sakakerAllIconsDock,
+html body #sakakerAllIconsDock > *{
+  transition:none!important;
+}
+
 html body #sakFinalTrioDock#sakFinalTrioDock#sakFinalTrioDock{
   position:fixed!important;
   right:92px!important;
@@ -21,6 +40,7 @@ html body #sakFinalTrioDock#sakFinalTrioDock#sakFinalTrioDock{
   background:transparent!important;
   border:0!important;
   box-shadow:none!important;
+  transition:none!important;
 }
 
 html body #sakFinalTrioDock#sakFinalTrioDock .sak-final-ostrich{
@@ -50,6 +70,7 @@ html body #sakFinalTrioDock#sakFinalTrioDock .sak-final-ostrich{
   transform:none!important;
   translate:none!important;
   isolation:isolate!important;
+  transition:none!important;
 }
 
 /* Hide every legacy inner piece; keep only ostrich art + label */
