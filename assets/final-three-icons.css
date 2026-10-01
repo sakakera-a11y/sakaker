@@ -1,19 +1,96 @@
-/* Final icons: glowing ostrich trio + golden text-library star */
+/* Final icons: clean glowing ostrich trio + golden text-library star */
 html body #sakFinalTrioDock#sakFinalTrioDock#sakFinalTrioDock{
-  position:fixed!important;right:92px!important;left:auto!important;bottom:54px!important;top:auto!important;
-  display:flex!important;flex-direction:row!important;align-items:flex-end!important;justify-content:center!important;
-  gap:16px!important;width:max-content!important;height:auto!important;margin:0!important;padding:8px 10px!important;
-  z-index:2147483000!important;overflow:visible!important;pointer-events:none!important;isolation:isolate!important;background:transparent!important;
+  position:fixed!important;
+  right:52px!important;
+  left:auto!important;
+  bottom:132px!important;
+  top:auto!important;
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+  gap:18px!important;
+  width:max-content!important;
+  height:auto!important;
+  margin:0!important;
+  padding:6px 8px!important;
+  z-index:2147483000!important;
+  overflow:visible!important;
+  pointer-events:none!important;
+  isolation:isolate!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
 }
+
+/* Completely neutralize the old icon skins. */
 html body #sakFinalTrioDock#sakFinalTrioDock .sak-final-ostrich{
-  pointer-events:auto!important;display:flex!important;align-items:center!important;justify-content:flex-end!important;flex-direction:column!important;
-  padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important;border-radius:0!important;clip-path:none!important;
-  box-sizing:border-box!important;cursor:pointer!important;transform:none!important;translate:none!important;isolation:isolate!important;position:relative!important;inset:auto!important;
-  color:#fff!important;-webkit-text-fill-color:#fff!important;
+  pointer-events:auto!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  flex-direction:column!important;
+  width:82px!important;
+  height:98px!important;
+  min-width:82px!important;
+  min-height:98px!important;
+  max-width:82px!important;
+  max-height:98px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  outline:0!important;
+  background:none!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+  clip-path:none!important;
+  mask:none!important;
+  -webkit-mask:none!important;
+  box-sizing:border-box!important;
+  cursor:pointer!important;
+  transform:none!important;
+  translate:none!important;
+  isolation:isolate!important;
+  position:relative!important;
+  inset:auto!important;
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+  overflow:visible!important;
 }
+
+/* Hide every legacy child inside these buttons; keep only our ostrich and final label. */
+html body #sakFinalTrioDock .sak-final-ostrich > :not(.sak-ostrich-art):not(.sak-final-label){
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  width:0!important;
+  height:0!important;
+  margin:0!important;
+  padding:0!important;
+  pointer-events:none!important;
+}
+html body #sakFinalTrioDock .sak-final-ostrich::before{
+  content:none!important;
+  display:none!important;
+  background:none!important;
+  box-shadow:none!important;
+}
+
 html body #sakFinalTrioDock .sak-ostrich-art{
-  display:block!important;position:absolute!important;inset:0 0 14px 0!important;width:100%!important;height:auto!important;z-index:4!important;
-  pointer-events:none!important;filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 14px #ffd95a) drop-shadow(0 0 26px #00e9d6)!important;
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  top:0!important;
+  bottom:17px!important;
+  width:100%!important;
+  height:auto!important;
+  z-index:4!important;
+  pointer-events:none!important;
+  filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 14px #ffd95a) drop-shadow(0 0 26px #00e9d6)!important;
   animation:sakOstrichGlow 2.2s ease-in-out infinite!important;
 }
 html body #sakFinalTrioDock .sak-ostrich-map .sak-ostrich-art{
@@ -22,42 +99,124 @@ html body #sakFinalTrioDock .sak-ostrich-map .sak-ostrich-art{
 html body #sakFinalTrioDock .sak-ostrich-music .sak-ostrich-art{
   filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 16px #ffe26a) drop-shadow(0 0 30px #ff9d00)!important;
 }
-html body #sakFinalTrioDock .sak-ostrich-svg{display:block!important;width:100%!important;height:100%!important;overflow:visible!important}
-html body #sakFinalTrioDock .sak-ostrich-body{transform-origin:50% 70%;animation:sakOstrichFloat 2.8s ease-in-out infinite!important}
-html body #sakFinalTrioDock .sak-ostrich-badge{filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 8px currentColor)!important;animation:sakBadgePulse 1.7s ease-in-out infinite!important}
+html body #sakFinalTrioDock .sak-ostrich-svg{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  width:100%!important;
+  height:100%!important;
+  overflow:visible!important;
+}
+html body #sakFinalTrioDock .sak-ostrich-body{
+  transform-origin:50% 70%;
+  animation:sakOstrichFloat 2.8s ease-in-out infinite!important;
+}
+html body #sakFinalTrioDock .sak-ostrich-badge{
+  filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 8px currentColor)!important;
+  animation:sakBadgePulse 1.7s ease-in-out infinite!important;
+}
 html body #sakFinalTrioDock .sak-final-label{
-  display:block!important;position:relative!important;z-index:7!important;width:98px!important;max-width:98px!important;text-align:center!important;
-  white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;color:#fff!important;-webkit-text-fill-color:#fff!important;
-  font:900 8px/1.1 Tajawal,Tahoma,Arial,sans-serif!important;text-shadow:0 1px 3px #000,0 0 6px #000,0 0 10px #fff!important;margin-top:-4px!important;
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:relative!important;
+  z-index:7!important;
+  width:98px!important;
+  max-width:98px!important;
+  height:auto!important;
+  margin:0 0 -2px!important;
+  padding:0!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+  font:900 8px/1.15 Tajawal,Tahoma,Arial,sans-serif!important;
+  text-shadow:0 1px 3px #000,0 0 6px #000,0 0 10px #fff!important;
+  pointer-events:none!important;
 }
 html body #sakFinalTrioDock .sak-final-ostrich::after{
-  content:'✦'!important;position:absolute!important;top:-7px!important;right:-4px!important;color:#fff!important;font-size:18px!important;line-height:1!important;z-index:8!important;
-  pointer-events:none!important;text-shadow:0 0 4px #fff,0 0 10px #fff,0 0 18px #ffe173!important;animation:sakFinalSpark 1.15s ease-in-out infinite!important;
+  content:'✦'!important;
+  position:absolute!important;
+  top:-7px!important;
+  right:-4px!important;
+  color:#fff!important;
+  font-size:18px!important;
+  line-height:1!important;
+  z-index:8!important;
+  pointer-events:none!important;
+  text-shadow:0 0 4px #fff,0 0 10px #fff,0 0 18px #ffe173!important;
+  animation:sakFinalSpark 1.15s ease-in-out infinite!important;
 }
-html body #sakFinalTrioDock .sak-final-ostrich:hover{transform:translateY(-5px) scale(1.08)!important;filter:brightness(1.15)!important}
+html body #sakFinalTrioDock .sak-final-ostrich:hover{
+  transform:translateY(-5px) scale(1.08)!important;
+  filter:brightness(1.15)!important;
+}
 
-/* Text library: full golden star icon, preserving its click behavior and position */
+/* Text library: full golden star, without changing its click target or location. */
 html body .sak-text-library-gold-star{
-  position:relative!important;overflow:visible!important;background:transparent!important;border:0!important;box-shadow:none!important;
+  position:relative!important;
+  overflow:visible!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
 }
 html body .sak-text-library-gold-star > .sak-text-star-art{
-  display:flex!important;align-items:center!important;justify-content:center!important;position:absolute!important;left:50%!important;top:50%!important;
-  transform:translate(-50%,-56%)!important;width:78px!important;height:78px!important;font-size:66px!important;line-height:1!important;z-index:9!important;
-  color:#ffd700!important;-webkit-text-fill-color:#ffd700!important;pointer-events:none!important;
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  align-items:center!important;
+  justify-content:center!important;
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  transform:translate(-50%,-56%)!important;
+  width:78px!important;
+  height:78px!important;
+  font-size:66px!important;
+  line-height:1!important;
+  z-index:9!important;
+  color:#ffd700!important;
+  -webkit-text-fill-color:#ffd700!important;
+  pointer-events:none!important;
   text-shadow:0 0 4px #fff8c8,0 0 11px #fff,0 0 19px #ffd700,0 0 32px #ffad00,0 0 46px #00ffd5!important;
-  filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 16px #ffd700)!important;animation:sakLibraryStarPulse 2s ease-in-out infinite!important;
+  filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 16px #ffd700)!important;
+  animation:sakLibraryStarPulse 2s ease-in-out infinite!important;
 }
-html body .sak-text-library-gold-star:hover > .sak-text-star-art{transform:translate(-50%,-56%) scale(1.1)!important}
+html body .sak-text-library-gold-star:hover > .sak-text-star-art{
+  transform:translate(-50%,-56%) scale(1.1)!important;
+}
 
-@keyframes sakOstrichGlow{0%,100%{opacity:.88;filter:brightness(1)}50%{opacity:1;filter:brightness(1.25)}}
+@keyframes sakOstrichGlow{0%,100%{opacity:.9;filter:brightness(1)}50%{opacity:1;filter:brightness(1.25)}}
 @keyframes sakOstrichFloat{0%,100%{transform:translateY(1px) rotate(-1deg)}50%{transform:translateY(-3px) rotate(1deg)}}
 @keyframes sakBadgePulse{0%,100%{opacity:.78;transform:scale(.94)}50%{opacity:1;transform:scale(1.08)}}
 @keyframes sakFinalSpark{0%,100%{opacity:.35;transform:scale(.7) rotate(0deg)}50%{opacity:1;transform:scale(1.35) rotate(45deg)}}
 @keyframes sakLibraryStarPulse{0%,100%{filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 16px #ffd700);opacity:.9}50%{filter:drop-shadow(0 0 9px #fff) drop-shadow(0 0 28px #ffd700) drop-shadow(0 0 38px #00ffd5);opacity:1}}
 
 @media(max-width:700px){
-  html body #sakFinalTrioDock#sakFinalTrioDock#sakFinalTrioDock{right:16px!important;bottom:62px!important;gap:8px!important;padding:5px!important}
-  html body #sakFinalTrioDock .sak-final-ostrich{width:62px!important;height:76px!important;min-width:62px!important;min-height:76px!important;max-width:62px!important;max-height:76px!important}
-  html body #sakFinalTrioDock .sak-final-label{width:72px!important;max-width:72px!important;font-size:6.5px!important}
-  html body .sak-text-library-gold-star > .sak-text-star-art{width:58px!important;height:58px!important;font-size:50px!important}
+  html body #sakFinalTrioDock#sakFinalTrioDock#sakFinalTrioDock{
+    right:12px!important;
+    bottom:118px!important;
+    gap:7px!important;
+    padding:4px!important;
+  }
+  html body #sakFinalTrioDock .sak-final-ostrich{
+    width:60px!important;
+    height:74px!important;
+    min-width:60px!important;
+    min-height:74px!important;
+    max-width:60px!important;
+    max-height:74px!important;
+  }
+  html body #sakFinalTrioDock .sak-final-label{
+    width:68px!important;
+    max-width:68px!important;
+    font-size:6.2px!important;
+  }
+  html body .sak-text-library-gold-star > .sak-text-star-art{
+    width:58px!important;
+    height:58px!important;
+    font-size:50px!important;
+  }
 }
