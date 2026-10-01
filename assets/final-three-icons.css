@@ -1,206 +1,17 @@
-/* Final trio: full ostrich icons */
-
-/* Prevent layout flash while icons are being moved into their final docks. */
-html body:not(.sak-icons-layout-ready) #sakakerAllIconsDock,
-html body:not(.sak-icons-layout-ready) #sakFinalTrioDock{
-  visibility:hidden!important;
-  opacity:0!important;
-  pointer-events:none!important;
-}
-html body.sak-icons-layout-ready #sakakerAllIconsDock,
-html body.sak-icons-layout-ready #sakFinalTrioDock{
-  visibility:visible!important;
-  opacity:1!important;
-}
+/* Approved permanent icon layout: original icons, no ostrich replacement */
 
 html body #sakakerAllIconsDock,
 html body #sakakerAllIconsDock > *{
   transition:none!important;
 }
 
-html body #sakFinalTrioDock#sakFinalTrioDock#sakFinalTrioDock{
-  position:fixed!important;
-  right:92px!important;
-  left:auto!important;
-  bottom:54px!important;
-  top:auto!important;
-  display:flex!important;
-  flex-direction:row!important;
-  align-items:flex-end!important;
-  justify-content:center!important;
-  gap:10px!important;
-  width:max-content!important;
-  height:auto!important;
-  margin:0!important;
-  padding:6px 8px!important;
-  z-index:2147483000!important;
-  overflow:visible!important;
-  pointer-events:none!important;
-  isolation:isolate!important;
-  background:transparent!important;
-  border:0!important;
-  box-shadow:none!important;
-  transition:none!important;
-}
-
-html body #sakFinalTrioDock#sakFinalTrioDock .sak-final-ostrich{
-  pointer-events:auto!important;
-  position:relative!important;
-  inset:auto!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:flex-start!important;
-  flex-direction:column!important;
-  width:72px!important;
-  height:86px!important;
-  min-width:72px!important;
-  max-width:72px!important;
-  min-height:86px!important;
-  max-height:86px!important;
-  margin:0!important;
-  padding:0!important;
-  border:0!important;
-  border-radius:0!important;
-  background:transparent!important;
-  background-image:none!important;
-  box-shadow:none!important;
-  clip-path:none!important;
-  overflow:visible!important;
-  cursor:pointer!important;
-  transform:none!important;
-  translate:none!important;
-  isolation:isolate!important;
-  transition:none!important;
-}
-
-/* Hide every legacy inner piece; keep only ostrich art + label */
-html body #sakFinalTrioDock#sakFinalTrioDock .sak-final-ostrich > *:not(.sak-ostrich-art):not(.sak-final-label){
-  display:none!important;
-  visibility:hidden!important;
-  opacity:0!important;
-  pointer-events:none!important;
-  width:0!important;
-  height:0!important;
-  min-width:0!important;
-  min-height:0!important;
-  max-width:0!important;
-  max-height:0!important;
-  margin:0!important;
-  padding:0!important;
-  border:0!important;
-  background:none!important;
-  box-shadow:none!important;
-  clip-path:none!important;
-  overflow:hidden!important;
-}
-
-html body #sakFinalTrioDock#sakFinalTrioDock .sak-final-ostrich .sak-ostrich-art{
-  display:block!important;
-  visibility:visible!important;
-  opacity:1!important;
-  position:relative!important;
-  width:58px!important;
-  height:70px!important;
-  min-width:58px!important;
-  min-height:70px!important;
-  margin:0 auto!important;
-  padding:0!important;
-  line-height:0!important;
-  overflow:visible!important;
-  filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 10px rgba(255,220,90,.8)) drop-shadow(0 0 18px rgba(0,255,210,.4))!important;
-  animation:sakOstrichGlow 2.2s ease-in-out infinite!important;
-}
-
-html body #sakFinalTrioDock#sakFinalTrioDock .sak-final-ostrich .sak-ostrich-svg{
-  display:block!important;
-  width:100%!important;
-  height:100%!important;
-  min-width:100%!important;
-  min-height:100%!important;
-  max-width:none!important;
-  max-height:none!important;
-  overflow:visible!important;
-}
-
-html body #sakFinalTrioDock#sakFinalTrioDock .sak-final-ostrich .sak-final-label{
-  display:block!important;
-  visibility:visible!important;
-  opacity:1!important;
-  position:absolute!important;
-  left:50%!important;
-  bottom:-10px!important;
-  transform:translateX(-50%)!important;
-  width:82px!important;
-  max-width:82px!important;
-  margin:0!important;
-  padding:0!important;
-  text-align:center!important;
-  white-space:nowrap!important;
-  overflow:hidden!important;
-  text-overflow:ellipsis!important;
-  z-index:7!important;
-  color:#fff!important;
-  -webkit-text-fill-color:#fff!important;
-  font:900 8px/1.1 Tajawal,Tahoma,Arial,sans-serif!important;
-  text-shadow:0 1px 3px #000,0 0 5px #000,0 0 8px rgba(255,255,255,.9)!important;
-}
-
-html body #sakFinalTrioDock#sakFinalTrioDock .sak-final-ostrich::before,
-html body #sakFinalTrioDock#sakFinalTrioDock .sak-final-ostrich::after,
-html body #sakFinalTrioDock#sakFinalTrioDock .sak-final-symbol{
-  display:none!important;
-  content:none!important;
-}
-
-html body #sakFinalTrioDock#sakFinalTrioDock .sak-final-ostrich:hover{
-  transform:translateY(-3px) scale(1.06)!important;
-}
-html body #sakFinalTrioDock#sakFinalTrioDock .sak-final-ostrich:hover .sak-ostrich-art{
-  filter:brightness(1.12) drop-shadow(0 0 7px #fff) drop-shadow(0 0 16px rgba(255,220,90,.95)) drop-shadow(0 0 24px rgba(0,255,210,.65))!important;
-}
-
-@keyframes sakOstrichGlow{
-  0%,100%{filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 10px rgba(255,220,90,.7)) drop-shadow(0 0 18px rgba(0,255,210,.35))}
-  50%{filter:drop-shadow(0 0 7px #fff) drop-shadow(0 0 16px rgba(255,220,90,.9)) drop-shadow(0 0 25px rgba(0,255,210,.55))}
-}
-
-@media(max-width:700px){
-  html body #sakFinalTrioDock#sakFinalTrioDock#sakFinalTrioDock{
-    right:14px!important;
-    bottom:150px!important;
-    gap:7px!important;
-    padding:5px!important;
-  }
-  html body #sakFinalTrioDock#sakFinalTrioDock .sak-final-ostrich{
-    width:62px!important;
-    height:76px!important;
-    min-width:62px!important;
-    max-width:62px!important;
-    min-height:76px!important;
-    max-height:76px!important;
-  }
-  html body #sakFinalTrioDock#sakFinalTrioDock .sak-final-ostrich .sak-ostrich-art{
-    width:50px!important;
-    height:62px!important;
-    min-width:50px!important;
-    min-height:62px!important;
-  }
-  html body #sakFinalTrioDock#sakFinalTrioDock .sak-final-ostrich .sak-final-label{
-    width:68px!important;
-    max-width:68px!important;
-    font-size:6.5px!important;
-    bottom:-8px!important;
-  }
-}
-
-/* =========================================================
-   Global layout correction: desktop + mobile
-========================================================= */
+/* Keep payment near mid-screen on desktop and mobile. */
 html body #sakGlobalPayment,
 html body.locked #sakGlobalPayment{
   bottom:44vh!important;
 }
 
+/* Keep the original icon artwork and arrange it in multiple rows. */
 html body #sakakerAllIconsDock{
   display:flex!important;
   flex-wrap:wrap!important;
@@ -213,12 +24,6 @@ html body #sakakerAllIconsDock{
   row-gap:8px!important;
   column-gap:8px!important;
   overflow:visible!important;
-}
-
-@media(min-width:701px){
-  html body #sakFinalTrioDock#sakFinalTrioDock#sakFinalTrioDock{
-    bottom:145px!important;
-  }
 }
 
 @media(max-width:700px){
