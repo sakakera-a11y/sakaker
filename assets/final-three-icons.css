@@ -11,26 +11,65 @@ html body.locked #sakGlobalPayment{
   bottom:44vh!important;
 }
 
-/* Keep the original icon artwork and arrange it in multiple rows. */
+/* Keep all original site icons anchored at the bottom-right. */
 html body #sakakerAllIconsDock{
+  position:fixed!important;
+  left:auto!important;
+  right:max(8px,env(safe-area-inset-right))!important;
+  bottom:max(8px,env(safe-area-inset-bottom))!important;
+  top:auto!important;
+  transform:none!important;
+  z-index:2147483000!important;
+
   display:flex!important;
   flex-wrap:wrap!important;
-  justify-content:center!important;
+  justify-content:flex-end!important;
   align-items:flex-end!important;
   align-content:flex-end!important;
-  width:min(680px,96vw)!important;
-  max-width:96vw!important;
+
+  width:min(680px,94vw)!important;
+  max-width:94vw!important;
   height:auto!important;
+  max-height:46vh!important;
+  padding:4px!important;
   row-gap:8px!important;
   column-gap:8px!important;
-  overflow:visible!important;
+
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain!important;
+  -webkit-overflow-scrolling:touch!important;
+  scrollbar-width:thin!important;
+}
+
+html body #sakakerAllIconsDock .cards,
+html body #sakakerAllIconsDock #sakakerUtilityDock,
+html body #sakakerAllIconsDock #sakakerCenterFeatureDock{
+  justify-content:flex-end!important;
+  align-items:flex-end!important;
 }
 
 @media(max-width:700px){
   html body #sakakerAllIconsDock{
-    width:96vw!important;
-    max-width:96vw!important;
+    right:max(5px,env(safe-area-inset-right))!important;
+    bottom:max(5px,env(safe-area-inset-bottom))!important;
+    width:94vw!important;
+    max-width:94vw!important;
+    max-height:44vh!important;
+    padding:3px!important;
     row-gap:6px!important;
     column-gap:5px!important;
+    justify-content:flex-end!important;
+  }
+}
+
+@media (orientation:landscape) and (max-height:650px){
+  html body #sakakerAllIconsDock{
+    right:max(6px,env(safe-area-inset-right))!important;
+    bottom:max(6px,env(safe-area-inset-bottom))!important;
+    width:min(820px,78vw)!important;
+    max-width:78vw!important;
+    max-height:58vh!important;
+    justify-content:flex-end!important;
   }
 }
