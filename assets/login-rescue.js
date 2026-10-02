@@ -26,6 +26,41 @@ function setBusy(busy){
   google.disabled=!!busy;
   google.setAttribute('aria-busy',busy?'true':'false');
 }
+
+/* Main-site sound control only: keep login page untouched. The signed-in
+   profile sits at the top-right, so the sound button is anchored top-left. */
+function installPostLoginSoundStyle(){
+  if(document.getElementById('sakPostLoginSoundStyle'))return;
+  const style=document.createElement('style');
+  style.id='sakPostLoginSoundStyle';
+  style.textContent=`
+    body:not(.locked) #bird-sound-btn,
+    body:not(.locked) #sakakerBirdSoundBtn{
+      display:none!important;
+      visibility:hidden!important;
+      opacity:0!important;
+      pointer-events:none!important;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+function placePostLoginSoundButton(){
+  if(!document.body||document.body.classList.contains('locked'))return;
+  const btn=$('sakSiteSoundBtn');
+  if(!btn)return;
+  btn.style.setProperty('left','max(12px, env(safe-area-inset-left))','important');
+  btn.style.setProperty('right','auto','important');
+  btn.style.setProperty('top','max(12px, env(safe-area-inset-top))','important');
+  btn.style.setProperty('bottom','auto','important');
+  btn.style.setProperty('transform','none','important');
+}
+
+function syncPostLoginSoundUi(){
+  installPostLoginSoundStyle();
+  placePostLoginSoundButton();
+}
+
 function applyUser(user){
   if(user){
     document.body.classList.remove('locked');
@@ -34,6 +69,7 @@ function applyUser(user){
     const n=$('userName');if(n)n.textContent=user.displayName||user.email||(langEn()?'User':'المستخدم');
     const p=$('userPhoto');if(p&&user.photoURL)p.src=user.photoURL;
     if(errorEl)errorEl.textContent='';
+    setTimeout(syncPostLoginSoundUi,0);
   }else{
     document.body.classList.add('locked');
     if(overlay){overlay.style.setProperty('display','flex','important');overlay.removeAttribute('aria-hidden')}
@@ -57,6 +93,8 @@ function lightenLoginVideo(){
   }catch(_){}
 }
 lightenLoginVideo();
+installPostLoginSoundStyle();
+[0,250,700,1500,3000,5500,9000].forEach(ms=>setTimeout(syncPostLoginSoundUi,ms));
 
 (async()=>{
   try{
