@@ -47,6 +47,12 @@ function installFacebookEmbeds(){
   const box=popup?.querySelector('.fbVideoBox');
   if(!box||box.querySelector('#sakFacebookEmbeddedMedia'))return;
   const items=[
+    {
+      type:'custom',
+      src:'https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1713298586438007%2F&show_text=true&width=267&t=0',
+      width:'267',
+      height:'591'
+    },
     {type:'post',url:'https://www.facebook.com/100082898274465/posts/1089659210474011/?app=fbl'},
     {type:'video',url:'https://www.facebook.com/share/r/1BQxaJUuP5/'},
     {type:'post',url:'https://www.facebook.com/61556336314377/posts/122326658408211210/'}
@@ -56,11 +62,18 @@ function installFacebookEmbeds(){
   wrap.style.cssText='display:grid;grid-template-columns:1fr;gap:12px;margin:12px 0 6px;max-width:100%;overflow:hidden';
   items.forEach(item=>{
     const iframe=document.createElement('iframe');
-    const plugin=item.type==='video'?'video.php':'post.php';
-    const extra=item.type==='video'?'&show_text=false&width=500':'&show_text=true&width=500';
-    iframe.src='https://www.facebook.com/plugins/'+plugin+'?href='+encodeURIComponent(item.url)+extra;
-    iframe.width='500';iframe.height=item.type==='video'?'520':'620';
-    iframe.style.cssText='border:none;overflow:hidden;width:100%;max-width:500px;min-height:500px;margin:auto';
+    if(item.type==='custom'){
+      iframe.src=item.src;
+      iframe.width=item.width;
+      iframe.height=item.height;
+      iframe.style.cssText='border:none;overflow:hidden;width:100%;max-width:267px;min-height:591px;margin:auto';
+    }else{
+      const plugin=item.type==='video'?'video.php':'post.php';
+      const extra=item.type==='video'?'&show_text=false&width=500':'&show_text=true&width=500';
+      iframe.src='https://www.facebook.com/plugins/'+plugin+'?href='+encodeURIComponent(item.url)+extra;
+      iframe.width='500';iframe.height=item.type==='video'?'520':'620';
+      iframe.style.cssText='border:none;overflow:hidden;width:100%;max-width:500px;min-height:500px;margin:auto';
+    }
     iframe.scrolling='no';iframe.frameBorder='0';iframe.allowFullscreen=true;iframe.loading='lazy';
     iframe.allow='autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share';
     wrap.appendChild(iframe);
