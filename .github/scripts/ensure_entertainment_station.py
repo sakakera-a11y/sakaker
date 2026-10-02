@@ -12,6 +12,17 @@ TITLE = 'abwalqmrzmrd castle'
 STYLE = '<link id="sak-compact-main-icons" rel="stylesheet" href="/assets/compact-main-icons.css?v=20261002-1">'
 LOADER = '<script id="sak-entertainment-runtime-loader" src="/assets/entertainment-station.js?v=20261002-2" defer></script>'
 
+# Replace the old site name anywhere it remains in visible/page metadata text.
+legacy_names = [
+    r'موسوعة\s*ابوالقمرزمرد\s*\|\s*abwalqmrzmrd\s*enc(?:y|i)lopedia',
+    r'موسوعة\s*أبوالقمرزمرد\s*\|\s*abwalqmrzmrd\s*enc(?:y|i)lopedia',
+    r'abwalqmrzmrd\s*enc(?:y|i)lopedia',
+    r'موسوعة\s*ابوالقمرزمرد',
+    r'موسوعة\s*أبوالقمرزمرد',
+]
+for pattern in legacy_names:
+    text = re.sub(pattern, TITLE, text, flags=re.IGNORECASE)
+
 title_re = re.compile(r'<title\b[^>]*>.*?</title>', re.IGNORECASE | re.DOTALL)
 if title_re.search(text):
     text = title_re.sub(f'<title>{TITLE}</title>', text, count=1)
