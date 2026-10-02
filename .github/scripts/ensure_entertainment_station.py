@@ -8,7 +8,7 @@ text = page.read_text(encoding='utf-8')
 if '<html' not in text.lower() or '</html>' not in text.lower():
     raise SystemExit('Refusing to patch incomplete index.html')
 
-TITLE = 'Emerald Moon Castle'
+TITLE = 'abwalqmrzmrd castle'
 LOADER = '<script id="sak-entertainment-runtime-loader" src="/assets/entertainment-station.js?v=20261002-2" defer></script>'
 
 # Browser-tab name: English only, independent of the page language.
