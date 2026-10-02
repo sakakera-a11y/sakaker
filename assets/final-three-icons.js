@@ -104,11 +104,11 @@ function installSiteBackgroundStyle(){
     }
     #sakSiteSoundBtn{
       position:fixed!important;
-      top:max(8px,env(safe-area-inset-top))!important;
-      left:50%!important;
-      right:auto!important;
-      bottom:auto!important;
-      transform:translateX(-50%)!important;
+      top:auto!important;
+      left:auto!important;
+      right:max(12px,env(safe-area-inset-right))!important;
+      bottom:max(12px,env(safe-area-inset-bottom))!important;
+      transform:none!important;
       z-index:2147483647!important;
       min-width:150px!important;
       min-height:44px!important;
@@ -134,6 +134,7 @@ function installSiteBackgroundStyle(){
     }
     #sakSiteSoundBtn:hover,
     #sakSiteSoundBtn:focus-visible{
+      transform:translateY(-1px) scale(1.03)!important;
       filter:brightness(1.14)!important;
       box-shadow:0 0 0 2px rgba(0,0,0,.4),0 0 16px rgba(95,255,220,1),0 0 32px rgba(255,210,72,.78)!important;
       outline:2px solid #fff6bd!important;
@@ -187,6 +188,17 @@ function removeOldSeaSoundControl(){
     const s=((el.getAttribute('title')||'')+' '+(el.getAttribute('aria-label')||'')+' '+(el.textContent||'')).replace(/\s+/g,' ').trim();
     if(/صوت\s*البحر|Sea\s*Sound|Ocean\s*Sound/i.test(s))el.remove();
   });
+
+  const circleRoots=document.querySelectorAll('.video-top-container-fixed,#sakSecondStreamCorner,#sakakerVideoSlot');
+  circleRoots.forEach(root=>{
+    root.querySelectorAll('button,[role="button"],span,[title],[aria-label],[id],[class]').forEach(el=>{
+      if(el.closest('#loginOverlay'))return;
+      if(el.id==='sakSiteSoundBtn'||el.id==='sakSiteBackgroundBtn')return;
+      if(el.matches('video,iframe'))return;
+      const meta=((el.id||'')+' '+(el.className||'')+' '+(el.getAttribute('title')||'')+' '+(el.getAttribute('aria-label')||'')+' '+(el.textContent||'')).replace(/\s+/g,' ').trim();
+      if(/sound|audio|mute|volume|speaker|صوت|🔊|🔇|🔈|🔉|🎵|🎶|🌊/i.test(meta))el.remove();
+    });
+  });
 }
 
 function visibleRect(el){
@@ -214,32 +226,19 @@ function placeSiteSoundAboveClock(){
   const btn=document.getElementById('sakSiteSoundBtn');
   if(!btn)return;
 
-  const anchor=findClockAnchor();
-  const btnWidth=Math.max(btn.offsetWidth||150,120);
-  const btnHeight=Math.max(btn.offsetHeight||44,38);
-  let left=window.innerWidth/2;
-  let top=Math.max(6,Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sat')||'0')||6);
-
-  if(anchor){
-    const r=anchor.getBoundingClientRect();
-    left=r.left+r.width/2;
-    top=Math.max(6,r.top-btnHeight-6);
-  }
-
-  const profile=document.getElementById('userProfile');
-  const profileRect=visibleRect(profile);
-  const half=btnWidth/2;
-  left=Math.max(half+8,Math.min(window.innerWidth-half-8,left));
-  if(profileRect&&top<profileRect.bottom+6&&top+btnHeight>profileRect.top-6&&left+half>profileRect.left-8){
-    left=Math.max(half+8,profileRect.left-half-12);
+  let bottom=12;
+  const dock=document.getElementById('sakakerAllIconsDock');
+  const dockRect=visibleRect(dock);
+  if(dockRect&&dockRect.top<window.innerHeight&&dockRect.bottom>0){
+    bottom=Math.max(bottom,window.innerHeight-dockRect.top+8);
   }
 
   btn.style.setProperty('position','fixed','important');
-  btn.style.setProperty('left',left+'px','important');
-  btn.style.setProperty('right','auto','important');
-  btn.style.setProperty('top',top+'px','important');
-  btn.style.setProperty('bottom','auto','important');
-  btn.style.setProperty('transform','translateX(-50%)','important');
+  btn.style.setProperty('left','auto','important');
+  btn.style.setProperty('right','max(10px, env(safe-area-inset-right))','important');
+  btn.style.setProperty('top','auto','important');
+  btn.style.setProperty('bottom','calc('+Math.round(bottom)+'px + env(safe-area-inset-bottom))','important');
+  btn.style.setProperty('transform','none','important');
 }
 
 function updateSiteBackgroundButton(){
@@ -565,14 +564,16 @@ if(document.body){
   },{once:true});
 }
 
-/* Legacy sea-sound scripts may try to reinsert their old button. Remove only
-   those known legacy sound nodes; no other page content is observed. */
+/* Legacy sea-sound scripts may try to reinsert their old button. Also clean
+   sound badges re-added below either circular video. */
 const legacySoundObserver=new MutationObserver(records=>{
   let touched=false;
   for(const record of records){
     for(const node of record.addedNodes){
       if(!(node instanceof Element))continue;
-      if(node.matches?.('#sakSeaSoundButton,#sakSeaAudio,#bird-sound-btn,#sakakerBirdSoundBtn,#sakakerBirdAudio')||node.querySelector?.('#sakSeaSoundButton,#sakSeaAudio,#bird-sound-btn,#sakakerBirdSoundBtn,#sakakerBirdAudio')){
+      const known=node.matches?.('#sakSeaSoundButton,#sakSeaAudio,#bird-sound-btn,#sakakerBirdSoundBtn,#sakakerBirdAudio')||node.querySelector?.('#sakSeaSoundButton,#sakSeaAudio,#bird-sound-btn,#sakakerBirdSoundBtn,#sakakerBirdAudio');
+      const inCircle=!!node.closest?.('.video-top-container-fixed,#sakSecondStreamCorner,#sakakerVideoSlot');
+      if(known||inCircle){
         touched=true;
         break;
       }
