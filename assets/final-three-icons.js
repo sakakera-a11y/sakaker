@@ -2,6 +2,7 @@
 
 const NS='http://www.w3.org/2000/svg';
 const EXCLUDED='#facebookVideoPopup,#livePopup,#shipPopup_new,#sakakerBusinessPopup,#emeraldLibraryContent,#sakMusicPlayer,#sakTextLibraryModal,#loginOverlay';
+const SITE_BG_SRC='/gemini_generated_video_34118154.mp4';
 
 /* Requested row order first, then the remaining site tools. */
 const utilityItems=[
@@ -10,6 +11,7 @@ const utilityItems=[
   {key:'videoLibrary',selectors:['#emeraldLibraryButton']},
   {key:'live',selectors:['#liveFlasher']},
   {key:'pong',selectors:['#pongGame-btn']},
+  {key:'siteBackground',selectors:['#sakSiteBackgroundBtn']},
   {key:'ship',selectors:['#shipIcon_new']},
   {key:'music',selectors:['#emOpenBtn','#emeraldMusicHost #emOpenBtn','#emeraldMusicHost button','#emeraldMusicHost [role="button"]']},
   {key:'map',selectors:['#mapIcon','.launcher[data-map]','.launcher[aria-label*="خريطة"]','.launcher[title*="خريطة"]','.launcher']},
@@ -22,6 +24,7 @@ const labels={
   videoLibrary:{ar:'مكتبة الفيديو',en:'Video Library'},
   live:{ar:'قنوات مباشرة',en:'Live Channels'},
   pong:{ar:'لعبة البونج',en:'Pong'},
+  siteBackground:{ar:'خلفية الصفحة',en:'Page Background'},
   ship:{ar:'أبوالقمر زمرد',en:'Abwalqmrzmrd'},
   music:{ar:'تحويل الصوت',en:'Audio'},
   map:{ar:'الخرائط',en:'Maps'},
@@ -65,9 +68,153 @@ function installFacebookEmbeds(){
   iframe.setAttribute('allowfullscreen','true');
   iframe.setAttribute('title','Facebook Reel');
 
-  /* Prepend directly to the existing Facebook box so it is guaranteed to be
-     the first media item; all older uploads remain untouched after it. */
   box.insertBefore(iframe,box.firstChild);
+}
+
+function isLocked(){return document.body?.classList.contains('locked');}
+
+function installSiteBackgroundStyle(){
+  if(document.getElementById('sakSiteBackgroundStyle'))return;
+  const style=document.createElement('style');
+  style.id='sakSiteBackgroundStyle';
+  style.textContent=`
+    body:not(.locked){
+      background-image:none!important;
+      background-color:#02090b!important;
+      isolation:isolate!important;
+    }
+    #sakSiteBackgroundVideo{
+      position:fixed!important;
+      inset:0!important;
+      width:100vw!important;
+      height:100dvh!important;
+      object-fit:cover!important;
+      object-position:center center!important;
+      z-index:-1!important;
+      pointer-events:none!important;
+      background:#02090b!important;
+    }
+    body.locked #sakSiteBackgroundVideo{
+      display:none!important;
+    }
+    #sakSiteBackgroundBtn{
+      cursor:pointer!important;
+      touch-action:manipulation!important;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+function removeOldSeaSoundControl(){
+  const direct=document.getElementById('sakakerBirdSoundBtn');
+  if(direct&&!direct.closest('#loginOverlay'))direct.remove();
+
+  const audio=document.getElementById('sakakerBirdAudio');
+  if(audio&&!audio.closest('#loginOverlay')){
+    try{audio.pause();audio.currentTime=0;}catch(_){ }
+    audio.remove();
+  }
+
+  const nodes=[...document.querySelectorAll('button,[role="button"],[title],[aria-label]')];
+  nodes.forEach(el=>{
+    if(el.closest('#loginOverlay'))return;
+    if(el.id==='sakSiteBackgroundBtn')return;
+    const s=((el.getAttribute('title')||'')+' '+(el.getAttribute('aria-label')||'')+' '+(el.textContent||'')).replace(/\s+/g,' ').trim();
+    if(/صوت\s*البحر|Sea\s*Sound|Ocean\s*Sound/i.test(s))el.remove();
+  });
+}
+
+function updateSiteBackgroundButton(){
+  const btn=document.getElementById('sakSiteBackgroundBtn');
+  const video=document.getElementById('sakSiteBackgroundVideo');
+  if(!btn||!video)return;
+  const en=document.documentElement.lang==='en';
+  const playing=!video.paused&&!video.muted;
+  const label=en?'Page Background':'خلفية الصفحة';
+  btn.setAttribute('aria-label',label);
+  btn.title=label;
+  btn.dataset.sound=playing?'on':'off';
+  if(!btn.classList.contains('sak-ostrich-icon'))btn.textContent=playing?'🔊':'🎬';
+}
+
+async function startSiteBackgroundSound(){
+  const video=document.getElementById('sakSiteBackgroundVideo');
+  if(!video||isLocked())return false;
+  video.muted=false;
+  video.volume=1;
+  try{
+    await video.play();
+    updateSiteBackgroundButton();
+    return true;
+  }catch(_){
+    updateSiteBackgroundButton();
+    return false;
+  }
+}
+
+function ensureSiteBackground(){
+  if(!document.body)return;
+  installSiteBackgroundStyle();
+  removeOldSeaSoundControl();
+
+  let video=document.getElementById('sakSiteBackgroundVideo');
+  if(!video){
+    video=document.createElement('video');
+    video.id='sakSiteBackgroundVideo';
+    video.src=SITE_BG_SRC;
+    video.autoplay=true;
+    video.loop=true;
+    video.playsInline=true;
+    video.preload='auto';
+    video.muted=false;
+    video.setAttribute('playsinline','');
+    video.setAttribute('webkit-playsinline','');
+    video.setAttribute('aria-hidden','true');
+    document.body.prepend(video);
+    video.addEventListener('play',updateSiteBackgroundButton);
+    video.addEventListener('pause',updateSiteBackgroundButton);
+    video.addEventListener('volumechange',updateSiteBackgroundButton);
+  }
+
+  let btn=document.getElementById('sakSiteBackgroundBtn');
+  if(!btn){
+    btn=document.createElement('button');
+    btn.id='sakSiteBackgroundBtn';
+    btn.type='button';
+    btn.textContent='🎬';
+    btn.setAttribute('aria-label','خلفية الصفحة');
+    btn.title='خلفية الصفحة';
+    btn.addEventListener('click',async e=>{
+      e.preventDefault();
+      e.stopPropagation();
+      if(video.paused){
+        await startSiteBackgroundSound();
+      }else{
+        video.muted=!video.muted;
+        if(!video.muted)await video.play().catch(()=>{});
+        updateSiteBackgroundButton();
+      }
+    });
+    document.body.appendChild(btn);
+  }
+
+  if(isLocked()){
+    video.pause();
+  }else{
+    startSiteBackgroundSound();
+  }
+  updateSiteBackgroundButton();
+}
+
+function syncSiteBackgroundLock(){
+  const video=document.getElementById('sakSiteBackgroundVideo');
+  if(!video)return;
+  if(isLocked()){
+    video.pause();
+  }else{
+    startSiteBackgroundSound();
+  }
+  updateSiteBackgroundButton();
 }
 
 function validCandidate(el){return !!el&&!el.closest(EXCLUDED)&&!el.closest('dialog');}
@@ -196,7 +343,6 @@ function rebuildIconAppearance(){
     decorateAsOstrich(item,info.key);
   });
 
-  /* Remove stale empty cells from older layouts, then use one deterministic order. */
   utility.querySelectorAll('.sakaker-utility-slot').forEach(slot=>{
     if(!slot.firstElementChild)slot.remove();
   });
@@ -206,17 +352,31 @@ function rebuildIconAppearance(){
   });
 
   dock.dataset.sakakerOstrichLayout='1';
+  updateSiteBackgroundButton();
 }
 
 function settle(){
   removeVisitorCounters();
   installFacebookEmbeds();
+  ensureSiteBackground();
   rebuildIconAppearance();
 }
 
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',settle,{once:true});else settle();
 window.addEventListener('load',settle,{once:true});
 [250,700,1500,3000,5500,9000].forEach(ms=>setTimeout(settle,ms));
-new MutationObserver(()=>{installFacebookEmbeds();rebuildIconAppearance();}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+new MutationObserver(()=>{installFacebookEmbeds();ensureSiteBackground();rebuildIconAppearance();}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+
+if(document.body){
+  new MutationObserver(syncSiteBackgroundLock).observe(document.body,{attributes:true,attributeFilter:['class']});
+}else{
+  document.addEventListener('DOMContentLoaded',()=>{
+    new MutationObserver(syncSiteBackgroundLock).observe(document.body,{attributes:true,attributeFilter:['class']});
+  },{once:true});
+}
+
+document.addEventListener('pointerdown',()=>{
+  if(!isLocked())startSiteBackgroundSound();
+},{capture:true});
 
 })();
