@@ -1,11 +1,12 @@
 name: Update yacht ship icon
 
 on:
+  workflow_dispatch:
   push:
-    branches: [main]
+    branches:
+      - main
     paths:
       - '.github/workflows/update-yacht-icon.yml'
-  workflow_dispatch:
 
 permissions:
   contents: write
@@ -16,14 +17,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Apply glowing yacht image to ship icon
+        shell: bash
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          p=Path('assets/final-three-icons.js')
-          s=p.read_text(encoding='utf-8')
-          marker='sakYachtShipIconStyle'
-          if marker not in s:
-              patch=r'''
+          cat >> assets/final-three-icons.js <<'EOF'
 
 /* Glowing yacht artwork for the existing ship launcher. */
 (function installSakYachtShipIcon(){
@@ -34,47 +30,39 @@ jobs:
     el.classList.add('sak-yacht-ship-icon');
     el.setAttribute('aria-label',document.documentElement.lang==='en'?'Abwalqmrzmrd yacht':'يخت أبوالقمر زمرد');
     el.title=document.documentElement.lang==='en'?'Abwalqmrzmrd yacht':'يخت أبوالقمر زمرد';
-    el.style.setProperty('background-image',`url("${IMG}")`,'important');
+    el.style.setProperty('background-image','url("'+IMG+'")','important');
     el.style.setProperty('background-size','contain','important');
     el.style.setProperty('background-position','center','important');
     el.style.setProperty('background-repeat','no-repeat','important');
     el.style.setProperty('color','transparent','important');
     el.style.setProperty('-webkit-text-fill-color','transparent','important');
-    [...el.children].forEach(c=>c.style.setProperty('visibility','hidden','important'));
+    Array.from(el.children).forEach(function(c){c.style.setProperty('visibility','hidden','important');});
   }
   if(!document.getElementById('sakYachtShipIconStyle')){
     const st=document.createElement('style');
     st.id='sakYachtShipIconStyle';
-    st.textContent=`
-      #shipIcon_new.sak-yacht-ship-icon{
-        overflow:visible!important;
-        border-radius:50%!important;
-        border:2px solid rgba(255,215,80,.96)!important;
-        box-shadow:0 0 7px #fff6b0,0 0 16px #ffd54a,0 0 30px rgba(255,174,0,.95),inset 0 0 10px rgba(255,244,176,.85)!important;
-        filter:brightness(1.12) saturate(1.12)!important;
-        animation:sakYachtGlow 2.2s ease-in-out infinite alternate!important;
-      }
-      #shipIcon_new.sak-yacht-ship-icon:hover,
-      #shipIcon_new.sak-yacht-ship-icon:focus-visible{
-        filter:brightness(1.28) saturate(1.18)!important;
-        box-shadow:0 0 10px #fff,0 0 24px #ffe36b,0 0 42px #ffad00!important;
-      }
-      @keyframes sakYachtGlow{
-        from{box-shadow:0 0 6px #fff6b0,0 0 14px #ffd54a,0 0 25px rgba(255,174,0,.78),inset 0 0 8px rgba(255,244,176,.75)}
-        to{box-shadow:0 0 10px #fff,0 0 23px #ffe36b,0 0 40px rgba(255,174,0,1),inset 0 0 13px rgba(255,248,190,.95)}
-      }
-      @media(prefers-reduced-motion:reduce){#shipIcon_new.sak-yacht-ship-icon{animation:none!important}}
-    `;
+    st.textContent='#shipIcon_new.sak-yacht-ship-icon{overflow:visible!important;border-radius:50%!important;border:2px solid rgba(255,215,80,.96)!important;box-shadow:0 0 7px #fff6b0,0 0 16px #ffd54a,0 0 30px rgba(255,174,0,.95),inset 0 0 10px rgba(255,244,176,.85)!important;filter:brightness(1.12) saturate(1.12)!important;animation:sakYachtGlow 2.2s ease-in-out infinite alternate!important}#shipIcon_new.sak-yacht-ship-icon:hover,#shipIcon_new.sak-yacht-ship-icon:focus-visible{filter:brightness(1.28) saturate(1.18)!important;box-shadow:0 0 10px #fff,0 0 24px #ffe36b,0 0 42px #ffad00!important}@keyframes sakYachtGlow{from{box-shadow:0 0 6px #fff6b0,0 0 14px #ffd54a,0 0 25px rgba(255,174,0,.78),inset 0 0 8px rgba(255,244,176,.75)}to{box-shadow:0 0 10px #fff,0 0 23px #ffe36b,0 0 40px rgba(255,174,0,1),inset 0 0 13px rgba(255,248,190,.95)}}@media(prefers-reduced-motion:reduce){#shipIcon_new.sak-yacht-ship-icon{animation:none!important}}';
     document.head.appendChild(st);
   }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true}); else apply();
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
   new MutationObserver(apply).observe(document.documentElement,{childList:true,subtree:true});
 })();
-'''
-              s += patch
+EOF
+      - name: Remove duplicate patch if already present
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('assets/final-three-icons.js')
+          s=p.read_text(encoding='utf-8')
+          marker='/* Glowing yacht artwork for the existing ship launcher. */'
+          parts=s.split(marker)
+          if len(parts)>2:
+              s=parts[0]+marker+parts[-1]
               p.write_text(s,encoding='utf-8')
           PY
       - name: Commit yacht icon
+        shell: bash
         run: |
           if git diff --quiet -- assets/final-three-icons.js; then
             echo 'No changes to commit.'
