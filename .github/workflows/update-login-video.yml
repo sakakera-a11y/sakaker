@@ -15,24 +15,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Use new login background video
+      - name: Use latest login background video
         run: |
           python3 - <<'PY'
           from pathlib import Path
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          old = '/sakaker-video.mp4'
-          new = '/sakaker-video%20(1).mp4'
-          s = s.replace(old, new)
+          # Replace any previously used Sakaker login video with the new (2) version.
+          for old in ('/sakaker-video.mp4','/sakaker-video%20(1).mp4','/sakaker-video (1).mp4'):
+              s = s.replace(old, '/sakaker-video%20(2).mp4')
           marker = '<style id="sakaker-login-video-top-position">'
-          css = '''\n<style id="sakaker-login-video-top-position">\n/* Keep the important text at the top of the login video visible. */\n#loginOverlay #sakLoginBackgroundVideo{\n  object-position:center top !important;\n}\n@media(max-width:700px){\n  #loginOverlay #sakLoginBackgroundVideo{\n    object-position:center top !important;\n  }\n}\n</style>\n'''
+          css = '''\n<style id="sakaker-login-video-top-position">\n/* Keep the important top of the login video visible without page gaps. */\n#loginOverlay #sakLoginBackgroundVideo{\n  object-fit:cover !important;\n  object-position:center top !important;\n}\n@media(max-width:700px){\n  #loginOverlay #sakLoginBackgroundVideo{\n    object-fit:cover !important;\n    object-position:center top !important;\n  }\n}\n</style>\n'''
           if marker not in s:
               if '</head>' in s:
                   s = s.replace('</head>', css + '</head>', 1)
               else:
                   s = css + s
           p.write_text(s, encoding='utf-8')
-          print('Login video updated to sakaker-video (1).mp4.')
+          print('Login video updated to sakaker-video (2).mp4.')
           PY
       - name: Commit update
         run: |
@@ -43,5 +43,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
-          git commit -m 'Use new login background video'
+          git commit -m 'Use sakaker-video (2) as login background'
           git push
