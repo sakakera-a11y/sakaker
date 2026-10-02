@@ -1,0 +1,60 @@
+name: Login video performance optimization
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/scripts/optimize_login_video.py'
+      - '.github/workflows/login-video-performance.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: login-video-performance-${{ github.repository }}
+  cancel-in-progress: true
+
+jobs:
+  optimize-login-video:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Optimize initial login video tag
+        run: python .github/scripts/optimize_login_video.py
+
+      - name: Verify optimized login video tag
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          text = Path('index.html').read_text(encoding='utf-8')
+          m = re.search(r'<video\b(?=[^>]*\bid=["\']sakLoginBackgroundVideo["\'])[^>]*>', text, re.I)
+          if not m:
+              raise SystemExit('Login video tag missing after optimization')
+          tag = m.group(0)
+          assert '/gemini_generated_video_be58b3bc.mp4' in tag
+          assert re.search(r'\bpreload\s*=\s*["\']metadata["\']', tag, re.I)
+          assert not re.search(r'\bfetchpriority\s*=', tag, re.I)
+          for attr in ('autoplay','muted','loop','playsinline'):
+              assert re.search(rf'\b{attr}\b', tag, re.I), attr
+          print(tag)
+
+      - name: Commit optimized index if changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          if git diff --cached --quiet; then
+            echo 'Login video optimization is already applied.'
+            exit 0
+          fi
+          git commit -m 'Optimize login video initial loading'
+          git push origin HEAD:main
