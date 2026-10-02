@@ -1,0 +1,46 @@
+name: Runtime performance optimization
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/scripts/apply_runtime_performance.py'
+      - '.github/workflows/runtime-performance.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: runtime-performance-${{ github.repository }}
+  cancel-in-progress: true
+
+jobs:
+  optimize-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Apply safe runtime optimization
+        run: python .github/scripts/apply_runtime_performance.py
+
+      - name: Verify JavaScript syntax
+        run: node --check assets/final-three-icons.js
+
+      - name: Commit optimized runtime if changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/final-three-icons.js
+          if git diff --cached --quiet; then
+            echo 'Runtime optimizations are already applied.'
+            exit 0
+          fi
+          git commit -m 'Reduce login load and defer main background video'
+          git push origin HEAD:main
