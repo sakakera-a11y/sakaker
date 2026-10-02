@@ -54,6 +54,7 @@ function installFinalLayoutAuthority(){
   let style=document.getElementById(id);
   if(!style){style=document.createElement('style');style.id=id;}
   style.textContent=`
+/* Final authority: icons always use the right side after login. */
 html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock{
   position:fixed!important;inset:auto!important;
   left:auto!important;right:max(8px,env(safe-area-inset-right))!important;
@@ -73,11 +74,39 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock :is(.cards,#sakakerUtilityDoc
   align-items:flex-end!important;align-content:flex-end!important;
   width:auto!important;max-width:100%!important;margin:0!important;gap:7px!important;
 }
+
+/* Normal site: payment remains on the left and slightly raised. */
 html body:not(.locked) #sakGlobalPayment#sakGlobalPayment{
   position:fixed!important;left:max(8px,env(safe-area-inset-left))!important;right:auto!important;
   top:auto!important;bottom:max(86px,calc(86px + env(safe-area-inset-bottom)))!important;
   transform:none!important;translate:none!important;z-index:2147483001!important;
 }
+
+/* Login screen: move BOTH payment and site identity to the left. */
+html body.locked #sakGlobalPayment#sakGlobalPayment{
+  position:fixed!important;
+  left:max(10px,env(safe-area-inset-left))!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:max(74px,calc(74px + env(safe-area-inset-bottom)))!important;
+  transform:none!important;translate:none!important;
+  z-index:2147483646!important;
+}
+html body.locked #sakPaymentPanel#sakPaymentPanel{
+  left:0!important;right:auto!important;
+}
+html body.locked #loginOverlay #sakLoginIdentity,
+html body.locked #sakLoginIdentity#sakLoginIdentity{
+  position:fixed!important;
+  left:max(10px,env(safe-area-inset-left))!important;
+  right:auto!important;
+  bottom:max(12px,env(safe-area-inset-bottom))!important;
+  top:auto!important;
+  transform:none!important;translate:none!important;
+  margin:0!important;
+  z-index:2147483645!important;
+}
+
 html body:not(.locked) .video-top-container-fixed,
 html body:not(.locked) #sakSecondStreamCorner{
   top:clamp(105px,18dvh,165px)!important;bottom:auto!important;
@@ -100,6 +129,17 @@ html body:not(.locked) #sakSecondStreamCorner{
   html body:not(.locked) #sakGlobalPayment#sakGlobalPayment{
     bottom:max(76px,calc(76px + env(safe-area-inset-bottom)))!important;
   }
+  html body.locked #sakGlobalPayment#sakGlobalPayment{
+    left:max(7px,env(safe-area-inset-left))!important;
+    bottom:max(68px,calc(68px + env(safe-area-inset-bottom)))!important;
+  }
+  html body.locked #loginOverlay #sakLoginIdentity,
+  html body.locked #sakLoginIdentity#sakLoginIdentity{
+    left:max(7px,env(safe-area-inset-left))!important;
+    right:auto!important;
+    bottom:max(8px,env(safe-area-inset-bottom))!important;
+    max-width:calc(100vw - 14px)!important;
+  }
   html body:not(.locked) .video-top-container-fixed,
   html body:not(.locked) #sakSecondStreamCorner{
     top:108px!important;width:68px!important;height:68px!important;
@@ -113,6 +153,7 @@ html body:not(.locked) #sakSecondStreamCorner{
 @media(orientation:landscape) and (max-height:650px){
   html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock{max-width:78vw!important;max-height:56dvh!important;}
   html body:not(.locked) #sakGlobalPayment#sakGlobalPayment{bottom:max(68px,calc(68px + env(safe-area-inset-bottom)))!important;}
+  html body.locked #sakGlobalPayment#sakGlobalPayment{bottom:max(58px,calc(58px + env(safe-area-inset-bottom)))!important;}
   html body:not(.locked) .video-top-container-fixed,
   html body:not(.locked) #sakSecondStreamCorner{top:58px!important;width:62px!important;height:62px!important;}
 }
