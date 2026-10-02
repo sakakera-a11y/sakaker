@@ -113,8 +113,7 @@ function normalizeMainCards(cards){
 function normalizeUtilityItem(item,key){
   item.classList.add('sakaker-dock-item');
   item.dataset.sakakerDockKey=key;
-  /* Intentionally do not alter hidden/display/visibility/opacity.
-     The icon keeps its own real state; CSS only unifies the transition. */
+  /* Do not change hidden/display/visibility/opacity. */
 }
 
 function consolidateIconsOnce(){
@@ -131,21 +130,18 @@ function consolidateIconsOnce(){
 
   const utility=ensureUtilityDock(dock);
 
-  const center=document.getElementById('sakakerCenterFeatureDock');
-  if(center&&center.parentElement!==dock)dock.appendChild(center);
-
+  /* The old center feature dock is deliberately not appended here.
+     Its real launchers are collected into their own utility slots instead,
+     which prevents a second invisible layout block from occupying the row. */
   utilityItems.forEach(info=>{
     const item=firstCandidate(info.selectors);
     if(!item)return;
 
     const slot=ensureSlot(utility,info.key);
     normalizeUtilityItem(item,info.key);
-
     if(item.parentElement!==slot)slot.appendChild(item);
   });
 
-  /* Remove truly obsolete empty slots only. Expected slots are kept so an icon
-     may disappear/reappear without shifting every other icon or causing overlap. */
   utility.querySelectorAll('.sakaker-utility-slot').forEach(slot=>{
     const key=slot.dataset.sakakerUtil;
     const expected=utilityItems.some(info=>info.key===key);
@@ -170,8 +166,7 @@ if(document.readyState==='loading'){
 
 window.addEventListener('load',settle,{once:true});
 
-/* Only a short bounded collection window for delayed launchers. No permanent
-   position/visibility watchdog and no code that forces an icon to appear. */
+/* Short collection window only; no permanent position or visibility watchdog. */
 [300,900,1800,3500,6000,10000].forEach(ms=>setTimeout(settle,ms));
 
 new MutationObserver(()=>{
