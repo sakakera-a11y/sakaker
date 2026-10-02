@@ -46,7 +46,6 @@ function forceElementPositions(){
   if(dock){
     setImportant(dock,'position','fixed');setImportant(dock,'left','auto');setImportant(dock,'right','max(8px, env(safe-area-inset-right))');
     setImportant(dock,'top','auto');setImportant(dock,'bottom','max(8px, env(safe-area-inset-bottom))');setImportant(dock,'transform','none');setImportant(dock,'translate','none');
-    setImportant(dock,'justify-content','flex-end');setImportant(dock,'align-items','flex-end');
   }
   const payment=document.getElementById('sakGlobalPayment');
   if(payment){
@@ -67,8 +66,24 @@ function installFinalLayoutAuthority(){
   const id='sak-final-runtime-layout-authority';
   let style=document.getElementById(id);if(!style){style=document.createElement('style');style.id=id;}
   style.textContent=`
-html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock{position:fixed!important;inset:auto!important;left:auto!important;right:max(8px,env(safe-area-inset-right))!important;top:auto!important;bottom:max(8px,env(safe-area-inset-bottom))!important;transform:none!important;translate:none!important;display:flex!important;flex-flow:row wrap!important;justify-content:flex-end!important;align-items:flex-end!important;align-content:flex-end!important;width:fit-content!important;max-width:min(620px,calc(100vw - 16px))!important;height:auto!important;min-height:0!important;max-height:44dvh!important;gap:7px!important;padding:5px!important;margin:0!important;overflow-x:hidden!important;overflow-y:auto!important;box-sizing:border-box!important;z-index:2147483000!important}
-html body #sakakerAllIconsDock#sakakerAllIconsDock :is(.cards,#sakakerUtilityDock,#sakakerCenterFeatureDock){position:relative!important;inset:auto!important;transform:none!important;translate:none!important;display:flex!important;flex-flow:row wrap!important;justify-content:flex-end!important;align-items:flex-end!important;align-content:flex-end!important;width:auto!important;max-width:100%!important;margin:0!important;gap:7px!important}
+:root{--sak-final-icon:62px;--sak-final-gap:7px}
+html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock{
+  position:fixed!important;inset:auto!important;left:auto!important;right:max(8px,env(safe-area-inset-right))!important;top:auto!important;bottom:max(8px,env(safe-area-inset-bottom))!important;
+  transform:none!important;translate:none!important;display:grid!important;grid-template-columns:repeat(7,var(--sak-final-icon))!important;grid-auto-rows:minmax(var(--sak-final-icon),auto)!important;
+  justify-content:end!important;align-items:end!important;align-content:end!important;width:auto!important;max-width:calc(100vw - 16px)!important;height:auto!important;min-height:0!important;max-height:none!important;
+  gap:var(--sak-final-gap)!important;padding:5px!important;margin:0!important;overflow:visible!important;box-sizing:border-box!important;z-index:2147483000!important;
+}
+html body #sakakerAllIconsDock#sakakerAllIconsDock :is(.cards,#sakakerUtilityDock,#sakakerCenterFeatureDock){display:contents!important}
+html body #sakakerAllIconsDock#sakakerAllIconsDock :is(.cards,#sakakerUtilityDock,#sakakerCenterFeatureDock)>*,
+html body #sakakerAllIconsDock#sakakerAllIconsDock>.icon-card,
+html body #sakakerAllIconsDock#sakakerAllIconsDock>.sakaker-utility-slot{
+  position:relative!important;inset:auto!important;transform:none!important;translate:none!important;margin:0!important;
+  width:var(--sak-final-icon)!important;min-width:var(--sak-final-icon)!important;max-width:var(--sak-final-icon)!important;
+  height:var(--sak-final-icon)!important;min-height:var(--sak-final-icon)!important;max-height:var(--sak-final-icon)!important;
+  box-sizing:border-box!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;align-self:end!important;justify-self:end!important;
+}
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-utility-slot>*{max-width:100%!important;max-height:100%!important}
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-icon-cycle.sak-cycle-hidden{visibility:visible!important;opacity:1!important;pointer-events:auto!important}
 html body:not(.locked) #sakGlobalPayment#sakGlobalPayment{position:fixed!important;left:max(8px,env(safe-area-inset-left))!important;right:auto!important;top:auto!important;bottom:max(86px,calc(86px + env(safe-area-inset-bottom)))!important;transform:none!important;translate:none!important;z-index:2147483001!important}
 html body.locked #loginOverlay #sakGlobalPayment#sakGlobalPayment,html body.locked #sakGlobalPayment#sakGlobalPayment{position:fixed!important;left:max(10px,env(safe-area-inset-left))!important;right:auto!important;top:auto!important;bottom:max(74px,calc(74px + env(safe-area-inset-bottom)))!important;transform:none!important;translate:none!important;z-index:2147483646!important}
 html body.locked #loginOverlay #sakPaymentPanel#sakPaymentPanel,html body.locked #sakPaymentPanel#sakPaymentPanel{left:0!important;right:auto!important}
@@ -76,27 +91,28 @@ html body.locked #loginOverlay #sakLoginIdentity#sakLoginIdentity,html body.lock
 html body:not(.locked) .video-top-container-fixed,html body:not(.locked) #sakSecondStreamCorner{top:clamp(105px,18dvh,165px)!important;bottom:auto!important;width:clamp(76px,8.2vw,108px)!important;height:clamp(76px,8.2vw,108px)!important;translate:none!important;transform:none!important;box-sizing:border-box!important}
 html body:not(.locked) .video-top-container-fixed{left:max(8px,env(safe-area-inset-left))!important;right:auto!important}
 html body:not(.locked) #sakSecondStreamCorner{right:max(8px,env(safe-area-inset-right))!important;left:auto!important}
-@media(max-width:700px){html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock{right:max(5px,env(safe-area-inset-right))!important;bottom:max(5px,env(safe-area-inset-bottom))!important;width:fit-content!important;max-width:95vw!important;max-height:42dvh!important;gap:5px!important;padding:3px!important}html body #sakakerAllIconsDock#sakakerAllIconsDock :is(.cards,#sakakerUtilityDock,#sakakerCenterFeatureDock){gap:5px!important}html body:not(.locked) #sakGlobalPayment#sakGlobalPayment{bottom:max(76px,calc(76px + env(safe-area-inset-bottom)))!important}html body.locked #loginOverlay #sakGlobalPayment#sakGlobalPayment,html body.locked #sakGlobalPayment#sakGlobalPayment{left:max(7px,env(safe-area-inset-left))!important;right:auto!important;bottom:max(68px,calc(68px + env(safe-area-inset-bottom)))!important}html body.locked #loginOverlay #sakLoginIdentity#sakLoginIdentity,html body.locked #sakLoginIdentity#sakLoginIdentity{left:max(7px,env(safe-area-inset-left))!important;right:auto!important;bottom:max(8px,env(safe-area-inset-bottom))!important;max-width:calc(100vw - 14px)!important}html body:not(.locked) .video-top-container-fixed,html body:not(.locked) #sakSecondStreamCorner{top:108px!important;width:68px!important;height:68px!important}}
-@media(max-width:390px){html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock{max-width:96vw!important;gap:4px!important}html body:not(.locked) .video-top-container-fixed,html body:not(.locked) #sakSecondStreamCorner{width:62px!important;height:62px!important;top:102px!important}}
-@media(orientation:landscape) and (max-height:650px){html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock{max-width:78vw!important;max-height:56dvh!important}html body:not(.locked) #sakGlobalPayment#sakGlobalPayment{bottom:max(68px,calc(68px + env(safe-area-inset-bottom)))!important}html body.locked #loginOverlay #sakGlobalPayment#sakGlobalPayment,html body.locked #sakGlobalPayment#sakGlobalPayment{left:max(7px,env(safe-area-inset-left))!important;right:auto!important;bottom:max(58px,calc(58px + env(safe-area-inset-bottom)))!important}html body:not(.locked) .video-top-container-fixed,html body:not(.locked) #sakSecondStreamCorner{top:58px!important;width:62px!important;height:62px!important}}
+@media(max-width:900px){:root{--sak-final-icon:56px;--sak-final-gap:6px}html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock{grid-template-columns:repeat(5,var(--sak-final-icon))!important}}
+@media(max-width:700px){
+  :root{--sak-final-icon:50px;--sak-final-gap:5px}
+  html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock{right:max(5px,env(safe-area-inset-right))!important;bottom:max(5px,env(safe-area-inset-bottom))!important;grid-template-columns:repeat(4,var(--sak-final-icon))!important;max-width:calc(100vw - 10px)!important;padding:3px!important}
+  html body:not(.locked) #sakGlobalPayment#sakGlobalPayment{bottom:max(76px,calc(76px + env(safe-area-inset-bottom)))!important}
+  html body.locked #loginOverlay #sakGlobalPayment#sakGlobalPayment,html body.locked #sakGlobalPayment#sakGlobalPayment{left:max(7px,env(safe-area-inset-left))!important;right:auto!important;bottom:max(68px,calc(68px + env(safe-area-inset-bottom)))!important}
+  html body.locked #loginOverlay #sakLoginIdentity#sakLoginIdentity,html body.locked #sakLoginIdentity#sakLoginIdentity{left:max(7px,env(safe-area-inset-left))!important;right:auto!important;bottom:max(8px,env(safe-area-inset-bottom))!important;max-width:calc(100vw - 14px)!important}
+  html body:not(.locked) .video-top-container-fixed,html body:not(.locked) #sakSecondStreamCorner{top:108px!important;width:68px!important;height:68px!important}
+}
+@media(max-width:390px){:root{--sak-final-icon:44px;--sak-final-gap:4px}html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock{grid-template-columns:repeat(4,var(--sak-final-icon))!important}html body:not(.locked) .video-top-container-fixed,html body:not(.locked) #sakSecondStreamCorner{width:62px!important;height:62px!important;top:102px!important}}
+@media(orientation:landscape) and (max-height:650px){:root{--sak-final-icon:46px;--sak-final-gap:4px}html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock{grid-template-columns:repeat(7,var(--sak-final-icon))!important;max-width:78vw!important}html body:not(.locked) #sakGlobalPayment#sakGlobalPayment{bottom:max(68px,calc(68px + env(safe-area-inset-bottom)))!important}html body.locked #loginOverlay #sakGlobalPayment#sakGlobalPayment,html body.locked #sakGlobalPayment#sakGlobalPayment{left:max(7px,env(safe-area-inset-left))!important;right:auto!important;bottom:max(58px,calc(58px + env(safe-area-inset-bottom)))!important}html body:not(.locked) .video-top-container-fixed,html body:not(.locked) #sakSecondStreamCorner{top:58px!important;width:62px!important;height:62px!important}}
 `;
   if(style.parentNode!==document.body){style.remove();(document.body||document.documentElement).appendChild(style)}
   forceElementPositions();
 }
 let watched=new WeakSet();
-function watchPositionElement(el){
-  if(!el||watched.has(el))return;watched.add(el);
-  new MutationObserver(()=>requestAnimationFrame(forceElementPositions)).observe(el,{attributes:true,attributeFilter:['style','class']});
-}
-function bindPositionWatchers(){
-  ['sakGlobalPayment','sakPaymentPanel','sakLoginIdentity','sakakerAllIconsDock'].forEach(id=>watchPositionElement(document.getElementById(id)));
-  forceElementPositions();
-}
+function watchPositionElement(el){if(!el||watched.has(el))return;watched.add(el);new MutationObserver(()=>requestAnimationFrame(forceElementPositions)).observe(el,{attributes:true,attributeFilter:['style','class']});}
+function bindPositionWatchers(){['sakGlobalPayment','sakPaymentPanel','sakLoginIdentity','sakakerAllIconsDock'].forEach(id=>watchPositionElement(document.getElementById(id)));forceElementPositions();}
 function installPositionWatchdog(){
   bindPositionWatchers();
   new MutationObserver(()=>requestAnimationFrame(bindPositionWatchers)).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
-  const until=Date.now()+15000;
-  const timer=setInterval(()=>{bindPositionWatchers();if(Date.now()>until)clearInterval(timer)},250);
+  const until=Date.now()+15000;const timer=setInterval(()=>{bindPositionWatchers();if(Date.now()>until)clearInterval(timer)},250);
 }
 function run(){removeVisitorCounters();removeEmptyTextLibrary();installFacebookEmbeds();installFinalLayoutAuthority();installPositionWatchdog();[100,400,1200,3200,6000].forEach(ms=>setTimeout(()=>{installFinalLayoutAuthority();bindPositionWatchers()},ms));}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
