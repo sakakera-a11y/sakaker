@@ -27,15 +27,17 @@ function setBusy(busy){
   google.setAttribute('aria-busy',busy?'true':'false');
 }
 
-/* Main-site sound control only: keep login page untouched. The signed-in
-   profile sits at the top-right, so the sound button is anchored top-left. */
+/* Main-site sound control only: keep login page untouched. */
 function installPostLoginSoundStyle(){
   if(document.getElementById('sakPostLoginSoundStyle'))return;
   const style=document.createElement('style');
   style.id='sakPostLoginSoundStyle';
   style.textContent=`
     body:not(.locked) #bird-sound-btn,
-    body:not(.locked) #sakakerBirdSoundBtn{
+    body:not(.locked) #sakakerBirdSoundBtn,
+    body:not(.locked) #sakSeaSoundButton,
+    body:not(.locked) #sakSeaAudio,
+    body:not(.locked) #sakakerBirdAudio{
       display:none!important;
       visibility:hidden!important;
       opacity:0!important;
@@ -45,13 +47,38 @@ function installPostLoginSoundStyle(){
   document.head.appendChild(style);
 }
 
+function visibleRect(el){
+  if(!el)return null;
+  const style=getComputedStyle(el);
+  if(style.display==='none'||style.visibility==='hidden'||style.opacity==='0')return null;
+  const r=el.getBoundingClientRect();
+  return r.width>1&&r.height>1?r:null;
+}
+
 function placePostLoginSoundButton(){
   if(!document.body||document.body.classList.contains('locked'))return;
   const btn=$('sakSiteSoundBtn');
   if(!btn)return;
-  btn.style.setProperty('left','max(12px, env(safe-area-inset-left))','important');
+
+  const payment=$('sakGlobalPayment');
+  const paymentRect=visibleRect(payment);
+  const width=Math.max(btn.offsetWidth||150,120);
+  const height=Math.max(btn.offsetHeight||44,38);
+  let left=8;
+  let top=window.innerHeight-height-10;
+
+  if(paymentRect){
+    left=paymentRect.left+(paymentRect.width-width)/2;
+    top=paymentRect.bottom+8;
+  }
+
+  left=Math.max(8,Math.min(window.innerWidth-width-8,left));
+  top=Math.max(8,Math.min(window.innerHeight-height-8,top));
+
+  btn.style.setProperty('position','fixed','important');
+  btn.style.setProperty('left',Math.round(left)+'px','important');
   btn.style.setProperty('right','auto','important');
-  btn.style.setProperty('top','max(12px, env(safe-area-inset-top))','important');
+  btn.style.setProperty('top',Math.round(top)+'px','important');
   btn.style.setProperty('bottom','auto','important');
   btn.style.setProperty('transform','none','important');
 }
@@ -95,6 +122,8 @@ function lightenLoginVideo(){
 lightenLoginVideo();
 installPostLoginSoundStyle();
 [0,250,700,1500,3000,5500,9000].forEach(ms=>setTimeout(syncPostLoginSoundUi,ms));
+window.addEventListener('resize',()=>requestAnimationFrame(placePostLoginSoundButton),{passive:true});
+window.addEventListener('orientationchange',()=>setTimeout(placePostLoginSoundButton,120),{passive:true});
 
 (async()=>{
   try{
