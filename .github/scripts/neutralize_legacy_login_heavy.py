@@ -103,3 +103,5 @@ if text != original:
     print('Legacy login/video controllers optimized safely.')
 else:
     print('Legacy login/video controllers already optimized.')
+
+# Idempotent trigger marker: 2026-10-02 performance pass.
