@@ -342,8 +342,13 @@ function ensureSiteSoundButton(video){
 function ensureSiteBackground(){
   if(!document.body)return;
   installSiteBackgroundStyle();
-  removeOldSeaSoundControl();
 
+  /* Performance: never create/download the heavy main-site background video
+     while the Google login gate is still visible. It is created only after
+     authentication unlocks the page. */
+  if(isLocked())return;
+
+  removeOldSeaSoundControl();
   let video=document.getElementById('sakSiteBackgroundVideo');
   if(!video){
     video=document.createElement('video');
@@ -352,7 +357,9 @@ function ensureSiteBackground(){
     video.autoplay=true;
     video.loop=true;
     video.playsInline=true;
-    video.preload='auto';
+    /* Metadata is enough before playback begins; play() will stream the
+       actual video once the authenticated site is visible. */
+    video.preload='metadata';
     video.muted=false;
     video.setAttribute('playsinline','');
     video.setAttribute('webkit-playsinline','');
@@ -402,15 +409,24 @@ function ensureSiteBackground(){
 }
 
 function syncSiteBackgroundLock(){
-  const video=document.getElementById('sakSiteBackgroundVideo');
-  if(!video)return;
+  let video=document.getElementById('sakSiteBackgroundVideo');
+
   if(isLocked()){
-    video.pause();
-  }else{
-    startSiteBackgroundSound();
-    removeOldSeaSoundControl();
-    requestAnimationFrame(placeSiteSoundAboveClock);
+    if(video)video.pause();
+    return;
   }
+
+  /* The video is intentionally absent during login. Create it now, once,
+     immediately after Firebase unlocks the page. */
+  if(!video){
+    ensureSiteBackground();
+    video=document.getElementById('sakSiteBackgroundVideo');
+    if(!video)return;
+  }
+
+  startSiteBackgroundSound();
+  removeOldSeaSoundControl();
+  requestAnimationFrame(placeSiteSoundAboveClock);
   updateSiteBackgroundButton();
 }
 
@@ -554,6 +570,12 @@ function rebuildIconAppearance(){
 
 function settle(){
   removeVisitorCounters();
+  installSiteBackgroundStyle();
+
+  /* Keep the login screen light: no Facebook scanning, icon rebuilding or
+     background-video creation until the authenticated page is visible. */
+  if(isLocked())return;
+
   installFacebookEmbeds();
   ensureSiteBackground();
   rebuildIconAppearance();
@@ -563,8 +585,15 @@ function settle(){
 
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',settle,{once:true});else settle();
 window.addEventListener('load',settle,{once:true});
-[250,700,1500,3000,5500,9000].forEach(ms=>setTimeout(settle,ms));
-new MutationObserver(()=>{installFacebookEmbeds();ensureSiteBackground();rebuildIconAppearance();removeOldSeaSoundControl();requestAnimationFrame(placeSiteSoundAboveClock);}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+[500,1500,3500,7000].forEach(ms=>setTimeout(settle,ms));
+new MutationObserver(()=>{
+  if(isLocked())return;
+  installFacebookEmbeds();
+  ensureSiteBackground();
+  rebuildIconAppearance();
+  removeOldSeaSoundControl();
+  requestAnimationFrame(placeSiteSoundAboveClock);
+}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 
 if(document.body){
   new MutationObserver(syncSiteBackgroundLock).observe(document.body,{attributes:true,attributeFilter:['class']});
