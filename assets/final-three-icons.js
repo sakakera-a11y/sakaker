@@ -19,6 +19,85 @@ function removeEmptyTextLibrary(){
   const el=findTextLibrary();
   if(el)el.remove();
 }
+function installFinalLayoutFix(){
+  let style=document.getElementById('sakPermanentMultiRowLayout');
+  if(!style){
+    style=document.createElement('style');
+    style.id='sakPermanentMultiRowLayout';
+    style.textContent=`
+html body #sakakerAllIconsDock{
+  position:fixed!important;
+  left:50%!important;
+  right:auto!important;
+  bottom:max(8px,env(safe-area-inset-bottom))!important;
+  top:auto!important;
+  transform:translateX(-50%)!important;
+  display:flex!important;
+  flex-wrap:wrap!important;
+  justify-content:center!important;
+  align-items:flex-end!important;
+  align-content:flex-end!important;
+  width:min(680px,96vw)!important;
+  max-width:96vw!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  padding:5px 8px!important;
+  gap:8px!important;
+  row-gap:8px!important;
+  column-gap:8px!important;
+  overflow:visible!important;
+  overflow-x:visible!important;
+  overflow-y:visible!important;
+  scroll-snap-type:none!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+html body #sakakerAllIconsDock .cards,
+html body #sakakerAllIconsDock #sakakerUtilityDock,
+html body #sakakerAllIconsDock #sakakerCenterFeatureDock{
+  position:static!important;
+  inset:auto!important;
+  transform:none!important;
+  display:flex!important;
+  flex-wrap:wrap!important;
+  justify-content:center!important;
+  align-items:flex-end!important;
+  width:auto!important;
+  max-width:100%!important;
+  height:auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+  gap:8px!important;
+}
+html body #sakakerAllIconsDock,
+html body #sakakerAllIconsDock *,
+html body #sakakerAllIconsDock *::before,
+html body #sakakerAllIconsDock *::after{
+  transition:none!important;
+}
+@media(max-width:700px){
+  html body #sakakerAllIconsDock{
+    width:96vw!important;
+    max-width:96vw!important;
+    gap:6px!important;
+    row-gap:6px!important;
+    column-gap:5px!important;
+  }
+  html body #sakakerAllIconsDock .cards,
+  html body #sakakerAllIconsDock #sakakerUtilityDock,
+  html body #sakakerAllIconsDock #sakakerCenterFeatureDock{
+    gap:5px!important;
+  }
+}
+html body #sakGlobalPayment,
+html body.locked #sakGlobalPayment{
+  bottom:44vh!important;
+}
+`;
+    (document.head||document.documentElement).appendChild(style);
+  }
+}
 function installFacebookLinks(){
   const popup=document.getElementById('facebookVideoPopup');
   const box=popup?.querySelector('.fbVideoBox');
@@ -56,8 +135,11 @@ function installFacebookLinks(){
 function run(){
   removeVisitorCounters();
   removeEmptyTextLibrary();
+  installFinalLayoutFix();
   installFacebookLinks();
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
-new MutationObserver(()=>{removeEmptyTextLibrary();installFacebookLinks()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+window.addEventListener('load',run,{once:true});
+setTimeout(run,300);
+new MutationObserver(()=>{removeEmptyTextLibrary();installFinalLayoutFix();installFacebookLinks()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 })();
