@@ -1,10 +1,11 @@
-/* SAKAKER responsive layout layer
-   Visual rebuild only: preserves all existing click handlers, IDs and application logic. */
+/* SAKAKER — single stable authority for the bottom-right icon dock.
+   Keeps original IDs/events and prevents older layout rules from moving icons. */
 
 :root{
-  --sak-dock-gap:8px;
-  --sak-dock-edge:10px;
-  --sak-icon-size:clamp(58px,5.3vw,76px);
+  --sak-icon-size:52px;
+  --sak-icon-gap:6px;
+  --sak-icon-cols:7;
+  --sak-icon-edge:8px;
 }
 
 html,body{
@@ -12,190 +13,151 @@ html,body{
   overflow-x:hidden;
 }
 
-/* Prevent old transitions/position animations from moving the dock after load. */
-html body #sakakerAllIconsDock,
-html body #sakakerAllIconsDock > *{
+/* One fixed, transparent, predictable dock. */
+html body #sakakerAllIconsDock#sakakerAllIconsDock{
+  position:fixed!important;
+  inset:auto!important;
+  right:max(var(--sak-icon-edge),env(safe-area-inset-right))!important;
+  bottom:max(var(--sak-icon-edge),env(safe-area-inset-bottom))!important;
+  left:auto!important;
+  top:auto!important;
+  transform:none!important;
+  translate:none!important;
+
+  display:grid!important;
+  grid-template-columns:repeat(var(--sak-icon-cols),var(--sak-icon-size))!important;
+  grid-auto-rows:var(--sak-icon-size)!important;
+  grid-auto-flow:row!important;
+  justify-content:end!important;
+  align-content:end!important;
+  align-items:center!important;
+
+  width:max-content!important;
+  max-width:calc(100vw - 16px)!important;
+  height:auto!important;
+  max-height:none!important;
+  gap:var(--sak-icon-gap)!important;
+  padding:0!important;
+  margin:0!important;
+
+  overflow:visible!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  isolation:isolate!important;
+  z-index:2147483000!important;
   transition:none!important;
 }
 
-/* Payment: keep its original horizontal side and behavior, only raise it slightly. */
-html body #sakGlobalPayment,
-html body.locked #sakGlobalPayment{
-  bottom:clamp(100px,16dvh,155px)!important;
-  z-index:2147483001!important;
-  max-width:calc(100vw - 20px)!important;
-  transform:translateZ(0);
+/* Flatten legacy sub-containers so there is only ONE layout engine. */
+html body #sakakerAllIconsDock#sakakerAllIconsDock :is(.cards,#sakakerUtilityDock,#sakakerCenterFeatureDock){
+  display:contents!important;
 }
 
-/* Main icon dock: permanently anchored to the bottom-right. */
-html body #sakakerAllIconsDock{
-  position:fixed!important;
-  left:auto!important;
-  right:max(var(--sak-dock-edge),env(safe-area-inset-right))!important;
-  bottom:max(var(--sak-dock-edge),env(safe-area-inset-bottom))!important;
-  top:auto!important;
-  transform:none!important;
-  z-index:2147483000!important;
-
-  display:flex!important;
-  flex-flow:row wrap!important;
-  justify-content:flex-end!important;
-  align-items:flex-end!important;
-  align-content:flex-end!important;
-
-  width:min(720px,calc(100vw - 20px))!important;
-  max-width:calc(100vw - 20px)!important;
-  height:auto!important;
-  max-height:min(46dvh,430px)!important;
-  padding:5px!important;
-  gap:var(--sak-dock-gap)!important;
-
-  overflow-x:hidden!important;
-  overflow-y:auto!important;
-  overscroll-behavior:contain!important;
-  -webkit-overflow-scrolling:touch!important;
-  scrollbar-width:none!important;
-  box-sizing:border-box!important;
-  isolation:isolate!important;
-}
-
-html body #sakakerAllIconsDock::-webkit-scrollbar{
-  width:0!important;
-  height:0!important;
-}
-
-/* Every internal icon group follows the same right-aligned responsive grid. */
-html body #sakakerAllIconsDock :is(.cards,#sakakerUtilityDock,#sakakerCenterFeatureDock){
+/* Every dock item owns one exact grid cell. */
+html body #sakakerAllIconsDock#sakakerAllIconsDock :is(.icon-card,.sakaker-utility-slot),
+html body #sakakerAllIconsDock#sakakerAllIconsDock > .icon-card,
+html body #sakakerAllIconsDock#sakakerAllIconsDock > .sakaker-utility-slot{
   position:relative!important;
   inset:auto!important;
-  transform:none!important;
-  display:flex!important;
-  flex-flow:row wrap!important;
-  justify-content:flex-end!important;
-  align-items:flex-end!important;
-  align-content:flex-end!important;
-  gap:var(--sak-dock-gap)!important;
-  width:auto!important;
-  max-width:100%!important;
-  margin:0!important;
-  box-sizing:border-box!important;
-}
-
-/* Standard circular launchers. This changes appearance only, never their events. */
-html body #sakakerAllIconsDock :is(.icon-card,.launcher,.sak-launcher){
-  position:relative!important;
-  inset:auto!important;
-  flex:0 0 var(--sak-icon-size)!important;
   width:var(--sak-icon-size)!important;
   min-width:var(--sak-icon-size)!important;
+  max-width:var(--sak-icon-size)!important;
   height:var(--sak-icon-size)!important;
   min-height:var(--sak-icon-size)!important;
-  aspect-ratio:1/1!important;
+  max-height:var(--sak-icon-size)!important;
   margin:0!important;
-  box-sizing:border-box!important;
-  border-radius:50%!important;
-  overflow:visible!important;
+  padding:0!important;
   transform:none!important;
-  transform-origin:center!important;
-  touch-action:manipulation!important;
-  -webkit-tap-highlight-color:transparent!important;
+  translate:none!important;
+  box-sizing:border-box!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+  transition:none!important;
 }
 
-html body #sakakerAllIconsDock :is(button,a,[role="button"]){
-  touch-action:manipulation!important;
-  -webkit-tap-highlight-color:transparent!important;
-}
-
-/* Preserve glow/shadow without allowing an icon to push the whole page sideways. */
-html body #sakakerAllIconsDock > *,
-html body #sakakerAllIconsDock :is(.cards,#sakakerUtilityDock,#sakakerCenterFeatureDock) > *{
+/* Utility launchers fill their own cell but cannot change its position. */
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-utility-slot > *{
+  position:relative!important;
+  inset:auto!important;
+  width:100%!important;
   max-width:100%!important;
+  height:100%!important;
+  max-height:100%!important;
+  margin:0!important;
+  transform:none!important;
+  translate:none!important;
   box-sizing:border-box!important;
 }
 
-/* Tablets and narrow desktops. */
-@media (max-width:900px){
-  :root{
-    --sak-dock-gap:7px;
-    --sak-dock-edge:7px;
-    --sak-icon-size:clamp(54px,8vw,68px);
-  }
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-icon-cycle.sak-cycle-hidden{
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+}
 
-  html body #sakakerAllIconsDock{
-    width:min(94vw,640px)!important;
-    max-width:94vw!important;
-    max-height:44dvh!important;
-    padding:4px!important;
+/* Payment remains separate on the left and never participates in the icon grid. */
+html body #sakGlobalPayment,
+html body.locked #sakGlobalPayment{
+  position:fixed!important;
+  left:max(8px,env(safe-area-inset-left))!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:clamp(78px,13dvh,118px)!important;
+  transform:none!important;
+  translate:none!important;
+  z-index:2147483001!important;
+  max-width:calc(100vw - 20px)!important;
+}
+
+/* Medium screens: 5 fixed columns. */
+@media(max-width:900px){
+  :root{
+    --sak-icon-size:48px;
+    --sak-icon-gap:5px;
+    --sak-icon-cols:5;
+    --sak-icon-edge:6px;
+  }
+}
+
+/* Phones: 4 columns, still fixed and without scroll/reflow animation. */
+@media(max-width:600px){
+  :root{
+    --sak-icon-size:44px;
+    --sak-icon-gap:5px;
+    --sak-icon-cols:4;
+    --sak-icon-edge:5px;
   }
 
   html body #sakGlobalPayment,
   html body.locked #sakGlobalPayment{
-    bottom:clamp(94px,15dvh,135px)!important;
+    bottom:72px!important;
   }
 }
 
-/* Phones. Keep the right edge fixed and reduce circle size without overlap. */
-@media (max-width:700px){
+/* Very narrow phones. */
+@media(max-width:370px){
   :root{
-    --sak-dock-gap:6px;
-    --sak-dock-edge:5px;
-    --sak-icon-size:clamp(48px,13vw,60px);
+    --sak-icon-size:40px;
+    --sak-icon-gap:4px;
   }
+}
 
-  html body #sakakerAllIconsDock{
-    right:max(var(--sak-dock-edge),env(safe-area-inset-right))!important;
-    bottom:max(var(--sak-dock-edge),env(safe-area-inset-bottom))!important;
-    width:95vw!important;
-    max-width:95vw!important;
-    max-height:42dvh!important;
-    padding:3px!important;
-    gap:var(--sak-dock-gap)!important;
+/* Landscape phones use more columns to keep the dock shallow. */
+@media(orientation:landscape) and (max-height:650px){
+  :root{
+    --sak-icon-size:42px;
+    --sak-icon-gap:4px;
+    --sak-icon-cols:7;
+    --sak-icon-edge:5px;
   }
 
   html body #sakGlobalPayment,
   html body.locked #sakGlobalPayment{
-    bottom:clamp(88px,14dvh,118px)!important;
-  }
-}
-
-/* Very small phones. */
-@media (max-width:390px){
-  :root{
-    --sak-dock-gap:5px;
-    --sak-icon-size:clamp(44px,13.5vw,54px);
-  }
-
-  html body #sakakerAllIconsDock{
-    width:96vw!important;
-    max-width:96vw!important;
-    max-height:40dvh!important;
-  }
-}
-
-/* Landscape phones: use horizontal space, keep content above browser controls. */
-@media (orientation:landscape) and (max-height:650px){
-  :root{
-    --sak-icon-size:clamp(44px,7.5vh,58px);
-  }
-
-  html body #sakakerAllIconsDock{
-    right:max(6px,env(safe-area-inset-right))!important;
-    bottom:max(6px,env(safe-area-inset-bottom))!important;
-    width:min(82vw,820px)!important;
-    max-width:82vw!important;
-    max-height:58dvh!important;
-  }
-
-  html body #sakGlobalPayment,
-  html body.locked #sakGlobalPayment{
-    bottom:clamp(68px,20dvh,104px)!important;
-  }
-}
-
-/* Accessibility: do not add motion when the operating system requests less motion. */
-@media (prefers-reduced-motion:reduce){
-  html body #sakakerAllIconsDock *,
-  html body #sakGlobalPayment{
-    scroll-behavior:auto!important;
+    bottom:62px!important;
   }
 }
