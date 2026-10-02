@@ -195,12 +195,14 @@ function rebuildIconAppearance(){
     decorateAsOstrich(item,info.key);
   });
 
-  /* Keep the requested five first in the same row. */
-  ['facebook','textLibrary','videoLibrary','live','pong'].forEach(key=>{
-    const slot=utility.querySelector('[data-sakaker-util="'+key+'"]');
-    if(slot)utility.appendChild(slot);
+  /* Remove stale empty cells from older layouts, then use one deterministic order. */
+  utility.querySelectorAll('.sakaker-utility-slot').forEach(slot=>{
+    if(!slot.firstElementChild)slot.remove();
   });
-  [...utility.querySelectorAll('.sakaker-utility-slot')].reverse().forEach(slot=>utility.prepend(slot));
+  utilityItems.forEach(info=>{
+    const slot=utility.querySelector('[data-sakaker-util="'+info.key+'"]');
+    if(slot&&slot.firstElementChild)utility.appendChild(slot);
+  });
 
   dock.dataset.sakakerOstrichLayout='1';
 }
