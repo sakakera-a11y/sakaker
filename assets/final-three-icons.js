@@ -91,7 +91,6 @@ function safeKey(value){return String(value||'icon').replace(/[^a-zA-Z0-9_-]/g,'
 function ostrichSVG(key){
   const k=safeKey(key);
   const gid='sakOstrichGold_'+k;
-  const eid='sakOstrichEmerald_'+k;
   const svg=make('svg',{viewBox:'0 0 100 120','aria-hidden':'true',focusable:'false',class:'sak-ostrich-svg'});
   const defs=make('defs');
   const gold=make('linearGradient',{id:gid,x1:'0',y1:'0',x2:'1',y2:'1'});
@@ -100,13 +99,7 @@ function ostrichSVG(key){
     make('stop',{offset:'.42','stop-color':'#ffe47a'}),
     make('stop',{offset:'1','stop-color':'#ff9f1a'})
   );
-  const emerald=make('radialGradient',{id:eid,cx:'.38',cy:'.32',r:'.72'});
-  emerald.append(
-    make('stop',{offset:'0','stop-color':'#eaffff'}),
-    make('stop',{offset:'.34','stop-color':'#53f3d5'}),
-    make('stop',{offset:'1','stop-color':'#057f84'})
-  );
-  defs.append(gold,emerald);svg.appendChild(defs);
+  defs.append(gold);svg.appendChild(defs);
 
   const body=make('g',{class:'sak-ostrich-body'});
   body.append(
@@ -120,12 +113,7 @@ function ostrichSVG(key){
     make('path',{d:'M35 110 L45 110 M58 110 L69 110',stroke:'#ffd85a','stroke-width':'4','stroke-linecap':'round'})
   );
 
-  const gem=make('g',{class:'sak-ostrich-gem'});
-  gem.append(
-    make('circle',{cx:'49',cy:'55',r:'11.5',fill:`url(#${eid})`,stroke:'#eaffff','stroke-width':'1.7'}),
-    make('path',{d:'M49 45 L56 51 L53 60 L45 61 L42 52 Z',fill:'none',stroke:'rgba(255,255,255,.9)','stroke-width':'1.4'})
-  );
-  svg.append(body,gem);
+  svg.append(body);
   return svg;
 }
 
@@ -151,10 +139,8 @@ function decorateAsOstrich(el,key){
     art.className='sak-ostrich-art';
     el.prepend(art);
   }
-  if(art.dataset.key!==stableKey){
-    art.replaceChildren(ostrichSVG(stableKey));
-    art.dataset.key=stableKey;
-  }
+  art.replaceChildren(ostrichSVG(stableKey));
+  art.dataset.key=stableKey;
 
   let name=el.querySelector(':scope > .sak-ostrich-name');
   if(!name){
