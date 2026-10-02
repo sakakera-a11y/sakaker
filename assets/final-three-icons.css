@@ -1,11 +1,11 @@
-/* SAKAKER — single stable authority for the bottom-right icon dock.
-   Keeps original IDs/events and prevents older layout rules from moving icons. */
+/* SAKAKER — unified icon dock.
+   One layout system, one motion system, and no forced visibility state. */
 
 :root{
   --sak-icon-size:52px;
-  --sak-icon-gap:6px;
-  --sak-icon-cols:7;
+  --sak-icon-gap:7px;
   --sak-icon-edge:8px;
+  --sak-icon-transition:280ms;
 }
 
 html,body{
@@ -13,7 +13,8 @@ html,body{
   overflow-x:hidden;
 }
 
-/* One fixed, transparent, predictable dock. */
+/* One transparent row anchored at the lower-right.
+   It never wraps, so icons cannot stack or overlap. */
 html body #sakakerAllIconsDock#sakakerAllIconsDock{
   position:fixed!important;
   inset:auto!important;
@@ -24,23 +25,30 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock{
   transform:none!important;
   translate:none!important;
 
-  display:grid!important;
-  grid-template-columns:repeat(var(--sak-icon-cols),var(--sak-icon-size))!important;
-  grid-auto-rows:var(--sak-icon-size)!important;
-  grid-auto-flow:row!important;
-  justify-content:end!important;
-  align-content:end!important;
+  display:flex!important;
+  flex-flow:row nowrap!important;
+  direction:rtl!important;
+  justify-content:flex-start!important;
   align-items:center!important;
+  align-content:center!important;
 
   width:max-content!important;
   max-width:calc(100vw - 16px)!important;
-  height:auto!important;
-  max-height:none!important;
+  height:calc(var(--sak-icon-size) + 8px)!important;
+  min-height:calc(var(--sak-icon-size) + 8px)!important;
+  max-height:calc(var(--sak-icon-size) + 8px)!important;
   gap:var(--sak-icon-gap)!important;
-  padding:0!important;
+  padding:4px 0!important;
   margin:0!important;
 
-  overflow:visible!important;
+  overflow-x:auto!important;
+  overflow-y:hidden!important;
+  overscroll-behavior-x:contain!important;
+  -webkit-overflow-scrolling:touch!important;
+  scrollbar-width:none!important;
+  scroll-snap-type:x proximity!important;
+  touch-action:pan-x!important;
+
   border:0!important;
   border-radius:0!important;
   background:transparent!important;
@@ -49,20 +57,24 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock{
   -webkit-backdrop-filter:none!important;
   isolation:isolate!important;
   z-index:2147483000!important;
-  transition:none!important;
 }
 
-/* Flatten legacy sub-containers so there is only ONE layout engine. */
-html body #sakakerAllIconsDock#sakakerAllIconsDock :is(.cards,#sakakerUtilityDock,#sakakerCenterFeatureDock){
+html body #sakakerAllIconsDock#sakakerAllIconsDock::-webkit-scrollbar{
+  display:none!important;
+  width:0!important;
+  height:0!important;
+}
+
+/* Legacy groups no longer create independent rows or coordinates. */
+html body #sakakerAllIconsDock#sakakerAllIconsDock :is(.cards,#sakakerUtilityDock){
   display:contents!important;
 }
 
-/* Every dock item owns one exact grid cell. */
-html body #sakakerAllIconsDock#sakakerAllIconsDock :is(.icon-card,.sakaker-utility-slot),
-html body #sakakerAllIconsDock#sakakerAllIconsDock > .icon-card,
-html body #sakakerAllIconsDock#sakakerAllIconsDock > .sakaker-utility-slot{
+/* Every real icon/slot gets exactly one cell and the same spacing. */
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-dock-entry{
   position:relative!important;
   inset:auto!important;
+  flex:0 0 var(--sak-icon-size)!important;
   width:var(--sak-icon-size)!important;
   min-width:var(--sak-icon-size)!important;
   max-width:var(--sak-icon-size)!important;
@@ -71,28 +83,25 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock > .sakaker-utility-slot{
   max-height:var(--sak-icon-size)!important;
   margin:0!important;
   padding:0!important;
-  transform:none!important;
-  translate:none!important;
   box-sizing:border-box!important;
-  visibility:visible!important;
-  opacity:1!important;
-  pointer-events:auto!important;
-  transition:none!important;
+  scroll-snap-align:end!important;
+  transform-origin:center center!important;
+  transition:
+    opacity var(--sak-icon-transition) ease,
+    filter var(--sak-icon-transition) ease,
+    box-shadow var(--sak-icon-transition) ease!important;
+  animation:sakUnifiedIconFloat 4.8s ease-in-out infinite!important;
 }
 
-/* Utility launchers fill their own cell but cannot change its position.
-   Explicit display/visibility overrides old fixed-launcher rules after they
-   are moved into the stable dock. */
-html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-utility-slot > *{
+/* Utility launcher keeps its own real visible/hidden state.
+   Only its coordinates and motion are normalized inside the slot. */
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-utility-slot > .sakaker-dock-item{
   position:relative!important;
   inset:auto!important;
   left:auto!important;
   right:auto!important;
   top:auto!important;
   bottom:auto!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
   width:100%!important;
   min-width:0!important;
   max-width:100%!important;
@@ -100,23 +109,59 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-utility-slot > *{
   min-height:0!important;
   max-height:100%!important;
   margin:0!important;
+  box-sizing:border-box!important;
   transform:none!important;
   translate:none!important;
-  visibility:visible!important;
-  opacity:1!important;
-  pointer-events:auto!important;
-  overflow:visible!important;
+  animation:none!important;
+  transition:
+    opacity var(--sak-icon-transition) ease,
+    visibility var(--sak-icon-transition) ease,
+    filter var(--sak-icon-transition) ease!important;
+}
+
+/* Main cards use the same movement instead of their older independent motion. */
+html body #sakakerAllIconsDock#sakakerAllIconsDock .icon-card.sakaker-main-dock-item{
+  position:relative!important;
+  inset:auto!important;
+  left:auto!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:auto!important;
+  width:var(--sak-icon-size)!important;
+  min-width:var(--sak-icon-size)!important;
+  max-width:var(--sak-icon-size)!important;
+  height:var(--sak-icon-size)!important;
+  min-height:var(--sak-icon-size)!important;
+  max-height:var(--sak-icon-size)!important;
+  margin:0!important;
   box-sizing:border-box!important;
-  z-index:1!important;
 }
 
-html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-icon-cycle.sak-cycle-hidden{
-  visibility:visible!important;
-  opacity:1!important;
-  pointer-events:auto!important;
+/* If any existing icon system uses sak-cycle-hidden, respect the hidden state
+   but make the fade/scale identical for every icon. Nothing is forced visible. */
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-cycle-hidden{
+  opacity:0!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+  transform:translateY(5px) scale(.94)!important;
+  animation:none!important;
+  transition:
+    opacity var(--sak-icon-transition) ease,
+    transform var(--sak-icon-transition) ease,
+    visibility 0s linear var(--sak-icon-transition)!important;
 }
 
-/* Payment remains separate on the left and never participates in the icon grid. */
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-dock-entry:hover{
+  filter:brightness(1.08) saturate(1.06);
+  animation-play-state:paused!important;
+}
+
+@keyframes sakUnifiedIconFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-2px)}
+}
+
+/* Payment stays completely separate on the left. */
 html body #sakGlobalPayment,
 html body.locked #sakGlobalPayment{
   position:fixed!important;
@@ -130,23 +175,32 @@ html body.locked #sakGlobalPayment{
   max-width:calc(100vw - 20px)!important;
 }
 
-/* Medium screens: 5 fixed columns. */
+/* Tablets and phones keep one row and use horizontal touch scrolling. */
 @media(max-width:900px){
   :root{
     --sak-icon-size:48px;
-    --sak-icon-gap:5px;
-    --sak-icon-cols:5;
+    --sak-icon-gap:6px;
     --sak-icon-edge:6px;
+  }
+
+  html body #sakakerAllIconsDock#sakakerAllIconsDock{
+    width:calc(100vw - 12px)!important;
+    max-width:calc(100vw - 12px)!important;
   }
 }
 
-/* Phones: 4 columns, still fixed and without scroll/reflow animation. */
 @media(max-width:600px){
   :root{
-    --sak-icon-size:44px;
+    --sak-icon-size:45px;
     --sak-icon-gap:5px;
-    --sak-icon-cols:4;
     --sak-icon-edge:5px;
+  }
+
+  html body #sakakerAllIconsDock#sakakerAllIconsDock{
+    right:max(5px,env(safe-area-inset-right))!important;
+    bottom:max(5px,env(safe-area-inset-bottom))!important;
+    width:calc(100vw - 10px)!important;
+    max-width:calc(100vw - 10px)!important;
   }
 
   html body #sakGlobalPayment,
@@ -155,25 +209,33 @@ html body.locked #sakGlobalPayment{
   }
 }
 
-/* Very narrow phones. */
 @media(max-width:370px){
   :root{
-    --sak-icon-size:40px;
+    --sak-icon-size:42px;
     --sak-icon-gap:4px;
   }
 }
 
-/* Landscape phones use more columns to keep the dock shallow. */
 @media(orientation:landscape) and (max-height:650px){
   :root{
-    --sak-icon-size:42px;
-    --sak-icon-gap:4px;
-    --sak-icon-cols:7;
+    --sak-icon-size:43px;
+    --sak-icon-gap:5px;
     --sak-icon-edge:5px;
+  }
+
+  html body #sakakerAllIconsDock#sakakerAllIconsDock{
+    width:calc(100vw - 10px)!important;
+    max-width:calc(100vw - 10px)!important;
   }
 
   html body #sakGlobalPayment,
   html body.locked #sakGlobalPayment{
     bottom:62px!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-dock-entry{
+    animation:none!important;
   }
 }
