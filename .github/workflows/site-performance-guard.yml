@@ -157,3 +157,5 @@ jobs:
           path: lighthouse-live
           if-no-files-found: ignore
           retention-days: 7
+
+# Manual verification trigger after login-load optimization.
