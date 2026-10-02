@@ -158,4 +158,4 @@ jobs:
           if-no-files-found: ignore
           retention-days: 7
 
-# Manual verification trigger after initial login-video optimization.
+# Manual verification trigger after legacy login/media optimization.
