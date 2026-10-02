@@ -93,25 +93,54 @@ html body #sakGlobalPayment,html body.locked #sakGlobalPayment{bottom:44vh!impor
     (document.head||document.documentElement).appendChild(style);
   }
 }
-function installFacebookLinks(){
+function installFacebookEmbeds(){
   const popup=document.getElementById('facebookVideoPopup');
   const box=popup?.querySelector('.fbVideoBox');
-  if(!box||box.querySelector('#sakFacebookExtraLinks'))return;
-  const links=[
-    ['منشور فيسبوك 1','https://www.facebook.com/100082898274465/posts/1089659210474011/?app=fbl'],
-    ['ريلز فيسبوك','https://www.facebook.com/share/r/1BQxaJUuP5/'],
-    ['منشور فيسبوك 2','https://www.facebook.com/61556336314377/posts/122326658408211210/']
+  if(!box)return;
+  const legacy=box.querySelector('#sakFacebookExtraLinks');
+  if(legacy)legacy.remove();
+  if(box.querySelector('#sakFacebookEmbeddedMedia'))return;
+  const items=[
+    {type:'post',ar:'منشور فيسبوك 1',en:'Facebook Post 1',url:'https://www.facebook.com/100082898274465/posts/1089659210474011/?app=fbl'},
+    {type:'video',ar:'ريلز فيسبوك',en:'Facebook Reel',url:'https://www.facebook.com/share/r/1BQxaJUuP5/'},
+    {type:'post',ar:'منشور فيسبوك 2',en:'Facebook Post 2',url:'https://www.facebook.com/61556336314377/posts/122326658408211210/'}
   ];
-  const wrap=document.createElement('section');wrap.id='sakFacebookExtraLinks';wrap.setAttribute('aria-label','روابط فيسبوك');
-  wrap.style.cssText='display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin:12px 0 4px;padding:10px;border:1px solid rgba(0,255,204,.35);border-radius:14px;background:rgba(0,25,35,.45)';
-  links.forEach(([label,url],i)=>{const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.dataset.ar=label;a.dataset.en=i===1?'Facebook Reel':'Facebook Post '+(i===0?'1':'2');a.textContent='📘 '+label;a.style.cssText='display:flex;align-items:center;justify-content:center;min-height:42px;padding:8px 10px;border-radius:11px;border:1px solid rgba(120,220,255,.5);background:linear-gradient(135deg,rgba(24,119,242,.75),rgba(0,210,190,.35));color:#fff;text-decoration:none;font:700 12px Tajawal,Tahoma,Arial,sans-serif;text-align:center';wrap.appendChild(a)});
-  const comments=box.querySelector('.fbCommentsBox,.fbComments,.fbCommentWrite');if(comments)box.insertBefore(wrap,comments);else box.appendChild(wrap);
-  const updateLanguage=()=>{const en=document.documentElement.lang==='en';wrap.querySelectorAll('a').forEach(a=>a.textContent='📘 '+(en?a.dataset.en:a.dataset.ar))};updateLanguage();
+  const wrap=document.createElement('section');
+  wrap.id='sakFacebookEmbeddedMedia';
+  wrap.setAttribute('aria-label','مقاطع ومنشورات فيسبوك المضمنة');
+  wrap.style.cssText='display:grid;grid-template-columns:1fr;gap:14px;margin:12px 0 6px;padding:10px;border:1px solid rgba(0,255,204,.35);border-radius:14px;background:rgba(0,25,35,.45);max-width:100%;overflow:hidden';
+  items.forEach(item=>{
+    const card=document.createElement('article');
+    card.style.cssText='display:grid;gap:8px;padding:8px;border:1px solid rgba(120,220,255,.25);border-radius:12px;background:rgba(0,0,0,.18);overflow:hidden';
+    const title=document.createElement('div');
+    title.className='sakFbEmbedTitle';title.dataset.ar=item.ar;title.dataset.en=item.en;
+    title.style.cssText='font:800 13px Tajawal,Tahoma,Arial,sans-serif;color:#fff;text-align:center';
+    const iframe=document.createElement('iframe');
+    const plugin=item.type==='video'?'video.php':'post.php';
+    const params=item.type==='video'?'&show_text=false&width=500':'&show_text=true&width=500';
+    iframe.src='https://www.facebook.com/plugins/'+plugin+'?href='+encodeURIComponent(item.url)+params;
+    iframe.width='500';iframe.height=item.type==='video'?'520':'620';
+    iframe.style.cssText='border:none;overflow:hidden;width:100%;max-width:500px;min-height:500px;margin:auto;border-radius:10px;background:#fff';
+    iframe.scrolling='no';iframe.frameBorder='0';iframe.allowFullscreen=true;iframe.loading='lazy';
+    iframe.allow='autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share';
+    const fallback=document.createElement('a');
+    fallback.href=item.url;fallback.target='_blank';fallback.rel='noopener noreferrer';
+    fallback.className='sakFbEmbedFallback';fallback.dataset.ar='فتح الأصل في فيسبوك';fallback.dataset.en='Open original on Facebook';
+    fallback.style.cssText='display:flex;align-items:center;justify-content:center;min-height:38px;padding:7px 10px;border-radius:10px;border:1px solid rgba(24,119,242,.65);background:rgba(24,119,242,.2);color:#fff;text-decoration:none;font:700 12px Tajawal,Tahoma,Arial,sans-serif';
+    card.append(title,iframe,fallback);wrap.appendChild(card);
+  });
+  const updateLanguage=()=>{
+    const en=document.documentElement.lang==='en';
+    wrap.querySelectorAll('.sakFbEmbedTitle,.sakFbEmbedFallback').forEach(el=>{el.textContent=en?el.dataset.en:el.dataset.ar});
+  };
+  updateLanguage();
+  const comments=box.querySelector('.fbCommentsBox,.fbComments,.fbCommentWrite');
+  if(comments)box.insertBefore(wrap,comments);else box.appendChild(wrap);
   new MutationObserver(updateLanguage).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 }
-function run(){removeVisitorCounters();removeEmptyTextLibrary();ensureAllIconGroups();installFinalLayoutFix();installFacebookLinks()}
+function run(){removeVisitorCounters();removeEmptyTextLibrary();ensureAllIconGroups();installFinalLayoutFix();installFacebookEmbeds()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
 window.addEventListener('load',run,{once:true});
 [300,900,1900,4300].forEach(ms=>setTimeout(run,ms));
-new MutationObserver(()=>{removeEmptyTextLibrary();ensureAllIconGroups();installFinalLayoutFix();installFacebookLinks()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+new MutationObserver(()=>{removeEmptyTextLibrary();ensureAllIconGroups();installFinalLayoutFix();installFacebookEmbeds()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 })();
