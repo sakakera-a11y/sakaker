@@ -1,0 +1,43 @@
+/* Compact the main icon area after removed/grouped launchers. */
+body:not(.locked) #sakakerAllIconsDock{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  align-items:flex-start!important;
+  justify-content:center!important;
+  align-content:flex-start!important;
+  column-gap:10px!important;
+  row-gap:8px!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  padding-top:6px!important;
+  padding-bottom:6px!important;
+}
+body:not(.locked) #sakakerAllIconsDock .sakaker-utility-slot{
+  margin:0!important;
+}
+body:not(.locked) #sakakerAllIconsDock .sakaker-utility-slot:empty,
+body:not(.locked) #sakakerAllIconsDock .sakaker-utility-slot[data-sak-entertainment-hidden="1"],
+body:not(.locked) #sakakerAllIconsDock .sakaker-utility-slot[data-sakaker-util="siteBackground"],
+body:not(.locked) #sakakerAllIconsDock [data-sak-entertainment-grouped="1"]{
+  display:none!important;
+  flex:0 0 0!important;
+  width:0!important;
+  min-width:0!important;
+  max-width:0!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  overflow:hidden!important;
+}
+@media(max-width:700px){
+  body:not(.locked) #sakakerAllIconsDock{
+    column-gap:7px!important;
+    row-gap:6px!important;
+    padding-top:4px!important;
+    padding-bottom:4px!important;
+  }
+}
