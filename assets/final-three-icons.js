@@ -3,10 +3,12 @@
 const NS='http://www.w3.org/2000/svg';
 const EXCLUDED='#facebookVideoPopup,#livePopup,#shipPopup_new,#sakakerBusinessPopup,#emeraldLibraryContent,#sakMusicPlayer,#sakTextLibraryModal,#loginOverlay';
 
+/* Requested row order first, then the remaining site tools. */
 const utilityItems=[
   {key:'facebook',selectors:['#facebookVideoIcon']},
+  {key:'textLibrary',finder:findTextLibrary},
+  {key:'videoLibrary',selectors:['#emeraldLibraryButton']},
   {key:'live',selectors:['#liveFlasher']},
-  {key:'library',selectors:['#emeraldLibraryButton']},
   {key:'pong',selectors:['#pongGame-btn']},
   {key:'ship',selectors:['#shipIcon_new']},
   {key:'music',selectors:['#emOpenBtn','#emeraldMusicHost #emOpenBtn','#emeraldMusicHost button','#emeraldMusicHost [role="button"]']},
@@ -16,9 +18,10 @@ const utilityItems=[
 
 const labels={
   facebook:{ar:'فيس بوك',en:'Facebook'},
-  live:{ar:'القنوات',en:'Live'},
-  library:{ar:'المكتبة',en:'Library'},
-  pong:{ar:'بونج',en:'Pong'},
+  textLibrary:{ar:'المكتبة النصية',en:'Text Library'},
+  videoLibrary:{ar:'مكتبة الفيديو',en:'Video Library'},
+  live:{ar:'قنوات مباشرة',en:'Live Channels'},
+  pong:{ar:'لعبة البونج',en:'Pong'},
   ship:{ar:'أبوالقمر زمرد',en:'Abwalqmrzmrd'},
   music:{ar:'تحويل الصوت',en:'Audio'},
   map:{ar:'الخرائط',en:'Maps'},
@@ -31,17 +34,12 @@ function removeVisitorCounters(){
 }
 
 function findTextLibrary(){
-  const nodes=[...document.querySelectorAll('button,[role="button"],.launcher,[title],[aria-label]')];
+  const nodes=[...document.querySelectorAll('button,[role="button"],a,.launcher,[title],[aria-label]')];
   return nodes.find(el=>{
     if(el.closest('#sakTextLibraryModal'))return false;
     const s=((el.getAttribute('title')||'')+' '+(el.getAttribute('aria-label')||'')+' '+(el.textContent||'')).replace(/\s+/g,' ').trim();
     return /المكتبة\s*النصية|Text\s*Library/i.test(s);
   })||null;
-}
-
-function removeEmptyTextLibrary(){
-  const el=findTextLibrary();
-  if(el)el.remove();
 }
 
 function installFacebookEmbeds(){
@@ -73,11 +71,16 @@ function installFacebookEmbeds(){
 
 function validCandidate(el){return !!el&&!el.closest(EXCLUDED)&&!el.closest('dialog');}
 function firstCandidate(selectors){
-  for(const selector of selectors){
+  for(const selector of selectors||[]){
     const found=[...document.querySelectorAll(selector)].find(validCandidate);
     if(found)return found;
   }
   return null;
+}
+
+function findUtilityItem(info){
+  const item=typeof info.finder==='function'?info.finder():firstCandidate(info.selectors);
+  return validCandidate(item)?item:null;
 }
 
 function make(tag,attrs={}){
@@ -185,19 +188,25 @@ function rebuildIconAppearance(){
 
   const utility=ensureUtilityDock(dock);
   utilityItems.forEach(info=>{
-    const item=firstCandidate(info.selectors);
+    const item=findUtilityItem(info);
     if(!item)return;
     const slot=ensureSlot(utility,info.key);
     if(item.parentElement!==slot)slot.appendChild(item);
     decorateAsOstrich(item,info.key);
   });
 
+  /* Keep the requested five first in the same row. */
+  ['facebook','textLibrary','videoLibrary','live','pong'].forEach(key=>{
+    const slot=utility.querySelector('[data-sakaker-util="'+key+'"]');
+    if(slot)utility.appendChild(slot);
+  });
+  [...utility.querySelectorAll('.sakaker-utility-slot')].reverse().forEach(slot=>utility.prepend(slot));
+
   dock.dataset.sakakerOstrichLayout='1';
 }
 
 function settle(){
   removeVisitorCounters();
-  removeEmptyTextLibrary();
   installFacebookEmbeds();
   rebuildIconAppearance();
 }
@@ -205,6 +214,6 @@ function settle(){
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',settle,{once:true});else settle();
 window.addEventListener('load',settle,{once:true});
 [250,700,1500,3000,5500,9000].forEach(ms=>setTimeout(settle,ms));
-new MutationObserver(()=>{removeEmptyTextLibrary();installFacebookEmbeds();rebuildIconAppearance();}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+new MutationObserver(()=>{installFacebookEmbeds();rebuildIconAppearance();}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 
 })();
