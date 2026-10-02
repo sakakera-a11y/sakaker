@@ -105,9 +105,9 @@ function installSiteBackgroundStyle(){
     #sakSiteSoundBtn{
       position:fixed!important;
       top:auto!important;
-      left:auto!important;
-      right:max(12px,env(safe-area-inset-right))!important;
-      bottom:max(12px,env(safe-area-inset-bottom))!important;
+      left:max(8px,env(safe-area-inset-left))!important;
+      right:auto!important;
+      bottom:max(10px,env(safe-area-inset-bottom))!important;
       transform:none!important;
       z-index:2147483647!important;
       min-width:150px!important;
@@ -150,7 +150,17 @@ function installSiteBackgroundStyle(){
     }
     html body:not(.locked) #sakSeaSoundButton,
     html body:not(.locked) #bird-sound-btn,
-    html body:not(.locked) #sakakerBirdSoundBtn{
+    html body:not(.locked) #sakakerBirdSoundBtn,
+    html body:not(.locked) #sakSeaAudio,
+    html body:not(.locked) #sakakerBirdAudio{
+      display:none!important;
+      visibility:hidden!important;
+      opacity:0!important;
+      pointer-events:none!important;
+    }
+    .video-top-container-fixed :is([id*="sound" i],[class*="sound" i],[id*="audio" i],[class*="audio" i],[id*="mute" i],[class*="mute" i],[id*="volume" i],[class*="volume" i]),
+    #sakSecondStreamCorner :is([id*="sound" i],[class*="sound" i],[id*="audio" i],[class*="audio" i],[id*="mute" i],[class*="mute" i],[id*="volume" i],[class*="volume" i]),
+    #sakakerVideoSlot :is([id*="sound" i],[class*="sound" i],[id*="audio" i],[class*="audio" i],[id*="mute" i],[class*="mute" i],[id*="volume" i],[class*="volume" i]){
       display:none!important;
       visibility:hidden!important;
       opacity:0!important;
@@ -195,7 +205,8 @@ function removeOldSeaSoundControl(){
       if(el.closest('#loginOverlay'))return;
       if(el.id==='sakSiteSoundBtn'||el.id==='sakSiteBackgroundBtn')return;
       if(el.matches('video,iframe'))return;
-      const meta=((el.id||'')+' '+(el.className||'')+' '+(el.getAttribute('title')||'')+' '+(el.getAttribute('aria-label')||'')+' '+(el.textContent||'')).replace(/\s+/g,' ').trim();
+      const ownText=[...el.childNodes].filter(n=>n.nodeType===Node.TEXT_NODE).map(n=>n.textContent||'').join(' ').trim();
+      const meta=((el.id||'')+' '+(typeof el.className==='string'?el.className:'')+' '+(el.getAttribute('title')||'')+' '+(el.getAttribute('aria-label')||'')+' '+ownText).replace(/\s+/g,' ').trim();
       if(/sound|audio|mute|volume|speaker|صوت|🔊|🔇|🔈|🔉|🎵|🎶|🌊/i.test(meta))el.remove();
     });
   });
@@ -210,34 +221,33 @@ function visibleRect(el){
   return r;
 }
 
-function findClockAnchor(){
-  const selectors=['#clock','.clock-box','#sakakerClockSlot','.sakaker-news-clock','.news-ticker'];
-  for(const selector of selectors){
-    for(const el of document.querySelectorAll(selector)){
-      if(el.closest('#loginOverlay'))continue;
-      if(visibleRect(el))return el;
-    }
-  }
-  return null;
-}
-
+/* Keep the main-site sound button directly below the payment control. */
 function placeSiteSoundAboveClock(){
   if(isLocked())return;
   const btn=document.getElementById('sakSiteSoundBtn');
   if(!btn)return;
 
-  let bottom=12;
-  const dock=document.getElementById('sakakerAllIconsDock');
-  const dockRect=visibleRect(dock);
-  if(dockRect&&dockRect.top<window.innerHeight&&dockRect.bottom>0){
-    bottom=Math.max(bottom,window.innerHeight-dockRect.top+8);
+  const payment=document.getElementById('sakGlobalPayment');
+  const paymentRect=visibleRect(payment);
+  const btnWidth=Math.max(btn.offsetWidth||150,120);
+  const btnHeight=Math.max(btn.offsetHeight||44,38);
+
+  let left=Math.max(8,Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--safe-left')||'0')||8);
+  let top=window.innerHeight-btnHeight-10;
+
+  if(paymentRect){
+    left=paymentRect.left+(paymentRect.width-btnWidth)/2;
+    top=paymentRect.bottom+8;
   }
 
+  left=Math.max(8,Math.min(window.innerWidth-btnWidth-8,left));
+  top=Math.max(8,Math.min(window.innerHeight-btnHeight-8,top));
+
   btn.style.setProperty('position','fixed','important');
-  btn.style.setProperty('left','auto','important');
-  btn.style.setProperty('right','max(10px, env(safe-area-inset-right))','important');
-  btn.style.setProperty('top','auto','important');
-  btn.style.setProperty('bottom','calc('+Math.round(bottom)+'px + env(safe-area-inset-bottom))','important');
+  btn.style.setProperty('left',Math.round(left)+'px','important');
+  btn.style.setProperty('right','auto','important');
+  btn.style.setProperty('top',Math.round(top)+'px','important');
+  btn.style.setProperty('bottom','auto','important');
   btn.style.setProperty('transform','none','important');
 }
 
@@ -267,8 +277,8 @@ function updateSiteBackgroundButton(){
     soundBtn.setAttribute('aria-label',label);
     soundBtn.title=label;
     soundBtn.textContent=playing
-      ?(en?'🔊 Background sound':'🔊 صوت الخلفية')
-      :(en?'🔇 Turn on sound':'🔇 تشغيل الصوت');
+      ?(en?'Background sound':'صوت الخلفية')
+      :(en?'Turn on sound':'تشغيل الصوت');
     requestAnimationFrame(placeSiteSoundAboveClock);
   }
 }
