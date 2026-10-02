@@ -13,9 +13,15 @@ html body.locked #sakGlobalPayment{
 
 /* Keep the original icon artwork and arrange it in multiple rows. */
 html body #sakakerAllIconsDock{
+  position:fixed!important;
+  left:auto!important;
+  right:max(8px,env(safe-area-inset-right))!important;
+  bottom:max(8px,env(safe-area-inset-bottom))!important;
+  top:auto!important;
+  transform:none!important;
   display:flex!important;
   flex-wrap:wrap!important;
-  justify-content:center!important;
+  justify-content:flex-end!important;
   align-items:flex-end!important;
   align-content:flex-end!important;
   width:min(680px,96vw)!important;
@@ -28,26 +34,28 @@ html body #sakakerAllIconsDock{
 
 @media(max-width:700px){
   html body #sakakerAllIconsDock{
-    width:96vw!important;
-    max-width:96vw!important;
+    right:max(6px,env(safe-area-inset-right))!important;
+    width:94vw!important;
+    max-width:94vw!important;
     row-gap:6px!important;
     column-gap:5px!important;
   }
 }
 
-/* Mobile landscape only: keep the three icon groups on clear separate rows. */
+/* Mobile landscape only: anchor the whole icon container at the bottom-right. */
 @media (orientation:landscape) and (max-height:650px){
   html body #sakakerAllIconsDock#sakakerAllIconsDock{
-    left:50%!important;
-    right:auto!important;
+    left:auto!important;
+    right:max(8px,env(safe-area-inset-right))!important;
     bottom:max(8px,env(safe-area-inset-bottom))!important;
+    transform:none!important;
     width:min(900px,76vw)!important;
     max-width:76vw!important;
     padding:6px 10px!important;
     gap:8px!important;
     row-gap:9px!important;
     column-gap:10px!important;
-    justify-content:center!important;
+    justify-content:flex-end!important;
     align-items:flex-end!important;
     align-content:flex-end!important;
     overflow:visible!important;
@@ -61,7 +69,7 @@ html body #sakakerAllIconsDock{
     max-width:100%!important;
     display:flex!important;
     flex-wrap:wrap!important;
-    justify-content:center!important;
+    justify-content:flex-end!important;
     align-items:flex-end!important;
     gap:10px 14px!important;
     overflow:visible!important;
