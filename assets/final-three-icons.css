@@ -1,11 +1,14 @@
-/* SAKAKER — unified icon dock.
-   One layout system, one motion system, and no forced visibility state. */
+/* SAKAKER — unified ostrich icon system.
+   Rebuilds ONLY icon appearance and placement. Existing click logic and
+   each icon's own visible/hidden state remain untouched. */
 
 :root{
-  --sak-icon-size:52px;
-  --sak-icon-gap:7px;
-  --sak-icon-edge:8px;
-  --sak-icon-transition:280ms;
+  --sak-ostrich-cell:clamp(58px,5.2vw,72px);
+  --sak-ostrich-height:clamp(76px,6.5vw,90px);
+  --sak-ostrich-art:clamp(48px,4.5vw,62px);
+  --sak-ostrich-gap:clamp(4px,.55vw,8px);
+  --sak-ostrich-edge:8px;
+  --sak-ostrich-speed:2.8s;
 }
 
 html,body{
@@ -13,15 +16,14 @@ html,body{
   overflow-x:hidden;
 }
 
-/* One transparent row anchored at the lower-right.
-   It never wraps, so icons cannot stack or overlap. */
+/* One placement engine only. No visible container and no wrapping. */
 html body #sakakerAllIconsDock#sakakerAllIconsDock{
   position:fixed!important;
   inset:auto!important;
-  right:max(var(--sak-icon-edge),env(safe-area-inset-right))!important;
-  bottom:max(var(--sak-icon-edge),env(safe-area-inset-bottom))!important;
+  right:max(var(--sak-ostrich-edge),env(safe-area-inset-right))!important;
   left:auto!important;
   top:auto!important;
+  bottom:max(6px,env(safe-area-inset-bottom))!important;
   transform:none!important;
   translate:none!important;
 
@@ -29,29 +31,29 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock{
   flex-flow:row nowrap!important;
   direction:rtl!important;
   justify-content:flex-start!important;
-  align-items:center!important;
-  align-content:center!important;
+  align-items:flex-end!important;
+  align-content:flex-end!important;
 
   width:max-content!important;
   max-width:calc(100vw - 16px)!important;
-  height:calc(var(--sak-icon-size) + 8px)!important;
-  min-height:calc(var(--sak-icon-size) + 8px)!important;
-  max-height:calc(var(--sak-icon-size) + 8px)!important;
-  gap:var(--sak-icon-gap)!important;
-  padding:4px 0!important;
+  height:calc(var(--sak-ostrich-height) + 12px)!important;
+  min-height:calc(var(--sak-ostrich-height) + 12px)!important;
+  max-height:calc(var(--sak-ostrich-height) + 12px)!important;
+  gap:var(--sak-ostrich-gap)!important;
   margin:0!important;
+  padding:5px 0!important;
 
   overflow-x:auto!important;
   overflow-y:hidden!important;
   overscroll-behavior-x:contain!important;
   -webkit-overflow-scrolling:touch!important;
-  scrollbar-width:none!important;
-  scroll-snap-type:x proximity!important;
   touch-action:pan-x!important;
+  scroll-snap-type:x proximity!important;
+  scrollbar-width:none!important;
 
+  background:transparent!important;
   border:0!important;
   border-radius:0!important;
-  background:transparent!important;
   box-shadow:none!important;
   backdrop-filter:none!important;
   -webkit-backdrop-filter:none!important;
@@ -65,37 +67,125 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock::-webkit-scrollbar{
   height:0!important;
 }
 
-/* Legacy groups no longer create independent rows or coordinates. */
+/* Old nested rows no longer participate in layout. */
 html body #sakakerAllIconsDock#sakakerAllIconsDock :is(.cards,#sakakerUtilityDock){
   display:contents!important;
 }
 
-/* Every real icon/slot gets exactly one cell and the same spacing. */
-html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-dock-entry{
+/* Utility cells and main buttons use exactly the same footprint. */
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-utility-slot,
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon{
   position:relative!important;
   inset:auto!important;
-  flex:0 0 var(--sak-icon-size)!important;
-  width:var(--sak-icon-size)!important;
-  min-width:var(--sak-icon-size)!important;
-  max-width:var(--sak-icon-size)!important;
-  height:var(--sak-icon-size)!important;
-  min-height:var(--sak-icon-size)!important;
-  max-height:var(--sak-icon-size)!important;
+  left:auto!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:auto!important;
+  flex:0 0 var(--sak-ostrich-cell)!important;
+  width:var(--sak-ostrich-cell)!important;
+  min-width:var(--sak-ostrich-cell)!important;
+  max-width:var(--sak-ostrich-cell)!important;
+  height:var(--sak-ostrich-height)!important;
+  min-height:var(--sak-ostrich-height)!important;
+  max-height:var(--sak-ostrich-height)!important;
   margin:0!important;
   padding:0!important;
   box-sizing:border-box!important;
   scroll-snap-align:end!important;
-  transform-origin:center center!important;
-  transition:
-    opacity var(--sak-icon-transition) ease,
-    filter var(--sak-icon-transition) ease,
-    box-shadow var(--sak-icon-transition) ease!important;
-  animation:sakUnifiedIconFloat 4.8s ease-in-out infinite!important;
 }
 
-/* Utility launcher keeps its own real visible/hidden state.
-   Only its coordinates and motion are normalized inside the slot. */
-html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-utility-slot > .sakaker-dock-item{
+/* Remove the old circle/star/moon/button artwork completely.
+   We intentionally do NOT set display/visibility/opacity on the icon itself. */
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon{
+  border:0!important;
+  border-radius:0!important;
+  outline:0!important;
+  background:transparent!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  clip-path:none!important;
+  filter:none!important;
+  transform:none!important;
+  translate:none!important;
+  overflow:visible!important;
+  animation:none!important;
+  font-size:0!important;
+  line-height:0!important;
+  text-decoration:none!important;
+}
+
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon::before,
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon::after{
+  display:none!important;
+  content:none!important;
+  animation:none!important;
+}
+
+/* Old visual children are removed from layout; only the new ostrich and its
+   unified label remain. The parent keeps its original click handler. */
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon > :not(.sak-ostrich-art):not(.sak-ostrich-name){
+  display:none!important;
+}
+
+/* Every ostrich is centered identically inside its own cell. */
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-art{
+  position:absolute!important;
+  left:50%!important;
+  top:1px!important;
+  width:var(--sak-ostrich-art)!important;
+  height:calc(var(--sak-ostrich-art) * 1.2)!important;
+  min-width:var(--sak-ostrich-art)!important;
+  min-height:calc(var(--sak-ostrich-art) * 1.2)!important;
+  max-width:var(--sak-ostrich-art)!important;
+  max-height:calc(var(--sak-ostrich-art) * 1.2)!important;
+  margin:0!important;
+  padding:0!important;
+  transform:translateX(-50%)!important;
+  transform-origin:50% 78%!important;
+  pointer-events:none!important;
+  overflow:visible!important;
+  line-height:0!important;
+  filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 8px rgba(255,222,90,.72)) drop-shadow(0 0 14px rgba(38,241,213,.42))!important;
+  animation:sakOstrichUnifiedMotion var(--sak-ostrich-speed) ease-in-out infinite!important;
+}
+
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-svg{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:100%!important;
+  min-height:100%!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  overflow:visible!important;
+  pointer-events:none!important;
+}
+
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-name{
+  position:absolute!important;
+  left:50%!important;
+  right:auto!important;
+  bottom:1px!important;
+  width:calc(var(--sak-ostrich-cell) + 12px)!important;
+  max-width:calc(var(--sak-ostrich-cell) + 12px)!important;
+  transform:translateX(-50%)!important;
+  margin:0!important;
+  padding:0!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+  font:800 clamp(6px,.62vw,9px)/1.15 Tajawal,Tahoma,Arial,sans-serif!important;
+  text-shadow:0 1px 3px #000,0 0 5px #000,0 0 7px rgba(255,255,255,.75)!important;
+  pointer-events:none!important;
+  z-index:2!important;
+}
+
+/* Utility launchers are centered inside their cells without changing their
+   own visibility state. */
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-utility-slot > .sak-ostrich-icon{
   position:relative!important;
   inset:auto!important;
   left:auto!important;
@@ -103,65 +193,36 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-utility-slot > .saka
   top:auto!important;
   bottom:auto!important;
   width:100%!important;
-  min-width:0!important;
+  min-width:100%!important;
   max-width:100%!important;
   height:100%!important;
-  min-height:0!important;
+  min-height:100%!important;
   max-height:100%!important;
   margin:0!important;
-  box-sizing:border-box!important;
-  transform:none!important;
-  translate:none!important;
-  animation:none!important;
-  transition:
-    opacity var(--sak-icon-transition) ease,
-    visibility var(--sak-icon-transition) ease,
-    filter var(--sak-icon-transition) ease!important;
 }
 
-/* Main cards use the same movement instead of their older independent motion. */
-html body #sakakerAllIconsDock#sakakerAllIconsDock .icon-card.sakaker-main-dock-item{
-  position:relative!important;
-  inset:auto!important;
-  left:auto!important;
-  right:auto!important;
-  top:auto!important;
-  bottom:auto!important;
-  width:var(--sak-icon-size)!important;
-  min-width:var(--sak-icon-size)!important;
-  max-width:var(--sak-icon-size)!important;
-  height:var(--sak-icon-size)!important;
-  min-height:var(--sak-icon-size)!important;
-  max-height:var(--sak-icon-size)!important;
-  margin:0!important;
-  box-sizing:border-box!important;
-}
-
-/* If any existing icon system uses sak-cycle-hidden, respect the hidden state
-   but make the fade/scale identical for every icon. Nothing is forced visible. */
-html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-cycle-hidden{
+/* One common hide transition for any existing cycle system. Nothing is
+   forced visible when the class is absent. */
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon.sak-cycle-hidden,
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-cycle-hidden .sak-ostrich-icon{
   opacity:0!important;
   visibility:hidden!important;
   pointer-events:none!important;
-  transform:translateY(5px) scale(.94)!important;
-  animation:none!important;
-  transition:
-    opacity var(--sak-icon-transition) ease,
-    transform var(--sak-icon-transition) ease,
-    visibility 0s linear var(--sak-icon-transition)!important;
+  transition:opacity 240ms ease,visibility 0s linear 240ms!important;
 }
 
-html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-dock-entry:hover{
-  filter:brightness(1.08) saturate(1.06);
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon:hover .sak-ostrich-art,
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon:focus-visible .sak-ostrich-art{
   animation-play-state:paused!important;
+  filter:brightness(1.1) drop-shadow(0 0 5px #fff) drop-shadow(0 0 13px rgba(255,222,90,.9)) drop-shadow(0 0 21px rgba(38,241,213,.58))!important;
 }
 
-@keyframes sakUnifiedIconFloat{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-2px)}
+@keyframes sakOstrichUnifiedMotion{
+  0%,100%{transform:translateX(-50%) translateY(0) rotate(-1deg)}
+  50%{transform:translateX(-50%) translateY(-3px) rotate(1deg)}
 }
 
-/* Payment stays completely separate on the left. */
+/* Payment stays separate on the left. */
 html body #sakGlobalPayment,
 html body.locked #sakGlobalPayment{
   position:fixed!important;
@@ -175,67 +236,73 @@ html body.locked #sakGlobalPayment{
   max-width:calc(100vw - 20px)!important;
 }
 
-/* Tablets and phones keep one row and use horizontal touch scrolling. */
+/* Tablet and mobile: same shape, same centering, horizontal touch scroll. */
 @media(max-width:900px){
   :root{
-    --sak-icon-size:48px;
-    --sak-icon-gap:6px;
-    --sak-icon-edge:6px;
+    --sak-ostrich-cell:62px;
+    --sak-ostrich-height:78px;
+    --sak-ostrich-art:52px;
+    --sak-ostrich-gap:6px;
+    --sak-ostrich-edge:6px;
   }
-
   html body #sakakerAllIconsDock#sakakerAllIconsDock{
+    right:max(var(--sak-ostrich-edge),env(safe-area-inset-right))!important;
     width:calc(100vw - 12px)!important;
     max-width:calc(100vw - 12px)!important;
+  }
+  html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-name{
+    font-size:7px!important;
   }
 }
 
 @media(max-width:600px){
   :root{
-    --sak-icon-size:45px;
-    --sak-icon-gap:5px;
-    --sak-icon-edge:5px;
+    --sak-ostrich-cell:56px;
+    --sak-ostrich-height:72px;
+    --sak-ostrich-art:47px;
+    --sak-ostrich-gap:5px;
+    --sak-ostrich-edge:5px;
   }
-
   html body #sakakerAllIconsDock#sakakerAllIconsDock{
     right:max(5px,env(safe-area-inset-right))!important;
     bottom:max(5px,env(safe-area-inset-bottom))!important;
     width:calc(100vw - 10px)!important;
     max-width:calc(100vw - 10px)!important;
   }
+  html body #sakGlobalPayment,
+  html body.locked #sakGlobalPayment{
+    bottom:78px!important;
+  }
+}
 
+@media(max-width:370px){
+  :root{
+    --sak-ostrich-cell:52px;
+    --sak-ostrich-height:68px;
+    --sak-ostrich-art:44px;
+    --sak-ostrich-gap:4px;
+  }
+}
+
+@media(orientation:landscape) and (max-height:650px){
+  :root{
+    --sak-ostrich-cell:54px;
+    --sak-ostrich-height:68px;
+    --sak-ostrich-art:45px;
+    --sak-ostrich-gap:5px;
+  }
+  html body #sakakerAllIconsDock#sakakerAllIconsDock{
+    width:calc(100vw - 12px)!important;
+    max-width:calc(100vw - 12px)!important;
+  }
   html body #sakGlobalPayment,
   html body.locked #sakGlobalPayment{
     bottom:72px!important;
   }
 }
 
-@media(max-width:370px){
-  :root{
-    --sak-icon-size:42px;
-    --sak-icon-gap:4px;
-  }
-}
-
-@media(orientation:landscape) and (max-height:650px){
-  :root{
-    --sak-icon-size:43px;
-    --sak-icon-gap:5px;
-    --sak-icon-edge:5px;
-  }
-
-  html body #sakakerAllIconsDock#sakakerAllIconsDock{
-    width:calc(100vw - 10px)!important;
-    max-width:calc(100vw - 10px)!important;
-  }
-
-  html body #sakGlobalPayment,
-  html body.locked #sakGlobalPayment{
-    bottom:62px!important;
-  }
-}
-
 @media(prefers-reduced-motion:reduce){
-  html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-dock-entry{
+  html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-art{
     animation:none!important;
   }
 }
