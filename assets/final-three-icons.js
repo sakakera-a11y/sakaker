@@ -1,15 +1,16 @@
 (()=>{'use strict';
 
 const EXCLUDED='#facebookVideoPopup,#livePopup,#shipPopup_new,#sakakerBusinessPopup,#emeraldLibraryContent,#sakMusicPlayer,#sakTextLibraryModal,#loginOverlay';
+
 const utilityItems=[
-  {key:'facebook',selector:'#facebookVideoIcon'},
-  {key:'live',selector:'#liveFlasher'},
-  {key:'library',selector:'#emeraldLibraryButton'},
-  {key:'pong',selector:'#pongGame-btn'},
-  {key:'ship',selector:'#shipIcon_new'},
-  {key:'music',selector:'#emeraldMusicHost'},
-  {key:'map',selector:'.launcher'},
-  {key:'business',selector:'#sakakerBusinessAd'}
+  {key:'facebook',selectors:['#facebookVideoIcon']},
+  {key:'live',selectors:['#liveFlasher']},
+  {key:'library',selectors:['#emeraldLibraryButton']},
+  {key:'pong',selectors:['#pongGame-btn']},
+  {key:'ship',selectors:['#shipIcon_new']},
+  {key:'music',selectors:['#emOpenBtn','#emeraldMusicHost #emOpenBtn','#emeraldMusicHost button','#emeraldMusicHost [role="button"]']},
+  {key:'map',selectors:['#mapIcon','.launcher[data-map]','.launcher[aria-label*="خريطة"]','.launcher[title*="خريطة"]','.launcher']},
+  {key:'business',selectors:['#sakakerBusinessAd']}
 ];
 
 function removeVisitorCounters(){
@@ -70,14 +71,38 @@ function validCandidate(el){
   return !!el&&!el.closest(EXCLUDED)&&!el.closest('dialog');
 }
 
-function firstCandidate(selector){
-  return [...document.querySelectorAll(selector)].find(validCandidate)||null;
+function firstCandidate(selectors){
+  for(const selector of selectors){
+    const found=[...document.querySelectorAll(selector)].find(validCandidate);
+    if(found)return found;
+  }
+  return null;
+}
+
+function ensureSlot(utility,key){
+  let slot=utility.querySelector('[data-sakaker-util="'+key+'"]');
+  if(!slot){
+    slot=document.createElement('div');
+    slot.className='sakaker-utility-slot';
+    slot.dataset.sakakerUtil=key;
+    utility.appendChild(slot);
+  }
+  return slot;
+}
+
+function normalizeUtilityItem(item,key){
+  item.classList.add('sakaker-dock-item');
+  item.dataset.sakakerDockKey=key;
+  item.removeAttribute('hidden');
+  item.style.setProperty('visibility','visible','important');
+  item.style.setProperty('opacity','1','important');
+  item.style.setProperty('pointer-events','auto','important');
 }
 
 /*
-  Consolidate only when necessary. There is intentionally NO MutationObserver
-  and NO permanent position watchdog here. Older scripts are therefore not
-  continuously fighting this file for the same bottom-right coordinates.
+  Six main .icon-card items already exist in the normal cards group.
+  The eight utility launchers are mounted into dedicated cells so the full
+  set of fourteen icons appears without a second positioning system.
 */
 function consolidateIconsOnce(){
   const dock=document.getElementById('sakakerAllIconsDock');
@@ -99,22 +124,34 @@ function consolidateIconsOnce(){
   if(center&&center.parentElement!==dock)dock.appendChild(center);
 
   utilityItems.forEach(info=>{
-    const item=firstCandidate(info.selector);
-    if(!item||item.closest('#sakakerAllIconsDock'))return;
+    const item=firstCandidate(info.selectors);
+    if(!item)return;
 
-    let slot=utility.querySelector('[data-sakaker-util="'+info.key+'"]');
-    if(!slot){
-      slot=document.createElement('div');
-      slot.className='sakaker-utility-slot';
-      slot.dataset.sakakerUtil=info.key;
-      utility.appendChild(slot);
-    }
-    slot.appendChild(item);
+    const slot=ensureSlot(utility,info.key);
+    normalizeUtilityItem(item,info.key);
+
+    /* Do not skip items that are already somewhere inside the dock: place
+       every utility launcher in its own exact cell. */
+    if(item.parentElement!==slot)slot.appendChild(item);
+  });
+
+  /* Remove empty utility cells left by old passes, but preserve expected cells
+     whose launcher may be created during one of the bounded late passes. */
+  utility.querySelectorAll('.sakaker-utility-slot').forEach(slot=>{
+    const key=slot.dataset.sakakerUtil;
+    const expected=utilityItems.some(info=>info.key===key);
+    if(!expected&&!slot.firstElementChild)slot.remove();
   });
 
   dock.querySelectorAll('.sak-cycle-hidden').forEach(el=>el.classList.remove('sak-cycle-hidden'));
+  dock.querySelectorAll('.icon-card').forEach(el=>{
+    el.style.setProperty('visibility','visible','important');
+    el.style.setProperty('opacity','1','important');
+    el.style.setProperty('pointer-events','auto','important');
+  });
 
   dock.dataset.sakakerStableDock='1';
+  dock.dataset.sakakerExpectedIcons='14';
 }
 
 function settle(){
@@ -132,10 +169,10 @@ if(document.readyState==='loading'){
 
 window.addEventListener('load',settle,{once:true});
 
-/* A few bounded late passes catch delayed widgets, then stop permanently. */
-[500,1500,3500,6000].forEach(ms=>setTimeout(settle,ms));
+/* Delayed widgets are collected for a short bounded period only. No permanent
+   position observer is used, so the icons do not keep changing location. */
+[250,700,1500,3000,5000,8000,12000].forEach(ms=>setTimeout(settle,ms));
 
-/* Language changes may recreate labels; one pass is enough and does not watch positions. */
 new MutationObserver(()=>{
   removeEmptyTextLibrary();
   installFacebookEmbeds();
