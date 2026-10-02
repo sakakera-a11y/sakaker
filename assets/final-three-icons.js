@@ -49,12 +49,35 @@ function installFacebookEmbeds(){
   const comments=box.querySelector('.fbCommentsBox,.fbComments,.fbCommentWrite');
   if(comments)box.insertBefore(wrap,comments);else box.appendChild(wrap);
 }
+function forceElementPositions(){
+  const set=(el,prop,val)=>{if(el)el.style.setProperty(prop,val,'important');};
+  const dock=document.getElementById('sakakerAllIconsDock');
+  if(dock){
+    set(dock,'position','fixed');set(dock,'left','auto');set(dock,'right','max(8px, env(safe-area-inset-right))');
+    set(dock,'top','auto');set(dock,'bottom','max(8px, env(safe-area-inset-bottom))');
+    set(dock,'transform','none');set(dock,'translate','none');
+    set(dock,'justify-content','flex-end');set(dock,'align-items','flex-end');
+  }
+  const payment=document.getElementById('sakGlobalPayment');
+  if(payment){
+    set(payment,'position','fixed');set(payment,'left','max(10px, env(safe-area-inset-left))');set(payment,'right','auto');
+    set(payment,'top','auto');set(payment,'transform','none');set(payment,'translate','none');
+    set(payment,'bottom',document.body.classList.contains('locked')?'max(74px, calc(74px + env(safe-area-inset-bottom)))':'max(86px, calc(86px + env(safe-area-inset-bottom)))');
+  }
+  const panel=document.getElementById('sakPaymentPanel');
+  if(panel&&document.body.classList.contains('locked')){set(panel,'left','0');set(panel,'right','auto');}
+  const identity=document.getElementById('sakLoginIdentity');
+  if(identity&&document.body.classList.contains('locked')){
+    set(identity,'position','fixed');set(identity,'left','max(10px, env(safe-area-inset-left))');set(identity,'right','auto');
+    set(identity,'top','auto');set(identity,'bottom','max(12px, env(safe-area-inset-bottom))');
+    set(identity,'transform','none');set(identity,'translate','none');set(identity,'margin','0');
+  }
+}
 function installFinalLayoutAuthority(){
   const id='sak-final-runtime-layout-authority';
   let style=document.getElementById(id);
   if(!style){style=document.createElement('style');style.id=id;}
   style.textContent=`
-/* Final authority: icons always use the right side after login. */
 html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock{
   position:fixed!important;inset:auto!important;
   left:auto!important;right:max(8px,env(safe-area-inset-right))!important;
@@ -74,76 +97,46 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock :is(.cards,#sakakerUtilityDoc
   align-items:flex-end!important;align-content:flex-end!important;
   width:auto!important;max-width:100%!important;margin:0!important;gap:7px!important;
 }
-
-/* Normal site: payment remains on the left and slightly raised. */
 html body:not(.locked) #sakGlobalPayment#sakGlobalPayment{
   position:fixed!important;left:max(8px,env(safe-area-inset-left))!important;right:auto!important;
   top:auto!important;bottom:max(86px,calc(86px + env(safe-area-inset-bottom)))!important;
   transform:none!important;translate:none!important;z-index:2147483001!important;
 }
-
-/* Login screen: move BOTH payment and site identity to the left. */
+html body.locked #loginOverlay #sakGlobalPayment#sakGlobalPayment,
 html body.locked #sakGlobalPayment#sakGlobalPayment{
-  position:fixed!important;
-  left:max(10px,env(safe-area-inset-left))!important;
-  right:auto!important;
-  top:auto!important;
-  bottom:max(74px,calc(74px + env(safe-area-inset-bottom)))!important;
-  transform:none!important;translate:none!important;
-  z-index:2147483646!important;
+  position:fixed!important;left:max(10px,env(safe-area-inset-left))!important;right:auto!important;
+  top:auto!important;bottom:max(74px,calc(74px + env(safe-area-inset-bottom)))!important;
+  transform:none!important;translate:none!important;z-index:2147483646!important;
 }
-html body.locked #sakPaymentPanel#sakPaymentPanel{
-  left:0!important;right:auto!important;
-}
-html body.locked #loginOverlay #sakLoginIdentity,
+html body.locked #loginOverlay #sakPaymentPanel#sakPaymentPanel,
+html body.locked #sakPaymentPanel#sakPaymentPanel{left:0!important;right:auto!important;}
+html body.locked #loginOverlay #sakLoginIdentity#sakLoginIdentity,
 html body.locked #sakLoginIdentity#sakLoginIdentity{
-  position:fixed!important;
-  left:max(10px,env(safe-area-inset-left))!important;
-  right:auto!important;
-  bottom:max(12px,env(safe-area-inset-bottom))!important;
-  top:auto!important;
-  transform:none!important;translate:none!important;
-  margin:0!important;
-  z-index:2147483645!important;
+  position:fixed!important;left:max(10px,env(safe-area-inset-left))!important;right:auto!important;
+  bottom:max(12px,env(safe-area-inset-bottom))!important;top:auto!important;
+  transform:none!important;translate:none!important;margin:0!important;z-index:2147483645!important;
 }
-
 html body:not(.locked) .video-top-container-fixed,
 html body:not(.locked) #sakSecondStreamCorner{
   top:clamp(105px,18dvh,165px)!important;bottom:auto!important;
   width:clamp(76px,8.2vw,108px)!important;height:clamp(76px,8.2vw,108px)!important;
   translate:none!important;transform:none!important;box-sizing:border-box!important;
 }
-html body:not(.locked) .video-top-container-fixed{
-  left:max(8px,env(safe-area-inset-left))!important;right:auto!important;
-}
-html body:not(.locked) #sakSecondStreamCorner{
-  right:max(8px,env(safe-area-inset-right))!important;left:auto!important;
-}
+html body:not(.locked) .video-top-container-fixed{left:max(8px,env(safe-area-inset-left))!important;right:auto!important;}
+html body:not(.locked) #sakSecondStreamCorner{right:max(8px,env(safe-area-inset-right))!important;left:auto!important;}
 @media(max-width:700px){
   html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock{
     right:max(5px,env(safe-area-inset-right))!important;bottom:max(5px,env(safe-area-inset-bottom))!important;
-    width:fit-content!important;max-width:95vw!important;max-height:42dvh!important;
-    gap:5px!important;padding:3px!important;
+    width:fit-content!important;max-width:95vw!important;max-height:42dvh!important;gap:5px!important;padding:3px!important;
   }
   html body #sakakerAllIconsDock#sakakerAllIconsDock :is(.cards,#sakakerUtilityDock,#sakakerCenterFeatureDock){gap:5px!important;}
-  html body:not(.locked) #sakGlobalPayment#sakGlobalPayment{
-    bottom:max(76px,calc(76px + env(safe-area-inset-bottom)))!important;
-  }
-  html body.locked #sakGlobalPayment#sakGlobalPayment{
-    left:max(7px,env(safe-area-inset-left))!important;
-    bottom:max(68px,calc(68px + env(safe-area-inset-bottom)))!important;
-  }
-  html body.locked #loginOverlay #sakLoginIdentity,
-  html body.locked #sakLoginIdentity#sakLoginIdentity{
-    left:max(7px,env(safe-area-inset-left))!important;
-    right:auto!important;
-    bottom:max(8px,env(safe-area-inset-bottom))!important;
-    max-width:calc(100vw - 14px)!important;
-  }
+  html body:not(.locked) #sakGlobalPayment#sakGlobalPayment{bottom:max(76px,calc(76px + env(safe-area-inset-bottom)))!important;}
+  html body.locked #loginOverlay #sakGlobalPayment#sakGlobalPayment,
+  html body.locked #sakGlobalPayment#sakGlobalPayment{left:max(7px,env(safe-area-inset-left))!important;right:auto!important;bottom:max(68px,calc(68px + env(safe-area-inset-bottom)))!important;}
+  html body.locked #loginOverlay #sakLoginIdentity#sakLoginIdentity,
+  html body.locked #sakLoginIdentity#sakLoginIdentity{left:max(7px,env(safe-area-inset-left))!important;right:auto!important;bottom:max(8px,env(safe-area-inset-bottom))!important;max-width:calc(100vw - 14px)!important;}
   html body:not(.locked) .video-top-container-fixed,
-  html body:not(.locked) #sakSecondStreamCorner{
-    top:108px!important;width:68px!important;height:68px!important;
-  }
+  html body:not(.locked) #sakSecondStreamCorner{top:108px!important;width:68px!important;height:68px!important;}
 }
 @media(max-width:390px){
   html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock{max-width:96vw!important;gap:4px!important;}
@@ -153,23 +146,27 @@ html body:not(.locked) #sakSecondStreamCorner{
 @media(orientation:landscape) and (max-height:650px){
   html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock{max-width:78vw!important;max-height:56dvh!important;}
   html body:not(.locked) #sakGlobalPayment#sakGlobalPayment{bottom:max(68px,calc(68px + env(safe-area-inset-bottom)))!important;}
-  html body.locked #sakGlobalPayment#sakGlobalPayment{bottom:max(58px,calc(58px + env(safe-area-inset-bottom)))!important;}
+  html body.locked #loginOverlay #sakGlobalPayment#sakGlobalPayment,
+  html body.locked #sakGlobalPayment#sakGlobalPayment{left:max(7px,env(safe-area-inset-left))!important;right:auto!important;bottom:max(58px,calc(58px + env(safe-area-inset-bottom)))!important;}
   html body:not(.locked) .video-top-container-fixed,
   html body:not(.locked) #sakSecondStreamCorner{top:58px!important;width:62px!important;height:62px!important;}
 }
 `;
-  if(document.body){document.body.appendChild(style);}else{document.documentElement.appendChild(style);}
+  if(style.parentNode)style.remove();
+  (document.body||document.documentElement).appendChild(style);
+  forceElementPositions();
 }
 function run(){
   removeVisitorCounters();
   removeEmptyTextLibrary();
   installFacebookEmbeds();
   installFinalLayoutAuthority();
-  [400,1200,3200].forEach(ms=>setTimeout(installFinalLayoutAuthority,ms));
+  [100,400,1200,3200,6000].forEach(ms=>setTimeout(installFinalLayoutAuthority,ms));
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
 window.addEventListener('load',()=>{installFacebookEmbeds();installFinalLayoutAuthority();},{once:true});
 window.addEventListener('resize',installFinalLayoutAuthority,{passive:true});
 window.addEventListener('orientationchange',()=>setTimeout(installFinalLayoutAuthority,120),{passive:true});
 new MutationObserver(()=>{removeEmptyTextLibrary();installFacebookEmbeds();installFinalLayoutAuthority()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+new MutationObserver(()=>installFinalLayoutAuthority()).observe(document.body,{attributes:true,attributeFilter:['class']});
 })();
