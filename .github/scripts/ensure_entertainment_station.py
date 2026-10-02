@@ -9,9 +9,9 @@ if '<html' not in text.lower() or '</html>' not in text.lower():
     raise SystemExit('Refusing to patch incomplete index.html')
 
 TITLE = 'abwalqmrzmrd castle'
+STYLE = '<link id="sak-compact-main-icons" rel="stylesheet" href="/assets/compact-main-icons.css?v=20261002-1">'
 LOADER = '<script id="sak-entertainment-runtime-loader" src="/assets/entertainment-station.js?v=20261002-2" defer></script>'
 
-# Browser-tab name: English only, independent of the page language.
 title_re = re.compile(r'<title\b[^>]*>.*?</title>', re.IGNORECASE | re.DOTALL)
 if title_re.search(text):
     text = title_re.sub(f'<title>{TITLE}</title>', text, count=1)
@@ -21,6 +21,13 @@ else:
         text = text[:head_open.end()] + f'\n<title>{TITLE}</title>' + text[head_open.end():]
     else:
         raise SystemExit('No <head> element found')
+
+# Keep one authoritative compact-icons stylesheet.
+text = re.sub(r'\s*<link\b[^>]*(?:id=["\']sak-compact-main-icons["\']|href=["\'][^"\']*assets/compact-main-icons\.css[^"\']*["\'])[^>]*>\s*', '\n', text, flags=re.IGNORECASE)
+head_close = re.search(r'</head\s*>', text, re.IGNORECASE)
+if not head_close:
+    raise SystemExit('No closing </head> found')
+text = text[:head_close.start()] + '\n' + STYLE + '\n' + text[head_close.start():]
 
 # Remove any older runtime loader, then add one cache-busted authoritative loader.
 text = re.sub(
