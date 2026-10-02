@@ -18,8 +18,22 @@ function installStyle(){
   style.id='sakEntertainmentRuntimeStyle';
   style.textContent=`
     body:not(.locked) [data-sak-entertainment-grouped="1"],
-    body:not(.locked) .sakaker-utility-slot[data-sak-entertainment-hidden="1"]{
+    body:not(.locked) .sakaker-utility-slot[data-sak-entertainment-hidden="1"],
+    body:not(.locked) #sakakerAllIconsDock .sakaker-utility-slot[data-sakaker-util="siteBackground"],
+    body:not(.locked) #sakSiteBackgroundBtn,
+    body:not(.locked) #sakSeaSoundButton,
+    body:not(.locked) #bird-sound-btn,
+    body:not(.locked) #sakakerBirdSoundBtn{
       display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
+    }
+    body:not(.locked) #sakakerAllIconsDock .sakaker-utility-slot:empty{
+      display:none!important;flex:0 0 0!important;width:0!important;min-width:0!important;max-width:0!important;
+      height:0!important;min-height:0!important;max-height:0!important;margin:0!important;padding:0!important;overflow:hidden!important;
+    }
+    body:not(.locked) #sakakerAllIconsDock .sakaker-utility-slot[data-sak-entertainment-hidden="1"],
+    body:not(.locked) #sakakerAllIconsDock .sakaker-utility-slot[data-sakaker-util="siteBackground"]{
+      flex:0 0 0!important;width:0!important;min-width:0!important;max-width:0!important;
+      height:0!important;min-height:0!important;max-height:0!important;margin:0!important;padding:0!important;overflow:hidden!important;
     }
     #sakEntertainmentStationRuntime[hidden]{display:none!important}
     #sakEntertainmentStationRuntime{
@@ -81,6 +95,25 @@ function groupLaunchers(){
   ['emOpenBtn','sakCreativeIcon','pongGame-btn'].forEach(id=>groupOne($(id)));
   chatTarget=findChatLauncher()||chatTarget;
   groupOne(chatTarget);
+}
+
+function compactDock(){
+  if(!unlocked())return;
+  const dock=$('sakakerAllIconsDock');
+  if(!dock)return;
+
+  const backgroundSlot=dock.querySelector('.sakaker-utility-slot[data-sakaker-util="siteBackground"]');
+  if(backgroundSlot)backgroundSlot.dataset.sakEntertainmentHidden='1';
+
+  dock.querySelectorAll('.sakaker-utility-slot').forEach(slot=>{
+    if(slot.querySelector('[data-sak-entertainment-grouped="1"]'))slot.dataset.sakEntertainmentHidden='1';
+    if(!slot.firstElementChild)slot.remove();
+  });
+
+  const station=$('sakEmeraldChessIcon');
+  const businessSlot=dock.querySelector('.sakaker-utility-slot[data-sakaker-util="business"]');
+  if(station)station.style.setProperty('order','0','important');
+  if(businessSlot)businessSlot.style.setProperty('order','1','important');
 }
 
 function ensurePanel(){
@@ -170,6 +203,7 @@ function settle(){
   ensureStationButton();
   ensurePanel();
   groupLaunchers();
+  compactDock();
   updateLanguage();
 }
 
