@@ -1,0 +1,42 @@
+from pathlib import Path
+import re
+import sys
+
+page = Path(sys.argv[1] if len(sys.argv) > 1 else 'index.html')
+text = page.read_text(encoding='utf-8')
+
+if '<html' not in text.lower() or '</html>' not in text.lower():
+    raise SystemExit('Refusing to patch incomplete index.html')
+
+TITLE = 'Emerald Moon Castle'
+LOADER = '<script id="sak-entertainment-runtime-loader" src="/assets/entertainment-station.js?v=20261002-2" defer></script>'
+
+# Browser-tab name: English only, independent of the page language.
+title_re = re.compile(r'<title\b[^>]*>.*?</title>', re.IGNORECASE | re.DOTALL)
+if title_re.search(text):
+    text = title_re.sub(f'<title>{TITLE}</title>', text, count=1)
+else:
+    head_open = re.search(r'<head\b[^>]*>', text, re.IGNORECASE)
+    if head_open:
+        text = text[:head_open.end()] + f'\n<title>{TITLE}</title>' + text[head_open.end():]
+    else:
+        raise SystemExit('No <head> element found')
+
+# Remove any older runtime loader, then add one cache-busted authoritative loader.
+text = re.sub(
+    r'\s*<script\b[^>]*(?:id=["\']sak-entertainment-runtime-loader["\']|src=["\'][^"\']*assets/entertainment-station\.js[^"\']*["\'])[^>]*>\s*</script>\s*',
+    '\n',
+    text,
+    flags=re.IGNORECASE,
+)
+
+body_close = re.search(r'</body\s*>', text, re.IGNORECASE)
+if body_close:
+    text = text[:body_close.start()] + '\n' + LOADER + '\n' + text[body_close.start():]
+else:
+    html_close = re.search(r'</html\s*>', text, re.IGNORECASE)
+    if not html_close:
+        raise SystemExit('No closing </body> or </html> found')
+    text = text[:html_close.start()] + '\n' + LOADER + '\n' + text[html_close.start():]
+
+page.write_text(text, encoding='utf-8')
