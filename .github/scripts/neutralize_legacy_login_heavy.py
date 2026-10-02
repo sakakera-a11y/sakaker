@@ -62,13 +62,17 @@ patch_script('sakaker-final-login-and-sea-audio-override', [
     (f'const LOGIN_URL="{RAW_LOGIN}";', f'const LOGIN_URL="{LOCAL_LOGIN}";'),
 ])
 
-# 3) Old performance override must not re-escalate the 13 MB login video to
-# fetchpriority=high/preload=auto. Keep all its visibility/play/pause logic.
+# 3) Old performance override must not re-escalate either background video to
+# fetchpriority=high/preload=auto. Keep all visibility/play/pause logic.
 patch_script('sakaker-performance-video-override', [
     (f'const LOGIN_SRC="{RAW_LOGIN}";', f'const LOGIN_SRC="{LOCAL_LOGIN}";'),
     (
         'login.preload="auto";login.setAttribute("fetchpriority","high");login.muted=true;safePlay(login)',
         'login.preload="metadata";login.setAttribute("preload","metadata");login.removeAttribute("fetchpriority");login.muted=true;safePlay(login)'
+    ),
+    (
+        'if(main){main.preload="auto";main.setAttribute("fetchpriority","high");main.muted=true;safePlay(main)}',
+        'if(main){main.preload="metadata";main.setAttribute("preload","metadata");main.removeAttribute("fetchpriority");main.muted=true;safePlay(main)}'
     ),
 ])
 
@@ -104,4 +108,4 @@ if text != original:
 else:
     print('Legacy login/video controllers already optimized.')
 
-# Idempotent trigger marker: 2026-10-02 performance pass.
+# Idempotent trigger marker: 2026-10-02 performance pass v2.
