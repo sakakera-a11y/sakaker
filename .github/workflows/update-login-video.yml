@@ -1,0 +1,43 @@
+name: Update login background video
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/update-login-video.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-login-video:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Replace login video source
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          old = '/gemini_generated_video_be58b3bc.mp4'
+          new = '/sakaker-video.mp4'
+          if old not in s:
+              print('Old login video source not found; no replacement needed.')
+          else:
+              s = s.replace(old, new)
+              p.write_text(s, encoding='utf-8')
+              print('Login video source updated.')
+          PY
+      - name: Commit update
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Use sakaker-video.mp4 for login background'
+          git push
