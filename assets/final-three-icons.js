@@ -104,7 +104,7 @@ function installSiteBackgroundStyle(){
     }
     #sakSiteSoundBtn{
       position:fixed!important;
-      top:max(10px,env(safe-area-inset-top))!important;
+      top:max(8px,env(safe-area-inset-top))!important;
       left:50%!important;
       right:auto!important;
       bottom:auto!important;
@@ -134,7 +134,6 @@ function installSiteBackgroundStyle(){
     }
     #sakSiteSoundBtn:hover,
     #sakSiteSoundBtn:focus-visible{
-      transform:translateX(-50%) translateY(-1px) scale(1.03)!important;
       filter:brightness(1.14)!important;
       box-shadow:0 0 0 2px rgba(0,0,0,.4),0 0 16px rgba(95,255,220,1),0 0 32px rgba(255,210,72,.78)!important;
       outline:2px solid #fff6bd!important;
@@ -148,9 +147,16 @@ function installSiteBackgroundStyle(){
     body.locked #sakSiteSoundBtn{
       display:none!important;
     }
+    html body:not(.locked) #sakSeaSoundButton,
+    html body:not(.locked) #bird-sound-btn,
+    html body:not(.locked) #sakakerBirdSoundBtn{
+      display:none!important;
+      visibility:hidden!important;
+      opacity:0!important;
+      pointer-events:none!important;
+    }
     @media(max-width:600px){
       #sakSiteSoundBtn{
-        top:max(7px,env(safe-area-inset-top))!important;
         min-width:132px!important;
         min-height:40px!important;
         padding:8px 14px!important;
@@ -164,15 +170,15 @@ function installSiteBackgroundStyle(){
   document.head.appendChild(style);
 }
 
-function removeOldSeaSoundControl(){
-  const direct=document.getElementById('sakakerBirdSoundBtn');
-  if(direct&&!direct.closest('#loginOverlay'))direct.remove();
+function removeLegacySoundNode(id){
+  const el=document.getElementById(id);
+  if(!el||el.closest('#loginOverlay'))return;
+  try{if(typeof el.pause==='function'){el.pause();el.currentTime=0;}}catch(_){ }
+  el.remove();
+}
 
-  const audio=document.getElementById('sakakerBirdAudio');
-  if(audio&&!audio.closest('#loginOverlay')){
-    try{audio.pause();audio.currentTime=0;}catch(_){ }
-    audio.remove();
-  }
+function removeOldSeaSoundControl(){
+  ['sakSeaSoundButton','sakSeaAudio','bird-sound-btn','sakakerBirdSoundBtn','sakakerBirdAudio'].forEach(removeLegacySoundNode);
 
   const nodes=[...document.querySelectorAll('button,[role="button"],[title],[aria-label]')];
   nodes.forEach(el=>{
@@ -181,6 +187,59 @@ function removeOldSeaSoundControl(){
     const s=((el.getAttribute('title')||'')+' '+(el.getAttribute('aria-label')||'')+' '+(el.textContent||'')).replace(/\s+/g,' ').trim();
     if(/صوت\s*البحر|Sea\s*Sound|Ocean\s*Sound/i.test(s))el.remove();
   });
+}
+
+function visibleRect(el){
+  if(!el)return null;
+  const style=getComputedStyle(el);
+  if(style.display==='none'||style.visibility==='hidden'||style.opacity==='0')return null;
+  const r=el.getBoundingClientRect();
+  if(r.width<2||r.height<2)return null;
+  return r;
+}
+
+function findClockAnchor(){
+  const selectors=['#clock','.clock-box','#sakakerClockSlot','.sakaker-news-clock','.news-ticker'];
+  for(const selector of selectors){
+    for(const el of document.querySelectorAll(selector)){
+      if(el.closest('#loginOverlay'))continue;
+      if(visibleRect(el))return el;
+    }
+  }
+  return null;
+}
+
+function placeSiteSoundAboveClock(){
+  if(isLocked())return;
+  const btn=document.getElementById('sakSiteSoundBtn');
+  if(!btn)return;
+
+  const anchor=findClockAnchor();
+  const btnWidth=Math.max(btn.offsetWidth||150,120);
+  const btnHeight=Math.max(btn.offsetHeight||44,38);
+  let left=window.innerWidth/2;
+  let top=Math.max(6,Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sat')||'0')||6);
+
+  if(anchor){
+    const r=anchor.getBoundingClientRect();
+    left=r.left+r.width/2;
+    top=Math.max(6,r.top-btnHeight-6);
+  }
+
+  const profile=document.getElementById('userProfile');
+  const profileRect=visibleRect(profile);
+  const half=btnWidth/2;
+  left=Math.max(half+8,Math.min(window.innerWidth-half-8,left));
+  if(profileRect&&top<profileRect.bottom+6&&top+btnHeight>profileRect.top-6&&left+half>profileRect.left-8){
+    left=Math.max(half+8,profileRect.left-half-12);
+  }
+
+  btn.style.setProperty('position','fixed','important');
+  btn.style.setProperty('left',left+'px','important');
+  btn.style.setProperty('right','auto','important');
+  btn.style.setProperty('top',top+'px','important');
+  btn.style.setProperty('bottom','auto','important');
+  btn.style.setProperty('transform','translateX(-50%)','important');
 }
 
 function updateSiteBackgroundButton(){
@@ -211,6 +270,7 @@ function updateSiteBackgroundButton(){
     soundBtn.textContent=playing
       ?(en?'🔊 Background sound':'🔊 صوت الخلفية')
       :(en?'🔇 Turn on sound':'🔇 تشغيل الصوت');
+    requestAnimationFrame(placeSiteSoundAboveClock);
   }
 }
 
@@ -266,6 +326,7 @@ function ensureSiteSoundButton(video){
     updateSiteBackgroundButton();
   });
   document.body.appendChild(soundBtn);
+  requestAnimationFrame(placeSiteSoundAboveClock);
   return soundBtn;
 }
 
@@ -328,6 +389,7 @@ function ensureSiteBackground(){
     startSiteBackgroundSound();
   }
   updateSiteBackgroundButton();
+  requestAnimationFrame(placeSiteSoundAboveClock);
 }
 
 function syncSiteBackgroundLock(){
@@ -337,6 +399,8 @@ function syncSiteBackgroundLock(){
     video.pause();
   }else{
     startSiteBackgroundSound();
+    removeOldSeaSoundControl();
+    requestAnimationFrame(placeSiteSoundAboveClock);
   }
   updateSiteBackgroundButton();
 }
@@ -484,12 +548,14 @@ function settle(){
   installFacebookEmbeds();
   ensureSiteBackground();
   rebuildIconAppearance();
+  removeOldSeaSoundControl();
+  requestAnimationFrame(placeSiteSoundAboveClock);
 }
 
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',settle,{once:true});else settle();
 window.addEventListener('load',settle,{once:true});
 [250,700,1500,3000,5500,9000].forEach(ms=>setTimeout(settle,ms));
-new MutationObserver(()=>{installFacebookEmbeds();ensureSiteBackground();rebuildIconAppearance();}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+new MutationObserver(()=>{installFacebookEmbeds();ensureSiteBackground();rebuildIconAppearance();removeOldSeaSoundControl();requestAnimationFrame(placeSiteSoundAboveClock);}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 
 if(document.body){
   new MutationObserver(syncSiteBackgroundLock).observe(document.body,{attributes:true,attributeFilter:['class']});
@@ -498,6 +564,28 @@ if(document.body){
     new MutationObserver(syncSiteBackgroundLock).observe(document.body,{attributes:true,attributeFilter:['class']});
   },{once:true});
 }
+
+/* Legacy sea-sound scripts may try to reinsert their old button. Remove only
+   those known legacy sound nodes; no other page content is observed. */
+const legacySoundObserver=new MutationObserver(records=>{
+  let touched=false;
+  for(const record of records){
+    for(const node of record.addedNodes){
+      if(!(node instanceof Element))continue;
+      if(node.matches?.('#sakSeaSoundButton,#sakSeaAudio,#bird-sound-btn,#sakakerBirdSoundBtn,#sakakerBirdAudio')||node.querySelector?.('#sakSeaSoundButton,#sakSeaAudio,#bird-sound-btn,#sakakerBirdSoundBtn,#sakakerBirdAudio')){
+        touched=true;
+        break;
+      }
+    }
+    if(touched)break;
+  }
+  if(touched)removeOldSeaSoundControl();
+});
+if(document.body)legacySoundObserver.observe(document.body,{childList:true,subtree:true});
+else document.addEventListener('DOMContentLoaded',()=>legacySoundObserver.observe(document.body,{childList:true,subtree:true}),{once:true});
+
+window.addEventListener('resize',()=>requestAnimationFrame(placeSiteSoundAboveClock),{passive:true});
+window.addEventListener('orientationchange',()=>setTimeout(placeSiteSoundAboveClock,120),{passive:true});
 
 document.addEventListener('pointerdown',()=>{
   if(!isLocked()&&!siteSoundUserMuted)startSiteBackgroundSound();
