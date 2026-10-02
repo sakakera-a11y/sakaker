@@ -34,3 +34,56 @@ html body #sakakerAllIconsDock{
     column-gap:5px!important;
   }
 }
+
+/* Mobile landscape only: keep the three icon groups on clear separate rows. */
+@media (orientation:landscape) and (max-height:650px){
+  html body #sakakerAllIconsDock#sakakerAllIconsDock{
+    left:50%!important;
+    right:auto!important;
+    bottom:max(8px,env(safe-area-inset-bottom))!important;
+    width:min(900px,76vw)!important;
+    max-width:76vw!important;
+    padding:6px 10px!important;
+    gap:8px!important;
+    row-gap:9px!important;
+    column-gap:10px!important;
+    justify-content:center!important;
+    align-items:flex-end!important;
+    align-content:flex-end!important;
+    overflow:visible!important;
+  }
+
+  html body #sakakerAllIconsDock#sakakerAllIconsDock .cards,
+  html body #sakakerAllIconsDock#sakakerAllIconsDock #sakakerUtilityDock,
+  html body #sakakerAllIconsDock#sakakerAllIconsDock #sakakerCenterFeatureDock{
+    flex:0 0 100%!important;
+    width:100%!important;
+    max-width:100%!important;
+    display:flex!important;
+    flex-wrap:wrap!important;
+    justify-content:center!important;
+    align-items:flex-end!important;
+    gap:10px 14px!important;
+    overflow:visible!important;
+  }
+
+  html body #sakakerAllIconsDock#sakakerAllIconsDock .cards > *,
+  html body #sakakerAllIconsDock#sakakerAllIconsDock #sakakerUtilityDock > *,
+  html body #sakakerAllIconsDock#sakakerAllIconsDock #sakakerCenterFeatureDock > *{
+    flex:0 0 auto!important;
+    margin:0!important;
+  }
+
+  html body #sakakerAllIconsDock#sakakerAllIconsDock .icon-card,
+  html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-utility-slot,
+  html body #sakakerAllIconsDock#sakakerAllIconsDock .launcher{
+    min-width:72px!important;
+    max-width:96px!important;
+  }
+
+  html body #sakakerAllIconsDock#sakakerAllIconsDock .icon-card *,
+  html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-utility-slot *,
+  html body #sakakerAllIconsDock#sakakerAllIconsDock .launcher *{
+    line-height:1.2!important;
+  }
+}
