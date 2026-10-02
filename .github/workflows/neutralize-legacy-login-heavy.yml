@@ -1,0 +1,56 @@
+name: Neutralize legacy login heavy loaders
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/scripts/neutralize_legacy_login_heavy.py'
+      - '.github/workflows/neutralize-legacy-login-heavy.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: neutralize-legacy-login-heavy-${{ github.repository }}
+  cancel-in-progress: true
+
+jobs:
+  patch-index:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Patch legacy login/video controllers
+        run: python .github/scripts/neutralize_legacy_login_heavy.py
+
+      - name: Verify index structure
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          text = Path('index.html').read_text(encoding='utf-8')
+          assert text.lower().count('</html>') >= 1
+          assert 'id="sakLoginBackgroundVideo"' in text
+          assert '/gemini_generated_video_be58b3bc.mp4' in text
+          for sid in ['sakaker-final-preview-and-bilingual-update','sakaker-final-login-and-sea-audio-override','sakaker-performance-video-override']:
+              assert len(re.findall(rf'<script\b[^>]*\bid=["\']{re.escape(sid)}["\']', text, re.I)) == 1, sid
+          print('Index structure checks passed.')
+
+      - name: Commit optimized index if changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          if git diff --cached --quiet; then
+            echo 'Legacy login loaders are already optimized.'
+            exit 0
+          fi
+          git commit -m 'Defer preview media and stop legacy login video reloads'
+          git push origin HEAD:main
