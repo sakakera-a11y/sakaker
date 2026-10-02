@@ -75,3 +75,5 @@ else:
     print('Optimized initial login-video source, preload and fetch priority.')
     print('Before:', tag)
     print('After :', new_tag)
+
+# This script is deliberately idempotent so future runs are safe.
