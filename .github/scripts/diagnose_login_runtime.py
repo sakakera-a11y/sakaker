@@ -24,3 +24,5 @@ for needle in needles:
         snippet = text[lo:hi]
         print(f'\n--- MATCH {i} @ {pos} ---')
         print(snippet)
+
+# Trigger-safe diagnostic script; it never edits the repository.
