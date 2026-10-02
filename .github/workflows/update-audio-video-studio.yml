@@ -1,0 +1,45 @@
+name: Update image to video studio
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/update-audio-video-studio.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-studio:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Preserve full images and move gold site name
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('audio-video.html')
+          s=p.read_text(encoding='utf-8')
+          replacement=r'''function fit(img,t){const w=C.width,h=C.height;X.fillStyle='#02070d';X.fillRect(0,0,w,h);const scale=Math.min(w/img.width,h/img.height);const dw=img.width*scale,dh=img.height*scale,dx=(w-dw)/2,dy=(h-dh)/2;X.drawImage(img,0,0,img.width,img.height,dx,dy,dw,dh);X.save();X.textAlign='left';X.textBaseline='alphabetic';X.font='900 22px Arial';X.fillStyle='#ffd85a';X.shadowColor='rgba(255,196,35,.98)';X.shadowBlur=18;X.fillText('sakaker.co',24,h-24);X.shadowBlur=7;X.fillStyle='#fff0a3';X.fillText('sakaker.co',24,h-24);X.restore()}
+function drawStatic'''
+          s2,n=re.subn(r'function fit\(img,t\)\{.*?\}\nfunction drawStatic',replacement,s,count=1,flags=re.S)
+          if n!=1:
+              raise SystemExit('Could not locate fit() renderer safely')
+          # Thumbnails also show the complete uploaded image rather than cropping it.
+          s2=s2.replace('.thumb img{width:100%;height:100%;object-fit:cover}', '.thumb img{width:100%;height:100%;object-fit:contain;background:#02070d}')
+          p.write_text(s2,encoding='utf-8')
+          print('Studio updated: contain preview + small glowing gold bottom-left sakaker.co')
+          PY
+      - name: Commit update
+        run: |
+          if git diff --quiet -- audio-video.html; then
+            echo 'No changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add audio-video.html
+          git commit -m 'Improve image-to-video preview and site branding'
+          git push
