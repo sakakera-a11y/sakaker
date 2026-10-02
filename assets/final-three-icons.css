@@ -80,18 +80,34 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock > .sakaker-utility-slot{
   transition:none!important;
 }
 
-/* Utility launchers fill their own cell but cannot change its position. */
+/* Utility launchers fill their own cell but cannot change its position.
+   Explicit display/visibility overrides old fixed-launcher rules after they
+   are moved into the stable dock. */
 html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-utility-slot > *{
   position:relative!important;
   inset:auto!important;
+  left:auto!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:auto!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
   width:100%!important;
+  min-width:0!important;
   max-width:100%!important;
   height:100%!important;
+  min-height:0!important;
   max-height:100%!important;
   margin:0!important;
   transform:none!important;
   translate:none!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+  overflow:visible!important;
   box-sizing:border-box!important;
+  z-index:1!important;
 }
 
 html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-icon-cycle.sak-cycle-hidden{
