@@ -1,68 +1,67 @@
 (()=>{
 'use strict';
 const LOGIN_VIDEO='/gemini_video_birds_login.mp4';
-const LIB_URL='/books.html?v=20261003-final2';
+const LIB_URL='/books.html?v=20261003-final3';
 const OVERLAY_ID='sakStableTextLibraryOverlay';
+const STABLE_LOGIN_ID='sakStableLoginVideo';
 
-function normalizePath(src){
-  try{return new URL(src||'',location.href).pathname}catch(_){return src||''}
-}
+function installStableLoginVideo(){
+  const overlay=document.getElementById('loginOverlay');
+  if(!overlay)return;
 
-function lockLoginVideo(){
-  const v=document.getElementById('sakLoginBackgroundVideo');
-  if(!v||v.dataset.sakLoginLocked==='1')return;
-  v.dataset.sakLoginLocked='1';
+  let style=document.getElementById('sakStableLoginVideoStyle');
+  if(!style){
+    style=document.createElement('style');
+    style.id='sakStableLoginVideoStyle';
+    style.textContent=`
+      #loginOverlay{isolation:isolate!important;background:#000!important}
+      #loginOverlay #sakLoginBackgroundVideo{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
+      #${STABLE_LOGIN_ID}{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center center!important;z-index:0!important;display:block!important;visibility:visible!important;opacity:1!important;background:#000!important;pointer-events:none!important}
+      #loginOverlay > *:not(#${STABLE_LOGIN_ID}){position:relative;z-index:1}
+    `;
+    document.head.appendChild(style);
+  }
 
-  const setCorrectSource=(shouldPlay=true)=>{
-    const attr=normalizePath(v.getAttribute('src'));
-    if(attr!==LOGIN_VIDEO){
-      v.setAttribute('src',LOGIN_VIDEO);
-    }
-
-    /* Direct src wins over nested <source> elements. Remove them once so
-       legacy code cannot keep causing source-selection/reload loops. */
-    v.querySelectorAll('source').forEach(s=>s.remove());
-
+  let v=document.getElementById(STABLE_LOGIN_ID);
+  if(!v){
+    v=document.createElement('video');
+    v.id=STABLE_LOGIN_ID;
+    v.src=LOGIN_VIDEO;
+    v.autoplay=true;
     v.loop=true;
+    v.muted=true;
+    v.defaultMuted=true;
     v.playsInline=true;
-    v.setAttribute('playsinline','');
     v.preload='auto';
+    v.setAttribute('playsinline','');
+    v.setAttribute('webkit-playsinline','');
+    v.setAttribute('aria-hidden','true');
+    overlay.insertBefore(v,overlay.firstChild);
+  }
 
-    if(shouldPlay){
-      const p=v.play();
-      if(p&&typeof p.catch==='function')p.catch(()=>{});
-    }
+  const playMuted=()=>{
+    v.muted=true;
+    const p=v.play();
+    if(p&&typeof p.catch==='function')p.catch(()=>{});
   };
 
-  /* Set the source once. Do not call load(): assigning src already starts
-     loading and repeated load() calls were causing the black-screen loop. */
-  setCorrectSource(false);
+  if(v.readyState>=2) playMuted();
+  else {
+    v.addEventListener('loadeddata',playMuted,{once:true});
+    v.addEventListener('canplay',playMuted,{once:true});
+  }
 
-  const start=()=>{
-    if(v.readyState>=2){
+  const enableSound=()=>{
+    try{
+      v.muted=false;
+      v.volume=1;
       const p=v.play();
-      if(p&&typeof p.catch==='function')p.catch(()=>{});
-    }
+      if(p&&typeof p.catch==='function')p.catch(()=>{v.muted=true;});
+    }catch(_){v.muted=true;}
   };
-  v.addEventListener('loadeddata',start,{once:true});
-  v.addEventListener('canplay',start,{once:true});
-
-  /* Watch only real src-attribute changes from legacy scripts. We compare the
-     attribute itself, not currentSrc, because currentSrc can temporarily point
-     to the previous file while the new one is loading. */
-  const mo=new MutationObserver(records=>{
-    for(const r of records){
-      if(r.type==='attributes'&&r.attributeName==='src'){
-        if(normalizePath(v.getAttribute('src'))!==LOGIN_VIDEO){
-          v.setAttribute('src',LOGIN_VIDEO);
-          v.querySelectorAll('source').forEach(s=>s.remove());
-          const p=v.play();
-          if(p&&typeof p.catch==='function')p.catch(()=>{});
-        }
-      }
-    }
-  });
-  mo.observe(v,{attributes:true,attributeFilter:['src']});
+  overlay.addEventListener('pointerdown',enableSound,{once:true,passive:true});
+  overlay.addEventListener('touchstart',enableSound,{once:true,passive:true});
+  overlay.addEventListener('keydown',enableSound,{once:true});
 }
 
 function ensureLibraryOverlay(){
@@ -120,6 +119,6 @@ function installLibraryBridge(){
   },true);
 }
 
-function init(){lockLoginVideo();installLibraryBridge();}
+function init(){installStableLoginVideo();installLibraryBridge();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
