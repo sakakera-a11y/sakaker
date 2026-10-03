@@ -1,0 +1,157 @@
+name: Final Site Audit
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/final-site-audit.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Repository structure audit
+        shell: python
+        run: |
+          from pathlib import Path
+          from html.parser import HTMLParser
+          from urllib.parse import urlsplit, unquote
+          import re
+
+          root=Path('.')
+          pages=[Path('index.html'),Path('books.html'),Path('videos.html')]
+          print('=== FILE SIZES ===')
+          for p in pages:
+              if p.exists(): print(f'{p}: {p.stat().st_size/1024:.1f} KB')
+              else: print(f'MISSING PAGE: {p}')
+
+          class P(HTMLParser):
+              def __init__(self):
+                  super().__init__(convert_charrefs=True)
+                  self.ids=[]; self.refs=[]
+              def handle_starttag(self, tag, attrs):
+                  d=dict(attrs)
+                  if d.get('id'): self.ids.append(d['id'])
+                  for k in ('src','href','poster'):
+                      if d.get(k): self.refs.append((tag,k,d[k]))
+
+          missing=[]
+          print('\n=== HTML / LOCAL REFERENCE AUDIT ===')
+          for p in pages:
+              if not p.exists(): continue
+              text=p.read_text(encoding='utf-8',errors='replace')
+              parser=P(); parser.feed(text)
+              dups=sorted({x for x in parser.ids if parser.ids.count(x)>1})
+              print(f'{p}: ids={len(parser.ids)} duplicate_ids={len(dups)} refs={len(parser.refs)}')
+              if dups:
+                  print('  duplicate ids sample:', ', '.join(dups[:30]))
+              for tag,k,ref in parser.refs:
+                  r=ref.strip()
+                  if not r or r.startswith(('#','data:','blob:','javascript:','mailto:','tel:','http://','https://','//')): continue
+                  path=urlsplit(r).path
+                  path=unquote(path).lstrip('/')
+                  if not path: continue
+                  target=(root/path) if r.startswith('/') else (p.parent/path)
+                  if not target.exists():
+                      missing.append((str(p),r,str(target)))
+          print(f'Local missing references: {len(missing)}')
+          for row in missing[:80]: print('  MISSING', *row)
+
+          idx=Path('index.html').read_text(encoding='utf-8',errors='replace')
+          vid=Path('videos.html').read_text(encoding='utf-8',errors='replace') if Path('videos.html').exists() else ''
+          books=Path('books.html').read_text(encoding='utf-8',errors='replace') if Path('books.html').exists() else ''
+
+          print('\n=== FINAL FEATURE MARKERS ===')
+          checks={
+            'title abwalqmrzmrd castle': '<title>abwalqmrzmrd castle</title>' in idx.lower(),
+            'new login video ref': 'gemini_video_birds_login.mp4' in idx or Path('assets/main-runtime-locks.js').read_text(encoding='utf-8').find('gemini_video_birds_login.mp4')>=0,
+            'main background ref': 'gemini_generated_video_34118154.mp4' in idx or Path('assets/final-three-icons.js').read_text(encoding='utf-8').find('gemini_generated_video_34118154.mp4')>=0,
+            'video modal repair loaded': 'video-modal-fix.js' in idx and 'video-modal-fix.js' in vid,
+            'ebooks Drive IDs present': '1gwOaOxZe75ADi4lQbjxfvDS-qP4qGEhv' in idx,
+            'text-library ebooks bridge': 'sak-open-ebooks' in Path('assets/main-runtime-locks.js').read_text(encoding='utf-8'),
+            'books page present': bool(books),
+          }
+          for k,v in checks.items(): print(('PASS' if v else 'FAIL'), k)
+
+          print('\n=== LEGACY / CONFLICT MARKERS ===')
+          markers=[
+            'gemini_generated_video_be58b3bc.mp4','sakaker-video.mp4','sakaker-video (1).mp4','sakaker-video (2).mp4',
+            'sakSeaSoundButton','sakSeaAudio','bird-sound-btn','مختارات أبوالقمرزمرد'
+          ]
+          for m in markers:
+              count=0; locations=[]
+              for p in root.rglob('*'):
+                  if not p.is_file() or '.git' in p.parts: continue
+                  if p.suffix.lower() not in {'.html','.js','.css','.yml','.yaml','.py','.txt','.md'}: continue
+                  try: t=p.read_text(encoding='utf-8',errors='ignore')
+                  except Exception: continue
+                  c=t.count(m)
+                  if c: count+=c; locations.append(str(p))
+              print(f'{m}: {count} refs -> {locations[:12]}')
+
+          print('\n=== LOGIN PROVIDER MARKERS ===')
+          for term in ['Google','Microsoft','Facebook']:
+              print(term, len(re.findall(term,idx,re.I)))
+
+          print('\n=== VIDEO PAGE SANITY ===')
+          print('emerald circles:', vid.count('emeraldVideoCircle'))
+          print('openEmeraldVideo calls:', vid.count('openEmeraldVideo('))
+          print('video fix script refs:', vid.count('video-modal-fix.js'))
+          print('suspicious bare emerald button marker:', 'id="emeraldLibraryButton">' in vid and '<div id="emeraldLibraryButton">' not in vid)
+
+          print('\n=== WORKFLOW LEGACY RISK ===')
+          for wf in Path('.github/workflows').glob('*.yml'):
+              t=wf.read_text(encoding='utf-8',errors='ignore')
+              hits=[m for m in ['gemini_generated_video_be58b3bc.mp4','sakaker-video (2).mp4','final5'] if m in t]
+              if hits: print(wf, hits)
+
+          # Only hard-fail on truly missing critical files.
+          critical=['index.html','books.html','videos.html','assets/main-runtime-locks.js','assets/final-three-icons.js','assets/video-modal-fix.js','gemini_video_birds_login.mp4','gemini_generated_video_34118154.mp4']
+          absent=[p for p in critical if not Path(p).exists()]
+          if absent:
+              raise SystemExit('Critical files missing: '+', '.join(absent))
+
+      - name: Live endpoint audit
+        shell: bash
+        run: |
+          set -u
+          urls=(
+            'https://sakaker.co/'
+            'https://sakaker.co/books.html'
+            'https://sakaker.co/videos.html'
+            'https://sakaker.co/assets/main-runtime-locks.js?v=20261003-final6'
+            'https://sakaker.co/assets/final-three-icons.js?v=20261003-sound2'
+            'https://sakaker.co/assets/video-modal-fix.js?v=20261003-video1'
+            'https://sakaker.co/gemini_video_birds_login.mp4'
+            'https://sakaker.co/gemini_generated_video_34118154.mp4'
+            'https://sakaker.co/robots.txt'
+            'https://sakaker.co/sitemap.xml'
+          )
+          bad=0
+          for u in "${urls[@]}"; do
+            out=$(curl -L -sS --max-time 30 -o /dev/null -w '%{http_code} %{time_starttransfer} %{time_total} %{size_download}' "$u" || echo '000 0 0 0')
+            echo "$out  $u"
+            code=${out%% *}
+            if [ "$code" != '200' ]; then bad=$((bad+1)); fi
+          done
+          echo "Non-200 key endpoints: $bad"
+          exit 0
+
+      - name: Live source marker audit
+        shell: bash
+        run: |
+          set -e
+          curl -L -sS --max-time 30 https://sakaker.co/ -o /tmp/home.html
+          echo "bytes $(wc -c </tmp/home.html)"
+          for m in 'abwalqmrzmrd castle' 'main-runtime-locks.js?v=20261003-final6' 'final-three-icons.js?v=20261003-sound2' 'video-modal-fix.js?v=20261003-video1'; do
+            if grep -Fq "$m" /tmp/home.html; then echo "PASS live marker: $m"; else echo "WARN missing live marker: $m"; fi
+          done
+          echo "old sea labels: $(grep -o 'تشغيل صوت البحر' /tmp/home.html | wc -l)"
+          echo "Microsoft labels: $(grep -oi 'Microsoft' /tmp/home.html | wc -l)"
+          echo "Facebook login labels: $(grep -oi 'الدخول بواسطة Facebook' /tmp/home.html | wc -l)"
