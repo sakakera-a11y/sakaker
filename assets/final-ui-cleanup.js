@@ -2,6 +2,16 @@
 if(window.__sakakerFinalUiCleanup)return;
 window.__sakakerFinalUiCleanup=true;
 
+const LEGACY_SOUND_IDS=['sakSeaAudio','sakSeaSoundButton','sakakerBirdAudio','sakakerBirdSoundBtn','bird-sound-btn'];
+function purgeLegacyIndependentSounds(){
+  LEGACY_SOUND_IDS.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    try{if(typeof el.pause==='function'){el.pause();el.currentTime=0;}}catch(_){}
+    el.remove();
+  });
+}
+
 function textOf(el){return ((el?.textContent||'')+' '+(el?.getAttribute?.('aria-label')||'')+' '+(el?.getAttribute?.('title')||'')).replace(/\s+/g,' ').trim();}
 
 function cleanLoginProviders(){
@@ -45,7 +55,7 @@ function ensureVideoFix(){
   document.head.appendChild(s);
 }
 
-function run(){cleanLoginProviders();cleanLegacySeaSound();ensureVideoFix();}
+function run(){purgeLegacyIndependentSounds();cleanLoginProviders();cleanLegacySeaSound();ensureVideoFix();}
 
 // Run immediately at parser completion, then one short retry for legacy late-created controls.
 run();
