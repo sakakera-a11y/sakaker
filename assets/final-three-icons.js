@@ -3,7 +3,7 @@
 const NS='http://www.w3.org/2000/svg';
 const EXCLUDED='#facebookVideoPopup,#livePopup,#shipPopup_new,#sakakerBusinessPopup,#emeraldLibraryContent,#sakMusicPlayer,#sakTextLibraryModal,#loginOverlay';
 const SITE_BG_SRC='/gemini_generated_video_34118154.mp4';
-let siteSoundUserMuted=false;
+let siteSoundUserMuted=true;
 
 /* Requested row order first, then the remaining site tools. */
 const utilityItems=[

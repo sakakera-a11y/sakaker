@@ -133,24 +133,12 @@ function openMainEbooks(){
   if(lib)lib.classList.remove('show');
   document.body.classList.remove('modal-open');
 
-  const modal=document.getElementById('sakEbooksShelfModal');
-  if(modal){
-    modal.classList.add('show','active');
-    modal.style.setProperty('display','flex','important');
-    modal.style.setProperty('visibility','visible','important');
-    modal.style.setProperty('opacity','1','important');
-    modal.removeAttribute('aria-hidden');
-    document.body.classList.add('sak-ebook-layer-open');
-    return true;
+  /* Use the site's original e-book shelf function. It renders the book cards,
+     wires close controls, and opens the Google Drive preview/download URLs. */
+  if(typeof window.openSakakerEbooks==='function'){
+    try{window.openSakakerEbooks();return true;}catch(_){ }
   }
 
-  const candidates=[...document.querySelectorAll('button,a,[role="button"],[title],[aria-label]')];
-  const launcher=candidates.find(el=>{
-    if(el.closest('#'+OVERLAY_ID))return false;
-    const meta=((el.id||'')+' '+(el.getAttribute('title')||'')+' '+(el.getAttribute('aria-label')||'')+' '+(el.textContent||'')).replace(/\s+/g,' ').trim();
-    return /كتب\s*إلكترونية|الكتب\s*الالكترونية|E-?Books?/i.test(meta);
-  });
-  if(launcher){launcher.click();return true;}
   return false;
 }
 
