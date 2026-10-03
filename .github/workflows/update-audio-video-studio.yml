@@ -14,7 +14,7 @@ jobs:
   update-studio:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Preserve full images and add small gold site name
         run: |
           python3 - <<'PY'
