@@ -47,3 +47,5 @@ assert "if(sakYearEl) sakYearEl.textContent" in books
 assert 'video-modal-fix.js?v=20261003-video2' in idx
 assert 'final-ui-cleanup.js?v=20261003-polish1' in idx
 print('Runtime error/performance polish verified.')
+
+# retrigger after workflow is present on main
