@@ -1,6 +1,7 @@
 (()=>{
 'use strict';
 const IMG='/file_00000000e530821086e1b6135c3db20e.png';
+const BUSINESS_URL='https://business.sakaker.co/';
 const LAUNCHER_ID='sakYachtPaymentLauncher';
 const IMAGE_ID='sakYachtPaymentImage';
 
@@ -67,23 +68,13 @@ function hideReturnedLegacyShip(){
   dock.querySelector('.sakaker-utility-slot[data-sakaker-util="ship"]')?.classList.add('sak-hide-legacy-ship');
 }
 
-function findTextLibraryLauncher(){
-  const direct=document.querySelector('[data-open="sakTextLibraryModal"],#sakTextLibraryBtn,#openTextLibrary');
-  if(direct) return direct;
-  return [...document.querySelectorAll('button,a,[role="button"]')].find(el=>/المكتبة النصية|text library/i.test(meta(el)))||null;
-}
-
 function ensureLauncher(){
   let btn=document.getElementById(LAUNCHER_ID);
   if(!btn){
     btn=document.createElement('button');
     btn.id=LAUNCHER_ID;
     btn.type='button';
-    btn.addEventListener('click',()=>{
-      const lib=findTextLibraryLauncher();
-      if(lib){ lib.click(); return; }
-      location.href='/books.html';
-    });
+    btn.addEventListener('click',()=>{ window.location.href=BUSINESS_URL; });
     document.body.appendChild(btn);
   }
   let img=btn.querySelector('#'+IMAGE_ID);
@@ -96,8 +87,8 @@ function ensureLauncher(){
   }
   if(img.getAttribute('src')!==IMG) img.src=IMG;
   const en=(document.documentElement.lang||'').toLowerCase().startsWith('en');
-  btn.setAttribute('aria-label',en?'Abwalqmrzmrd yacht – text library':'يخت أبوالقمر زمرد — المكتبة النصية');
-  btn.title=en?'Abwalqmrzmrd yacht – text library':'يخت أبوالقمر زمرد — المكتبة النصية';
+  btn.setAttribute('aria-label',en?'Open Sakaker Business':'فتح موقع Sakaker Business');
+  btn.title=en?'Open Sakaker Business':'فتح موقع Sakaker Business';
   return btn;
 }
 
