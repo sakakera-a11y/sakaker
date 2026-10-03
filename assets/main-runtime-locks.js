@@ -1,31 +1,68 @@
 (()=>{
 'use strict';
 const LOGIN_VIDEO='/gemini_video_birds_login.mp4';
-const LIB_URL='/books.html?v=20261003-final';
+const LIB_URL='/books.html?v=20261003-final2';
 const OVERLAY_ID='sakStableTextLibraryOverlay';
 
-function absPath(src){
-  try{return new URL(src,location.href).pathname}catch(_){return src||''}
+function normalizePath(src){
+  try{return new URL(src||'',location.href).pathname}catch(_){return src||''}
 }
 
 function lockLoginVideo(){
   const v=document.getElementById('sakLoginBackgroundVideo');
-  if(!v)return;
-  const enforce=()=>{
-    const current=absPath(v.currentSrc||v.getAttribute('src')||'');
-    if(current!==LOGIN_VIDEO){
+  if(!v||v.dataset.sakLoginLocked==='1')return;
+  v.dataset.sakLoginLocked='1';
+
+  const setCorrectSource=(shouldPlay=true)=>{
+    const attr=normalizePath(v.getAttribute('src'));
+    if(attr!==LOGIN_VIDEO){
       v.setAttribute('src',LOGIN_VIDEO);
-      const sources=v.querySelectorAll('source');
-      sources.forEach(s=>s.setAttribute('src',LOGIN_VIDEO));
-      try{v.load()}catch(_){}
-      try{v.play().catch(()=>{})}catch(_){}
+    }
+
+    /* Direct src wins over nested <source> elements. Remove them once so
+       legacy code cannot keep causing source-selection/reload loops. */
+    v.querySelectorAll('source').forEach(s=>s.remove());
+
+    v.loop=true;
+    v.playsInline=true;
+    v.setAttribute('playsinline','');
+    v.preload='auto';
+
+    if(shouldPlay){
+      const p=v.play();
+      if(p&&typeof p.catch==='function')p.catch(()=>{});
     }
   };
-  enforce();
-  new MutationObserver(enforce).observe(v,{attributes:true,attributeFilter:['src'],childList:true,subtree:true});
-  v.addEventListener('emptied',()=>setTimeout(enforce,0));
-  v.addEventListener('error',()=>setTimeout(enforce,250));
-  [250,700,1500,3000,6000,12000].forEach(ms=>setTimeout(enforce,ms));
+
+  /* Set the source once. Do not call load(): assigning src already starts
+     loading and repeated load() calls were causing the black-screen loop. */
+  setCorrectSource(false);
+
+  const start=()=>{
+    if(v.readyState>=2){
+      const p=v.play();
+      if(p&&typeof p.catch==='function')p.catch(()=>{});
+    }
+  };
+  v.addEventListener('loadeddata',start,{once:true});
+  v.addEventListener('canplay',start,{once:true});
+
+  /* Watch only real src-attribute changes from legacy scripts. We compare the
+     attribute itself, not currentSrc, because currentSrc can temporarily point
+     to the previous file while the new one is loading. */
+  const mo=new MutationObserver(records=>{
+    for(const r of records){
+      if(r.type==='attributes'&&r.attributeName==='src'){
+        if(normalizePath(v.getAttribute('src'))!==LOGIN_VIDEO){
+          v.setAttribute('src',LOGIN_VIDEO);
+          v.querySelectorAll('source').forEach(s=>s.remove());
+          const p=v.play();
+          if(p&&typeof p.catch==='function')p.catch(()=>{});
+        }
+      }
+    }
+  });
+  mo.observe(v,{attributes:true,attributeFilter:['src']});
 }
 
 function ensureLibraryOverlay(){
@@ -85,6 +122,4 @@ function installLibraryBridge(){
 
 function init(){lockLoginVideo();installLibraryBridge();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
-setTimeout(lockLoginVideo,1000);
-setTimeout(lockLoginVideo,5000);
 })();
