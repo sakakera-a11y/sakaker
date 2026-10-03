@@ -54,6 +54,7 @@ jobs:
           b = books.read_text(encoding='utf-8')
           if '<html' not in b.lower() or '</html>' not in b.lower():
               raise SystemExit('Refusing to modify incomplete books.html')
+
           library_tag = '<script id="sak-ship-story-library-runtime" src="/assets/text-library-ship.js?v=20261003-3" defer></script>'
           if 'id="sak-ship-story-library-runtime"' in b:
               b = re.sub(r'<script\s+id="sak-ship-story-library-runtime"[^>]*></script>', library_tag, b, count=1, flags=re.I)
@@ -62,6 +63,16 @@ jobs:
               if pos < 0:
                   raise SystemExit('Closing body tag not found in books.html')
               b = b[:pos] + library_tag + '\n' + b[pos:]
+
+          order_tag = '<script id="sak-text-library-order-runtime" src="/assets/text-library-order.js?v=20261003-1" defer></script>'
+          if 'id="sak-text-library-order-runtime"' in b:
+              b = re.sub(r'<script\s+id="sak-text-library-order-runtime"[^>]*></script>', order_tag, b, count=1, flags=re.I)
+          else:
+              pos = b.lower().rfind('</body>')
+              if pos < 0:
+                  raise SystemExit('Closing body tag not found in books.html')
+              b = b[:pos] + order_tag + '\n' + b[pos:]
+
           books.write_text(b, encoding='utf-8')
 
       - name: Verify yacht and library runtimes
@@ -69,12 +80,15 @@ jobs:
         run: |
           test -f assets/yacht-ship-icon.js
           test -f assets/text-library-ship.js
+          test -f assets/text-library-order.js
           test -f file_00000000e530821086e1b6135c3db20e.png
           grep -Fq 'id="sak-yacht-ship-runtime"' index.html
           grep -Fq 'yacht-ship-icon.js?v=20261003-7' index.html
           ! grep -Fq 'id="sakYachtDirectStyle"' index.html
           grep -Fq 'id="sak-ship-story-library-runtime"' books.html
           grep -Fq 'text-library-ship.js?v=20261003-3' books.html
+          grep -Fq 'id="sak-text-library-order-runtime"' books.html
+          grep -Fq 'text-library-order.js?v=20261003-1' books.html
           grep -Fq 'sakYachtPaymentLauncher' assets/yacht-ship-icon.js
           grep -Fq "BUSINESS_URL='https://business.sakaker.co/'" assets/yacht-ship-icon.js
           grep -Fq 'removeDuplicateBusinessStar' assets/yacht-ship-icon.js
@@ -84,16 +98,17 @@ jobs:
           grep -Fq '🚢 الفصل الثالث… حين أبحرت السفينة' assets/text-library-ship.js
           grep -Fq '🕯️ كلمة في الذكرى' assets/text-library-ship.js
           grep -Fq '2025 — 2026' assets/text-library-ship.js
-          grep -Fq 'function arrangeSections()' assets/text-library-ship.js
-          grep -Fq "return['ebooks',1]" assets/text-library-ship.js
-          grep -Fq "return['puzzles',2]" assets/text-library-ship.js
-          grep -Fq "return['quiz',3]" assets/text-library-ship.js
-          grep -Fq "return['today',4]" assets/text-library-ship.js
-          grep -Fq "return['culture',5]" assets/text-library-ship.js
-          grep -Fq 'data-sak-section="ebooks"' assets/text-library-ship.js
-          grep -Fq 'data-sak-section="puzzles"' assets/text-library-ship.js
+          grep -Fq "return ['ebooks',1]" assets/text-library-order.js
+          grep -Fq "return ['puzzles',2]" assets/text-library-order.js
+          grep -Fq "return ['quiz',3]" assets/text-library-order.js
+          grep -Fq "return ['today',4]" assets/text-library-order.js
+          grep -Fq "return ['culture',5]" assets/text-library-order.js
+          grep -Fq "return ['ship',9]" assets/text-library-order.js
+          grep -Fq 'data-sak-section="ebooks"' assets/text-library-order.js
+          grep -Fq 'data-sak-section="ship"' assets/text-library-order.js
           node --check assets/yacht-ship-icon.js
           node --check assets/text-library-ship.js
+          node --check assets/text-library-order.js
 
       - name: Commit safe runtime links with retry
         shell: bash
@@ -102,12 +117,12 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
           if git diff --quiet -- index.html books.html; then
-            echo 'Compact yacht and ship story runtimes are already linked.'
+            echo 'Yacht and text library runtimes are already linked.'
             exit 0
           fi
 
           git add index.html books.html
-          git commit -m 'Publish ordered colorful text library sections'
+          git commit -m 'Publish fixed ordered colorful text library with ship section'
 
           for attempt in 1 2 3; do
             if git push origin HEAD:main; then
