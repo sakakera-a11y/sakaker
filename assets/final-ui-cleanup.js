@@ -44,7 +44,7 @@ function cleanLegacySeaSound(){
   });
 }
 function ensureVideoFix(){
-  const wanted='20261003-video3';
+  const wanted='20261003-video4';
   if(window.__sakVideoModalFixVersion===wanted)return;
   document.querySelectorAll('script[src*="video-modal-fix.js"]').forEach(s=>{
     if(!String(s.src).includes(wanted))s.remove();
@@ -52,7 +52,7 @@ function ensureVideoFix(){
   const s=document.createElement('script');
   s.src='/assets/video-modal-fix.js?v='+wanted;
   s.defer=true;
-  s.id='sak-video-modal-fix-final-loader-v3';
+  s.id='sak-video-modal-fix-final-loader-v4';
   document.head.appendChild(s);
 }
 function run(){
