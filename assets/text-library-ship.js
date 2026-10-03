@@ -95,7 +95,8 @@ function findHost(){
  return document.querySelector('.cards')||document.querySelector('main .grid')||document.querySelector('main')||document.body;
 }
 function ensureButton(){
- let b=document.getElementById(BTN_ID);if(!b){b=document.createElement('button');b.id=BTN_ID;b.type='button';b.dataset.sakShipLibrary='1';findHost().appendChild(b);b.addEventListener('click',openModal);}b.textContent=COPY[lang()].button;b.setAttribute('aria-label',COPY[lang()].button);return b;
+ let b=document.getElementById(BTN_ID);if(!b){b=document.createElement('button');b.id=BTN_ID;b.type='button';b.dataset.sakShipLibrary='1';findHost().appendChild(b);}
+ b.onclick=openModal;b.textContent=COPY[lang()].button;b.setAttribute('aria-label',COPY[lang()].button);return b;
 }
 function ensureModal(){
  let m=document.getElementById(MODAL_ID);if(m)return m;
