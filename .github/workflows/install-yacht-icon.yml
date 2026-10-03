@@ -22,12 +22,16 @@ jobs:
         shell: python
         run: |
           from pathlib import Path
+          import re
           p = Path('index.html')
           text = p.read_text(encoding='utf-8')
           if '<html' not in text.lower() or '</html>' not in text.lower():
               raise SystemExit('Refusing to modify incomplete index.html')
-          tag = '<script id="sak-yacht-ship-runtime" src="/assets/yacht-ship-icon.js?v=20261002-1" defer></script>'
-          if 'id="sak-yacht-ship-runtime"' not in text:
+          tag = '<script id="sak-yacht-ship-runtime" src="/assets/yacht-ship-icon.js?v=20261003-1" defer></script>'
+          if 'id="sak-yacht-ship-runtime"' in text:
+              text = re.sub(r'<script\s+id="sak-yacht-ship-runtime"[^>]*></script>', tag, text, count=1, flags=re.I)
+              p.write_text(text, encoding='utf-8')
+          else:
               low = text.lower()
               pos = low.rfind('</body>')
               if pos < 0:
@@ -41,6 +45,7 @@ jobs:
           test -f assets/yacht-ship-icon.js
           test -f file_00000000e530821086e1b6135c3db20e.png
           grep -Fq 'id="sak-yacht-ship-runtime"' index.html
+          grep -Fq 'yacht-ship-icon.js?v=20261003-1' index.html
           grep -Fq 'file_00000000e530821086e1b6135c3db20e.png' assets/yacht-ship-icon.js
           node --check assets/yacht-ship-icon.js
 
@@ -48,11 +53,11 @@ jobs:
         shell: bash
         run: |
           if git diff --quiet -- index.html; then
-            echo 'Yacht runtime already linked.'
+            echo 'Yacht runtime already linked with current cache version.'
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
-          git commit -m 'Load glowing yacht ship icon runtime'
+          git commit -m 'Refresh glowing yacht icon runtime cache'
           git push
