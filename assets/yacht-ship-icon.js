@@ -91,9 +91,15 @@ function ensureLauncher(){
     img=document.createElement('img');
     img.id=IMAGE_ID;
     img.alt='';
+    img.loading='lazy';
+    img.decoding='async';
+    img.fetchPriority='low';
     img.setAttribute('aria-hidden','true');
     btn.prepend(img);
   }
+  if(img.loading!=='lazy') img.loading='lazy';
+  img.decoding='async';
+  img.fetchPriority='low';
   if(img.getAttribute('src')!==IMG) img.src=IMG;
   const en=(document.documentElement.lang||'').toLowerCase().startsWith('en');
   btn.setAttribute('aria-label',en?'Open Sakaker Business':'فتح موقع Sakaker Business');
@@ -118,27 +124,21 @@ function placeAbovePayment(){
   top=Math.max(8,Math.min(innerHeight-h-8,top));
   btn.style.setProperty('left',Math.round(left)+'px','important');
   btn.style.setProperty('top',Math.round(top)+'px','important');
-  btn.style.setProperty('right','auto','important');
-  btn.style.setProperty('bottom','auto','important');
   btn.style.setProperty('visibility','visible','important');
   btn.style.setProperty('pointer-events','auto','important');
 }
 
-let raf=0;
-function apply(){
+function run(){
   installStyle();
   removeDuplicateBusinessStar();
-  ensureLauncher();
   hideReturnedLegacyShip();
-  cancelAnimationFrame(raf);
-  raf=requestAnimationFrame(placeAbovePayment);
+  ensureLauncher();
+  placeAbovePayment();
 }
 
-if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',apply,{once:true}); else apply();
-window.addEventListener('load',apply,{once:true});
-window.addEventListener('resize',()=>requestAnimationFrame(placeAbovePayment),{passive:true});
-window.addEventListener('orientationchange',()=>setTimeout(placeAbovePayment,120),{passive:true});
-new MutationObserver(apply).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
-new MutationObserver(()=>{removeDuplicateBusinessStar();hideReturnedLegacyShip();requestAnimationFrame(placeAbovePayment);}).observe(document.body,{childList:true,subtree:true});
-[500,1600,3800,7200].forEach(ms=>setTimeout(apply,ms));
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run,{once:true}); else run();
+window.addEventListener('resize',placeAbovePayment,{passive:true});
+window.addEventListener('orientationchange',()=>setTimeout(placeAbovePayment,180),{passive:true});
+[250,700,1500,3000].forEach(ms=>setTimeout(run,ms));
+new MutationObserver(()=>{hideReturnedLegacyShip();removeDuplicateBusinessStar();placeAbovePayment();}).observe(document.documentElement,{childList:true,subtree:true});
 })();
