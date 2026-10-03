@@ -1435,8 +1435,8 @@ document.getElementById('quizModal').style.display='none';
    السنة
 ================================================== */
 
-document.getElementById('year').textContent=
-new Date().getFullYear();
+const sakYearEl=document.getElementById('year');
+if(sakYearEl) sakYearEl.textContent=new Date().getFullYear();
 
 /* ==================================================
    زر ESC
