@@ -1,0 +1,97 @@
+name: Update login video and verify library
+
+on:
+  push:
+    paths:
+      - '.github/workflows/update-login-video-and-verify-library.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Update login video references and verify library
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          new = '/gemini_video_birds_login.mp4'
+          old_names = [
+              '/gemini_generated_video_be58b3bc.mp4',
+              'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_be58b3bc.mp4',
+          ]
+
+          video = Path('gemini_video_birds_login.mp4')
+          if not video.exists():
+              raise SystemExit('New login video is not present in repository root: gemini_video_birds_login.mp4')
+
+          text_files = [
+              Path('index.html'),
+              Path('assets/login-rescue.js'),
+              Path('.github/scripts/optimize_login_video.py'),
+              Path('.github/scripts/diagnose_login_runtime.py'),
+              Path('.github/scripts/neutralize_legacy_login_heavy.py'),
+              Path('.github/workflows/login-video-performance.yml'),
+              Path('.github/workflows/neutralize-legacy-login-heavy.yml'),
+          ]
+
+          changed = []
+          for p in text_files:
+              if not p.exists():
+                  continue
+              s = p.read_text(encoding='utf-8')
+              original = s
+              for old in old_names:
+                  s = s.replace(old, new)
+              # Normalize any accidental blob URL reference to a site-local URL.
+              s = s.replace('https://github.com/sakakera-a11y/sakaker/blob/main/gemini_video_birds_login.mp4', new)
+              if s != original:
+                  p.write_text(s, encoding='utf-8')
+                  changed.append(str(p))
+
+          index = Path('index.html').read_text(encoding='utf-8')
+          if 'id="sakLoginBackgroundVideo"' not in index and "id='sakLoginBackgroundVideo'" not in index:
+              raise SystemExit('Login background video element is missing from index.html')
+          if new not in index:
+              raise SystemExit('New login video was not linked in index.html')
+          if 'gemini_generated_video_be58b3bc.mp4' in index:
+              raise SystemExit('Old login video reference still exists in index.html')
+
+          books = Path('books.html').read_text(encoding='utf-8')
+          checks = {
+              'ship button': 'sakShipStoryLibraryBtn',
+              'ship runtime': '/assets/text-library-ship.js',
+              'order runtime': '/assets/text-library-order.js',
+              'ship label': 'محتوى السفينة',
+              'section host': 'sakTextLibrarySections',
+          }
+          missing = [name for name, needle in checks.items() if needle not in books]
+          if missing:
+              raise SystemExit('Text library verification failed: ' + ', '.join(missing))
+
+          print('Updated files:', ', '.join(changed) if changed else 'no replacements needed')
+          print('Login video:', new)
+          print('Text library: ship content and ordered section runtime verified')
+          PY
+
+      - name: Commit updates
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo 'No content changes needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html assets/login-rescue.js .github/scripts/optimize_login_video.py .github/scripts/diagnose_login_runtime.py .github/scripts/neutralize_legacy_login_heavy.py .github/workflows/login-video-performance.yml .github/workflows/neutralize-legacy-login-heavy.yml
+          git commit -m 'Use bird-sound video for login background'
+          git push
