@@ -18,6 +18,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Refresh branch before editing
+        shell: bash
+        run: |
+          git fetch origin main
+          git reset --hard origin/main
+
       - name: Link compact yacht and text-library ship story
         shell: python
         run: |
@@ -29,7 +35,6 @@ jobs:
           if '<html' not in text.lower() or '</html>' not in text.lower():
               raise SystemExit('Refusing to modify incomplete index.html')
 
-          # Remove the old direct yacht CSS that can make the legacy ship icon huge.
           text = re.sub(
               r'\s*<style\s+id=["\']sakYachtDirectStyle["\'][^>]*>.*?</style>\s*',
               '\n', text, flags=re.I|re.S
@@ -75,15 +80,28 @@ jobs:
           node --check assets/yacht-ship-icon.js
           node --check assets/text-library-ship.js
 
-      - name: Commit safe runtime links
+      - name: Commit safe runtime links with retry
         shell: bash
         run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
           if git diff --quiet -- index.html books.html; then
             echo 'Compact yacht and ship story runtimes are already linked.'
             exit 0
           fi
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
           git add index.html books.html
           git commit -m 'Install compact yacht and ship story library runtime'
-          git push
+
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            echo "Push attempt $attempt raced with another update; rebasing and retrying."
+            git fetch origin main
+            git rebase origin/main
+          done
+
+          echo 'Unable to push after three attempts.' >&2
+          exit 1
