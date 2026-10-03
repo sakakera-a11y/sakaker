@@ -1,0 +1,197 @@
+name: Fix background loaders and ebooks section
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/fix-background-loaders-and-ebooks.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Patch login runtime and text library
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          # 1) Stop hidden legacy login/main background videos from continuing network work.
+          p = Path('assets/main-runtime-locks.js')
+          s = p.read_text(encoding='utf-8')
+
+          s = s.replace("const LIB_URL='/books.html?v=20261003-final3';", "const LIB_URL='/books.html?v=20261003-final4';")
+
+          needle = "  const overlay=document.getElementById('loginOverlay');\n  if(!overlay)return;\n"
+          insert = """  const overlay=document.getElementById('loginOverlay');
+  if(!overlay)return;
+
+  /* Remove legacy login video completely. Hiding it is not enough because a
+     hidden <video> can continue fetching its old source in the background. */
+  const legacyLogin=document.getElementById('sakLoginBackgroundVideo');
+  if(legacyLogin){
+    try{legacyLogin.pause();}catch(_){}
+    legacyLogin.querySelectorAll('source').forEach(n=>n.remove());
+    legacyLogin.removeAttribute('src');
+    legacyLogin.remove();
+  }
+
+  /* Remove the known legacy main-background duplicate if an old script
+     recreates it. Keep sakSiteBackgroundVideo, which is the current site BG. */
+  const legacyMain=document.getElementById('sakakerMainVideoBackground');
+  if(legacyMain){
+    try{legacyMain.pause();}catch(_){}
+    legacyMain.querySelectorAll('source').forEach(n=>n.remove());
+    legacyMain.removeAttribute('src');
+    legacyMain.remove();
+  }
+"""
+          if needle in s and 'hidden <video> can continue fetching' not in s:
+              s = s.replace(needle, insert, 1)
+
+          # Add e-books bridge from iframe library to the existing main-site shelf.
+          if 'function openMainEbooks()' not in s:
+              marker = "function installLibraryBridge(){"
+              bridge = r'''function openMainEbooks(){
+  const lib=document.getElementById(OVERLAY_ID);
+  if(lib){lib.classList.remove('show');}
+  document.body.classList.remove('modal-open');
+
+  const modal=document.getElementById('sakEbooksShelfModal');
+  if(modal){
+    modal.classList.add('show','active');
+    modal.style.setProperty('display','flex','important');
+    modal.style.setProperty('visibility','visible','important');
+    modal.style.setProperty('opacity','1','important');
+    modal.removeAttribute('aria-hidden');
+    document.body.classList.add('sak-ebook-layer-open');
+    return true;
+  }
+
+  const candidates=[...document.querySelectorAll('button,a,[role="button"],[title],[aria-label]')];
+  const launcher=candidates.find(el=>{
+    if(el.closest('#'+OVERLAY_ID))return false;
+    const meta=((el.id||'')+' '+(el.getAttribute('title')||'')+' '+(el.getAttribute('aria-label')||'')+' '+(el.textContent||'')).replace(/\s+/g,' ').trim();
+    return /كتب\s*إلكترونية|الكتب\s*الالكترونية|E-?Books?/i.test(meta);
+  });
+  if(launcher){launcher.click();return true;}
+  return false;
+}
+
+window.addEventListener('message',e=>{
+  if(e.origin!==location.origin)return;
+  if(e.data&&e.data.type==='sak-open-ebooks')openMainEbooks();
+});
+
+'''
+              s = s.replace(marker, bridge + marker, 1)
+
+          p.write_text(s, encoding='utf-8')
+
+          # 2) Add permanent E-books section to books.html, first in the grid.
+          p = Path('books.html')
+          b = p.read_text(encoding='utf-8')
+
+          # Add style matching the existing fixed grid.
+          if 'data-sak-section="ebooks"' not in b:
+              grid = '<div id="sakTextLibrarySections" class="sak-text-library-sections">'
+              ebook_btn = '<button id="sakEbooksLibraryBtn" data-sak-section="ebooks" type="button">📚 الكتب الإلكترونية</button>'
+              if grid not in b:
+                  raise SystemExit('Text library grid not found')
+              b = b.replace(grid, grid + ebook_btn, 1)
+
+          if '#sakTextLibrarySections>[data-sak-section="ebooks"]' not in b:
+              style_marker = '#sakTextLibrarySections>[data-sak-section="puzzles"]'
+              ebook_style = '#sakTextLibrarySections>[data-sak-section="ebooks"]{background:linear-gradient(145deg,#18334f,#276c91)!important;border:1px solid #9bdcff!important;box-shadow:0 0 20px #4dc7ff3f,0 9px 24px #0007!important}\n'
+              if style_marker in b:
+                  b = b.replace(style_marker, ebook_style + style_marker, 1)
+
+          # Add bilingual label + bridge to parent main-site existing e-book shelf.
+          if 'sakEbooksLibraryBtn' in b and 'sak-open-ebooks' not in b:
+              js = r'''
+<script id="sak-text-library-ebooks-bridge">
+(()=>{
+  'use strict';
+  const btn=document.getElementById('sakEbooksLibraryBtn');
+  if(!btn)return;
+  const sync=()=>{
+    const en=document.documentElement.lang==='en';
+    btn.textContent=en?'📚 E-Books':'📚 الكتب الإلكترونية';
+    btn.title=en?'Open E-Books':'فتح الكتب الإلكترونية';
+    btn.setAttribute('aria-label',btn.title);
+  };
+  sync();
+  new MutationObserver(sync).observe(document.documentElement,{attributes:true,attributeFilter:['lang','dir']});
+  btn.addEventListener('click',()=>{
+    if(window.parent&&window.parent!==window){
+      window.parent.postMessage({type:'sak-open-ebooks'},location.origin);
+      return;
+    }
+    const msg=document.documentElement.lang==='en'
+      ?'Open the text library from the main site to access the E-Books shelf.'
+      :'افتح المكتبة النصية من الموقع الرئيسي للوصول إلى رف الكتب الإلكترونية.';
+    alert(msg);
+  });
+})();
+</script>
+'''
+              pos = b.lower().rfind('</body>')
+              if pos < 0: raise SystemExit('books.html missing </body>')
+              b = b[:pos] + js + b[pos:]
+
+          p.write_text(b, encoding='utf-8')
+
+          # 3) Bump runtime script URL in index.html so browsers fetch the new fix.
+          p = Path('index.html')
+          idx = p.read_text(encoding='utf-8')
+          idx = re.sub(
+              r'(/assets/main-runtime-locks\.js\?v=)[^"\']+',
+              r'\g<1>20261003-final4',
+              idx,
+              count=1
+          )
+          p.write_text(idx, encoding='utf-8')
+
+          print('Patched background cleanup, e-books section, and runtime cache version.')
+          PY
+
+      - name: Verify patch
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          js=Path('assets/main-runtime-locks.js').read_text(encoding='utf-8')
+          books=Path('books.html').read_text(encoding='utf-8')
+          idx=Path('index.html').read_text(encoding='utf-8')
+          assert "legacyLogin.remove()" in js
+          assert "legacyMain.remove()" in js
+          assert "sak-open-ebooks" in js
+          assert 'data-sak-section="ebooks"' in books
+          assert 'sak-text-library-ebooks-bridge' in books
+          assert 'main-runtime-locks.js?v=20261003-final4' in idx
+          assert '/gemini_generated_video_34118154.mp4' in Path('assets/final-three-icons.js').read_text(encoding='utf-8')
+          assert Path('gemini_generated_video_34118154.mp4').exists()
+          assert Path('gemini_video_birds_login.mp4').exists()
+          print('Verification passed.')
+          PY
+
+      - name: Commit changes
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo 'No changes needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/main-runtime-locks.js books.html index.html
+          git commit -m 'Stop duplicate background loading and add ebooks section'
+          git push
