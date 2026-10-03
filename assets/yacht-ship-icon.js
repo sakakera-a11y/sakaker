@@ -7,7 +7,7 @@ function installStyle(){
  const st=document.createElement('style');
  st.id='sakYachtAbovePaymentStyle';
  st.textContent=`
- .sakaker-utility-slot[data-sakaker-slot="ship"]{display:none!important}
+ .sakaker-utility-slot[data-sakaker-util="ship"]{display:none!important}
  #shipIcon_new.sak-yacht-above-payment{
    position:fixed!important;
    inset:auto!important;
@@ -76,7 +76,7 @@ function installStyle(){
 function visibleRect(el){
  if(!el) return null;
  const cs=getComputedStyle(el);
- if(cs.display==='none'||cs.visibility==='hidden'||cs.opacity==='0') return null;
+ if(cs.display==='none'||cs.visibility==='hidden'||Number(cs.opacity)===0) return null;
  const r=el.getBoundingClientRect();
  return (r.width>2&&r.height>2)?r:null;
 }
@@ -84,16 +84,21 @@ function visibleRect(el){
 function placeAbovePayment(){
  const ship=document.getElementById('shipIcon_new');
  const payment=document.getElementById('sakGlobalPayment');
- if(!ship||!payment) return;
+ if(!ship) return;
  const pr=visibleRect(payment);
- if(!pr) return;
- const sr=ship.getBoundingClientRect();
- const w=sr.width||76;
- const h=sr.height||76;
+ if(!pr){
+   ship.style.setProperty('visibility','hidden','important');
+   ship.style.setProperty('pointer-events','none','important');
+   return;
+ }
+ ship.style.setProperty('visibility','visible','important');
+ ship.style.setProperty('pointer-events','auto','important');
+ const w=ship.offsetWidth||76;
+ const h=ship.offsetHeight||76;
  let left=pr.left+(pr.width-w)/2;
  let top=pr.top-h-14;
  left=Math.max(8,Math.min(window.innerWidth-w-8,left));
- top=Math.max(8,top);
+ top=Math.max(8,Math.min(window.innerHeight-h-8,top));
  ship.style.setProperty('left',Math.round(left)+'px','important');
  ship.style.setProperty('top',Math.round(top)+'px','important');
  ship.style.setProperty('right','auto','important');
@@ -108,15 +113,47 @@ function apply(){
  ship.classList.add('sak-yacht-above-payment');
  ship.removeAttribute('aria-hidden');
  if(ship.tabIndex<0) ship.tabIndex=0;
- ship.setAttribute('aria-label',document.documentElement.lang==='en'?'Abwalqmrzmrd yacht':'يخت أبوالقمر زمرد');
- ship.title=document.documentElement.lang==='en'?'Abwalqmrzmrd yacht':'يخت أبوالقمر زمرد';
+ const en=(document.documentElement.lang||'').toLowerCase().startsWith('en');
+ ship.setAttribute('aria-label',en?'Abwalqmrzmrd yacht':'يخت أبوالقمر زمرد');
+ ship.title=en?'Abwalqmrzmrd yacht':'يخت أبوالقمر زمرد';
  requestAnimationFrame(placeAbovePayment);
 }
 
 let queued=false;
-function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;apply()})}
+function scheduleApply(){
+ if(queued) return;
+ queued=true;
+ requestAnimationFrame(()=>{queued=false;apply();});
+}
+
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',apply,{once:true}); else apply();
-window.addEventListener('resize',placeAbovePayment,{passive:true});
+window.addEventListener('load',apply,{once:true});
+window.addEventListener('resize',()=>requestAnimationFrame(placeAbovePayment),{passive:true});
 window.addEventListener('orientationchange',()=>setTimeout(placeAbovePayment,120),{passive:true});
-new MutationObserver(schedule).observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['lang','class','style']});
+new MutationObserver(scheduleApply).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+
+const bodyObserver=new MutationObserver(records=>{
+ for(const record of records){
+   for(const node of record.addedNodes){
+     if(!(node instanceof Element)) continue;
+     if(node.id==='shipIcon_new'||node.id==='sakGlobalPayment'||node.querySelector?.('#shipIcon_new,#sakGlobalPayment')){
+       scheduleApply();
+       return;
+     }
+   }
+ }
+});
+if(document.body) bodyObserver.observe(document.body,{childList:true,subtree:true});
+else document.addEventListener('DOMContentLoaded',()=>bodyObserver.observe(document.body,{childList:true,subtree:true}),{once:true});
+
+const paymentObserver=new MutationObserver(()=>requestAnimationFrame(placeAbovePayment));
+function watchPayment(){
+ const payment=document.getElementById('sakGlobalPayment');
+ if(payment) paymentObserver.observe(payment,{attributes:true,attributeFilter:['class','style','hidden']});
+}
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',watchPayment,{once:true}); else watchPayment();
+setTimeout(apply,600);
+setTimeout(apply,1800);
+setTimeout(apply,4000);
+setTimeout(apply,7500);
 })();
