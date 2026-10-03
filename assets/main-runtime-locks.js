@@ -4,6 +4,7 @@ const LOGIN_VIDEO='/gemini_video_birds_login.mp4';
 const LIB_URL='/books.html?v=20261003-final4';
 const OVERLAY_ID='sakStableTextLibraryOverlay';
 const STABLE_LOGIN_ID='sakStableLoginVideo';
+const LOGIN_SOUND_ID='sakLoginSoundBtn';
 
 function installStableLoginVideo(){
   const overlay=document.getElementById('loginOverlay');
@@ -38,6 +39,7 @@ function installStableLoginVideo(){
       #loginOverlay #sakLoginBackgroundVideo{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
       #${STABLE_LOGIN_ID}{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center center!important;z-index:0!important;display:block!important;visibility:visible!important;opacity:1!important;background:#000!important;pointer-events:none!important}
       #loginOverlay > *:not(#${STABLE_LOGIN_ID}){position:relative;z-index:1}
+      #${LOGIN_SOUND_ID}{position:absolute!important;top:max(12px,env(safe-area-inset-top))!important;right:max(12px,env(safe-area-inset-right))!important;z-index:4!important;min-width:46px!important;min-height:42px!important;padding:8px 12px!important;border:1px solid rgba(150,255,235,.85)!important;border-radius:999px!important;background:rgba(1,18,24,.76)!important;color:#fff!important;font:700 13px Tajawal,Tahoma,Arial,sans-serif!important;box-shadow:0 0 16px rgba(0,255,220,.42)!important;backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important;cursor:pointer!important;touch-action:manipulation!important}
     `;
     document.head.appendChild(style);
   }
@@ -59,6 +61,10 @@ function installStableLoginVideo(){
     overlay.insertBefore(v,overlay.firstChild);
   }
 
+  /* The login background always starts muted. Ordinary clicks/touches on the
+     login page must never unmute it. Sound is controlled only by the button. */
+  v.muted=true;
+  v.defaultMuted=true;
   const playMuted=()=>{
     v.muted=true;
     const p=v.play();
@@ -71,17 +77,42 @@ function installStableLoginVideo(){
     v.addEventListener('canplay',playMuted,{once:true});
   }
 
-  const enableSound=()=>{
-    try{
-      v.muted=false;
-      v.volume=1;
-      const p=v.play();
-      if(p&&typeof p.catch==='function')p.catch(()=>{v.muted=true;});
-    }catch(_){v.muted=true;}
+  let soundBtn=document.getElementById(LOGIN_SOUND_ID);
+  if(!soundBtn){
+    soundBtn=document.createElement('button');
+    soundBtn.id=LOGIN_SOUND_ID;
+    soundBtn.type='button';
+    overlay.appendChild(soundBtn);
+  }
+
+  const updateSoundButton=()=>{
+    const en=document.documentElement.lang==='en';
+    const muted=v.muted;
+    soundBtn.textContent=muted?(en?'🔇 Background sound':'🔇 صوت الخلفية'):(en?'🔊 Mute background':'🔊 إيقاف الصوت');
+    soundBtn.setAttribute('aria-label',soundBtn.textContent.replace(/^[^ ]+\s*/,''));
+    soundBtn.setAttribute('aria-pressed',muted?'false':'true');
   };
-  overlay.addEventListener('pointerdown',enableSound,{once:true,passive:true});
-  overlay.addEventListener('touchstart',enableSound,{once:true,passive:true});
-  overlay.addEventListener('keydown',enableSound,{once:true});
+
+  if(soundBtn.dataset.sakLoginSoundBound!=='1'){
+    soundBtn.dataset.sakLoginSoundBound='1';
+    soundBtn.addEventListener('click',async e=>{
+      e.preventDefault();
+      e.stopPropagation();
+      if(v.muted){
+        try{
+          v.volume=1;
+          v.muted=false;
+          const p=v.play();
+          if(p&&typeof p.then==='function')await p;
+        }catch(_){v.muted=true;}
+      }else{
+        v.muted=true;
+      }
+      updateSoundButton();
+    });
+  }
+  updateSoundButton();
+  new MutationObserver(updateSoundButton).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 }
 
 function ensureLibraryOverlay(){
