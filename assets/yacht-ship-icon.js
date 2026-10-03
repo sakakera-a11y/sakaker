@@ -1,101 +1,150 @@
 (()=>{
 'use strict';
 const IMG='/file_00000000e530821086e1b6135c3db20e.png';
+const LAUNCHER_ID='sakYachtPaymentLauncher';
 
 function installStyle(){
- if(document.getElementById('sakYachtAbovePaymentStyle')) return;
- const st=document.createElement('style');
- st.id='sakYachtAbovePaymentStyle';
- st.textContent=`
- .sakaker-utility-slot[data-sakaker-util="ship"]{display:none!important}
- #sakakerAllIconsDock .sak-hide-legacy-icon{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
- #shipIcon_new.sak-yacht-above-payment{
-   position:fixed!important;inset:auto!important;
-   width:84px!important;height:84px!important;min-width:84px!important;min-height:84px!important;max-width:84px!important;max-height:84px!important;
-   margin:0!important;padding:0!important;display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;
-   border-radius:50%!important;border:2px solid rgba(255,226,105,.98)!important;
-   background:radial-gradient(circle at 50% 45%,rgba(255,245,185,.20),rgba(5,20,25,.50) 58%,rgba(0,0,0,.74))!important;background-image:none!important;
-   color:transparent!important;-webkit-text-fill-color:transparent!important;
-   box-shadow:0 0 8px rgba(255,255,220,.95),0 0 18px rgba(255,218,70,.90),0 0 32px rgba(0,255,220,.48)!important;
-   overflow:visible!important;transform:none!important;z-index:2147483002!important;cursor:pointer!important;touch-action:manipulation!important;
- }
- #shipIcon_new.sak-yacht-above-payment>*{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
- #shipIcon_new.sak-yacht-above-payment::before{
-   content:''!important;position:absolute!important;inset:3px!important;border-radius:50%!important;
-   background:url('${IMG}') center/94% 94% no-repeat!important;
-   filter:brightness(1.18) saturate(1.14) drop-shadow(0 0 4px rgba(255,232,120,.82))!important;pointer-events:none!important;z-index:2!important;
- }
- #shipIcon_new.sak-yacht-above-payment::after{
-   content:'abwalqmrzmrd'!important;position:absolute!important;left:50%!important;bottom:-17px!important;transform:translateX(-50%)!important;
-   color:#ffe56b!important;-webkit-text-fill-color:#ffe56b!important;font:700 9px/1.05 Tajawal,Arial,sans-serif!important;white-space:nowrap!important;
-   text-shadow:0 1px 2px #000,0 0 6px #000,0 0 9px rgba(255,199,45,.9)!important;pointer-events:none!important;z-index:3!important;
- }
- @media(max-width:600px){
-   #shipIcon_new.sak-yacht-above-payment{width:76px!important;height:76px!important;min-width:76px!important;min-height:76px!important;max-width:76px!important;max-height:76px!important}
-   #shipIcon_new.sak-yacht-above-payment::after{font-size:8px!important;bottom:-15px!important}
- }
- `;
- document.head.appendChild(st);
+  if(document.getElementById('sakYachtPaymentStyle')) return;
+  const st=document.createElement('style');
+  st.id='sakYachtPaymentStyle';
+  st.textContent=`
+  #shipIcon_new,
+  .sakaker-utility-slot[data-sakaker-util="ship"]{
+    display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
+  }
+  #sakakerAllIconsDock .sak-hide-legacy-icon{
+    display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
+  }
+  #${LAUNCHER_ID}{
+    position:fixed!important;inset:auto!important;
+    width:62px!important;height:62px!important;min-width:62px!important;min-height:62px!important;max-width:62px!important;max-height:62px!important;
+    margin:0!important;padding:0!important;
+    display:block!important;visibility:hidden!important;opacity:1!important;pointer-events:none!important;
+    border-radius:50%!important;border:1.5px solid rgba(255,226,105,.98)!important;
+    background:radial-gradient(circle at 50% 45%,rgba(255,245,185,.18),rgba(5,20,25,.56) 58%,rgba(0,0,0,.80))!important;
+    box-shadow:0 0 7px rgba(255,255,220,.9),0 0 15px rgba(255,218,70,.82),0 0 24px rgba(0,255,220,.38)!important;
+    overflow:visible!important;z-index:2147483005!important;cursor:pointer!important;touch-action:manipulation!important;
+  }
+  #${LAUNCHER_ID}::before{
+    content:''!important;position:absolute!important;inset:2px!important;border-radius:50%!important;
+    background:url('${IMG}') center/96% 96% no-repeat!important;
+    filter:brightness(1.16) saturate(1.12) drop-shadow(0 0 3px rgba(255,232,120,.75))!important;
+    pointer-events:none!important;
+  }
+  #${LAUNCHER_ID}::after{
+    content:'abwalqmrzmrd'!important;position:absolute!important;left:50%!important;bottom:-13px!important;transform:translateX(-50%)!important;
+    color:#ffe56b!important;-webkit-text-fill-color:#ffe56b!important;font:700 7px/1 Tajawal,Arial,sans-serif!important;white-space:nowrap!important;
+    text-shadow:0 1px 2px #000,0 0 5px #000,0 0 7px rgba(255,199,45,.85)!important;pointer-events:none!important;
+  }
+  @media(max-width:600px){
+    #${LAUNCHER_ID}{width:54px!important;height:54px!important;min-width:54px!important;min-height:54px!important;max-width:54px!important;max-height:54px!important}
+    #${LAUNCHER_ID}::after{font-size:6px!important;bottom:-11px!important}
+  }
+  `;
+  document.head.appendChild(st);
 }
 
 function meta(el){
- return [el.id||'',typeof el.className==='string'?el.className:'',el.getAttribute?.('title')||'',el.getAttribute?.('aria-label')||'',el.textContent||'']
-   .join(' ').replace(/\s+/g,' ').trim();
+  return [el.id||'',typeof el.className==='string'?el.className:'',el.getAttribute?.('title')||'',el.getAttribute?.('aria-label')||'',el.textContent||'']
+    .join(' ').replace(/\s+/g,' ').trim();
+}
+
+function cleanupOldYachtPatches(){
+  document.getElementById('sakYachtDirectStyle')?.remove();
+  document.getElementById('sakShipMovedStyle')?.remove();
+  const business=document.getElementById('sakakerBusinessAd');
+  if(business){
+    business.classList.remove('sak-business-yacht');
+    delete business.dataset.sakBusinessLabel;
+  }
 }
 
 function hideReturnedLegacyIcons(){
- const dock=document.getElementById('sakakerAllIconsDock');
- if(!dock) return;
- const candidates=dock.querySelectorAll('button,a,[role="button"],.icon-card,.launcher,.sakaker-utility-slot');
- candidates.forEach(el=>{
-   if(el.id==='shipIcon_new'||el.contains?.(document.getElementById('shipIcon_new'))) return;
-   const s=meta(el);
-   const oldShip=/(^|\s)(السفينة|سفينة|ship)(\s|$)/i.test(s);
-   const oldStar=/(^|\s)(النجمة|نجمة|star)(\s|$)/i.test(s);
-   if(oldShip||oldStar) el.classList.add('sak-hide-legacy-icon');
- });
- const shipSlot=dock.querySelector('.sakaker-utility-slot[data-sakaker-util="ship"]');
- if(shipSlot) shipSlot.classList.add('sak-hide-legacy-icon');
+  const dock=document.getElementById('sakakerAllIconsDock');
+  if(!dock) return;
+  dock.querySelectorAll('button,a,[role="button"],.icon-card,.launcher,.sakaker-utility-slot').forEach(el=>{
+    if(el.id===LAUNCHER_ID) return;
+    const s=meta(el);
+    if(/(^|\s)(السفينة|سفينة|ship|النجمة|نجمة|star)(\s|$)/i.test(s)) el.classList.add('sak-hide-legacy-icon');
+  });
+  dock.querySelector('.sakaker-utility-slot[data-sakaker-util="ship"]')?.classList.add('sak-hide-legacy-icon');
 }
 
 function visibleRect(el){
- if(!el) return null;
- const cs=getComputedStyle(el);
- if(cs.display==='none'||cs.visibility==='hidden'||Number(cs.opacity)===0) return null;
- const r=el.getBoundingClientRect();
- return (r.width>2&&r.height>2)?r:null;
+  if(!el) return null;
+  const cs=getComputedStyle(el);
+  if(cs.display==='none'||cs.visibility==='hidden'||Number(cs.opacity)===0) return null;
+  const r=el.getBoundingClientRect();
+  return (r.width>2&&r.height>2)?r:null;
+}
+
+function findTextLibraryLauncher(){
+  const nodes=[...document.querySelectorAll('button,[role="button"],a,.launcher,[title],[aria-label]')];
+  return nodes.find(el=>{
+    if(el.id===LAUNCHER_ID) return false;
+    const s=((el.getAttribute('title')||'')+' '+(el.getAttribute('aria-label')||'')+' '+(el.textContent||'')).replace(/\s+/g,' ').trim();
+    return /المكتبة\s*النصية|Text\s*Library/i.test(s);
+  })||null;
+}
+
+function ensureLauncher(){
+  let btn=document.getElementById(LAUNCHER_ID);
+  if(!btn){
+    btn=document.createElement('button');
+    btn.id=LAUNCHER_ID;
+    btn.type='button';
+    document.body.appendChild(btn);
+    btn.addEventListener('click',()=>{
+      const lib=findTextLibraryLauncher();
+      if(lib){ lib.click(); return; }
+      location.href='/books.html';
+    });
+  }
+  const en=(document.documentElement.lang||'').toLowerCase().startsWith('en');
+  const label=en?'Text library yacht':'يخت المكتبة النصية';
+  btn.setAttribute('aria-label',label);
+  btn.title=label;
+  return btn;
 }
 
 function placeAbovePayment(){
- const ship=document.getElementById('shipIcon_new');
- const payment=document.getElementById('sakGlobalPayment');
- if(!ship) return;
- const pr=visibleRect(payment);
- if(!pr){ship.style.setProperty('visibility','hidden','important');ship.style.setProperty('pointer-events','none','important');return;}
- ship.style.setProperty('visibility','visible','important');ship.style.setProperty('pointer-events','auto','important');
- const w=ship.offsetWidth||76,h=ship.offsetHeight||76;
- let left=pr.left+(pr.width-w)/2,top=pr.top-h-14;
- left=Math.max(8,Math.min(window.innerWidth-w-8,left));
- top=Math.max(8,Math.min(window.innerHeight-h-8,top));
- ship.style.setProperty('left',Math.round(left)+'px','important');ship.style.setProperty('top',Math.round(top)+'px','important');
- ship.style.setProperty('right','auto','important');ship.style.setProperty('bottom','auto','important');
+  const btn=document.getElementById(LAUNCHER_ID);
+  const payment=document.getElementById('sakGlobalPayment');
+  if(!btn) return;
+  const pr=visibleRect(payment);
+  if(!pr){
+    btn.style.setProperty('visibility','hidden','important');
+    btn.style.setProperty('pointer-events','none','important');
+    return;
+  }
+  const w=btn.offsetWidth||54;
+  const h=btn.offsetHeight||54;
+  let left=pr.left+(pr.width-w)/2;
+  let top=pr.top-h-8;
+  left=Math.max(8,Math.min(window.innerWidth-w-8,left));
+  top=Math.max(8,Math.min(window.innerHeight-h-8,top));
+  btn.style.setProperty('left',Math.round(left)+'px','important');
+  btn.style.setProperty('top',Math.round(top)+'px','important');
+  btn.style.setProperty('right','auto','important');
+  btn.style.setProperty('bottom','auto','important');
+  btn.style.setProperty('visibility','visible','important');
+  btn.style.setProperty('pointer-events','auto','important');
 }
 
 function apply(){
- installStyle();
- const ship=document.getElementById('shipIcon_new');
- if(ship){
-   if(ship.parentElement!==document.body) document.body.appendChild(ship);
-   ship.classList.remove('sak-hide-legacy-icon');
-   ship.classList.add('sak-yacht-above-payment');
-   ship.removeAttribute('aria-hidden');
-   if(ship.tabIndex<0) ship.tabIndex=0;
-   const en=(document.documentElement.lang||'').toLowerCase().startsWith('en');
-   ship.setAttribute('aria-label',en?'Abwalqmrzmrd yacht':'يخت أبوالقمر زمرد');
-   ship.title=en?'Abwalqmrzmrd yacht':'يخت أبوالقمر زمرد';
- }
- hideReturnedLegacyIcons();
- requestAnimationFrame(placeAbovePayment);
+  installStyle();
+  cleanupOldYachtPatches();
+  const old=document.getElementById('shipIcon_new');
+  if(old){
+    old.style.setProperty('display','none','important');
+    old.style.setProperty('visibility','hidden','important');
+    old.style.setProperty('pointer-events','none','important');
+    old.setAttribute('aria-hidden','true');
+    old.tabIndex=-1;
+  }
+  ensureLauncher();
+  hideReturnedLegacyIcons();
+  requestAnimationFrame(placeAbovePayment);
 }
 
 let queued=false;
@@ -107,17 +156,16 @@ window.addEventListener('orientationchange',()=>setTimeout(placeAbovePayment,120
 new MutationObserver(scheduleApply).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 
 const bodyObserver=new MutationObserver(records=>{
- let needsCleanup=false;
- for(const record of records){
-   if(record.addedNodes.length){needsCleanup=true;break;}
- }
- if(needsCleanup) scheduleApply();
+  if(records.some(r=>r.addedNodes.length)) scheduleApply();
 });
 if(document.body) bodyObserver.observe(document.body,{childList:true,subtree:true});
 else document.addEventListener('DOMContentLoaded',()=>bodyObserver.observe(document.body,{childList:true,subtree:true}),{once:true});
 
 const paymentObserver=new MutationObserver(()=>requestAnimationFrame(placeAbovePayment));
-function watchPayment(){const payment=document.getElementById('sakGlobalPayment');if(payment)paymentObserver.observe(payment,{attributes:true,attributeFilter:['class','style','hidden']});}
+function watchPayment(){
+  const payment=document.getElementById('sakGlobalPayment');
+  if(payment) paymentObserver.observe(payment,{attributes:true,attributeFilter:['class','style','hidden']});
+}
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',watchPayment,{once:true}); else watchPayment();
-[600,1800,4000,7500].forEach(ms=>setTimeout(apply,ms));
+[500,1200,2500,5000].forEach(ms=>setTimeout(apply,ms));
 })();
