@@ -1,0 +1,12 @@
+{
+  "name": "abwalqmrzmrd castle",
+  "short_name": "abwalqmrzmrd",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#021218",
+  "theme_color": "#067b6a",
+  "icons": [
+    {"src":"/favicon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}
