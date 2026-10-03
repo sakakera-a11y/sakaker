@@ -1,0 +1,51 @@
+name: Fix video library modal
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/fix-video-library-modal.yml'
+      - '.github/scripts/install_video_modal_fix.py'
+      - 'assets/video-modal-fix.js'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install video modal fix
+        run: python .github/scripts/install_video_modal_fix.py
+
+      - name: Verify video modal fix
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          js=Path('assets/video-modal-fix.js').read_text(encoding='utf-8')
+          idx=Path('index.html').read_text(encoding='utf-8')
+          vid=Path('videos.html').read_text(encoding='utf-8')
+          assert 'openFixedEmeraldVideo' in js
+          assert "document.addEventListener('click'" in js
+          assert 'sak-video-modal-fix' in idx
+          assert 'sak-video-modal-fix' in vid
+          print('Video modal repair verified')
+          PY
+
+      - name: Commit repaired pages
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo 'No changes needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html videos.html
+          git commit -m 'Restore video library player modal'
+          git push
