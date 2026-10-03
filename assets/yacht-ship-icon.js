@@ -11,7 +11,10 @@ function installStyle(){
   st.id='sakYachtPaymentStyle';
   st.textContent=`
   #shipIcon_new,
-  .sakaker-utility-slot[data-sakaker-util="ship"]{
+  #sakakerBusinessAd,
+  #sakakerBusinessIcon,
+  .sakaker-utility-slot[data-sakaker-util="ship"],
+  .sakaker-utility-slot[data-sakaker-util="business"]{
     display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
   }
   #sakakerAllIconsDock .sak-hide-legacy-ship{
@@ -58,11 +61,17 @@ function meta(el){
   return [el.id,el.className,el.getAttribute('aria-label'),el.title,el.textContent].filter(Boolean).join(' ');
 }
 
+function removeDuplicateBusinessStar(){
+  document.querySelectorAll('#sakakerBusinessAd,#sakakerBusinessIcon,.sakaker-utility-slot[data-sakaker-util="business"]').forEach(el=>{
+    if(el && el.id!==LAUNCHER_ID) el.remove();
+  });
+}
+
 function hideReturnedLegacyShip(){
   const dock=document.getElementById('sakakerAllIconsDock');
   if(!dock) return;
   dock.querySelectorAll('button,a,[role="button"],.icon-card,.launcher,.sakaker-utility-slot').forEach(el=>{
-    if(el.id===LAUNCHER_ID || el.id==='sakakerBusinessAd' || el.id==='sakakerBusinessIcon') return;
+    if(el.id===LAUNCHER_ID) return;
     if(/(^|\s)(السفينة|سفينة|ship)(\s|$)/i.test(meta(el))) el.classList.add('sak-hide-legacy-ship');
   });
   dock.querySelector('.sakaker-utility-slot[data-sakaker-util="ship"]')?.classList.add('sak-hide-legacy-ship');
@@ -118,6 +127,7 @@ function placeAbovePayment(){
 let raf=0;
 function apply(){
   installStyle();
+  removeDuplicateBusinessStar();
   ensureLauncher();
   hideReturnedLegacyShip();
   cancelAnimationFrame(raf);
@@ -129,6 +139,6 @@ window.addEventListener('load',apply,{once:true});
 window.addEventListener('resize',()=>requestAnimationFrame(placeAbovePayment),{passive:true});
 window.addEventListener('orientationchange',()=>setTimeout(placeAbovePayment,120),{passive:true});
 new MutationObserver(apply).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
-new MutationObserver(()=>{hideReturnedLegacyShip();requestAnimationFrame(placeAbovePayment);}).observe(document.body,{childList:true,subtree:true});
+new MutationObserver(()=>{removeDuplicateBusinessStar();hideReturnedLegacyShip();requestAnimationFrame(placeAbovePayment);}).observe(document.body,{childList:true,subtree:true});
 [500,1600,3800,7200].forEach(ms=>setTimeout(apply,ms));
 })();
