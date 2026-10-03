@@ -25,17 +25,42 @@ jobs:
           import re
 
           new = '/gemini_video_birds_login.mp4'
-          old_names = [
-              '/gemini_generated_video_be58b3bc.mp4',
-              'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_be58b3bc.mp4',
-          ]
-
           video = Path('gemini_video_birds_login.mp4')
           if not video.exists():
               raise SystemExit('New login video is not present in repository root: gemini_video_birds_login.mp4')
 
-          text_files = [
-              Path('index.html'),
+          index_path = Path('index.html')
+          index = index_path.read_text(encoding='utf-8')
+          original_index = index
+
+          # Target the actual login video element regardless of its previous source.
+          pat = re.compile(r'(<video\b(?=[^>]*\bid=["\']sakLoginBackgroundVideo["\'])[^>]*)(>)', re.I|re.S)
+          m = pat.search(index)
+          if not m:
+              raise SystemExit('Login background video element is missing from index.html')
+          tag = m.group(1)
+          if re.search(r'\bsrc\s*=\s*["\'][^"\']*["\']', tag, re.I):
+              tag = re.sub(r'\bsrc\s*=\s*["\'][^"\']*["\']', f'src="{new}"', tag, count=1, flags=re.I)
+          else:
+              tag += f' src="{new}"'
+          updated_tag = tag + m.group(2)
+          index = index[:m.start()] + updated_tag + index[m.end():]
+
+          # Also normalize source tags nested immediately after the login video tag if present.
+          login_pos = index.find('sakLoginBackgroundVideo')
+          window_end = min(len(index), login_pos + 1500)
+          segment = index[login_pos:window_end]
+          segment = re.sub(r'(<source\b[^>]*\bsrc\s*=\s*)["\'][^"\']+["\']', rf'\1"{new}"', segment, count=1, flags=re.I)
+          index = index[:login_pos] + segment + index[window_end:]
+
+          # Replace known rescue/fallback references so they cannot restore an older login video.
+          old_video_pattern = re.compile(r'(?:https://raw\.githubusercontent\.com/sakakera-a11y/sakaker/main/)?/?gemini_generated_video_[A-Za-z0-9_-]+\.mp4', re.I)
+          index = old_video_pattern.sub(new, index)
+          index = index.replace('https://github.com/sakakera-a11y/sakaker/blob/main/gemini_video_birds_login.mp4', new)
+          if index != original_index:
+              index_path.write_text(index, encoding='utf-8')
+
+          helper_files = [
               Path('assets/login-rescue.js'),
               Path('.github/scripts/optimize_login_video.py'),
               Path('.github/scripts/diagnose_login_runtime.py'),
@@ -43,28 +68,22 @@ jobs:
               Path('.github/workflows/login-video-performance.yml'),
               Path('.github/workflows/neutralize-legacy-login-heavy.yml'),
           ]
-
-          changed = []
-          for p in text_files:
+          changed_helpers = []
+          for p in helper_files:
               if not p.exists():
                   continue
               s = p.read_text(encoding='utf-8')
-              original = s
-              for old in old_names:
-                  s = s.replace(old, new)
-              # Normalize any accidental blob URL reference to a site-local URL.
+              old = s
+              s = old_video_pattern.sub(new, s)
               s = s.replace('https://github.com/sakakera-a11y/sakaker/blob/main/gemini_video_birds_login.mp4', new)
-              if s != original:
+              if s != old:
                   p.write_text(s, encoding='utf-8')
-                  changed.append(str(p))
+                  changed_helpers.append(str(p))
 
-          index = Path('index.html').read_text(encoding='utf-8')
-          if 'id="sakLoginBackgroundVideo"' not in index and "id='sakLoginBackgroundVideo'" not in index:
-              raise SystemExit('Login background video element is missing from index.html')
-          if new not in index:
-              raise SystemExit('New login video was not linked in index.html')
-          if 'gemini_generated_video_be58b3bc.mp4' in index:
-              raise SystemExit('Old login video reference still exists in index.html')
+          index = index_path.read_text(encoding='utf-8')
+          login_match = pat.search(index)
+          if not login_match or new not in login_match.group(0):
+              raise SystemExit('New login video is not set on sakLoginBackgroundVideo')
 
           books = Path('books.html').read_text(encoding='utf-8')
           checks = {
@@ -78,9 +97,9 @@ jobs:
           if missing:
               raise SystemExit('Text library verification failed: ' + ', '.join(missing))
 
-          print('Updated files:', ', '.join(changed) if changed else 'no replacements needed')
-          print('Login video:', new)
-          print('Text library: ship content and ordered section runtime verified')
+          print('Login video updated to:', new)
+          print('Updated helper files:', ', '.join(changed_helpers) if changed_helpers else 'none')
+          print('Text library verified: ordered sections + ship content present')
           PY
 
       - name: Commit updates
