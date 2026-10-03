@@ -27,7 +27,7 @@ jobs:
           p=Path('index.html')
           s=p.read_text(encoding='utf-8')
           marker='sak-main-runtime-locks'
-          tag='<script id="sak-main-runtime-locks" src="/assets/main-runtime-locks.js?v=20261003-final3" defer></script>'
+          tag='<script id="sak-main-runtime-locks" src="/assets/main-runtime-locks.js?v=20261003-final4" defer></script>'
           if marker in s:
               s=re.sub(r'<script\b[^>]*id=["\']sak-main-runtime-locks["\'][^>]*>\s*</script>',tag,s,flags=re.I)
           else:
@@ -47,11 +47,15 @@ jobs:
           idx=Path('index.html').read_text(encoding='utf-8')
           js=Path('assets/main-runtime-locks.js').read_text(encoding='utf-8')
           books=Path('books.html').read_text(encoding='utf-8')
+          order=Path('assets/text-library-order.js').read_text(encoding='utf-8')
           assert 'sak-main-runtime-locks' in idx
-          assert 'main-runtime-locks.js?v=20261003-final3' in idx
+          assert 'main-runtime-locks.js?v=20261003-final4' in idx
           assert '/gemini_video_birds_login.mp4' in js
-          assert '/books.html?v=20261003-final3' in js
+          assert '/books.html?v=20261003-final4' in js
           assert 'sakStableLoginVideo' in js
+          assert 'legacyLogin.remove()' in js
+          assert 'legacyMain.remove()' in js
+          assert 'ensureEbooksButton' in order
           for needle in ['sakShipStoryLibraryBtn','محتوى السفينة','sakTextLibrarySections']:
               assert needle in books, needle
           print('Runtime and text library verified')
@@ -67,5 +71,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
-          git commit -m 'Refresh stable login runtime cache final3'
+          git commit -m 'Keep stable runtime cache final4'
           git push
