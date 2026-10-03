@@ -47,3 +47,5 @@ assert '</button>id="emeraldLibraryButton">' not in vid
 assert Path('manifest.json').exists()
 assert Path('favicon.svg').exists()
 print('Final polish patch verified.')
+
+# retrigger final-polish workflow after workflow file exists on main
