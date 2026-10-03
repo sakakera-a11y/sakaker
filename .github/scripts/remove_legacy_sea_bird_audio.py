@@ -51,3 +51,5 @@ assert 'gemini_video_birds_login.mp4' in runtime
 assert 'gemini_generated_video_34118154.mp4' in icons
 assert 'sakSiteSoundBtn' in icons
 print('Legacy independent sea/bird sound cleanup prepared.')
+
+# retrigger after workflow is present on main
