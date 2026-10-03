@@ -7,28 +7,31 @@ function textOf(el){return ((el?.textContent||'')+' '+(el?.getAttribute?.('aria-
 function cleanLoginProviders(){
   const overlay=document.getElementById('loginOverlay');
   if(!overlay)return;
-  [...overlay.querySelectorAll('button,a,[role="button"]')].forEach(el=>{
+  overlay.querySelectorAll('button,a,[role="button"]').forEach(el=>{
     if(el.id==='googleButton'||el.id==='loginLanguageButton')return;
     const t=textOf(el);
     if(/Microsoft|الدخول\s+بواسطة\s+Microsoft/i.test(t) || /الدخول\s+بواسطة\s+Facebook|Sign\s*in\s*with\s*Facebook|Continue\s*with\s*Facebook/i.test(t)){
-      try{el.remove();}catch(_){el.style.display='none';}
+      el.style.setProperty('display','none','important');
+      el.setAttribute('aria-hidden','true');
+      el.tabIndex=-1;
     }
   });
 }
 
-function stopAndRemove(el){
+function stopAndHide(el){
   if(!el)return;
   try{if(typeof el.pause==='function'){el.pause();el.currentTime=0;}}catch(_){}
   try{el.removeAttribute('autoplay');}catch(_){}
-  try{el.remove();}catch(_){el.style.display='none';}
+  el.style?.setProperty?.('display','none','important');
+  el.setAttribute?.('aria-hidden','true');
 }
 
 function cleanLegacySeaSound(){
-  ['sakSeaSoundButton','sakSeaAudio','bird-sound-btn','sakakerBirdSoundBtn','sakakerBirdAudio'].forEach(id=>stopAndRemove(document.getElementById(id)));
-  [...document.querySelectorAll('button,[role="button"],[title],[aria-label]')].forEach(el=>{
+  ['sakSeaSoundButton','sakSeaAudio','bird-sound-btn','sakakerBirdSoundBtn','sakakerBirdAudio'].forEach(id=>stopAndHide(document.getElementById(id)));
+  document.querySelectorAll('button,[role="button"],[title],[aria-label]').forEach(el=>{
     if(el.id==='sakSiteSoundBtn'||el.closest('#loginOverlay'))return;
     const t=textOf(el);
-    if(/تشغيل\s*صوت\s*البحر|إيقاف\s*صوت\s*البحر|Sea\s*Sound|Ocean\s*Sound/i.test(t))stopAndRemove(el);
+    if(/تشغيل\s*صوت\s*البحر|إيقاف\s*صوت\s*البحر|Sea\s*Sound|Ocean\s*Sound/i.test(t))stopAndHide(el);
   });
 }
 
@@ -43,11 +46,9 @@ function ensureVideoFix(){
 }
 
 function run(){cleanLoginProviders();cleanLegacySeaSound();ensureVideoFix();}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
 
-// A few delayed passes catch legacy code that creates old controls after load.
-[300,900,1800,3500].forEach(ms=>setTimeout(()=>{cleanLoginProviders();cleanLegacySeaSound();},ms));
-
-const mo=new MutationObserver(()=>{cleanLoginProviders();cleanLegacySeaSound();});
-if(document.documentElement)mo.observe(document.documentElement,{childList:true,subtree:true});
+// Run immediately at parser completion, then one short retry for legacy late-created controls.
+run();
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});
+setTimeout(run,500);
 })();
