@@ -33,7 +33,6 @@ jobs:
           index = index_path.read_text(encoding='utf-8')
           original_index = index
 
-          # Target the actual login video element regardless of its previous source.
           pat = re.compile(r'(<video\b(?=[^>]*\bid=["\']sakLoginBackgroundVideo["\'])[^>]*)(>)', re.I|re.S)
           m = pat.search(index)
           if not m:
@@ -43,17 +42,14 @@ jobs:
               tag = re.sub(r'\bsrc\s*=\s*["\'][^"\']*["\']', f'src="{new}"', tag, count=1, flags=re.I)
           else:
               tag += f' src="{new}"'
-          updated_tag = tag + m.group(2)
-          index = index[:m.start()] + updated_tag + index[m.end():]
+          index = index[:m.start()] + tag + m.group(2) + index[m.end():]
 
-          # Also normalize source tags nested immediately after the login video tag if present.
           login_pos = index.find('sakLoginBackgroundVideo')
           window_end = min(len(index), login_pos + 1500)
           segment = index[login_pos:window_end]
           segment = re.sub(r'(<source\b[^>]*\bsrc\s*=\s*)["\'][^"\']+["\']', rf'\1"{new}"', segment, count=1, flags=re.I)
           index = index[:login_pos] + segment + index[window_end:]
 
-          # Replace known rescue/fallback references so they cannot restore an older login video.
           old_video_pattern = re.compile(r'(?:https://raw\.githubusercontent\.com/sakakera-a11y/sakaker/main/)?/?gemini_generated_video_[A-Za-z0-9_-]+\.mp4', re.I)
           index = old_video_pattern.sub(new, index)
           index = index.replace('https://github.com/sakakera-a11y/sakaker/blob/main/gemini_video_birds_login.mp4', new)
@@ -65,8 +61,6 @@ jobs:
               Path('.github/scripts/optimize_login_video.py'),
               Path('.github/scripts/diagnose_login_runtime.py'),
               Path('.github/scripts/neutralize_legacy_login_heavy.py'),
-              Path('.github/workflows/login-video-performance.yml'),
-              Path('.github/workflows/neutralize-legacy-login-heavy.yml'),
           ]
           changed_helpers = []
           for p in helper_files:
@@ -111,6 +105,6 @@ jobs:
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html assets/login-rescue.js .github/scripts/optimize_login_video.py .github/scripts/diagnose_login_runtime.py .github/scripts/neutralize_legacy_login_heavy.py .github/workflows/login-video-performance.yml .github/workflows/neutralize-legacy-login-heavy.yml
+          git add index.html assets/login-rescue.js .github/scripts/optimize_login_video.py .github/scripts/diagnose_login_runtime.py .github/scripts/neutralize_legacy_login_heavy.py
           git commit -m 'Use bird-sound video for login background'
           git push
