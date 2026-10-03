@@ -62,7 +62,20 @@ function storyHtml(){
 function installStyle(){
  if(document.getElementById('sakShipStoryLibraryStyle')) return;
  const s=document.createElement('style');s.id='sakShipStoryLibraryStyle';s.textContent=`
- #${BTN_ID}{cursor:pointer!important;border:1px solid rgba(0,255,213,.7)!important;border-radius:16px!important;padding:13px 16px!important;background:linear-gradient(145deg,rgba(0,80,70,.78),rgba(8,20,25,.95))!important;color:#fff!important;font-weight:800!important;box-shadow:0 0 14px rgba(0,255,213,.22)!important;min-height:54px!important}
+ #sakTextLibrarySections{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(170px,1fr))!important;gap:12px!important;margin-top:18px!important}
+ #sakTextLibrarySections>button{min-height:64px!important;padding:13px 14px!important;border-radius:18px!important;color:#fff!important;font-weight:900!important;font-size:15px!important;letter-spacing:.1px!important;box-shadow:0 8px 22px rgba(0,0,0,.28),inset 0 0 18px rgba(255,255,255,.05)!important;transition:transform .2s ease,filter .2s ease,box-shadow .2s ease!important}
+ #sakTextLibrarySections>button:hover{transform:translateY(-3px)!important;filter:brightness(1.12)!important}
+ #sakTextLibrarySections>button[data-sak-section="ebooks"]{background:linear-gradient(145deg,#4a2500,#b66b00)!important;border:1px solid #ffd36a!important;box-shadow:0 0 18px rgba(255,180,50,.28)!important}
+ #sakTextLibrarySections>button[data-sak-section="puzzles"]{background:linear-gradient(145deg,#2b1458,#6e40c9)!important;border:1px solid #bba3ff!important;box-shadow:0 0 18px rgba(160,120,255,.28)!important}
+ #sakTextLibrarySections>button[data-sak-section="quiz"]{background:linear-gradient(145deg,#003d68,#087bb4)!important;border:1px solid #74d7ff!important;box-shadow:0 0 18px rgba(70,190,255,.28)!important}
+ #sakTextLibrarySections>button[data-sak-section="today"]{background:linear-gradient(145deg,#584a00,#aa8c00)!important;border:1px solid #ffe779!important;box-shadow:0 0 18px rgba(255,225,80,.25)!important}
+ #sakTextLibrarySections>button[data-sak-section="culture"]{background:linear-gradient(145deg,#004a35,#008c63)!important;border:1px solid #74ffd6!important;box-shadow:0 0 18px rgba(80,255,205,.23)!important}
+ #sakTextLibrarySections>button[data-sak-section="stories"]{background:linear-gradient(145deg,#5b1738,#a23d70)!important;border:1px solid #ff9ac5!important}
+ #sakTextLibrarySections>button[data-sak-section="about"]{background:linear-gradient(145deg,#263238,#546e7a)!important;border:1px solid #b0bec5!important}
+ #sakTextLibrarySections>button[data-sak-section="wisdom"]{background:linear-gradient(145deg,#4b3100,#8d6500)!important;border:1px solid #e7c86a!important}
+ #sakTextLibrarySections>button[data-sak-section="ship"]{background:linear-gradient(145deg,#003a38,#00796f)!important;border:1px solid #63ffe9!important;box-shadow:0 0 18px rgba(0,255,220,.25)!important}
+ #sakTextLibrarySections>button[data-sak-section="other"]{background:linear-gradient(145deg,#19323b,#315b68)!important;border:1px solid #76bdcf!important}
+ #${BTN_ID}{cursor:pointer!important}
  #${MODAL_ID}{position:fixed!important;inset:0!important;display:none;align-items:center!important;justify-content:center!important;padding:12px!important;background:rgba(0,0,0,.78)!important;backdrop-filter:blur(6px);z-index:2147483300!important;box-sizing:border-box!important}
  #${MODAL_ID}.show{display:flex!important}
  #${MODAL_ID} .sak-ship-panel{width:min(920px,96vw)!important;height:min(88dvh,900px)!important;overflow:hidden!important;display:flex!important;flex-direction:column!important;border:1px solid rgba(0,255,213,.55)!important;border-radius:20px!important;background:linear-gradient(180deg,#020b0b,#041818,#020909)!important;box-shadow:0 0 30px rgba(0,255,213,.22)!important}
@@ -90,11 +103,35 @@ function ensureModal(){
  m.innerHTML='<div class="sak-ship-panel"><div class="sak-ship-head"><strong id="sakShipStoryLibraryTitle"></strong><button class="sak-ship-close" type="button">✕</button></div><div class="sak-ship-scroll"></div></div>';
  document.body.appendChild(m);m.querySelector('.sak-ship-close').addEventListener('click',closeModal);m.addEventListener('click',e=>{if(e.target===m)closeModal();});return m;
 }
-function render(){const t=COPY[lang()];const b=ensureButton();b.textContent=t.button;const m=ensureModal();m.querySelector('#sakShipStoryLibraryTitle').textContent=t.title;m.querySelector('.sak-ship-scroll').innerHTML=storyHtml();m.querySelector('.sak-ship-close').setAttribute('aria-label',t.close);}
+function classifyButton(btn){
+ const txt=(btn.textContent+' '+(btn.id||'')+' '+(btn.getAttribute('onclick')||'')).toLowerCase();
+ if(/كتب إلكترونية|الكتب الالكترونية|ebooks?|ebook|sakebooks/.test(txt))return['ebooks',1];
+ if(/ألغاز|الغاز|puzzle|riddle/.test(txt))return['puzzles',2];
+ if(/اختبر معلوماتك|quiz/.test(txt))return['quiz',3];
+ if(/معلومة اليوم|today fact|opentodayfact/.test(txt))return['today',4];
+ if(/ثقافة عامة|general culture|openfolder\(4\)/.test(txt))return['culture',5];
+ if(/خواطر وقصص|stories|openfolder\(1\)/.test(txt))return['stories',6];
+ if(/تعريف بالموقع|about|openfolder\(5\)/.test(txt))return['about',7];
+ if(/حكم وأمثال|wisdom/.test(txt))return['wisdom',8];
+ if(btn.id===BTN_ID||/محتوى السفينة|ship story/.test(txt))return['ship',9];
+ return['other',50];
+}
+function arrangeSections(){
+ const main=document.querySelector('main');if(!main)return;
+ let source=[...main.querySelectorAll(':scope button')];
+ const ship=document.getElementById(BTN_ID);if(ship&&!source.includes(ship))source.push(ship);
+ source=source.filter(b=>b.id!=='back');
+ if(!source.length)return;
+ let host=document.getElementById('sakTextLibrarySections');
+ if(!host){host=document.createElement('div');host.id='sakTextLibrarySections';const h=main.querySelector('h1');(h||main.firstChild)?.after(host);}
+ const ranked=source.map((b,i)=>{const [kind,rank]=classifyButton(b);b.dataset.sakSection=kind;return{b,rank,i};}).sort((a,b)=>a.rank-b.rank||a.i-b.i);
+ ranked.forEach(x=>host.appendChild(x.b));
+}
+function render(){const t=COPY[lang()];const b=ensureButton();b.textContent=t.button;const m=ensureModal();m.querySelector('#sakShipStoryLibraryTitle').textContent=t.title;m.querySelector('.sak-ship-scroll').innerHTML=storyHtml();m.querySelector('.sak-ship-close').setAttribute('aria-label',t.close);arrangeSections();}
 function openModal(){render();const m=ensureModal();m.classList.add('show');document.body.classList.add('modal-open');m.querySelector('.sak-ship-close').focus();}
 function closeModal(){const m=document.getElementById(MODAL_ID);if(m)m.classList.remove('show');document.body.classList.remove('modal-open');document.getElementById(BTN_ID)?.focus();}
-function init(){installStyle();ensureButton();ensureModal();render();}
+function init(){installStyle();ensureButton();ensureModal();render();arrangeSections();[300,900,1800,3500].forEach(ms=>setTimeout(arrangeSections,ms));}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById(MODAL_ID)?.classList.contains('show'))closeModal();});
-new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang','dir']});
+new MutationObserver(()=>{render();arrangeSections();}).observe(document.documentElement,{attributes:true,attributeFilter:['lang','dir']});
 })();
