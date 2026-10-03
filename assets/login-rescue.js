@@ -112,7 +112,7 @@ function lightenLoginVideo(){
     v.preload='metadata';
     const src=v.getAttribute('src')||'';
     if(!src||src.includes('raw.githubusercontent.com')){
-      v.src='/gemini_generated_video_be58b3bc.mp4';
+      v.src='/gemini_video_birds_login.mp4';
       v.load();
     }
     v.muted=true;

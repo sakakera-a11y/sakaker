@@ -2,7 +2,7 @@ from pathlib import Path
 import re
 
 INDEX = Path('index.html')
-LOCAL_LOGIN_VIDEO = '/gemini_generated_video_be58b3bc.mp4'
+LOCAL_LOGIN_VIDEO = '/gemini_video_birds_login.mp4'
 
 text = INDEX.read_text(encoding='utf-8')
 

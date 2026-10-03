@@ -2,8 +2,8 @@ from pathlib import Path
 import re
 
 INDEX = Path('index.html')
-LOCAL_LOGIN = '/gemini_generated_video_be58b3bc.mp4'
-RAW_LOGIN = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_be58b3bc.mp4'
+LOCAL_LOGIN = '/gemini_video_birds_login.mp4'
+RAW_LOGIN = '/gemini_video_birds_login.mp4'
 
 text = INDEX.read_text(encoding='utf-8')
 original = text

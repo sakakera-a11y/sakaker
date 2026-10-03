@@ -5,7 +5,7 @@ text = Path('index.html').read_text(encoding='utf-8')
 needles = [
     'sakLoginBackgroundVideo',
     'fetchpriority',
-    'raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_generated_video_be58b3bc.mp4',
+    'raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_video_birds_login.mp4',
     'sakLoginWeather',
     'sakPwaInstallIcon',
     'sakLoginProgress',
