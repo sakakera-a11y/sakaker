@@ -35,55 +35,64 @@ function style(){
   #${HOST_ID}>button[data-sak-section="about"]{background:linear-gradient(145deg,#263238,#546e7a)!important;border:1px solid #b0bec5!important}
   #${HOST_ID}>button[data-sak-section="wisdom"]{background:linear-gradient(145deg,#4b3100,#8d6500)!important;border:1px solid #e7c86a!important}
   #${HOST_ID}>button[data-sak-section="ship"]{background:linear-gradient(145deg,#003a38,#00796f)!important;border:1px solid #63ffe9!important;box-shadow:0 0 18px rgba(0,255,220,.28)!important}
-  #${HOST_ID}>button[data-sak-section="other"]{background:linear-gradient(145deg,#19323b,#315b68)!important;border:1px solid #76bdcf!important}
+  #sakThoughtsPlaceholder{max-width:760px;margin:24px auto;padding:30px 20px;border:1px solid rgba(120,255,230,.48);border-radius:22px;background:rgba(2,24,29,.82);color:#effffc;text-align:center;font:800 clamp(17px,3vw,23px)/1.9 Tajawal,Tahoma,Arial,sans-serif;box-shadow:0 0 25px rgba(0,255,220,.18)}
   `;
   document.head.appendChild(s);
 }
+
+function thoughtsText(){return document.documentElement.lang==='en'?'When a new thought or story becomes available, you will find it here.':'عند توفر خاطرة أو قصة ستجدونها هنا.'}
+function renderThoughts(){
+  const title=document.getElementById('folderTitle');
+  const body=document.getElementById('folderBody');
+  const modal=document.getElementById('folderModal');
+  if(title)title.textContent=document.documentElement.lang==='en'?'Thoughts & Stories':'خواطر وقصص';
+  if(body)body.innerHTML='<div id="sakThoughtsPlaceholder">'+thoughtsText()+'</div>';
+  if(modal)modal.style.display='block';
+}
+window.showKhwater=function(el){
+  const title=document.getElementById('folderTitle');
+  if(title)title.textContent=document.documentElement.lang==='en'?'Thoughts & Stories':'خواطر وقصص';
+  if(el)el.innerHTML='<div id="sakThoughtsPlaceholder">'+thoughtsText()+'</div>';
+};
 
 function ensureEbooksButton(){
   const main=document.querySelector('main');
   if(!main)return null;
   let b=document.getElementById(EBOOK_ID);
-  if(!b){
-    b=document.createElement('button');
-    b.id=EBOOK_ID;
-    b.type='button';
-    b.dataset.sakSection='ebooks';
-  }
-  const en=document.documentElement.lang==='en';
-  b.textContent=en?'📚 E-Books':'📚 الكتب الإلكترونية';
-  b.title=en?'Open E-Books':'فتح الكتب الإلكترونية';
+  if(!b){b=document.createElement('button');b.id=EBOOK_ID;b.type='button';b.dataset.sakSection='ebooks'}
+  const isEn=document.documentElement.lang==='en';
+  b.textContent=isEn?'📚 E-Books':'📚 الكتب الإلكترونية';
+  b.title=isEn?'Open E-Books':'فتح الكتب الإلكترونية';
   b.setAttribute('aria-label',b.title);
-  b.onclick=()=>{
-    if(window.parent&&window.parent!==window){
-      window.parent.postMessage({type:'sak-open-ebooks'},location.origin);
-    }
-  };
+  b.onclick=()=>{if(window.parent&&window.parent!==window)window.parent.postMessage({type:'sak-open-ebooks'},location.origin)};
   return b;
 }
 
 function arrange(){
-  const main=document.querySelector('main');
-  if(!main) return;
-  style();
+  const main=document.querySelector('main');if(!main)return;style();
   const ebookBtn=ensureEbooksButton();
   let host=document.getElementById(HOST_ID);
-  if(!host){
-    host=document.createElement('div');
-    host.id=HOST_ID;
-    const h=main.querySelector('h1');
-    (h||main.firstChild)?.after(host);
-  }
+  if(!host){host=document.createElement('div');host.id=HOST_ID;const h=main.querySelector('h1');(h||main.firstChild)?.after(host)}
   if(ebookBtn&&!ebookBtn.isConnected)host.appendChild(ebookBtn);
   const buttons=[...main.querySelectorAll('button')].filter(b=>b.id!=='back'&&!b.closest('.modal'));
   const unique=[...new Set(buttons)];
-  unique.forEach((b,i)=>{const [kind,rank]=classify(b);b.dataset.sakSection=kind;b.dataset.sakRank=String(rank);b.dataset.sakIndex=String(i);});
+  unique.forEach((b,i)=>{const [kind,rank]=classify(b);b.dataset.sakSection=kind;b.dataset.sakRank=String(rank);b.dataset.sakIndex=String(i)});
   unique.sort((a,b)=>(+a.dataset.sakRank)-(+b.dataset.sakRank)||(+a.dataset.sakIndex)-(+b.dataset.sakIndex));
   unique.forEach(b=>host.appendChild(b));
-  [...main.children].forEach(el=>{if(el!==host&&el.tagName==='DIV'&&!el.children.length)el.style.display='none';});
 }
 
-function init(){arrange();[100,300,700,1500,3000].forEach(ms=>setTimeout(arrange,ms));}
+function installStoriesGuard(){
+  if(document.__sakStoriesGuard)return;document.__sakStoriesGuard=true;
+  document.addEventListener('click',e=>{
+    const b=e.target?.closest?.('button,[role="button"],a');if(!b)return;
+    const meta=((b.dataset?.sakSection||'')+' '+(b.getAttribute('onclick')||'')+' '+b.textContent);
+    if(/stories|openFolder\(1\)|خواطر\s*وقصص|Thoughts\s*&?\s*Stories/i.test(meta)){
+      e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();renderThoughts();
+    }
+  },true);
+}
+function refreshOpenThoughts(){const body=document.getElementById('folderBody');const title=document.getElementById('folderTitle');if(body&&title&&/خواطر|Thoughts/i.test(title.textContent||''))renderThoughts()}
+function init(){arrange();installStoriesGuard();[100,300,700,1500,3000].forEach(ms=>setTimeout(arrange,ms))}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
-new MutationObserver(arrange).observe(document.documentElement,{attributes:true,attributeFilter:['lang','dir']});
+new MutationObserver(()=>{arrange();refreshOpenThoughts()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang','dir']});
 })();
