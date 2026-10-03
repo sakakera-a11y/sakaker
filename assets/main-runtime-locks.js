@@ -1,13 +1,33 @@
 (()=>{
 'use strict';
 const LOGIN_VIDEO='/gemini_video_birds_login.mp4';
-const LIB_URL='/books.html?v=20261003-final3';
+const LIB_URL='/books.html?v=20261003-final4';
 const OVERLAY_ID='sakStableTextLibraryOverlay';
 const STABLE_LOGIN_ID='sakStableLoginVideo';
 
 function installStableLoginVideo(){
   const overlay=document.getElementById('loginOverlay');
   if(!overlay)return;
+
+  /* Remove legacy login video completely. Hiding it is not enough because a
+     hidden <video> can continue fetching its old source in the background. */
+  const legacyLogin=document.getElementById('sakLoginBackgroundVideo');
+  if(legacyLogin){
+    try{legacyLogin.pause();}catch(_){}
+    legacyLogin.querySelectorAll('source').forEach(n=>n.remove());
+    legacyLogin.removeAttribute('src');
+    legacyLogin.remove();
+  }
+
+  /* Remove the known old duplicate of the main-site background, while keeping
+     sakSiteBackgroundVideo which is the current main background. */
+  const legacyMain=document.getElementById('sakakerMainVideoBackground');
+  if(legacyMain){
+    try{legacyMain.pause();}catch(_){}
+    legacyMain.querySelectorAll('source').forEach(n=>n.remove());
+    legacyMain.removeAttribute('src');
+    legacyMain.remove();
+  }
 
   let style=document.getElementById('sakStableLoginVideoStyle');
   if(!style){
@@ -107,6 +127,37 @@ function isLibraryLauncher(el){
   const s=((n.getAttribute('title')||'')+' '+(n.getAttribute('aria-label')||'')+' '+(n.textContent||'')).replace(/\s+/g,' ').trim();
   return /المكتبة\s*النصية|Text\s*Library/i.test(s);
 }
+
+function openMainEbooks(){
+  const lib=document.getElementById(OVERLAY_ID);
+  if(lib)lib.classList.remove('show');
+  document.body.classList.remove('modal-open');
+
+  const modal=document.getElementById('sakEbooksShelfModal');
+  if(modal){
+    modal.classList.add('show','active');
+    modal.style.setProperty('display','flex','important');
+    modal.style.setProperty('visibility','visible','important');
+    modal.style.setProperty('opacity','1','important');
+    modal.removeAttribute('aria-hidden');
+    document.body.classList.add('sak-ebook-layer-open');
+    return true;
+  }
+
+  const candidates=[...document.querySelectorAll('button,a,[role="button"],[title],[aria-label]')];
+  const launcher=candidates.find(el=>{
+    if(el.closest('#'+OVERLAY_ID))return false;
+    const meta=((el.id||'')+' '+(el.getAttribute('title')||'')+' '+(el.getAttribute('aria-label')||'')+' '+(el.textContent||'')).replace(/\s+/g,' ').trim();
+    return /كتب\s*إلكترونية|الكتب\s*الالكترونية|E-?Books?/i.test(meta);
+  });
+  if(launcher){launcher.click();return true;}
+  return false;
+}
+
+window.addEventListener('message',e=>{
+  if(e.origin!==location.origin)return;
+  if(e.data&&e.data.type==='sak-open-ebooks')openMainEbooks();
+});
 
 function installLibraryBridge(){
   ensureLibraryOverlay();

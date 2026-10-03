@@ -2,6 +2,7 @@
 'use strict';
 const HOST_ID='sakTextLibrarySections';
 const SHIP_ID='sakShipStoryLibraryBtn';
+const EBOOK_ID='sakEbooksLibraryBtn';
 
 function classify(btn){
   const txt=(btn.textContent+' '+(btn.id||'')+' '+(btn.getAttribute('onclick')||'')).toLowerCase();
@@ -39,10 +40,33 @@ function style(){
   document.head.appendChild(s);
 }
 
+function ensureEbooksButton(){
+  const main=document.querySelector('main');
+  if(!main)return null;
+  let b=document.getElementById(EBOOK_ID);
+  if(!b){
+    b=document.createElement('button');
+    b.id=EBOOK_ID;
+    b.type='button';
+    b.dataset.sakSection='ebooks';
+  }
+  const en=document.documentElement.lang==='en';
+  b.textContent=en?'📚 E-Books':'📚 الكتب الإلكترونية';
+  b.title=en?'Open E-Books':'فتح الكتب الإلكترونية';
+  b.setAttribute('aria-label',b.title);
+  b.onclick=()=>{
+    if(window.parent&&window.parent!==window){
+      window.parent.postMessage({type:'sak-open-ebooks'},location.origin);
+    }
+  };
+  return b;
+}
+
 function arrange(){
   const main=document.querySelector('main');
   if(!main) return;
   style();
+  const ebookBtn=ensureEbooksButton();
   let host=document.getElementById(HOST_ID);
   if(!host){
     host=document.createElement('div');
@@ -50,6 +74,7 @@ function arrange(){
     const h=main.querySelector('h1');
     (h||main.firstChild)?.after(host);
   }
+  if(ebookBtn&&!ebookBtn.isConnected)host.appendChild(ebookBtn);
   const buttons=[...main.querySelectorAll('button')].filter(b=>b.id!=='back'&&!b.closest('.modal'));
   const unique=[...new Set(buttons)];
   unique.forEach((b,i)=>{const [kind,rank]=classify(b);b.dataset.sakSection=kind;b.dataset.sakRank=String(rank);b.dataset.sakIndex=String(i);});
