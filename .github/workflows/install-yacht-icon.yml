@@ -54,7 +54,7 @@ jobs:
           b = books.read_text(encoding='utf-8')
           if '<html' not in b.lower() or '</html>' not in b.lower():
               raise SystemExit('Refusing to modify incomplete books.html')
-          library_tag = '<script id="sak-ship-story-library-runtime" src="/assets/text-library-ship.js?v=20261003-2" defer></script>'
+          library_tag = '<script id="sak-ship-story-library-runtime" src="/assets/text-library-ship.js?v=20261003-3" defer></script>'
           if 'id="sak-ship-story-library-runtime"' in b:
               b = re.sub(r'<script\s+id="sak-ship-story-library-runtime"[^>]*></script>', library_tag, b, count=1, flags=re.I)
           else:
@@ -74,20 +74,24 @@ jobs:
           grep -Fq 'yacht-ship-icon.js?v=20261003-7' index.html
           ! grep -Fq 'id="sakYachtDirectStyle"' index.html
           grep -Fq 'id="sak-ship-story-library-runtime"' books.html
-          grep -Fq 'text-library-ship.js?v=20261003-2' books.html
+          grep -Fq 'text-library-ship.js?v=20261003-3' books.html
           grep -Fq 'sakYachtPaymentLauncher' assets/yacht-ship-icon.js
-          grep -Fq 'sakYachtPaymentImage' assets/yacht-ship-icon.js
           grep -Fq "BUSINESS_URL='https://business.sakaker.co/'" assets/yacht-ship-icon.js
-          grep -Fq 'window.location.href=BUSINESS_URL' assets/yacht-ship-icon.js
           grep -Fq 'removeDuplicateBusinessStar' assets/yacht-ship-icon.js
-          grep -Fq '#sakakerBusinessAd' assets/yacht-ship-icon.js
-          grep -Fq '.sakaker-utility-slot[data-sakaker-util="business"]' assets/yacht-ship-icon.js
           grep -Fq 'sakShipStoryLibraryBtn' assets/text-library-ship.js
           grep -Fq '🌙 الذكرى السنوية لبناء أبو القمر زمرد' assets/text-library-ship.js
           grep -Fq '🌱 الفصل الأول… حين بدأت الحكاية' assets/text-library-ship.js
           grep -Fq '🚢 الفصل الثالث… حين أبحرت السفينة' assets/text-library-ship.js
           grep -Fq '🕯️ كلمة في الذكرى' assets/text-library-ship.js
           grep -Fq '2025 — 2026' assets/text-library-ship.js
+          grep -Fq 'function arrangeSections()' assets/text-library-ship.js
+          grep -Fq "return['ebooks',1]" assets/text-library-ship.js
+          grep -Fq "return['puzzles',2]" assets/text-library-ship.js
+          grep -Fq "return['quiz',3]" assets/text-library-ship.js
+          grep -Fq "return['today',4]" assets/text-library-ship.js
+          grep -Fq "return['culture',5]" assets/text-library-ship.js
+          grep -Fq 'data-sak-section="ebooks"' assets/text-library-ship.js
+          grep -Fq 'data-sak-section="puzzles"' assets/text-library-ship.js
           node --check assets/yacht-ship-icon.js
           node --check assets/text-library-ship.js
 
@@ -103,7 +107,7 @@ jobs:
           fi
 
           git add index.html books.html
-          git commit -m 'Publish sole Business yacht and fixed ship anniversary library'
+          git commit -m 'Publish ordered colorful text library sections'
 
           for attempt in 1 2 3; do
             if git push origin HEAD:main; then
