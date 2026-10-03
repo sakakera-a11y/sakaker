@@ -1,0 +1,79 @@
+name: Fix text library final layout
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-text-library-final.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix-library:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Make text library layout deterministic
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          books = Path('books.html')
+          text = books.read_text(encoding='utf-8')
+
+          old_main = '''<main style="padding:75px 12px"><h1>📖 المكتبة النصية / Text Library</h1><div style="display:flex;flex-wrap:wrap;gap:8px"><button onclick="openFolder(1)">📚 خواطر وقصص</button><button onclick="startQuiz()">❓ اختبر معلوماتك</button><button onclick="openFolder(4)">🌍 ثقافة عامة</button><button onclick="openTodayFact()">💡 معلومة اليوم</button><button onclick="openPuzzle()">🧩 ألغاز</button><button onclick="openFolder(5)">ℹ️ تعريف بالموقع</button><button onclick="openWisdomLibrary()">📜 حكم وأمثال</button></div></main>'''
+
+          new_main = '''<main style="padding:75px 12px"><h1>📖 المكتبة النصية / Text Library</h1><div id="sakTextLibrarySections" class="sak-text-library-sections"><button data-sak-section="puzzles" onclick="openPuzzle()">🧩 ألغاز</button><button data-sak-section="quiz" onclick="startQuiz()">❓ اختبر معلوماتك</button><button data-sak-section="today" onclick="openTodayFact()">💡 معلومة اليوم</button><button data-sak-section="culture" onclick="openFolder(4)">🌍 ثقافة عامة</button><button data-sak-section="stories" onclick="openFolder(1)">📚 خواطر وقصص</button><button data-sak-section="about" onclick="openFolder(5)">ℹ️ تعريف بالموقع</button><button data-sak-section="wisdom" onclick="openWisdomLibrary()">📜 حكم وأمثال</button><button id="sakShipStoryLibraryBtn" data-sak-section="ship" type="button">🌙 محتوى السفينة</button></div></main>'''
+
+          if old_main in text:
+              text = text.replace(old_main, new_main, 1)
+          elif 'id="sakTextLibrarySections"' not in text:
+              raise SystemExit('Expected text library main block not found')
+
+          marker = 'sak-text-library-fixed-inline-style'
+          if marker not in text:
+              css = '''<style id="sak-text-library-fixed-inline-style">
+          #sakTextLibrarySections{display:grid!important;grid-template-columns:repeat(4,minmax(145px,1fr))!important;gap:14px!important;margin:20px auto 0!important;max-width:980px!important;align-items:stretch!important}
+          #sakTextLibrarySections>button{min-height:78px!important;padding:12px 14px!important;border-radius:20px!important;color:#fff!important;font:900 15px/1.35 Tajawal,Tahoma,Arial,sans-serif!important;cursor:pointer!important;box-shadow:0 9px 24px #0007,inset 0 0 20px #ffffff0d!important;transition:transform .2s ease,filter .2s ease,box-shadow .2s ease!important}
+          #sakTextLibrarySections>button:hover,#sakTextLibrarySections>button:focus-visible{transform:translateY(-4px) scale(1.02)!important;filter:brightness(1.14)!important;outline:2px solid #fff8!important;outline-offset:2px!important}
+          #sakTextLibrarySections>[data-sak-section="puzzles"]{background:linear-gradient(145deg,#2b1458,#7047c8)!important;border:1px solid #c1a9ff!important}
+          #sakTextLibrarySections>[data-sak-section="quiz"]{background:linear-gradient(145deg,#003a66,#087db8)!important;border:1px solid #77d9ff!important}
+          #sakTextLibrarySections>[data-sak-section="today"]{background:linear-gradient(145deg,#554600,#ad9000)!important;border:1px solid #ffe778!important}
+          #sakTextLibrarySections>[data-sak-section="culture"]{background:linear-gradient(145deg,#004431,#00845f)!important;border:1px solid #70ffd5!important}
+          #sakTextLibrarySections>[data-sak-section="stories"]{background:linear-gradient(145deg,#5b1738,#a53e73)!important;border:1px solid #ff9bc7!important}
+          #sakTextLibrarySections>[data-sak-section="about"]{background:linear-gradient(145deg,#263238,#546e7a)!important;border:1px solid #c2d1d7!important}
+          #sakTextLibrarySections>[data-sak-section="wisdom"]{background:linear-gradient(145deg,#4b3100,#8f6700)!important;border:1px solid #efd174!important}
+          #sakTextLibrarySections>[data-sak-section="ship"]{background:linear-gradient(145deg,#003b39,#007e73)!important;border:1px solid #6effeb!important;box-shadow:0 0 20px #00ffd54a,0 9px 24px #0007!important}
+          @media(max-width:760px){#sakTextLibrarySections{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}#sakTextLibrarySections>button{min-height:68px!important;font-size:13px!important}}
+          @media(max-width:380px){#sakTextLibrarySections{grid-template-columns:1fr 1fr!important}#sakTextLibrarySections>button{padding:10px 8px!important;font-size:12px!important}}
+          </style>'''
+              text = text.replace('</head>', css + '</head>', 1)
+
+          text = text.replace('/assets/text-library-ship.js?v=20261003-3','/assets/text-library-ship.js?v=20261003-4')
+          text = text.replace('/assets/text-library-order.js?v=20261003-1','/assets/text-library-order.js?v=20261003-2')
+          books.write_text(text, encoding='utf-8')
+
+          ship = Path('assets/text-library-ship.js')
+          s = ship.read_text(encoding='utf-8')
+          old = "function ensureButton(){\n let b=document.getElementById(BTN_ID);if(!b){b=document.createElement('button');b.id=BTN_ID;b.type='button';b.dataset.sakShipLibrary='1';findHost().appendChild(b);b.addEventListener('click',openModal);}b.textContent=COPY[lang()].button;b.setAttribute('aria-label',COPY[lang()].button);return b;\n}"
+          new = "function ensureButton(){\n let b=document.getElementById(BTN_ID);if(!b){b=document.createElement('button');b.id=BTN_ID;b.type='button';b.dataset.sakShipLibrary='1';findHost().appendChild(b);}\n b.onclick=openModal;b.textContent=COPY[lang()].button;b.setAttribute('aria-label',COPY[lang()].button);return b;\n}"
+          if old in s:
+              s = s.replace(old,new,1)
+          else:
+              s = re.sub(r"function ensureButton\(\)\{.*?return b;\n\}", new, s, count=1, flags=re.S)
+          ship.write_text(s, encoding='utf-8')
+
+      - name: Commit fixed library
+        run: |
+          if git diff --quiet -- books.html assets/text-library-ship.js; then
+            echo "No change needed"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add books.html assets/text-library-ship.js
+          git commit -m "Fix text library sections and ship content"
+          git push
