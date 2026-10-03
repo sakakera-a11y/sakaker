@@ -3,62 +3,66 @@ if(window.__sakakerFinalUiCleanup)return;
 window.__sakakerFinalUiCleanup=true;
 
 const LEGACY_SOUND_IDS=['sakSeaAudio','sakSeaSoundButton','sakakerBirdAudio','sakakerBirdSoundBtn','bird-sound-btn'];
-function purgeLegacyIndependentSounds(){
-  LEGACY_SOUND_IDS.forEach(id=>{
-    const el=document.getElementById(id);
-    if(!el)return;
-    try{if(typeof el.pause==='function'){el.pause();el.currentTime=0;}}catch(_){}
-    el.remove();
-  });
+
+function textOf(el){
+  return ((el?.textContent||'')+' '+(el?.getAttribute?.('aria-label')||'')+' '+(el?.getAttribute?.('title')||'')).replace(/\s+/g,' ').trim();
 }
-
-function textOf(el){return ((el?.textContent||'')+' '+(el?.getAttribute?.('aria-label')||'')+' '+(el?.getAttribute?.('title')||'')).replace(/\s+/g,' ').trim();}
-
-function cleanLoginProviders(){
-  const overlay=document.getElementById('loginOverlay');
-  if(!overlay)return;
-  overlay.querySelectorAll('button,a,[role="button"]').forEach(el=>{
-    if(el.id==='googleButton'||el.id==='loginLanguageButton')return;
-    const t=textOf(el);
-    if(/Microsoft|الدخول\s+بواسطة\s+Microsoft/i.test(t) || /الدخول\s+بواسطة\s+Facebook|Sign\s*in\s*with\s*Facebook|Continue\s*with\s*Facebook/i.test(t)){
-      el.style.setProperty('display','none','important');
-      el.setAttribute('aria-hidden','true');
-      el.tabIndex=-1;
-    }
-  });
-}
-
-function stopAndHide(el){
+function stopAndRemove(el){
   if(!el)return;
+  if(el.closest?.('#loginOverlay'))return;
   try{if(typeof el.pause==='function'){el.pause();el.currentTime=0;}}catch(_){}
   try{el.removeAttribute('autoplay');}catch(_){}
-  el.style?.setProperty?.('display','none','important');
-  el.setAttribute?.('aria-hidden','true');
+  el.remove();
 }
-
+function purgeLegacyIndependentSounds(){
+  LEGACY_SOUND_IDS.forEach(id=>stopAndRemove(document.getElementById(id)));
+  document.querySelectorAll('audio').forEach(el=>{
+    if(el.closest('#loginOverlay'))return;
+    const meta=((el.id||'')+' '+(typeof el.className==='string'?el.className:'')+' '+(el.getAttribute('src')||'')).toLowerCase();
+    if(/bird|sea|ocean|wave|طيور|بحر/.test(meta))stopAndRemove(el);
+  });
+}
+function keepAuthProvidersVisible(){
+  const overlay=document.getElementById('loginOverlay');
+  if(!overlay)return;
+  ['googleButton','facebookButton','microsoftButton','loginLanguageButton'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    el.style.removeProperty('display');
+    el.style.removeProperty('visibility');
+    el.style.removeProperty('opacity');
+    el.removeAttribute('aria-hidden');
+    if(el.tagName==='BUTTON')el.tabIndex=0;
+  });
+}
 function cleanLegacySeaSound(){
-  ['sakSeaSoundButton','sakSeaAudio','bird-sound-btn','sakakerBirdSoundBtn','sakakerBirdAudio'].forEach(id=>stopAndHide(document.getElementById(id)));
+  LEGACY_SOUND_IDS.forEach(id=>stopAndRemove(document.getElementById(id)));
   document.querySelectorAll('button,[role="button"],[title],[aria-label]').forEach(el=>{
     if(el.id==='sakSiteSoundBtn'||el.closest('#loginOverlay'))return;
     const t=textOf(el);
-    if(/تشغيل\s*صوت\s*البحر|إيقاف\s*صوت\s*البحر|Sea\s*Sound|Ocean\s*Sound/i.test(t))stopAndHide(el);
+    if(/تشغيل\s*صوت\s*البحر|إيقاف\s*صوت\s*البحر|Sea\s*Sound|Ocean\s*Sound|Bird\s*Sound|صوت\s*الطيور/i.test(t))stopAndRemove(el);
   });
 }
-
 function ensureVideoFix(){
-  if(window.__sakVideoModalFixLoaded)return;
-  if(document.querySelector('script[src*="video-modal-fix.js"]'))return;
+  const wanted='20261003-video3';
+  if(window.__sakVideoModalFixVersion===wanted)return;
+  document.querySelectorAll('script[src*="video-modal-fix.js"]').forEach(s=>{
+    if(!String(s.src).includes(wanted))s.remove();
+  });
   const s=document.createElement('script');
-  s.src='/assets/video-modal-fix.js?v=20261003-video2';
+  s.src='/assets/video-modal-fix.js?v='+wanted;
   s.defer=true;
-  s.id='sak-video-modal-fix-final-loader';
+  s.id='sak-video-modal-fix-final-loader-v3';
   document.head.appendChild(s);
 }
-
-function run(){purgeLegacyIndependentSounds();cleanLoginProviders();cleanLegacySeaSound();ensureVideoFix();}
-
-// Run immediately at parser completion, then one short retry for legacy late-created controls.
+function run(){
+  purgeLegacyIndependentSounds();
+  keepAuthProvidersVisible();
+  cleanLegacySeaSound();
+  ensureVideoFix();
+}
 run();
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});
 setTimeout(run,500);
+setTimeout(run,1800);
 })();
