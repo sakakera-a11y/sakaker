@@ -73,3 +73,5 @@ EOF
           git add assets/final-three-icons.js
           git commit -m 'Use glowing yacht artwork for ship icon'
           git push
+
+# retrigger: 2026-10-03
