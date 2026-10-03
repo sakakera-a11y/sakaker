@@ -18,48 +18,72 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Safely link yacht runtime into index
+      - name: Link compact yacht and text-library ship story
         shell: python
         run: |
           from pathlib import Path
           import re
-          p = Path('index.html')
-          text = p.read_text(encoding='utf-8')
+
+          index = Path('index.html')
+          text = index.read_text(encoding='utf-8')
           if '<html' not in text.lower() or '</html>' not in text.lower():
               raise SystemExit('Refusing to modify incomplete index.html')
-          tag = '<script id="sak-yacht-ship-runtime" src="/assets/yacht-ship-icon.js?v=20261003-3" defer></script>'
-          if 'id="sak-yacht-ship-runtime"' in text:
-              text = re.sub(r'<script\s+id="sak-yacht-ship-runtime"[^>]*></script>', tag, text, count=1, flags=re.I)
-              p.write_text(text, encoding='utf-8')
-          else:
-              low = text.lower()
-              pos = low.rfind('</body>')
-              if pos < 0:
-                  raise SystemExit('Closing body tag not found')
-              text = text[:pos] + tag + '\n' + text[pos:]
-              p.write_text(text, encoding='utf-8')
 
-      - name: Verify yacht assets and link
+          # Remove the old direct yacht CSS that can make the legacy ship icon huge.
+          text = re.sub(
+              r'\s*<style\s+id=["\']sakYachtDirectStyle["\'][^>]*>.*?</style>\s*',
+              '\n', text, flags=re.I|re.S
+          )
+
+          yacht_tag = '<script id="sak-yacht-ship-runtime" src="/assets/yacht-ship-icon.js?v=20261003-4" defer></script>'
+          if 'id="sak-yacht-ship-runtime"' in text:
+              text = re.sub(r'<script\s+id="sak-yacht-ship-runtime"[^>]*></script>', yacht_tag, text, count=1, flags=re.I)
+          else:
+              pos = text.lower().rfind('</body>')
+              if pos < 0:
+                  raise SystemExit('Closing body tag not found in index.html')
+              text = text[:pos] + yacht_tag + '\n' + text[pos:]
+          index.write_text(text, encoding='utf-8')
+
+          books = Path('books.html')
+          b = books.read_text(encoding='utf-8')
+          if '<html' not in b.lower() or '</html>' not in b.lower():
+              raise SystemExit('Refusing to modify incomplete books.html')
+          library_tag = '<script id="sak-ship-story-library-runtime" src="/assets/text-library-ship.js?v=20261003-1" defer></script>'
+          if 'id="sak-ship-story-library-runtime"' in b:
+              b = re.sub(r'<script\s+id="sak-ship-story-library-runtime"[^>]*></script>', library_tag, b, count=1, flags=re.I)
+          else:
+              pos = b.lower().rfind('</body>')
+              if pos < 0:
+                  raise SystemExit('Closing body tag not found in books.html')
+              b = b[:pos] + library_tag + '\n' + b[pos:]
+          books.write_text(b, encoding='utf-8')
+
+      - name: Verify yacht and library runtimes
         shell: bash
         run: |
           test -f assets/yacht-ship-icon.js
+          test -f assets/text-library-ship.js
           test -f file_00000000e530821086e1b6135c3db20e.png
           grep -Fq 'id="sak-yacht-ship-runtime"' index.html
-          grep -Fq 'yacht-ship-icon.js?v=20261003-3' index.html
-          grep -Fq 'file_00000000e530821086e1b6135c3db20e.png' assets/yacht-ship-icon.js
-          grep -Fq 'data-sakaker-util="ship"' assets/yacht-ship-icon.js
-          grep -Fq 'sak-hide-legacy-icon' assets/yacht-ship-icon.js
+          grep -Fq 'yacht-ship-icon.js?v=20261003-4' index.html
+          ! grep -Fq 'id="sakYachtDirectStyle"' index.html
+          grep -Fq 'id="sak-ship-story-library-runtime"' books.html
+          grep -Fq 'text-library-ship.js?v=20261003-1' books.html
+          grep -Fq 'sakYachtPaymentLauncher' assets/yacht-ship-icon.js
+          grep -Fq 'sakShipStoryLibraryBtn' assets/text-library-ship.js
           node --check assets/yacht-ship-icon.js
+          node --check assets/text-library-ship.js
 
-      - name: Commit safe index link
+      - name: Commit safe runtime links
         shell: bash
         run: |
-          if git diff --quiet -- index.html; then
-            echo 'Yacht runtime already linked with current cache version.'
+          if git diff --quiet -- index.html books.html; then
+            echo 'Compact yacht and ship story runtimes are already linked.'
             exit 0
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html
-          git commit -m 'Refresh stable yacht icon runtime cache'
+          git add index.html books.html
+          git commit -m 'Install compact yacht and ship story library runtime'
           git push
