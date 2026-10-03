@@ -160,3 +160,4 @@ jobs:
 
 # Manual verification trigger after legacy login/media optimization.
 # Final polish verification trigger: 2026-10-03.
+# Final runtime verification trigger: 2026-10-03-2.
