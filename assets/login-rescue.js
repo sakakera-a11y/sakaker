@@ -18,16 +18,86 @@ const overlay=$('loginOverlay');
 const google=$('googleButton');
 const errorEl=$('loginError');
 const profile=$('userProfile');
+let facebook=null;
+let microsoft=null;
 
 function langEn(){return document.documentElement.lang==='en'}
 function setError(msgAr,msgEn){if(errorEl)errorEl.textContent=langEn()?msgEn:msgAr}
-function setBusy(busy){
-  if(!google)return;
-  google.disabled=!!busy;
-  google.setAttribute('aria-busy',busy?'true':'false');
+function authButtons(){return [google,facebook,microsoft].filter(Boolean)}
+function setBusy(busy,active){
+  authButtons().forEach(btn=>{
+    btn.disabled=!!busy;
+    btn.setAttribute('aria-busy',busy&&btn===active?'true':'false');
+  });
+}
+function buttonText(kind){
+  const en=langEn();
+  if(kind==='facebook')return en?'Continue with Facebook':'الدخول بواسطة Facebook';
+  if(kind==='microsoft')return en?'Continue with Microsoft':'الدخول بواسطة Microsoft';
+  return en?'Continue with Google':'الدخول بواسطة Google';
+}
+function makeProviderButton(id,kind){
+  if(!overlay||!google)return null;
+  let btn=$(id);
+  if(btn)return btn;
+  btn=google.cloneNode(false);
+  btn.id=id;
+  btn.removeAttribute('onclick');
+  btn.removeAttribute('aria-busy');
+  btn.type='button';
+  btn.dataset.authProvider=kind;
+  btn.textContent=buttonText(kind);
+  btn.setAttribute('aria-label',buttonText(kind));
+  btn.style.marginTop='10px';
+  if(kind==='facebook'){
+    btn.style.background='#1877f2';
+    btn.style.color='#fff';
+  }else{
+    btn.style.background='#fff';
+    btn.style.color='#111';
+    btn.style.borderColor='rgba(0,0,0,.2)';
+  }
+  google.insertAdjacentElement('afterend',btn);
+  return btn;
+}
+function installSocialButtons(){
+  facebook=makeProviderButton('facebookButton','facebook');
+  microsoft=makeProviderButton('microsoftButton','microsoft');
+  if(facebook&&microsoft&&facebook.nextElementSibling!==microsoft){
+    facebook.insertAdjacentElement('afterend',microsoft);
+  }
+}
+function refreshProviderLabels(){
+  if(google){
+    const existing=(google.textContent||'').trim();
+    if(!existing||/Google|جوجل/i.test(existing)) google.setAttribute('aria-label',buttonText('google'));
+  }
+  if(facebook){facebook.textContent=buttonText('facebook');facebook.setAttribute('aria-label',buttonText('facebook'))}
+  if(microsoft){microsoft.textContent=buttonText('microsoft');microsoft.setAttribute('aria-label',buttonText('microsoft'))}
 }
 
-/* Main-site sound control only: keep login page untouched. */
+/* Keep exactly the two intended sound systems:
+   1) the login background video sound inside #loginOverlay
+   2) the main-site background sound controlled by #sakSiteSoundBtn
+   All legacy independent sea/bird players are stopped and removed outside login. */
+const LEGACY_SOUND_IDS=['sakSeaAudio','sakSeaSoundButton','bird-sound-btn','sakakerBirdSoundBtn','sakakerBirdAudio'];
+function removeExtraSounds(){
+  LEGACY_SOUND_IDS.forEach(id=>{
+    const el=$(id);
+    if(!el||el.closest?.('#loginOverlay'))return;
+    try{if(typeof el.pause==='function'){el.pause();el.currentTime=0;}}catch(_){}
+    el.remove();
+  });
+  document.querySelectorAll('audio').forEach(el=>{
+    if(el.closest('#loginOverlay'))return;
+    if(el.id==='sakSiteBackgroundVideo')return;
+    const meta=((el.id||'')+' '+(el.className||'')+' '+(el.getAttribute('src')||'')).toLowerCase();
+    if(/bird|sea|ocean|wave|طيور|بحر/.test(meta)){
+      try{el.pause();el.currentTime=0;}catch(_){}
+      el.remove();
+    }
+  });
+}
 function installPostLoginSoundStyle(){
   if(document.getElementById('sakPostLoginSoundStyle'))return;
   const style=document.createElement('style');
@@ -46,7 +116,6 @@ function installPostLoginSoundStyle(){
   `;
   document.head.appendChild(style);
 }
-
 function visibleRect(el){
   if(!el)return null;
   const style=getComputedStyle(el);
@@ -54,27 +123,22 @@ function visibleRect(el){
   const r=el.getBoundingClientRect();
   return r.width>1&&r.height>1?r:null;
 }
-
 function placePostLoginSoundButton(){
   if(!document.body||document.body.classList.contains('locked'))return;
   const btn=$('sakSiteSoundBtn');
   if(!btn)return;
-
   const payment=$('sakGlobalPayment');
   const paymentRect=visibleRect(payment);
   const width=Math.max(btn.offsetWidth||150,120);
   const height=Math.max(btn.offsetHeight||44,38);
   let left=8;
   let top=window.innerHeight-height-10;
-
   if(paymentRect){
     left=paymentRect.left+(paymentRect.width-width)/2;
     top=paymentRect.bottom+8;
   }
-
   left=Math.max(8,Math.min(window.innerWidth-width-8,left));
   top=Math.max(8,Math.min(window.innerHeight-height-8,top));
-
   btn.style.setProperty('position','fixed','important');
   btn.style.setProperty('left',Math.round(left)+'px','important');
   btn.style.setProperty('right','auto','important');
@@ -82,12 +146,11 @@ function placePostLoginSoundButton(){
   btn.style.setProperty('bottom','auto','important');
   btn.style.setProperty('transform','none','important');
 }
-
 function syncPostLoginSoundUi(){
   installPostLoginSoundStyle();
+  removeExtraSounds();
   placePostLoginSoundButton();
 }
-
 function applyUser(user){
   if(user){
     document.body.classList.remove('locked');
@@ -103,7 +166,6 @@ function applyUser(user){
     if(profile)profile.style.display='none';
   }
 }
-
 function lightenLoginVideo(){
   const v=$('sakLoginBackgroundVideo');
   if(!v)return;
@@ -119,11 +181,42 @@ function lightenLoginVideo(){
     const p=v.play();if(p&&p.catch)p.catch(()=>{});
   }catch(_){}
 }
+function providerError(err,label){
+  const code=String(err&&err.code||'');
+  if(code==='auth/popup-blocked')setError(`❌ المتصفح منع نافذة ${label}. اسمح بالنوافذ المنبثقة ثم حاول مرة أخرى.`,`❌ The browser blocked the ${label} window. Allow pop-ups and try again.`);
+  else if(code==='auth/unauthorized-domain')setError('❌ نطاق sakaker.co غير مصرح به في Firebase Authentication.','❌ sakaker.co is not authorized in Firebase Authentication.');
+  else if(code==='auth/operation-not-allowed')setError(`❌ تسجيل الدخول عبر ${label} يحتاج تفعيل مزود الخدمة في Firebase Authentication.`,`❌ ${label} sign-in must be enabled in Firebase Authentication.`);
+  else if(code==='auth/account-exists-with-different-credential')setError('❌ يوجد حساب بنفس البريد مرتبط بطريقة دخول أخرى. استخدم طريقة الدخول الأصلية أولًا.','❌ An account with this email already uses another sign-in method. Use the original method first.');
+  else if(code==='auth/network-request-failed')setError('❌ تعذر الاتصال بخدمة تسجيل الدخول. تحقق من الشبكة ثم حاول مرة أخرى.','❌ Could not reach the sign-in service. Check the network and try again.');
+  else if(code==='auth/popup-closed-by-user'||code==='auth/cancelled-popup-request')setError('تم إلغاء تسجيل الدخول.','Sign-in was cancelled.');
+  else setError(`❌ فشل تسجيل الدخول عبر ${label}${code?' ('+code+')':''}`,`❌ ${label} sign-in failed${code?' ('+code+')':''}`);
+}
+function bindProvider(btn,label,makeProvider,auth,authMod){
+  if(!btn||btn.dataset.sakAuthBound==='1')return;
+  btn.dataset.sakAuthBound='1';
+  btn.disabled=false;
+  btn.addEventListener('click',async e=>{
+    e.preventDefault();e.stopImmediatePropagation();
+    if(btn.disabled)return;
+    setBusy(true,btn);if(errorEl)errorEl.textContent='';
+    try{
+      const provider=makeProvider();
+      await authMod.signInWithPopup(auth,provider);
+    }catch(err){
+      providerError(err,label);
+      console.error('SAKAKER '+label+' sign-in:',err);
+    }finally{setBusy(false,null)}
+  },true);
+}
+
 lightenLoginVideo();
+installSocialButtons();
+refreshProviderLabels();
 installPostLoginSoundStyle();
 [0,250,700,1500,3000,5500,9000].forEach(ms=>setTimeout(syncPostLoginSoundUi,ms));
 window.addEventListener('resize',()=>requestAnimationFrame(placePostLoginSoundButton),{passive:true});
 window.addEventListener('orientationchange',()=>setTimeout(placePostLoginSoundButton,120),{passive:true});
+new MutationObserver(()=>{installSocialButtons();refreshProviderLabels();removeExtraSounds();}).observe(document.documentElement,{subtree:true,childList:true});
 
 (async()=>{
   try{
@@ -142,32 +235,28 @@ window.addEventListener('orientationchange',()=>setTimeout(placePostLoginSoundBu
     }else{
       setTimeout(()=>applyUser(auth.currentUser),500);
     }
-    if(google){
-      google.disabled=false;
-      google.setAttribute('aria-busy','false');
-      google.addEventListener('click',async e=>{
-        e.preventDefault();e.stopImmediatePropagation();
-        if(google.disabled)return;
-        setBusy(true);if(errorEl)errorEl.textContent='';
-        try{
-          const provider=new authMod.GoogleAuthProvider();
-          provider.setCustomParameters({prompt:'select_account'});
-          await authMod.signInWithPopup(auth,provider);
-        }catch(err){
-          const code=String(err&&err.code||'');
-          if(code==='auth/popup-blocked')setError('❌ المتصفح منع نافذة Google. اسمح بالنوافذ المنبثقة ثم حاول مرة أخرى.','❌ The browser blocked the Google window. Allow pop-ups and try again.');
-          else if(code==='auth/unauthorized-domain')setError('❌ نطاق sakaker.co غير مصرح به في Firebase Authentication.','❌ sakaker.co is not authorized in Firebase Authentication.');
-          else if(code==='auth/network-request-failed')setError('❌ تعذر الاتصال بخدمة تسجيل الدخول. تحقق من الشبكة ثم حاول مرة أخرى.','❌ Could not reach the sign-in service. Check the network and try again.');
-          else if(code==='auth/popup-closed-by-user'||code==='auth/cancelled-popup-request')setError('تم إلغاء تسجيل الدخول.','Sign-in was cancelled.');
-          else setError('❌ فشل تسجيل الدخول عبر Google'+(code?' ('+code+')':''),'❌ Google sign-in failed'+(code?' ('+code+')':'') );
-          console.error('SAKAKER login rescue:',err);
-        }finally{setBusy(false)}
-      },true);
-    }
-    console.log('SAKAKER lightweight login ready');
+
+    installSocialButtons();
+    bindProvider(google,'Google',()=>{
+      const p=new authMod.GoogleAuthProvider();
+      p.setCustomParameters({prompt:'select_account'});
+      return p;
+    },auth,authMod);
+    bindProvider(facebook,'Facebook',()=>{
+      const p=new authMod.FacebookAuthProvider();
+      p.addScope('email');
+      return p;
+    },auth,authMod);
+    bindProvider(microsoft,'Microsoft',()=>{
+      const p=new authMod.OAuthProvider('microsoft.com');
+      p.setCustomParameters({prompt:'select_account'});
+      return p;
+    },auth,authMod);
+
+    console.log('SAKAKER Google/Facebook/Microsoft login ready');
   }catch(err){
     console.error('SAKAKER lightweight login failed:',err);
-    setBusy(false);
+    setBusy(false,null);
     setError('❌ تعذر تحميل نظام تسجيل الدخول. تحقق من الاتصال ثم حدّث الصفحة.','❌ Could not load the sign-in system. Check the connection and refresh.');
   }
 })();
