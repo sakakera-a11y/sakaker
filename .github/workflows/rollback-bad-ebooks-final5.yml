@@ -61,3 +61,5 @@ jobs:
           git add assets/main-runtime-locks.js index.html
           git commit -m 'Rollback bad ebooks final5 runtime only'
           git push
+
+# retrigger after removing the bad final5 repair script
