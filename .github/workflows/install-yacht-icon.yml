@@ -40,7 +40,7 @@ jobs:
               '\n', text, flags=re.I|re.S
           )
 
-          yacht_tag = '<script id="sak-yacht-ship-runtime" src="/assets/yacht-ship-icon.js?v=20261003-4" defer></script>'
+          yacht_tag = '<script id="sak-yacht-ship-runtime" src="/assets/yacht-ship-icon.js?v=20261003-5" defer></script>'
           if 'id="sak-yacht-ship-runtime"' in text:
               text = re.sub(r'<script\s+id="sak-yacht-ship-runtime"[^>]*></script>', yacht_tag, text, count=1, flags=re.I)
           else:
@@ -54,7 +54,7 @@ jobs:
           b = books.read_text(encoding='utf-8')
           if '<html' not in b.lower() or '</html>' not in b.lower():
               raise SystemExit('Refusing to modify incomplete books.html')
-          library_tag = '<script id="sak-ship-story-library-runtime" src="/assets/text-library-ship.js?v=20261003-1" defer></script>'
+          library_tag = '<script id="sak-ship-story-library-runtime" src="/assets/text-library-ship.js?v=20261003-2" defer></script>'
           if 'id="sak-ship-story-library-runtime"' in b:
               b = re.sub(r'<script\s+id="sak-ship-story-library-runtime"[^>]*></script>', library_tag, b, count=1, flags=re.I)
           else:
@@ -71,12 +71,16 @@ jobs:
           test -f assets/text-library-ship.js
           test -f file_00000000e530821086e1b6135c3db20e.png
           grep -Fq 'id="sak-yacht-ship-runtime"' index.html
-          grep -Fq 'yacht-ship-icon.js?v=20261003-4' index.html
+          grep -Fq 'yacht-ship-icon.js?v=20261003-5' index.html
           ! grep -Fq 'id="sakYachtDirectStyle"' index.html
           grep -Fq 'id="sak-ship-story-library-runtime"' books.html
-          grep -Fq 'text-library-ship.js?v=20261003-1' books.html
+          grep -Fq 'text-library-ship.js?v=20261003-2' books.html
           grep -Fq 'sakYachtPaymentLauncher' assets/yacht-ship-icon.js
+          grep -Fq 'sakYachtPaymentImage' assets/yacht-ship-icon.js
+          grep -Fq "el.id==='sakakerBusinessAd'" assets/yacht-ship-icon.js
           grep -Fq 'sakShipStoryLibraryBtn' assets/text-library-ship.js
+          grep -Fq '🌙 الذكرى السنوية لبناء أبو القمر زمرد' assets/text-library-ship.js
+          grep -Fq '2025 — 2026' assets/text-library-ship.js
           node --check assets/yacht-ship-icon.js
           node --check assets/text-library-ship.js
 
@@ -92,7 +96,7 @@ jobs:
           fi
 
           git add index.html books.html
-          git commit -m 'Install compact yacht and ship story library runtime'
+          git commit -m 'Publish visible yacht and full ship story library runtime'
 
           for attempt in 1 2 3; do
             if git push origin HEAD:main; then
