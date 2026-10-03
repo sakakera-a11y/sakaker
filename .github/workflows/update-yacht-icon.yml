@@ -35,7 +35,7 @@ jobs:
           if '<html' not in s.lower() or '</html>' not in s.lower():
               raise SystemExit('Refusing to modify incomplete index.html')
           s=re.sub(r'\s*<script[^>]*src=["\'][^"\']*assets/yacht-ship-icon\.js(?:\?[^"\']*)?["\'][^>]*>\s*</script>\s*','\n',s,flags=re.I)
-          tag='<script id="sak-yacht-ship-runtime" src="/assets/yacht-ship-icon.js?v=20261003-2" defer></script>'
+          tag='<script id="sak-yacht-ship-runtime" src="/assets/yacht-ship-icon.js?v=20261003-3" defer></script>'
           pos=s.lower().rfind('</body>')
           if pos == -1:
               raise SystemExit('index.html has no </body> tag')
@@ -46,7 +46,7 @@ jobs:
       - name: Verify installation
         shell: bash
         run: |
-          grep -F 'src="/assets/yacht-ship-icon.js?v=20261003-2"' index.html
+          grep -F 'src="/assets/yacht-ship-icon.js?v=20261003-3"' index.html
           test "$(grep -o 'yacht-ship-icon.js' index.html | wc -l)" -eq 1
           grep -F "const IMG='/file_00000000e530821086e1b6135c3db20e.png'" assets/yacht-ship-icon.js
 
@@ -60,5 +60,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add index.html
-          git commit -m 'Force fresh yacht ship icon loader'
+          git commit -m 'Force yacht icon cache refresh v3'
           git push
