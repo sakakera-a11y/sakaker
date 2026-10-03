@@ -12,8 +12,7 @@ function textOf(el){
   return ((el?.textContent||'')+' '+(el?.getAttribute?.('aria-label')||'')+' '+(el?.getAttribute?.('title')||'')).replace(/\s+/g,' ').trim();
 }
 function stopAndRemove(el){
-  if(!el)return;
-  if(el.closest?.('#loginOverlay'))return;
+  if(!el||el.closest?.('#loginOverlay'))return;
   try{if(typeof el.pause==='function'){el.pause();el.currentTime=0;}}catch(_){}
   try{el.removeAttribute('autoplay');}catch(_){}
   el.remove();
@@ -43,8 +42,7 @@ function cleanLegacySeaSound(){
   LEGACY_SOUND_IDS.forEach(id=>stopAndRemove(document.getElementById(id)));
   document.querySelectorAll('button,[role="button"],[title],[aria-label]').forEach(el=>{
     if(el.id==='sakSiteSoundBtn'||el.closest('#loginOverlay'))return;
-    const t=textOf(el);
-    if(/تشغيل\s*صوت\s*البحر|إيقاف\s*صوت\s*البحر|Sea\s*Sound|Ocean\s*Sound|Bird\s*Sound|صوت\s*الطيور/i.test(t))stopAndRemove(el);
+    if(/تشغيل\s*صوت\s*البحر|إيقاف\s*صوت\s*البحر|Sea\s*Sound|Ocean\s*Sound|Bird\s*Sound|صوت\s*الطيور/i.test(textOf(el)))stopAndRemove(el);
   });
 }
 function ensureVideoFix(){
@@ -53,6 +51,7 @@ function ensureVideoFix(){
   document.querySelectorAll('script[src*="video-modal-fix.js"]').forEach(s=>{
     if(!String(s.src).includes(wanted))s.remove();
   });
+  if(document.getElementById('sak-video-modal-fix-final-loader-v4'))return;
   const s=document.createElement('script');
   s.src='/assets/video-modal-fix.js?v='+wanted;
   s.defer=true;
@@ -104,24 +103,25 @@ function isTextLibraryTarget(el){
   const n=el?.closest?.('a,button,[role="button"],.launcher,[title],[aria-label]');
   if(!n||n.closest('#'+TEXT_LIB_OVERLAY)||n.closest('#sakTextLibraryModal'))return false;
   const href=(n.getAttribute?.('href')||'').toLowerCase();
-  const txt=textOf(n);
-  return href.includes('books.html')||/المكتبة\s*النصية|Text\s*Library/i.test(txt);
+  return href.includes('books.html')||/المكتبة\s*النصية|Text\s*Library/i.test(textOf(n));
 }
 
 function newsContent(){
   const en=document.documentElement.lang==='en';
   if(en)return `
     <h2>📰 Site News</h2>
-    <article><h3>Video Library</h3><p>The video library was rebuilt for better speed and mobile use. Each non-religious section now contains 100 video entries, while the Islamic section remains unchanged.</p></article>
-    <article><h3>Text Library</h3><p>The text library now opens inside the website in a responsive glass window instead of taking over the whole browser page.</p></article>
-    <article><h3>Login Background Sound</h3><p>Background sound no longer starts from an ordinary page click. It is controlled only by its sound button.</p></article>
-    <small>Latest site maintenance: October 3, 2026</small>`;
+    <article>
+      <h3>New Update for Abwalqmrzmrd Castle</h3>
+      <p>By the grace of God, the site has been updated with new improvements and content. We have expanded the text library and added more electronic books, developed the chess experience, and expanded the video library with more content while improving speed, display quality, and mobile compatibility. We are continuing to develop the site and add more features and content, God willing. And with God's blessing, we move forward.</p>
+    </article>
+    <small>Latest update: October 3, 2026</small>`;
   return `
     <h2>📰 أخبار الموقع</h2>
-    <article><h3>مكتبة الفيديو</h3><p>تمت إعادة بناء مكتبة الفيديو لتكون أسرع ومتوافقة مع الجوال. أصبح كل قسم غير ديني يحتوي على 100 فيديو، مع إبقاء القسم الديني كما هو.</p></article>
-    <article><h3>المكتبة النصية</h3><p>تم تثبيت فتح المكتبة النصية داخل الموقع في نافذة زجاجية متجاوبة بدل فتح صفحة المتصفح كاملة.</p></article>
-    <article><h3>صوت خلفية الدخول</h3><p>لم يعد صوت الخلفية يبدأ بمجرد النقر العادي على الصفحة، وأصبح تشغيله وإيقافه من زر الصوت فقط.</p></article>
-    <small>آخر صيانة للموقع: 3 أكتوبر 2026</small>`;
+    <article>
+      <h3>تحديث جديد لموقع قلعة أبوالقمرزمرد</h3>
+      <p>تم بحمد الله تحديث الموقع وإضافة مجموعة من التحسينات والمحتويات الجديدة، منها توسيع المكتبة النصية وإضافة المزيد من الكتب الإلكترونية، وتطوير تجربة لعبة الشطرنج، وتوسيع مكتبة الفيديو بمحتوى أكثر، مع تحسين السرعة وطريقة العرض والتوافق مع الجوال. وما زلنا مستمرين في تطوير الموقع وإضافة المزيد من المزايا والمحتوى بإذن الله. وعلى بركة الله نسير.</p>
+    </article>
+    <small>آخر تحديث: 3 أكتوبر 2026</small>`;
 }
 function ensureNewsStyle(){
   if(document.getElementById('sakSiteNewsRuntimeStyle'))return;
@@ -131,10 +131,15 @@ function ensureNewsStyle(){
   #${SITE_NEWS_MODAL}{position:fixed!important;inset:0!important;z-index:2147483646!important;display:none;align-items:center!important;justify-content:center!important;padding:12px!important;background:rgba(0,5,8,.9)!important;backdrop-filter:blur(12px)!important;-webkit-backdrop-filter:blur(12px)!important}
   #${SITE_NEWS_MODAL}.show{display:flex!important}
   #${SITE_NEWS_MODAL} .sak-news-shell{position:relative!important;width:min(760px,96vw)!important;max-height:90dvh!important;overflow:auto!important;padding:28px 20px 76px!important;border-radius:24px!important;border:1px solid rgba(115,255,233,.82)!important;background:linear-gradient(145deg,rgba(4,34,39,.97),rgba(1,12,17,.98))!important;box-shadow:0 0 38px rgba(0,255,220,.35)!important;color:#fff!important}
-  #${SITE_NEWS_MODAL} h2{text-align:center!important;color:#bafff4!important;margin:0 0 16px!important}#${SITE_NEWS_MODAL} article{padding:14px!important;margin:10px 0!important;border-radius:16px!important;background:rgba(255,255,255,.055)!important;border:1px solid rgba(115,255,233,.18)!important}#${SITE_NEWS_MODAL} h3{margin:0 0 7px!important;color:#8fffe8!important}#${SITE_NEWS_MODAL} p{margin:0!important;line-height:1.8!important}#${SITE_NEWS_MODAL} small{display:block!important;text-align:center!important;margin-top:14px!important;color:#a9cfca!important}
+  #${SITE_NEWS_MODAL} h2{text-align:center!important;color:#bafff4!important;margin:0 0 16px!important}
+  #${SITE_NEWS_MODAL} article{padding:16px!important;margin:10px 0!important;border-radius:16px!important;background:rgba(255,255,255,.055)!important;border:1px solid rgba(115,255,233,.18)!important}
+  #${SITE_NEWS_MODAL} h3{margin:0 0 9px!important;color:#8fffe8!important;text-align:center!important}
+  #${SITE_NEWS_MODAL} p{margin:0!important;line-height:1.95!important;text-align:start!important}
+  #${SITE_NEWS_MODAL} small{display:block!important;text-align:center!important;margin-top:14px!important;color:#a9cfca!important}
   #${SITE_NEWS_MODAL} .sak-news-close{position:absolute!important;left:50%!important;bottom:14px!important;transform:translateX(-50%)!important;min-width:116px!important;min-height:42px!important;border-radius:999px!important;border:1px solid #8fffe8!important;background:#06282c!important;color:#fff!important;font-weight:900!important;cursor:pointer!important}
   #${SITE_NEWS_BUTTON}{border:1px solid rgba(99,255,230,.7)!important;background:radial-gradient(circle at 35% 25%,rgba(27,92,99,.96),rgba(1,17,22,.98))!important;color:#fff!important;border-radius:50%!important;width:88px!important;height:88px!important;min-width:88px!important;min-height:88px!important;padding:7px!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:3px!important;text-align:center!important;cursor:pointer!important;box-shadow:0 0 18px rgba(0,255,220,.34)!important;font:800 11px/1.2 Tajawal,Tahoma,Arial,sans-serif!important}
-  #${SITE_NEWS_BUTTON} .sak-news-icon{font-size:27px!important;line-height:1!important}#${SITE_NEWS_BUTTON}:hover{box-shadow:0 0 28px rgba(0,255,220,.58)!important;transform:translateY(-2px)!important}
+  #${SITE_NEWS_BUTTON} .sak-news-icon{font-size:27px!important;line-height:1!important}
+  #${SITE_NEWS_BUTTON}:hover{box-shadow:0 0 28px rgba(0,255,220,.58)!important;transform:translateY(-2px)!important}
   body.locked #${SITE_NEWS_BUTTON}{display:none!important}
   `;
   document.head.appendChild(st);
@@ -162,7 +167,7 @@ function openNews(){
   m.classList.add('show');
 }
 function ensureNewsButton(){
-  if(document.body?.classList.contains('locked'))return;
+  if(!document.body||document.body.classList.contains('locked'))return;
   ensureNewsStyle();
   let b=document.getElementById(SITE_NEWS_BUTTON);
   if(!b){
@@ -178,11 +183,19 @@ function ensureNewsButton(){
   const dock=document.getElementById('sakakerUtilityDock');
   if(dock){
     let slot=dock.querySelector('[data-sakaker-util="siteNews"]');
-    if(!slot){slot=document.createElement('div');slot.className='sakaker-utility-slot';slot.dataset.sakakerUtil='siteNews';dock.appendChild(slot)}
+    if(!slot){
+      slot=document.createElement('div');
+      slot.className='sakaker-utility-slot';
+      slot.dataset.sakakerUtil='siteNews';
+      dock.appendChild(slot);
+    }
     if(b.parentElement!==slot)slot.appendChild(b);
   }else if(b.parentElement!==document.body){
     document.body.appendChild(b);
-    b.style.position='fixed';b.style.right='14px';b.style.bottom='14px';b.style.zIndex='2147483000';
+    b.style.position='fixed';
+    b.style.right='14px';
+    b.style.bottom='14px';
+    b.style.zIndex='2147483000';
   }
 }
 
@@ -223,5 +236,14 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 setTimeout(run,500);
 setTimeout(run,1800);
 setTimeout(run,4000);
-new MutationObserver(()=>{if(!document.body?.classList.contains('locked'))ensureNewsButton()}).observe(document.documentElement,{attributes:true,subtree:false,attributeFilter:['lang']});
+new MutationObserver(()=>{
+  if(!document.body?.classList.contains('locked'))ensureNewsButton();
+}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+if(document.body){
+  new MutationObserver(()=>{if(!document.body.classList.contains('locked'))ensureNewsButton()}).observe(document.body,{attributes:true,attributeFilter:['class']});
+}else{
+  document.addEventListener('DOMContentLoaded',()=>{
+    new MutationObserver(()=>{if(!document.body.classList.contains('locked'))ensureNewsButton()}).observe(document.body,{attributes:true,attributeFilter:['class']});
+  },{once:true});
+}
 })();
