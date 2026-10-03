@@ -1,65 +1,10 @@
-name: Rollback bad ebooks final5
-
+name: Frozen - ebooks rollback writer
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - '.github/workflows/rollback-bad-ebooks-final5.yml'
-
 permissions:
-  contents: write
-
+  contents: read
 jobs:
-  rollback:
+  frozen:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Restore stable final4 runtime only
-        shell: bash
-        run: |
-          set -e
-          git checkout 53551cfd9205581f80dffa3529298e9d897953fb -- assets/main-runtime-locks.js
-          python - <<'PY'
-          from pathlib import Path
-          p=Path('index.html')
-          s=p.read_text(encoding='utf-8')
-          s=s.replace('main-runtime-locks.js?v=20261003-final5','main-runtime-locks.js?v=20261003-final4')
-          p.write_text(s,encoding='utf-8')
-          PY
-
-      - name: Verify rollback safety
-        shell: bash
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          js=Path('assets/main-runtime-locks.js').read_text(encoding='utf-8')
-          idx=Path('index.html').read_text(encoding='utf-8')
-          order=Path('assets/text-library-order.js').read_text(encoding='utf-8')
-          bg=Path('assets/final-three-icons.js').read_text(encoding='utf-8')
-          assert '/books.html?v=20261003-final4' in js
-          assert 'findOriginalEbooksLauncher' not in js
-          assert 'installEbooksCloseSafety' not in js
-          assert 'main-runtime-locks.js?v=20261003-final4' in idx
-          assert 'ensureEbooksButton' in order
-          assert '/gemini_generated_video_34118154.mp4' in bg
-          assert '/gemini_video_birds_login.mp4' in js
-          print('Stable final4 restored; backgrounds and ebooks section preserved.')
-          PY
-
-      - name: Commit rollback
-        shell: bash
-        run: |
-          if git diff --quiet && git diff --cached --quiet; then
-            echo 'No changes needed.'
-            exit 0
-          fi
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add assets/main-runtime-locks.js index.html
-          git commit -m 'Rollback bad ebooks final5 runtime only'
-          git push
-
-# retrigger after removing the bad final5 repair script
+      - run: echo 'Repository write workflow frozen by owner request.'

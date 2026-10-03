@@ -1,53 +1,10 @@
-name: Apply Final Site Polish
-
+name: Frozen - final polish
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - '.github/workflows/apply-final-polish.yml'
-      - '.github/scripts/apply_final_polish.py'
-
 permissions:
-  contents: write
-
+  contents: read
 jobs:
-  polish:
+  frozen:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Apply final polish
-        run: python .github/scripts/apply_final_polish.py
-
-      - name: Verify protected features remain
-        shell: python
-        run: |
-          from pathlib import Path
-          idx=Path('index.html').read_text(encoding='utf-8')
-          runtime=Path('assets/main-runtime-locks.js').read_text(encoding='utf-8')
-          icons=Path('assets/final-three-icons.js').read_text(encoding='utf-8')
-          vid=Path('videos.html').read_text(encoding='utf-8')
-          assert 'gemini_video_birds_login.mp4' in runtime
-          assert 'gemini_generated_video_34118154.mp4' in icons
-          assert 'main-runtime-locks.js?v=20261003-final6' in idx
-          assert 'final-three-icons.js?v=20261003-sound2' in idx
-          assert 'video-modal-fix.js?v=20261003-video2' in idx
-          assert 'final-ui-cleanup.js?v=20261003-polish1' in idx
-          assert '<div id="emeraldLibraryButton">' in vid
-          print('Protected backgrounds, books and current sound runtime preserved.')
-
-      - name: Commit final polish
-        shell: bash
-        run: |
-          if git diff --quiet; then
-            echo 'No changes needed.'
-            exit 0
-          fi
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html videos.html
-          git commit -m 'Apply final site polish and video fixes'
-          git push
+      - run: echo 'Repository write workflow frozen by owner request.'

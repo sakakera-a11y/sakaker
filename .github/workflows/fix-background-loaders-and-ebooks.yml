@@ -1,51 +1,10 @@
-name: Fix background loaders and ebooks section
-
+name: Frozen - background ebooks writer
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - '.github/workflows/fix-background-loaders-and-ebooks.yml'
-      - '.github/scripts/fix_backgrounds_ebooks.py'
-      - '.github/scripts/fix_ebooks_modal.py'
-
 permissions:
-  contents: write
-
+  contents: read
 jobs:
-  fix:
+  frozen:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Apply e-books modal fix
-        run: python .github/scripts/fix_ebooks_modal.py
-
-      - name: Verify e-books modal fix
-        shell: bash
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          js=Path('assets/main-runtime-locks.js').read_text(encoding='utf-8')
-          idx=Path('index.html').read_text(encoding='utf-8')
-          assert 'findOriginalEbooksLauncher' in js
-          assert 'installEbooksCloseSafety' in js
-          assert 'closeMainEbooks' in js
-          assert '/books.html?v=20261003-final5' in js
-          assert 'main-runtime-locks.js?v=20261003-final5' in idx
-          print('E-books modal fix verified')
-          PY
-
-      - name: Commit changes
-        shell: bash
-        run: |
-          if git diff --quiet; then
-            echo 'No changes needed.'
-            exit 0
-          fi
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add assets/main-runtime-locks.js index.html
-          git commit -m 'Fix e-books shelf opening and closing'
-          git push
+      - run: echo 'Repository write workflow frozen by owner request.'

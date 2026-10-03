@@ -1,52 +1,10 @@
-name: Fix sound and Drive ebooks
-
+name: Frozen - sound drive ebooks writer
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - '.github/workflows/fix-sound-drive-ebooks.yml'
-      - '.github/scripts/fix_sound_drive_ebooks.py'
-
 permissions:
-  contents: write
-
+  contents: read
 jobs:
-  fix:
+  frozen:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Apply targeted repair
-        run: python .github/scripts/fix_sound_drive_ebooks.py
-
-      - name: Verify targeted repair
-        shell: bash
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          icons=Path('assets/final-three-icons.js').read_text(encoding='utf-8')
-          runtime=Path('assets/main-runtime-locks.js').read_text(encoding='utf-8')
-          idx=Path('index.html').read_text(encoding='utf-8')
-          assert 'let siteSoundUserMuted=true;' in icons
-          assert "typeof window.openSakakerEbooks==='function'" in runtime
-          assert 'final-three-icons.js?v=20261003-sound2' in idx
-          assert 'main-runtime-locks.js?v=20261003-final6' in idx
-          assert '/gemini_generated_video_34118154.mp4' in icons
-          assert '/gemini_video_birds_login.mp4' in runtime
-          print('Targeted repair verified')
-          PY
-
-      - name: Commit repaired runtime files
-        shell: bash
-        run: |
-          if git diff --quiet; then
-            echo 'No changes needed.'
-            exit 0
-          fi
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add assets/final-three-icons.js assets/main-runtime-locks.js index.html
-          git commit -m 'Stop automatic site audio and restore Drive ebooks'
-          git push
+      - run: echo 'Repository write workflow frozen by owner request.'

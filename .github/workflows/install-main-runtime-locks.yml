@@ -1,75 +1,10 @@
-name: Install main runtime locks
-
+name: Frozen - runtime lock writer
 on:
-  push:
-    paths:
-      - 'assets/main-runtime-locks.js'
-      - '.github/workflows/install-main-runtime-locks.yml'
   workflow_dispatch:
-
 permissions:
-  contents: write
-
+  contents: read
 jobs:
-  install:
+  frozen:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Inject stable runtime into index
-        shell: bash
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          import re
-          p=Path('index.html')
-          s=p.read_text(encoding='utf-8')
-          marker='sak-main-runtime-locks'
-          tag='<script id="sak-main-runtime-locks" src="/assets/main-runtime-locks.js?v=20261003-final4" defer></script>'
-          if marker in s:
-              s=re.sub(r'<script\b[^>]*id=["\']sak-main-runtime-locks["\'][^>]*>\s*</script>',tag,s,flags=re.I)
-          else:
-              if '</body>' not in s.lower():
-                  raise SystemExit('index.html missing </body>')
-              pos=s.lower().rfind('</body>')
-              s=s[:pos]+tag+'\n'+s[pos:]
-          p.write_text(s,encoding='utf-8')
-          print('Injected runtime lock script')
-          PY
-
-      - name: Verify assets and library
-        shell: bash
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          idx=Path('index.html').read_text(encoding='utf-8')
-          js=Path('assets/main-runtime-locks.js').read_text(encoding='utf-8')
-          books=Path('books.html').read_text(encoding='utf-8')
-          order=Path('assets/text-library-order.js').read_text(encoding='utf-8')
-          assert 'sak-main-runtime-locks' in idx
-          assert 'main-runtime-locks.js?v=20261003-final4' in idx
-          assert '/gemini_video_birds_login.mp4' in js
-          assert '/books.html?v=20261003-final4' in js
-          assert 'sakStableLoginVideo' in js
-          assert 'legacyLogin.remove()' in js
-          assert 'legacyMain.remove()' in js
-          assert 'ensureEbooksButton' in order
-          for needle in ['sakShipStoryLibraryBtn','محتوى السفينة','sakTextLibrarySections']:
-              assert needle in books, needle
-          print('Runtime and text library verified')
-          PY
-
-      - name: Commit index update
-        shell: bash
-        run: |
-          if git diff --quiet; then
-            echo 'No index changes needed.'
-            exit 0
-          fi
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html
-          git commit -m 'Keep stable runtime cache final4'
-          git push
+      - run: echo 'Repository write workflow frozen by owner request.'

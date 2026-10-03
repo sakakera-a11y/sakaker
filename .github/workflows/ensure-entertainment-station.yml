@@ -1,44 +1,10 @@
-name: Ensure abwalqmrzmrd castle site updates
-
+name: Frozen - entertainment writer
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'assets/entertainment-station.js'
-      - '.github/scripts/ensure_entertainment_station.py'
-      - '.github/workflows/ensure-entertainment-station.yml'
-
 permissions:
-  contents: write
-
-concurrency:
-  group: ensure-entertainment-${{ github.repository }}
-  cancel-in-progress: true
-
+  contents: read
 jobs:
-  patch-index:
+  frozen:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: true
-
-      - name: Patch abwalqmrzmrd castle title and site updates
-        run: python .github/scripts/ensure_entertainment_station.py index.html
-
-      - name: Commit index.html if changed
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html
-          if git diff --cached --quiet; then
-            echo 'index.html already contains the requested abwalqmrzmrd castle title and site updates.'
-            exit 0
-          fi
-          git commit -m 'Apply abwalqmrzmrd castle title and site updates'
-          git push origin HEAD:main
+      - run: echo 'Repository write workflow frozen by owner request.'
