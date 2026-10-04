@@ -40160,6 +40160,9 @@ html body #sakChatOverlay.sak-chat-shielded #sakChatIdentity{visibility:hidden!i
 #emeraldModal iframe{width:min(960px,100%)!important;height:min(54vw,calc(100dvh - 116px))!important;min-height:min(55vw,320px)!important;max-height:calc(100dvh - 116px)!important;border:0!important;border-radius:16px!important;background:#000!important}
 #emeraldModalClose{position:static!important;margin-top:12px!important;min-height:44px!important;padding:9px 18px!important;touch-action:manipulation!important}
 html body .cards > .sakaker-site-news-card[data-sak-news-card="1"]{display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important}
+html body .cards > .sak-news-flasher-card{position:relative!important;overflow:visible!important;border-color:#ffe89a!important;background:linear-gradient(145deg,#30184c,#073f4e 58%,#30184c)!important;box-shadow:0 0 0 1px #fff6c466,0 0 14px #39e7d8,0 0 28px #e9b8ff!important;animation:sakNewsFlash 1.8s ease-in-out infinite!important}
+html body .sak-news-flasher-icon{font-size:24px!important;line-height:1!important;filter:drop-shadow(0 0 6px #fff5a6)!important}
+@keyframes sakNewsFlash{0%,100%{transform:scale(1);filter:brightness(1)}50%{transform:scale(1.045);filter:brightness(1.28)}}
 @media(max-width:600px){#emeraldModal{padding:10px!important}#emeraldModal iframe{height:min(56.25vw,calc(100dvh - 100px))!important;min-height:220px!important}#emeraldModalClose{min-height:48px!important}}
 </style>
 <script id="sak-final-reliability-js">
@@ -40170,10 +40173,10 @@ html body .cards > .sakaker-site-news-card[data-sak-news-card="1"]{display:flex!
     const cards=document.querySelector('.cards');
     if(!cards||cards.querySelector('[data-sak-news-card="1"]'))return;
     const card=document.createElement('div');
-    card.className='icon-card sakaker-site-news-card';
+    card.className='icon-card sakaker-site-news-card sak-news-flasher-card';
     card.dataset.sakNewsCard='1';
     card.setAttribute('role','button');card.tabIndex=0;
-    const render=()=>{const en=lang()==='en';card.dir=en?'ltr':'rtl';card.setAttribute('aria-label',en?'Site News':'أخبار الموقع');card.innerHTML='<span class="icon-label" aria-hidden="true">📰</span><div class="icon-label">'+(en?'Site News':'أخبار الموقع')+'</div><div class="sub">'+(en?'Latest updates':'آخر التحديثات')+'</div>';};
+    const render=()=>{const en=lang()==='en';card.dir=en?'ltr':'rtl';card.setAttribute('aria-label',en?'Site News':'أخبار الموقع');card.innerHTML='<span class="sak-news-flasher-icon" aria-hidden="true">📰</span><div class="icon-label">'+(en?'Site News':'أخبار الموقع')+'</div><div class="sub">'+(en?'Latest updates':'آخر التحديثات')+'</div>';};
     const open=()=>{if(typeof window.openSiteNewsModal==='function')window.openSiteNewsModal();};
     card.addEventListener('click',open);
     card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}});
@@ -40199,6 +40202,23 @@ html body .cards > .sakaker-site-news-card[data-sak-news-card="1"]{display:flex!
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('emeraldModal'))closeVideo();});
   document.querySelectorAll('audio').forEach(audio=>audio.removeAttribute('autoplay'));
   [0,400,1200,2500,4000,6000,7000].forEach(delay=>setTimeout(restoreNewsCard,delay));
+})();
+</script>
+<script id="sak-single-thoughts-story">
+(()=>{
+  'use strict';
+  const story={
+    ar:{title:'📜 علي بابا والسبعون حرامي',lead:'حكاية شعبية بصياغة عربية وإنجليزية',paragraphs:['كان علي بابا رجلًا بسيطًا يعمل في جمع الحطب. وفي يومٍ من الأيام رأى جماعة من اللصوص يقفون أمام صخرة كبيرة، فسمع قائدهم يقول: «افتح يا سمسم». انفتحت الصخرة عن مغارةٍ تخفي كنوزًا كثيرة، فحفظ علي بابا العبارة وانتظر حتى غادروا.','دخل علي بابا المغارة وأخذ قدرًا يسيرًا من المال ليعين أسرته، لكنه أوصى نفسه ألا يجعل الطمع دليلًا له. وعندما حاول آخرون معرفة السر، كادت المغارة أن تصبح سببًا للخطر، لولا الحكمة والشجاعة اللتان أنقذتا الموقف.','تذكّرنا الحكاية بأن الثروة لا تكون خيرًا إلا حين ترافقها الأمانة والعقل، وأن الطمع قد يحوّل الفرصة إلى مشكلة. وهي قصة من التراث الشعبي تُروى بصيغ متعددة للمتعة والعبرة.']},
+    en:{title:'📜 Ali Baba and the Seventy Thieves',lead:'A folk tale presented in Arabic and English',paragraphs:['Ali Baba was a modest woodcutter. One day, he saw a band of thieves standing before a great rock and heard their leader say, “Open, Sesame.” The rock opened into a cave filled with treasure, so Ali Baba remembered the words and waited until the thieves had gone.','Ali Baba entered the cave and took only a small amount to help his family, reminding himself not to let greed lead him. When others tried to learn the secret, the cave nearly became a source of danger, until wisdom and courage helped bring the matter safely to an end.','The tale reminds us that wealth is a blessing only when joined with honesty and good judgment, and that greed can turn an opportunity into trouble. It is a folk story told in many versions for enjoyment and reflection.']}
+  };
+  window.showKhwater=function(host){
+    if(!host)return;const ar=document.documentElement.lang!=='en',copy=ar?story.ar:story.en;
+    const article=document.createElement('article');article.className='sak-single-story';article.dir=ar?'rtl':'ltr';
+    const heading=document.createElement('h2');heading.textContent=copy.title;
+    const lead=document.createElement('p');lead.className='sak-story-note';lead.textContent=copy.lead;
+    article.append(heading,lead);copy.paragraphs.forEach(text=>{const p=document.createElement('p');p.textContent=text;article.append(p);});
+    host.replaceChildren(article);const title=document.getElementById('folderTitle');if(title)title.textContent=ar?'خواطر وقصص':'Thoughts & Stories';
+  };
 })();
 </script>
 </body>
