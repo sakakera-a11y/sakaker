@@ -40112,24 +40112,37 @@ html body #sakakerAllIconsDock #sakUtilityRow #sakMusicIcon{background:radial-gr
 html body #sakakerAllIconsDock #sakUtilityRow #sakMusicIcon span{color:#3d2900!important;-webkit-text-fill-color:#3d2900!important;text-shadow:0 1px 2px #fff4ae!important;}
 </style>
 <style id="sak-business-gold-above-counter">
-html body #sakBusinessGoldAnchor{position:fixed!important;inset:auto!important;left:var(--gold-left,8px)!important;top:var(--gold-top,70vh)!important;width:62px!important;height:62px!important;z-index:800550!important;pointer-events:none!important;filter:drop-shadow(0 0 5px #ffe477) drop-shadow(0 0 12px #ffbe1699)!important;}
-html body #sakBusinessGoldAnchor #sakakerBusinessIcon{display:flex!important;align-items:center!important;justify-content:center!important;position:relative!important;inset:auto!important;transform:none!important;translate:none!important;width:100%!important;height:100%!important;min-width:0!important;max-width:none!important;min-height:0!important;max-height:none!important;margin:0!important;padding:0!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;animation:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:radial-gradient(circle at 35% 25%,#fff9c4 0%,#ffe77a 22%,#ffd426 48%,#da9600 85%,#fff09e 100%)!important;clip-path:polygon(50% 0%,62% 34%,98% 36%,70% 58%,80% 94%,50% 73%,20% 94%,30% 58%,2% 36%,38% 34%)!important;cursor:pointer!important;}
-html body #sakBusinessGoldAnchor #sakakerBusinessIcon .sbIconCore{position:static!important;inset:auto!important;transform:none!important;font:700 10px/1.3 Tahoma,Arial,sans-serif!important;color:#382500!important;-webkit-text-fill-color:#382500!important;text-shadow:none!important;background:none!important;}
-html body #sakBusinessGoldAnchor #sakakerBusinessIcon :is(.sbShine,.sbSpark),html body #sakBusinessGoldAnchor #sakakerBusinessIcon::before,html body #sakBusinessGoldAnchor #sakakerBusinessIcon::after{display:none!important;}
+html body #sakBusinessGoldAnchor{position:fixed!important;inset:auto!important;left:var(--gold-left,8px)!important;top:var(--gold-top,70vh)!important;width:62px!important;height:62px!important;z-index:800550!important;pointer-events:none!important;}
+html body #sakBusinessGoldAnchor #sakakerBusinessIcon{display:block!important;position:relative!important;inset:auto!important;transform:none!important;translate:none!important;width:100%!important;height:100%!important;min-width:0!important;max-width:none!important;min-height:0!important;max-height:none!important;margin:0!important;padding:2px!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;animation:none!important;border:1.5px solid #ffe269!important;border-radius:50%!important;box-shadow:0 0 7px #ffffdce6,0 0 15px #ffda46d1,0 0 24px #00ffdc61!important;background:radial-gradient(circle at 50% 45%,#fff5b92e,#0514198f 58%,#000c)!important;clip-path:none!important;overflow:visible!important;cursor:pointer!important;}
+html body #sakBusinessGoldAnchor #sakakerBusinessIcon :is(.sbIconCore,.sbShine,.sbSpark),html body #sakBusinessGoldAnchor #sakakerBusinessIcon::before{display:none!important;}
+html body #sakBusinessGoldAnchor #sakakerBusinessIcon::after{content:'abwalqmrzmrd'!important;position:absolute!important;display:block!important;inset:auto!important;left:50%!important;bottom:-13px!important;transform:translateX(-50%)!important;color:#ffe56b!important;-webkit-text-fill-color:#ffe56b!important;font:700 7px/1 Tahoma,Arial,sans-serif!important;white-space:nowrap!important;text-shadow:0 1px 2px #000,0 0 7px #ffc72dd9!important;pointer-events:none!important;}
+html body #sakBusinessGoldAnchor #sakYachtPaymentImage{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;border-radius:50%!important;filter:brightness(1.14) saturate(1.12) drop-shadow(0 0 3px #ffe878b8)!important;pointer-events:none!important;}
 html body #sakBusinessGoldAnchor:focus-within{filter:drop-shadow(0 0 4px white) drop-shadow(0 0 12px #ffd426)!important;}
 html body.locked #sakBusinessGoldAnchor{display:none!important;}
-@media(max-width:600px){html body #sakBusinessGoldAnchor{width:52px!important;height:52px!important;}}
+@media(max-width:600px){html body #sakBusinessGoldAnchor{width:54px!important;height:54px!important;}}
 </style>
 <script id="sak-business-gold-position">
 (()=>{
- const icon=document.getElementById('sakakerBusinessIcon'),counter=document.getElementById('sakakerVisitorCounter');
- if(!icon||!counter)return;
- const anchor=document.createElement('div');anchor.id='sakBusinessGoldAnchor';anchor.append(icon);document.body.append(anchor);
+ const icon=document.getElementById('sakakerBusinessIcon');
+ if(!icon)return;
+ const anchor=document.getElementById('sakBusinessGoldAnchor')||document.createElement('div');
+ anchor.id='sakBusinessGoldAnchor';anchor.append(icon);document.body.append(anchor);
+ if(!document.getElementById('sakYachtPaymentImage')){
+  const image=document.createElement('img');image.id='sakYachtPaymentImage';image.alt='';image.setAttribute('aria-hidden','true');image.loading='lazy';image.decoding='async';image.src='/file_00000000e530821086e1b6135c3db20e.png';icon.prepend(image);
+ }
  let pending=false;
- function place(){pending=false;const r=counter.getBoundingClientRect(),size=innerWidth<=600?52:62;anchor.style.setProperty('--gold-left',Math.max(8,Math.min(innerWidth-size-8,r.left+(r.width-size)/2))+'px');anchor.style.setProperty('--gold-top',Math.max(8,r.top-size-12)+'px');}
+ function place(){
+  pending=false;
+  const payment=document.getElementById('sakGlobalPayment'),counter=document.getElementById('sakakerVisitorCounter');
+  const target=payment||counter;if(!target)return;
+  const r=target.getBoundingClientRect(),size=innerWidth<=600?54:62;
+  anchor.style.setProperty('--gold-left',Math.max(8,Math.min(innerWidth-size-8,r.left+(r.width-size)/2))+'px');
+  anchor.style.setProperty('--gold-top',Math.max(8,Math.min(innerHeight-size-20,r.top-size-20))+'px');
+ }
  function queue(){if(!pending){pending=true;requestAnimationFrame(place);}}
- const resize=new ResizeObserver(queue);resize.observe(counter);resize.observe(document.body);
- new MutationObserver(queue).observe(counter,{attributes:true,childList:true,subtree:true,characterData:true});
+ const resize=new ResizeObserver(queue);
+ [document.getElementById('sakGlobalPayment'),document.getElementById('sakakerVisitorCounter')].filter(Boolean).forEach(el=>resize.observe(el));
+ new MutationObserver(queue).observe(document.body,{attributes:true,attributeFilter:['class']});
  window.addEventListener('resize',queue,{passive:true});window.addEventListener('load',queue,{once:true});window.visualViewport?.addEventListener('resize',queue,{passive:true});
  document.fonts?.ready.then(queue);queue();
 })();
@@ -40222,5 +40235,154 @@ html body .sak-news-flasher-icon{font-size:24px!important;line-height:1!importan
   };
 })();
 </script>
+
+<!-- Restored only: entertainment, shopping, images-to-video. Source history: 06918e2 and 485dd27. -->
+<!-- SAKAKER ENTERTAINMENT STATION — flying gull launcher -->
+<style id="sakaker-chess-launcher-style">
+html body #sakakerAllIconsDock #sakEmeraldChessIcon,
+html body #sakEmeraldChessIcon{position:relative!important;inset:auto!important;flex:0 0 74px!important;width:74px!important;height:80px!important;min-width:0!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important;color:#e2fff3!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;cursor:pointer!important;pointer-events:auto!important;touch-action:manipulation!important;overflow:visible!important;font:700 11px/1.2 Tahoma,Arial,sans-serif!important;transform:none!important}
+#sakEmeraldChessIcon svg{width:66px;height:58px;overflow:visible;filter:drop-shadow(0 0 7px #a6ffdd);animation:sakChessFlight 3.4s ease-in-out infinite}
+#sakEmeraldChessIcon .sak-chess-wing{transform-origin:39px 35px;animation:sakChessWing 1.6s ease-in-out infinite alternate}
+#sakEmeraldChessIcon small{display:block;max-width:96px;text-align:center;white-space:normal!important;font:700 10px/1.2 Tahoma,Arial,sans-serif;color:#d0ffec;text-shadow:0 0 7px #00dfab}
+#sakEmeraldChessIcon:focus-visible{outline:2px solid #ffe399!important;border-radius:10px!important}
+@keyframes sakChessFlight{0%,100%{translate:0 0}50%{translate:0 -4px}}
+@keyframes sakChessWing{from{rotate:-5deg}to{rotate:9deg}}
+
+/* Hide the five launchers from the public icon row; their functions stay available
+   through the Entertainment Station. */
+html body:not(.locked) #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock [data-sak-entertainment-grouped="1"],
+html body:not(.locked) #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock .sakaker-utility-slot[data-sak-entertainment-hidden="1"]{display:none!important;visibility:hidden!important;pointer-events:none!important}
+
+#sakEntertainmentStation[hidden]{display:none!important}
+#sakEntertainmentStation{position:fixed!important;width:100vw!important;height:100dvh!important;max-width:none!important;max-height:none!important;margin:0!important;border:0!important;inset:0!important;z-index:2147483647!important;display:flex;align-items:center;justify-content:center;padding:14px;box-sizing:border-box;background:rgba(0,9,15,.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);font-family:Tajawal,Tahoma,Arial,sans-serif;color:#effff8}
+#sakEntertainmentStation .sak-ent-panel{width:min(640px,calc(100vw - 22px));max-height:calc(100dvh - 24px);overflow:auto;padding:18px;border:1px solid rgba(164,255,222,.78);border-radius:24px;background:linear-gradient(145deg,rgba(4,40,45,.96),rgba(4,15,29,.97) 62%,rgba(66,43,11,.94));box-shadow:0 0 18px rgba(84,255,216,.58),0 0 42px rgba(255,211,84,.2);box-sizing:border-box}
+#sakEntertainmentStation .sak-ent-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+#sakEntertainmentStation h2{margin:0;color:#eafff6;font-size:clamp(18px,4vw,26px);text-shadow:0 0 10px rgba(101,255,220,.72)}
+#sakEntertainmentClose{flex:0 0 auto;width:44px;height:44px;border-radius:50%;border:1px solid #ffe28a;background:rgba(35,15,11,.86);color:#fff;font-size:25px;cursor:pointer;box-shadow:0 0 12px rgba(255,210,91,.4)}
+#sakEntertainmentGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#sakEntertainmentStation .sak-ent-item{min-height:96px;border:1px solid rgba(152,255,225,.6);border-radius:18px;background:linear-gradient(145deg,rgba(0,82,77,.78),rgba(7,29,45,.9));color:#fff;cursor:pointer;padding:12px;display:flex;align-items:center;justify-content:center;gap:10px;flex-direction:column;text-align:center;font:800 15px/1.3 Tajawal,Tahoma,Arial,sans-serif;box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 0 13px rgba(63,255,217,.22);transition:transform .18s ease,filter .18s ease,box-shadow .18s ease}
+#sakEntertainmentStation .sak-ent-item:hover,#sakEntertainmentStation .sak-ent-item:focus-visible{transform:translateY(-2px);filter:brightness(1.12);box-shadow:0 0 18px rgba(81,255,222,.62);outline:2px solid #ffe99e;outline-offset:2px}
+#sakEntertainmentStation .sak-ent-item .sak-ent-symbol{font-size:34px;line-height:1}
+#sakEntertainmentStation .sak-ent-item[data-action="chess"]{grid-column:1/-1;background:linear-gradient(145deg,rgba(63,43,6,.88),rgba(4,62,58,.9))}
+@media(max-width:700px){html body #sakakerAllIconsDock #sakEmeraldChessIcon{flex-basis:54px!important;width:54px!important;height:62px!important}#sakEmeraldChessIcon svg{width:49px;height:43px}#sakEmeraldChessIcon small{font-size:8px!important}#sakEntertainmentStation{padding:7px}#sakEntertainmentStation .sak-ent-panel{padding:13px;border-radius:18px}#sakEntertainmentGrid{grid-template-columns:1fr;gap:9px}#sakEntertainmentStation .sak-ent-item{min-height:72px;flex-direction:row;justify-content:flex-start;text-align:start}#sakEntertainmentStation .sak-ent-item[data-action="chess"]{grid-column:auto}#sakEntertainmentStation .sak-ent-item .sak-ent-symbol{font-size:28px}}
+@media(prefers-reduced-motion:reduce){#sakEmeraldChessIcon svg,#sakEmeraldChessIcon .sak-chess-wing,#sakEntertainmentStation .sak-ent-item{animation:none!important;transition:none!important}}
+</style>
+<script id="sakaker-chess-launcher-js">
+(function(){
+ 'use strict';
+ let button=null,loadingChess=false;
+ const $=id=>document.getElementById(id);
+ const targets={music:'emOpenBtn',creative:'sakCreativeIcon',pong:'pongGame-btn',chat:'sakChatIcon'};
+ function en(){return document.documentElement.lang==='en'}
+ function label(){
+   if(!button)return;
+   const text=en()?'Entertainment Station':'المحطة الترفيهية';
+   button.setAttribute('aria-label',text);button.title=text;
+   const small=button.querySelector('small');if(small)small.textContent=text;
+   updatePanelLanguage();
+ }
+ function panel(){
+   let modal=$('sakEntertainmentStation');
+   if(modal)return modal;
+   modal=document.createElement('dialog');
+   modal.id='sakEntertainmentStation';modal.hidden=true;modal.setAttribute('role','dialog');modal.setAttribute('aria-modal','true');modal.setAttribute('aria-labelledby','sakEntertainmentTitle');
+   modal.innerHTML='<div class="sak-ent-panel"><div class="sak-ent-head"><h2 id="sakEntertainmentTitle"></h2><button id="sakEntertainmentClose" type="button" aria-label="Close">×</button></div><div id="sakEntertainmentGrid"><button class="sak-ent-item" type="button" data-action="music"><span class="sak-ent-symbol">🎹</span><span></span></button><button class="sak-ent-item" type="button" data-action="creative"><span class="sak-ent-symbol">🎨</span><span></span></button><button class="sak-ent-item" type="button" data-action="pong"><span class="sak-ent-symbol">🏓</span><span></span></button><button class="sak-ent-item" type="button" data-action="chat"><span class="sak-ent-symbol">💬</span><span></span></button><button class="sak-ent-item" type="button" data-action="chess"><span class="sak-ent-symbol">♞</span><span></span></button></div></div>';
+   document.body.appendChild(modal);
+   $('sakEntertainmentClose').addEventListener('click',closePanel);
+   modal.addEventListener('click',e=>{if(e.target===modal)closePanel()});modal.addEventListener('cancel',e=>{e.preventDefault();closePanel()});
+   $('sakEntertainmentGrid').addEventListener('click',e=>{const item=e.target.closest('.sak-ent-item');if(item)launch(item.dataset.action)});
+   updatePanelLanguage();
+   return modal;
+ }
+ function updatePanelLanguage(){
+   const modal=$('sakEntertainmentStation');if(!modal)return;
+   modal.dir=en()?'ltr':'rtl';
+   const title=$('sakEntertainmentTitle');if(title)title.textContent=en()?'Entertainment Station':'المحطة الترفيهية';
+   const close=$('sakEntertainmentClose');if(close){close.title=en()?'Close':'إغلاق';close.setAttribute('aria-label',close.title)}
+   const names={music:en()?'Music Studio':'استديو الموسيقى',creative:en()?'Creative Studio':'الاستديو الإبداعي',pong:en()?'Pong Game':'لعبة البونج',chat:en()?'Chat':'الشات',chess:en()?'Chess Game':'لعبة الشطرنج'};
+   modal.querySelectorAll('.sak-ent-item').forEach(item=>{const span=item.querySelector('span:last-child');if(span)span.textContent=names[item.dataset.action]||item.dataset.action;item.title=names[item.dataset.action]||'';item.setAttribute('aria-label',item.title)});
+ }
+ let previousOverflow='';
+ function openPanel(){if(document.body.classList.contains('locked'))return;const modal=panel();if(modal.open)return;previousOverflow=document.body.style.overflow;modal.hidden=false;modal.showModal();document.body.style.overflow='hidden';$('sakEntertainmentClose')?.focus()}
+ function closePanel(){const modal=$('sakEntertainmentStation');if(!modal?.open)return;modal.close();modal.hidden=true;document.body.style.overflow=previousOverflow;button?.focus()}
+ async function openChess(){
+   if(loadingChess)return;loadingChess=true;
+   try{const module=await import('/assets/chess/chess-app.js?v=20260930-5');await module.openChess()}
+   catch(error){alert(en()?'Chess could not load. Please check your connection and retry.':'تعذر تحميل الشطرنج. تحقق من الاتصال ثم أعد المحاولة.')}
+   finally{loadingChess=false}
+ }
+ function clickTarget(id,missingAr,missingEn){
+   const target=$(id);if(target){target.click();return true}
+   alert(en()?missingEn:missingAr);return false;
+ }
+ function launch(action){
+   closePanel();
+   if(action==='chess'){openChess();return}
+   if(action==='music'){clickTarget(targets.music,'استديو الموسيقى لم يكتمل تحميله بعد. أعد المحاولة بعد لحظة.','Music Studio is still loading. Try again in a moment.');return}
+   if(action==='creative'){clickTarget(targets.creative,'الاستديو الإبداعي لم يكتمل تحميله بعد. أعد المحاولة بعد لحظة.','Creative Studio is still loading. Try again in a moment.');return}
+   if(action==='pong'){clickTarget(targets.pong,'لعبة البونج لم تكتمل بعد. أعد المحاولة بعد لحظة.','Pong is still loading. Try again in a moment.');return}
+   if(action==='chat'){clickTarget(targets.chat,'الشات لم يكتمل تحميله بعد. أعد المحاولة بعد لحظة.','Chat is still loading. Try again in a moment.');return}
+ }
+ function groupLaunchers(){
+   Object.values(targets).forEach(id=>{
+     const el=$(id);if(!el)return;
+     el.dataset.sakEntertainmentGrouped='1';
+     const slot=el.closest('.sakaker-utility-slot');if(slot)slot.dataset.sakEntertainmentHidden='1';
+   });
+ }
+ function mount(){
+   const dock=$('sakakerAllIconsDock');if(!dock)return;
+   button=$('sakEmeraldChessIcon');
+   if(!button){
+     button=document.createElement('button');button.id='sakEmeraldChessIcon';button.type='button';button.setAttribute('aria-haspopup','dialog');button.setAttribute('aria-controls','sakEntertainmentStation');button.dataset.sakRole='entertainment-station';
+     button.innerHTML='<svg viewBox="0 0 88 68" aria-hidden="true"><defs><linearGradient id="sakChessBirdMetal" x2="0" y2="1"><stop stop-color="#fff"/><stop offset=".55" stop-color="#d1eee5"/><stop offset="1" stop-color="#639b94"/></linearGradient></defs><path d="M38 38 18 49 12 44 25 35Z" fill="#e3fff4" stroke="#254b4d" stroke-width="1.4"/><path class="sak-chess-wing" d="M38 37C25 25 10 22 3 8C20 12 34 17 45 32L43 38Z" fill="url(#sakChessBirdMetal)" stroke="#234c4d" stroke-width="1.3"/><path class="sak-chess-wing" d="M42 34C52 19 69 14 78 5C76 22 67 32 49 41Z" fill="url(#sakChessBirdMetal)" stroke="#234c4d" stroke-width="1.3"/><path d="M25 37C29 30 39 28 46 33C52 34 51 27 52 18C53 8 62 8 67 12L75 15 67 19C64 18 60 17 59 22C60 34 55 43 45 44C37 46 29 43 25 37Z" fill="url(#sakChessBirdMetal)" stroke="#254b4d" stroke-width="1.5"/><path d="m67 13 13 4-13 2Z" fill="#e7bb53" stroke="#8b5b26"/><circle cx="64" cy="13" r="1.7" fill="#102529"/><path d="m39 43-3 7m10-7-2 7" stroke="#d9b967" stroke-width="2"/></svg><small></small>';
+     dock.append(button);button.addEventListener('click',openPanel);
+   }
+   label();panel();groupLaunchers();
+ }
+ function maybeGroupFromNode(node){
+   if(!(node instanceof Element))return false;
+   if(Object.values(targets).some(id=>node.id===id||node.querySelector?.('#'+id)))return true;
+   return !!node.querySelector?.('.sakaker-utility-slot');
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
+ window.addEventListener('load',()=>{mount();groupLaunchers()},{once:true});
+ [250,700,1500,3000,5500,9000].forEach(ms=>setTimeout(()=>{mount();groupLaunchers()},ms));
+ new MutationObserver(()=>{label();groupLaunchers()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+ const observer=new MutationObserver(records=>{if(records.some(r=>[...r.addedNodes].some(maybeGroupFromNode)))groupLaunchers()});
+ if(document.body)observer.observe(document.body,{childList:true,subtree:true});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('sakEntertainmentStation')?.hidden)closePanel()});
+
+})();
+</script>
+<script id="sak-shopping-restored-loader" src="/assets/shopping/launcher.js?v=20260930-1" defer></script>
+<script id="sak-audio-video-restored">
+(()=>{
+'use strict';
+const NS='http://www.w3.org/2000/svg';
+function e(tag,a={}){const n=document.createElementNS(NS,tag);Object.entries(a).forEach(([k,v])=>n.setAttribute(k,String(v)));return n}
+function ostrich(kind){const s=e('svg',{viewBox:'0 0 100 112',class:'sak-proxy-ostrich-svg','aria-hidden':'true'}),d=e('defs'),g=e('linearGradient',{id:'proxy-og-'+kind,x1:'0',y1:'0',x2:'1',y2:'1'});const p=kind==='business'?['#fff8bc','#ffd426','#d68c00']:kind==='map'?['#ffffff','#dce8ef','#758896']:['#dfe7ef','#3d4856','#0a0f16'];g.append(e('stop',{offset:'0','stop-color':p[0]}),e('stop',{offset:'.48','stop-color':p[1]}),e('stop',{offset:'1','stop-color':p[2]}));d.append(g);s.append(d);const f=`url(#proxy-og-${kind})`,st=kind==='audio'?'#b8c6d6':'#fff9d7',b=e('g');b.append(e('ellipse',{cx:'46',cy:'64',rx:'28',ry:'20',fill:f,stroke:st,'stroke-width':'2'}),e('path',{d:'M58 56 C69 45 70 31 68 21 C67 15 70 10 75 10 C81 10 84 16 82 22 C79 31 77 42 78 53',fill:'none',stroke:f,'stroke-width':'8','stroke-linecap':'round'}),e('circle',{cx:'77',cy:'15',r:'8',fill:f,stroke:st,'stroke-width':'1.4'}),e('circle',{cx:'79',cy:'13',r:'1.7',fill:'#07131b'}),e('path',{d:'M84 16 L95 19 L84 22 Z',fill:kind==='audio'?'#8896a5':'#ffbf3f'}),e('path',{d:'M29 62 Q12 52 19 42 Q34 47 41 58',fill:f,opacity:'.95'}),e('path',{d:'M39 81 L36 106 M56 81 L60 106',stroke:kind==='audio'?'#9ba9b7':'#fff0a8','stroke-width':'4','stroke-linecap':'round'}),e('path',{d:'M32 107 L42 107 M56 107 L67 107',stroke:kind==='audio'?'#7d8995':'#ffd95a','stroke-width':'4','stroke-linecap':'round'}));if(kind==='map')b.append(e('path',{d:'M42 49 A10 10 0 1 0 54 37 A8 8 0 1 1 42 49Z',fill:'#f7fdff',stroke:'#9bdfff','stroke-width':'1.4'}));else if(kind==='audio'){b.append(e('circle',{cx:'48',cy:'47',r:'8',fill:'#1b2732',stroke:'#d8e5ef','stroke-width':'1.5'}));b.append(e('path',{d:'M45 43 L54 47 L45 51 Z',fill:'#d8e5ef'}))}else b.append(e('path',{d:'M48 36 L52 44 L61 45 L54 51 L56 60 L48 56 L40 60 L42 51 L35 45 L44 44 Z',fill:'#fff1a0',stroke:'#ffd426','stroke-width':'1.3'}));s.append(b);return s}
+function mount(){
+ const dock=document.getElementById('sakakerAllIconsDock');if(!dock||document.getElementById('sakAudioVideoIcon'))return;
+ const link=document.createElement('a');link.id='sakAudioVideoIcon';link.href='audio-video.html';
+ link.append(ostrich('audio'),document.createElement('small'));dock.append(link);label();
+}
+function label(){const link=document.getElementById('sakAudioVideoIcon');if(!link)return;const text=document.documentElement.lang==='en'?'Images to Video':'تحويل الصور إلى فيديو';link.title=text;link.setAttribute('aria-label',text);link.querySelector('small').textContent=text;}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
+new MutationObserver(label).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+})();
+</script>
+<style id="sak-restored-launchers-layout">
+html body #sakakerAllIconsDock :is(#sakEmeraldChessIcon,#sakShoppingIcon,#sakAudioVideoIcon){
+ position:relative!important;inset:auto!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:flex-start!important;
+ width:var(--sak-cell,56px)!important;height:var(--sak-row,76px)!important;min-width:0!important;min-height:0!important;max-width:none!important;max-height:none!important;
+ padding:0!important;margin:0!important;border:0!important;background:transparent!important;box-shadow:none!important;transform:none!important;clip-path:none!important;
+ color:#d0ffec!important;cursor:pointer!important;pointer-events:auto!important;text-decoration:none!important;overflow:visible!important;
+}
+html body #sakakerAllIconsDock :is(#sakEmeraldChessIcon,#sakShoppingIcon,#sakAudioVideoIcon) svg{width:var(--sak-cell,56px)!important;height:var(--sak-cell,56px)!important;flex-shrink:0;filter:drop-shadow(0 0 5px #7effd2)}
+html body #sakakerAllIconsDock :is(#sakEmeraldChessIcon,#sakShoppingIcon,#sakAudioVideoIcon) small{font:700 9px/1.2 Tahoma,Arial,sans-serif!important;white-space:normal!important;text-align:center!important;color:#d0ffec!important;text-shadow:0 1px 3px #000}
+html body #sakakerAllIconsDock :is(#sakEmeraldChessIcon,#sakShoppingIcon,#sakAudioVideoIcon):focus-visible{outline:2px solid #ffe399!important;outline-offset:2px}
+</style>
+
 </body>
 </html>
