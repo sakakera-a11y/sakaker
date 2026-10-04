@@ -40384,5 +40384,152 @@ html body #sakakerAllIconsDock :is(#sakEmeraldChessIcon,#sakShoppingIcon,#sakAud
 html body #sakakerAllIconsDock :is(#sakEmeraldChessIcon,#sakShoppingIcon,#sakAudioVideoIcon):focus-visible{outline:2px solid #ffe399!important;outline-offset:2px}
 </style>
 
+
+<!-- =========================================================
+     SAKAKER — فيديو الطيور كخلفية لصفحة الدخول والموقع
+     المصدر: GitHub / sakakera-a11y / sakaker
+========================================================= -->
+<style id="sakaker-birds-video-background-final">
+  /* فيديو خلفية الموقع */
+  #sakakerSiteBirdsVideo{
+    position:fixed !important;
+    inset:0 !important;
+    width:100vw !important;
+    height:100vh !important;
+    min-width:100vw !important;
+    min-height:100vh !important;
+    object-fit:cover !important;
+    object-position:center center !important;
+    border:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+    pointer-events:none !important;
+    z-index:0 !important;
+    background:#000 !important;
+  }
+
+  /* فيديو خلفية صفحة الدخول */
+  #sakakerLoginBirdsVideo{
+    position:absolute !important;
+    inset:0 !important;
+    width:100% !important;
+    height:100% !important;
+    min-width:100% !important;
+    min-height:100% !important;
+    object-fit:cover !important;
+    object-position:center center !important;
+    border:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+    pointer-events:none !important;
+    z-index:0 !important;
+    background:#000 !important;
+  }
+
+  /* إبقاء محتويات صفحة الدخول فوق الفيديو */
+  #loginOverlay > *:not(#sakakerLoginBirdsVideo){
+    position:relative;
+    z-index:1;
+  }
+
+  /* عند فتح الموقع: إظهار فيديو الموقع وإخفاء فيديو الدخول */
+  body:not(.locked) #sakakerSiteBirdsVideo{
+    display:block !important;
+    visibility:visible !important;
+  }
+
+  body.locked #sakakerSiteBirdsVideo{
+    display:none !important;
+  }
+
+  body:not(.locked) #sakakerLoginBirdsVideo{
+    display:none !important;
+  }
+
+  body.locked #sakakerLoginBirdsVideo{
+    display:block !important;
+    visibility:visible !important;
+  }
+
+  @media(max-width:700px){
+    #sakakerSiteBirdsVideo,
+    #sakakerLoginBirdsVideo{
+      object-position:center center !important;
+    }
+  }
+</style>
+
+<script id="sakaker-birds-video-background-final-js">
+(function(){
+  'use strict';
+
+  const birdsVideo = 'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/gemini_video_birds_login.mp4';
+
+  function makeVideo(id){
+    let v=document.getElementById(id);
+    if(v) return v;
+
+    v=document.createElement('video');
+    v.id=id;
+    v.src=birdsVideo;
+    v.autoplay=true;
+    v.muted=true;
+    v.loop=true;
+    v.playsInline=true;
+    v.setAttribute('playsinline','');
+    v.setAttribute('webkit-playsinline','');
+    v.preload='auto';
+    v.setAttribute('aria-hidden','true');
+    return v;
+  }
+
+  function start(v){
+    if(!v) return;
+    const p=v.play();
+    if(p && typeof p.catch==='function') p.catch(function(){});
+  }
+
+  function init(){
+    const login=document.getElementById('loginOverlay');
+    if(!login) return;
+
+    const siteVideo=makeVideo('sakakerSiteBirdsVideo');
+    if(!siteVideo.parentElement) document.body.insertBefore(siteVideo, document.body.firstChild);
+
+    const loginVideo=makeVideo('sakakerLoginBirdsVideo');
+    if(!loginVideo.parentElement) login.insertBefore(loginVideo, login.firstChild);
+
+    const sync=function(){
+      const locked=document.body.classList.contains('locked');
+      if(locked){
+        siteVideo.pause();
+        loginVideo.style.display='block';
+        start(loginVideo);
+      }else{
+        loginVideo.pause();
+        loginVideo.style.display='none';
+        start(siteVideo);
+      }
+    };
+
+    sync();
+    document.addEventListener('visibilitychange',function(){
+      if(!document.hidden) sync();
+    });
+
+    new MutationObserver(sync).observe(document.body,{
+      attributes:true,
+      attributeFilter:['class']
+    });
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',init,{once:true});
+  }else{
+    init();
+  }
+})();
+</script>
+
 </body>
 </html>
