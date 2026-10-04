@@ -4466,6 +4466,48 @@ birdBtn.addEventListener('click',async e=>{
       ✕
     </button>
 
+<div class="fbPostSection fbNewEmbed">
+  <div class="fbPostTitle">📌 منشور فيسبوك جديد</div>
+  <div class="fbPostFrame">
+    <iframe class="fbResponsiveEmbed" loading="lazy"
+      data-facebook-href="https://www.facebook.com/100082898274465/posts/1089659210474011/?app=fbl"
+      data-facebook-plugin="post"
+      src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2F100082898274465%2Fposts%2F1089659210474011%2F%3Fapp%3Dfbl&show_text=true&width=500"
+      width="500" height="520"
+      style="border:none;overflow:hidden" scrolling="no" frameborder="0"
+      allowfullscreen="true"
+      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+  </div>
+</div>
+
+<div class="fbPostSection fbNewEmbed">
+  <div class="fbPostTitle">🎬 ريل فيسبوك جديد</div>
+  <div class="fbPostFrame">
+    <iframe class="fbResponsiveEmbed" loading="lazy"
+      data-facebook-href="https://www.facebook.com/share/r/1BQxaJUuP5/"
+      data-facebook-plugin="video"
+      src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Fshare%2Fr%2F1BQxaJUuP5%2F&show_text=true&width=500"
+      width="500" height="520"
+      style="border:none;overflow:hidden" scrolling="no" frameborder="0"
+      allowfullscreen="true"
+      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+  </div>
+</div>
+
+<div class="fbPostSection fbNewEmbed">
+  <div class="fbPostTitle">📌 منشور فيسبوك جديد</div>
+  <div class="fbPostFrame">
+    <iframe class="fbResponsiveEmbed" loading="lazy"
+      data-facebook-href="https://www.facebook.com/61556336314377/posts/122326658408211210/"
+      data-facebook-plugin="post"
+      src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2F61556336314377%2Fposts%2F122326658408211210%2F&show_text=true&width=500"
+      width="500" height="520"
+      style="border:none;overflow:hidden" scrolling="no" frameborder="0"
+      allowfullscreen="true"
+      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+  </div>
+</div>
+
 <div class="fbPostSection">
 
   <div class="fbPostTitle">
@@ -40514,5 +40556,90 @@ html body.locked #loginOverlay #sakLoginBackgroundVideo{
   pointer-events:none !important;
 }
 </style>
+
+<style id="fb-mobile-responsive-final">
+/* Facebook popup: final responsive layer */
+html body #facebookVideoPopup .fbPostTitle{
+  margin:0 0 8px !important;
+  text-align:center !important;
+  font-size:14px !important;
+  font-weight:900 !important;
+  color:#ffd700 !important;
+}
+html body #facebookVideoPopup .fbPostFrame{
+  width:100% !important;
+  max-width:100% !important;
+  overflow:hidden !important;
+}
+html body #facebookVideoPopup .fbPostFrame iframe.fbResponsiveEmbed{
+  display:block !important;
+  width:100% !important;
+  max-width:500px !important;
+  height:520px !important;
+  max-height:none !important;
+  margin:0 auto !important;
+  border:0 !important;
+}
+@media(max-width:700px){
+  html body #facebookVideoPopup{
+    align-items:stretch !important;
+  }
+  html body #facebookVideoPopup .fbVideoBox{
+    width:calc(100vw - 8px) !important;
+    max-width:calc(100vw - 8px) !important;
+    max-height:calc(100dvh - 8px) !important;
+    padding:8px !important;
+  }
+  html body #facebookVideoPopup .fbPostSection{
+    width:100% !important;
+    margin:0 0 8px !important;
+    padding:5px !important;
+    border-radius:12px !important;
+  }
+  html body #facebookVideoPopup .fbPostFrame iframe.fbResponsiveEmbed{
+    width:100% !important;
+    height:500px !important;
+    min-height:420px !important;
+  }
+}
+@media(max-width:390px){
+  html body #facebookVideoPopup .fbPostFrame iframe.fbResponsiveEmbed{
+    height:470px !important;
+    min-height:390px !important;
+  }
+}
+</style>
+<script id="fb-responsive-embed-script">
+(function(){
+  function updateFacebookEmbeds(){
+    document.querySelectorAll('#facebookVideoPopup iframe.fbResponsiveEmbed').forEach(function(frame){
+      var box=frame.parentElement;
+      if(!box) return;
+      var width=Math.max(280, Math.min(500, Math.floor(box.clientWidth || 500)));
+      var href=frame.getAttribute('data-facebook-href');
+      var type=frame.getAttribute('data-facebook-plugin') || 'post';
+      if(!href) return;
+      var base=type==='video'
+        ? 'https://www.facebook.com/plugins/video.php'
+        : 'https://www.facebook.com/plugins/post.php';
+      var next=base+'?href='+encodeURIComponent(href)+'&show_text=true&width='+width;
+      if(frame.getAttribute('src')!==next){
+        frame.setAttribute('src',next);
+        frame.setAttribute('width',String(width));
+      }
+    });
+  }
+  window.addEventListener('resize',function(){ clearTimeout(window.__fbResizeTimer); window.__fbResizeTimer=setTimeout(updateFacebookEmbeds,120); });
+  document.addEventListener('DOMContentLoaded',updateFacebookEmbeds);
+  var popup=document.getElementById('facebookVideoPopup');
+  if(popup){
+    new MutationObserver(function(){
+      if(popup.classList.contains('active') || getComputedStyle(popup).display!=='none'){
+        setTimeout(updateFacebookEmbeds,30);
+      }
+    }).observe(popup,{attributes:true,attributeFilter:['class','style']});
+  }
+})();
+</script>
 </body>
 </html>
