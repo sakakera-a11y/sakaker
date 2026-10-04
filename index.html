@@ -4429,19 +4429,15 @@ birdBtn.addEventListener('click',async e=>{
 
 <div id="loginError"></div>
 
-<div id="loginCopyright">
-<div>
-                جميع الحقوق محفوظة
-                <span class="siteName">
-                    sakaker.co
-                </span>
-</div>
-<div>
-                للتواصل:
-                <a class="email" href="sakaker@outlook.com">
-                    sakaker@outlook.com
-                </a>
-</div>
+<div id="loginCopyright" aria-label="هوية الموقع">
+  <div class="sakaker-copyright-inner">
+    <span class="sakaker-copyright-symbol">©</span>
+    <span class="sakaker-year">2026</span>
+    <span class="sakaker-name">أبو القمر زمرد</span>
+    <span class="sakaker-dash">—</span>
+    <span class="sakaker-site-dot"></span>
+    <span class="sakaker-site">sakaker</span>
+  </div>
 </div>
 </div>
 </div>
@@ -9241,37 +9237,6 @@ body.sakaker-pong-open #pongGame-container{
 
 </style>
 
-<footer
-  class="sakaker-copyright"
-  aria-label="حقوق موقع سكاكر">
-
-  <div class="sakaker-copyright-inner">
-
-    <span class="sakaker-copyright-symbol">
-      ©
-    </span>
-
-    <span class="sakaker-year">
-      2026
-    </span>
-
-    <span class="sakaker-name">
-      أبو القمر زمرد
-    </span>
-
-    <span class="sakaker-dash">
-      —
-    </span>
-
-    <span class="sakaker-site-dot"></span>
-
-    <span class="sakaker-site">
-      sakaker
-    </span>
-
-  </div>
-
-</footer>
 
 <div id="emeraldMusicHost">
 
@@ -40531,5 +40496,23 @@ html body #sakakerAllIconsDock :is(#sakEmeraldChessIcon,#sakShoppingIcon,#sakAud
 })();
 </script>
 
+
+<style id="sakaker-login-image-background-final">
+/* خلفية صفحة الدخول فقط — الصورة الجديدة */
+html body.locked #loginOverlay{
+  background-color:#02090b !important;
+  background-image:url("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D8%B3%D9%81%D9%8A%D9%86%D8%A9%20%D8%A7%D9%84%D9%82%D9%85%D8%B1%20%D9%81%D9%88%D9%82%20%D8%A7%D9%84%D9%85%D8%AD%D9%8A%D8%B7%E0%B8%AD%E0%B8%B1%E0%B8%99%E0%B8%A7%E0%B9%88%E0%B8%B2%E0%B8%87%E0%B9%80%E0%B8%9B%E0%B8%A5%E0%B9%88%E0%B8%B2.png") !important;
+  background-repeat:no-repeat !important;
+  background-position:center center !important;
+  background-size:cover !important;
+  background-attachment:fixed !important;
+}
+html body.locked #loginOverlay #sakLoginBackgroundVideo{
+  display:none !important;
+  visibility:hidden !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+</style>
 </body>
 </html>
