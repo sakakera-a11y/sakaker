@@ -44,3 +44,16 @@ function setup(){const dock=document.getElementById('sakakerAllIconsDock');const
 if(!setup()){const observer=new MutationObserver(()=>{if(setup())observer.disconnect()});observer.observe(document.body,{childList:true,subtree:true});}
 new MutationObserver(setLabels).observe(document.documentElement,{attributes:true,attributeFilter:['lang','dir']});
 })();
+
+/* Final icon-row guard: keep legacy Facebook/ship hidden and keep Shopping + combined visible. */
+(()=>{
+'use strict';
+let queued=false;
+function slotFor(utility,key){let slot=utility.querySelector('[data-sakaker-util="'+key+'"]');if(!slot){slot=document.createElement('div');slot.className='sakaker-utility-slot';slot.dataset.sakakerUtil=key;utility.appendChild(slot);}return slot;}
+function apply(){queued=false;const utility=document.getElementById('sakakerUtilityDock');const facebook=document.getElementById('facebookVideoIcon');const ship=document.getElementById('shipIcon_new');const combined=document.getElementById('sakSocialShipIcon');const shop=document.getElementById('sakShoppingIcon');
+ [facebook,ship].forEach(el=>{if(!el)return;el.style.setProperty('display','none','important');el.style.setProperty('visibility','hidden','important');el.style.setProperty('opacity','0','important');el.style.setProperty('pointer-events','none','important');el.setAttribute('aria-hidden','true');el.setAttribute('tabindex','-1');});
+ if(utility){const oldFb=utility.querySelector('[data-sakaker-util="facebook"]');const oldShip=utility.querySelector('[data-sakaker-util="ship"]');if(oldFb)oldFb.style.setProperty('display','none','important');if(oldShip)oldShip.style.setProperty('display','none','important');if(combined){const slot=slotFor(utility,'facebookShip');if(combined.parentElement!==slot)slot.appendChild(combined);slot.style.removeProperty('display');}if(shop){const slot=slotFor(utility,'shopping');if(shop.parentElement!==slot)slot.appendChild(shop);slot.style.removeProperty('display');shop.style.setProperty('display','flex','important');shop.style.setProperty('visibility','visible','important');shop.style.setProperty('opacity','1','important');shop.style.setProperty('pointer-events','auto','important');}}
+}
+function schedule(){if(queued)return;queued=true;requestAnimationFrame(apply);}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();window.addEventListener('load',schedule,{once:true});new MutationObserver(schedule).observe(document.documentElement,{childList:true,subtree:true});[250,800,1800,3500].forEach(ms=>setTimeout(schedule,ms));
+})();
