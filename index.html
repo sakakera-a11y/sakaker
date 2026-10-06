@@ -41147,5 +41147,70 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.con
 new MutationObserver(()=>{if(modal.classList.contains('is-open'))render()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 })();
 </script>
+
+<style id="sak-star-audio-video-integration">
+html body #sakAudioVideoIcon{display:none!important;visibility:hidden!important;pointer-events:none!important}
+html body #sakMusicPlayer .sak-music-box{
+  width:min(920px,96vw)!important;max-width:96vw!important;max-height:94dvh!important;
+  overflow:auto!important;box-sizing:border-box!important
+}
+html body #sakMusicPlayer .sak-star-tools{
+  display:flex!important;gap:8px!important;flex-wrap:wrap!important;justify-content:center!important;
+  margin:14px 0 4px!important
+}
+html body #sakMusicPlayer #sakImageVideoToggle[aria-expanded="true"]{
+  background:#b98517!important;border-color:#ffe28a!important;color:#fff!important
+}
+html body #sakImageVideoPane{display:none!important;margin-top:12px!important;border-top:1px solid #ffffff35!important;padding-top:12px!important}
+html body #sakImageVideoPane.is-open{display:block!important}
+html body #sakImageVideoFrame{
+  display:block!important;width:100%!important;height:min(72dvh,760px)!important;min-height:480px!important;
+  border:1px solid #7fffe0aa!important;border-radius:16px!important;background:#06111b!important
+}
+@media(max-width:600px){
+ html body #sakMusicPlayer{padding:6px!important}
+ html body #sakMusicPlayer .sak-music-box{width:98vw!important;max-width:98vw!important;padding:14px!important;border-radius:18px!important}
+ html body #sakImageVideoFrame{height:70dvh!important;min-height:520px!important}
+}
+</style>
+<script id="sak-star-audio-video-integration-js">
+(()=>{
+ 'use strict';
+ const removeStandalone=()=>{document.querySelectorAll('#sakAudioVideoIcon').forEach(el=>el.remove())};
+ function labels(){
+   const en=document.documentElement.lang==='en';
+   return {
+     open:en?'🎬 Images to Video':'🎬 تحويل الصور إلى فيديو',
+     close:en?'✕ Hide Converter':'✕ إخفاء المحوّل'
+   };
+ }
+ function mount(){
+   removeStandalone();
+   const player=document.getElementById('sakMusicPlayer');
+   const box=player?.querySelector('.sak-music-box');
+   if(!box||document.getElementById('sakImageVideoToggle'))return;
+   const tools=document.createElement('div');tools.className='sak-star-tools';
+   const toggle=document.createElement('button');toggle.id='sakImageVideoToggle';toggle.type='button';toggle.setAttribute('aria-expanded','false');
+   const pane=document.createElement('div');pane.id='sakImageVideoPane';
+   const frame=document.createElement('iframe');frame.id='sakImageVideoFrame';frame.title='Images to Video';frame.loading='lazy';frame.allow='autoplay';
+   pane.append(frame);tools.append(toggle);box.append(tools,pane);
+   const render=()=>{const x=labels();toggle.textContent=toggle.getAttribute('aria-expanded')==='true'?x.close:x.open;frame.title=x.open.replace(/^🎬\s*/,'');};
+   toggle.addEventListener('click',()=>{
+     const open=toggle.getAttribute('aria-expanded')!=='true';
+     toggle.setAttribute('aria-expanded',open?'true':'false');
+     pane.classList.toggle('is-open',open);
+     if(open&&(!frame.getAttribute('src')||frame.getAttribute('src')==='about:blank'))frame.src='/audio-video.html?embed=1';
+     if(!open){try{frame.contentWindow?.postMessage({type:'sak-pause-media'},location.origin)}catch(_){}}
+     render();
+   });
+   new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+   render();
+ }
+ const obs=new MutationObserver(()=>{removeStandalone();mount()});
+ obs.observe(document.documentElement,{childList:true,subtree:true});
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
+ [300,1000,2500,5000].forEach(ms=>setTimeout(()=>{removeStandalone();mount()},ms));
+})();
+</script>
 </body>
 </html>
