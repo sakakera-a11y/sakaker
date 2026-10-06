@@ -40995,5 +40995,50 @@ document.addEventListener('keydown',e=>{
 },true);
 })();
 </script>
+
+<style id="sak-site-news-compact-fix-20261006">
+html body #sakakerSiteNewsModal{padding:10px!important}
+html body #sakakerSiteNewsModal .sakaker-site-news-box{
+  width:min(360px,88vw)!important;
+  min-height:0!important;
+  max-height:min(68dvh,520px)!important;
+  padding:52px 18px 20px!important;
+  border-radius:18px!important;
+  overflow:auto!important;
+}
+html body #sakakerSiteNewsTitle{
+  margin:0 0 12px!important;
+  font-size:18px!important;
+}
+html body #sakakerSiteNewsText{
+  font-size:13px!important;
+  line-height:1.65!important;
+  font-weight:700!important;
+}
+html body #sakakerSiteNewsClose{
+  top:8px!important;
+  right:8px!important;
+  width:42px!important;
+  height:42px!important;
+  display:grid!important;
+  place-items:center!important;
+  background:#8b1020!important;
+  color:#fff!important;
+  border:2px solid #fff!important;
+  font-size:28px!important;
+  line-height:1!important;
+  opacity:1!important;
+  visibility:visible!important;
+  box-shadow:0 0 0 2px rgba(255,210,210,.35),0 0 18px rgba(255,60,80,.75)!important;
+}
+@media(max-width:600px){
+  html body #sakakerSiteNewsModal .sakaker-site-news-box{
+    width:min(330px,92vw)!important;
+    max-height:64dvh!important;
+    padding:50px 15px 18px!important;
+  }
+  html body #sakakerSiteNewsText{font-size:12.5px!important;line-height:1.6!important}
+}
+</style>
 </body>
 </html>
