@@ -40788,5 +40788,57 @@ window.addEventListener('load',liftTopLayers,{once:true});
 </script>
 <!-- /SAKAKER EBOOKS + ABWALQMRZMRD STORIES -->
 
+
+<!-- SAKAKER popup layer hardening 2026-10-06 -->
+<style id="sakaker-all-popups-top-layer-20261006">
+html body #facebookVideoPopup,
+html body #livePopup,
+html body #shipPopup_new,
+html body #sakakerBusinessPopup,
+html body #emeraldLibraryContent,
+html body #pongGame-container,
+html body #sakStudio,
+html body #sakChatOverlay,
+html body #sakTextLibraryModal,
+html body #sakBooksAppLayer,
+html body #sakEntertainmentStation,
+html body #sakEntertainmentStationRuntime,
+html body #sakMapOverlay{
+  z-index:2147483647 !important;
+}
+html body #facebookVideoPopup,
+html body #livePopup,
+html body #shipPopup_new,
+html body #sakakerBusinessPopup,
+html body #pongGame-container,
+html body #sakStudio,
+html body #sakChatOverlay,
+html body #sakTextLibraryModal,
+html body #sakBooksAppLayer,
+html body #sakEntertainmentStation,
+html body #sakEntertainmentStationRuntime,
+html body #sakMapOverlay{
+  position:fixed !important;
+}
+</style>
+<script id="sakaker-all-popups-top-layer-20261006-js">
+(()=>{
+'use strict';
+function tagMapOverlay(){
+  const frame=document.getElementById('mapFrame');
+  const overlay=frame?.closest?.('.overlay');
+  if(overlay&&!overlay.id)overlay.id='sakMapOverlay';
+}
+function liftOpenLayers(){
+  tagMapOverlay();
+  ['facebookVideoPopup','livePopup','shipPopup_new','sakakerBusinessPopup','emeraldLibraryContent','pongGame-container','sakStudio','sakChatOverlay','sakTextLibraryModal','sakBooksAppLayer','sakEntertainmentStation','sakEntertainmentStationRuntime','sakMapOverlay'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.style.setProperty('z-index','2147483647','important');
+  });
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',liftOpenLayers,{once:true});else liftOpenLayers();
+new MutationObserver(liftOpenLayers).observe(document.body||document.documentElement,{childList:true,subtree:true});
+})();
+</script>
 </body>
 </html>
