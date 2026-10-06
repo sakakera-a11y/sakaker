@@ -40937,5 +40937,63 @@ new MutationObserver(()=>{if(shell&&layer.classList.contains('sak-open'))render(
 </script>
 
 <!-- sak-site-news-update-20261006 -->
+
+<!-- sak-video-library-videos-html-overlay-20261006 -->
+<style id="sak-video-library-videos-html-overlay-20261006-style">
+#sakVideoLibraryPageOverlay{
+  position:fixed!important;inset:0!important;z-index:2147483647!important;
+  display:none;align-items:stretch;justify-content:stretch;
+  background:#031218!important;
+}
+#sakVideoLibraryPageOverlay.open{display:flex!important}
+#sakVideoLibraryPageOverlay iframe{width:100%!important;height:100%!important;border:0!important;background:#031218!important}
+#sakVideoLibraryPageClose{
+  position:fixed!important;top:max(10px,env(safe-area-inset-top))!important;right:max(10px,env(safe-area-inset-right))!important;
+  z-index:2147483647!important;width:48px!important;height:48px!important;border-radius:50%!important;
+  border:1px solid #8fffe8!important;background:rgba(38,11,22,.96)!important;color:#fff!important;
+  font-size:28px!important;font-weight:900!important;cursor:pointer!important;box-shadow:0 0 18px rgba(0,255,210,.55)!important
+}
+</style>
+<script id="sak-video-library-videos-html-overlay-20261006-js">
+(()=>{
+'use strict';
+let oldOverflow='';
+function ensure(){
+  let o=document.getElementById('sakVideoLibraryPageOverlay');
+  if(o)return o;
+  o=document.createElement('div');
+  o.id='sakVideoLibraryPageOverlay';
+  o.setAttribute('role','dialog');
+  o.setAttribute('aria-modal','true');
+  o.innerHTML='<button id="sakVideoLibraryPageClose" type="button" aria-label="إغلاق / Close">×</button><iframe id="sakVideoLibraryPageFrame" title="مكتبة الفيديو / Video Library" loading="eager"></iframe>';
+  document.body.appendChild(o);
+  o.querySelector('#sakVideoLibraryPageClose').addEventListener('click',close);
+  return o;
+}
+function open(){
+  const o=ensure(),f=o.querySelector('#sakVideoLibraryPageFrame');
+  oldOverflow=document.documentElement.style.overflow;
+  f.src='/videos.html?v=20261006-library2';
+  o.classList.add('open');
+  document.documentElement.style.overflow='hidden';
+  const old=document.getElementById('emeraldLibraryContent');
+  if(old)old.style.setProperty('display','none','important');
+}
+function close(){
+  const o=document.getElementById('sakVideoLibraryPageOverlay');if(!o)return;
+  o.classList.remove('open');
+  const f=o.querySelector('#sakVideoLibraryPageFrame');if(f)f.src='about:blank';
+  document.documentElement.style.overflow=oldOverflow;
+}
+document.addEventListener('click',e=>{
+  const btn=e.target.closest?.('#emeraldLibraryButton');
+  if(!btn)return;
+  e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();open();
+},true);
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&document.getElementById('sakVideoLibraryPageOverlay')?.classList.contains('open')){e.preventDefault();close();}
+},true);
+})();
+</script>
 </body>
 </html>
