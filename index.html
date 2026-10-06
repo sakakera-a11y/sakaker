@@ -41212,5 +41212,119 @@ html body #sakImageVideoFrame{
  [300,1000,2500,5000].forEach(ms=>setTimeout(()=>{removeStandalone();mount()},ms));
 })();
 </script>
+
+<style id="sak-castle-index-simple-style">
+html body.locked #sakCastleIndexIcon,
+html body.locked #sakCastleIndexModal{display:none!important}
+html body #sakCastleIndexIcon{
+  position:relative!important;inset:auto!important;display:flex!important;flex-direction:column!important;
+  align-items:center!important;justify-content:flex-start!important;width:var(--sak-cell,58px)!important;
+  height:var(--sak-row,78px)!important;padding:0!important;margin:0!important;border:0!important;
+  background:transparent!important;color:#effff9!important;cursor:pointer!important;font:800 9px/1.2 Tahoma,Arial,sans-serif!important
+}
+html body #sakCastleIndexIcon .sak-index-orb{
+  width:var(--sak-cell,58px)!important;height:var(--sak-cell,58px)!important;border-radius:50%!important;
+  display:grid!important;place-items:center!important;font-size:28px!important;
+  background:radial-gradient(circle at 35% 25%,#fff,#8affe0 18%,#168872 50%,#04261f 78%)!important;
+  border:1px solid #effffb!important;box-shadow:0 0 8px #fff,0 0 20px #64ffd9!important
+}
+html body #sakCastleIndexIcon small{color:#effff9!important;text-shadow:0 1px 2px #000,0 0 6px #64ffd9!important}
+html body #sakCastleIndexModal{
+  position:fixed!important;inset:0!important;z-index:2147483647!important;display:none;align-items:center!important;justify-content:center!important;
+  padding:10px!important;background:rgba(0,8,12,.92)!important;backdrop-filter:blur(8px)!important
+}
+html body #sakCastleIndexModal.is-open{display:flex!important}
+html body #sakCastleIndexModal .sak-index-box{
+  position:relative!important;width:min(780px,95vw)!important;max-height:92dvh!important;overflow:auto!important;
+  padding:54px 14px 18px!important;border:1px solid #9fffe4aa!important;border-radius:20px!important;
+  background:linear-gradient(145deg,#071e24,#102c34)!important;color:#fff!important;box-shadow:0 0 28px #54ffd633!important
+}
+html body #sakCastleIndexClose{
+  position:absolute!important;top:8px!important;right:8px!important;width:40px!important;height:40px!important;border-radius:50%!important;
+  border:2px solid #fff!important;background:#8b1020!important;color:#fff!important;font-size:26px!important;cursor:pointer!important
+}
+html body #sakCastleIndexTitle{text-align:center!important;margin:0 0 14px!important;font:900 24px/1.4 Tahoma,Arial,sans-serif!important;color:#dffff6!important}
+html body #sakCastleIndexGrid{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(145px,1fr))!important;gap:8px!important}
+html body .sak-index-link{
+  min-height:58px!important;border:1px solid #7fffe044!important;border-radius:12px!important;padding:9px!important;
+  background:#0b252c!important;color:#fff!important;cursor:pointer!important;font:800 12px/1.4 Tahoma,Arial,sans-serif!important;
+  display:flex!important;align-items:center!important;gap:8px!important;text-align:start!important
+}
+html body .sak-index-link span{font-size:22px!important}
+@media(max-width:520px){
+ html body #sakCastleIndexGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ html body .sak-index-link{font-size:10.5px!important;min-height:62px!important}
+}
+</style>
+<script id="sak-castle-index-simple-js">
+(()=>{
+ 'use strict';
+ const $=id=>document.getElementById(id), isEn=()=>document.documentElement.lang==='en';
+ const entries=[
+  ['🎥','مكتبة الفيديو','Video Library',()=>click('emeraldLibraryButton')],
+  ['📚','المكتبة النصية','Text Library',()=>call('openSakakerTextLibrary')],
+  ['📖','الكتب الإلكترونية','E-Books',()=>call('openSakakerEbooks')],
+  ['📝','خواطر وقصص','Thoughts & Stories',()=>folder(1)],
+  ['❓','اختبر معلوماتك','Test Your Knowledge',()=>call('startQuiz')],
+  ['🌍','ثقافة عامة','General Culture',()=>folder(4)],
+  ['💡','معلومة اليوم','Fact of the Day',()=>call('openTodayFact')],
+  ['🧩','ألغاز','Riddles',()=>call('openPuzzle')],
+  ['📜','حكم وأمثال','Wisdom & Proverbs',()=>call('openWisdomLibrary')],
+  ['📰','أخبار الموقع','Site News',()=>call('openSiteNewsModal')],
+  ['📺','البث والإذاعة','Live TV & Radio',()=>click('liveFlasher')],
+  ['⭐','المشغّل والمحوّل','Player & Converter',()=>click('sakMusicIcon')],
+  ['🎶','استديو الموسيقى','Music Studio',()=>click('emOpenBtn')],
+  ['♟️','الشطرنج','Chess',()=>click('sakEmeraldChessIcon')],
+  ['🏓','بونج','Pong',()=>click('pongGame-btn')],
+  ['💬','الدردشة','Chat',()=>click('sakChatIcon')],
+  ['🗺️','الخرائط','Maps',()=>call('openMap')],
+  ['🛍️','التسوق','Shopping',()=>click('sakShoppingIcon')],
+  ['🎨','الاستديو الإبداعي','Creative Studio',()=>click('sakCreativeIcon')],
+  ['💼','الأعمال','Business',()=>clickFirst(['sakakerBusinessIcon','sakakerBusinessAd'])],
+  ['📘','فيسبوك','Facebook',()=>click('facebookVideoIcon')],
+  ['🚢','السفينة','Ship',()=>click('shipIcon_new')],
+  ['🌎','الأخبار العالمية','World News',()=>click('sakNewsLaunch')]
+ ];
+ function click(id){const el=$(id);if(el){close();el.click()}}
+ function clickFirst(ids){for(const id of ids){if($(id)){close();$(id).click();return}}}
+ function call(name){if(typeof window[name]==='function'){close();window[name]()}}
+ function folder(n){if(typeof window.openFolder==='function'){close();window.openFolder(n)}}
+ function ensure(){
+  let m=$('sakCastleIndexModal');
+  if(m)return m;
+  m=document.createElement('div');m.id='sakCastleIndexModal';
+  m.innerHTML='<div class="sak-index-box" role="dialog" aria-modal="true"><button id="sakCastleIndexClose" type="button">×</button><h2 id="sakCastleIndexTitle"></h2><div id="sakCastleIndexGrid"></div></div>';
+  document.body.append(m);
+  $('sakCastleIndexClose').onclick=close;
+  m.addEventListener('click',e=>{if(e.target===m)close()});
+  render();return m;
+ }
+ function render(){
+  const m=ensure(),g=$('sakCastleIndexGrid'),t=$('sakCastleIndexTitle'),b=$('sakCastleIndexIcon');
+  t.textContent=isEn()?'🧭 Castle Index':'🧭 فهرس القلعة';
+  g.replaceChildren();
+  entries.forEach(([ico,ar,enText,run])=>{
+   const x=document.createElement('button');x.type='button';x.className='sak-index-link';
+   x.innerHTML='<span aria-hidden="true">'+ico+'</span><b>'+(isEn()?enText:ar)+'</b>';
+   x.onclick=run;g.append(x);
+  });
+  if(b){b.querySelector('small').textContent=isEn()?'Index':'الفهرس';b.title=isEn()?'Castle Index':'فهرس القلعة';b.setAttribute('aria-label',b.title)}
+ }
+ function open(){const m=ensure();render();m.classList.add('is-open');document.documentElement.style.overflow='hidden';$('sakCastleIndexClose').focus()}
+ function close(){const m=$('sakCastleIndexModal');if(m)m.classList.remove('is-open');document.documentElement.style.overflow=''}
+ function mount(){
+  if($('sakCastleIndexIcon'))return;
+  const host=$('sakakerAllIconsDock')||document.querySelector('.cards');if(!host)return;
+  const b=document.createElement('button');b.id='sakCastleIndexIcon';b.type='button';
+  b.innerHTML='<span class="sak-index-orb" aria-hidden="true">🧭</span><small></small>';
+  b.onclick=open;host.append(b);render();
+ }
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('sakCastleIndexModal')?.classList.contains('is-open')){e.preventDefault();close()}});
+ new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
+ setTimeout(mount,800);setTimeout(mount,2500);
+})();
+</script>
+
 </body>
 </html>
