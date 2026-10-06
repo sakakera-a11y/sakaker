@@ -15382,7 +15382,7 @@ html body #logoutText{
         <div class="sakaker-site-news-box" role="dialog" aria-modal="true">
           <button id="sakakerSiteNewsClose" type="button" aria-label="إغلاق">×</button>
           <h2 id="sakakerSiteNewsTitle">أخبار الموقع</h2>
-          <div id="sakakerSiteNewsText">تم تحديث الموقع وإضافة محتوى جديد لمكتبة الفيديو وبعض الأقسام.</div>
+          <div id="sakakerSiteNewsText">تم تحديث الموقع بتاريخ 6 أكتوبر 2026. أضيف قسم الكتب الإلكترونية ويضم سبعة كتب، وأضيفت خمس قصص جديدة لأبوالقمرزمرد ضمن المكتبة النصية. كما تم تحديث مكتبة الفيديو بإضافة جرندايزر في قسم الكرتون، ومحتوى كأس العالم 2026 في قسم الرياضة، وأغاني وموسيقى Titanic في قسم الموسيقى، وأفلام بروس لي وجاكي شان ومارلين مونرو في قسم الأفلام فقط. الحد الأقصى 100 عنصر لكل قسم، ويُستخدم المحتوى الرسمي أو المرخّص عند توفره.</div>
         </div>
       `;
       document.body.appendChild(modal);
@@ -15408,7 +15408,7 @@ html body #logoutText{
     if(title) title.textContent = en ? 'Site News' : 'أخبار الموقع';
     if(text){
       if(window.sakRenderSiteNews)window.sakRenderSiteNews(text);
-      else text.textContent=en?'The site has been updated with new content in the video library and several sections.':'تم تحديث الموقع وإضافة محتوى جديد لمكتبة الفيديو وبعض الأقسام.';
+      else text.textContent=en?'Site update — October 6, 2026. A new E-Books section with seven books and five new Abwalqmrzmrd stories were added to the text library. The video library was also updated with Grendizer in Cartoon, FIFA World Cup 2026 content in Sports, Titanic songs and music in Music, and Bruce Lee, Jackie Chan, and Marilyn Monroe titles in Movies only. Each section is capped at 100 items, using official or licensed sources when available.':'تم تحديث الموقع بتاريخ 6 أكتوبر 2026. أضيف قسم الكتب الإلكترونية ويضم سبعة كتب، وأضيفت خمس قصص جديدة لأبوالقمرزمرد ضمن المكتبة النصية. كما تم تحديث مكتبة الفيديو بإضافة جرندايزر في قسم الكرتون، ومحتوى كأس العالم 2026 في قسم الرياضة، وأغاني وموسيقى Titanic في قسم الموسيقى، وأفلام بروس لي وجاكي شان ومارلين مونرو في قسم الأفلام فقط. الحد الأقصى 100 عنصر لكل قسم، ويُستخدم المحتوى الرسمي أو المرخّص عند توفره.';
     }
 
     if(close) close.setAttribute('aria-label', en ? 'Close' : 'إغلاق');
@@ -39556,7 +39556,8 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock #emOpenBt
   document.getElementById('folderModal').style.display='block';
  };
  window.sakRenderSiteNews=function(host){
-  host.replaceChildren(entry(['آخر التحديثات','Latest updates','تم تحديث الموقع وإضافة محتوى جديد إلى مكتبة الفيديو وبعض الأقسام. تضم الإضافات 400 فيديو يوتيوب موزّعة على ثمانية أقسام، إلى جانب تحديث المكتبة النصية بمحتوى عربي وإنجليزي وتحسين عرض الأيقونات والنوافذ على مختلف الشاشات.','The site has been updated with new content in the video library and several sections. Additions include 400 YouTube videos across eight categories, refreshed Arabic and English text-library content, and improvements to icon and window layouts across screen sizes.']));
+  const enMode=document.documentElement.lang==='en';
+  host.replaceChildren(entry(['تحديثات الموقع','Site updates',"تم تحديث الموقع بتاريخ 6 أكتوبر 2026. أضيف قسم الكتب الإلكترونية ويضم سبعة كتب، وأضيفت خمس قصص جديدة لأبوالقمرزمرد ضمن المكتبة النصية. كما تم تحديث مكتبة الفيديو بإضافة جرندايزر في قسم الكرتون، ومحتوى كأس العالم 2026 في قسم الرياضة، وأغاني وموسيقى Titanic في قسم الموسيقى، وأفلام بروس لي وجاكي شان ومارلين مونرو في قسم الأفلام فقط. الحد الأقصى 100 عنصر لكل قسم، ويُستخدم المحتوى الرسمي أو المرخّص عند توفره.","Site update — October 6, 2026. A new E-Books section with seven books and five new Abwalqmrzmrd stories were added to the text library. The video library was also updated with Grendizer in Cartoon, FIFA World Cup 2026 content in Sports, Titanic songs and music in Music, and Bruce Lee, Jackie Chan, and Marilyn Monroe titles in Movies only. Each section is capped at 100 items, using official or licensed sources when available."]));
  };
  function refresh(){
   const host=document.getElementById('folderBody'),root=host?.querySelector('[data-sak-text-view]');
@@ -40934,5 +40935,7 @@ window.closeSakakerEbooks=function(){
 new MutationObserver(()=>{if(shell&&layer.classList.contains('sak-open'))render()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 })();
 </script>
+
+<!-- sak-site-news-update-20261006 -->
 </body>
 </html>
