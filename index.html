@@ -40788,5 +40788,151 @@ window.addEventListener('load',liftTopLayers,{once:true});
 </script>
 <!-- /SAKAKER EBOOKS + ABWALQMRZMRD STORIES -->
 
+
+<!-- SAKAKER popup layer hardening 2026-10-06 -->
+<style id="sakaker-all-popups-top-layer-20261006">
+html body #facebookVideoPopup,
+html body #livePopup,
+html body #shipPopup_new,
+html body #sakakerBusinessPopup,
+html body #emeraldLibraryContent,
+html body #pongGame-container,
+html body #sakStudio,
+html body #sakChatOverlay,
+html body #sakTextLibraryModal,
+html body #sakBooksAppLayer,
+html body #sakEntertainmentStation,
+html body #sakEntertainmentStationRuntime,
+html body #sakMapOverlay{
+  z-index:2147483647 !important;
+}
+html body #facebookVideoPopup,
+html body #livePopup,
+html body #shipPopup_new,
+html body #sakakerBusinessPopup,
+html body #pongGame-container,
+html body #sakStudio,
+html body #sakChatOverlay,
+html body #sakTextLibraryModal,
+html body #sakBooksAppLayer,
+html body #sakEntertainmentStation,
+html body #sakEntertainmentStationRuntime,
+html body #sakMapOverlay{
+  position:fixed !important;
+}
+</style>
+<script id="sakaker-all-popups-top-layer-20261006-js">
+(()=>{
+'use strict';
+function tagMapOverlay(){
+  const frame=document.getElementById('mapFrame');
+  const overlay=frame?.closest?.('.overlay');
+  if(overlay&&!overlay.id)overlay.id='sakMapOverlay';
+}
+function liftOpenLayers(){
+  tagMapOverlay();
+  ['facebookVideoPopup','livePopup','shipPopup_new','sakakerBusinessPopup','emeraldLibraryContent','pongGame-container','sakStudio','sakChatOverlay','sakTextLibraryModal','sakBooksAppLayer','sakEntertainmentStation','sakEntertainmentStationRuntime','sakMapOverlay'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.style.setProperty('z-index','2147483647','important');
+  });
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',liftOpenLayers,{once:true});else liftOpenLayers();
+new MutationObserver(liftOpenLayers).observe(document.body||document.documentElement,{childList:true,subtree:true});
+})();
+</script>
+
+<!-- SAKAKER direct seven-book shelf 2026-10-06 -->
+<style id="sakaker-direct-seven-books-20261006">
+#sakBooksAppFrame{display:none!important}
+#sakDirectBooksShell{
+  position:absolute;inset:0;padding:68px 16px 18px;box-sizing:border-box;
+  overflow:auto;background:radial-gradient(circle at top,#0b3a31 0,#031218 52%,#010708 100%);
+  color:#fff;font-family:Tahoma,"Segoe UI",Arial,sans-serif
+}
+#sakDirectBooksTitle{text-align:center;margin:0 0 6px;color:#ffd45c;text-shadow:0 0 14px #00ffd066;font-size:clamp(22px,4vw,34px)}
+#sakDirectBooksSub{text-align:center;color:#b8d3cc;margin-bottom:18px}
+#sakDirectBooksGrid{max-width:980px;margin:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.sak-direct-book{
+  min-height:165px;border:1px solid #5fffd4aa;border-radius:22px;
+  background:linear-gradient(145deg,rgba(7,47,39,.96),rgba(3,23,28,.98));color:#fff;
+  padding:18px 14px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  cursor:pointer;box-shadow:0 10px 28px #0008,0 0 20px #00ffd01f;transition:.22s
+}
+.sak-direct-book:hover,.sak-direct-book:focus-visible{transform:translateY(-5px);box-shadow:0 14px 36px #0009,0 0 30px #00ffd044;outline:2px solid #fff8}
+.sak-direct-book .ico{font-size:42px;margin-bottom:8px}.sak-direct-book b{font-size:16px}.sak-direct-book small{color:#cdeee6;margin-top:6px;line-height:1.5}.sak-direct-book em{margin-top:10px;color:#ffd45c;font-style:normal;font-weight:800;font-size:12px}
+#sakDirectReader{display:none;position:absolute;inset:0;background:#031218;z-index:3;padding-top:62px}
+#sakDirectReader.open{display:flex;flex-direction:column}
+#sakDirectReaderHead{position:absolute;top:8px;left:70px;right:70px;min-height:46px;display:flex;align-items:center;gap:8px}
+#sakDirectReaderTitle{flex:1;text-align:center;color:#ffd45c;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sakDirectReaderBack,#sakDirectReaderDownload{border:1px solid #7fffe0;border-radius:12px;background:#0b3b33;color:#fff;text-decoration:none;padding:9px 12px;cursor:pointer;font-weight:800}
+#sakDirectReaderFrame{width:100%;height:100%;border:0;background:#fff;flex:1}
+@media(max-width:720px){#sakDirectBooksShell{padding:68px 10px 14px}#sakDirectBooksGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.sak-direct-book{min-height:145px;padding:13px 8px;border-radius:17px}.sak-direct-book .ico{font-size:34px}.sak-direct-book b{font-size:14px}#sakDirectReaderHead{left:8px;right:62px;flex-wrap:wrap}#sakDirectReaderTitle{order:3;flex-basis:100%;font-size:12px}}
+@media(max-width:360px){#sakDirectBooksGrid{grid-template-columns:1fr}}
+</style>
+<script id="sakaker-direct-seven-books-20261006-js">
+(()=>{
+'use strict';
+const books=[
+{id:'1gwOaOxZe75ADi4lQbjxfvDS-qP4qGEhv',ar:'مغامرة في الصحراء',en:'Adventure in the Desert',authorAr:'مصطفى محمود',authorEn:'Mostafa Mahmoud'},
+{id:'1vXtFhdd_6B_1H7TiSmZ_BufboGYQf7f5',ar:'أنت لي',en:'Anta Li',authorAr:'منى المرشود',authorEn:'Mona Al-Mershoud'},
+{id:'1QNTci94vrzoUWO1yZFZdZ5RlM1vOqH2d',ar:'إيكادولي',en:'Ikadoli',authorAr:'حنان لاشين',authorEn:'Hanan Lashin'},
+{id:'1z1iQDVvxcj49D664-wkCi-H3r2lBpkMs',ar:'قضية زعيم العصابة',en:'The Gang Leader Case',authorAr:'روايات مصرية للجيب',authorEn:'Egyptian Pocket Novels'},
+{id:'1LdhTXBaSSHwOI6XBreWwCd8QqOjy3beu',ar:'فن الحياة',en:'The Art of Life',authorAr:'سلامة موسى',authorEn:'Salama Moussa'},
+{id:'1svg6UMe1yq7d62iola4DHAMkT2dKWfPN',ar:'ألف ليلة وليلة',en:'One Thousand and One Nights',authorAr:'المجلد الأول',authorEn:'Volume One'},
+{id:'1X8LuHDx06ZjSG1TH-Y065i0yVXUUoebu',ar:'قواعد جارتين',en:'Qawaed Jartin',authorAr:'عمرو عبد الحميد',authorEn:'Amr Abdel Hamid'}
+];
+const layer=document.getElementById('sakBooksAppLayer');
+const legacyFrame=document.getElementById('sakBooksAppFrame');
+let shell=null,reader=null,readerFrame=null,readerTitle=null,download=null,oldOverflow='';
+const en=()=>document.documentElement.lang==='en';
+const t=(ar,enText)=>en()?enText:ar;
+
+function ensure(){
+ if(shell)return;
+ if(legacyFrame)legacyFrame.style.display='none';
+ shell=document.createElement('section');shell.id='sakDirectBooksShell';
+ shell.innerHTML='<h2 id="sakDirectBooksTitle"></h2><div id="sakDirectBooksSub"></div><div id="sakDirectBooksGrid"></div><div id="sakDirectReader"><div id="sakDirectReaderHead"><button id="sakDirectReaderBack" type="button"></button><div id="sakDirectReaderTitle"></div><a id="sakDirectReaderDownload" target="_blank" rel="noopener"></a></div><iframe id="sakDirectReaderFrame" title="Book reader"></iframe></div>';
+ layer.appendChild(shell);
+ reader=shell.querySelector('#sakDirectReader');readerFrame=shell.querySelector('#sakDirectReaderFrame');readerTitle=shell.querySelector('#sakDirectReaderTitle');download=shell.querySelector('#sakDirectReaderDownload');
+ shell.querySelector('#sakDirectReaderBack').onclick=showShelf;
+ render();
+}
+function render(){
+ if(!shell)return;
+ shell.querySelector('#sakDirectBooksTitle').textContent=t('📚 الكتب الإلكترونية','📚 E-Books');
+ shell.querySelector('#sakDirectBooksSub').textContent=t('الكتب السبعة — اختر كتابًا للقراءة','Seven books — choose a book to read');
+ const grid=shell.querySelector('#sakDirectBooksGrid');grid.replaceChildren();
+ books.forEach((b,i)=>{const btn=document.createElement('button');btn.type='button';btn.className='sak-direct-book';btn.innerHTML='<span class="ico">📖</span><b></b><small></small><em></em>';btn.querySelector('b').textContent=t(b.ar,b.en);btn.querySelector('small').textContent=t(b.authorAr,b.authorEn);btn.querySelector('em').textContent=t('قراءة الكتاب','Read book');btn.onclick=()=>openBook(i);grid.appendChild(btn)});
+ shell.querySelector('#sakDirectReaderBack').textContent=t('↩ الكتب','↩ Books');
+ download.textContent=t('⬇ تحميل','⬇ Download');
+}
+function showShelf(){
+ if(!reader)return;
+ reader.classList.remove('open');readerFrame.src='about:blank';render();
+}
+function openBook(i){
+ const b=books[i];if(!b)return;
+ readerTitle.textContent='📖 '+t(b.ar,b.en);
+ readerFrame.src='https://drive.google.com/file/d/'+b.id+'/preview';
+ download.href='https://drive.google.com/uc?export=download&id='+b.id;
+ reader.classList.add('open');
+}
+window.openSakakerEbooks=function(){
+ ensure();render();showShelf();
+ oldOverflow=document.documentElement.style.overflow;
+ layer.classList.add('sak-open');layer.setAttribute('aria-hidden','false');
+ document.documentElement.style.overflow='hidden';
+};
+window.closeSakakerEbooks=function(){
+ if(!layer)return;
+ layer.classList.remove('sak-open');layer.setAttribute('aria-hidden','true');
+ document.documentElement.style.overflow=oldOverflow;
+ if(readerFrame)readerFrame.src='about:blank';
+ if(reader)reader.classList.remove('open');
+ if(legacyFrame)legacyFrame.src='about:blank';
+};
+new MutationObserver(()=>{if(shell&&layer.classList.contains('sak-open'))render()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+})();
+</script>
 </body>
 </html>
