@@ -15382,7 +15382,7 @@ html body #logoutText{
         <div class="sakaker-site-news-box" role="dialog" aria-modal="true">
           <button id="sakakerSiteNewsClose" type="button" aria-label="إغلاق">×</button>
           <h2 id="sakakerSiteNewsTitle">أخبار الموقع</h2>
-          <div id="sakakerSiteNewsText">تم تحديث الموقع وإضافة محتوى جديد لمكتبة الفيديو وبعض الأقسام.</div>
+          <div id="sakakerSiteNewsText">تم تحديث الموقع بتاريخ 6 أكتوبر 2026. أضيف قسم الكتب الإلكترونية ويضم سبعة كتب، وأضيفت خمس قصص جديدة لأبوالقمرزمرد ضمن المكتبة النصية. كما تم تحديث مكتبة الفيديو بإضافة جرندايزر في قسم الكرتون، ومحتوى كأس العالم 2026 في قسم الرياضة، وأغاني وموسيقى Titanic في قسم الموسيقى، وأفلام بروس لي وجاكي شان ومارلين مونرو في قسم الأفلام فقط. الحد الأقصى 100 عنصر لكل قسم، ويُستخدم المحتوى الرسمي أو المرخّص عند توفره.</div>
         </div>
       `;
       document.body.appendChild(modal);
@@ -15408,7 +15408,7 @@ html body #logoutText{
     if(title) title.textContent = en ? 'Site News' : 'أخبار الموقع';
     if(text){
       if(window.sakRenderSiteNews)window.sakRenderSiteNews(text);
-      else text.textContent=en?'The site has been updated with new content in the video library and several sections.':'تم تحديث الموقع وإضافة محتوى جديد لمكتبة الفيديو وبعض الأقسام.';
+      else text.textContent=en?'Site update — October 6, 2026. A new E-Books section with seven books and five new Abwalqmrzmrd stories were added to the text library. The video library was also updated with Grendizer in Cartoon, FIFA World Cup 2026 content in Sports, Titanic songs and music in Music, and Bruce Lee, Jackie Chan, and Marilyn Monroe titles in Movies only. Each section is capped at 100 items, using official or licensed sources when available.':'تم تحديث الموقع بتاريخ 6 أكتوبر 2026. أضيف قسم الكتب الإلكترونية ويضم سبعة كتب، وأضيفت خمس قصص جديدة لأبوالقمرزمرد ضمن المكتبة النصية. كما تم تحديث مكتبة الفيديو بإضافة جرندايزر في قسم الكرتون، ومحتوى كأس العالم 2026 في قسم الرياضة، وأغاني وموسيقى Titanic في قسم الموسيقى، وأفلام بروس لي وجاكي شان ومارلين مونرو في قسم الأفلام فقط. الحد الأقصى 100 عنصر لكل قسم، ويُستخدم المحتوى الرسمي أو المرخّص عند توفره.';
     }
 
     if(close) close.setAttribute('aria-label', en ? 'Close' : 'إغلاق');
@@ -39556,7 +39556,8 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock #emOpenBt
   document.getElementById('folderModal').style.display='block';
  };
  window.sakRenderSiteNews=function(host){
-  host.replaceChildren(entry(['آخر التحديثات','Latest updates','تم تحديث الموقع وإضافة محتوى جديد إلى مكتبة الفيديو وبعض الأقسام. تضم الإضافات 400 فيديو يوتيوب موزّعة على ثمانية أقسام، إلى جانب تحديث المكتبة النصية بمحتوى عربي وإنجليزي وتحسين عرض الأيقونات والنوافذ على مختلف الشاشات.','The site has been updated with new content in the video library and several sections. Additions include 400 YouTube videos across eight categories, refreshed Arabic and English text-library content, and improvements to icon and window layouts across screen sizes.']));
+  const enMode=document.documentElement.lang==='en';
+  host.replaceChildren(entry(['تحديثات الموقع','Site updates',"تم تحديث الموقع بتاريخ 6 أكتوبر 2026. أضيف قسم الكتب الإلكترونية ويضم سبعة كتب، وأضيفت خمس قصص جديدة لأبوالقمرزمرد ضمن المكتبة النصية. كما تم تحديث مكتبة الفيديو بإضافة جرندايزر في قسم الكرتون، ومحتوى كأس العالم 2026 في قسم الرياضة، وأغاني وموسيقى Titanic في قسم الموسيقى، وأفلام بروس لي وجاكي شان ومارلين مونرو في قسم الأفلام فقط. الحد الأقصى 100 عنصر لكل قسم، ويُستخدم المحتوى الرسمي أو المرخّص عند توفره.","Site update — October 6, 2026. A new E-Books section with seven books and five new Abwalqmrzmrd stories were added to the text library. The video library was also updated with Grendizer in Cartoon, FIFA World Cup 2026 content in Sports, Titanic songs and music in Music, and Bruce Lee, Jackie Chan, and Marilyn Monroe titles in Movies only. Each section is capped at 100 items, using official or licensed sources when available."]));
  };
  function refresh(){
   const host=document.getElementById('folderBody'),root=host?.querySelector('[data-sak-text-view]');
@@ -40932,6 +40933,202 @@ window.closeSakakerEbooks=function(){
  if(legacyFrame)legacyFrame.src='about:blank';
 };
 new MutationObserver(()=>{if(shell&&layer.classList.contains('sak-open'))render()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+})();
+</script>
+
+<!-- sak-site-news-update-20261006 -->
+
+<!-- sak-video-library-videos-html-overlay-20261006 -->
+<style id="sak-video-library-videos-html-overlay-20261006-style">
+#sakVideoLibraryPageOverlay{
+  position:fixed!important;inset:0!important;z-index:2147483647!important;
+  display:none;align-items:stretch;justify-content:stretch;
+  background:#031218!important;
+}
+#sakVideoLibraryPageOverlay.open{display:flex!important}
+#sakVideoLibraryPageOverlay iframe{width:100%!important;height:100%!important;border:0!important;background:#031218!important}
+#sakVideoLibraryPageClose{
+  position:fixed!important;top:max(10px,env(safe-area-inset-top))!important;right:max(10px,env(safe-area-inset-right))!important;
+  z-index:2147483647!important;width:48px!important;height:48px!important;border-radius:50%!important;
+  border:1px solid #8fffe8!important;background:rgba(38,11,22,.96)!important;color:#fff!important;
+  font-size:28px!important;font-weight:900!important;cursor:pointer!important;box-shadow:0 0 18px rgba(0,255,210,.55)!important
+}
+</style>
+<script id="sak-video-library-videos-html-overlay-20261006-js">
+(()=>{
+'use strict';
+let oldOverflow='';
+function ensure(){
+  let o=document.getElementById('sakVideoLibraryPageOverlay');
+  if(o)return o;
+  o=document.createElement('div');
+  o.id='sakVideoLibraryPageOverlay';
+  o.setAttribute('role','dialog');
+  o.setAttribute('aria-modal','true');
+  o.innerHTML='<button id="sakVideoLibraryPageClose" type="button" aria-label="إغلاق / Close">×</button><iframe id="sakVideoLibraryPageFrame" title="مكتبة الفيديو / Video Library" loading="eager"></iframe>';
+  document.body.appendChild(o);
+  o.querySelector('#sakVideoLibraryPageClose').addEventListener('click',close);
+  return o;
+}
+function open(){
+  const o=ensure(),f=o.querySelector('#sakVideoLibraryPageFrame');
+  oldOverflow=document.documentElement.style.overflow;
+  f.src='/videos.html?v=20261006-library2';
+  o.classList.add('open');
+  document.documentElement.style.overflow='hidden';
+  const old=document.getElementById('emeraldLibraryContent');
+  if(old)old.style.setProperty('display','none','important');
+}
+function close(){
+  const o=document.getElementById('sakVideoLibraryPageOverlay');if(!o)return;
+  o.classList.remove('open');
+  const f=o.querySelector('#sakVideoLibraryPageFrame');if(f)f.src='about:blank';
+  document.documentElement.style.overflow=oldOverflow;
+}
+document.addEventListener('click',e=>{
+  const btn=e.target.closest?.('#emeraldLibraryButton');
+  if(!btn)return;
+  e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();open();
+},true);
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&document.getElementById('sakVideoLibraryPageOverlay')?.classList.contains('open')){e.preventDefault();close();}
+},true);
+})();
+</script>
+
+<style id="sak-site-news-compact-fix-20261006">
+html body #sakakerSiteNewsModal{padding:10px!important}
+html body #sakakerSiteNewsModal .sakaker-site-news-box{
+  width:min(360px,88vw)!important;
+  min-height:0!important;
+  max-height:min(68dvh,520px)!important;
+  padding:52px 18px 20px!important;
+  border-radius:18px!important;
+  overflow:auto!important;
+}
+html body #sakakerSiteNewsTitle{
+  margin:0 0 12px!important;
+  font-size:18px!important;
+}
+html body #sakakerSiteNewsText{
+  font-size:13px!important;
+  line-height:1.65!important;
+  font-weight:700!important;
+}
+html body #sakakerSiteNewsClose{
+  top:8px!important;
+  right:8px!important;
+  width:42px!important;
+  height:42px!important;
+  display:grid!important;
+  place-items:center!important;
+  background:#8b1020!important;
+  color:#fff!important;
+  border:2px solid #fff!important;
+  font-size:28px!important;
+  line-height:1!important;
+  opacity:1!important;
+  visibility:visible!important;
+  box-shadow:0 0 0 2px rgba(255,210,210,.35),0 0 18px rgba(255,60,80,.75)!important;
+}
+@media(max-width:600px){
+  html body #sakakerSiteNewsModal .sakaker-site-news-box{
+    width:min(330px,92vw)!important;
+    max-height:64dvh!important;
+    padding:50px 15px 18px!important;
+  }
+  html body #sakakerSiteNewsText{font-size:12.5px!important;line-height:1.6!important}
+}
+</style>
+
+<style id="sak-progressive-all-quiz-20261006-style">
+html body #sakLearningModal{
+  z-index:2147483647!important;
+  position:fixed!important;
+  inset:0!important;
+  padding:10px!important;
+  background:rgba(0,5,10,.92)!important;
+}
+html body #sakLearningModal.is-open{display:flex!important}
+html body #sakLearningModal .sak-learning-panel{
+  width:min(620px,94vw)!important;
+  max-height:92dvh!important;
+  overflow:auto!important;
+  border-radius:20px!important;
+  padding:58px 20px 22px!important;
+  box-shadow:0 0 0 1px #fff5,0 0 26px #00ffd944,0 20px 70px #000!important;
+}
+html body #sakLearningModal .sak-learning-close{
+  position:absolute!important;top:10px!important;right:10px!important;
+  width:42px!important;height:42px!important;display:grid!important;place-items:center!important;
+  z-index:2147483647!important;background:#8b1020!important;color:#fff!important;
+  border:2px solid #fff!important;border-radius:50%!important;font-size:28px!important;
+  box-shadow:0 0 18px #ff4b5caa!important;
+}
+.sak-quiz-levelbar{display:flex;gap:6px;margin:8px 0 14px}
+.sak-quiz-levelbar span{flex:1;padding:7px 5px;border-radius:999px;text-align:center;font-size:11px;font-weight:900;background:#ffffff14;border:1px solid #ffffff2e}
+.sak-quiz-levelbar span.active{background:#ffe78a;color:#17354b;border-color:#fff}
+.sak-quiz-meter{height:8px;border-radius:999px;background:#ffffff18;overflow:hidden;margin:10px 0 16px}
+.sak-quiz-meter>i{display:block;height:100%;background:linear-gradient(90deg,#65ffd7,#ffe36f,#ff8b73);width:0}
+.sak-quiz-meta{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;color:#aefaf2;font-weight:900;font-size:12px}
+@media(max-width:600px){
+ html body #sakLearningModal .sak-learning-panel{width:96vw!important;max-height:94dvh!important;padding:56px 14px 18px!important}
+ .sak-learning-options button{min-height:48px!important}
+}
+</style>
+<script id="sak-progressive-all-quiz-20261006-js">
+(()=>{
+'use strict';
+const BANK=[{"qAr":"ما عاصمة المملكة العربية السعودية؟","qEn":"What is the capital of Saudi Arabia?","oAr":["الرياض","جدة","مكة","الدمام"],"oEn":["Riyadh","Jeddah","Makkah","Dammam"],"a":0},{"qAr":"كم عدد أيام الأسبوع؟","qEn":"How many days are in a week?","oAr":["5","6","7","8"],"oEn":["5","6","7","8"],"a":2},{"qAr":"أي كوكب نعيش عليه؟","qEn":"Which planet do we live on?","oAr":["المريخ","الأرض","الزهرة","زحل"],"oEn":["Mars","Earth","Venus","Saturn"],"a":1},{"qAr":"ما لون السماء في يوم صافٍ؟","qEn":"What color is the sky on a clear day?","oAr":["أزرق","أخضر","أحمر","بنفسجي"],"oEn":["Blue","Green","Red","Purple"],"a":0},{"qAr":"كم يساوي 2 + 3؟","qEn":"What is 2 + 3?","oAr":["4","5","6","7"],"oEn":["4","5","6","7"],"a":1},{"qAr":"أي حيوان ينتج العسل؟","qEn":"Which animal produces honey?","oAr":["النحلة","القطة","الحصان","السمكة"],"oEn":["Bee","Cat","Horse","Fish"],"a":0},{"qAr":"ما اللغة الرسمية في السعودية؟","qEn":"What is the official language of Saudi Arabia?","oAr":["العربية","الإنجليزية","الفرنسية","الإسبانية"],"oEn":["Arabic","English","French","Spanish"],"a":0},{"qAr":"كم شهراً في السنة؟","qEn":"How many months are in a year?","oAr":["10","11","12","13"],"oEn":["10","11","12","13"],"a":2},{"qAr":"أي عضو نرى به؟","qEn":"Which organ do we use to see?","oAr":["الأذن","العين","اليد","القدم"],"oEn":["Ear","Eye","Hand","Foot"],"a":1},{"qAr":"ما الشكل ذو ثلاثة أضلاع؟","qEn":"Which shape has three sides?","oAr":["مربع","دائرة","مثلث","مستطيل"],"oEn":["Square","Circle","Triangle","Rectangle"],"a":2},{"qAr":"ما الغاز الذي نتنفسه أساساً؟","qEn":"Which gas do we mainly breathe?","oAr":["الأكسجين","الهيليوم","النيتروجين","ثاني أكسيد الكربون"],"oEn":["Oxygen","Helium","Nitrogen","Carbon dioxide"],"a":0},{"qAr":"كم قارة في العالم؟","qEn":"How many continents are there?","oAr":["5","6","7","8"],"oEn":["5","6","7","8"],"a":2},{"qAr":"ما أكبر محيط؟","qEn":"What is the largest ocean?","oAr":["الأطلسي","الهادئ","الهندي","المتجمد"],"oEn":["Atlantic","Pacific","Indian","Arctic"],"a":1},{"qAr":"ما وحدة قياس الحرارة؟","qEn":"What unit measures temperature?","oAr":["لتر","درجة","متر","كيلوغرام"],"oEn":["Litre","Degree","Metre","Kilogram"],"a":1},{"qAr":"من كتب روميو وجولييت؟","qEn":"Who wrote Romeo and Juliet?","oAr":["شكسبير","نجيب محفوظ","طاغور","تولستوي"],"oEn":["Shakespeare","Naguib Mahfouz","Tagore","Tolstoy"],"a":0},{"qAr":"ما أسرع حيوان بري؟","qEn":"What is the fastest land animal?","oAr":["الفهد","الأسد","الحصان","الغزال"],"oEn":["Cheetah","Lion","Horse","Gazelle"],"a":0},{"qAr":"ما عاصمة اليابان؟","qEn":"What is Japan’s capital?","oAr":["كيوتو","طوكيو","أوساكا","ناغويا"],"oEn":["Kyoto","Tokyo","Osaka","Nagoya"],"a":1},{"qAr":"كم ضلعاً للمسدس؟","qEn":"How many sides does a hexagon have?","oAr":["5","6","7","8"],"oEn":["5","6","7","8"],"a":1},{"qAr":"ما المادة التي يرمز لها بـ H2O؟","qEn":"What substance is H2O?","oAr":["ملح","ماء","ذهب","أكسجين"],"oEn":["Salt","Water","Gold","أكسجين"],"a":1},{"qAr":"ما الجهاز المسؤول عن ضخ الدم؟","qEn":"Which organ pumps blood?","oAr":["الرئة","القلب","الكبد","المعدة"],"oEn":["Lung","Heart","Liver","Stomach"],"a":1},{"qAr":"ما الكوكب المعروف بالكوكب الأحمر؟","qEn":"Which planet is known as the Red Planet?","oAr":["المريخ","المشتري","زحل","عطارد"],"oEn":["Mars","Jupiter","Saturn","Mercury"],"a":0},{"qAr":"ما أسرع سرعة للضوء تقريباً؟","qEn":"What is the approximate speed of light?","oAr":["300 ألف كم/ث","30 ألف كم/ث","3 آلاف كم/ث","3 ملايين كم/ث"],"oEn":["300,000 km/s","30,000 km/s","3,000 km/s","3,000,000 km/s"],"a":0},{"qAr":"من وضع قوانين الحركة؟","qEn":"Who formulated the laws of motion?","oAr":["نيوتن","أينشتاين","غاليليو","داروين"],"oEn":["Newton","Einstein","Galileo","Darwin"],"a":0},{"qAr":"ما أكبر عضو في جسم الإنسان؟","qEn":"What is the largest organ in the human body?","oAr":["القلب","الجلد","الكبد","الرئة"],"oEn":["Heart","Skin","Liver","Lung"],"a":1},{"qAr":"ما أصلب معدن طبيعي؟","qEn":"What is the hardest natural mineral?","oAr":["الذهب","الحديد","الألماس","الفضة"],"oEn":["الذهب","Iron","Diamond","Silver"],"a":2},{"qAr":"أي محيط يفصل أفريقيا عن أستراليا؟","qEn":"Which ocean lies between Africa and Australia?","oAr":["الهندي","الهادئ","الأطلسي","المتجمد"],"oEn":["Indian","Pacific","Atlantic","Arctic"],"a":0},{"qAr":"ما اسم العملية التي تصنع بها النباتات غذاءها؟","qEn":"What process lets plants make food?","oAr":["التنفس","البناء الضوئي","الهضم","التبخر"],"oEn":["Respiration","Photosynthesis","Digestion","Evaporation"],"a":1},{"qAr":"ما اللغة الأكثر تحدثاً كلغة أم؟","qEn":"Which language has the most native speakers?","oAr":["الصينية المندرينية","الإنجليزية","العربية","الإسبانية"],"oEn":["Mandarin Chinese","English","Arabic","Spanish"],"a":0},{"qAr":"كم عدد العظام في جسم البالغ تقريباً؟","qEn":"About how many bones are in an adult body?","oAr":["106","206","306","406"],"oEn":["106","206","306","406"],"a":1},{"qAr":"ما الرمز الكيميائي للذهب؟","qEn":"What is the chemical symbol for gold?","oAr":["Ag","Au","Fe","Go"],"oEn":["Ag","Au","Fe","Go"],"a":1}];
+const modal=document.getElementById('sakLearningModal');
+const out=document.getElementById('sakLearningContent');
+if(!modal||!out)return;
+let index=0,score=0,locked=false;
+const en=()=>document.documentElement.lang==='en';
+const level=()=>index<10?0:index<20?1:2;
+const labels=()=>en()?['Easy','Medium','Hard']:['سهل','متوسط','صعب'];
+function close(){modal.classList.remove('is-open');modal.setAttribute('aria-hidden','true');document.documentElement.style.overflow=''}
+function open(){
+ index=0;score=0;locked=false;
+ modal.classList.add('is-open');modal.setAttribute('aria-hidden','false');
+ document.documentElement.style.overflow='hidden';render();
+}
+function render(){
+ const item=BANK[index],lv=level(),labs=labels(),opts=en()?item.oEn:item.oAr;
+ out.innerHTML=
+ '<h2 class="sak-learning-title">'+(en()?'Test Your Knowledge':'اختبر معلوماتك')+'</h2>'+
+ '<div class="sak-quiz-levelbar">'+labs.map((x,i)=>'<span class="'+(i===lv?'active':'')+'">'+x+'</span>').join('')+'</div>'+
+ '<div class="sak-quiz-meta"><span>'+(en()?'Question ':'السؤال ')+(index+1)+' / '+BANK.length+'</span><span>'+(en()?'Difficulty: ':'الصعوبة: ')+labs[lv]+'</span></div>'+
+ '<div class="sak-quiz-meter"><i style="width:'+(((index+1)/BANK.length)*100)+'%"></i></div>'+
+ '<div class="sak-learning-card"><p><b>'+(en()?item.qEn:item.qAr)+'</b></p><div class="sak-learning-options">'+
+ opts.map((x,i)=>'<button type="button" data-i="'+i+'">'+x+'</button>').join('')+
+ '</div><div id="sakQuizFeedback"></div><div class="sak-learning-actions"><button id="sakQuizNext" type="button" style="display:none">'+(index===BANK.length-1?(en()?'Show result':'عرض النتيجة'):(en()?'Next question':'السؤال التالي'))+'</button></div></div>';
+ out.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>answer(+b.dataset.i,item.a));
+}
+function answer(choice,correct){
+ if(locked)return;locked=true;
+ const buttons=[...out.querySelectorAll('[data-i]')];
+ buttons.forEach((b,i)=>{b.disabled=true;if(i===correct)b.classList.add('correct');});
+ const fb=document.getElementById('sakQuizFeedback');
+ if(choice===correct){score++;fb.textContent=en()?'✅ Correct':'✅ إجابة صحيحة';}
+ else{buttons[choice]?.classList.add('wrong');fb.textContent=en()?'❌ Incorrect — the correct answer is highlighted.':'❌ إجابة غير صحيحة — تم تمييز الإجابة الصحيحة.';}
+ fb.style.marginTop='12px';fb.style.fontWeight='900';
+ const next=document.getElementById('sakQuizNext');next.style.display='';
+ next.onclick=()=>{locked=false;if(index<BANK.length-1){index++;render()}else finish()};
+}
+function finish(){
+ const pct=Math.round(score/BANK.length*100);
+ out.innerHTML='<h2 class="sak-learning-title">'+(en()?'Quiz complete':'اكتمل الاختبار')+'</h2>'+
+ '<div class="sak-learning-card"><p style="font-size:1.25rem;font-weight:900">'+(en()?'Score: ':'النتيجة: ')+score+' / '+BANK.length+' ('+pct+'%)</p>'+
+ '<p>'+(en()?'You completed all questions from easy to hard.':'أكملت جميع الأسئلة بالتدرج من السهل إلى الصعب.')+'</p>'+
+ '<div class="sak-learning-actions"><button id="sakQuizAgain" type="button">'+(en()?'Try again':'إعادة الاختبار')+'</button></div></div>';
+ document.getElementById('sakQuizAgain').onclick=open;
+}
+window.startQuiz=open;
+document.querySelector('.sak-learning-close')?.addEventListener('click',close,true);
+modal.addEventListener('click',e=>{if(e.target===modal)close()},true);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('is-open')){e.preventDefault();close()}},true);
+new MutationObserver(()=>{if(modal.classList.contains('is-open'))render()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 })();
 </script>
 </body>
