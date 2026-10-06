@@ -27,7 +27,7 @@ function itemsFor(key){
   const seen=new Set();
   return s.seeds
     .filter(x=>{
-      const key=x.id||x.href||((x.ar||'')+'|'+(x.en||''));
+      const key=x.id||((x.ar||'')+'|'+(x.en||''))||x.href;
       if(!key||seen.has(key))return false;
       seen.add(key);return true;
     })
