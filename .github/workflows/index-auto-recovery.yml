@@ -1,0 +1,138 @@
+name: Index Auto Recovery
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'archive/03_sakaker_books7_stories5_all-popups_2026-10-06.html'
+      - '.github/workflows/index-auto-recovery.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: index-auto-recovery-main
+  cancel-in-progress: false
+
+jobs:
+  validate-and-recover:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Validate published index
+        id: validate
+        shell: python
+        run: |
+          from pathlib import Path
+          import sys
+
+          index = Path("index.html")
+          archive = Path("archive/03_sakaker_books7_stories5_all-popups_2026-10-06.html")
+
+          errors = []
+          if not index.exists():
+              errors.append("index.html is missing")
+          if not archive.exists():
+              errors.append("recovery archive is missing")
+
+          if index.exists():
+              text = index.read_text(encoding="utf-8", errors="replace")
+
+              if len(text) < 900_000:
+                  errors.append("index.html is unexpectedly small")
+
+              required = [
+                  "<!DOCTYPE html",
+                  "<html",
+                  "</html>",
+                  "<body",
+                  "</body>",
+                  'id="loginOverlay"',
+                  'id="facebookVideoIcon"',
+                  'id="facebookVideoPopup"',
+                  'id="liveFlasher"',
+                  'id="livePopup"',
+                  'id="pongGame-btn"',
+                  'id="shipIcon_new"',
+                  'id="shipPopup_new"',
+                  'id="emeraldLibraryButton"',
+                  'id="emeraldLibraryContent"',
+                  'id="sakakerBusinessAd"',
+                  'id="sakBooksAppLayer"',
+                  "window.openSakakerEbooks",
+                  "sakaker-direct-seven-books-20261006",
+                  "sakaker-all-popups-top-layer-20261006",
+                  "أبوالقمرزمرد وسفينة الضباب",
+                  "أبوالقمرزمرد وقلعة الزمرد الخفية",
+                  "أبوالقمرزمرد وحارس الميناء الأسود",
+                  "أبوالقمرزمرد وجزيرة الرياح السبع",
+                  "أبوالقمرزمرد ونجم الصحراء",
+                  "مغامرة في الصحراء",
+                  "أنت لي",
+                  "إيكادولي",
+                  "قضية زعيم العصابة",
+                  "فن الحياة",
+                  "ألف ليلة وليلة",
+                  "قواعد جارتين",
+              ]
+              missing = [item for item in required if item not in text]
+              if missing:
+                  errors.append("missing critical markers: " + ", ".join(missing))
+
+              if text.count("<html") != 1:
+                  errors.append("unexpected html root count")
+              if text.count("</html>") != 1:
+                  errors.append("unexpected closing html count")
+
+          if errors:
+              print("RECOVERY_REQUIRED=1")
+              for e in errors:
+                  print("ERROR:", e)
+              Path("recovery_required.txt").write_text("\n".join(errors), encoding="utf-8")
+              sys.exit(1)
+
+          print("RECOVERY_REQUIRED=0")
+          print("index.html passed critical validation")
+
+      - name: Restore stable archive
+        if: failure() && steps.validate.outcome == 'failure'
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp "archive/03_sakaker_books7_stories5_all-popups_2026-10-06.html" index.html
+          echo "Stable archive restored into index.html"
+
+      - name: Verify restored copy
+        if: failure() && steps.validate.outcome == 'failure'
+        shell: bash
+        run: |
+          set -euo pipefail
+          cmp -s index.html "archive/03_sakaker_books7_stories5_all-popups_2026-10-06.html"
+          echo "Restored index matches archive exactly"
+
+      - name: Commit automatic recovery
+        if: failure() && steps.validate.outcome == 'failure'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "sakaker-auto-recovery"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No recovery commit needed."
+            exit 0
+          fi
+          git commit -m "Auto-recover index.html from stable archive"
+          git push origin HEAD:main
+
+      - name: Mark job successful after recovery
+        if: failure() && steps.validate.outcome == 'failure'
+        shell: bash
+        run: |
+          echo "Automatic recovery completed successfully."
