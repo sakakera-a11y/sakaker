@@ -80,4 +80,38 @@ async function run(exporting){const t=T[lang];if(!audioBlob||!imgs.length){ST.te
 P.onclick=()=>run(false);E.onclick=()=>run(true);STOP.onclick=()=>{cancel=true};drawStatic();captureSiteImage();tr();
 })();
 </script>
+
+<style id="sak-audio-video-embed-mode">
+html.sak-av-embedded,html.sak-av-embedded body{min-height:100%;background:transparent!important}
+html.sak-av-embedded body{padding:6px!important}
+html.sak-av-embedded .wrap{width:100%!important;max-width:none!important}
+html.sak-av-embedded .head{justify-content:flex-end!important;margin-bottom:8px!important}
+html.sak-av-embedded .head .brand,
+html.sak-av-embedded .head a[href="/"]{display:none!important}
+html.sak-av-embedded .assetbar{position:relative!important;top:auto!important}
+@media(max-width:600px){
+ html.sak-av-embedded body{padding:2px!important}
+ html.sak-av-embedded .assetbar{padding:8px!important}
+ html.sak-av-embedded .preview,html.sak-av-embedded .side{padding:10px!important}
+}
+</style>
+<script id="sak-audio-video-embed-mode-js">
+(()=>{
+ const embedded=new URLSearchParams(location.search).get('embed')==='1';
+ if(!embedded)return;
+ document.documentElement.classList.add('sak-av-embedded');
+ try{
+   const p=window.parent;
+   if(p&&p!==window){
+     const sync=()=>{
+       const want=p.documentElement.lang==='en'?'en':'ar';
+       const have=document.documentElement.lang==='en'?'en':'ar';
+       if(want!==have)document.getElementById('langBtn')?.click();
+     };
+     sync();
+     new MutationObserver(sync).observe(p.documentElement,{attributes:true,attributeFilter:['lang']});
+   }
+ }catch(_){}
+})();
+</script>
 </body></html>
