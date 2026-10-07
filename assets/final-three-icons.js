@@ -563,7 +563,19 @@ function rebuildIconAppearance(){
   updateSiteBackgroundButton();
 }
 
+let visitorCounterModuleRequested=false;
+function loadVisitorCounterModule(){
+  if(visitorCounterModuleRequested)return;
+  visitorCounterModuleRequested=true;
+  const script=document.createElement('script');
+  script.type='module';
+  script.src='/assets/visitor-counter.js?v=20261007-visitor1';
+  script.onerror=()=>{visitorCounterModuleRequested=false;};
+  document.head.appendChild(script);
+}
+
 function settle(){
+  loadVisitorCounterModule();
   installSiteBackgroundStyle();
 
   /* Keep the login screen light: no Facebook scanning, icon rebuilding or
