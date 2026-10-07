@@ -6022,6 +6022,7 @@ import {
     getDoc,
     setDoc,
     updateDoc,
+    writeBatch,
     increment,
     serverTimestamp
 }
@@ -6475,41 +6476,46 @@ document.getElementById(
 
   async function registerVisit(user){
     try{
-      /* لا نكرر الزيارة في نفس جلسة المتصفح */
       if(sessionStorage.getItem("sakakerVisitRegistered") === "1") return;
 
       const totalRef = doc(db, "siteStats", "visits");
       const todayRef = doc(db, "siteStats", "daily_" + todayKey);
+      const totalMarkRef = doc(db, "siteStats", "visits", "visitorMarks", user.uid);
+      const todayMarkRef = doc(db, "siteStats", "daily_" + todayKey, "visitorMarks", user.uid);
 
-      const totalSnap = await getDoc(totalRef);
-      if(totalSnap.exists()){
-        await updateDoc(totalRef, {
-          count: increment(1),
-          updatedAt: serverTimestamp()
-        });
-      }else{
-        await setDoc(totalRef, {
-          count: 1,
-          updatedAt: serverTimestamp()
-        });
+      const [totalSnap,todaySnap,totalMarkSnap,todayMarkSnap] = await Promise.all([
+        getDoc(totalRef),
+        getDoc(todayRef),
+        getDoc(totalMarkRef),
+        getDoc(todayMarkRef)
+      ]);
+
+      const batch = writeBatch(db);
+      let writes = 0;
+
+      if(!totalMarkSnap.exists()){
+        batch.set(totalMarkRef,{createdAt:serverTimestamp()});
+        if(totalSnap.exists()){
+          batch.update(totalRef,{count:increment(1),updatedAt:serverTimestamp()});
+        }else{
+          batch.set(totalRef,{count:1,updatedAt:serverTimestamp()});
+        }
+        writes++;
       }
 
-      const todaySnap = await getDoc(todayRef);
-      if(todaySnap.exists()){
-        await updateDoc(todayRef, {
-          count: increment(1),
-          updatedAt: serverTimestamp()
-        });
-      }else{
-        await setDoc(todayRef, {
-          count: 1,
-          date: todayKey,
-          updatedAt: serverTimestamp()
-        });
+      if(!todayMarkSnap.exists()){
+        batch.set(todayMarkRef,{createdAt:serverTimestamp()});
+        if(todaySnap.exists()){
+          batch.update(todayRef,{count:increment(1),updatedAt:serverTimestamp()});
+        }else{
+          batch.set(todayRef,{count:1,date:todayKey,updatedAt:serverTimestamp()});
+        }
+        writes++;
       }
 
+      if(writes) await batch.commit();
       sessionStorage.setItem("sakakerVisitRegistered","1");
-      loadVisitTotals();
+      await loadVisitTotals();
     }catch(err){
       console.warn("SAKAKER visit counter:", err);
     }
@@ -6569,43 +6575,49 @@ document.getElementById(
     if(typeof window.sakakerPresenceStop==='function')await window.sakakerPresenceStop();
     onlineEl.dataset.state='loading';delete onlineEl.dataset.value;updateCounterLanguage();
     try{
-      const {ref,set,onDisconnect,onValue}=await import("https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js");
+      const {ref,onValue}=await import("https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js");
       if(generation!==presenceGeneration)return;
-      const uid=user.uid,sessionId=uid+'_'+Math.random().toString(36).slice(2);
-      const myRef=ref(rtdb,'sakakerPresence/'+sessionId),allRef=ref(rtdb,'sakakerPresence');
-      let active=true,connected=false,heartbeat=null,snapshotData={},readReady=false;
-      function fail(err){if(!active)return;readReady=false;onlineEl.dataset.state='error';onlineEl.title=document.documentElement.lang==='en'?'Live counter unavailable: check connection or database permissions.':'تعذر قراءة الموجودين: تحقق من الاتصال أو صلاحيات قاعدة البيانات.';updateCounterLanguage();console.warn('SAKAKER presence:',err);}
-      function render(){
-        if(!active||!connected||!readReady)return;
-        const now=Date.now(),users=new Set();
-        Object.entries(snapshotData).forEach(([id,item])=>{if(item&&item.online===true&&Number(item.lastSeen)>now-90000)users.add(item.uid||id)});
-        onlineEl.dataset.state='live';onlineEl.dataset.value=String(users.size);
-        onlineEl.title=document.documentElement.lang==='en'?'Connected signed-in users':'المستخدمون المسجلون المتصلون الآن';
+
+      const allRef=ref(rtdb,'onlineUsers');
+      let active=true;
+      const fail=err=>{
+        if(!active)return;
+        onlineEl.dataset.state='error';
+        onlineEl.title=document.documentElement.lang==='en'
+          ?'Live counter unavailable: check connection or database permissions.'
+          :'تعذر قراءة الموجودين: تحقق من الاتصال أو صلاحيات قاعدة البيانات.';
         updateCounterLanguage();
-      }
-      const unsubAll=onValue(allRef,snap=>{snapshotData=snap.val()||{};readReady=true;render()},fail);
-      const write=()=>set(myRef,{online:true,uid,lastSeen:Date.now()});
-      const unsubConnection=onValue(ref(rtdb,'.info/connected'),async snap=>{
-        connected=snap.val()===true;
-        clearInterval(heartbeat);
-        if(!connected){onlineEl.dataset.state='offline';updateCounterLanguage();return;}
-        try{
-          await onDisconnect(myRef).remove();
-          if(!active)return;
-          await write();if(!active){await set(myRef,null);return;}
-          render();heartbeat=setInterval(()=>{write().catch(fail);render()},25000);
-        }catch(err){fail(err)}
+        console.warn('SAKAKER presence:',err);
+      };
+      const unsub=onValue(allRef,snap=>{
+        if(!active||generation!==presenceGeneration)return;
+        const data=snap.val()||{};
+        const users=new Set();
+        Object.entries(data).forEach(([id,item])=>{
+          if(item&&typeof item==='object')users.add(item.uid||id);
+        });
+        onlineEl.dataset.state='live';
+        onlineEl.dataset.value=String(users.size);
+        onlineEl.title=document.documentElement.lang==='en'
+          ?'Connected signed-in users'
+          :'المستخدمون المسجلون المتصلون الآن';
+        updateCounterLanguage();
       },fail);
+
       window.sakakerPresenceStop=async()=>{
-        active=false;connected=false;clearInterval(heartbeat);unsubAll();unsubConnection();
-        onlineEl.dataset.state='offline';delete onlineEl.dataset.value;updateCounterLanguage();
-        try{await set(myRef,null)}catch(_){}
+        active=false;
+        try{unsub()}catch(_){}
+        onlineEl.dataset.state='offline';
+        delete onlineEl.dataset.value;
+        updateCounterLanguage();
       };
     }catch(err){
       if(generation!==presenceGeneration)return;
-      onlineEl.dataset.state='error';updateCounterLanguage();console.warn('SAKAKER live presence:',err);
+      onlineEl.dataset.state='error';updateCounterLanguage();
+      console.warn('SAKAKER live presence:',err);
     }
   }
+
 
   /* عداد الزيارات يبدأ بعد نجاح تسجيل الدخول لأن الموقع مقفول قبل ذلك */
   if(window.firebaseAuth){
