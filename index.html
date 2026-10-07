@@ -40186,24 +40186,6 @@ html body .sak-news-flasher-icon{font-size:24px!important;line-height:1!importan
   [0,400,1200,2500,4000,6000,7000].forEach(delay=>setTimeout(restoreNewsCard,delay));
 })();
 </script>
-<script id="sak-single-thoughts-story">
-(()=>{
-  'use strict';
-  const story={
-    ar:{title:'📜 علي بابا والسبعون حرامي',lead:'حكاية شعبية بصياغة عربية وإنجليزية',paragraphs:['كان علي بابا رجلًا بسيطًا يعمل في جمع الحطب. وفي يومٍ من الأيام رأى جماعة من اللصوص يقفون أمام صخرة كبيرة، فسمع قائدهم يقول: «افتح يا سمسم». انفتحت الصخرة عن مغارةٍ تخفي كنوزًا كثيرة، فحفظ علي بابا العبارة وانتظر حتى غادروا.','دخل علي بابا المغارة وأخذ قدرًا يسيرًا من المال ليعين أسرته، لكنه أوصى نفسه ألا يجعل الطمع دليلًا له. وعندما حاول آخرون معرفة السر، كادت المغارة أن تصبح سببًا للخطر، لولا الحكمة والشجاعة اللتان أنقذتا الموقف.','تذكّرنا الحكاية بأن الثروة لا تكون خيرًا إلا حين ترافقها الأمانة والعقل، وأن الطمع قد يحوّل الفرصة إلى مشكلة. وهي قصة من التراث الشعبي تُروى بصيغ متعددة للمتعة والعبرة.']},
-    en:{title:'📜 Ali Baba and the Seventy Thieves',lead:'A folk tale presented in Arabic and English',paragraphs:['Ali Baba was a modest woodcutter. One day, he saw a band of thieves standing before a great rock and heard their leader say, “Open, Sesame.” The rock opened into a cave filled with treasure, so Ali Baba remembered the words and waited until the thieves had gone.','Ali Baba entered the cave and took only a small amount to help his family, reminding himself not to let greed lead him. When others tried to learn the secret, the cave nearly became a source of danger, until wisdom and courage helped bring the matter safely to an end.','The tale reminds us that wealth is a blessing only when joined with honesty and good judgment, and that greed can turn an opportunity into trouble. It is a folk story told in many versions for enjoyment and reflection.']}
-  };
-  window.showKhwater=function(host){
-    if(!host)return;const ar=document.documentElement.lang!=='en',copy=ar?story.ar:story.en;
-    const article=document.createElement('article');article.className='sak-single-story';article.dir=ar?'rtl':'ltr';
-    const heading=document.createElement('h2');heading.textContent=copy.title;
-    const lead=document.createElement('p');lead.className='sak-story-note';lead.textContent=copy.lead;
-    article.append(heading,lead);copy.paragraphs.forEach(text=>{const p=document.createElement('p');p.textContent=text;article.append(p);});
-    host.replaceChildren(article);const title=document.getElementById('folderTitle');if(title)title.textContent=ar?'خواطر وقصص':'Thoughts & Stories';
-  };
-})();
-</script>
-
 <!-- Restored only: entertainment, shopping, images-to-video. Source history: 06918e2 and 485dd27. -->
 <!-- SAKAKER ENTERTAINMENT STATION — flying gull launcher -->
 <style id="sakaker-chess-launcher-style">
