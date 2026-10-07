@@ -6453,6 +6453,12 @@ document.getElementById(
     return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
   })();
 
+  /* Official historical baseline:
+     Cloudflare Analytics recorded 1.41k unique visitors for the verified
+     historical period. Keep this separate from Firestore so new visits
+     continue incrementing without rewriting historical data. */
+  const SAKAKER_HISTORICAL_VERIFIED_VISITS = 1410;
+
   const formatNumber = n => Number(n || 0).toLocaleString(
     document.documentElement.lang === "en" ? "en-US" : "ar-SA"
   );
@@ -6527,9 +6533,13 @@ document.getElementById(
         getDoc(doc(db,"siteStats","visits")),
         getDoc(doc(db,"siteStats","daily_" + todayKey))
       ]);
-      const total = totalSnap.exists() ? Number(totalSnap.data().count || 0) : 0;
+      const newVisits = totalSnap.exists() ? Number(totalSnap.data().count || 0) : 0;
       const today = todaySnap.exists() ? Number(todaySnap.data().count || 0) : 0;
-      totalEl.dataset.value = String(total);
+      const officialTotal = SAKAKER_HISTORICAL_VERIFIED_VISITS + Math.max(0,newVisits);
+      totalEl.dataset.value = String(officialTotal);
+      totalEl.title = document.documentElement.lang === "en"
+        ? "Verified historical visitors + new registered visits"
+        : "الزوار التاريخيون الموثقون + الزيارات الجديدة المسجلة";
       todayEl.dataset.value = String(today);
       updateCounterLanguage();
     }catch(err){
