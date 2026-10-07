@@ -19,8 +19,8 @@ replacements = [
         "function syncSiteBackgroundLock(){\n  let video=document.getElementById('sakSiteBackgroundVideo');\n\n  if(isLocked()){\n    if(video)video.pause();\n    return;\n  }\n\n  /* The video is intentionally absent during login. Create it now, once,\n     immediately after Firebase unlocks the page. */\n  if(!video){\n    ensureSiteBackground();\n    video=document.getElementById('sakSiteBackgroundVideo');\n    if(!video)return;\n  }\n\n  startSiteBackgroundSound();\n  removeOldSeaSoundControl();\n  requestAnimationFrame(placeSiteSoundAboveClock);\n  updateSiteBackgroundButton();\n}"
     ),
     (
-        "function settle(){\n  removeVisitorCounters();\n  installFacebookEmbeds();\n  ensureSiteBackground();\n  rebuildIconAppearance();\n  removeOldSeaSoundControl();\n  requestAnimationFrame(placeSiteSoundAboveClock);\n}",
-        "function settle(){\n  removeVisitorCounters();\n  installSiteBackgroundStyle();\n\n  /* Keep the login screen light: no Facebook scanning, icon rebuilding or\n     background-video creation until the authenticated page is visible. */\n  if(isLocked())return;\n\n  installFacebookEmbeds();\n  ensureSiteBackground();\n  rebuildIconAppearance();\n  removeOldSeaSoundControl();\n  requestAnimationFrame(placeSiteSoundAboveClock);\n}"
+        "function settle(){\n  installFacebookEmbeds();\n  ensureSiteBackground();\n  rebuildIconAppearance();\n  removeOldSeaSoundControl();\n  requestAnimationFrame(placeSiteSoundAboveClock);\n}",
+        "function settle(){\n  installSiteBackgroundStyle();\n\n  /* Keep the login screen light: no Facebook scanning, icon rebuilding or\n     background-video creation until the authenticated page is visible. */\n  if(isLocked())return;\n\n  installFacebookEmbeds();\n  ensureSiteBackground();\n  rebuildIconAppearance();\n  removeOldSeaSoundControl();\n  requestAnimationFrame(placeSiteSoundAboveClock);\n}"
     ),
     (
         "[250,700,1500,3000,5500,9000].forEach(ms=>setTimeout(settle,ms));",
