@@ -32,11 +32,6 @@ const labels={
   business:{ar:'سكاكر بزنس',en:'Business'}
 };
 
-function removeVisitorCounters(){
-  const selectors=['#sakakerVisitorCounter','#sakakerRightStats','#visitorCounter','#visitCounter','[id*="VisitorCounter"]','[id*="visitorCounter"]','[class*="visitor-counter"]','[class*="visitorCounter"]'];
-  document.querySelectorAll(selectors.join(',')).forEach(el=>el.remove());
-}
-
 function findTextLibrary(){
   const nodes=[...document.querySelectorAll('button,[role="button"],a,.launcher,[title],[aria-label]')];
   return nodes.find(el=>{
@@ -569,7 +564,6 @@ function rebuildIconAppearance(){
 }
 
 function settle(){
-  removeVisitorCounters();
   installSiteBackgroundStyle();
 
   /* Keep the login screen light: no Facebook scanning, icon rebuilding or
