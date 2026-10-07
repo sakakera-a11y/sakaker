@@ -41327,5 +41327,36 @@ html body .sak-index-link span{font-size:22px!important}
 })();
 </script>
 
+
+<script id="sak-text-library-language-final">
+(()=>{
+ 'use strict';
+ function syncTextLibraryLanguage(){
+   const card=document.querySelector('.cards .sak-text-library-card');
+   if(!card)return;
+   const en=document.documentElement.lang==='en';
+   const label=card.querySelector('.icon-label');
+   const sub=card.querySelector('.sub');
+   if(label)label.textContent=en?'Text Library':'المكتبة النصية';
+   if(sub)sub.textContent=en?'Stories • Knowledge • Riddles':'قصص • معرفة • ألغاز';
+   const title=en?'Text Library':'المكتبة النصية';
+   card.setAttribute('aria-label',title);
+   card.setAttribute('title',title);
+ }
+ const observer=new MutationObserver(syncTextLibraryLanguage);
+ observer.observe(document.documentElement,{attributes:true,attributeFilter:['lang','dir']});
+ document.addEventListener('click',e=>{
+   if(e.target.closest('#siteLangToggle')){
+     setTimeout(syncTextLibraryLanguage,0);
+     setTimeout(syncTextLibraryLanguage,80);
+   }
+ },true);
+ if(document.readyState==='loading'){
+   document.addEventListener('DOMContentLoaded',syncTextLibraryLanguage,{once:true});
+ }else syncTextLibraryLanguage();
+ [300,900,1800,3500,6000].forEach(ms=>setTimeout(syncTextLibraryLanguage,ms));
+})();
+</script>
+
 </body>
 </html>
