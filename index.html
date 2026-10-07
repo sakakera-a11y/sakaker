@@ -40846,6 +40846,14 @@ window.showKhwater=function(host){
   body.replaceChildren(wrap);
 };
 
+window.addKhwaterStory=function(story){
+  if(!story||!story.ar||!story.en||!Array.isArray(story.ar.paragraphs)||!Array.isArray(story.en.paragraphs))return false;
+  stories.unshift(story);
+  const body=document.getElementById('folderBody');
+  if(body)window.showKhwater(body);
+  return true;
+};
+
 const oldOpenFolder=window.openFolder;
 if(typeof oldOpenFolder==='function'){
   window.openFolder=function(n){
