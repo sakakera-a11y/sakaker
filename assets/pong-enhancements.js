@@ -4,8 +4,8 @@
   if (!arena || document.getElementById('spxInvite')) return;
   const locale = () => document.documentElement.lang.toLowerCase().startsWith('en') ? 'en' : 'ar';
   const copy = {
-    ar: { invite:'🔗 دعوة صديق', inviteTitle:'نسخ رابط دعوة لهذه الغرفة', inviteReady:'انسخ رابط الدعوة وأرسله لصديقك ليدخل إلى هذه الغرفة.', inviteFirst:'أنشئ غرفة أولًا لتفعيل رابط الدعوة.', copied:'تم نسخ رابط الدعوة', shareTitle:'انضم إلى مباراة Pong في SAKAKER', helpTitle:'طريقة اللعب', help:'اسحب المضرب أو حرّك الفأرة فوق الملعب. على لوحة المفاتيح استخدم ↑ ↓ أو W و S. أنشئ غرفة وأرسل رابط الدعوة، أو انضم باستخدام الرمز أو من قائمة الغرف العامة.', copyFallback:'تعذر النسخ تلقائيًا؛ انسخ الرابط من شريط العنوان.', inviteLabel:'دعوة صديق إلى الغرفة' },
-    en: { invite:'🔗 Invite a friend', inviteTitle:'Copy an invitation link to this room', inviteReady:'Copy the invite link and send it to a friend to join this room.', inviteFirst:'Create a room first to enable its invitation link.', copied:'Invitation link copied', shareTitle:'Join a Pong match on SAKAKER', helpTitle:'How to play', help:'Drag your paddle or move the mouse over the court. On a keyboard, use ↑ ↓ or W and S. Create a room and share its invite link, or join with a code or from the public rooms list.', copyFallback:'Automatic copying failed; copy the link from the address bar.', inviteLabel:'Invite a friend to this room' }
+    ar: { invite:'🔗 دعوة صديق', joinInvite:'🎮 انضم إلى الغرفة', joinInviteTitle:'انضم إلى الغرفة من رابط الدعوة', inviteTitle:'نسخ رابط دعوة لهذه الغرفة', inviteReady:'انسخ رابط الدعوة وأرسله لصديقك ليدخل إلى هذه الغرفة.', inviteFirst:'أنشئ غرفة أولًا لتفعيل رابط الدعوة.', copied:'تم نسخ رابط الدعوة', shareTitle:'انضم إلى مباراة Pong في SAKAKER', helpTitle:'طريقة اللعب', help:'اسحب المضرب أو حرّك الفأرة فوق الملعب. على لوحة المفاتيح استخدم ↑ ↓ أو W و S. أنشئ غرفة وأرسل رابط الدعوة، أو انضم باستخدام الرمز أو من قائمة الغرف العامة.', copyFallback:'تعذر النسخ تلقائيًا؛ انسخ الرابط من شريط العنوان.', inviteLabel:'دعوة صديق إلى الغرفة' },
+    en: { invite:'🔗 Invite a friend', joinInvite:'🎮 Join invited room', joinInviteTitle:'Join the room from this invitation', inviteTitle:'Copy an invitation link to this room', inviteReady:'Copy the invite link and send it to a friend to join this room.', inviteFirst:'Create a room first to enable its invitation link.', copied:'Invitation link copied', shareTitle:'Join a Pong match on SAKAKER', helpTitle:'How to play', help:'Drag your paddle or move the mouse over the court. On a keyboard, use ↑ ↓ or W and S. Create a room and share its invite link, or join with a code or from the public rooms list.', copyFallback:'Automatic copying failed; copy the link from the address bar.', inviteLabel:'Invite a friend to this room' }
   };
   const t = key => copy[locale()][key];
   const codeInput = document.getElementById('sakPongCode');
@@ -19,12 +19,13 @@
   style.textContent = [
     '#sakPongArena .spx-invite{border-color:#ffd45a;background:linear-gradient(135deg,#154a42,#176847);font-weight:700}',
     '#sakPongArena .spx-invite:not(:disabled){box-shadow:0 0 0 1px #ffd45a55,0 5px 16px #00d9a333}',
+    '#sakPongArena .spx-join{border-color:#79ffd1;background:linear-gradient(135deg,#0d604f,#124b74);font-weight:700}',
     '#sakPongArena .spx-invite:focus-visible,#sakPongArena .spx-tips summary:focus-visible{outline:3px solid #ffe16b;outline-offset:2px}',
     '#sakPongArena .spx-tips{margin:8px 0 0;padding:8px 11px;border:1px solid #8fdba955;border-radius:12px;background:linear-gradient(120deg,#062d38,#092b25);color:#eafff5}',
     '#sakPongArena .spx-tips summary{cursor:pointer;font-weight:700;color:#ffe58b}',
     '#sakPongArena .spx-tips p{margin:7px 0 0;line-height:1.75}',
     '#sakPongArena .spx-toast{min-height:1.4em;margin-top:4px;color:#ffe58b;font-size:12px}',
-    '@media(max-width:720px){#sakPongArena .spx-invite{flex:1 1 140px}}',
+    '@media(max-width:720px){#sakPongArena .spx-invite,#sakPongArena .spx-join{flex:1 1 140px}}',
     '@media(prefers-reduced-motion:reduce){#sakPongArena .spx-invite{scroll-behavior:auto}}'
   ].join('');
   document.head.append(style);
@@ -38,6 +39,16 @@
   inviteButton.textContent = t('invite');
   inviteButton.disabled = true;
   copyButton.insertAdjacentElement('afterend', inviteButton);
+  const inviteCode = (new URL(location.href).searchParams.get('pongRoom') || '').replace(/[^A-Fa-f0-9]/g, '').slice(0, 12).toUpperCase();
+  const joinButton = document.createElement('button');
+  joinButton.id = 'spxJoinInvite';
+  joinButton.type = 'button';
+  joinButton.className = 'spx-join';
+  joinButton.textContent = t('joinInvite');
+  joinButton.title = t('joinInviteTitle');
+  joinButton.hidden = !inviteCode || codeInput.value.toUpperCase() !== inviteCode;
+  joinButton.addEventListener('click', () => document.getElementById('sakPongJoin')?.click());
+  inviteButton.insertAdjacentElement('afterend', joinButton);
 
   const tips = document.createElement('details');
   tips.className = 'spx-tips';
@@ -60,6 +71,7 @@
     inviteButton.disabled = !valid;
     inviteButton.title = valid ? t('inviteTitle') : t('inviteFirst');
     inviteButton.setAttribute('aria-label', t('inviteLabel'));
+    joinButton.hidden = !inviteCode || codeInput.value.toUpperCase() !== inviteCode;
   }
   function notify(message) {
     toast.textContent = message;
@@ -120,6 +132,8 @@
     summary.textContent = t('helpTitle');
     help.textContent = t('help');
     inviteButton.textContent = t('invite');
+    joinButton.textContent = t('joinInvite');
+    joinButton.title = t('joinInviteTitle');
     inviteButton.setAttribute('aria-label', t('inviteLabel'));
     refresh();
   }).observe(document.documentElement, { attributes:true, attributeFilter:['lang'] });
