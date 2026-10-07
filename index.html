@@ -40650,15 +40650,18 @@ document.addEventListener('keydown',e=>{
 
 const stories=[
   {
-    ar:{title:'📜 علي بابا والسبعون حرامي',lead:'حكاية شعبية بصياغة عربية وإنجليزية',paragraphs:[
-      'كان علي بابا رجلًا بسيطًا يعمل في جمع الحطب، وذات يوم اكتشف مغارة اللصوص وسمع كلمة السر: «افتح يا سمسم».',
-      'دخل المغارة وأخذ قدرًا يسيرًا ليعين أسرته، لكنه حذر نفسه من الطمع، وحين اقترب الخطر أنقذته الحكمة والشجاعة.',
-      'تذكّرنا الحكاية بأن الثروة لا تكون خيرًا إلا حين ترافقها الأمانة والعقل.'
+    image:'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/Screenshot_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A1%D9%A0%D9%A0%D9%A6-%D9%A1%D9%A7%D9%A4%D9%A2%D9%A0%D9%A7_1.png',
+    ar:{title:'🏜️ أبوالقمرزمرد — ليلة على حافة الصحراء',lead:'حكاية من قلب الرمل، بين السكون والمغامرة',paragraphs:[
+      'في مساءٍ امتد فيه الرمل حتى آخر الأفق، توقف أبوالقمرزمرد عند مخيم صغير وسط الصحراء. كانت الخيام منصوبة قرب السيارة، والريح تمر خفيفة فوق الكثبان كأنها تمهّد لبداية حكاية لا يعرف نهايتها أحد.',
+      'لم تكن الرحلة بحثًا عن كنز ولا هروبًا من خطر، بل كانت لحظة اختبار للهدوء والانتباه. مع غروب الشمس تغيّرت ملامح المكان، وصارت العلامات التي بدت واضحة نهارًا أقل يقينًا، فبدأ أبوالقمرزمرد يقرأ اتجاه الريح وآثار الطريق ويثبت في ذاكرته موضع المخيم.',
+      'وحين أقبل الليل، بدت السماء أوسع من كل طريق. جلس قريبًا من الخيمة يتأمل الصمت، وتعلّم أن الصحراء لا تعطي أسرارها لمن يسرع؛ بل لمن يراقب ويصبر ويعرف متى يتحرك ومتى ينتظر.',
+      'مع أول ضوء للفجر عاد الطريق واضحًا، لكن الرحلة تركت معنى أبقى من الطريق نفسه: أن المغامرة ليست دائمًا في الوصول إلى مكان بعيد، بل أحيانًا في أن ترى المكان المألوف بعين مختلفة، وأن تعرف نفسك حين يقلّ الضجيج من حولك.'
     ]},
-    en:{title:'📜 Ali Baba and the Seventy Thieves',lead:'A folk tale presented in Arabic and English',paragraphs:[
-      'Ali Baba discovered the thieves’ cave and learned the words “Open, Sesame.”',
-      'He took only a little to help his family and refused to let greed guide him.',
-      'The tale reminds us that wealth is best joined with honesty and good judgment.'
+    en:{title:'🏜️ Abwalqmrzmrd — A Night at the Edge of the Desert',lead:'A story from the heart of the sands, between stillness and adventure',paragraphs:[
+      'As evening stretched across the dunes, Abwalqmrzmrd stopped beside a small desert camp. The tents stood near the vehicle while a light wind moved over the sand, as though preparing the opening of a story whose ending was still unknown.',
+      'The journey was neither a hunt for treasure nor an escape from danger. It became a lesson in calm observation. As daylight faded, familiar landmarks became less certain, so Abwalqmrzmrd studied the wind, the tracks, and the position of the camp.',
+      'When night arrived, the sky seemed wider than every road. Sitting near the tent, he discovered that the desert does not reveal itself to those who hurry, but to those who watch, wait, and know when to move.',
+      'At first light the route became clear again, yet the journey left behind something more lasting: adventure is not always about reaching a distant place; sometimes it is about seeing a familiar world differently and discovering yourself when the noise around you fades.'
     ]}
   },
   {
@@ -40733,24 +40736,46 @@ window.showKhwater=function(host){
   const wrap=document.createElement('div');
   wrap.id='sakThoughtsStories';
 
-  stories.forEach(st=>{
+  const mast=document.createElement('header');
+  mast.className='sak-story-blog-head';
+  mast.innerHTML='<span>✦</span><h2>'+(en?'Stories & Tales Blog':'مدونة القصص والحكايات')+'</h2><p>'+(en?'Journeys, adventures, and tales from the world of Abwalqmrzmrd':'رحلات ومغامرات وحكايات من عالم أبوالقمرزمرد')+'</p>';
+  wrap.appendChild(mast);
+
+  stories.forEach((st,i)=>{
     const c=en?st.en:st.ar;
     const article=document.createElement('article');
-    article.className='sak-story-card';
+    article.className='sak-story-card'+(i===0?' sak-story-featured':'');
     article.dir=en?'ltr':'rtl';
+
+    if(st.image){
+      const figure=document.createElement('figure');
+      figure.className='sak-story-cover';
+      const img=document.createElement('img');
+      img.src=st.image; img.alt=c.title; img.loading='eager'; img.decoding='async';
+      const cap=document.createElement('figcaption');
+      cap.textContent=en?'From the desert journey':'من رحلة الصحراء';
+      figure.append(img,cap); article.appendChild(figure);
+    }
+
+    const meta=document.createElement('div');
+    meta.className='sak-story-meta';
+    meta.textContent=(en?'Story ':'الحكاية ')+String(i+1).padStart(2,'0');
 
     const h=document.createElement('h2');
     h.textContent=c.title;
     const lead=document.createElement('p');
     lead.className='sak-story-note';
     lead.textContent=c.lead;
-    article.append(h,lead);
+    article.append(meta,h,lead);
 
+    const bodyWrap=document.createElement('div');
+    bodyWrap.className='sak-story-body';
     c.paragraphs.forEach(t=>{
       const p=document.createElement('p');
       p.textContent=t;
-      article.appendChild(p);
+      bodyWrap.appendChild(p);
     });
+    article.appendChild(bodyWrap);
     wrap.appendChild(article);
   });
 
@@ -41357,6 +41382,57 @@ html body .sak-index-link span{font-size:22px!important}
  [300,900,1800,3500,6000].forEach(ms=>setTimeout(syncTextLibraryLanguage,ms));
 })();
 </script>
+
+
+<style id="sak-stories-blog-final">
+#sakThoughtsStories{
+  width:min(900px,100%)!important;margin:0 auto!important;display:grid!important;gap:18px!important;
+  font-family:Tajawal,Tahoma,Arial,sans-serif!important
+}
+#sakThoughtsStories .sak-story-blog-head{
+  text-align:center!important;padding:20px 14px!important;border:1px solid rgba(117,255,220,.32)!important;
+  border-radius:20px!important;background:linear-gradient(145deg,rgba(7,35,42,.92),rgba(15,20,30,.94))!important;
+  box-shadow:0 12px 36px rgba(0,0,0,.30)!important
+}
+#sakThoughtsStories .sak-story-blog-head span{font-size:25px;color:#ffe28a}
+#sakThoughtsStories .sak-story-blog-head h2{margin:5px 0!important;color:#eafff8!important;font-size:clamp(22px,4vw,32px)!important}
+#sakThoughtsStories .sak-story-blog-head p{margin:0!important;color:#aee8dd!important}
+#sakThoughtsStories .sak-story-card{
+  overflow:hidden!important;padding:18px!important;border:1px solid rgba(134,255,226,.28)!important;border-radius:20px!important;
+  background:linear-gradient(150deg,rgba(7,28,35,.96),rgba(10,15,23,.97))!important;
+  box-shadow:0 13px 35px rgba(0,0,0,.34),inset 0 0 18px rgba(82,255,211,.025)!important
+}
+#sakThoughtsStories .sak-story-featured{padding:0 0 20px!important;border-color:rgba(255,226,138,.52)!important}
+#sakThoughtsStories .sak-story-cover{margin:0 0 18px!important;position:relative!important;background:#020609!important}
+#sakThoughtsStories .sak-story-cover img{display:block!important;width:100%!important;max-height:520px!important;object-fit:cover!important}
+#sakThoughtsStories .sak-story-cover figcaption{
+  position:absolute!important;inset:auto 12px 10px!important;width:max-content!important;max-width:calc(100% - 24px)!important;
+  padding:6px 10px!important;border-radius:999px!important;background:rgba(0,0,0,.68)!important;color:#fff4b8!important;font-size:11px!important
+}
+#sakThoughtsStories .sak-story-featured>:not(.sak-story-cover){margin-inline:20px!important}
+#sakThoughtsStories .sak-story-meta{
+  display:inline-block!important;margin-bottom:7px!important;padding:4px 9px!important;border-radius:999px!important;
+  background:rgba(67,255,209,.10)!important;color:#7fffe0!important;font-size:11px!important;font-weight:900!important
+}
+#sakThoughtsStories .sak-story-card h2{
+  margin:4px 0 7px!important;color:#ffe799!important;font-size:clamp(19px,3.4vw,27px)!important;line-height:1.5!important
+}
+#sakThoughtsStories .sak-story-note{
+  margin:0 0 14px!important;padding-bottom:12px!important;border-bottom:1px solid rgba(255,255,255,.10)!important;
+  color:#9debdc!important;font-weight:800!important;font-size:13px!important
+}
+#sakThoughtsStories .sak-story-body{display:grid!important;gap:10px!important}
+#sakThoughtsStories .sak-story-body p{
+  margin:0!important;color:#e6f4f1!important;font-size:clamp(14px,2.1vw,17px)!important;line-height:2!important;text-align:start!important
+}
+@media(max-width:600px){
+ #sakThoughtsStories{gap:12px!important}
+ #sakThoughtsStories .sak-story-card{padding:14px!important;border-radius:16px!important}
+ #sakThoughtsStories .sak-story-featured{padding:0 0 16px!important}
+ #sakThoughtsStories .sak-story-featured>:not(.sak-story-cover){margin-inline:14px!important}
+ #sakThoughtsStories .sak-story-cover img{max-height:360px!important}
+}
+</style>
 
 </body>
 </html>
