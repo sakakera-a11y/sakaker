@@ -36,7 +36,92 @@ const stories=[
         "The moon returned to its place and filled the desert with its calm light. The storm eased, and familiar landmarks appeared again: the oasis rock, the caravan trail, and the distant palms. The dragon gave a joyful roar. The skink disappeared into the sand for a moment, then emerged beside Abwalqmrzmrd’s foot, as if to announce that the adventure had ended safely.",
         "At dawn they returned to the oasis with no gold, but with a map of the tower and safe markers for the route. Abwalqmrzmrd recorded what had happened and left a copy for the desert people, so travelers would know what to do if the moonlight disappeared: work together, protect the water, follow the markers, and listen to the land’s experience. From that night on, the emerald star appeared in stories beside the silver dragon—a reminder that courage grows stronger when it travels with wisdom and fellowship."
       ]
-    }
+    },
+    "serial": 6
+  },
+  {
+    "ar": {
+      "title": "🌙 أبوالقمرزمرد وسفينة الضباب",
+      "lead": "مغامرة في البحر بين الشجاعة وحسن التدبير",
+      "paragraphs": [
+        "خرج أبوالقمرزمرد ليلًا حين غطى الضباب البحر، فسمع نداء استغاثة من قارب تائه قرب الصخور.",
+        "قاد سفينته بضوء القمر واتجاه الريح حتى أنقذ الركاب ورسم لهم طريق العودة بالنجوم.",
+        "عاد مع الفجر وقد أثبت أن البطولة شجاعة تعرف كيف تحمي الآخرين."
+      ]
+    },
+    "en": {
+      "title": "🌙 Abwalqmrzmrd and the Ship of Mist",
+      "lead": "A sea adventure of courage and judgment",
+      "paragraphs": [
+        "Abwalqmrzmrd sailed through thick mist and heard a distress call near the rocks.",
+        "Using moonlight and wind, he reached the stranded boat and guided its crew home by the stars.",
+        "He returned at dawn having shown that true heroism protects others."
+      ]
+    },
+    "serial": 5
+  },
+  {
+    "ar": {
+      "title": "💎 أبوالقمرزمرد وقلعة الزمرد الخفية",
+      "lead": "رحلة بحث عن سر القلعة القديمة",
+      "paragraphs": [
+        "عثر أبوالقمرزمرد على خريطة تقوده إلى قلعة لا يظهر مدخلها إلا تحت ضوء القمر.",
+        "حل ألغاز الأبواب حتى وصل إلى غرفة الكنوز، لكنه اختار سجلًا تاريخيًا بدل الجواهر.",
+        "خرج وهو يدرك أن المعرفة قد تكون أثمن من الذهب والزمرد."
+      ]
+    },
+    "en": {
+      "title": "💎 Abwalqmrzmrd and the Hidden Emerald Castle",
+      "lead": "A quest for the secret of an ancient fortress",
+      "paragraphs": [
+        "Abwalqmrzmrd followed an old map to a fortress revealed only by moonlight.",
+        "He solved its riddles and reached a treasure chamber, choosing an ancient record instead of jewels.",
+        "He left knowing that knowledge can be worth more than gold or emeralds."
+      ]
+    },
+    "serial": 4
+  },
+  {
+    "ar": {
+      "title": "⚓ أبوالقمرزمرد وحارس الميناء الأسود",
+      "lead": "مواجهة غامضة لحماية مدينة ساحلية",
+      "paragraphs": [
+        "وصل أبوالقمرزمرد إلى ميناء كانت إشارات كاذبة تقود السفن إلى الخطر.",
+        "تتبع الضوء إلى برج مهجور وكشف خدعة تستغل خوف البحارة.",
+        "أعاد المنارة الحقيقية وعادت السفن إلى البحر بأمان."
+      ]
+    },
+    "en": {
+      "title": "⚓ Abwalqmrzmrd and the Guardian of the Black Harbor",
+      "lead": "A mystery to protect a coastal city",
+      "paragraphs": [
+        "Abwalqmrzmrd found false lights guiding ships toward danger.",
+        "He traced them to an abandoned tower and exposed the scheme behind them.",
+        "The true lighthouse returned to service and the harbor became safe again."
+      ]
+    },
+    "serial": 3
+  },
+  {
+    "ar": {
+      "title": "🗺️ أبوالقمرزمرد وجزيرة الرياح السبع",
+      "lead": "مغامرة في جزيرة لا تثبت طرقها على حال",
+      "paragraphs": [
+        "قاد أبوالقمرزمرد رحلة إلى جزيرة تتغير طرقها مع الرياح.",
+        "راقب الأشجار والغيوم حتى فهم دورة الرياح وحدد الممر الآمن.",
+        "وصل إلى قلب الجزيرة وعاد برفاقه سالمين من دون أن يفقد أحدًا."
+      ]
+    },
+    "en": {
+      "title": "🗺️ Abwalqmrzmrd and the Island of Seven Winds",
+      "lead": "An adventure on an island whose paths constantly shift",
+      "paragraphs": [
+        "Abwalqmrzmrd led a voyage to an island whose paths changed with the winds.",
+        "By watching trees and clouds, he discovered the wind cycle and found the safe route.",
+        "He reached the island’s heart and brought everyone home safely."
+      ]
+    },
+    "serial": 2
   },
   {
     "ar": {
@@ -61,92 +146,13 @@ const stories=[
     "imageAlt": {
       "ar": "صورة أبوالقمرزمرد في الصحراء مرفقة بحكاية نجم الصحراء",
       "en": "Abwalqmrzmrd in the desert, accompanying the Desert Star story"
-    }
-  },
-  {
-    "ar": {
-      "title": "🌙 أبوالقمرزمرد وسفينة الضباب",
-      "lead": "مغامرة في البحر بين الشجاعة وحسن التدبير",
-      "paragraphs": [
-        "خرج أبوالقمرزمرد ليلًا حين غطى الضباب البحر، فسمع نداء استغاثة من قارب تائه قرب الصخور.",
-        "قاد سفينته بضوء القمر واتجاه الريح حتى أنقذ الركاب ورسم لهم طريق العودة بالنجوم.",
-        "عاد مع الفجر وقد أثبت أن البطولة شجاعة تعرف كيف تحمي الآخرين."
-      ]
     },
-    "en": {
-      "title": "🌙 Abwalqmrzmrd and the Ship of Mist",
-      "lead": "A sea adventure of courage and judgment",
-      "paragraphs": [
-        "Abwalqmrzmrd sailed through thick mist and heard a distress call near the rocks.",
-        "Using moonlight and wind, he reached the stranded boat and guided its crew home by the stars.",
-        "He returned at dawn having shown that true heroism protects others."
-      ]
-    }
-  },
-  {
-    "ar": {
-      "title": "💎 أبوالقمرزمرد وقلعة الزمرد الخفية",
-      "lead": "رحلة بحث عن سر القلعة القديمة",
-      "paragraphs": [
-        "عثر أبوالقمرزمرد على خريطة تقوده إلى قلعة لا يظهر مدخلها إلا تحت ضوء القمر.",
-        "حل ألغاز الأبواب حتى وصل إلى غرفة الكنوز، لكنه اختار سجلًا تاريخيًا بدل الجواهر.",
-        "خرج وهو يدرك أن المعرفة قد تكون أثمن من الذهب والزمرد."
-      ]
-    },
-    "en": {
-      "title": "💎 Abwalqmrzmrd and the Hidden Emerald Castle",
-      "lead": "A quest for the secret of an ancient fortress",
-      "paragraphs": [
-        "Abwalqmrzmrd followed an old map to a fortress revealed only by moonlight.",
-        "He solved its riddles and reached a treasure chamber, choosing an ancient record instead of jewels.",
-        "He left knowing that knowledge can be worth more than gold or emeralds."
-      ]
-    }
-  },
-  {
-    "ar": {
-      "title": "⚓ أبوالقمرزمرد وحارس الميناء الأسود",
-      "lead": "مواجهة غامضة لحماية مدينة ساحلية",
-      "paragraphs": [
-        "وصل أبوالقمرزمرد إلى ميناء كانت إشارات كاذبة تقود السفن إلى الخطر.",
-        "تتبع الضوء إلى برج مهجور وكشف خدعة تستغل خوف البحارة.",
-        "أعاد المنارة الحقيقية وعادت السفن إلى البحر بأمان."
-      ]
-    },
-    "en": {
-      "title": "⚓ Abwalqmrzmrd and the Guardian of the Black Harbor",
-      "lead": "A mystery to protect a coastal city",
-      "paragraphs": [
-        "Abwalqmrzmrd found false lights guiding ships toward danger.",
-        "He traced them to an abandoned tower and exposed the scheme behind them.",
-        "The true lighthouse returned to service and the harbor became safe again."
-      ]
-    }
-  },
-  {
-    "ar": {
-      "title": "🗺️ أبوالقمرزمرد وجزيرة الرياح السبع",
-      "lead": "مغامرة في جزيرة لا تثبت طرقها على حال",
-      "paragraphs": [
-        "قاد أبوالقمرزمرد رحلة إلى جزيرة تتغير طرقها مع الرياح.",
-        "راقب الأشجار والغيوم حتى فهم دورة الرياح وحدد الممر الآمن.",
-        "وصل إلى قلب الجزيرة وعاد برفاقه سالمين من دون أن يفقد أحدًا."
-      ]
-    },
-    "en": {
-      "title": "🗺️ Abwalqmrzmrd and the Island of Seven Winds",
-      "lead": "An adventure on an island whose paths constantly shift",
-      "paragraphs": [
-        "Abwalqmrzmrd led a voyage to an island whose paths changed with the winds.",
-        "By watching trees and clouds, he discovered the wind cycle and found the safe route.",
-        "He reached the island’s heart and brought everyone home safely."
-      ]
-    }
+    "serial": 1
   }
 ];
-function renderThoughts(){const en=document.documentElement.lang==='en',title=document.getElementById('folderTitle'),body=document.getElementById('folderBody'),modal=document.getElementById('folderModal');if(title)title.textContent=en?'Thoughts & Stories':'خواطر وقصص';if(body){body.innerHTML='<div id="sakThoughtsStories"></div>';const host=body.firstElementChild;stories.forEach(st=>{const c=en?st.en:st.ar,a=document.createElement('article');a.className='sak-story-card';a.dir=en?'ltr':'rtl';a.innerHTML='<h2></h2><p class="sak-story-note"></p>';a.querySelector('h2').textContent=c.title;a.querySelector('.sak-story-note').textContent=c.lead;if(st.image){const figure=document.createElement('figure'),img=document.createElement('img');img.src=st.image;img.alt=typeof st.imageAlt==='string'?st.imageAlt:(st.imageAlt?.[en?'en':'ar']||c.title);img.loading='lazy';img.decoding='async';img.style.cssText='display:block;width:min(100%,760px);height:auto;margin:14px auto;border-radius:16px;border:1px solid rgba(120,255,230,.42)';figure.appendChild(img);a.appendChild(figure)}c.paragraphs.forEach(t=>{const p=document.createElement('p');p.textContent=t;a.appendChild(p)});host.appendChild(a)})}if(modal)modal.style.display='block'}
+function renderThoughts(){const en=document.documentElement.lang==='en',title=document.getElementById('folderTitle'),body=document.getElementById('folderBody'),modal=document.getElementById('folderModal');if(title)title.textContent=en?'Thoughts & Stories':'خواطر وقصص';if(body){body.innerHTML='<div id="sakThoughtsStories"></div>';const host=body.firstElementChild;stories.forEach(st=>{const c=en?st.en:st.ar,a=document.createElement('article');a.className='sak-story-card';a.dir=en?'ltr':'rtl';a.innerHTML='<h2></h2><p class="sak-story-note"></p>';const number=document.createElement('p');number.className='sak-story-number';number.textContent=en?'Story '+st.serial:'القصة رقم '+st.serial;a.appendChild(number);a.querySelector('h2').textContent=c.title;a.querySelector('.sak-story-note').textContent=c.lead;if(st.image){const figure=document.createElement('figure'),img=document.createElement('img');img.src=st.image;img.alt=typeof st.imageAlt==='string'?st.imageAlt:(st.imageAlt?.[en?'en':'ar']||c.title);img.loading='lazy';img.decoding='async';img.style.cssText='display:block;width:min(100%,760px);height:auto;margin:14px auto;border-radius:16px;border:1px solid rgba(120,255,230,.42)';figure.appendChild(img);a.appendChild(figure)}c.paragraphs.forEach(t=>{const p=document.createElement('p');p.textContent=t;a.appendChild(p)});host.appendChild(a)})}if(modal)modal.style.display='block'}
 window.showKhwater=renderThoughts;
-window.addKhwaterStory=function(story){if(!story||!story.ar||!story.en||!Array.isArray(story.ar.paragraphs)||!Array.isArray(story.en.paragraphs))return false;stories.unshift(story);if(document.getElementById('sakThoughtsStories'))renderThoughts();return true};
+window.addKhwaterStory=function(story){if(!story||!story.ar||!story.en||!Array.isArray(story.ar.paragraphs)||!Array.isArray(story.en.paragraphs))return false;story.serial=Math.max(0,...stories.map(s=>Number(s.serial)||0))+1;stories.unshift(story);if(document.getElementById('sakThoughtsStories'))renderThoughts();return true};
 function ensureEbooksButton(){const main=document.querySelector('main');if(!main)return null;let b=document.getElementById(EBOOK_ID);if(!b){b=document.createElement('button');b.id=EBOOK_ID;b.type='button';b.dataset.sakSection='ebooks'}const en=document.documentElement.lang==='en';b.textContent=en?'📚 E-Books':'📚 الكتب الإلكترونية';b.title=en?'Open E-Books':'فتح الكتب الإلكترونية';b.setAttribute('aria-label',b.title);b.onclick=()=>{if(window.parent&&window.parent!==window)window.parent.postMessage({type:'sak-open-ebooks'},location.origin)};return b}
 function arrange(){const main=document.querySelector('main');if(!main)return;style();const ebookBtn=ensureEbooksButton();let host=document.getElementById(HOST_ID);if(!host){host=document.createElement('div');host.id=HOST_ID;const h=main.querySelector('h1');(h||main.firstChild)?.after(host)}if(ebookBtn&&!ebookBtn.isConnected)host.appendChild(ebookBtn);const buttons=[...main.querySelectorAll('button')].filter(b=>b.id!=='back'&&!b.closest('.modal'));buttons.forEach((b,i)=>{const[k,r]=classify(b);b.dataset.sakSection=k;b.dataset.sakRank=r;b.dataset.sakIndex=i});buttons.sort((a,b)=>(+a.dataset.sakRank)-(+b.dataset.sakRank)||(+a.dataset.sakIndex)-(+b.dataset.sakIndex)).forEach(b=>host.appendChild(b))}
 function lift(){['sakTextLibraryModal','folderModal','quizModal','puzzleModal','sakakerSiteNewsModal','sakBooksAppLayer'].forEach(id=>{const el=document.getElementById(id);if(el&&el.parentElement!==document.body)document.body.appendChild(el)})}
