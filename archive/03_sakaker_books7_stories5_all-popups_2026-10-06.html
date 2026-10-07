@@ -4245,7 +4245,7 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
     {icon:'📰', ar:'أخبار الموقع', en:'Site News', run:function(){window.openSiteNewsModal();}},
     {icon:'📜', ar:'حكم وأمثال', en:'Wisdom & Proverbs', run:function(){window.openWisdomLibrary();}}
   ];
-  const isEnglish = function(){return document.documentElement.lang === 'en';};
+  const isEnglish = function(){return (localStorage.getItem('sakakerLanguage') || (document.documentElement.lang==='en'?'en':'ar')) === 'en';};
   const label = function(ar,en){return isEnglish() ? en : ar;};
 
   function closeTextLibrary(){
@@ -4283,14 +4283,19 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
     card.setAttribute('role','button');
     card.setAttribute('tabindex','0');
     card.setAttribute('aria-label',label('المكتبة النصية','Text Library'));
+    card.setAttribute('data-aria-ar','المكتبة النصية');
+    card.setAttribute('data-aria-en','Text Library');
+    card.setAttribute('data-title-ar','المكتبة النصية');
+    card.setAttribute('data-title-en','Text Library');
+    card.title=label('المكتبة النصية','Text Library');
 
     card.innerHTML=
       '<svg class="icon-svg" fill="none" viewBox="0 0 24 24">' +
         '<path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 0-3 3V4Z" stroke-width="1.4"></path>' +
         '<path d="M8 8h8M8 12h8M8 16h5" stroke-linecap="round" stroke-width="1.4"></path>' +
       '</svg>' +
-      '<div class="icon-label">'+label('المكتبة النصية','Text Library')+'</div>' +
-      '<div class="sub">'+label('قصص • معرفة • ألغاز','Stories • Knowledge • Riddles')+'</div>';
+      '<div class="icon-label" data-ar="المكتبة النصية" data-en="Text Library">'+label('المكتبة النصية','Text Library')+'</div>' +
+      '<div class="sub" data-ar="قصص • معرفة • ألغاز" data-en="Stories • Knowledge • Riddles">'+label('قصص • معرفة • ألغاز','Stories • Knowledge • Riddles')+'</div>';
 
     const legacySelectors=[
       '.cards .icon-card[onclick="openFolder(1)"]',
@@ -15382,7 +15387,7 @@ html body #logoutText{
         <div class="sakaker-site-news-box" role="dialog" aria-modal="true">
           <button id="sakakerSiteNewsClose" type="button" aria-label="إغلاق">×</button>
           <h2 id="sakakerSiteNewsTitle">أخبار الموقع</h2>
-          <div id="sakakerSiteNewsText">تم تحديث الموقع وإضافة محتوى جديد لمكتبة الفيديو وبعض الأقسام.</div>
+          <div id="sakakerSiteNewsText">تم تحديث الموقع بتاريخ 6 أكتوبر 2026. شكرًا لكل زائر يشاركنا هذه المساحة، ونقدّر وقتكم وثقتكم ودعمكم. نواصل تطوير الموقع وتحسين محتواه وتجربة التصفح ليكون أكثر تنوعًا وسهولة وفائدة. نتمنى لكم تصفحًا ممتعًا، ولكم منا كل الشكر والتقدير — أبوالقمرزمرد.</div>
         </div>
       `;
       document.body.appendChild(modal);
@@ -15408,7 +15413,7 @@ html body #logoutText{
     if(title) title.textContent = en ? 'Site News' : 'أخبار الموقع';
     if(text){
       if(window.sakRenderSiteNews)window.sakRenderSiteNews(text);
-      else text.textContent=en?'The site has been updated with new content in the video library and several sections.':'تم تحديث الموقع وإضافة محتوى جديد لمكتبة الفيديو وبعض الأقسام.';
+      else text.textContent=en?'The site was updated on October 6, 2026. Thank you to every visitor who shares this space with us; we truly appreciate your time, trust, and support. We continue improving the site, its content, and the browsing experience to make it more diverse, useful, and easy to explore. We hope you enjoy your visit, with our sincere thanks and appreciation — Abwalqmrzmrd.':'تم تحديث الموقع بتاريخ 6 أكتوبر 2026. شكرًا لكل زائر يشاركنا هذه المساحة، ونقدّر وقتكم وثقتكم ودعمكم. نواصل تطوير الموقع وتحسين محتواه وتجربة التصفح ليكون أكثر تنوعًا وسهولة وفائدة. نتمنى لكم تصفحًا ممتعًا، ولكم منا كل الشكر والتقدير — أبوالقمرزمرد.';
     }
 
     if(close) close.setAttribute('aria-label', en ? 'Close' : 'إغلاق');
@@ -37885,12 +37890,8 @@ html body:not(.locked) #sakakerBusinessAd{
 <script id="sakaker-learning-hub-js">
 (()=>{'use strict';
  const T={ar:{quizLaunch:'اختبر معلوماتك',riddleLaunch:'الألغاز',quiz:'اختبر معلوماتك',riddle:'تحدي الألغاز',choose:'اختر الإجابة الصحيحة',phase:'المرحلة',easy:'سهل',medium:'متوسط',hard:'صعب',next:'السؤال التالي',start:'ابدأ المرحلة',result:'النتيجة',pass:'أحسنت! انتقلت إلى المرحلة التالية.',retry:'تحتاج إلى 7 إجابات صحيحة للانتقال. أعد المحاولة.',done:'أكملت جميع المراحل!',certificate:'بطاقة تهنئة',close:'إغلاق',again:'إعادة الاختبار',score:'النتيجة',introQuiz:'ثلاث مراحل، عشر أسئلة في كل مرحلة. تحتاج إلى 7 إجابات صحيحة للانتقال.',congrats:'تهانينا',passed:'لقد اجتزت الاختبار بنجاح بدرجة',good:'جيد جداً'},en:{quizLaunch:'Test your knowledge',riddleLaunch:'Riddles',quiz:'Test Your Knowledge',riddle:'Riddle Challenge',choose:'Choose the correct answer',phase:'Level',easy:'Easy',medium:'Medium',hard:'Hard',next:'Next question',start:'Start level',result:'Result',pass:'Well done! You have unlocked the next level.',retry:'You need 7 correct answers to continue. Try again.',done:'You completed all levels!',certificate:'Congratulations Card',close:'Close',again:'Try again',score:'Score',introQuiz:'Three levels, ten questions each. Score 7 correct answers to unlock the next level.',congrats:'Congratulations',passed:'You passed the test successfully with a',good:'Very Good'}};
- const Q={quiz:[
- [['ما عاصمة المملكة العربية السعودية؟','What is the capital of Saudi Arabia?'],['الرياض','جدة','مكة','الدمام'],0], [['كم عدد أيام الأسبوع؟','How many days are in a week?'],['5','6','7','8'],2], [['أي كوكب نعيش عليه؟','Which planet do we live on?'],['المريخ','الأرض','الزهرة','زحل'],1], [['ما لون السماء في يوم صافٍ؟','What color is the sky on a clear day?'],['أزرق','أخضر','أحمر','بنفسجي'],0], [['كم يساوي 2 + 3؟','What is 2 + 3?'],['4','5','6','7'],1], [['أي حيوان ينتج العسل؟','Which animal produces honey?'],['النحلة','القطة','الحصان','السمكة'],0], [['ما اللغة الرسمية في السعودية؟','What is the official language of Saudi Arabia?'],['العربية','الإنجليزية','الفرنسية','الإسبانية'],0], [['كم شهراً في السنة؟','How many months are in a year?'],['10','11','12','13'],2], [['أي عضو نرى به؟','Which organ do we use to see?'],['الأذن','العين','اليد','القدم'],1], [['ما الشكل ذو ثلاثة أضلاع؟','Which shape has three sides?'],['مربع','دائرة','مثلث','مستطيل'],2],
- [['ما الغاز الذي نتنفسه أساساً؟','Which gas do we mainly breathe?'],['الأكسجين','الهيليوم','النيتروجين','ثاني أكسيد الكربون'],0], [['كم قارة في العالم؟','How many continents are there?'],['5','6','7','8'],2], [['ما أكبر محيط؟','What is the largest ocean?'],['الأطلسي','الهادئ','الهندي','المتجمد'],1], [['ما وحدة قياس الحرارة؟','What unit measures temperature?'],['لتر','درجة','متر','كيلوغرام'],1], [['من كتب روميو وجولييت؟','Who wrote Romeo and Juliet?'],['شكسبير','نجيب محفوظ','طاغور','تولستوي'],0], [['ما أسرع حيوان بري؟','What is the fastest land animal?'],['الفهد','الأسد','الحصان','الغزال'],0], [['ما عاصمة اليابان؟','What is Japan’s capital?'],['كيوتو','طوكيو','أوساكا','ناغويا'],1], [['كم ضلعاً للمسدس؟','How many sides does a hexagon have?'],['5','6','7','8'],1], [['ما المادة التي يرمز لها بـ H2O؟','What substance is H2O?'],['ملح','ماء','ذهب','أكسجين'],1], [['ما الجهاز المسؤول عن ضخ الدم؟','Which organ pumps blood?'],['الرئة','القلب','الكبد','المعدة'],1],
- [['ما الكوكب المعروف بالكوكب الأحمر؟','Which planet is known as the Red Planet?'],['المريخ','المشتري','زحل','عطارد'],0], [['ما أسرع سرعة للضوء تقريباً؟','What is the approximate speed of light?'],['300 ألف كم/ث','30 ألف كم/ث','3 آلاف كم/ث','3 ملايين كم/ث'],0], [['من وضع قوانين الحركة؟','Who formulated the laws of motion?'],['نيوتن','أينشتاين','غاليليو','داروين'],0], [['ما أكبر عضو في جسم الإنسان؟','What is the largest organ in the human body?'],['القلب','الجلد','الكبد','الرئة'],1], [['ما أصلب معدن طبيعي؟','What is the hardest natural mineral?'],['الذهب','الحديد','الألماس','الفضة'],2], [['أي محيط يفصل أفريقيا عن أستراليا؟','Which ocean lies between Africa and Australia?'],['الهندي','الهادئ','الأطلسي','المتجمد'],0], [['ما اسم العملية التي تصنع بها النباتات غذاءها؟','What process lets plants make food?'],['التنفس','البناء الضوئي','الهضم','التبخر'],1], [['ما اللغة الأكثر تحدثاً كلغة أم؟','Which language has the most native speakers?'],['الصينية المندرينية','الإنجليزية','العربية','الإسبانية'],0], [['كم عدد العظام في جسم البالغ تقريباً؟','About how many bones are in an adult body?'],['106','206','306','406'],1], [['ما الرمز الكيميائي للذهب؟','What is the chemical symbol for gold?'],['Ag','Au','Fe','Go'],1]
- ]};
- const EN={'الرياض':'Riyadh','جدة':'Jeddah','مكة':'Makkah','الدمام':'Dammam','المريخ':'Mars','الأرض':'Earth','الزهرة':'Venus','زحل':'Saturn','أزرق':'Blue','أخضر':'Green','أحمر':'Red','بنفسجي':'Purple','النحلة':'Bee','القطة':'Cat','الحصان':'Horse','السمكة':'Fish','العربية':'Arabic','الإنجليزية':'English','الفرنسية':'French','الإسبانية':'Spanish','الأذن':'Ear','العين':'Eye','اليد':'Hand','القدم':'Foot','مربع':'Square','دائرة':'Circle','مثلث':'Triangle','مستطيل':'Rectangle','الأكسجين':'Oxygen','الهيليوم':'Helium','النيتروجين':'Nitrogen','ثاني أكسيد الكربون':'Carbon dioxide','الأطلسي':'Atlantic','الهادئ':'Pacific','الهندي':'Indian','المتجمد':'Arctic','لتر':'Litre','درجة':'Degree','متر':'Metre','كيلوغرام':'Kilogram','شكسبير':'Shakespeare','نجيب محفوظ':'Naguib Mahfouz','طاغور':'Tagore','تولستوي':'Tolstoy','الفهد':'Cheetah','الأسد':'Lion','الغزال':'Gazelle','كيوتو':'Kyoto','طوكيو':'Tokyo','أوساكا':'Osaka','ناغويا':'Nagoya','ملح':'Salt','ماء':'Water','ذهب':'Gold','الرئة':'Lung','القلب':'Heart','الكبد':'Liver','المعدة':'Stomach','المشتري':'Jupiter','عطارد':'Mercury','300 ألف كم/ث':'300,000 km/s','30 ألف كم/ث':'30,000 km/s','3 آلاف كم/ث':'3,000 km/s','3 ملايين كم/ث':'3,000,000 km/s','نيوتن':'Newton','أينشتاين':'Einstein','غاليليو':'Galileo','داروين':'Darwin','الجلد':'Skin','الحديد':'Iron','الألماس':'Diamond','الفضة':'Silver','التنفس':'Respiration','البناء الضوئي':'Photosynthesis','الهضم':'Digestion','التبخر':'Evaporation','الصينية المندرينية':'Mandarin Chinese'};
+ const Q={quiz:[[["ما الهدف الأساسي من المنهج السقراطي في الحوار؟","What is the primary aim of the Socratic method in dialogue?"],["تلقين الإجابة مباشرة","طرح أسئلة تكشف الافتراضات وتختبرها","إثبات أن الطرف الآخر مخطئ دائمًا","جمع أكبر عدد من الآراء"],1],[["متى يكون الاستدلال الاستنباطي صالحًا منطقيًا؟","When is a deductive argument logically valid?"],["إذا كانت النتيجة مشهورة","إذا استحال صدق المقدمات وكذب النتيجة معًا","إذا احتوى أرقامًا","إذا وافق رأي الأغلبية"],1],[["في الحجة المنطقية، ما «المقدمة»؟","In an argument, what is a premise?"],["الادعاء الذي يُقدَّم دعمًا للنتيجة","النتيجة النهائية فقط","مثال لا علاقة له بالحجة","اعتراض على السؤال"],0],[["أي مبدأ منطقي يقول إن القضية لا يمكن أن تكون صادقة وكاذبة بالمعنى نفسه وفي الوقت نفسه؟","Which logical principle says a proposition cannot be both true and false in the same respect at the same time?"],["مبدأ عدم التناقض","مبدأ المنفعة","مبدأ الشك","مبدأ الاحتمال"],0],[["مهاجمة الشخص بدل مناقشة حجته تُسمّى ماذا؟","Attacking the person instead of addressing the argument is called what?"],["القياس","مغالطة الشخصنة","الاستقراء","البرهان بالخلف"],1],[["لماذا لا يكفي الارتباط الإحصائي وحده لإثبات السببية؟","Why is statistical correlation alone insufficient to establish causation?"],["لأن الارتباط لا يمكن قياسه","لأن عاملًا ثالثًا أو اتجاهًا عكسيًا قد يفسر العلاقة","لأن السببية لا وجود لها","لأن كل ارتباط عشوائي"],1],[["أي فرع فلسفي يدرس طبيعة المعرفة ومصادرها وحدودها؟","Which branch of philosophy studies the nature, sources, and limits of knowledge?"],["علم الجمال","نظرية المعرفة","فلسفة اللغة فقط","الميتافيزيقا فقط"],1],[["أي فرع فلسفي يدرس ما ينبغي فعله وما يجعل الأفعال صائبة أو خاطئة؟","Which branch of philosophy studies what ought to be done and what makes actions right or wrong?"],["الأخلاق","المنطق الرمزي فقط","فلسفة الرياضيات","علم الوجود"],0],[["علم الوجود Ontology يهتم أساسًا بسؤال:","Ontology is primarily concerned with the question:"],["ما الذي يوجد وما طبيعة الوجود؟","كيف نكتب برهانًا رياضيًا؟","كيف تعمل الذاكرة؟","ما أجمل لون؟"],0],[["ما السمة الأساسية للمعرفة التجريبية؟","What is the key feature of empirical knowledge?"],["تعتمد على الملاحظة والخبرة","تعتمد على الحدس وحده","لا تحتاج أي دليل","تُستنتج من التعريفات فقط"],0],[["مبدأ «نصل أوكام» يفضّل عادةً:","Occam's razor generally favors:"],["التفسير الأكثر تعقيدًا دائمًا","التفسير الذي يفترض كيانات إضافية كثيرة","التفسير الأبسط الكافي دون افتراضات زائدة","أقدم تفسير تاريخيًا"],2],[["البحث فقط عن المعلومات التي تؤيد رأيك وتجاهل المخالف يُسمّى:","Seeking mainly information that supports your view while neglecting contrary evidence is called:"],["تحيز التأكيد","الحياد التام","الاستنباط الصحيح","مبدأ الاقتصاد"],0],[["إذا كان الشرط A كافيًا لحدوث B، فماذا يعني ذلك؟","If condition A is sufficient for B, what does that mean?"],["حدوث A يضمن B","حدوث B يضمن A دائمًا","A وB متناقضان","A لا علاقة له بـB"],0],[["الاستدلال الاستقرائي يختلف عن الاستنباطي لأنه عادةً:","Inductive reasoning differs from deduction because it typically:"],["يضمن النتيجة يقينًا","يجعل النتيجة مرجحة لا مضمونة","لا يستخدم أدلة","يعمل فقط في الرياضيات"],1],[["ما فائدة «التجربة الفكرية» في الفلسفة والعلم؟","What is the value of a thought experiment in philosophy and science?"],["اختبار مفاهيم ونتائج افتراضية ذهنيًا","استبدال كل تجربة فعلية دائمًا","إثبات أي رأي نريده","منع النقاش"],0],[["إذا كان: «إذا أمطرت ابتلت الأرض»، وقد أمطرت؛ فما الاستنتاج الصحيح وفق Modus Ponens؟","If 'If it rains, the ground gets wet,' and it rains, what follows by Modus Ponens?"],["الأرض مبتلة","لم تمطر","الأرض جافة بالضرورة","لا يمكن استنتاج شيء"],0],[["إذا كان: «إذا كان العدد من مضاعفات 4 فهو زوجي»، والعدد ليس زوجيًا؛ فما النتيجة وفق Modus Tollens؟","If 'If a number is divisible by 4, it is even,' and the number is not even, what follows by Modus Tollens?"],["هو من مضاعفات 4","ليس من مضاعفات 4","هو أولي بالضرورة","لا نتيجة"],1],[["من «إذا درست نجحت» و«نجحت» ثم استنتاج «إذن درست»؛ ما الخطأ؟","From 'If you study, you pass' and 'you passed,' concluding 'therefore you studied' commits which error?"],["إثبات التالي","نفي المقدم","قياس صحيح","استقراء علمي"],0],[["من «إذا كان الشيء ذهبًا فهو معدن» و«ليس ذهبًا» ثم استنتاج «إذن ليس معدنًا»؛ ما المغالطة؟","From 'If something is gold, it is a metal' and 'it is not gold,' concluding 'therefore it is not a metal' is:"],["نفي المقدم","إثبات التالي","Modus Ponens","برهان مباشر"],0],[["على من يقع عبء الإثبات عادةً في نقاش عقلاني؟","Who normally bears the burden of proof in a rational discussion?"],["من يقدّم الادعاء","من يسمع الادعاء دائمًا","الأكثر شهرة","الأصغر سنًا"],0],[["يرتبط مفهوم «قابلية التكذيب» عند كارل بوبر بفكرة أن النظرية العلمية ينبغي أن:","Karl Popper's idea of falsifiability holds that a scientific theory should:"],["تكون غير قابلة للاختبار","تسمح بملاحظات ممكنة قد تُظهر خطأها","تتفق مع كل نتيجة ممكنة","تكون معقدة جدًا"],1],[["«مشكلة الاستقراء» عند ديفيد هيوم تسأل أساسًا:","David Hume's 'problem of induction' mainly asks:"],["كيف نبرر انتقالنا من انتظام الماضي إلى توقع المستقبل؟","كيف نحل المعادلات؟","كيف نعرّف الكلمات؟","كيف نقيس المسافة؟"],0],[["في «تمثيل الكهف» عند أفلاطون، الظلال ترمز غالبًا إلى:","In Plato's Allegory of the Cave, the shadows commonly symbolize:"],["المظاهر المحدودة التي تُظن حقيقة كاملة","الرياضيات وحدها","العدالة السياسية فقط","اللغة المكتوبة"],0],[["تركز أخلاق الفضيلة الأرسطية بصورة أساسية على:","Aristotelian virtue ethics primarily focuses on:"],["تكوين الشخصية والفضائل","النتائج الحسابية وحدها","طاعة أي أمر دون نظر","رفض العادات كليًا"],0],[["المبدأ المركزي في النفعية الكلاسيكية هو تقييم الفعل أساسًا بحسب:","The central idea of classical utilitarianism evaluates actions mainly by:"],["نتائجها في تعظيم الرفاه أو السعادة","نية الفاعل فقط مهما كانت النتيجة","عمر الفكرة","مدى انتشارها"],0],[["في الأخلاق الواجبة Deontology، يُعطى وزن أساسي لـ:","In deontological ethics, central weight is given to:"],["الواجبات والقواعد الأخلاقية","اللذة الشخصية وحدها","الربح الاقتصادي فقط","الصدفة"],0],[["«حجاب الجهل» عند جون رولز صُمم لمساعدتنا على التفكير في العدالة من موقع:","John Rawls's 'veil of ignorance' is designed to help us think about justice from a position:"],["لا نعرف فيه مكاننا الخاص في المجتمع","نعرف فيه أننا الأغنى","نعرف فيه مهنتنا بدقة","نفضّل فيه جماعتنا مسبقًا"],0],[["في التفكير البايزي، وصول دليل جديد يؤثر عادةً في:","In Bayesian reasoning, new evidence typically affects:"],["الاحتمال السابق فيُحدَّث إلى احتمال لاحق","الحقيقة المنطقية للتعريفات","معنى الكلمات فقط","عدد الخيارات"],0],[["ما «تحيز البقاء» Survivorship Bias؟","What is survivorship bias?"],["التركيز على الحالات الناجية وإهمال الحالات التي اختفت أو فشلت","تفضيل المستقبل على الماضي","تذكر الأحداث السعيدة فقط","رفض الإحصاء"],0],[["الاستدلال إلى «أفضل تفسير» يُسمّى غالبًا:","Reasoning to the 'best explanation' is commonly called:"],["الاستدلال الاختطافي Abduction","الاستنباط فقط","المصادرة على المطلوب","التناقض"],0]]};
+ const EN={"تلقين الإجابة مباشرة":"Give the answer directly","طرح أسئلة تكشف الافتراضات وتختبرها":"Ask questions that expose and test assumptions","إثبات أن الطرف الآخر مخطئ دائمًا":"Prove the other person is always wrong","جمع أكبر عدد من الآراء":"Collect as many opinions as possible","إذا كانت النتيجة مشهورة":"When the conclusion is popular","إذا استحال صدق المقدمات وكذب النتيجة معًا":"When it is impossible for the premises to be true and the conclusion false","إذا احتوى أرقامًا":"When it contains numbers","إذا وافق رأي الأغلبية":"When it agrees with the majority","الادعاء الذي يُقدَّم دعمًا للنتيجة":"A claim offered in support of the conclusion","النتيجة النهائية فقط":"Only the final conclusion","مثال لا علاقة له بالحجة":"An unrelated example","اعتراض على السؤال":"An objection to the question","مبدأ عدم التناقض":"Law of non-contradiction","مبدأ المنفعة":"Principle of utility","مبدأ الشك":"Principle of doubt","مبدأ الاحتمال":"Principle of probability","القياس":"Syllogism","مغالطة الشخصنة":"Ad hominem fallacy","الاستقراء":"Induction","البرهان بالخلف":"Proof by contradiction","لأن الارتباط لا يمكن قياسه":"Because correlation cannot be measured","لأن عاملًا ثالثًا أو اتجاهًا عكسيًا قد يفسر العلاقة":"Because a third factor or reverse direction may explain the relation","لأن السببية لا وجود لها":"Because causation does not exist","لأن كل ارتباط عشوائي":"Because every correlation is random","علم الجمال":"Aesthetics","نظرية المعرفة":"Epistemology","فلسفة اللغة فقط":"Only philosophy of language","الميتافيزيقا فقط":"Only metaphysics","الأخلاق":"Ethics","المنطق الرمزي فقط":"Only symbolic logic","فلسفة الرياضيات":"Philosophy of mathematics","علم الوجود":"Ontology","ما الذي يوجد وما طبيعة الوجود؟":"What exists and what is the nature of being?","كيف نكتب برهانًا رياضيًا؟":"How do we write a mathematical proof?","كيف تعمل الذاكرة؟":"How does memory work?","ما أجمل لون؟":"What is the most beautiful color?","تعتمد على الملاحظة والخبرة":"It relies on observation and experience","تعتمد على الحدس وحده":"It relies on intuition alone","لا تحتاج أي دليل":"It needs no evidence","تُستنتج من التعريفات فقط":"It follows only from definitions","التفسير الأكثر تعقيدًا دائمًا":"The most complex explanation","التفسير الذي يفترض كيانات إضافية كثيرة":"The explanation with many extra entities","التفسير الأبسط الكافي دون افتراضات زائدة":"The simplest adequate explanation without unnecessary assumptions","أقدم تفسير تاريخيًا":"The historically oldest explanation","تحيز التأكيد":"Confirmation bias","الحياد التام":"Perfect neutrality","الاستنباط الصحيح":"Valid deduction","مبدأ الاقتصاد":"Principle of economy","حدوث A يضمن B":"A guarantees B","حدوث B يضمن A دائمًا":"B always guarantees A","A وB متناقضان":"A and B contradict each other","A لا علاقة له بـB":"A is unrelated to B","يضمن النتيجة يقينًا":"Guarantees the conclusion with certainty","يجعل النتيجة مرجحة لا مضمونة":"Makes the conclusion probable rather than guaranteed","لا يستخدم أدلة":"Uses no evidence","يعمل فقط في الرياضيات":"Works only in mathematics","اختبار مفاهيم ونتائج افتراضية ذهنيًا":"Mentally test concepts and hypothetical consequences","استبدال كل تجربة فعلية دائمًا":"Always replace every real experiment","إثبات أي رأي نريده":"Prove any view we want","منع النقاش":"Prevent discussion","الأرض مبتلة":"The ground is wet","لم تمطر":"It did not rain","الأرض جافة بالضرورة":"The ground must be dry","لا يمكن استنتاج شيء":"Nothing can be inferred","هو من مضاعفات 4":"It is divisible by 4","ليس من مضاعفات 4":"It is not divisible by 4","هو أولي بالضرورة":"It must be prime","لا نتيجة":"No conclusion","إثبات التالي":"Affirming the consequent","نفي المقدم":"Denying the antecedent","قياس صحيح":"Valid syllogism","استقراء علمي":"Scientific induction","Modus Ponens":"Modus Ponens","برهان مباشر":"Direct proof","من يقدّم الادعاء":"The person making the claim","من يسمع الادعاء دائمًا":"The listener in every case","الأكثر شهرة":"The more famous person","الأصغر سنًا":"The younger person","تكون غير قابلة للاختبار":"Be untestable","تسمح بملاحظات ممكنة قد تُظهر خطأها":"Allow possible observations that could show it false","تتفق مع كل نتيجة ممكنة":"Fit every possible outcome","تكون معقدة جدًا":"Be extremely complex","كيف نبرر انتقالنا من انتظام الماضي إلى توقع المستقبل؟":"How do we justify moving from past regularities to expectations about the future?","كيف نحل المعادلات؟":"How do we solve equations?","كيف نعرّف الكلمات؟":"How do we define words?","كيف نقيس المسافة؟":"How do we measure distance?","المظاهر المحدودة التي تُظن حقيقة كاملة":"Limited appearances mistaken for full reality","الرياضيات وحدها":"Mathematics alone","العدالة السياسية فقط":"Political justice only","اللغة المكتوبة":"Written language","تكوين الشخصية والفضائل":"Character formation and virtues","النتائج الحسابية وحدها":"Only numerical outcomes","طاعة أي أمر دون نظر":"Obeying any command without reflection","رفض العادات كليًا":"Rejecting habits entirely","نتائجها في تعظيم الرفاه أو السعادة":"Their consequences for maximizing welfare or happiness","نية الفاعل فقط مهما كانت النتيجة":"Only the agent's intention regardless of outcome","عمر الفكرة":"The age of the idea","مدى انتشارها":"Its popularity","الواجبات والقواعد الأخلاقية":"Duties and moral rules","اللذة الشخصية وحدها":"Personal pleasure alone","الربح الاقتصادي فقط":"Economic profit only","الصدفة":"Chance","لا نعرف فيه مكاننا الخاص في المجتمع":"Where we do not know our own place in society","نعرف فيه أننا الأغنى":"Where we know we are the richest","نعرف فيه مهنتنا بدقة":"Where we know our exact occupation","نفضّل فيه جماعتنا مسبقًا":"Where we favor our group in advance","الاحتمال السابق فيُحدَّث إلى احتمال لاحق":"A prior probability, updating it to a posterior probability","الحقيقة المنطقية للتعريفات":"The logical truth of definitions","معنى الكلمات فقط":"Only the meaning of words","عدد الخيارات":"The number of options","التركيز على الحالات الناجية وإهمال الحالات التي اختفت أو فشلت":"Focusing on surviving cases while overlooking those that disappeared or failed","تفضيل المستقبل على الماضي":"Preferring the future to the past","تذكر الأحداث السعيدة فقط":"Remembering only happy events","رفض الإحصاء":"Rejecting statistics","الاستدلال الاختطافي Abduction":"Abductive inference","الاستنباط فقط":"Deduction only","المصادرة على المطلوب":"Begging the question","التناقض":"Contradiction"};
  const modal=document.getElementById('sakLearningModal'),out=document.getElementById('sakLearningContent'); let state={};const lang=()=>document.documentElement.lang==='en'?'en':'ar';const txt=k=>T[lang()][k];const pair=x=>Array.isArray(x)?x[lang()==='en'?1:0]:x;
  function user(){return (document.getElementById('userName')?.textContent||localStorage.getItem('sakakerUserName')|| (lang()==='en'?'Guest':'الزائر')).trim()}
  function open(kind){if(kind==='riddle'){window.openPuzzle();return;}state={kind,phase:0,index:0,score:0,phaseScore:0,answered:false};modal.classList.add('is-open');modal.setAttribute('aria-hidden','false');home()}
@@ -39556,7 +39557,8 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock #emOpenBt
   document.getElementById('folderModal').style.display='block';
  };
  window.sakRenderSiteNews=function(host){
-  host.replaceChildren(entry(['آخر التحديثات','Latest updates','تم تحديث الموقع وإضافة محتوى جديد إلى مكتبة الفيديو وبعض الأقسام. تضم الإضافات 400 فيديو يوتيوب موزّعة على ثمانية أقسام، إلى جانب تحديث المكتبة النصية بمحتوى عربي وإنجليزي وتحسين عرض الأيقونات والنوافذ على مختلف الشاشات.','The site has been updated with new content in the video library and several sections. Additions include 400 YouTube videos across eight categories, refreshed Arabic and English text-library content, and improvements to icon and window layouts across screen sizes.']));
+  const enMode=document.documentElement.lang==='en';
+  host.replaceChildren(entry(['تحديثات الموقع','Site updates',"تم تحديث الموقع بتاريخ 6 أكتوبر 2026. شكرًا لكل زائر يشاركنا هذه المساحة، ونقدّر وقتكم وثقتكم ودعمكم. نواصل تطوير الموقع وتحسين محتواه وتجربة التصفح ليكون أكثر تنوعًا وسهولة وفائدة. نتمنى لكم تصفحًا ممتعًا، ولكم منا كل الشكر والتقدير — أبوالقمرزمرد.","The site was updated on October 6, 2026. Thank you to every visitor who shares this space with us; we truly appreciate your time, trust, and support. We continue improving the site, its content, and the browsing experience to make it more diverse, useful, and easy to explore. We hope you enjoy your visit, with our sincere thanks and appreciation — Abwalqmrzmrd."]));
  };
  function refresh(){
   const host=document.getElementById('folderBody'),root=host?.querySelector('[data-sak-text-view]');
@@ -40184,24 +40186,6 @@ html body .sak-news-flasher-icon{font-size:24px!important;line-height:1!importan
   [0,400,1200,2500,4000,6000,7000].forEach(delay=>setTimeout(restoreNewsCard,delay));
 })();
 </script>
-<script id="sak-single-thoughts-story">
-(()=>{
-  'use strict';
-  const story={
-    ar:{title:'📜 علي بابا والسبعون حرامي',lead:'حكاية شعبية بصياغة عربية وإنجليزية',paragraphs:['كان علي بابا رجلًا بسيطًا يعمل في جمع الحطب. وفي يومٍ من الأيام رأى جماعة من اللصوص يقفون أمام صخرة كبيرة، فسمع قائدهم يقول: «افتح يا سمسم». انفتحت الصخرة عن مغارةٍ تخفي كنوزًا كثيرة، فحفظ علي بابا العبارة وانتظر حتى غادروا.','دخل علي بابا المغارة وأخذ قدرًا يسيرًا من المال ليعين أسرته، لكنه أوصى نفسه ألا يجعل الطمع دليلًا له. وعندما حاول آخرون معرفة السر، كادت المغارة أن تصبح سببًا للخطر، لولا الحكمة والشجاعة اللتان أنقذتا الموقف.','تذكّرنا الحكاية بأن الثروة لا تكون خيرًا إلا حين ترافقها الأمانة والعقل، وأن الطمع قد يحوّل الفرصة إلى مشكلة. وهي قصة من التراث الشعبي تُروى بصيغ متعددة للمتعة والعبرة.']},
-    en:{title:'📜 Ali Baba and the Seventy Thieves',lead:'A folk tale presented in Arabic and English',paragraphs:['Ali Baba was a modest woodcutter. One day, he saw a band of thieves standing before a great rock and heard their leader say, “Open, Sesame.” The rock opened into a cave filled with treasure, so Ali Baba remembered the words and waited until the thieves had gone.','Ali Baba entered the cave and took only a small amount to help his family, reminding himself not to let greed lead him. When others tried to learn the secret, the cave nearly became a source of danger, until wisdom and courage helped bring the matter safely to an end.','The tale reminds us that wealth is a blessing only when joined with honesty and good judgment, and that greed can turn an opportunity into trouble. It is a folk story told in many versions for enjoyment and reflection.']}
-  };
-  window.showKhwater=function(host){
-    if(!host)return;const ar=document.documentElement.lang!=='en',copy=ar?story.ar:story.en;
-    const article=document.createElement('article');article.className='sak-single-story';article.dir=ar?'rtl':'ltr';
-    const heading=document.createElement('h2');heading.textContent=copy.title;
-    const lead=document.createElement('p');lead.className='sak-story-note';lead.textContent=copy.lead;
-    article.append(heading,lead);copy.paragraphs.forEach(text=>{const p=document.createElement('p');p.textContent=text;article.append(p);});
-    host.replaceChildren(article);const title=document.getElementById('folderTitle');if(title)title.textContent=ar?'خواطر وقصص':'Thoughts & Stories';
-  };
-})();
-</script>
-
 <!-- Restored only: entertainment, shopping, images-to-video. Source history: 06918e2 and 485dd27. -->
 <!-- SAKAKER ENTERTAINMENT STATION — flying gull launcher -->
 <style id="sakaker-chess-launcher-style">
@@ -40648,15 +40632,18 @@ document.addEventListener('keydown',e=>{
 
 const stories=[
   {
-    ar:{title:'📜 علي بابا والسبعون حرامي',lead:'حكاية شعبية بصياغة عربية وإنجليزية',paragraphs:[
-      'كان علي بابا رجلًا بسيطًا يعمل في جمع الحطب، وذات يوم اكتشف مغارة اللصوص وسمع كلمة السر: «افتح يا سمسم».',
-      'دخل المغارة وأخذ قدرًا يسيرًا ليعين أسرته، لكنه حذر نفسه من الطمع، وحين اقترب الخطر أنقذته الحكمة والشجاعة.',
-      'تذكّرنا الحكاية بأن الثروة لا تكون خيرًا إلا حين ترافقها الأمانة والعقل.'
+    image:'https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/Screenshot_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A1%D9%A0%D9%A0%D9%A6-%D9%A1%D9%A7%D9%A4%D9%A2%D9%A0%D9%A7_1.png',
+    ar:{title:'🏜️ أبوالقمرزمرد — ليلة على حافة الصحراء',lead:'حكاية من قلب الرمل، بين السكون والمغامرة',paragraphs:[
+      'في مساءٍ امتد فيه الرمل حتى آخر الأفق، توقف أبوالقمرزمرد عند مخيم صغير وسط الصحراء. كانت الخيام منصوبة قرب السيارة، والريح تمر خفيفة فوق الكثبان كأنها تمهّد لبداية حكاية لا يعرف نهايتها أحد.',
+      'لم تكن الرحلة بحثًا عن كنز ولا هروبًا من خطر، بل كانت لحظة اختبار للهدوء والانتباه. مع غروب الشمس تغيّرت ملامح المكان، وصارت العلامات التي بدت واضحة نهارًا أقل يقينًا، فبدأ أبوالقمرزمرد يقرأ اتجاه الريح وآثار الطريق ويثبت في ذاكرته موضع المخيم.',
+      'وحين أقبل الليل، بدت السماء أوسع من كل طريق. جلس قريبًا من الخيمة يتأمل الصمت، وتعلّم أن الصحراء لا تعطي أسرارها لمن يسرع؛ بل لمن يراقب ويصبر ويعرف متى يتحرك ومتى ينتظر.',
+      'مع أول ضوء للفجر عاد الطريق واضحًا، لكن الرحلة تركت معنى أبقى من الطريق نفسه: أن المغامرة ليست دائمًا في الوصول إلى مكان بعيد، بل أحيانًا في أن ترى المكان المألوف بعين مختلفة، وأن تعرف نفسك حين يقلّ الضجيج من حولك.'
     ]},
-    en:{title:'📜 Ali Baba and the Seventy Thieves',lead:'A folk tale presented in Arabic and English',paragraphs:[
-      'Ali Baba discovered the thieves’ cave and learned the words “Open, Sesame.”',
-      'He took only a little to help his family and refused to let greed guide him.',
-      'The tale reminds us that wealth is best joined with honesty and good judgment.'
+    en:{title:'🏜️ Abwalqmrzmrd — A Night at the Edge of the Desert',lead:'A story from the heart of the sands, between stillness and adventure',paragraphs:[
+      'As evening stretched across the dunes, Abwalqmrzmrd stopped beside a small desert camp. The tents stood near the vehicle while a light wind moved over the sand, as though preparing the opening of a story whose ending was still unknown.',
+      'The journey was neither a hunt for treasure nor an escape from danger. It became a lesson in calm observation. As daylight faded, familiar landmarks became less certain, so Abwalqmrzmrd studied the wind, the tracks, and the position of the camp.',
+      'When night arrived, the sky seemed wider than every road. Sitting near the tent, he discovered that the desert does not reveal itself to those who hurry, but to those who watch, wait, and know when to move.',
+      'At first light the route became clear again, yet the journey left behind something more lasting: adventure is not always about reaching a distant place; sometimes it is about seeing a familiar world differently and discovering yourself when the noise around you fades.'
     ]}
   },
   {
@@ -40731,24 +40718,46 @@ window.showKhwater=function(host){
   const wrap=document.createElement('div');
   wrap.id='sakThoughtsStories';
 
-  stories.forEach(st=>{
+  const mast=document.createElement('header');
+  mast.className='sak-story-blog-head';
+  mast.innerHTML='<span>✦</span><h2>'+(en?'Stories & Tales Blog':'مدونة القصص والحكايات')+'</h2><p>'+(en?'Journeys, adventures, and tales from the world of Abwalqmrzmrd':'رحلات ومغامرات وحكايات من عالم أبوالقمرزمرد')+'</p>';
+  wrap.appendChild(mast);
+
+  stories.forEach((st,i)=>{
     const c=en?st.en:st.ar;
     const article=document.createElement('article');
-    article.className='sak-story-card';
+    article.className='sak-story-card'+(i===0?' sak-story-featured':'');
     article.dir=en?'ltr':'rtl';
+
+    if(st.image){
+      const figure=document.createElement('figure');
+      figure.className='sak-story-cover';
+      const img=document.createElement('img');
+      img.src=st.image; img.alt=c.title; img.loading='eager'; img.decoding='async';
+      const cap=document.createElement('figcaption');
+      cap.textContent=en?'From the desert journey':'من رحلة الصحراء';
+      figure.append(img,cap); article.appendChild(figure);
+    }
+
+    const meta=document.createElement('div');
+    meta.className='sak-story-meta';
+    meta.textContent=(en?'Story ':'الحكاية ')+String(i+1).padStart(2,'0');
 
     const h=document.createElement('h2');
     h.textContent=c.title;
     const lead=document.createElement('p');
     lead.className='sak-story-note';
     lead.textContent=c.lead;
-    article.append(h,lead);
+    article.append(meta,h,lead);
 
+    const bodyWrap=document.createElement('div');
+    bodyWrap.className='sak-story-body';
     c.paragraphs.forEach(t=>{
       const p=document.createElement('p');
       p.textContent=t;
-      article.appendChild(p);
+      bodyWrap.appendChild(p);
     });
+    article.appendChild(bodyWrap);
     wrap.appendChild(article);
   });
 
@@ -40934,5 +40943,478 @@ window.closeSakakerEbooks=function(){
 new MutationObserver(()=>{if(shell&&layer.classList.contains('sak-open'))render()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 })();
 </script>
+
+<!-- sak-site-news-update-20261006 -->
+
+<!-- sak-video-library-videos-html-overlay-20261006 -->
+<style id="sak-video-library-videos-html-overlay-20261006-style">
+#sakVideoLibraryPageOverlay{
+  position:fixed!important;inset:0!important;z-index:2147483647!important;
+  display:none;align-items:stretch;justify-content:stretch;
+  background:#031218!important;
+}
+#sakVideoLibraryPageOverlay.open{display:flex!important}
+#sakVideoLibraryPageOverlay iframe{width:100%!important;height:100%!important;border:0!important;background:#031218!important}
+#sakVideoLibraryPageClose{
+  position:fixed!important;top:max(10px,env(safe-area-inset-top))!important;right:max(10px,env(safe-area-inset-right))!important;
+  z-index:2147483647!important;width:48px!important;height:48px!important;border-radius:50%!important;
+  border:1px solid #8fffe8!important;background:rgba(38,11,22,.96)!important;color:#fff!important;
+  font-size:28px!important;font-weight:900!important;cursor:pointer!important;box-shadow:0 0 18px rgba(0,255,210,.55)!important
+}
+</style>
+<script id="sak-video-library-videos-html-overlay-20261006-js">
+(()=>{
+'use strict';
+let oldOverflow='';
+function ensure(){
+  let o=document.getElementById('sakVideoLibraryPageOverlay');
+  if(o)return o;
+  o=document.createElement('div');
+  o.id='sakVideoLibraryPageOverlay';
+  o.setAttribute('role','dialog');
+  o.setAttribute('aria-modal','true');
+  o.innerHTML='<button id="sakVideoLibraryPageClose" type="button" aria-label="إغلاق / Close">×</button><iframe id="sakVideoLibraryPageFrame" title="مكتبة الفيديو / Video Library" loading="eager"></iframe>';
+  document.body.appendChild(o);
+  o.querySelector('#sakVideoLibraryPageClose').addEventListener('click',close);
+  return o;
+}
+function open(){
+  const o=ensure(),f=o.querySelector('#sakVideoLibraryPageFrame');
+  oldOverflow=document.documentElement.style.overflow;
+  f.src='/videos.html?v=20261006-library2';
+  o.classList.add('open');
+  document.documentElement.style.overflow='hidden';
+  const old=document.getElementById('emeraldLibraryContent');
+  if(old)old.style.setProperty('display','none','important');
+}
+function close(){
+  const o=document.getElementById('sakVideoLibraryPageOverlay');if(!o)return;
+  o.classList.remove('open');
+  const f=o.querySelector('#sakVideoLibraryPageFrame');if(f)f.src='about:blank';
+  document.documentElement.style.overflow=oldOverflow;
+}
+document.addEventListener('click',e=>{
+  const btn=e.target.closest?.('#emeraldLibraryButton');
+  if(!btn)return;
+  e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();open();
+},true);
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&document.getElementById('sakVideoLibraryPageOverlay')?.classList.contains('open')){e.preventDefault();close();}
+},true);
+})();
+</script>
+
+<style id="sak-site-news-compact-fix-20261006">
+html body #sakakerSiteNewsModal{padding:10px!important}
+html body #sakakerSiteNewsModal .sakaker-site-news-box{
+  width:min(360px,88vw)!important;
+  min-height:0!important;
+  max-height:min(68dvh,520px)!important;
+  padding:52px 18px 20px!important;
+  border-radius:18px!important;
+  overflow:auto!important;
+}
+html body #sakakerSiteNewsTitle{
+  margin:0 0 12px!important;
+  font-size:18px!important;
+}
+html body #sakakerSiteNewsText{
+  font-size:13px!important;
+  line-height:1.65!important;
+  font-weight:700!important;
+}
+html body #sakakerSiteNewsClose{
+  top:8px!important;
+  right:8px!important;
+  width:42px!important;
+  height:42px!important;
+  display:grid!important;
+  place-items:center!important;
+  background:#8b1020!important;
+  color:#fff!important;
+  border:2px solid #fff!important;
+  font-size:28px!important;
+  line-height:1!important;
+  opacity:1!important;
+  visibility:visible!important;
+  box-shadow:0 0 0 2px rgba(255,210,210,.35),0 0 18px rgba(255,60,80,.75)!important;
+}
+@media(max-width:600px){
+  html body #sakakerSiteNewsModal .sakaker-site-news-box{
+    width:min(330px,92vw)!important;
+    max-height:64dvh!important;
+    padding:50px 15px 18px!important;
+  }
+  html body #sakakerSiteNewsText{font-size:12.5px!important;line-height:1.6!important}
+}
+</style>
+
+<style id="sak-progressive-all-quiz-20261006-style">
+html body #sakLearningModal{
+  z-index:2147483647!important;
+  position:fixed!important;
+  inset:0!important;
+  padding:10px!important;
+  background:rgba(0,5,10,.92)!important;
+}
+html body #sakLearningModal.is-open{display:flex!important}
+html body #sakLearningModal .sak-learning-panel{
+  width:min(620px,94vw)!important;
+  max-height:92dvh!important;
+  overflow:auto!important;
+  border-radius:20px!important;
+  padding:58px 20px 22px!important;
+  box-shadow:0 0 0 1px #fff5,0 0 26px #00ffd944,0 20px 70px #000!important;
+}
+html body #sakLearningModal .sak-learning-close{
+  position:absolute!important;top:10px!important;right:10px!important;
+  width:42px!important;height:42px!important;display:grid!important;place-items:center!important;
+  z-index:2147483647!important;background:#8b1020!important;color:#fff!important;
+  border:2px solid #fff!important;border-radius:50%!important;font-size:28px!important;
+  box-shadow:0 0 18px #ff4b5caa!important;
+}
+.sak-quiz-levelbar{display:flex;gap:6px;margin:8px 0 14px}
+.sak-quiz-levelbar span{flex:1;padding:7px 5px;border-radius:999px;text-align:center;font-size:11px;font-weight:900;background:#ffffff14;border:1px solid #ffffff2e}
+.sak-quiz-levelbar span.active{background:#ffe78a;color:#17354b;border-color:#fff}
+.sak-quiz-meter{height:8px;border-radius:999px;background:#ffffff18;overflow:hidden;margin:10px 0 16px}
+.sak-quiz-meter>i{display:block;height:100%;background:linear-gradient(90deg,#65ffd7,#ffe36f,#ff8b73);width:0}
+.sak-quiz-meta{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;color:#aefaf2;font-weight:900;font-size:12px}
+@media(max-width:600px){
+ html body #sakLearningModal .sak-learning-panel{width:96vw!important;max-height:94dvh!important;padding:56px 14px 18px!important}
+ .sak-learning-options button{min-height:48px!important}
+}
+body.sak-quiz-active{overflow:hidden!important}
+body.sak-quiz-active #sakLearningModal{display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;isolation:isolate!important}
+body.sak-quiz-active #sakLearningModal *{pointer-events:auto}
+body.sak-quiz-active :is(#sakVideoLibraryPageOverlay,#facebookVideoPopup,#livePopup,#emeraldModal,#sakMusicPlayer,#sakakerMapOverlay,#shipPopup_new){z-index:2147483000!important}
+</style>
+<script id="sak-progressive-all-quiz-20261006-js">
+(()=>{
+'use strict';
+const BANK=[{"qAr":"ما الهدف الأساسي من المنهج السقراطي في الحوار؟","qEn":"What is the primary aim of the Socratic method in dialogue?","oAr":["تلقين الإجابة مباشرة","طرح أسئلة تكشف الافتراضات وتختبرها","إثبات أن الطرف الآخر مخطئ دائمًا","جمع أكبر عدد من الآراء"],"oEn":["Give the answer directly","Ask questions that expose and test assumptions","Prove the other person is always wrong","Collect as many opinions as possible"],"a":1},{"qAr":"متى يكون الاستدلال الاستنباطي صالحًا منطقيًا؟","qEn":"When is a deductive argument logically valid?","oAr":["إذا كانت النتيجة مشهورة","إذا استحال صدق المقدمات وكذب النتيجة معًا","إذا احتوى أرقامًا","إذا وافق رأي الأغلبية"],"oEn":["When the conclusion is popular","When it is impossible for the premises to be true and the conclusion false","When it contains numbers","When it agrees with the majority"],"a":1},{"qAr":"في الحجة المنطقية، ما «المقدمة»؟","qEn":"In an argument, what is a premise?","oAr":["الادعاء الذي يُقدَّم دعمًا للنتيجة","النتيجة النهائية فقط","مثال لا علاقة له بالحجة","اعتراض على السؤال"],"oEn":["A claim offered in support of the conclusion","Only the final conclusion","An unrelated example","An objection to the question"],"a":0},{"qAr":"أي مبدأ منطقي يقول إن القضية لا يمكن أن تكون صادقة وكاذبة بالمعنى نفسه وفي الوقت نفسه؟","qEn":"Which logical principle says a proposition cannot be both true and false in the same respect at the same time?","oAr":["مبدأ عدم التناقض","مبدأ المنفعة","مبدأ الشك","مبدأ الاحتمال"],"oEn":["Law of non-contradiction","Principle of utility","Principle of doubt","Principle of probability"],"a":0},{"qAr":"مهاجمة الشخص بدل مناقشة حجته تُسمّى ماذا؟","qEn":"Attacking the person instead of addressing the argument is called what?","oAr":["القياس","مغالطة الشخصنة","الاستقراء","البرهان بالخلف"],"oEn":["Syllogism","Ad hominem fallacy","Induction","Proof by contradiction"],"a":1},{"qAr":"لماذا لا يكفي الارتباط الإحصائي وحده لإثبات السببية؟","qEn":"Why is statistical correlation alone insufficient to establish causation?","oAr":["لأن الارتباط لا يمكن قياسه","لأن عاملًا ثالثًا أو اتجاهًا عكسيًا قد يفسر العلاقة","لأن السببية لا وجود لها","لأن كل ارتباط عشوائي"],"oEn":["Because correlation cannot be measured","Because a third factor or reverse direction may explain the relation","Because causation does not exist","Because every correlation is random"],"a":1},{"qAr":"أي فرع فلسفي يدرس طبيعة المعرفة ومصادرها وحدودها؟","qEn":"Which branch of philosophy studies the nature, sources, and limits of knowledge?","oAr":["علم الجمال","نظرية المعرفة","فلسفة اللغة فقط","الميتافيزيقا فقط"],"oEn":["Aesthetics","Epistemology","Only philosophy of language","Only metaphysics"],"a":1},{"qAr":"أي فرع فلسفي يدرس ما ينبغي فعله وما يجعل الأفعال صائبة أو خاطئة؟","qEn":"Which branch of philosophy studies what ought to be done and what makes actions right or wrong?","oAr":["الأخلاق","المنطق الرمزي فقط","فلسفة الرياضيات","علم الوجود"],"oEn":["Ethics","Only symbolic logic","Philosophy of mathematics","Ontology"],"a":0},{"qAr":"علم الوجود Ontology يهتم أساسًا بسؤال:","qEn":"Ontology is primarily concerned with the question:","oAr":["ما الذي يوجد وما طبيعة الوجود؟","كيف نكتب برهانًا رياضيًا؟","كيف تعمل الذاكرة؟","ما أجمل لون؟"],"oEn":["What exists and what is the nature of being?","How do we write a mathematical proof?","How does memory work?","What is the most beautiful color?"],"a":0},{"qAr":"ما السمة الأساسية للمعرفة التجريبية؟","qEn":"What is the key feature of empirical knowledge?","oAr":["تعتمد على الملاحظة والخبرة","تعتمد على الحدس وحده","لا تحتاج أي دليل","تُستنتج من التعريفات فقط"],"oEn":["It relies on observation and experience","It relies on intuition alone","It needs no evidence","It follows only from definitions"],"a":0},{"qAr":"مبدأ «نصل أوكام» يفضّل عادةً:","qEn":"Occam's razor generally favors:","oAr":["التفسير الأكثر تعقيدًا دائمًا","التفسير الذي يفترض كيانات إضافية كثيرة","التفسير الأبسط الكافي دون افتراضات زائدة","أقدم تفسير تاريخيًا"],"oEn":["The most complex explanation","The explanation with many extra entities","The simplest adequate explanation without unnecessary assumptions","The historically oldest explanation"],"a":2},{"qAr":"البحث فقط عن المعلومات التي تؤيد رأيك وتجاهل المخالف يُسمّى:","qEn":"Seeking mainly information that supports your view while neglecting contrary evidence is called:","oAr":["تحيز التأكيد","الحياد التام","الاستنباط الصحيح","مبدأ الاقتصاد"],"oEn":["Confirmation bias","Perfect neutrality","Valid deduction","Principle of economy"],"a":0},{"qAr":"إذا كان الشرط A كافيًا لحدوث B، فماذا يعني ذلك؟","qEn":"If condition A is sufficient for B, what does that mean?","oAr":["حدوث A يضمن B","حدوث B يضمن A دائمًا","A وB متناقضان","A لا علاقة له بـB"],"oEn":["A guarantees B","B always guarantees A","A and B contradict each other","A is unrelated to B"],"a":0},{"qAr":"الاستدلال الاستقرائي يختلف عن الاستنباطي لأنه عادةً:","qEn":"Inductive reasoning differs from deduction because it typically:","oAr":["يضمن النتيجة يقينًا","يجعل النتيجة مرجحة لا مضمونة","لا يستخدم أدلة","يعمل فقط في الرياضيات"],"oEn":["Guarantees the conclusion with certainty","Makes the conclusion probable rather than guaranteed","Uses no evidence","Works only in mathematics"],"a":1},{"qAr":"ما فائدة «التجربة الفكرية» في الفلسفة والعلم؟","qEn":"What is the value of a thought experiment in philosophy and science?","oAr":["اختبار مفاهيم ونتائج افتراضية ذهنيًا","استبدال كل تجربة فعلية دائمًا","إثبات أي رأي نريده","منع النقاش"],"oEn":["Mentally test concepts and hypothetical consequences","Always replace every real experiment","Prove any view we want","Prevent discussion"],"a":0},{"qAr":"إذا كان: «إذا أمطرت ابتلت الأرض»، وقد أمطرت؛ فما الاستنتاج الصحيح وفق Modus Ponens؟","qEn":"If 'If it rains, the ground gets wet,' and it rains, what follows by Modus Ponens?","oAr":["الأرض مبتلة","لم تمطر","الأرض جافة بالضرورة","لا يمكن استنتاج شيء"],"oEn":["The ground is wet","It did not rain","The ground must be dry","Nothing can be inferred"],"a":0},{"qAr":"إذا كان: «إذا كان العدد من مضاعفات 4 فهو زوجي»، والعدد ليس زوجيًا؛ فما النتيجة وفق Modus Tollens؟","qEn":"If 'If a number is divisible by 4, it is even,' and the number is not even, what follows by Modus Tollens?","oAr":["هو من مضاعفات 4","ليس من مضاعفات 4","هو أولي بالضرورة","لا نتيجة"],"oEn":["It is divisible by 4","It is not divisible by 4","It must be prime","No conclusion"],"a":1},{"qAr":"من «إذا درست نجحت» و«نجحت» ثم استنتاج «إذن درست»؛ ما الخطأ؟","qEn":"From 'If you study, you pass' and 'you passed,' concluding 'therefore you studied' commits which error?","oAr":["إثبات التالي","نفي المقدم","قياس صحيح","استقراء علمي"],"oEn":["Affirming the consequent","Denying the antecedent","Valid syllogism","Scientific induction"],"a":0},{"qAr":"من «إذا كان الشيء ذهبًا فهو معدن» و«ليس ذهبًا» ثم استنتاج «إذن ليس معدنًا»؛ ما المغالطة؟","qEn":"From 'If something is gold, it is a metal' and 'it is not gold,' concluding 'therefore it is not a metal' is:","oAr":["نفي المقدم","إثبات التالي","Modus Ponens","برهان مباشر"],"oEn":["Denying the antecedent","Affirming the consequent","Modus Ponens","Direct proof"],"a":0},{"qAr":"على من يقع عبء الإثبات عادةً في نقاش عقلاني؟","qEn":"Who normally bears the burden of proof in a rational discussion?","oAr":["من يقدّم الادعاء","من يسمع الادعاء دائمًا","الأكثر شهرة","الأصغر سنًا"],"oEn":["The person making the claim","The listener in every case","The more famous person","The younger person"],"a":0},{"qAr":"يرتبط مفهوم «قابلية التكذيب» عند كارل بوبر بفكرة أن النظرية العلمية ينبغي أن:","qEn":"Karl Popper's idea of falsifiability holds that a scientific theory should:","oAr":["تكون غير قابلة للاختبار","تسمح بملاحظات ممكنة قد تُظهر خطأها","تتفق مع كل نتيجة ممكنة","تكون معقدة جدًا"],"oEn":["Be untestable","Allow possible observations that could show it false","Fit every possible outcome","Be extremely complex"],"a":1},{"qAr":"«مشكلة الاستقراء» عند ديفيد هيوم تسأل أساسًا:","qEn":"David Hume's 'problem of induction' mainly asks:","oAr":["كيف نبرر انتقالنا من انتظام الماضي إلى توقع المستقبل؟","كيف نحل المعادلات؟","كيف نعرّف الكلمات؟","كيف نقيس المسافة؟"],"oEn":["How do we justify moving from past regularities to expectations about the future?","How do we solve equations?","How do we define words?","How do we measure distance?"],"a":0},{"qAr":"في «تمثيل الكهف» عند أفلاطون، الظلال ترمز غالبًا إلى:","qEn":"In Plato's Allegory of the Cave, the shadows commonly symbolize:","oAr":["المظاهر المحدودة التي تُظن حقيقة كاملة","الرياضيات وحدها","العدالة السياسية فقط","اللغة المكتوبة"],"oEn":["Limited appearances mistaken for full reality","Mathematics alone","Political justice only","Written language"],"a":0},{"qAr":"تركز أخلاق الفضيلة الأرسطية بصورة أساسية على:","qEn":"Aristotelian virtue ethics primarily focuses on:","oAr":["تكوين الشخصية والفضائل","النتائج الحسابية وحدها","طاعة أي أمر دون نظر","رفض العادات كليًا"],"oEn":["Character formation and virtues","Only numerical outcomes","Obeying any command without reflection","Rejecting habits entirely"],"a":0},{"qAr":"المبدأ المركزي في النفعية الكلاسيكية هو تقييم الفعل أساسًا بحسب:","qEn":"The central idea of classical utilitarianism evaluates actions mainly by:","oAr":["نتائجها في تعظيم الرفاه أو السعادة","نية الفاعل فقط مهما كانت النتيجة","عمر الفكرة","مدى انتشارها"],"oEn":["Their consequences for maximizing welfare or happiness","Only the agent's intention regardless of outcome","The age of the idea","Its popularity"],"a":0},{"qAr":"في الأخلاق الواجبة Deontology، يُعطى وزن أساسي لـ:","qEn":"In deontological ethics, central weight is given to:","oAr":["الواجبات والقواعد الأخلاقية","اللذة الشخصية وحدها","الربح الاقتصادي فقط","الصدفة"],"oEn":["Duties and moral rules","Personal pleasure alone","Economic profit only","Chance"],"a":0},{"qAr":"«حجاب الجهل» عند جون رولز صُمم لمساعدتنا على التفكير في العدالة من موقع:","qEn":"John Rawls's 'veil of ignorance' is designed to help us think about justice from a position:","oAr":["لا نعرف فيه مكاننا الخاص في المجتمع","نعرف فيه أننا الأغنى","نعرف فيه مهنتنا بدقة","نفضّل فيه جماعتنا مسبقًا"],"oEn":["Where we do not know our own place in society","Where we know we are the richest","Where we know our exact occupation","Where we favor our group in advance"],"a":0},{"qAr":"في التفكير البايزي، وصول دليل جديد يؤثر عادةً في:","qEn":"In Bayesian reasoning, new evidence typically affects:","oAr":["الاحتمال السابق فيُحدَّث إلى احتمال لاحق","الحقيقة المنطقية للتعريفات","معنى الكلمات فقط","عدد الخيارات"],"oEn":["A prior probability, updating it to a posterior probability","The logical truth of definitions","Only the meaning of words","The number of options"],"a":0},{"qAr":"ما «تحيز البقاء» Survivorship Bias؟","qEn":"What is survivorship bias?","oAr":["التركيز على الحالات الناجية وإهمال الحالات التي اختفت أو فشلت","تفضيل المستقبل على الماضي","تذكر الأحداث السعيدة فقط","رفض الإحصاء"],"oEn":["Focusing on surviving cases while overlooking those that disappeared or failed","Preferring the future to the past","Remembering only happy events","Rejecting statistics"],"a":0},{"qAr":"الاستدلال إلى «أفضل تفسير» يُسمّى غالبًا:","qEn":"Reasoning to the 'best explanation' is commonly called:","oAr":["الاستدلال الاختطافي Abduction","الاستنباط فقط","المصادرة على المطلوب","التناقض"],"oEn":["Abductive inference","Deduction only","Begging the question","Contradiction"],"a":0},{"qAr":"ما الذي أظهرته «مسائل غيتييه» بشأن تعريف المعرفة بأنها «اعتقاد صادق مبرر»؟","qEn":"What did Gettier cases show about defining knowledge as 'justified true belief'?","oAr":["أن هذه الشروط قد لا تكون كافية دائمًا للمعرفة","أن الصدق غير مهم","أن التبرير مستحيل","أن كل اعتقاد معرفة"],"oEn":["That these conditions may not always be sufficient for knowledge","That truth is irrelevant","That justification is impossible","That every belief is knowledge"],"a":0},{"qAr":"«نقص التعيين بالدليل» Underdetermination يعني أن:","qEn":"Underdetermination by evidence means that:","oAr":["الدليل المتاح قد ينسجم مع أكثر من تفسير أو نظرية","كل دليل يثبت نظرية واحدة فقط","القياس غير ممكن","النظرية لا تحتاج دليلًا"],"oEn":["Available evidence may fit more than one explanation or theory","Every piece of evidence proves only one theory","Measurement is impossible","A theory needs no evidence"],"a":0},{"qAr":"أطروحة دوهيم-كواين تشير إلى أن اختبار فرضية علمية يعتمد غالبًا أيضًا على:","qEn":"The Duhem-Quine thesis suggests that testing a scientific hypothesis often also depends on:","oAr":["افتراضات مساعدة وظروف خلفية","الفرضية وحدها دون أي شيء آخر","الرأي العام","تعريف لغوي واحد"],"oEn":["Auxiliary assumptions and background conditions","The hypothesis alone and nothing else","Public opinion","A single verbal definition"],"a":0},{"qAr":"تكشف «معضلة العربة» غالبًا عن توتر بين:","qEn":"The trolley problem often highlights a tension between:","oAr":["تقييم النتائج واحترام القيود أو الواجبات","المنطق والرياضيات","اللغة والتاريخ","العلم والفن فقط"],"oEn":["Evaluating consequences and respecting constraints or duties","Logic and mathematics","Language and history","Science and art only"],"a":0},{"qAr":"ما الذي توضحه «معضلة السجين» في نظرية الألعاب؟","qEn":"What does the Prisoner's Dilemma illustrate in game theory?","oAr":["قد تؤدي الخيارات العقلانية فرديًا إلى نتيجة أسوأ جماعيًا","التعاون مستحيل دائمًا","كل لعبة لها فائز واحد","المعلومات الكاملة تمنع الصراع"],"oEn":["Individually rational choices can lead to a worse collective outcome","Cooperation is always impossible","Every game has one winner","Complete information prevents conflict"],"a":0},{"qAr":"في توازن ناش، ماذا يعني أن الاستراتيجية في حالة توازن؟","qEn":"In a Nash equilibrium, what does equilibrium mean?","oAr":["لا يستطيع أي لاعب تحسين نتيجته بتغيير استراتيجيته منفردًا مع ثبات استراتيجيات الآخرين","جميع اللاعبين يحققون النتيجة نفسها","لا توجد أي استراتيجية بديلة","اللعبة انتهت بالتعادل"],"oEn":["No player can improve their outcome by changing strategy alone while others hold theirs fixed","All players get the same payoff","No alternative strategies exist","The game ends in a draw"],"a":0},{"qAr":"ما «مفارقة سمبسون»؟","qEn":"What is Simpson's paradox?","oAr":["قد ينعكس اتجاه علاقة عند تجميع البيانات مقارنةً بالمجموعات الفرعية","كل المتوسطات متساوية","العينة الكبيرة دائمًا منحازة","الاحتمال يتجاوز 100%"],"oEn":["A trend can reverse when data are aggregated compared with subgroup trends","All averages are equal","Large samples are always biased","Probability exceeds 100%"],"a":0},{"qAr":"إهمال المعدل الأساسي Base-rate neglect يعني:","qEn":"Base-rate neglect means:","oAr":["تجاهل الانتشار العام للفئة عند تقدير احتمال حالة معينة","تجاهل كل الأدلة الجديدة","استخدام المتوسط الحسابي","رفض الاحتمالات"],"oEn":["Ignoring the general prevalence of a category when judging a particular case","Ignoring all new evidence","Using the arithmetic mean","Rejecting probability"],"a":0},{"qAr":"في «مغالطة الاقتران»، لماذا يكون القول «A وB» أقل أو مساويًا احتمالًا من «A» وحدها؟","qEn":"In the conjunction fallacy, why must 'A and B' be no more probable than 'A' alone?","oAr":["لأن حالات A وB معًا مجموعة فرعية من حالات A","لأن B يلغي A دائمًا","لأن الاحتمالات لا تُجمع","لأن A يجب أن يكون يقينيًا"],"oEn":["Because cases where A and B are both true are a subset of cases where A is true","Because B always cancels A","Because probabilities cannot be combined","Because A must be certain"],"a":0},{"qAr":"في المنطق الكلاسيكي، مبدأ الثالث المرفوع يُعبَّر عنه عادةً بـ:","qEn":"In classical logic, the law of excluded middle is usually expressed as:","oAr":["P أو ليس P","P و ليس P","إذا P فليس P","لا P ولا ليس P"],"oEn":["P or not-P","P and not-P","If P then not-P","Neither P nor not-P"],"a":0},{"qAr":"في دلالات العوالم الممكنة الشائعة للمنطق الموجهي، القول إن قضية «ضرورية» يعني تقريبًا أنها:","qEn":"In standard possible-world semantics for modal logic, saying a proposition is 'necessary' roughly means it is:","oAr":["صادقة في كل العوالم الممكنة ذات الصلة","صادقة في عالم واحد فقط","محتملة بنسبة 50%","غير قابلة للصياغة"],"oEn":["True in all relevant possible worlds","True in only one world","50% probable","Impossible to formulate"],"a":0},{"qAr":"ما الفرق بين الحجة «الصحيحة Sound» والحجة «الصالحة Valid»؟","qEn":"What distinguishes a sound argument from a merely valid argument?","oAr":["الصحيحة صالحة ومقدماتها صادقة","الصحيحة أطول","الصالحة يجب أن تكون مقدماتها كاذبة","لا فرق"],"oEn":["A sound argument is valid and has true premises","A sound argument is longer","A valid argument must have false premises","There is no difference"],"a":0},{"qAr":"ما «المصادرة على المطلوب» Begging the Question؟","qEn":"What is 'begging the question'?","oAr":["افتراض النتيجة ضمن المقدمات بدل تقديم دعم مستقل لها","طرح سؤال كثيرًا","تغيير الموضوع","استخدام مثال مضاد"],"oEn":["Assuming the conclusion within the premises instead of independently supporting it","Asking too many questions","Changing the subject","Using a counterexample"],"a":0},{"qAr":"مشكلة «هو/ينبغي» عند هيوم تحذر من الانتقال مباشرةً من:","qEn":"Hume's 'is-ought' problem warns against moving directly from:","oAr":["وصف ما هو واقع إلى حكم عما ينبغي أن يكون دون مقدمة معيارية","الرياضيات إلى الفيزياء","الماضي إلى الحاضر","الجزء إلى الكل فقط"],"oEn":["Descriptions of what is to conclusions about what ought to be without a normative premise","Mathematics to physics","Past to present","Part to whole only"],"a":0},{"qAr":"حجة «الغرفة الصينية» لجون سيرل تستهدف أساسًا فكرة أن:","qEn":"John Searle's Chinese Room argument primarily challenges the idea that:","oAr":["معالجة الرموز نحويًا تكفي وحدها للفهم الدلالي","الحواسيب تستخدم الكهرباء","اللغات لها قواعد","الذاكرة محدودة"],"oEn":["Syntactic symbol processing alone is sufficient for semantic understanding","Computers use electricity","Languages have rules","Memory is limited"],"a":0},{"qAr":"إذا فسّرت نظرية كل نتيجة ممكنة بعد وقوعها، فما المشكلة المنهجية الأبرز؟","qEn":"If a theory can explain every possible outcome after it occurs, what is the main methodological problem?","oAr":["تصبح ضعيفة القابلية للاختبار أو التكذيب","تصبح أدق بالضرورة","تصبح رياضية","تصبح أخلاقية"],"oEn":["It becomes weakly testable or falsifiable","It necessarily becomes more accurate","It becomes mathematical","It becomes ethical"],"a":0}];
+const modal=document.getElementById('sakLearningModal');
+const out=document.getElementById('sakLearningContent');
+if(!modal||!out)return;
+let index=0,score=0,locked=false,oldOverflow='';
+const en=()=>document.documentElement.lang==='en';
+const level=()=>index<15?0:index<30?1:2;
+const labels=()=>en()?['Foundation','Intermediate','Advanced']:['تأسيسي','متوسط','متقدم'];
+function close(){
+ modal.classList.remove('is-open');modal.setAttribute('aria-hidden','true');
+ document.body.classList.remove('sak-quiz-active');
+ document.documentElement.style.overflow=oldOverflow;
+}
+function open(){
+ index=0;score=0;locked=false;
+ oldOverflow=document.documentElement.style.overflow;
+ if(modal.parentElement!==document.body)document.body.appendChild(modal);else document.body.appendChild(modal);
+ modal.style.setProperty('z-index','2147483647','important');
+ modal.classList.add('is-open');modal.setAttribute('aria-hidden','false');
+ document.body.classList.add('sak-quiz-active');
+ document.documentElement.style.overflow='hidden';render();
+ setTimeout(()=>modal.querySelector('.sak-learning-close')?.focus({preventScroll:true}),0);
+}
+function render(){
+ const item=BANK[index],lv=level(),labs=labels(),opts=en()?item.oEn:item.oAr;
+ out.innerHTML=
+ '<h2 class="sak-learning-title">'+(en()?'Test Your Knowledge':'اختبر معلوماتك')+'</h2>'+ 
+ '<p class="sak-learning-intro">'+(en()?'46 questions in philosophy, logic, epistemology, and reasoning, progressing from foundations to deeper analysis.':'46 سؤالًا في الفلسفة والمنطق ونظرية المعرفة والاستدلال، تتدرج من الأساسيات إلى التحليل الأعمق.')+'</p>'+ 
+ '<div class="sak-quiz-levelbar">'+labs.map((x,i)=>'<span class="'+(i===lv?'active':'')+'">'+x+'</span>').join('')+'</div>'+ 
+ '<div class="sak-quiz-meta"><span>'+(en()?'Question ':'السؤال ')+(index+1)+' / '+BANK.length+'</span><span>'+(en()?'Level: ':'المستوى: ')+labs[lv]+'</span></div>'+ 
+ '<div class="sak-quiz-meter"><i style="width:'+(((index+1)/BANK.length)*100)+'%"></i></div>'+ 
+ '<div class="sak-learning-card"><p><b>'+(en()?item.qEn:item.qAr)+'</b></p><div class="sak-learning-options">'+ 
+ opts.map((x,i)=>'<button type="button" data-i="'+i+'">'+x+'</button>').join('')+ 
+ '</div><div id="sakQuizFeedback" aria-live="polite"></div><div class="sak-learning-actions"><button id="sakQuizNext" type="button" style="display:none">'+(index===BANK.length-1?(en()?'Show result':'عرض النتيجة'):(en()?'Next question':'السؤال التالي'))+'</button></div></div>';
+ out.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>answer(+b.dataset.i,item.a));
+}
+function answer(choice,correct){
+ if(locked)return;locked=true;
+ const buttons=[...out.querySelectorAll('[data-i]')];
+ buttons.forEach((b,i)=>{b.disabled=true;if(i===correct)b.classList.add('correct')});
+ const fb=document.getElementById('sakQuizFeedback');
+ if(choice===correct){score++;fb.textContent=en()?'✅ Correct':'✅ إجابة صحيحة'}
+ else{buttons[choice]?.classList.add('wrong');fb.textContent=en()?'❌ Incorrect — the correct answer is highlighted.':'❌ إجابة غير صحيحة — تم تمييز الإجابة الصحيحة.'}
+ fb.style.marginTop='12px';fb.style.fontWeight='900';
+ const next=document.getElementById('sakQuizNext');next.style.display='';
+ next.onclick=()=>{locked=false;if(index<BANK.length-1){index++;render()}else finish()};
+}
+function finish(){
+ const pct=Math.round(score/BANK.length*100);
+ let note=en()?'Good effort — review the advanced questions and try again.':'محاولة جيدة — راجع الأسئلة المتقدمة ثم أعد الاختبار.';
+ if(pct>=90)note=en()?'Excellent — exceptional breadth and depth of knowledge.':'ممتاز — لديك اتساع وعمق معرفي مميز.';
+ else if(pct>=75)note=en()?'Very good — strong knowledge across multiple fields.':'جيد جدًا — معرفتك قوية في مجالات متعددة.';
+ out.innerHTML='<h2 class="sak-learning-title">'+(en()?'Quiz complete':'اكتمل الاختبار')+'</h2>'+ 
+ '<div class="sak-learning-card"><p style="font-size:1.25rem;font-weight:900">'+(en()?'Score: ':'النتيجة: ')+score+' / '+BANK.length+' ('+pct+'%)</p>'+ 
+ '<p>'+note+'</p><div class="sak-learning-actions"><button id="sakQuizAgain" type="button">'+(en()?'Try again':'إعادة الاختبار')+'</button></div></div>';
+ document.getElementById('sakQuizAgain').onclick=open;
+}
+window.startQuiz=open;
+document.querySelector('.sak-learning-close')?.addEventListener('click',close,true);
+modal.addEventListener('click',e=>{if(e.target===modal)close()},true);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('is-open')){e.preventDefault();close()}},true);
+new MutationObserver(()=>{if(modal.classList.contains('is-open'))render()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+})();
+</script>
+
+<style id="sak-star-audio-video-integration">
+html body #sakAudioVideoIcon{display:none!important;visibility:hidden!important;pointer-events:none!important}
+html body #sakMusicPlayer .sak-music-box{
+  width:min(920px,96vw)!important;max-width:96vw!important;max-height:94dvh!important;
+  overflow:auto!important;box-sizing:border-box!important
+}
+html body #sakMusicPlayer .sak-star-tools{
+  display:flex!important;gap:8px!important;flex-wrap:wrap!important;justify-content:center!important;
+  margin:14px 0 4px!important
+}
+html body #sakMusicPlayer #sakImageVideoToggle[aria-expanded="true"]{
+  background:#b98517!important;border-color:#ffe28a!important;color:#fff!important
+}
+html body #sakImageVideoPane{display:none!important;margin-top:12px!important;border-top:1px solid #ffffff35!important;padding-top:12px!important}
+html body #sakImageVideoPane.is-open{display:block!important}
+html body #sakImageVideoFrame{
+  display:block!important;width:100%!important;height:min(72dvh,760px)!important;min-height:480px!important;
+  border:1px solid #7fffe0aa!important;border-radius:16px!important;background:#06111b!important
+}
+@media(max-width:600px){
+ html body #sakMusicPlayer{padding:6px!important}
+ html body #sakMusicPlayer .sak-music-box{width:98vw!important;max-width:98vw!important;padding:14px!important;border-radius:18px!important}
+ html body #sakImageVideoFrame{height:70dvh!important;min-height:520px!important}
+}
+</style>
+<script id="sak-star-audio-video-integration-js">
+(()=>{
+ 'use strict';
+ const removeStandalone=()=>{document.querySelectorAll('#sakAudioVideoIcon').forEach(el=>el.remove())};
+ function labels(){
+   const en=document.documentElement.lang==='en';
+   return {
+     open:en?'🎬 Images to Video':'🎬 تحويل الصور إلى فيديو',
+     close:en?'✕ Hide Converter':'✕ إخفاء المحوّل'
+   };
+ }
+ function mount(){
+   removeStandalone();
+   const player=document.getElementById('sakMusicPlayer');
+   const box=player?.querySelector('.sak-music-box');
+   if(!box||document.getElementById('sakImageVideoToggle'))return;
+   const tools=document.createElement('div');tools.className='sak-star-tools';
+   const toggle=document.createElement('button');toggle.id='sakImageVideoToggle';toggle.type='button';toggle.setAttribute('aria-expanded','false');
+   const pane=document.createElement('div');pane.id='sakImageVideoPane';
+   const frame=document.createElement('iframe');frame.id='sakImageVideoFrame';frame.title='Images to Video';frame.loading='lazy';frame.allow='autoplay';
+   pane.append(frame);tools.append(toggle);box.append(tools,pane);
+   const render=()=>{const x=labels();toggle.textContent=toggle.getAttribute('aria-expanded')==='true'?x.close:x.open;frame.title=x.open.replace(/^🎬\s*/,'');};
+   toggle.addEventListener('click',()=>{
+     const open=toggle.getAttribute('aria-expanded')!=='true';
+     toggle.setAttribute('aria-expanded',open?'true':'false');
+     pane.classList.toggle('is-open',open);
+     if(open&&(!frame.getAttribute('src')||frame.getAttribute('src')==='about:blank'))frame.src='/audio-video.html?embed=1';
+     if(!open){try{frame.contentWindow?.postMessage({type:'sak-pause-media'},location.origin)}catch(_){}}
+     render();
+   });
+   new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+   render();
+ }
+ const obs=new MutationObserver(()=>{removeStandalone();mount()});
+ obs.observe(document.documentElement,{childList:true,subtree:true});
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
+ [300,1000,2500,5000].forEach(ms=>setTimeout(()=>{removeStandalone();mount()},ms));
+})();
+</script>
+
+<style id="sak-castle-index-simple-style">
+html body.locked #sakCastleIndexIcon,
+html body.locked #sakCastleIndexModal{display:none!important}
+html body #sakCastleIndexIcon{
+  position:relative!important;inset:auto!important;display:flex!important;flex-direction:column!important;
+  align-items:center!important;justify-content:flex-start!important;width:var(--sak-cell,58px)!important;
+  height:var(--sak-row,78px)!important;padding:0!important;margin:0!important;border:0!important;
+  background:transparent!important;color:#effff9!important;cursor:pointer!important;font:800 9px/1.2 Tahoma,Arial,sans-serif!important
+}
+html body #sakCastleIndexIcon .sak-index-orb{
+  width:var(--sak-cell,58px)!important;height:var(--sak-cell,58px)!important;border-radius:50%!important;
+  display:grid!important;place-items:center!important;font-size:28px!important;
+  background:radial-gradient(circle at 35% 25%,#fff,#8affe0 18%,#168872 50%,#04261f 78%)!important;
+  border:1px solid #effffb!important;box-shadow:0 0 8px #fff,0 0 20px #64ffd9!important
+}
+html body #sakCastleIndexIcon small{color:#effff9!important;text-shadow:0 1px 2px #000,0 0 6px #64ffd9!important}
+html body #sakCastleIndexModal{
+  position:fixed!important;inset:0!important;z-index:2147483647!important;display:none;align-items:center!important;justify-content:center!important;
+  padding:10px!important;background:rgba(0,8,12,.92)!important;backdrop-filter:blur(8px)!important
+}
+html body #sakCastleIndexModal.is-open{display:flex!important}
+html body #sakCastleIndexModal .sak-index-box{
+  position:relative!important;width:min(780px,95vw)!important;max-height:92dvh!important;overflow:auto!important;
+  padding:54px 14px 18px!important;border:1px solid #9fffe4aa!important;border-radius:20px!important;
+  background:linear-gradient(145deg,#071e24,#102c34)!important;color:#fff!important;box-shadow:0 0 28px #54ffd633!important
+}
+html body #sakCastleIndexClose{
+  position:absolute!important;top:8px!important;right:8px!important;width:40px!important;height:40px!important;border-radius:50%!important;
+  border:2px solid #fff!important;background:#8b1020!important;color:#fff!important;font-size:26px!important;cursor:pointer!important
+}
+html body #sakCastleIndexTitle{text-align:center!important;margin:0 0 14px!important;font:900 24px/1.4 Tahoma,Arial,sans-serif!important;color:#dffff6!important}
+html body #sakCastleIndexGrid{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(145px,1fr))!important;gap:8px!important}
+html body .sak-index-link{
+  min-height:58px!important;border:1px solid #7fffe044!important;border-radius:12px!important;padding:9px!important;
+  background:#0b252c!important;color:#fff!important;cursor:pointer!important;font:800 12px/1.4 Tahoma,Arial,sans-serif!important;
+  display:flex!important;align-items:center!important;gap:8px!important;text-align:start!important
+}
+html body .sak-index-link span{font-size:22px!important}
+@media(max-width:520px){
+ html body #sakCastleIndexGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ html body .sak-index-link{font-size:10.5px!important;min-height:62px!important}
+}
+</style>
+<script id="sak-castle-index-simple-js">
+(()=>{
+ 'use strict';
+ const $=id=>document.getElementById(id), isEn=()=>document.documentElement.lang==='en';
+ const entries=[
+  ['🎥','مكتبة الفيديو','Video Library',()=>click('emeraldLibraryButton')],
+  ['📚','المكتبة النصية','Text Library',()=>call('openSakakerTextLibrary')],
+  ['📖','الكتب الإلكترونية','E-Books',()=>call('openSakakerEbooks')],
+  ['📝','خواطر وقصص','Thoughts & Stories',()=>folder(1)],
+  ['❓','اختبر معلوماتك','Test Your Knowledge',()=>call('startQuiz')],
+  ['🌍','ثقافة عامة','General Culture',()=>folder(4)],
+  ['💡','معلومة اليوم','Fact of the Day',()=>call('openTodayFact')],
+  ['🧩','ألغاز','Riddles',()=>call('openPuzzle')],
+  ['📜','حكم وأمثال','Wisdom & Proverbs',()=>call('openWisdomLibrary')],
+  ['📰','أخبار الموقع','Site News',()=>call('openSiteNewsModal')],
+  ['📺','البث والإذاعة','Live TV & Radio',()=>click('liveFlasher')],
+  ['⭐','المشغّل والمحوّل','Player & Converter',()=>click('sakMusicIcon')],
+  ['🎶','استديو الموسيقى','Music Studio',()=>click('emOpenBtn')],
+  ['♟️','الشطرنج','Chess',()=>click('sakEmeraldChessIcon')],
+  ['🏓','بونج','Pong',()=>click('pongGame-btn')],
+  ['💬','الدردشة','Chat',()=>click('sakChatIcon')],
+  ['🗺️','الخرائط','Maps',()=>call('openMap')],
+  ['🛍️','التسوق','Shopping',()=>click('sakShoppingIcon')],
+  ['🎨','الاستديو الإبداعي','Creative Studio',()=>click('sakCreativeIcon')],
+  ['💼','الأعمال','Business',()=>clickFirst(['sakakerBusinessIcon','sakakerBusinessAd'])],
+  ['📘','فيسبوك','Facebook',()=>click('facebookVideoIcon')],
+  ['🚢','السفينة','Ship',()=>click('shipIcon_new')],
+  ['🌎','الأخبار العالمية','World News',()=>click('sakNewsLaunch')]
+ ];
+ function click(id){const el=$(id);if(el){close();el.click()}}
+ function clickFirst(ids){for(const id of ids){if($(id)){close();$(id).click();return}}}
+ function call(name){if(typeof window[name]==='function'){close();window[name]()}}
+ function folder(n){if(typeof window.openFolder==='function'){close();window.openFolder(n)}}
+ function ensure(){
+  let m=$('sakCastleIndexModal');
+  if(m)return m;
+  m=document.createElement('div');m.id='sakCastleIndexModal';
+  m.innerHTML='<div class="sak-index-box" role="dialog" aria-modal="true"><button id="sakCastleIndexClose" type="button">×</button><h2 id="sakCastleIndexTitle"></h2><div id="sakCastleIndexGrid"></div></div>';
+  document.body.append(m);
+  $('sakCastleIndexClose').onclick=close;
+  m.addEventListener('click',e=>{if(e.target===m)close()});
+  render();return m;
+ }
+ function render(){
+  const m=ensure(),g=$('sakCastleIndexGrid'),t=$('sakCastleIndexTitle'),b=$('sakCastleIndexIcon');
+  t.textContent=isEn()?'🧭 Castle Index':'🧭 فهرس القلعة';
+  g.replaceChildren();
+  entries.forEach(([ico,ar,enText,run])=>{
+   const x=document.createElement('button');x.type='button';x.className='sak-index-link';
+   x.innerHTML='<span aria-hidden="true">'+ico+'</span><b>'+(isEn()?enText:ar)+'</b>';
+   x.onclick=run;g.append(x);
+  });
+  if(b){b.querySelector('small').textContent=isEn()?'Index':'الفهرس';b.title=isEn()?'Castle Index':'فهرس القلعة';b.setAttribute('aria-label',b.title)}
+ }
+ function open(){const m=ensure();render();m.classList.add('is-open');document.documentElement.style.overflow='hidden';$('sakCastleIndexClose').focus()}
+ function close(){const m=$('sakCastleIndexModal');if(m)m.classList.remove('is-open');document.documentElement.style.overflow=''}
+ function mount(){
+  if($('sakCastleIndexIcon'))return;
+  const host=$('sakakerAllIconsDock')||document.querySelector('.cards');if(!host)return;
+  const b=document.createElement('button');b.id='sakCastleIndexIcon';b.type='button';
+  b.innerHTML='<span class="sak-index-orb" aria-hidden="true">🧭</span><small></small>';
+  b.onclick=open;host.append(b);render();
+ }
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('sakCastleIndexModal')?.classList.contains('is-open')){e.preventDefault();close()}});
+ new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
+ setTimeout(mount,800);setTimeout(mount,2500);
+})();
+</script>
+
+
+<script id="sak-text-library-language-final">
+(()=>{
+ 'use strict';
+ function syncTextLibraryLanguage(){
+   const card=document.querySelector('.cards .sak-text-library-card');
+   if(!card)return;
+   const en=document.documentElement.lang==='en';
+   const label=card.querySelector('.icon-label');
+   const sub=card.querySelector('.sub');
+   if(label)label.textContent=en?'Text Library':'المكتبة النصية';
+   if(sub)sub.textContent=en?'Stories • Knowledge • Riddles':'قصص • معرفة • ألغاز';
+   const title=en?'Text Library':'المكتبة النصية';
+   card.setAttribute('aria-label',title);
+   card.setAttribute('title',title);
+ }
+ const observer=new MutationObserver(syncTextLibraryLanguage);
+ observer.observe(document.documentElement,{attributes:true,attributeFilter:['lang','dir']});
+ document.addEventListener('click',e=>{
+   if(e.target.closest('#siteLangToggle')){
+     setTimeout(syncTextLibraryLanguage,0);
+     setTimeout(syncTextLibraryLanguage,80);
+   }
+ },true);
+ if(document.readyState==='loading'){
+   document.addEventListener('DOMContentLoaded',syncTextLibraryLanguage,{once:true});
+ }else syncTextLibraryLanguage();
+ [300,900,1800,3500,6000].forEach(ms=>setTimeout(syncTextLibraryLanguage,ms));
+})();
+</script>
+
+
+<style id="sak-stories-blog-final">
+#sakThoughtsStories{
+  width:min(900px,100%)!important;margin:0 auto!important;display:grid!important;gap:18px!important;
+  font-family:Tajawal,Tahoma,Arial,sans-serif!important
+}
+#sakThoughtsStories .sak-story-blog-head{
+  text-align:center!important;padding:20px 14px!important;border:1px solid rgba(117,255,220,.32)!important;
+  border-radius:20px!important;background:linear-gradient(145deg,rgba(7,35,42,.92),rgba(15,20,30,.94))!important;
+  box-shadow:0 12px 36px rgba(0,0,0,.30)!important
+}
+#sakThoughtsStories .sak-story-blog-head span{font-size:25px;color:#ffe28a}
+#sakThoughtsStories .sak-story-blog-head h2{margin:5px 0!important;color:#eafff8!important;font-size:clamp(22px,4vw,32px)!important}
+#sakThoughtsStories .sak-story-blog-head p{margin:0!important;color:#aee8dd!important}
+#sakThoughtsStories .sak-story-card{
+  overflow:hidden!important;padding:18px!important;border:1px solid rgba(134,255,226,.28)!important;border-radius:20px!important;
+  background:linear-gradient(150deg,rgba(7,28,35,.96),rgba(10,15,23,.97))!important;
+  box-shadow:0 13px 35px rgba(0,0,0,.34),inset 0 0 18px rgba(82,255,211,.025)!important
+}
+#sakThoughtsStories .sak-story-featured{padding:0 0 20px!important;border-color:rgba(255,226,138,.52)!important}
+#sakThoughtsStories .sak-story-cover{margin:0 0 18px!important;position:relative!important;background:#020609!important}
+#sakThoughtsStories .sak-story-cover img{display:block!important;width:100%!important;max-height:520px!important;object-fit:cover!important}
+#sakThoughtsStories .sak-story-cover figcaption{
+  position:absolute!important;inset:auto 12px 10px!important;width:max-content!important;max-width:calc(100% - 24px)!important;
+  padding:6px 10px!important;border-radius:999px!important;background:rgba(0,0,0,.68)!important;color:#fff4b8!important;font-size:11px!important
+}
+#sakThoughtsStories .sak-story-featured>:not(.sak-story-cover){margin-inline:20px!important}
+#sakThoughtsStories .sak-story-meta{
+  display:inline-block!important;margin-bottom:7px!important;padding:4px 9px!important;border-radius:999px!important;
+  background:rgba(67,255,209,.10)!important;color:#7fffe0!important;font-size:11px!important;font-weight:900!important
+}
+#sakThoughtsStories .sak-story-card h2{
+  margin:4px 0 7px!important;color:#ffe799!important;font-size:clamp(19px,3.4vw,27px)!important;line-height:1.5!important
+}
+#sakThoughtsStories .sak-story-note{
+  margin:0 0 14px!important;padding-bottom:12px!important;border-bottom:1px solid rgba(255,255,255,.10)!important;
+  color:#9debdc!important;font-weight:800!important;font-size:13px!important
+}
+#sakThoughtsStories .sak-story-body{display:grid!important;gap:10px!important}
+#sakThoughtsStories .sak-story-body p{
+  margin:0!important;color:#e6f4f1!important;font-size:clamp(14px,2.1vw,17px)!important;line-height:2!important;text-align:start!important
+}
+@media(max-width:600px){
+ #sakThoughtsStories{gap:12px!important}
+ #sakThoughtsStories .sak-story-card{padding:14px!important;border-radius:16px!important}
+ #sakThoughtsStories .sak-story-featured{padding:0 0 16px!important}
+ #sakThoughtsStories .sak-story-featured>:not(.sak-story-cover){margin-inline:14px!important}
+ #sakThoughtsStories .sak-story-cover img{max-height:360px!important}
+}
+</style>
+
 </body>
 </html>
