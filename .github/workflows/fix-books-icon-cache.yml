@@ -36,7 +36,7 @@ jobs:
               if archive_count != 1:
                   raise SystemExit(f'Expected one books iframe initializer in recovery archive; found {archive_count}')
               archive.write_text(archived, encoding='utf-8')
-          print('Books icon now loads the current nine-book page on every open.')
+          print('Books icon now refreshes to the nine-book version on every open.')
 
       - name: Commit repair
         shell: bash
