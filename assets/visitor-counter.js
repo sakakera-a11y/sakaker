@@ -223,6 +223,7 @@ import {
     const allPresenceRef = ref(rtdb, "onlineUsers");
     const connectedRef = ref(rtdb, ".info/connected");
     let heartbeat = 0;
+    let writeFailed = false;
 
     const writePresence = async () => {
       await onDisconnect(presenceRef).remove();
@@ -232,11 +233,18 @@ import {
         status: "available",
         lastSeen: rtdbServerTimestamp()
       });
+      writeFailed = false;
     };
 
     const connectedUnsub = onValue(connectedRef, snapshot => {
-      if (snapshot.val() !== true) return;
+      const connected = snapshot.val() === true;
+      if (!connected) {
+        if (heartbeat) window.clearInterval(heartbeat);
+        heartbeat = 0;
+        return;
+      }
       writePresence().catch(error => {
+        writeFailed = true;
         onlineEl.dataset.state = "error";
         updateCounterLanguage();
         console.warn("SAKAKER presence write:", error);
@@ -261,7 +269,7 @@ import {
           sessions.add(key);
         }
       });
-      onlineEl.dataset.state = "live";
+      onlineEl.dataset.state = writeFailed ? "error" : "live";
       onlineEl.dataset.value = String(sessions.size);
       onlineEl.title = document.documentElement.lang === "en"
         ? "Active anonymous or signed-in visitor sessions"
@@ -295,33 +303,37 @@ import {
     const sessionUid = sessionCredential.user.uid;
     let dayKey = riyadhDayKey();
     watchCounters(dayKey);
+    const stopPresence = startPresence(sessionCredential.user);
+    window.sakakerPresenceStop = stopPresence;
+
     await registerCounterMarks(uniqueUid, [
       { id: "visits" },
       { id: `daily_${dayKey}`, date: dayKey }
-    ]);
+    ]).catch(error => console.warn("SAKAKER unique visitor write:", error));
 
     const pageSessionKey = `sakakerVisitSessionRegistered:${dayKey}`;
     if (getSessionFlag(pageSessionKey) !== "1") {
       await registerCounterMarks(sessionUid, [
         { id: "sessionVisits" },
         { id: `dailySessionVisits_${dayKey}`, date: dayKey }
-      ]);
-      setSessionFlag(pageSessionKey);
+      ]).then(() => setSessionFlag(pageSessionKey))
+        .catch(error => console.warn("SAKAKER session visit write:", error));
     }
 
-    const stopPresence = startPresence(sessionCredential.user);
-    window.sakakerPresenceStop = stopPresence;
-
     window.setInterval(async () => {
-      const nextDay = riyadhDayKey();
-      if (nextDay === dayKey) return;
-      dayKey = nextDay;
-      watchCounters(dayKey);
-      await registerCounterMarks(uniqueUid, [{ id: `daily_${dayKey}`, date: dayKey }]);
-      const nextSessionKey = `sakakerVisitSessionRegistered:${dayKey}`;
-      if (getSessionFlag(nextSessionKey) !== "1") {
-        await registerCounterMarks(sessionUid, [{ id: `dailySessionVisits_${dayKey}`, date: dayKey }]);
-        setSessionFlag(nextSessionKey);
+      try {
+        const nextDay = riyadhDayKey();
+        if (nextDay === dayKey) return;
+        dayKey = nextDay;
+        watchCounters(dayKey);
+        await registerCounterMarks(uniqueUid, [{ id: `daily_${dayKey}`, date: dayKey }]);
+        const nextSessionKey = `sakakerVisitSessionRegistered:${dayKey}`;
+        if (getSessionFlag(nextSessionKey) !== "1") {
+          await registerCounterMarks(sessionUid, [{ id: `dailySessionVisits_${dayKey}`, date: dayKey }]);
+          setSessionFlag(nextSessionKey);
+        }
+      } catch (error) {
+        console.warn("SAKAKER daily visitor rollover:", error);
       }
     }, 30_000);
   }
