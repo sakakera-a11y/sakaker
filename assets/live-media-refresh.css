@@ -276,3 +276,78 @@ html body #sakakerSiteNewsModal .sakaker-site-news-title{color:#fff0fa!important
 @media(max-width:700px){
  html body #sakakerSiteNewsModal .sakaker-site-news-box{width:calc(100vw - 20px)!important;max-width:calc(100vw - 20px)!important;max-height:calc(100dvh - 20px)!important;overflow-y:auto!important;overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important}
 }
+
+
+/* Window palette completion: luminous, opaque rose and violet surfaces. */
+html body :is(
+ #loginOverlay,#folderModal,#quizModal,#puzzleModal,#livePopup,#facebookVideoPopup,#videoOverlay,#videoBoxFixed,
+ #shipPopup_new,#sakakerBusinessPopup,#emPanel,#emNotesModal,#sakChatOverlay,#sakLearningModal,
+ #sakSecureStreamModal,#sakCrystalDialog,#sakShipDialog,#sakPaymentPanel,#sakNewsDialog,#sakPongSharePanel,
+ #emeraldModal,#emeraldLibraryContent,#sakMapOverlay,#sakDirectReader,#sakTextLibraryModal,
+ #sakVideoLibraryPageOverlay,#sakCastleIndexModal,#sakakerSiteNewsModal,#sakBooksAppLayer,
+ #sakPongArena,#pongGame-menu,#sakChessModal,#chessModal,#chessOverlay,.sak-chess-modal
+){--sak-window-rgb:255,111,194}
+html body #loginOverlay{--sak-window-rgb:190,128,255}
+html body #folderModal{--sak-window-rgb:231,103,184}
+html body #quizModal{--sak-window-rgb:255,164,196}
+html body #puzzleModal{--sak-window-rgb:255,93,160}
+html body #livePopup{--sak-window-rgb:255,84,180}
+html body #facebookVideoPopup{--sak-window-rgb:210,119,255}
+html body :is(#videoOverlay,#videoBoxFixed,#sakSecureStreamModal){--sak-window-rgb:255,128,191}
+html body :is(#shipPopup_new,#sakShipDialog){--sak-window-rgb:193,113,255}
+html body #sakakerBusinessPopup{--sak-window-rgb:255,157,190}
+html body :is(#emPanel,#emNotesModal){--sak-window-rgb:173,106,255}
+html body #sakChatOverlay{--sak-window-rgb:231,107,193}
+html body #sakLearningModal{--sak-window-rgb:198,116,255}
+html body #sakCrystalDialog{--sak-window-rgb:255,111,197}
+html body #sakPaymentPanel{--sak-window-rgb:232,100,183}
+html body #sakNewsDialog{--sak-window-rgb:255,164,196}
+html body #sakPongSharePanel{--sak-window-rgb:187,108,255}
+html body :is(#emeraldModal,#emeraldLibraryContent){--sak-window-rgb:255,104,190}
+html body #sakMapOverlay{--sak-window-rgb:189,128,255}
+html body :is(#sakDirectReader,#sakTextLibraryModal){--sak-window-rgb:216,111,229}
+html body #sakVideoLibraryPageOverlay{--sak-window-rgb:255,116,184}
+html body #sakCastleIndexModal{--sak-window-rgb:255,94,192}
+html body #sakakerSiteNewsModal{--sak-window-rgb:255,163,194}
+html body #sakBooksAppLayer{--sak-window-rgb:196,117,255}
+html body :is(#sakPongArena,#pongGame-menu){--sak-window-rgb:255,103,190}
+html body :is(#sakChessModal,#chessModal,#chessOverlay,.sak-chess-modal){--sak-window-rgb:195,115,255}
+
+/* Give every window a distinct rose, berry or violet glow while leaving the backdrop dim. */
+html body :is(
+ #loginBox,#folderModal .panel,#quizModal .panel,#puzzleModal .panel,#facebookVideoPopup .fbVideoBox,
+ #livePopup #liveVideosContainer,#videoOverlay #videoBox,#videoBoxFixed,#shipPopup_new .ship-anniversary,
+ #sakakerBusinessPopup .sbPopupBox,#emPanel,#emNotesModal .emNotesBox,#sakChatPanel,
+ #sakLearningModal .sak-learning-panel,#sakSecureStreamModal .sak-secure-stream-box,#sakCrystalDialog,
+ #sakShipDialog,#sakPaymentPanel,#sakNewsDialog,#sakPongSharePanel,#emeraldModal,
+ #emeraldLibraryContent,#sakMapOverlay .box,#sakDirectReader,#sakTextLibraryModal,
+ #sakVideoLibraryPageOverlay,#sakCastleIndexModal,#sakakerSiteNewsModal .sakaker-site-news-box,
+ #sakBooksAppLayer,#sakPongArena,#pongGame-menu,#sakChessModal,#chessModal,#chessOverlay,.sak-chess-modal,
+ .sak-music-box
+){
+ color:#fff7fd!important;
+ border-color:rgba(var(--sak-window-rgb,255,111,194),.68)!important;
+ background:
+  radial-gradient(ellipse at 10% 8%,rgba(255,125,203,.30),transparent 38%),
+  radial-gradient(ellipse at 92% 88%,rgba(178,107,255,.25),transparent 42%),
+  linear-gradient(145deg,rgba(79,20,67,.98),rgba(43,19,63,.98) 58%,rgba(var(--sak-window-rgb,255,111,194),.34))!important;
+ box-shadow:inset 0 1px rgba(255,255,255,.15),0 20px 60px rgba(0,0,0,.48),
+  0 0 30px rgba(var(--sak-window-rgb,255,111,194),.24)!important
+}
+/* Apply the same panel finish to the video library, chess and both Pong entry/game windows. */
+html body :is(#sakVideoLibraryPageOverlay,#sakBooksAppLayer,#sakPongArena,#pongGame-menu,#sakChessModal,#chessModal,#chessOverlay,.sak-chess-modal){
+ border:1px solid rgba(var(--sak-window-rgb,255,111,194),.7)!important;
+ background:
+  radial-gradient(ellipse at 12% 8%,rgba(255,113,196,.3),transparent 38%),
+  radial-gradient(ellipse at 88% 92%,rgba(177,111,255,.25),transparent 42%),
+  linear-gradient(145deg,#511742f7,#2e1748f7 62%,#60204fF5)!important;
+ box-shadow:inset 0 1px #ffffff24,0 20px 60px #0008,0 0 32px rgba(var(--sak-window-rgb,255,111,194),.24)!important
+}
+html body #pongGame-container{background:rgba(9,5,17,.84)!important}
+html body #pongGame-menu{backdrop-filter:blur(16px) saturate(140%)!important}
+html body #sakBooksAppFrame{background:#30163b!important;border:1px solid rgba(213,151,255,.75)!important}
+/* Playback viewports and game arenas stay black so media and board contrast remain clear. */
+html body :is(.fbVideoFrame,#mainVideo,#fixedVideo,#videoBox iframe,#videoOverlay iframe,#emeraldModal iframe,
+ #sakVideoLibraryPageFrame,#sakImageVideoFrame,#sakPongCourt,#pongGame-canvas,.chess-board,.sak-chess-board){
+ background:#000!important
+}
