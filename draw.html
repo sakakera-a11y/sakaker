@@ -1,4 +1,25 @@
-<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SAKAKER — Creative Studio</title></head><body><style>html,body{margin:0;min-height:100%;background:#041016;color:#fff;font-family:Tahoma,Arial,sans-serif}#back{position:fixed;top:10px;left:10px;z-index:2147483647;padding:10px 14px;border-radius:12px;border:1px solid #7fffd4;background:#092a2d;color:#fff;cursor:pointer}</style><button id="back" onclick="location.href='../index.html'">↩ الرئيسية / Home</button><style id="sak-creative-studio-style">
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SAKAKER — Creative Studio</title>
+<style id="sak-window-palette-studio">
+/* Sapphire and violet glass palette for the creative studio modal. */
+html body #sakStudio{
+ background:radial-gradient(ellipse at 12% 8%,rgba(76,137,255,.24),transparent 34%),radial-gradient(ellipse at 90% 90%,rgba(153,91,255,.23),transparent 38%),rgba(5,8,24,.87)!important;
+ backdrop-filter:blur(16px) saturate(135%)!important;-webkit-backdrop-filter:blur(16px) saturate(135%)!important
+}
+html body #sakStudio::backdrop{background:rgba(7,9,30,.78)!important}
+html body #sakStudio .studio-panel{
+ border-color:rgba(160,185,255,.76)!important;
+ background:linear-gradient(145deg,rgba(31,47,91,.98),rgba(12,20,48,.98) 62%,rgba(75,48,126,.92))!important;
+ box-shadow:inset 0 1px rgba(255,255,255,.13),0 22px 70px rgba(0,0,0,.62),0 0 34px rgba(97,135,255,.25)!important
+}
+html body #sakStudio h2{color:#e8e5ff!important;text-shadow:0 0 15px rgba(128,157,255,.42)!important}
+html body #sakStudio button{border-color:rgba(163,187,255,.76)!important;background:linear-gradient(125deg,#344e9a,#4a3d9d 62%,#7051aa)!important;color:#fff!important;box-shadow:0 0 12px rgba(99,131,255,.14)!important}
+html body #sakStudio button[aria-pressed="true"]{border-color:#d6ddff!important;background:linear-gradient(125deg,#7c82ff,#a48bff)!important;color:#111b43!important}
+html body #sakStudio button:disabled{opacity:.48!important}
+html body #sakStudio :focus-visible{outline-color:#b8c8ff!important}
+html body #sakStudio #studioStatus{color:#d7d0ff!important}
+@media(max-width:600px){html body #sakStudio{padding:5px!important}html body #sakStudio .studio-panel{max-height:calc(100dvh - 10px)!important}}
+</style>
+</head><body><style>html,body{margin:0;min-height:100%;background:#041016;color:#fff;font-family:Tahoma,Arial,sans-serif}#back{position:fixed;top:10px;left:10px;z-index:2147483647;padding:10px 14px;border-radius:12px;border:1px solid #7fffd4;background:#092a2d;color:#fff;cursor:pointer}</style><button id="back" onclick="location.href='../index.html'">↩ الرئيسية / Home</button><style id="sak-creative-studio-style">
 html body #sakCreativeIcon { cursor:pointer; font-family:inherit; }
 
 html body #sakCreativeIcon .icon-label { white-space:normal !important; }
