@@ -40751,6 +40751,8 @@ new MutationObserver(liftOpenLayers).observe(document.body||document.documentEle
 (()=>{
 'use strict';
 const books=[
+{id:'1GXTRPWdBrkI8f_x9KmhRpSfJM3HL1Bfy',ar:'الموسوعة العربية العالمية — الجزء 30',en:'The Arab World Encyclopedia — Volume 30',authorAr:'الموسوعة العربية العالمية',authorEn:'Arab World Encyclopedia'},
+{id:'1E8m9p7TKZWoJdNEBn0RbAUZcyofOVQts',ar:'كليلة ودمنة',en:'Kalila wa Dimna',authorAr:'عبد الله بن المقفع',authorEn:'Abdullah ibn al-Muqaffa'},
 {id:'1gwOaOxZe75ADi4lQbjxfvDS-qP4qGEhv',ar:'مغامرة في الصحراء',en:'Adventure in the Desert',authorAr:'مصطفى محمود',authorEn:'Mostafa Mahmoud'},
 {id:'1vXtFhdd_6B_1H7TiSmZ_BufboGYQf7f5',ar:'أنت لي',en:'Anta Li',authorAr:'منى المرشود',authorEn:'Mona Al-Mershoud'},
 {id:'1QNTci94vrzoUWO1yZFZdZ5RlM1vOqH2d',ar:'إيكادولي',en:'Ikadoli',authorAr:'حنان لاشين',authorEn:'Hanan Lashin'},
@@ -40778,7 +40780,7 @@ function ensure(){
 function render(){
  if(!shell)return;
  shell.querySelector('#sakDirectBooksTitle').textContent=t('📚 الكتب الإلكترونية','📚 E-Books');
- shell.querySelector('#sakDirectBooksSub').textContent=t('الكتب السبعة — اختر كتابًا للقراءة','Seven books — choose a book to read');
+ shell.querySelector('#sakDirectBooksSub').textContent=t('اختر كتابًا للقراءة','Choose a book to read');
  const grid=shell.querySelector('#sakDirectBooksGrid');grid.replaceChildren();
  books.forEach((b,i)=>{const btn=document.createElement('button');btn.type='button';btn.className='sak-direct-book';btn.innerHTML='<span class="ico">📖</span><b></b><small></small><em></em>';btn.querySelector('b').textContent=t(b.ar,b.en);btn.querySelector('small').textContent=t(b.authorAr,b.authorEn);btn.querySelector('em').textContent=t('قراءة الكتاب','Read book');btn.onclick=()=>openBook(i);grid.appendChild(btn)});
  shell.querySelector('#sakDirectReaderBack').textContent=t('↩ الكتب','↩ Books');
