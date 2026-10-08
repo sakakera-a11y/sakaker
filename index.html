@@ -4357,7 +4357,7 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
 @media(max-width:700px){html,body{max-width:100%;overflow-x:hidden}button,[role="button"],.icon-card{touch-action:manipulation}#shipPopup_new{border-radius:16px!important}#closeShip_new{position:sticky!important;top:0!important;float:inline-end!important;z-index:2!important}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
-<link rel="stylesheet" href="/assets/live-media-refresh.css?v=20261008-sea2">
+<link rel="stylesheet" href="/assets/live-media-refresh.css?v=20261008-flower3">
 </head>
 <body>
 
@@ -23579,8 +23579,8 @@ html body #sakGlobalStreamDetails{
     if(title){
       title.textContent =
         isEn()
-          ? '🌍 Worldwide Live TV Directory'
-          : '🌍 دليل القنوات المباشرة حول العالم';
+          ? '🌸 Live Channels'
+          : '🌸 قنوات مباشرة';
     }
 
     if(input){
@@ -37835,16 +37835,16 @@ html body:not(.locked) #sakakerBusinessAd{
   function addSeo(){const head=document.head;const set=(name,content)=>{let m=head.querySelector('meta[name="'+name+'"]');if(!m){m=document.createElement('meta');m.name=name;head.appendChild(m)}m.content=content};set('description','SAKAKER: منصة عربية للمعرفة والقراءة والكتابة والمحتوى المرئي والتفاعل المجتمعي.');set('robots','index, follow, max-image-preview:large');set('theme-color','#063947');document.title='abwalqmrzmrd castle';}
   function addMusic(){
     if(document.getElementById('sakMusicIcon'))return;
-    const remote='https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/%D9%81%D9%87%D8%AF%D8%A8%D9%86%20%D8%B3%D8%B9%D9%8A%D8%AF%20%D9%8A%D8%A7%D8%B5%D8%A7%D8%AD%D8%A8%D9%8A%20%D9%85%D8%A7%D8%AA%D8%AC%D9%8A%20%D8%A8%D8%A7%D9%84%D8%B2%D9%8A%D8%A7%D8%B1%D9%87%20%D8%A8%D8%AE%D9%8A%D9%84_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A0%D9%A4%D9%A1%D9%A3_%D9%A1%D9%A6%D9%A3%D9%A6%D9%A2%D9%A5.mp3';
-    const btn=document.createElement('button');btn.id='sakMusicIcon';btn.type='button';btn.className='launcher';btn.innerHTML='<span>⭐ موسيقى</span>';document.body.append(btn);
+    const remote='https://cdn.freesound.org/previews/468/468452_1661766-hq.mp3';
+    const btn=document.createElement('button');btn.id='sakMusicIcon';btn.type='button';btn.className='launcher';btn.innerHTML='<span>🌊 صوت البحر</span>';document.body.append(btn);
     const modal=document.createElement('div');modal.id='sakMusicPlayer';
     modal.innerHTML='<div class="sak-music-box" role="dialog" aria-modal="true" aria-labelledby="sakMediaTitle"><button type="button" class="sak-close" data-media-label="close">×</button><h2 id="sakMediaTitle" data-media-text="title"></h2><p data-media-text="song"></p><div class="sak-media-actions"><button id="sakRemotePlay" type="button" data-media-text="remote"></button></div><label for="sakMediaFile" data-media-text="choose"></label><input id="sakMediaFile" type="file" accept="audio/*,video/*,.mp3,.m4a,.aac,.wav,.ogg,.oga,.flac,.mp4,.m4v,.mov,.webm,.ogv"><p data-media-text="privacy"></p><audio id="sakNativeAudio" controls preload="none"></audio><video id="sakNativeVideo" controls playsinline preload="metadata" hidden></video><div class="sak-media-actions"><button id="sakMediaPlay" type="button" data-media-text="play"></button><button id="sakMediaPause" type="button" data-media-text="pause"></button><button id="sakMediaRestart" type="button" data-media-text="restart"></button></div><p id="sakMediaStatus" role="status" aria-live="polite"></p></div>';
     document.body.append(modal);
     const audio=modal.querySelector('audio'),video=modal.querySelector('video'),picker=modal.querySelector('input');
     let active=audio,objectUrl=null,selectedName='',statusKey='ready',revision=0,previousOverflow='';
     const words={
-      ar:{title:'🎵 مشغّل الصوت والفيديو',song:'يا صاحبي ما تجي بالزيارة بخيل — فهد بن سعيد',remote:'▶ تشغيل الأغنية',source:'فتح صفحة الأغنية ↗',choose:'اختر ملف صوت أو فيديو من جهازك',privacy:'تشغيل مباشر من جهازك دون رفع الملف أو تثبيت إضافات. دعم الصيغ يعتمد على متصفحك.',play:'▶ تشغيل',pause:'⏸ إيقاف مؤقت',restart:'↺ من البداية',close:'إغلاق المشغّل',ready:'اضغط تشغيل الأغنية أو اختر ملفاً من جهازك.',loading:'جارٍ تجهيز الملف…',playing:'قيد التشغيل',paused:'متوقف مؤقتاً',ended:'انتهى التشغيل',blocked:'اضغط زر التشغيل للبدء.',unsupported:'تعذر تشغيل هذه الصيغة أو الملف تالف. جرّب MP3 للصوت أو MP4 بترميز H.264/AAC للفيديو.',network:'تعذر تحميل الأغنية. تحقق من الإنترنت أو افتح صفحة المصدر.',selected:'الملف المختار: '},
-      en:{title:'🎵 Audio & video player',song:'Ya Sahbi Ma Tiji Bil Ziyarah Bakheel — Fahad bin Saeed',remote:'▶ Play song',source:'Open song page ↗',choose:'Choose an audio or video file from your device',privacy:'Plays from your device without uploads or plugins. Format support depends on your browser.',play:'▶ Play',pause:'⏸ Pause',restart:'↺ Restart',close:'Close player',ready:'Play the song or choose a file from your device.',loading:'Preparing media…',playing:'Playing',paused:'Paused',ended:'Playback finished',blocked:'Press Play to start.',unsupported:'This format is unsupported or the file is damaged. Try MP3 audio or MP4 video with H.264/AAC.',network:'Could not load the song. Check your connection or open its source page.',selected:'Selected file: '}
+      ar:{title:'🎵 مشغّل الصوت والفيديو',song:'🌊 صوت البحر',remote:'▶ تشغيل صوت البحر',source:'مصدر صوت البحر ↗',choose:'اختر ملف صوت أو فيديو من جهازك',privacy:'تشغيل مباشر من جهازك دون رفع الملف أو تثبيت إضافات. دعم الصيغ يعتمد على متصفحك.',play:'▶ تشغيل',pause:'⏸ إيقاف مؤقت',restart:'↺ من البداية',close:'إغلاق المشغّل',ready:'اضغط تشغيل صوت البحر أو اختر ملفاً من جهازك.',loading:'جارٍ تجهيز الملف…',playing:'قيد التشغيل',paused:'متوقف مؤقتاً',ended:'انتهى التشغيل',blocked:'اضغط زر التشغيل للبدء.',unsupported:'تعذر تشغيل هذه الصيغة أو الملف تالف. جرّب MP3 للصوت أو MP4 بترميز H.264/AAC للفيديو.',network:'تعذر تحميل صوت البحر. تحقق من الإنترنت ثم أعد المحاولة.',selected:'الملف المختار: '},
+      en:{title:'🎵 Audio & video player',song:'Sea waves and seagulls',remote:'▶ Play sea sound',source:'Open sea sound source ↗',choose:'Choose an audio or video file from your device',privacy:'Plays from your device without uploads or plugins. Format support depends on your browser.',play:'▶ Play',pause:'⏸ Pause',restart:'↺ Restart',close:'Close player',ready:'Play the sea sound or choose a file from your device.',loading:'Preparing media…',playing:'Playing',paused:'Paused',ended:'Playback finished',blocked:'Press Play to start.',unsupported:'This format is unsupported or the file is damaged. Try MP3 audio or MP4 video with H.264/AAC.',network:'Could not load the sea sound. Check your connection and try again.',selected:'Selected file: '}
     };
     const dict=()=>words[document.documentElement.lang==='en'?'en':'ar'];
     function render(){const t=dict();modal.dir=document.documentElement.lang==='en'?'ltr':'rtl';modal.querySelectorAll('[data-media-text]').forEach(el=>{const value=t[el.dataset.mediaText];if(el.textContent!==value)el.textContent=value});modal.querySelector('.sak-close').setAttribute('aria-label',t.close);audio.setAttribute('aria-label',t.title);video.setAttribute('aria-label',t.title);modal.querySelector('#sakMediaStatus').textContent=t[statusKey]+(selectedName?' — '+t.selected+selectedName:'');}
@@ -41288,6 +41288,6 @@ html body .sak-index-link span{font-size:22px!important}
 </style>
 
 <script type="module" src="assets/sakaker-live.js"></script>
-<script src="/assets/live-media-refresh.js?v=20261008-sea2" defer></script>
+<script src="/assets/live-media-refresh.js?v=20261008-flower3" defer></script>
 </body>
 </html>
