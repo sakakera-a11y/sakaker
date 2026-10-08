@@ -167,3 +167,100 @@ html body .sak-live-media-tab{background:linear-gradient(130deg,#4d1649ed,#2b133
  html body #livePopup #sakGlobalLiveResults,html body #livePopup #sakRadioResults{grid-template-columns:1fr!important}
  html body #livePopup #liveVideosContainer{width:calc(100vw - 8px)!important;max-height:calc(100dvh - 16px)!important}
 }
+
+/* Site-wide luminous glass window system: one family, a distinct accent per tool. */
+html body :is(
+ #loginOverlay,#folderModal,#quizModal,#puzzleModal,#livePopup,#facebookVideoPopup,#videoOverlay,#videoBoxFixed,
+ #shipPopup_new,#sakakerBusinessPopup,#emPanel,#emNotesModal,#sakChatOverlay,#sakLearningModal,
+ #sakSecureStreamModal,#sakCrystalDialog,#sakShipDialog,#sakPaymentPanel,#sakNewsDialog,#sakPongSharePanel,
+ #emeraldModal,#emeraldLibraryContent,#sakMapOverlay,#sakDirectReader,#sakTextLibraryModal,
+ #sakVideoLibraryPageOverlay,#sakCastleIndexModal
+){--sak-window-rgb:255,104,193}
+html body #loginOverlay{--sak-window-rgb:183,124,255}
+html body #folderModal{--sak-window-rgb:86,190,255}
+html body #quizModal{--sak-window-rgb:255,190,88}
+html body #puzzleModal{--sak-window-rgb:255,92,156}
+html body #livePopup{--sak-window-rgb:255,84,180}
+html body #facebookVideoPopup{--sak-window-rgb:87,190,255}
+html body :is(#videoOverlay,#videoBoxFixed,#sakSecureStreamModal){--sak-window-rgb:70,215,218}
+html body :is(#shipPopup_new,#sakShipDialog){--sak-window-rgb:67,183,255}
+html body #sakakerBusinessPopup{--sak-window-rgb:255,176,77}
+html body :is(#emPanel,#emNotesModal){--sak-window-rgb:180,127,255}
+html body #sakChatOverlay{--sak-window-rgb:77,154,255}
+html body #sakLearningModal{--sak-window-rgb:189,116,255}
+html body #sakCrystalDialog{--sak-window-rgb:70,225,197}
+html body #sakPaymentPanel{--sak-window-rgb:70,213,139}
+html body #sakNewsDialog{--sak-window-rgb:255,155,66}
+html body #sakPongSharePanel{--sak-window-rgb:92,182,255}
+html body :is(#emeraldModal,#emeraldLibraryContent){--sak-window-rgb:49,217,174}
+html body #sakMapOverlay{--sak-window-rgb:94,174,255}
+html body :is(#sakDirectReader,#sakTextLibraryModal){--sak-window-rgb:187,135,255}
+html body #sakVideoLibraryPageOverlay{--sak-window-rgb:255,116,184}
+html body #sakCastleIndexModal{--sak-window-rgb:255,94,192}
+
+html body :is(.modal,#facebookVideoPopup,#livePopup,#videoOverlay,#shipPopup_new,#sakakerBusinessPopup,
+ #sakChatOverlay,#sakLearningModal,#sakSecureStreamModal,#sakMapOverlay,#sakVideoLibraryPageOverlay){
+ backdrop-filter:blur(11px) saturate(135%)!important;-webkit-backdrop-filter:blur(11px) saturate(135%)!important
+}
+html body :is(
+ #loginBox,#folderModal .panel,#quizModal .panel,#puzzleModal .panel,#facebookVideoPopup .fbVideoBox,
+ #livePopup #liveVideosContainer,#videoOverlay #videoBox,#videoBoxFixed,#shipPopup_new .ship-anniversary,
+ #sakakerBusinessPopup .sbPopupBox,#emPanel,#emNotesModal .emNotesBox,#sakChatPanel,
+ #sakLearningModal .sak-learning-panel,#sakSecureStreamModal .sak-secure-stream-box,#sakCrystalDialog,
+ #sakShipDialog,#sakPaymentPanel,#sakNewsDialog,#sakPongSharePanel,#emeraldModal,
+ #emeraldLibraryContent,#sakMapOverlay .box,#sakDirectReader,#sakTextLibraryModal,
+ #sakVideoLibraryPageOverlay,#sakCastleIndexModal
+){
+ color:#fff7fd!important;
+ border:1px solid rgba(var(--sak-window-rgb,255,104,193),.56)!important;
+ background:
+  radial-gradient(circle at 9% 9%,rgba(var(--sak-window-rgb,255,104,193),.24),transparent 34%),
+  radial-gradient(circle at 92% 88%,rgba(182,104,255,.15),transparent 36%),
+  linear-gradient(145deg,rgba(59,18,56,.97),rgba(28,15,43,.98) 62%,rgba(var(--sak-window-rgb,255,104,193),.20))!important;
+ box-shadow:inset 0 1px rgba(255,255,255,.12),0 20px 60px rgba(0,0,0,.5),
+  0 0 28px rgba(var(--sak-window-rgb,255,104,193),.17)!important;
+ backdrop-filter:blur(16px) saturate(135%)!important;-webkit-backdrop-filter:blur(16px) saturate(135%)!important
+}
+html body :is(.modal .panel-head,#sakChatHeader,#sakGlobalLiveHeader,#sakRadioHeader,#sakLiveMediaTabs){
+ border-color:rgba(var(--sak-window-rgb,255,104,193),.42)!important;
+ background:linear-gradient(130deg,rgba(var(--sak-window-rgb,255,104,193),.19),rgba(42,18,52,.72))!important
+}
+html body :is(.modal .panel-title,#loginTitle,#sakGlobalLiveTitle,#sakRadioTitle,#sakChatTitle,#shipAnniversaryTitle,#sakLearningTitle,#sakCastleIndexTitle){
+ color:#fff0fa!important;text-shadow:0 0 12px rgba(var(--sak-window-rgb,255,104,193),.78),0 0 25px rgba(var(--sak-window-rgb,255,104,193),.34)!important
+}
+html body :is(
+ .modal .panel,.fbVideoBox,#liveVideosContainer,#videoBoxFixed,.ship-anniversary,.sbPopupBox,
+ .emNotesBox,#sakChatPanel,.sak-learning-panel,.sak-secure-stream-box,#sakCrystalDialog,#sakShipDialog,
+ #sakPaymentPanel,#sakNewsDialog,#sakPongSharePanel,#emeraldModal,#emeraldLibraryContent,
+ #sakMapOverlay .box,#sakDirectReader,#sakTextLibraryModal,#sakVideoLibraryPageOverlay,#sakCastleIndexModal
+) :is(button:not(.close):not([id*="Close"]):not([aria-label="إغلاق"]),.item-btn,.action-btn){
+ border-color:rgba(var(--sak-window-rgb,255,104,193),.52)!important;
+ box-shadow:0 0 13px rgba(var(--sak-window-rgb,255,104,193),.14)!important
+}
+html body :is(
+ .modal .panel,.fbVideoBox,#liveVideosContainer,.ship-anniversary,.sbPopupBox,.emNotesBox,
+ #sakChatPanel,.sak-learning-panel,.sak-secure-stream-box,#sakCrystalDialog,#sakShipDialog,
+ #sakPaymentPanel,#sakNewsDialog,#sakPongSharePanel,#emeraldModal,#emeraldLibraryContent,
+ #sakMapOverlay .box,#sakDirectReader,#sakTextLibraryModal,#sakVideoLibraryPageOverlay,#sakCastleIndexModal
+) :is(input,select,textarea){
+ color:#fff9fd!important;border-color:rgba(var(--sak-window-rgb,255,104,193),.4)!important;
+ background:rgba(26,12,36,.74)!important
+}
+html body :is(.modal,#facebookVideoPopup,#livePopup,#videoOverlay,#shipPopup_new,#sakakerBusinessPopup,
+ #sakChatOverlay,#sakLearningModal,#sakMapOverlay,#sakVideoLibraryPageOverlay)
+ :is(button,input,select,textarea):focus-visible{
+ outline:2px solid rgba(var(--sak-window-rgb,255,104,193),.88)!important;outline-offset:2px!important
+}
+@media(max-width:700px){
+ html body :is(.modal .panel,#loginBox,#facebookVideoPopup .fbVideoBox,#livePopup #liveVideosContainer,
+ #videoOverlay #videoBox,.ship-anniversary,.sbPopupBox,.emNotesBox,.sak-learning-panel,
+ .sak-secure-stream-box,#sakMapOverlay .box,#sakDirectReader,#sakTextLibraryModal,
+ #sakVideoLibraryPageOverlay,#sakCastleIndexModal){
+  max-width:calc(100vw - 16px)!important;max-height:calc(100dvh - 20px)!important;
+  box-sizing:border-box!important;overflow-x:hidden!important;overflow-y:auto!important;
+  overscroll-behavior:contain!important;-webkit-overflow-scrolling:touch!important
+ }
+ html body #sakChatPanel{max-width:calc(100vw - 16px)!important;max-height:calc(100dvh - 20px)!important;box-sizing:border-box!important}
+ html body #loginBox{width:min(420px,calc(100vw - 24px))!important}
+ html body #sakLiveMediaTabs{gap:7px!important}
+}
