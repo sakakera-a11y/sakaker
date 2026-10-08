@@ -27,7 +27,20 @@ function enhance(){
  const filters=document.getElementById('sakRadioFilterRow')||header.lastElementChild;
  (filters||header).insertAdjacentElement('afterend',section);
 }
+function pinRefreshStyles(){
+ const link=[...document.querySelectorAll('link[rel="stylesheet"]')].find(node=>node.href.includes('live-media-refresh.css'));
+ if(!link||document.getElementById('sakLiveMediaPinnedStyle'))return;
+ const apply=()=>{
+  let rules='';
+  try{rules=[...link.sheet.cssRules].map(rule=>rule.cssText).join('\n')}catch(_){}
+  if(!rules)return;
+  const style=document.createElement('style');style.id='sakLiveMediaPinnedStyle';style.textContent=rules;
+  (document.body||document.head).appendChild(style);
+ };
+ if(link.sheet)apply();else link.addEventListener('load',apply,{once:true});
+}
 function boot(){
+ pinRefreshStyles();
  enhance();
  const root=document.getElementById('liveVideosContainer');
  if(root&&!root.dataset.sakSeaStyleObserver){
