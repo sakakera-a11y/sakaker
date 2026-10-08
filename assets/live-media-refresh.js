@@ -29,13 +29,16 @@ function enhance(){
 }
 function pinRefreshStyles(){
  const link=[...document.querySelectorAll('link[rel="stylesheet"]')].find(node=>node.href.includes('live-media-refresh.css'));
- if(!link||document.getElementById('sakLiveMediaPinnedStyle'))return;
+ if(!link)return;
  const apply=()=>{
   let rules='';
   try{rules=[...link.sheet.cssRules].map(rule=>rule.cssText).join('\n')}catch(_){}
   if(!rules)return;
-  const style=document.createElement('style');style.id='sakLiveMediaPinnedStyle';style.textContent=rules;
-  (document.body||document.head).appendChild(style);
+  let style=document.getElementById('sakLiveMediaPinnedStyle');
+  if(!style){style=document.createElement('style');style.id='sakLiveMediaPinnedStyle'}
+  style.textContent=rules;
+  const host=document.body||document.head;
+  if(style.parentElement!==host||host.lastElementChild!==style)host.appendChild(style);
  };
  if(link.sheet)apply();else link.addEventListener('load',apply,{once:true});
 }
