@@ -1,0 +1,53 @@
+name: Fix Books Icon Cache
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-books-icon-cache.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-books-icon:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Refresh the books iframe URL
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          pattern = re.compile(
+              r"if\(!booksFrame\.getAttribute\('src'\)\s*\|\|\s*booksFrame\.getAttribute\('src'\)==='about:blank'\)\s*\{\s*booksFrame\.src='books\.html';\s*\}"
+          )
+          replacement = "booksFrame.src='books.html?v=20261008-books9';"
+          index = Path('index.html')
+          text = index.read_text(encoding='utf-8')
+          text, count = pattern.subn(replacement, text, count=1)
+          if count != 1:
+              raise SystemExit(f'Expected one books iframe initializer in index.html; found {count}')
+          index.write_text(text, encoding='utf-8')
+          archive = Path('archive/03_sakaker_books7_stories5_all-popups_2026-10-06.html')
+          if archive.exists():
+              archived = archive.read_text(encoding='utf-8')
+              archived, archive_count = pattern.subn(replacement, archived, count=1)
+              if archive_count != 1:
+                  raise SystemExit(f'Expected one books iframe initializer in recovery archive; found {archive_count}')
+              archive.write_text(archived, encoding='utf-8')
+          print('Books icon now loads the current nine-book page on every open.')
+
+      - name: Commit repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html archive/03_sakaker_books7_stories5_all-popups_2026-10-06.html
+          if git diff --cached --quiet; then
+            echo "No source changes needed."
+            exit 0
+          fi
+          git commit -m "Fix books icon cache refresh"
+          git push origin HEAD:main
