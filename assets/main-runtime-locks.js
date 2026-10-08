@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
 const LOGIN_VIDEO='/gemini_video_birds_login.mp4';
-const LIB_URL='/books.html?v=20261003-final4';
+const LIB_URL='/books.html?v=20261008-books9';
 const OVERLAY_ID='sakStableTextLibraryOverlay';
 
 function installStableLoginVideo(){
@@ -91,7 +91,7 @@ function openLibrary(){
   if(old){old.classList.remove('show','active');old.style.setProperty('display','none','important')}
   const o=ensureLibraryOverlay();
   const f=o.querySelector('iframe');
-  if(f && !f.src.includes('books.html')) f.src=LIB_URL;
+  if(f && !f.src.includes('v=20261008-books9')) f.src=LIB_URL;
   o.classList.add('show');
   document.body.classList.add('modal-open');
 }
