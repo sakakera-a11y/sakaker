@@ -40380,9 +40380,7 @@ let oldOverflow='';
 window.openSakakerEbooks=function(){
   if(!booksLayer||!booksFrame)return;
   oldOverflow=document.documentElement.style.overflow;
-  if(!booksFrame.getAttribute('src') || booksFrame.getAttribute('src')==='about:blank'){
-    booksFrame.src='books.html';
-  }
+  booksFrame.src='/books.html?v=20261008-books9';
   booksLayer.classList.add('sak-open');
   booksLayer.setAttribute('aria-hidden','false');
   document.documentElement.style.overflow='hidden';
