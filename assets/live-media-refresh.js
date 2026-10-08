@@ -36,7 +36,7 @@ function pinRefreshStyles(){
   if(!rules)return;
   let style=document.getElementById('sakLiveMediaPinnedStyle');
   if(!style){style=document.createElement('style');style.id='sakLiveMediaPinnedStyle'}
-  style.textContent=rules;
+  if(style.textContent!==rules)style.textContent=rules;
   const host=document.body||document.head;
   if(style.parentElement!==host||host.lastElementChild!==style)host.appendChild(style);
  };
