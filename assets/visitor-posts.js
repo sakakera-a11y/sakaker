@@ -56,7 +56,7 @@ function installVisitorPosts() {
     #visitorClockDock{position:fixed!important;left:50%!important;right:auto!important;top:auto!important;bottom:max(8px,env(safe-area-inset-bottom))!important;transform:translateX(-50%)!important;z-index:2147482999!important;min-width:0!important;padding:4px 8px!important;color:#fff!important;text-align:center!important;pointer-events:none!important;overflow:hidden!important}
     #visitorClockDock::before{content:"◷";display:inline-block;margin-inline-end:6px;color:#ffe27a;font:700 18px/1 Arial,sans-serif;text-shadow:0 0 8px rgba(255,215,0,.5);vertical-align:middle}
     #visitorClockDock .visitor-clock-dock-content{box-sizing:border-box!important;display:inline-block!important;vertical-align:middle!important;width:auto!important;max-width:calc(100% - 30px)!important;height:auto!important;max-height:30px!important;margin:0!important;color:#fff!important;font:700 9px/1.25 Tahoma,Arial,sans-serif!important;text-align:center!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
-    #visitorPostsCard{box-sizing:border-box!important;width:100%!important;height:100%!important;min-height:0!important;max-width:100%!important;padding:2px 5px!important;display:flex!important;flex-direction:row;align-items:center;justify-content:center;gap:6px;border:0!important;border-radius:12px!important;background:transparent!important;color:#fff3bd;box-shadow:none!important;font:800 11px Tahoma,Arial,sans-serif;cursor:pointer;touch-action:manipulation}
+    #visitorPostsCard{box-sizing:border-box!important;width:100%!important;height:100%!important;min-height:0!important;max-width:100%!important;padding:2px 5px!important;display:flex!important;flex-direction:row;align-items:center;justify-content:center;gap:6px;border:0!important;border-radius:12px!important;background:transparent!important;color:#fff3bd;box-shadow:none!important;font:800 11px Tahoma,Arial,sans-serif;cursor:pointer;touch-action:manipulation;pointer-events:auto!important;position:relative!important;z-index:2147482998!important}
     #visitorPostsCard:focus-visible{outline:3px solid #fff1a8;outline-offset:3px}
     #visitorPostsCard .visitor-gull{width:28px;height:24px;flex:none}
     #visitorPostsCard .visitor-gull path{stroke:none!important}
@@ -117,7 +117,7 @@ function installVisitorPosts() {
     const slot = document.getElementById("sakakerNewsSlot");
     if (!slot) return;
     const hasContent = Boolean((slot.innerText || slot.textContent || "").trim()) ||
-      Boolean(slot.querySelector("iframe,img,video,canvas,button,a,[role='button'],.news-ticker,.sak-festival"));
+      Boolean(slot.querySelector("iframe,img,video,canvas,button,a,[role='button']"));
     slot.classList.toggle("visitor-slot-empty", !hasContent);
   };
   hideEmptyNewsSlot();
