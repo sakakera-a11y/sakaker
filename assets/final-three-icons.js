@@ -41,30 +41,36 @@ function findTextLibrary(){
   })||null;
 }
 
-/* Add only the requested reel. Existing Facebook media in the popup is left
-   exactly as-is and stays after this new first item. */
+/* Preserve every reel already in the popup, restore the original reel, and add the newly requested reel. */
 function installFacebookEmbeds(){
   const popup=document.getElementById('facebookVideoPopup');
   const box=popup?.querySelector('.fbVideoBox');
-  if(!box)return;
+  const frame=box?.querySelector('.fbVideoFrame');
+  if(!box||!frame)return;
 
-  const reelId='1713298586438007';
-  if(box.querySelector('iframe[data-sak-facebook-reel="'+reelId+'"]'))return;
+  const reels=[
+    {id:'1028563299794826',title:'Facebook Reel (restored)'},
+    {id:'2073566429948129',title:'Facebook Reel'}
+  ];
 
-  const iframe=document.createElement('iframe');
-  iframe.dataset.sakFacebookReel=reelId;
-  iframe.src='https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1713298586438007%2F&show_text=true&width=267&t=0';
-  iframe.width='267';
-  iframe.height='591';
-  iframe.style.cssText='display:block;border:none;overflow:hidden;width:267px;max-width:100%;height:591px;min-height:591px;margin:0 auto 12px';
-  iframe.scrolling='no';
-  iframe.frameBorder='0';
-  iframe.allowFullscreen=true;
-  iframe.allow='autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share';
-  iframe.setAttribute('allowfullscreen','true');
-  iframe.setAttribute('title','Facebook Reel');
+  reels.forEach(({id,title})=>{
+    if(box.querySelector('iframe[data-sak-facebook-reel="'+id+'"]'))return;
 
-  box.insertBefore(iframe,box.firstChild);
+    const iframe=document.createElement('iframe');
+    iframe.dataset.sakFacebookReel=id;
+    iframe.src='https://www.facebook.com/plugins/video.php?height=476&href='+encodeURIComponent('https://www.facebook.com/reel/'+id+'/')+'&show_text=true&width=267&t=0';
+    iframe.width='267';
+    iframe.height='591';
+    iframe.style.cssText='display:block;border:none;overflow:hidden;width:267px;max-width:100%;height:591px;min-height:591px;margin:0 auto 12px';
+    iframe.scrolling='no';
+    iframe.frameBorder='0';
+    iframe.allowFullscreen=true;
+    iframe.allow='autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share';
+    iframe.setAttribute('allowfullscreen','true');
+    iframe.setAttribute('title',title);
+
+    frame.appendChild(iframe);
+  });
 }
 
 function isLocked(){return document.body?.classList.contains('locked');}
