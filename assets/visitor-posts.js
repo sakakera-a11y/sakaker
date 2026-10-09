@@ -1,6 +1,6 @@
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
-const VISITOR_APP_URL = "https://script.google.com/macros/s/AKfycbyWpf5UvEuaeS5X3axvyq2vIDzFDogSMO1yteUbhdUCXryPdrT4vLEN4xCJjkSJoaO3hg/exec";
+const VISITOR_APP_URL = "https://script.google.com/macros/s/AKfycbwFmkvE9YpTbGfE5nZsFYx8mNG4v_XB4TfPBDSuUKmdRmk3rhQc3iFT_eLGHg85TAMiwg/exec";
 const AUTH_ORIGINS = new Set(["https://sakaker.co", "https://www.sakaker.co", "https://sakakera-a11y.github.io"]);
 
 const CLOCK_TIME_RE = /[0-9٠-٩]{1,2}\s*[:٫][0-9٠-٩]{2}\s*(?:ص|م|a\.?m\.?|p\.?m\.?)?/i;
