@@ -88,6 +88,7 @@ function deleteVisitorFile(idToken, recordId) {
   const recordFile = recordFile_(recordId);
   const record = JSON.parse(recordFile.getBlob().getDataAsString());
   if (record.fileId) DriveApp.getFileById(record.fileId).setTrashed(true);
+  delete record.text;
   record.status = "deleted";
   record.deletedAt = new Date().toISOString();
   recordFile.setContent(JSON.stringify(record));
