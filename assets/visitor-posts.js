@@ -50,9 +50,9 @@ function installVisitorPosts() {
   css.textContent = `
     html body:has(#visitorPostsSection){display:block!important;min-height:100vh}
     :is(.sak-festival,.news-ticker,#visitorPostsSection,#visitorClockDock){box-sizing:border-box!important;width:calc(50vw - 16px)!important;height:42px!important;min-height:42px!important;max-height:42px!important;max-width:calc(50vw - 16px)!important;padding:5px 9px!important;border:1px solid rgba(75,226,199,.88)!important;border-radius:16px!important;background:linear-gradient(135deg,rgba(5,41,50,.88),rgba(20,29,48,.9))!important;box-shadow:0 0 14px rgba(0,255,204,.18),0 0 14px rgba(255,215,0,.12)!important;backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
-    #visitorPostsSection{margin:8px 6px!important;padding:3px 6px!important;display:flex!important;flex:0 0 auto;align-items:stretch;justify-content:stretch;text-align:center;direction:inherit;position:relative!important}
+    #visitorPostsSection{margin:8px 6px!important;padding:3px 6px!important;display:flex!important;flex:0 0 auto;align-items:stretch;justify-content:stretch;text-align:center;direction:inherit;position:relative!important;z-index:30!important;pointer-events:auto!important}
     #visitorPostsSection .visitor-posts-copy{display:none!important}
-    #sakakerNewsSlot:empty{display:none!important;width:0!important;height:0!important;min-height:0!important;max-height:0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
+    #sakakerNewsSlot:empty,#sakakerNewsSlot.visitor-slot-empty,#sakakerClockSlot:empty{display:none!important;width:0!important;height:0!important;min-height:0!important;max-height:0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
     #visitorClockDock{position:fixed!important;left:50%!important;right:auto!important;top:auto!important;bottom:max(8px,env(safe-area-inset-bottom))!important;transform:translateX(-50%)!important;z-index:2147482999!important;min-width:0!important;padding:4px 8px!important;color:#fff!important;text-align:center!important;pointer-events:none!important;overflow:hidden!important}
     #visitorClockDock::before{content:"◷";display:inline-block;margin-inline-end:6px;color:#ffe27a;font:700 18px/1 Arial,sans-serif;text-shadow:0 0 8px rgba(255,215,0,.5);vertical-align:middle}
     #visitorClockDock .visitor-clock-dock-content{box-sizing:border-box!important;display:inline-block!important;vertical-align:middle!important;width:auto!important;max-width:calc(100% - 30px)!important;height:auto!important;max-height:30px!important;margin:0!important;color:#fff!important;font:700 9px/1.25 Tahoma,Arial,sans-serif!important;text-align:center!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
@@ -66,7 +66,7 @@ function installVisitorPosts() {
     #visitorPostsOverlay{position:fixed;inset:0;z-index:2147483000;background:rgba(2,10,15,.88);display:none;place-items:center;padding:clamp(6px,2vw,24px)}
     #visitorPostsOverlay.open{display:grid}
     #visitorPostsLoading{display:none;position:absolute;inset:0;z-index:1;place-items:center;margin:0;padding:22px;color:#fff;font:700 16px/1.6 Tahoma,Arial,sans-serif;text-align:center;pointer-events:none}
-    #visitorPostsOverlay.loading #visitorPostsLoading{display:grid}
+    #visitorPostsOverlay.loading #visitorPostsLoading,#visitorPostsOverlay.needs-signin #visitorPostsLoading{display:grid}
     #visitorPostsDialog{width:min(1100px,100%);height:min(94dvh,900px);position:relative;border:1px solid #dfc15d;border-radius:18px;overflow:hidden;background:#0b1d24;box-shadow:0 24px 80px #000a}
     #visitorPostsClose{position:absolute;z-index:2;top:8px;inset-inline-end:8px;width:42px;height:42px;border:1px solid #fff7;border-radius:50%;background:#10232beF;color:#fff;font-size:25px;line-height:1;cursor:pointer}
     #visitorPostsFrame{width:100%;height:100%;border:0;background:#102127}
@@ -113,21 +113,41 @@ function installVisitorPosts() {
     section.setAttribute("aria-label", english ? "Visitor Posts" : "مشاركات الزوار");
   };
   applyCardLanguage();
-  const settleVisitorLayout = () => {
-    if (document.body.classList.contains("locked")) {
-      if (!section.isConnected) document.body.appendChild(section);
-      return false;
+  const hideEmptyNewsSlot = () => {
+    const slot = document.getElementById("sakakerNewsSlot");
+    if (!slot) return;
+    const hasContent = Boolean((slot.innerText || slot.textContent || "").trim()) ||
+      Boolean(slot.querySelector("iframe,img,video,canvas,button,a,[role='button'],.news-ticker,.sak-festival"));
+    slot.classList.toggle("visitor-slot-empty", !hasContent);
+  };
+  hideEmptyNewsSlot();
+  const newsSlot = document.getElementById("sakakerNewsSlot");
+  if (newsSlot) new MutationObserver(hideEmptyNewsSlot).observe(newsSlot, { childList: true, subtree: true, characterData: true });
+
+  const placeVisitorSection = () => {
+    const slot = document.getElementById("sakakerNewsSlot");
+    const newsRow = slot?.closest(".sakaker-news-clock");
+    if (newsRow && slot.parentElement === newsRow) {
+      if (section.parentElement !== newsRow || section.previousElementSibling !== slot) slot.insertAdjacentElement("afterend", section);
+      return true;
     }
+    const topRow = document.querySelector("#sakakerSequentialTop .sakaker-news-clock");
+    if (topRow) {
+      if (section.parentElement !== topRow.parentElement || section.previousElementSibling !== topRow) topRow.insertAdjacentElement("afterend", section);
+      return true;
+    }
+    if (!section.isConnected) document.body.appendChild(section);
+    return false;
+  };
+  const settleVisitorLayout = () => {
+    if (document.body.classList.contains("locked")) return false;
+    placeVisitorSection();
     if (clockDock) {
       positionVisitorClock(clockDock);
       return true;
     }
     const clock = findClockNode();
-    if (!clock || !clock.parentNode) {
-      if (!section.isConnected) document.body.appendChild(section);
-      return false;
-    }
-    clock.parentNode.insertBefore(section, clock);
+    if (!clock || !clock.parentNode) return false;
     clockDock = document.createElement("aside");
     clockDock.id = "visitorClockDock";
     clockDock.setAttribute("aria-label", document.documentElement.lang.toLowerCase().startsWith("en") ? "Site date and time" : "تاريخ ووقت الموقع");
@@ -172,7 +192,7 @@ function installVisitorPosts() {
   }
   const frame = overlay.querySelector("iframe");
   const close = () => {
-    overlay.classList.remove("open", "loading");
+    overlay.classList.remove("open", "loading", "needs-signin");
     frame.src = "about:blank";
     card.focus();
   };
@@ -209,8 +229,9 @@ function installVisitorPosts() {
       if (!authReady) waitForAuth();
       await Promise.race([authStateReady, new Promise(resolve => setTimeout(resolve, 3000))]);
       if (!currentUser) {
-        close();
-        alert(english ? "Sign in to the site before posting." : "سجّل الدخول إلى حساب الموقع قبل المشاركة.");
+        loading.textContent = english ? "Sign in to the site before posting. Close this window after signing in." : "سجّل الدخول إلى حساب الموقع قبل المشاركة، ثم أغلق هذه النافذة وأعد المحاولة.";
+        overlay.classList.remove("loading");
+        overlay.classList.add("needs-signin");
         return;
       }
       if (!VISITOR_APP_URL.startsWith("https://script.google.com/macros/s/")) {
