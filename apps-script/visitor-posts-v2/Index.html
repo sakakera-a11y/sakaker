@@ -95,6 +95,7 @@ el("drop").addEventListener("dragover",e=>{e.preventDefault();el("drop").classLi
 el("saveBtn").addEventListener("click",()=>{if(!idToken)return status(TEXT[language].signin,true);if(activeTab==="text")sendText();else sendFile()});
 window.addEventListener("message",e=>{if(!ALLOWED_ORIGINS.has(e.origin))return;const d=e.data||{};if(d.type==="sakakerVisitorLanguage"){setLanguage(d.lang);return}if(d.type!=="sakakerVisitorAuth"||!d.token)return;idToken=String(d.token);setLanguage(d.lang);status(language==="en"?"Signed in to the site.":"تم التحقق من تسجيل دخول الموقع.",false);updateTab();loadState()});
 setLanguage("ar");
+window.top.postMessage({type:"sakakerVisitorReady"},"*");
 </script>
 </body>
 </html>
