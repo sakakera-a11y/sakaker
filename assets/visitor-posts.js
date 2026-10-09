@@ -10,6 +10,8 @@ function installVisitorPosts() {
   const css = document.createElement("style");
   css.textContent = `
     #visitorPostsCard .visitor-gull{width:48px;height:44px;margin-bottom:4px}
+    html body .cards #visitorPostsCard .visitor-gull path:first-of-type{fill:#ffd447!important;stroke:#ffd447!important}
+    html body .cards #visitorPostsCard .visitor-gull path:last-of-type{fill:#238fe6!important;stroke:#238fe6!important}
     #visitorPostsCard .visitor-card-label{font-weight:700}
     #visitorPostsOverlay{position:fixed;inset:0;z-index:2147483000;background:rgba(2,10,15,.88);display:none;place-items:center;padding:clamp(6px,2vw,24px)}
     #visitorPostsOverlay.open{display:grid}
