@@ -49,6 +49,7 @@ function installFacebookEmbeds(){
   if(!box||!frame)return;
 
   const reels=[
+    {id:'1713298586438007',title:'Facebook Reel'},
     {id:'1028563299794826',title:'Facebook Reel (restored)'},
     {id:'2073566429948129',title:'Facebook Reel'}
   ];
