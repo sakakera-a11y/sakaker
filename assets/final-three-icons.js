@@ -418,6 +418,9 @@ function syncSiteBackgroundLock(){
     return;
   }
 
+  /* Install Facebook reels after login too; initial page load skips them while locked. */
+  installFacebookEmbeds();
+
   /* The video is intentionally absent during login. Create it now, once,
      immediately after Firebase unlocks the page. */
   if(!video){
