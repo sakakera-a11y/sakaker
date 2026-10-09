@@ -260,6 +260,26 @@ function installVisitorPosts() {
   let authReady = false;
   let resolveAuthState;
   const authStateReady = new Promise(resolve => { resolveAuthState = resolve; });
+  const isAppsScriptHtmlOrigin = origin => {
+    try { return new URL(origin).hostname.endsWith("-script.googleusercontent.com"); } catch { return false; }
+  };
+  window.addEventListener("message", async event => {
+    const message = event.data || {};
+    if (message.type !== "sakakerVisitorReady" || !isAppsScriptHtmlOrigin(event.origin) ||
+        !overlay.classList.contains("open") || !String(frame.getAttribute("src") || "").startsWith(VISITOR_APP_URL)) return;
+    if (!currentUser || !event.source) return;
+    try {
+      const siteUser = currentUser;
+      const token = await siteUser.getIdToken(true);
+      if (currentUser?.uid !== siteUser.uid || !overlay.classList.contains("open")) return;
+      event.source.postMessage({ type: "sakakerVisitorAuth", token, lang: document.documentElement.lang.toLowerCase().startsWith("en") ? "en" : "ar" }, event.origin);
+      overlay.classList.remove("loading", "needs-signin");
+    } catch (error) {
+      overlay.classList.remove("loading");
+      loading.textContent = document.documentElement.lang.toLowerCase().startsWith("en") ? "Could not verify your site sign-in. Please close and retry." : "تعذر التحقق من تسجيل الدخول. أغلق النافذة ثم حاول مجددًا.";
+      overlay.classList.add("needs-signin");
+    }
+  });
   const waitForAuth = () => {
     if (!window.firebaseAuth) {
       if (!authReady) setTimeout(waitForAuth, 120);
@@ -293,22 +313,7 @@ function installVisitorPosts() {
         alert(english ? "Visitor Posts is still being configured." : "ما زال إعداد مشاركات الزوار جارياً.");
         return;
       }
-      frame.onload = async () => {
-        overlay.classList.remove("loading");
-        if (!currentUser) return;
-        try {
-          const siteUser = currentUser;
-          const token = await siteUser.getIdToken(true);
-          if (frame.contentWindow) {
-            // Apps Script serves its HTML from script.googleusercontent.com.
-            // The receiver validates event.source and an explicit sakaker.co origin allowlist.
-            frame.contentWindow.postMessage({ type: "sakakerVisitorAuth", token, lang: english ? "en" : "ar" }, "*");
-          }
-        } catch (error) {
-          close();
-          alert(english ? "Could not verify your site sign-in. Please try again." : "تعذر التحقق من تسجيل الدخول للموقع. حاول مرة أخرى.");
-        }
-      };
+      frame.onload = () => overlay.classList.remove("loading");
       frame.src = VISITOR_APP_URL + "?embedded=1";
     });
   }
