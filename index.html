@@ -4500,7 +4500,7 @@ birdBtn.addEventListener('click',async e=>{
     </div>
 
 <div class="fbVideoFrame">
-<iframe loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen="true" frameborder="0" height="493" scrolling="no" src="https://www.facebook.com/plugins/video.php?height=378&amp;href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1028563299794826%2F&amp;show_text=true&amp;width=560&amp;t=0" style="border:none;overflow:hidden" width="560">
+<iframe loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen="true" frameborder="0" height="591" scrolling="no" src="https://www.facebook.com/plugins/video.php?height=476&amp;href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1439785018105026%2F&amp;show_text=true&amp;width=267&amp;t=0" style="border:none;overflow:hidden" width="267">
 </iframe>
 </div>
 
@@ -41293,5 +41293,32 @@ html body .sak-index-link span{font-size:22px!important}
 <script type="module" src="/assets/visitor-posts.js?v=20261009-14"></script>
 <script type="module" src="assets/sakaker-live.js"></script>
 <script src="/assets/live-media-refresh.js?v=20261008-window-palette4" defer></script>
+<style id="facebook-video-mobile-responsive">
+#facebookVideoPopup{
+  box-sizing:border-box!important;width:100vw!important;height:100dvh!important;max-width:100vw!important;max-height:100dvh!important;
+  padding:max(10px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left))!important;
+  overflow:auto!important;overscroll-behavior:contain!important;align-items:center!important;justify-content:center!important
+}
+#facebookVideoPopup .fbVideoBox{
+  box-sizing:border-box!important;width:min(620px,100%)!important;min-width:0!important;max-width:100%!important;
+  max-height:100%!important;overflow:auto!important;overscroll-behavior:contain!important
+}
+#facebookVideoPopup .fbVideoFrame{width:100%!important;min-width:0!important;overflow:hidden!important}
+#facebookVideoPopup .fbVideoFrame iframe{
+  display:block!important;width:min(267px,100%)!important;max-width:100%!important;
+  height:591px!important;min-height:591px!important;max-height:none!important;flex:0 1 267px!important;border:0!important
+}
+@media(max-width:600px){
+  #facebookVideoPopup{align-items:flex-start!important;justify-content:center!important}
+  #facebookVideoPopup .fbVideoBox{
+    width:100%!important;max-width:100%!important;max-height:100%!important;
+    padding:10px!important;border-radius:16px!important
+  }
+  #facebookVideoPopup .fbVideoTitle{padding-inline:42px!important}
+}
+@media(max-width:360px){
+  #facebookVideoPopup .fbVideoBox{padding:8px!important}
+}
+</style>
 </body>
 </html>
