@@ -3,14 +3,67 @@ import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.16.0/f
 const VISITOR_APP_URL = "https://script.google.com/macros/s/AKfycbyWpf5UvEuaeS5X3axvyq2vIDzFDogSMO1yteUbhdUCXryPdrT4vLEN4xCJjkSJoaO3hg/exec";
 const AUTH_ORIGINS = new Set(["https://sakaker.co", "https://www.sakaker.co", "https://sakakera-a11y.github.io"]);
 
+const CLOCK_TIME_RE = /[0-9٠-٩]{1,2}\s*[:٫][0-9٠-٩]{2}\s*(?:ص|م|a\.?m\.?|p\.?m\.?)?/i;
+
+function findClockNode() {
+  const selectors = 'time,[id*="clock" i],[class*="clock" i],[id*="dateTime" i],[class*="dateTime" i],[id*="siteTime" i],[class*="siteTime" i]';
+  const pool = new Set(document.querySelectorAll(selectors));
+  document.querySelectorAll("p,span,div,section,output").forEach(el => {
+    const text = (el.innerText || el.textContent || "").replace(/\s+/g, " ").trim();
+    if (text.length >= 5 && text.length <= 180 && CLOCK_TIME_RE.test(text)) pool.add(el);
+  });
+  const visible = [...pool].filter(el => {
+    if (!el || el.closest("#visitorClockDock,#visitorPostsOverlay,#loginOverlay")) return false;
+    const style = getComputedStyle(el);
+    const rect = el.getBoundingClientRect();
+    const text = (el.innerText || el.textContent || "").replace(/\s+/g, " ").trim();
+    return style.display !== "none" && style.visibility !== "hidden" && rect.width > 1 && rect.height > 1 &&
+      text.length <= 180 && CLOCK_TIME_RE.test(text);
+  });
+  visible.sort((a, b) =>
+    a.children.length - b.children.length ||
+    (a.innerText || a.textContent || "").length - (b.innerText || b.textContent || "").length ||
+    (a.getBoundingClientRect().width * a.getBoundingClientRect().height) -
+      (b.getBoundingClientRect().width * b.getBoundingClientRect().height)
+  );
+  return visible[0] || null;
+}
+
+function positionVisitorClock(host) {
+  if (!host || !host.isConnected) return;
+  const payment = document.querySelector("#sakGlobalPayment") ||
+    document.querySelector("#sakPaymentLaunch") ||
+    document.querySelector("#sakPaymentPanel");
+  const paymentStyle = payment ? getComputedStyle(payment) : null;
+  const paymentRect = payment && paymentStyle && paymentStyle.display !== "none" &&
+    paymentStyle.visibility !== "hidden" ? payment.getBoundingClientRect() : null;
+  const width = Math.min(360, Math.max(180, window.innerWidth - 16));
+  const height = Math.max(host.offsetHeight || 48, 42);
+  let left = 8;
+  let top = Math.max(8, window.innerHeight - height - 150);
+  if (paymentRect && paymentRect.width > 1 && paymentRect.height > 1) {
+    left = paymentRect.left;
+    top = paymentRect.top - height - 8;
+    if (top < 8) top = paymentRect.bottom + 8;
+  }
+  left = Math.max(8, Math.min(window.innerWidth - width - 8, left));
+  top = Math.max(8, Math.min(window.innerHeight - height - 8, top));
+  host.style.setProperty("left", Math.round(left) + "px", "important");
+  host.style.setProperty("top", Math.round(top) + "px", "important");
+  host.style.setProperty("width", width + "px", "important");
+}
+
 function installVisitorPosts() {
   if (document.getElementById("visitorPostsSection")) return;
 
   const css = document.createElement("style");
   css.textContent = `
     html body:has(#visitorPostsSection){display:block!important;min-height:100vh}
-    #visitorPostsSection{box-sizing:border-box;width:min(920px,calc(100% - 24px))!important;max-width:920px!important;margin:28px auto 180px!important;padding:clamp(16px,3vw,26px);display:flex!important;flex:0 0 auto;flex-direction:column;align-items:center;gap:13px;text-align:center;direction:inherit;position:relative!important;border:1px solid rgba(255,215,0,.6);border-radius:22px;background:linear-gradient(135deg,rgba(2,39,46,.94),rgba(8,22,37,.97));box-shadow:0 14px 42px #0007,0 0 22px rgba(0,255,204,.12)}
-    #visitorPostsSection .visitor-posts-copy{max-width:720px}
+    #visitorPostsSection{box-sizing:border-box;width:min(920px,calc(100% - 24px))!important;max-width:920px!important;margin:10px auto!important;padding:clamp(12px,2.4vw,22px);display:flex!important;flex:0 0 auto;flex-direction:column;align-items:center;gap:13px;text-align:center;direction:inherit;position:relative!important;border:1px solid rgba(255,215,0,.6);border-radius:22px;background:linear-gradient(135deg,rgba(2,39,46,.94),rgba(8,22,37,.97));box-shadow:0 14px 42px #0007,0 0 22px rgba(0,255,204,.12)}
+    #visitorPostsSection .visitor-posts-copy{max-width:720px;width:100%}
+    #visitorClockDock{position:fixed!important;z-index:2147482999!important;box-sizing:border-box!important;max-width:calc(100vw - 16px)!important;padding:8px 12px!important;border:1px solid rgba(255,220,100,.9)!important;border-radius:14px!important;background:linear-gradient(135deg,rgba(4,45,52,.96),rgba(7,20,31,.97))!important;color:#fff!important;text-align:center!important;box-shadow:0 0 14px rgba(0,255,204,.28),0 0 16px rgba(255,215,0,.18)!important;pointer-events:none!important;overflow:hidden!important}
+    #visitorClockDock .visitor-clock-dock-content{box-sizing:border-box!important;max-width:100%!important;margin:0!important;color:#fff!important;font:700 clamp(11px,2.6vw,14px)/1.5 Tahoma,Arial,sans-serif!important;text-align:center!important;overflow-wrap:anywhere!important}
+    @media(max-width:600px){#visitorClockDock{padding:6px 8px!important;border-radius:12px!important}#visitorClockDock .visitor-clock-dock-content{font-size:11px!important}}
     #visitorPostsSection h2{margin:0 0 7px;color:#ffe27a;font:800 clamp(18px,4vw,24px)/1.35 Tahoma,Arial,sans-serif;text-shadow:0 0 12px rgba(255,215,0,.24)}
     #visitorPostsSection p{margin:0;color:#e3f4f1;font:500 clamp(13px,3vw,16px)/1.8 Tahoma,Arial,sans-serif}
     #visitorPostsCard{min-height:52px;max-width:100%;padding:9px 18px;display:flex;align-items:center;justify-content:center;gap:10px;border:1px solid rgba(255,236,150,.8);border-radius:16px;background:linear-gradient(135deg,#15594d,#0b363c);color:#fff3bd;box-shadow:0 0 18px rgba(0,255,204,.2);font:800 15px Tahoma,Arial,sans-serif;cursor:pointer;touch-action:manipulation}
@@ -19,7 +72,7 @@ function installVisitorPosts() {
     #visitorPostsCard .visitor-gull path{stroke:none!important}
     #visitorPostsCard .visitor-card-label{display:block;white-space:normal;text-align:center;line-height:1.3;font-size:clamp(13px,3.2vw,16px);font-weight:800}
     #visitorPostsOverlay{position:fixed;inset:0;z-index:2147483000;background:rgba(2,10,15,.88);display:none;place-items:center;padding:clamp(6px,2vw,24px)}
-    @media(max-width:600px){#visitorPostsSection{width:calc(100% - 20px)!important;margin:18px auto calc(260px + env(safe-area-inset-bottom))!important;padding:15px 12px!important;border-radius:18px}#visitorPostsCard{width:min(100%,260px);min-height:58px}}
+    @media(max-width:600px){#visitorPostsSection{width:calc(100% - 20px)!important;margin:8px auto!important;padding:12px 10px!important;border-radius:18px}#visitorPostsCard{width:min(100%,300px);min-height:56px}}
     #visitorPostsOverlay.open{display:grid}
     #visitorPostsDialog{width:min(1100px,100%);height:min(94dvh,900px);position:relative;border:1px solid #dfc15d;border-radius:18px;overflow:hidden;background:#0b1d24;box-shadow:0 24px 80px #000a}
     #visitorPostsClose{position:absolute;z-index:2;top:8px;inset-inline-end:8px;width:42px;height:42px;border:1px solid #fff7;border-radius:50%;background:#10232beF;color:#fff;font-size:25px;line-height:1;cursor:pointer}
@@ -49,7 +102,37 @@ function installVisitorPosts() {
   section.innerHTML = `<div class="visitor-posts-copy"><h2 id="visitorPostsHeading"></h2><p></p></div>`;
   section.appendChild(card);
   applyCardLanguage();
-  document.body.appendChild(section);
+  const settleVisitorLayout = () => {
+    if (clockDock) {
+      positionVisitorClock(clockDock);
+      return true;
+    }
+    const clock = findClockNode();
+    if (!clock || !clock.parentNode) {
+      if (!section.isConnected) document.body.appendChild(section);
+      return false;
+    }
+    clock.parentNode.insertBefore(section, clock);
+    clockDock = document.createElement("aside");
+    clockDock.id = "visitorClockDock";
+    clockDock.setAttribute("aria-label", document.documentElement.lang.toLowerCase().startsWith("en") ? "Site date and time" : "تاريخ ووقت الموقع");
+    clock.classList.add("visitor-clock-dock-content");
+    clockDock.appendChild(clock);
+    document.body.appendChild(clockDock);
+    positionVisitorClock(clockDock);
+    return true;
+  };
+  let clockDock = null;
+  settleVisitorLayout();
+  const clockObserver = new MutationObserver(() => {
+    if (settleVisitorLayout()) clockObserver.disconnect();
+  });
+  clockObserver.observe(document.body, { childList: true, subtree: true });
+  [250, 700, 1500, 3000, 6000].forEach(ms => setTimeout(() => {
+    if (settleVisitorLayout()) clockObserver.disconnect();
+  }, ms));
+  window.addEventListener("resize", () => positionVisitorClock(clockDock), { passive: true });
+  window.addEventListener("orientationchange", () => setTimeout(() => positionVisitorClock(clockDock), 180), { passive: true });
   new MutationObserver(applyCardLanguage).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
 
   const overlay = document.createElement("div");
