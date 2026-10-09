@@ -225,6 +225,26 @@ function installVisitorPosts() {
     document.body.appendChild(overlay);
   }
   const frame = overlay.querySelector("iframe");
+  const syncOverlayLanguage = () => {
+    const english = document.documentElement.lang.toLowerCase().startsWith("en");
+    const dialog = overlay.querySelector("#visitorPostsDialog");
+    const closeButton = overlay.querySelector("#visitorPostsClose");
+    if (dialog) dialog.setAttribute("aria-label", english ? "Visitor Posts" : "مشاركات الزوار");
+    if (closeButton) closeButton.setAttribute("aria-label", english ? "Close" : "إغلاق");
+    frame.title = english ? "Visitor Posts" : "مشاركات الزوار";
+    const frameUrl = frame.getAttribute("src") || "";
+    if (frame.contentWindow && frameUrl && frameUrl !== "about:blank") {
+      frame.contentWindow.postMessage({
+        type: "sakakerVisitorLanguage",
+        lang: english ? "en" : "ar"
+      }, "*");
+    }
+  };
+  syncOverlayLanguage();
+  new MutationObserver(syncOverlayLanguage).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["lang"]
+  });
   const close = () => {
     overlay.classList.remove("open", "loading", "needs-signin");
     frame.src = "about:blank";
