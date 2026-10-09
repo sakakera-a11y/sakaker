@@ -36,8 +36,8 @@ function installVisitorPosts() {
     const english = document.documentElement.lang.toLowerCase().startsWith("en");
     card.querySelector(".visitor-card-label").textContent = english ? "Open submission form" : "فتح نموذج المشاركة";
     card.setAttribute("aria-label", english ? "Open visitor submission form" : "فتح نموذج مشاركات الزوار");
-    document.querySelector("#visitorPostsSection h2").textContent = english ? "Share with the castle visitors" : "شارك زوار القلعة";
-    document.querySelector("#visitorPostsSection p").textContent = english
+    section.querySelector("h2").textContent = english ? "Share with the castle visitors" : "شارك زوار القلعة";
+    section.querySelector("p").textContent = english
       ? "Write a useful post or upload a file. Your submission will wait for moderator review before publication."
       : "اكتب مشاركة نافعة أو ارفع ملفًا؛ وستبقى بانتظار مراجعة المشرف قبل النشر.";
   };
