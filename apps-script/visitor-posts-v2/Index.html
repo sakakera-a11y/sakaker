@@ -1,237 +1,97 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>مشاركات الزوار | Castle Visitor Posts</title>
-  <style>
-    :root{color-scheme:dark;--gold:#efd276;--mint:#68e6d0;--panel:rgba(8,27,35,.94)}
-    *{box-sizing:border-box}
-    body{margin:0;min-height:100vh;padding:clamp(12px,3vw,28px);font-family:Tahoma,Arial,sans-serif;color:#f7fbff;background:radial-gradient(circle at 15% 8%,#315b63 0,transparent 35%),radial-gradient(circle at 85% 85%,#3f285d 0,transparent 38%),linear-gradient(145deg,#08151d,#102c35 55%,#111e31);display:grid;place-items:center}
-    .shell{width:min(760px,100%);padding:1px;border-radius:26px;background:linear-gradient(135deg,#f5d876,#53dfd0 45%,#b57dff);box-shadow:0 22px 70px #0009,0 0 30px #58ead333}
-    .panel{position:relative;overflow:hidden;border-radius:25px;padding:clamp(18px,4vw,32px);background:linear-gradient(145deg,rgba(5,24,32,.97),rgba(12,35,45,.95));backdrop-filter:blur(16px)}
-    .panel:before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,#fff0a8,#62f3dc,#a78aff,#fff0a8)}
-    header{text-align:center;margin-bottom:24px}
-    .gull{width:56px;height:44px;filter:drop-shadow(0 0 12px #ffd94a);margin-bottom:6px}
-    h1{font-size:clamp(21px,5vw,30px);margin:0;color:#fff0b2;text-shadow:0 0 18px #eecb6a55}
-    .subtitle{margin:9px auto 0;color:#c7dce6;line-height:1.7;font-size:14px}
-    .drop{display:grid;place-items:center;gap:9px;min-height:180px;padding:24px;text-align:center;border:1px dashed #73dfd1;border-radius:20px;background:linear-gradient(140deg,#12343a99,#17283d99);transition:.2s}
-    .drop.drag{border-color:#ffe27c;background:#604d2644;transform:scale(1.01)}
-    .file-icon{font-size:38px;filter:drop-shadow(0 0 12px #6de3d6)}
-    .drop strong{font-size:17px;color:#effffb}
-    .hint{font-size:12px;color:#adc6d1;line-height:1.6}
-    .choose,.save,.action{border:0;border-radius:13px;padding:12px 18px;font-weight:800;font-family:inherit;cursor:pointer;touch-action:manipulation}
-    .choose{color:#071c24;background:linear-gradient(135deg,#ffe998,#62e6d3);box-shadow:0 8px 22px #56ddcb33}
-    input[type=file]{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
-    .selected{display:none;margin-top:16px;padding:13px 15px;border-radius:13px;border:1px solid #548b8a;background:#0a2530;color:#e6ffff;word-break:break-word}
-    .selected.show{display:block}
-    .save{width:100%;margin-top:14px;color:#0b1e27;background:linear-gradient(110deg,#f2d679,#6ce5d4);font-size:16px}
-    .save:disabled,.action:disabled{opacity:.45;cursor:not-allowed}
-    .status{min-height:26px;margin:12px 0 0;text-align:center;color:#bfeee6;font-size:14px;line-height:1.6}
-    .admin{display:none;margin-top:24px;padding-top:20px;border-top:1px solid #ffffff26}
-    .admin.show{display:block}
-    .admin h2{margin:0 0 12px;color:#ffe69a;font-size:18px}
-    .item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;margin:9px 0;border:1px solid #ffffff20;border-radius:14px;background:#ffffff08}
-    .item-name{min-width:0;overflow-wrap:anywhere;font-size:13px}
-    .actions{display:flex;gap:7px;flex:none}
-    .action{padding:9px 11px;font-size:12px}
-    .approve{background:#75e5b0;color:#0b2b20}
-    .remove{background:#ff9898;color:#371010}
-    .empty{color:#bdd0d8;font-size:13px}
-    footer{margin-top:18px;text-align:center;color:#91aab6;font-size:11px}
-    @media(max-width:520px){body{padding:0}.shell{width:100%;min-height:100dvh;border-radius:0}.panel{min-height:100dvh;border-radius:0;padding:22px 16px calc(20px + env(safe-area-inset-bottom))}.item{align-items:flex-start;flex-direction:column}.actions{width:100%}.action{flex:1}.drop{min-height:160px}}
-    @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>مشاركات الزوار | Castle Visitor Posts</title>
+<style>
+:root{color-scheme:dark;--gold:#efd276;--mint:#68e6d0}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;padding:clamp(12px,3vw,28px);font-family:Tahoma,Arial,sans-serif;color:#f7fbff;background:radial-gradient(circle at 15% 8%,#315b63 0,transparent 35%),radial-gradient(circle at 85% 85%,#3f285d 0,transparent 38%),linear-gradient(145deg,#08151d,#102c35 55%,#111e31);display:grid;place-items:center}
+.shell{width:min(760px,100%);padding:1px;border-radius:26px;background:linear-gradient(135deg,#f5d876,#53dfd0 45%,#b57dff);box-shadow:0 22px 70px #0009,0 0 30px #58ead333}
+.panel{position:relative;overflow:hidden;border-radius:25px;padding:clamp(18px,4vw,32px);background:linear-gradient(145deg,rgba(5,24,32,.97),rgba(12,35,45,.95));backdrop-filter:blur(16px)}
+.panel:before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,#fff0a8,#62f3dc,#a78aff,#fff0a8)}
+header{text-align:center;margin-bottom:22px}.gull{width:56px;height:44px;filter:drop-shadow(0 0 12px #ffd94a);margin-bottom:6px}
+h1{font-size:clamp(21px,5vw,30px);margin:0;color:#fff0b2;text-shadow:0 0 18px #eecb6a55}
+.subtitle{margin:9px auto 0;color:#c7dce6;line-height:1.7;font-size:14px}
+.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 14px}
+.tab{border:1px solid #5c9a96;border-radius:13px;padding:12px 6px;background:#ffffff08;color:#dceef0;font:700 13px Tahoma,Arial,sans-serif;cursor:pointer}
+.tab.active{border-color:#f0d679;background:linear-gradient(135deg,#eed579,#60dfd0);color:#09202a;box-shadow:0 0 18px #61e2d333}
+.drop{display:grid;place-items:center;gap:9px;min-height:176px;padding:24px;text-align:center;border:1px dashed #73dfd1;border-radius:20px;background:linear-gradient(140deg,#12343a99,#17283d99);transition:.2s}
+.drop.drag{border-color:#ffe27c;background:#604d2644;transform:scale(1.01)}
+.file-icon{font-size:38px;filter:drop-shadow(0 0 12px #6de3d6)}.drop strong{font-size:17px;color:#effffb}
+.hint{font-size:12px;color:#adc6d1;line-height:1.6}
+.choose,.save,.action{border:0;border-radius:13px;padding:12px 18px;font-weight:800;font-family:inherit;cursor:pointer;touch-action:manipulation}
+.choose{color:#071c24;background:linear-gradient(135deg,#ffe998,#62e6d3);box-shadow:0 8px 22px #56ddcb33}
+input[type=file]{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
+.selected{display:none;margin-top:16px;padding:13px 15px;border-radius:13px;border:1px solid #548b8a;background:#0a2530;color:#e6ffff;word-break:break-word}
+.selected.show{display:block}
+.text-area{width:100%;min-height:170px;padding:14px;border-radius:15px;border:1px solid #5c9a96;background:#071b24;color:#f7fbff;font:15px/1.8 Tahoma,Arial,sans-serif;resize:vertical}
+.text-area:focus{outline:2px solid #efd276}
+.save{width:100%;margin-top:14px;color:#0b1e27;background:linear-gradient(110deg,#f2d679,#6ce5d4);font-size:16px}
+.save:disabled,.action:disabled{opacity:.45;cursor:not-allowed}
+.status{min-height:26px;margin:12px 0 0;text-align:center;color:#bfeee6;font-size:14px;line-height:1.6}
+.published{margin-top:18px;padding:13px 15px;border:1px solid #ffffff22;border-radius:14px;background:#ffffff08;color:#c7dce6;font-size:13px;line-height:1.7}
+.published strong{display:block;color:#ffe69a;font-size:15px}
+.admin{display:none;margin-top:24px;padding-top:20px;border-top:1px solid #ffffff26}
+.admin.show{display:block}.admin h2{margin:0 0 12px;color:#ffe69a;font-size:18px}
+.item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;margin:9px 0;border:1px solid #ffffff20;border-radius:14px;background:#ffffff08}
+.item-name{min-width:0;overflow-wrap:anywhere;font-size:13px;line-height:1.6}
+.actions{display:flex;gap:7px;flex:none}.action{padding:9px 11px;font-size:12px}
+.approve{background:#75e5b0;color:#0b2b20}.remove{background:#ff9898;color:#371010}.empty{color:#bdd0d8;font-size:13px}
+footer{margin-top:18px;text-align:center;color:#91aab6;font-size:11px}
+[hidden]{display:none!important}
+@media(max-width:520px){body{padding:0}.shell{width:100%;min-height:100dvh;border-radius:0}.panel{min-height:100dvh;border-radius:0;padding:22px 16px calc(20px + env(safe-area-inset-bottom))}.item{align-items:flex-start;flex-direction:column}.actions{width:100%}.action{flex:1}.drop{min-height:160px}.tab{font-size:12px;padding:11px 3px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+</style>
 </head>
 <body>
-  <main class="shell">
-    <section class="panel" aria-labelledby="title">
-      <header>
-        <svg class="gull" viewBox="0 0 100 76" aria-hidden="true"><path fill="#ffd700" d="M5 43c16-16 29-21 43-15 12 5 18 4 26-5-2 14-14 22-29 18-14-4-23 1-40 15 7-1 15-5 21-9-4 7-12 13-21 15 12 1 25-4 34-13 10-9 20-9 31-4-13-1-22 7-31 16C29 80 9 71 5 43Z"/><path fill="#ffd700" d="M30 34c10-18 24-27 46-27-6 8-11 17-14 25-9 7-18 7-32 2Z"/></svg>
-        <h1 id="title">مشاركات الزوار</h1>
-        <p class="subtitle" id="intro">ارفع ملفك ليُحفظ في قائمة المراجعة الخاصة.</p>
-      </header>
-      <div class="drop" id="drop">
-        <span class="file-icon" aria-hidden="true">✦</span>
-        <strong id="dropTitle">اختر ملفًا لرفعه</strong>
-        <span class="hint" id="fileHint">صور، مستندات، وملفات فيديو قصيرة · الحد الأقصى 10 MB</span>
-        <label class="choose" for="fileInput" id="chooseLabel">اختيار ملف</label>
-        <input id="fileInput" type="file" accept="image/*,.pdf,.txt,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.mp4,.webm,.mov,video/*">
-      </div>
-      <div class="selected" id="selected" aria-live="polite"></div>
-      <button class="save" id="saveBtn" type="button" disabled>حفظ الملف للمراجعة</button>
-      <p class="status" id="status" role="status" aria-live="polite">جارٍ التحقق من تسجيل دخول الموقع…</p>
-      <section class="admin" id="admin" aria-labelledby="adminTitle">
-        <h2 id="adminTitle">لوحة المشرف · الملفات قيد المراجعة</h2>
-        <div id="pendingList"></div>
-      </section>
-      <footer id="footer">Castle Visitor Posts · sakaker.co</footer>
-    </section>
-  </main>
-
-  <script>
-    const TEXT = {
-      ar: {title:"مشاركات الزوار",intro:"ارفع ملفك ليُحفظ في قائمة المراجعة الخاصة.",dropTitle:"اختر ملفًا لرفعه",fileHint:"صور، مستندات، وملفات فيديو قصيرة · الحد الأقصى 10 MB",choose:"اختيار ملف",save:"حفظ الملف للمراجعة",checking:"جارٍ التحقق من تسجيل دخول الموقع…",signin:"سجّل الدخول إلى الموقع أولًا لرفع الملفات.",select:"اختر ملفًا أولًا.",size:"الحد الأقصى لحجم الملف 10 MB.",video:"مدة الفيديو لا تتجاوز دقيقة واحدة.",ready:"الملف جاهز للحفظ.",sending:"جارٍ حفظ الملف في المراجعة الخاصة…",saved:"تم حفظ الملف في قائمة المراجعة الخاصة.",failed:"تعذر حفظ الملف. حاول مرة أخرى.",adminTitle:"لوحة المشرف · الملفات قيد المراجعة",empty:"لا توجد ملفات قيد المراجعة.",approve:"اعتماد",remove:"حذف",approved:"تم اعتماد الملف.",deleted:"تم حذف الملف."},
-      en: {title:"Visitor Posts",intro:"Upload a file to save it in the private review queue.",dropTitle:"Choose a file to upload",fileHint:"Images, documents, and short videos · 10 MB maximum",choose:"Choose file",save:"Save file for review",checking:"Checking site sign-in…",signin:"Sign in to the site before uploading.",select:"Choose a file first.",size:"Maximum file size is 10 MB.",video:"Videos must be one minute or shorter.",ready:"File is ready to save.",sending:"Saving file to the private review queue…",saved:"File saved in the private review queue.",failed:"Could not save the file. Please try again.",adminTitle:"Admin · Pending files",empty:"No files are waiting for review.",approve:"Approve",remove:"Delete",approved:"File approved.",deleted:"File deleted."}
-    };
-    const allowedOrigins = new Set(["https://sakaker.co","https://www.sakaker.co","https://sakakera-a11y.github.io"]);
-    const el = id => document.getElementById(id);
-    let idToken = "";
-    let isAdmin = false;
-    let selectedFile = null;
-    let language = "ar";
-    let pendingRecords = [];
-
-    function setLanguage(value) {
-      language = value === "en" ? "en" : "ar";
-      const t = TEXT[language];
-      document.documentElement.lang = language;
-      document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
-      el("title").textContent = t.title;
-      el("intro").textContent = t.intro;
-      el("dropTitle").textContent = t.dropTitle;
-      el("fileHint").textContent = t.fileHint;
-      el("chooseLabel").textContent = t.choose;
-      el("saveBtn").textContent = t.save;
-      el("adminTitle").textContent = t.adminTitle;
-      if (!idToken) el("status").textContent = t.checking;
-      renderPending(pendingRecords);
-    }
-    function setStatus(message, error) {
-      el("status").textContent = message;
-      el("status").style.color = error ? "#ffaaaa" : "#bfeee6";
-    }
-    function fileChanged(file) {
-      selectedFile = file || null;
-      const box = el("selected");
-      const t = TEXT[language];
-      if (!selectedFile) {
-        box.classList.remove("show");
-        el("saveBtn").disabled = true;
-        return;
-      }
-      if (selectedFile.size > 10 * 1024 * 1024) {
-        selectedFile = null;
-        box.classList.remove("show");
-        el("saveBtn").disabled = true;
-        setStatus(t.size, true);
-        return;
-      }
-      box.textContent = selectedFile.name + " · " + (selectedFile.size / 1048576).toFixed(2) + " MB";
-      box.classList.add("show");
-      el("saveBtn").disabled = !idToken;
-      setStatus(t.ready, false);
-      if (selectedFile.type.startsWith("video/")) {
-        const probe = document.createElement("video");
-        probe.preload = "metadata";
-        probe.onloadedmetadata = function() {
-          URL.revokeObjectURL(probe.src);
-          if (probe.duration > 60) {
-            selectedFile = null;
-            box.classList.remove("show");
-            el("saveBtn").disabled = true;
-            setStatus(t.video, true);
-          }
-        };
-        probe.src = URL.createObjectURL(selectedFile);
-      }
-    }
-    function renderPending(records) {
-      pendingRecords = records || [];
-      const host = el("pendingList");
-      host.innerHTML = "";
-      if (!isAdmin) return;
-      if (!pendingRecords.length) {
-        const p = document.createElement("p");
-        p.className = "empty";
-        p.textContent = TEXT[language].empty;
-        host.appendChild(p);
-        return;
-      }
-      pendingRecords.forEach(record => {
-        const row = document.createElement("div");
-        row.className = "item";
-        const name = document.createElement("div");
-        name.className = "item-name";
-        const link = document.createElement("a");
-        link.href = record.url;
-        link.target = "_blank";
-        link.rel = "noopener";
-        link.textContent = record.fileName;
-        link.style.color = "#bfeee6";
-        name.appendChild(link);
-        const actions = document.createElement("div");
-        actions.className = "actions";
-        const approve = document.createElement("button");
-        approve.className = "action approve";
-        approve.textContent = TEXT[language].approve;
-        approve.onclick = () => runAdminAction("approveVisitorFile", record.id, TEXT[language].approved);
-        const remove = document.createElement("button");
-        remove.className = "action remove";
-        remove.textContent = TEXT[language].remove;
-        remove.onclick = () => runAdminAction("deleteVisitorFile", record.id, TEXT[language].deleted);
-        actions.append(approve, remove);
-        row.append(name, actions);
-        host.appendChild(row);
-      });
-    }
-    function loadState() {
-      google.script.run.withSuccessHandler(state => {
-        isAdmin = Boolean(state && state.isAdmin);
-        el("admin").classList.toggle("show", isAdmin);
-        renderPending(state && state.pending || []);
-      }).withFailureHandler(err => setStatus(err.message || TEXT[language].signin, true)).getVisitorState(idToken);
-    }
-    function runAdminAction(method, recordId, successText) {
-      setStatus(TEXT[language].sending, false);
-      google.script.run.withSuccessHandler(() => {
-        setStatus(successText, false);
-        loadState();
-      }).withFailureHandler(err => setStatus(err.message || TEXT[language].failed, true))[method](idToken, recordId);
-    }
-    el("fileInput").addEventListener("change", event => fileChanged(event.target.files[0]));
-    el("drop").addEventListener("dragover", event => { event.preventDefault(); el("drop").classList.add("drag"); });
-    el("drop").addEventListener("dragleave", () => el("drop").classList.remove("drag"));
-    el("drop").addEventListener("drop", event => {
-      event.preventDefault();
-      el("drop").classList.remove("drag");
-      if (event.dataTransfer.files[0]) fileChanged(event.dataTransfer.files[0]);
-    });
-    el("saveBtn").addEventListener("click", () => {
-      const t = TEXT[language];
-      if (!idToken) return setStatus(t.signin, true);
-      if (!selectedFile) return setStatus(t.select, true);
-      const reader = new FileReader();
-      reader.onload = () => {
-        const base64 = String(reader.result).split(",")[1] || "";
-        setStatus(t.sending, false);
-        el("saveBtn").disabled = true;
-        google.script.run.withSuccessHandler(() => {
-          selectedFile = null;
-          el("fileInput").value = "";
-          el("selected").classList.remove("show");
-          setStatus(t.saved, false);
-          el("saveBtn").disabled = true;
-          if (isAdmin) loadState();
-        }).withFailureHandler(err => {
-          el("saveBtn").disabled = false;
-          setStatus(err.message || t.failed, true);
-        }).saveVisitorFile({idToken:idToken,fileName:selectedFile.name,mimeType:selectedFile.type,base64:base64});
-      };
-      reader.onerror = () => setStatus(t.failed, true);
-      reader.readAsDataURL(selectedFile);
-    });
-    window.addEventListener("message", event => {
-      if (event.source !== window.parent || !allowedOrigins.has(event.origin)) return;
-      const data = event.data || {};
-      if (data.type !== "sakakerVisitorAuth" || !data.token) return;
-      idToken = String(data.token);
-      setLanguage(data.lang);
-      el("saveBtn").disabled = !selectedFile;
-      setStatus(language === "en" ? "Signed in to the site." : "تم التحقق من تسجيل دخول الموقع.", false);
-      loadState();
-    });
-    setLanguage("ar");
-  </script>
+<main class="shell"><section class="panel" aria-labelledby="title">
+<header>
+<svg class="gull" viewBox="0 0 100 76" aria-hidden="true"><path fill="#ffd700" d="M5 43c16-16 29-21 43-15 12 5 18 4 26-5-2 14-14 22-29 18-14-4-23 1-40 15 7-1 15-5 21-9-4 7-12 13-21 15 12 1 25-4 34-13 10-9 20-9 31-4-13-1-22 7-31 16C29 80 9 71 5 43Z"/><path fill="#ffd700" d="M30 34c10-18 24-27 46-27-6 8-11 17-14 25-9 7-18 7-32 2Z"/></svg>
+<h1 id="title">مشاركات الزوار</h1><p class="subtitle" id="intro"></p>
+</header>
+<div class="tabs" role="tablist" aria-label="Visitor post type">
+<button class="tab active" id="tabVideo" type="button" role="tab" aria-selected="true" data-tab="video"></button>
+<button class="tab" id="tabImage" type="button" role="tab" aria-selected="false" data-tab="image"></button>
+<button class="tab" id="tabText" type="button" role="tab" aria-selected="false" data-tab="text"></button>
+</div>
+<div class="drop" id="drop">
+<span class="file-icon" aria-hidden="true">✦</span><strong id="dropTitle"></strong><span class="hint" id="fileHint"></span>
+<label class="choose" for="fileInput" id="chooseLabel"></label>
+<input id="fileInput" type="file" accept="video/mp4,video/webm,video/quicktime">
+</div>
+<div id="textPanel" hidden><textarea id="textInput" class="text-area" maxlength="2000"></textarea></div>
+<div class="selected" id="selected" aria-live="polite"></div>
+<button class="save" id="saveBtn" type="button" disabled></button>
+<p class="status" id="status" role="status" aria-live="polite"></p>
+<div class="published"><strong id="publishedTitle"></strong><span id="publishedSoon"></span></div>
+<section class="admin" id="admin" aria-labelledby="adminTitle"><h2 id="adminTitle"></h2><div id="pendingList"></div></section>
+<footer>Castle Visitor Posts · sakaker.co</footer>
+</section></main>
+<script>
+const TEXT={
+ar:{title:"مشاركات الزوار",intro:"اختر نوع المشاركة. تُحفظ الإرسالات للمراجعة قبل النشر.",tabVideo:"الفيديوهات",tabImage:"الصور",tabText:"المنشورات النصية",videoTitle:"اختر فيديو لرفعه",imageTitle:"اختر صورة لرفعها",videoHint:"MP4 أو WebM · دقيقة واحدة كحد أقصى · 10 MB",imageHint:"JPEG أو PNG أو GIF أو WebP · 10 MB",chooseVideo:"اختيار فيديو",chooseImage:"اختيار صورة",saveVideo:"حفظ الفيديو للمراجعة",saveImage:"حفظ الصورة للمراجعة",saveText:"حفظ النص للمراجعة",textPlaceholder:"اكتب منشورك النصي (حتى 2000 حرف)…",publishedTitle:"المشاركات المنشورة",publishedSoon:"سيتم تفعيلها قريبًا.",checking:"جارٍ التحقق من تسجيل دخول الموقع…",signin:"سجّل الدخول إلى الموقع أولًا للمشاركة.",select:"اختر ملفًا مدعومًا أولًا.",size:"الحد الأقصى لحجم الملف 10 MB.",video:"مدة الفيديو لا تتجاوز دقيقة واحدة.",textEmpty:"اكتب نص المشاركة أولًا.",textLong:"الحد الأقصى للنص 2000 حرف.",ready:"المحتوى جاهز للحفظ.",sending:"جارٍ الحفظ في قائمة المراجعة الخاصة…",saved:"تم حفظ المشاركة في قائمة المراجعة الخاصة.",failed:"تعذر حفظ المشاركة. حاول مرة أخرى.",adminTitle:"لوحة المشرف · المشاركات قيد المراجعة",empty:"لا توجد مشاركات قيد المراجعة.",approve:"اعتماد",remove:"حذف",approved:"تم اعتماد المشاركة.",deleted:"تم حذف المشاركة."},
+en:{title:"Visitor Posts",intro:"Choose a post type. Submissions are saved for review before publishing.",tabVideo:"Videos",tabImage:"Photos",tabText:"Text posts",videoTitle:"Choose a video to upload",imageTitle:"Choose a photo to upload",videoHint:"MP4 or WebM · up to one minute · 10 MB",imageHint:"JPEG, PNG, GIF, or WebP · 10 MB",chooseVideo:"Choose video",chooseImage:"Choose photo",saveVideo:"Save video for review",saveImage:"Save photo for review",saveText:"Save text post for review",textPlaceholder:"Write a text post (up to 2,000 characters)…",publishedTitle:"Published posts",publishedSoon:"Coming soon.",checking:"Checking site sign-in…",signin:"Sign in to the site before posting.",select:"Choose a supported file first.",size:"Maximum file size is 10 MB.",video:"Videos must be one minute or shorter.",textEmpty:"Write a text post first.",textLong:"Maximum text length is 2,000 characters.",ready:"Content is ready to save.",sending:"Saving to the private review queue…",saved:"Post saved in the private review queue.",failed:"Could not save the post. Please try again.",adminTitle:"Admin · Pending posts",empty:"No posts are waiting for review.",approve:"Approve",remove:"Delete",approved:"Post approved.",deleted:"Post deleted."}
+};
+const ALLOWED_ORIGINS=new Set(["https://sakaker.co","https://www.sakaker.co","https://sakakera-a11y.github.io"]);
+const el=id=>document.getElementById(id);
+let idToken="",isAdmin=false,selectedFile=null,videoDuration=0,activeTab="video",language="ar",pendingRecords=[];
+function setLanguage(value){language=value==="en"?"en":"ar";const t=TEXT[language];document.documentElement.lang=language;document.documentElement.dir=language==="ar"?"rtl":"ltr";el("title").textContent=t.title;el("intro").textContent=t.intro;el("tabVideo").textContent=t.tabVideo;el("tabImage").textContent=t.tabImage;el("tabText").textContent=t.tabText;el("adminTitle").textContent=t.adminTitle;el("publishedTitle").textContent=t.publishedTitle;el("publishedSoon").textContent=t.publishedSoon;el("textInput").placeholder=t.textPlaceholder;if(!idToken)el("status").textContent=t.checking;updateTab();renderPending(pendingRecords)}
+function status(message,error){el("status").textContent=message;el("status").style.color=error?"#ffaaaa":"#bfeee6"}
+function updateTab(){const t=TEXT[language];document.querySelectorAll(".tab").forEach(b=>{const active=b.dataset.tab===activeTab;b.classList.toggle("active",active);b.setAttribute("aria-selected",String(active))});const isText=activeTab==="text";el("drop").hidden=isText;el("textPanel").hidden=!isText;el("selected").classList.toggle("show",!isText&&Boolean(selectedFile));if(activeTab==="video"){el("dropTitle").textContent=t.videoTitle;el("fileHint").textContent=t.videoHint;el("chooseLabel").textContent=t.chooseVideo;el("fileInput").accept="video/mp4,video/webm,video/quicktime";el("saveBtn").textContent=t.saveVideo}else if(activeTab==="image"){el("dropTitle").textContent=t.imageTitle;el("fileHint").textContent=t.imageHint;el("chooseLabel").textContent=t.chooseImage;el("fileInput").accept="image/jpeg,image/png,image/gif,image/webp,image/heic";el("saveBtn").textContent=t.saveImage}else el("saveBtn").textContent=t.saveText;el("saveBtn").disabled=!idToken||(isText?!el("textInput").value.trim():!selectedFile)}
+function chooseFile(file){selectedFile=null;videoDuration=0;const t=TEXT[language],box=el("selected");if(!file){updateTab();return}if(file.size>10*1024*1024){el("fileInput").value="";status(t.size,true);updateTab();return}if(activeTab==="video"&&!/^video\/(mp4|webm|quicktime)$/i.test(file.type)){status(t.select,true);updateTab();return}if(activeTab==="image"&&!/^image\/(jpeg|png|gif|webp|heic)$/i.test(file.type)){status(t.select,true);updateTab();return}function accept(){selectedFile=file;box.textContent=file.name+" · "+(file.size/1048576).toFixed(2)+" MB";box.classList.add("show");status(t.ready,false);updateTab()}if(activeTab==="video"){const probe=document.createElement("video");probe.preload="metadata";probe.onloadedmetadata=()=>{URL.revokeObjectURL(probe.src);if(probe.duration>60){el("fileInput").value="";status(t.video,true);updateTab();return}videoDuration=probe.duration;accept()};probe.onerror=()=>{el("fileInput").value="";status(t.select,true);updateTab()};probe.src=URL.createObjectURL(file)}else accept()}
+function renderPending(records){pendingRecords=records||[];const host=el("pendingList");host.innerHTML="";if(!isAdmin)return;if(!pendingRecords.length){const p=document.createElement("p");p.className="empty";p.textContent=TEXT[language].empty;host.appendChild(p);return}pendingRecords.forEach(r=>{const row=document.createElement("div");row.className="item";const name=document.createElement("div");name.className="item-name";if(r.type==="text")name.textContent=r.text;else{const a=document.createElement("a");a.href=r.url;a.target="_blank";a.rel="noopener";a.textContent=r.fileName;a.style.color="#bfeee6";name.appendChild(a)}const actions=document.createElement("div");actions.className="actions";const ok=document.createElement("button");ok.className="action approve";ok.textContent=TEXT[language].approve;ok.onclick=()=>adminAction("approveVisitorFile",r.id,TEXT[language].approved);const del=document.createElement("button");del.className="action remove";del.textContent=TEXT[language].remove;del.onclick=()=>adminAction("deleteVisitorFile",r.id,TEXT[language].deleted);actions.append(ok,del);row.append(name,actions);host.appendChild(row)})}
+function loadState(){google.script.run.withSuccessHandler(s=>{isAdmin=Boolean(s&&s.isAdmin);el("admin").classList.toggle("show",isAdmin);renderPending(s&&s.pending||[])}).withFailureHandler(e=>status(e.message||TEXT[language].signin,true)).getVisitorState(idToken)}
+function adminAction(method,recordId,message){status(TEXT[language].sending,false);google.script.run.withSuccessHandler(()=>{status(message,false);loadState()}).withFailureHandler(e=>status(e.message||TEXT[language].failed,true))[method](idToken,recordId)}
+function sendText(){const t=TEXT[language],value=el("textInput").value.trim();if(!value)return status(t.textEmpty,true);if(value.length>2000)return status(t.textLong,true);el("saveBtn").disabled=true;status(t.sending,false);google.script.run.withSuccessHandler(()=>{el("textInput").value="";updateTab();status(t.saved,false);if(isAdmin)loadState()}).withFailureHandler(e=>{status(e.message||t.failed,true);updateTab()}).saveVisitorText({idToken:idToken,text:value})}
+function sendFile(){const t=TEXT[language];if(!selectedFile)return status(t.select,true);const file=selectedFile,category=activeTab;const reader=new FileReader();reader.onload=()=>{const base64=String(reader.result).split(",")[1]||"";status(t.sending,false);el("saveBtn").disabled=true;google.script.run.withSuccessHandler(()=>{selectedFile=null;videoDuration=0;el("fileInput").value="";el("selected").classList.remove("show");updateTab();status(t.saved,false);if(isAdmin)loadState()}).withFailureHandler(e=>{status(e.message||t.failed,true);updateTab()}).saveVisitorFile({idToken:idToken,category:category,fileName:file.name,mimeType:file.type,durationSec:videoDuration,base64:base64})};reader.onerror=()=>status(t.failed,true);reader.readAsDataURL(file)}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{activeTab=b.dataset.tab;selectedFile=null;videoDuration=0;el("fileInput").value="";el("selected").classList.remove("show");updateTab()}));
+el("textInput").addEventListener("input",updateTab);el("fileInput").addEventListener("change",e=>chooseFile(e.target.files[0]));
+el("drop").addEventListener("dragover",e=>{e.preventDefault();el("drop").classList.add("drag")});el("drop").addEventListener("dragleave",()=>el("drop").classList.remove("drag"));el("drop").addEventListener("drop",e=>{e.preventDefault();el("drop").classList.remove("drag");if(e.dataTransfer.files[0])chooseFile(e.dataTransfer.files[0])});
+el("saveBtn").addEventListener("click",()=>{if(!idToken)return status(TEXT[language].signin,true);if(activeTab==="text")sendText();else sendFile()});
+window.addEventListener("message",e=>{if(e.source!==window.parent||!ALLOWED_ORIGINS.has(e.origin))return;const d=e.data||{};if(d.type!=="sakakerVisitorAuth"||!d.token)return;idToken=String(d.token);setLanguage(d.lang);status(language==="en"?"Signed in to the site.":"تم التحقق من تسجيل دخول الموقع.",false);updateTab();loadState()});
+setLanguage("ar");
+</script>
 </body>
 </html>
