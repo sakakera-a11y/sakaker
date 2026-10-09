@@ -41,12 +41,12 @@ function installVisitorPosts() {
       ? "Write a useful post or upload a file. Your submission will wait for moderator review before publication."
       : "اكتب مشاركة نافعة أو ارفع ملفًا؛ وستبقى بانتظار مراجعة المشرف قبل النشر.";
   };
-  applyCardLanguage();
   const section = document.createElement("section");
   section.id = "visitorPostsSection";
   section.setAttribute("aria-labelledby", "visitorPostsHeading");
   section.innerHTML = `<div class="visitor-posts-copy"><h2 id="visitorPostsHeading"></h2><p></p></div>`;
   section.appendChild(card);
+  applyCardLanguage();
   document.body.appendChild(section);
   new MutationObserver(applyCardLanguage).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
 
