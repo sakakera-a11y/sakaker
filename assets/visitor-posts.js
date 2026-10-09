@@ -53,20 +53,29 @@ function installVisitorPosts() {
 
   let currentUser = null;
   let authReady = false;
+  let resolveAuthState;
+  const authStateReady = new Promise(resolve => { resolveAuthState = resolve; });
   const waitForAuth = () => {
     if (!window.firebaseAuth) {
       if (!authReady) setTimeout(waitForAuth, 120);
       return;
     }
+    if (authReady) return;
     authReady = true;
-    onAuthStateChanged(window.firebaseAuth, user => { currentUser = user; });
+    currentUser = window.firebaseAuth.currentUser || null;
+    onAuthStateChanged(window.firebaseAuth, user => {
+      currentUser = user;
+      resolveAuthState(user);
+    });
   };
   waitForAuth();
 
   card.addEventListener("click", async () => {
     const english = document.documentElement.lang.toLowerCase().startsWith("en");
+    if (!authReady) waitForAuth();
+    await Promise.race([authStateReady, new Promise(resolve => setTimeout(resolve, 5000))]);
     if (!currentUser) {
-      alert(english ? "Sign in to the site with a verified email before posting." : "سجّل الدخول إلى الموقع ببريد إلكتروني موثّق قبل المشاركة.");
+      alert(english ? "Sign in to the site before posting." : "سجّل الدخول إلى حساب الموقع قبل المشاركة.");
       return;
     }
     if (!VISITOR_APP_URL.startsWith("https://script.google.com/macros/s/")) {
@@ -76,8 +85,9 @@ function installVisitorPosts() {
     overlay.classList.add("open");
     frame.onload = async () => {
       if (!currentUser) return;
-      const token = await currentUser.getIdToken(true);
-      if (frame.contentWindow) frame.contentWindow.postMessage({ type: "sakakerVisitorAuth", token, lang: english ? "en" : "ar" }, "*");
+      const siteUser = currentUser;
+      const token = await siteUser.getIdToken(true);
+      if (frame.contentWindow) frame.contentWindow.postMessage({ type: "sakakerVisitorAuth", token, lang: english ? "en" : "ar" }, new URL(VISITOR_APP_URL).origin);
     };
     frame.src = VISITOR_APP_URL + "?embedded=1";
   });
