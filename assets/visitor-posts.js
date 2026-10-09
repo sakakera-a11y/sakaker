@@ -10,8 +10,8 @@ function installVisitorPosts() {
   const css = document.createElement("style");
   css.textContent = `
     #visitorPostsCard .visitor-gull{width:40px!important;height:34px!important;margin:0 auto 3px!important;flex:none!important}
-    html body .cards button#visitorPostsCard svg.visitor-gull path:first-of-type{fill:#ffd447!important;stroke:none!important}
-    html body .cards button#visitorPostsCard svg.visitor-gull path:last-of-type{fill:#238fe6!important;stroke:none!important}
+    html body .cards button#visitorPostsCard svg.visitor-gull path:first-of-type{fill:#ffea00!important;stroke:none!important}
+    html body .cards button#visitorPostsCard svg.visitor-gull path:last-of-type{fill:#1677ff!important;stroke:none!important}
     #visitorPostsCard .visitor-card-label{display:block!important;width:68px!important;max-width:68px!important;white-space:normal!important;overflow-wrap:anywhere!important;text-align:center!important;line-height:1.1!important;font-size:clamp(7px,2.2vw,9px)!important;font-weight:800!important}
     #visitorPostsOverlay{position:fixed;inset:0;z-index:2147483000;background:rgba(2,10,15,.88);display:none;place-items:center;padding:clamp(6px,2vw,24px)}
     #visitorPostsOverlay.open{display:grid}
@@ -27,7 +27,7 @@ function installVisitorPosts() {
   card.id = "visitorPostsCard";
   card.className = "icon-card";
   card.setAttribute("aria-haspopup", "dialog");
-  card.innerHTML = `<svg class="visitor-gull" viewBox="0 0 100 76" aria-hidden="true" focusable="false"><path fill="#ffd447" d="M5 43c16-16 29-21 43-15 12 5 18 4 26-5-2 14-14 22-29 18-14-4-23 1-40 15 7-1 15-5 21-9-4 7-12 13-21 15 12 1 25-4 34-13 10-9 20-9 31-4-13-1-22 7-31 16C29 80 9 71 5 43Z"/><path fill="#238fe6" d="M30 34c10-18 24-27 46-27-6 8-11 17-14 25-9 7-18 7-32 2Z"/></svg><span class="visitor-card-label"></span>`;
+  card.innerHTML = `<svg class="visitor-gull" viewBox="0 0 100 76" aria-hidden="true" focusable="false"><path fill="#ffea00" d="M5 43c16-16 29-21 43-15 12 5 18 4 26-5-2 14-14 22-29 18-14-4-23 1-40 15 7-1 15-5 21-9-4 7-12 13-21 15 12 1 25-4 34-13 10-9 20-9 31-4-13-1-22 7-31 16C29 80 9 71 5 43Z"/><path fill="#1677ff" d="M30 34c10-18 24-27 46-27-6 8-11 17-14 25-9 7-18 7-32 2Z"/></svg><span class="visitor-card-label"></span>`;
   const applyCardLanguage = () => {
     const english = document.documentElement.lang.toLowerCase().startsWith("en");
     card.querySelector(".visitor-card-label").textContent = english ? "Visitor Posts" : "مشاركات الزوار";
