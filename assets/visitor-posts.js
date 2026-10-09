@@ -127,14 +127,27 @@ function installVisitorPosts() {
     return true;
   };
   let clockDock = null;
-  settleVisitorLayout();
-  const clockObserver = new MutationObserver(() => {
-    if (settleVisitorLayout()) clockObserver.disconnect();
-  });
-  clockObserver.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["class", "style", "hidden"] });
-  [250, 700, 1500, 3000, 6000].forEach(ms => setTimeout(() => {
-    if (settleVisitorLayout()) clockObserver.disconnect();
-  }, ms));
+  const watchForClock = () => {
+    if (settleVisitorLayout()) return;
+    const clockObserver = new MutationObserver(() => {
+      if (settleVisitorLayout()) clockObserver.disconnect();
+    });
+    clockObserver.observe(document.body, { childList: true, subtree: true });
+    [250, 700, 1500, 3000, 6000].forEach(ms => setTimeout(() => {
+      if (settleVisitorLayout()) clockObserver.disconnect();
+    }, ms));
+  };
+  if (document.body.classList.contains("locked")) {
+    const unlockObserver = new MutationObserver(() => {
+      if (!document.body.classList.contains("locked")) {
+        unlockObserver.disconnect();
+        watchForClock();
+      }
+    });
+    unlockObserver.observe(document.body, { attributes: true, attributeFilter: ["class"] });
+  } else {
+    watchForClock();
+  }
   window.addEventListener("resize", () => positionVisitorClock(clockDock), { passive: true });
   window.addEventListener("orientationchange", () => setTimeout(() => positionVisitorClock(clockDock), 180), { passive: true });
   new MutationObserver(applyCardLanguage).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
