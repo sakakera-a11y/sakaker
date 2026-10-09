@@ -39544,6 +39544,9 @@ html body #sakFestiveHeader #sakHolidayCountdowns #sakakerWatermarkClock{grid-co
 html body #sakFestiveHeader #sakHolidayCountdowns #sakakerWatermarkClock>time{font-size:9px!important}
 html body #sakNewsLaunch{grid-column:2;grid-row:2;justify-self:stretch;min-height:36px;pointer-events:auto!important;cursor:pointer;border:1px solid #dfbade77;border-radius:10px;padding:4px 5px;color:#fff0fb;background:linear-gradient(120deg,#144757b0,#6b3b64a6);font:700 10px/1.4 Tahoma,Arial,sans-serif;box-shadow:inset 0 1px 0 #ffffff33;text-align:center}
 #sakNewsLaunch:focus-visible{outline:2px solid #fff;outline-offset:3px}
+#sakNewsLaunch .sak-news-prompt{display:block;animation:sakPromptColorFlash 2.4s steps(1,end) infinite}
+@keyframes sakPromptColorFlash{0%,100%{color:#ffeb00;text-shadow:0 0 8px #ffeb00}16.66%{color:#32aaff;text-shadow:0 0 8px #32aaff}33.33%{color:#111;text-shadow:0 0 6px #fff}50%{color:#fff;text-shadow:0 0 8px #fff}66.66%{color:#ff4141;text-shadow:0 0 8px #ff4141}83.33%{color:#43f06b;text-shadow:0 0 8px #43f06b}}
+@media(prefers-reduced-motion:reduce){#sakNewsLaunch .sak-news-prompt{animation:none;color:#ffeb00}}
 html body #sakakerWorldNews{display:none!important}
 html body #sakGlobalPayment{bottom:max(52px,calc(46px + env(safe-area-inset-bottom)))!important}
 html body #sakPaymentPanel{max-height:calc(100dvh - 145px)!important}
@@ -39570,7 +39573,7 @@ html body #sakNewsDialog[open]{display:flex!important;flex-direction:column!impo
  const content=dialog.querySelector('#sakNewsContent'),title=dialog.querySelector('#sakNewsTitle'),close=dialog.querySelector('#sakNewsClose');
  function render(){
   const en=document.documentElement.lang==='en';
-  launch.textContent=en?'📰 News · Click to open ↗':'📰 الأخبار · اضغط للفتح ↗';
+  launch.innerHTML=en?'📰 News <span class="sak-news-prompt">Click to open</span> ↗':'📰 الأخبار <span class="sak-news-prompt">اضغط للفتح</span> ↗';
   launch.setAttribute('aria-label',en?'Open news window':'اضغط لفتح نافذة الأخبار');
   title.textContent=en?'News · Sports · Economy':'الأخبار · الرياضة · الاقتصاد';
   close.setAttribute('aria-label',en?'Close news':'إغلاق الأخبار');dialog.dir=en?'ltr':'rtl';
@@ -41287,7 +41290,7 @@ html body .sak-index-link span{font-size:22px!important}
 }
 </style>
 
-<script type="module" src="/assets/visitor-posts.js?v=20261009-13"></script>
+<script type="module" src="/assets/visitor-posts.js?v=20261009-14"></script>
 <script type="module" src="assets/sakaker-live.js"></script>
 <script src="/assets/live-media-refresh.js?v=20261008-window-palette4" defer></script>
 </body>
