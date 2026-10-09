@@ -37,11 +37,11 @@ function positionVisitorClock(host) {
   host.style.setProperty("top","auto","important");
   host.style.setProperty("bottom","max(8px, env(safe-area-inset-bottom))","important");
   host.style.setProperty("transform","translateX(-50%)","important");
-  host.style.setProperty("width","58px","important");
-  host.style.setProperty("height","72px","important");
-  host.style.setProperty("max-width","58px","important");
+  host.style.setProperty("width","calc(50vw - 16px)","important");
+  host.style.setProperty("height","42px","important");
+  host.style.setProperty("max-width","calc(50vw - 16px)","important");
   const dock=document.getElementById("sakakerAllIconsDock");
-  if(dock)dock.style.setProperty("bottom","max(88px, calc(78px + env(safe-area-inset-bottom)))","important");
+  if(dock)dock.style.setProperty("bottom","max(62px, calc(54px + env(safe-area-inset-bottom)))","important");
 }
 
 function installVisitorPosts() {
@@ -50,21 +50,20 @@ function installVisitorPosts() {
   const css = document.createElement("style");
   css.textContent = `
     html body:has(#visitorPostsSection){display:block!important;min-height:100vh}
-    :is(.sak-festival,.news-ticker,#visitorPostsSection){box-sizing:border-box!important;width:calc(50vw - 16px)!important;height:82px!important;min-height:82px!important;max-width:calc(50vw - 16px)!important;padding:7px 10px!important;border:1px solid rgba(75,226,199,.88)!important;border-radius:20px!important;background:linear-gradient(135deg,rgba(5,41,50,.88),rgba(20,29,48,.9))!important;box-shadow:0 0 14px rgba(0,255,204,.18),0 0 14px rgba(255,215,0,.12)!important;backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
-    #visitorPostsSection{margin:8px 6px!important;padding:6px!important;display:flex!important;flex:0 0 auto;align-items:stretch;justify-content:stretch;text-align:center;direction:inherit;position:relative!important}
+    :is(.sak-festival,.news-ticker,#sakakerNewsSlot,#visitorPostsSection,#visitorClockDock){box-sizing:border-box!important;width:calc(50vw - 16px)!important;height:42px!important;min-height:42px!important;max-height:42px!important;max-width:calc(50vw - 16px)!important;padding:5px 9px!important;border:1px solid rgba(75,226,199,.88)!important;border-radius:16px!important;background:linear-gradient(135deg,rgba(5,41,50,.88),rgba(20,29,48,.9))!important;box-shadow:0 0 14px rgba(0,255,204,.18),0 0 14px rgba(255,215,0,.12)!important;backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
+    #visitorPostsSection{margin:8px 6px!important;padding:3px 6px!important;display:flex!important;flex:0 0 auto;align-items:stretch;justify-content:stretch;text-align:center;direction:inherit;position:relative!important}
     #visitorPostsSection .visitor-posts-copy{display:none!important}
-    #visitorClockDock{position:fixed!important;left:50%!important;right:auto!important;top:auto!important;bottom:max(8px,env(safe-area-inset-bottom))!important;transform:translateX(-50%)!important;z-index:2147482999!important;box-sizing:border-box!important;width:58px!important;height:72px!important;max-width:58px!important;min-width:58px!important;padding:3px!important;border:1px solid rgba(75,226,199,.9)!important;border-radius:18px!important;background:linear-gradient(135deg,rgba(5,41,50,.92),rgba(20,29,48,.94))!important;color:#fff!important;text-align:center!important;box-shadow:0 0 14px rgba(0,255,204,.25),0 0 14px rgba(255,215,0,.16)!important;pointer-events:none!important;overflow:hidden!important}
-    #visitorClockDock::before{content:"◷";display:block;height:30px;color:#ffe27a;font:700 26px/30px Arial,sans-serif;text-shadow:0 0 8px rgba(255,215,0,.5)}
-    #visitorClockDock .visitor-clock-dock-content{box-sizing:border-box!important;display:-webkit-box!important;width:100%!important;max-width:100%!important;height:31px!important;margin:0!important;color:#fff!important;font:700 8px/1.3 Tahoma,Arial,sans-serif!important;text-align:center!important;overflow:hidden!important;overflow-wrap:anywhere!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:2!important}
-    #visitorPostsCard{box-sizing:border-box!important;width:100%!important;height:100%!important;min-height:0!important;max-width:100%!important;padding:4px 6px!important;display:flex!important;flex-direction:row;align-items:center;justify-content:center;gap:6px;border:0!important;border-radius:14px!important;background:transparent!important;color:#fff3bd;box-shadow:none!important;font:800 12px Tahoma,Arial,sans-serif;cursor:pointer;touch-action:manipulation}
+    #visitorClockDock{position:fixed!important;left:50%!important;right:auto!important;top:auto!important;bottom:max(8px,env(safe-area-inset-bottom))!important;transform:translateX(-50%)!important;z-index:2147482999!important;min-width:0!important;padding:4px 8px!important;color:#fff!important;text-align:center!important;pointer-events:none!important;overflow:hidden!important}
+    #visitorClockDock::before{content:"◷";display:inline-block;margin-inline-end:6px;color:#ffe27a;font:700 18px/1 Arial,sans-serif;text-shadow:0 0 8px rgba(255,215,0,.5);vertical-align:middle}
+    #visitorClockDock .visitor-clock-dock-content{box-sizing:border-box!important;display:inline-block!important;vertical-align:middle!important;width:auto!important;max-width:calc(100% - 30px)!important;height:auto!important;max-height:30px!important;margin:0!important;color:#fff!important;font:700 9px/1.25 Tahoma,Arial,sans-serif!important;text-align:center!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+    #visitorPostsCard{box-sizing:border-box!important;width:100%!important;height:100%!important;min-height:0!important;max-width:100%!important;padding:2px 5px!important;display:flex!important;flex-direction:row;align-items:center;justify-content:center;gap:6px;border:0!important;border-radius:12px!important;background:transparent!important;color:#fff3bd;box-shadow:none!important;font:800 11px Tahoma,Arial,sans-serif;cursor:pointer;touch-action:manipulation}
     #visitorPostsCard:focus-visible{outline:3px solid #fff1a8;outline-offset:3px}
-    #visitorPostsCard .visitor-gull{width:36px;height:30px;flex:none}
+    #visitorPostsCard .visitor-gull{width:28px;height:24px;flex:none}
     #visitorPostsCard .visitor-gull path{stroke:none!important}
-    #visitorPostsCard .visitor-card-label{display:block;white-space:normal;text-align:center;line-height:1.25;font-size:clamp(10px,2.2vw,13px);font-weight:800}
-    :is(.sak-festival,.news-ticker) :is(p,h1,h2,h3){margin:0!important}
-    @media(max-width:600px){:is(.sak-festival,.news-ticker,#visitorPostsSection){height:76px!important;min-height:76px!important;padding:5px 6px!important;border-radius:16px!important}#visitorPostsSection{margin:6px 4px!important}#visitorPostsCard{gap:4px}#visitorPostsCard .visitor-gull{width:30px;height:26px}#visitorClockDock{width:54px!important;min-width:54px!important;height:68px!important}#visitorClockDock .visitor-clock-dock-content{font-size:7px!important}}
+    #visitorPostsCard .visitor-card-label{display:block;white-space:nowrap;text-align:center;line-height:1.2;font-size:clamp(9px,2vw,12px);font-weight:800}
+    :is(.sak-festival,.news-ticker,#sakakerNewsSlot) :is(p,h1,h2,h3){margin:0!important}
+    @media(max-width:600px){:is(.sak-festival,.news-ticker,#sakakerNewsSlot,#visitorPostsSection,#visitorClockDock){height:40px!important;min-height:40px!important;max-height:40px!important;padding:4px 6px!important;border-radius:14px!important}#visitorPostsSection{margin:6px 4px!important}#visitorPostsCard{gap:4px}#visitorPostsCard .visitor-gull{width:25px;height:21px}#visitorClockDock{width:calc(50vw - 16px)!important;max-width:calc(50vw - 16px)!important}}
     #visitorPostsOverlay{position:fixed;inset:0;z-index:2147483000;background:rgba(2,10,15,.88);display:none;place-items:center;padding:clamp(6px,2vw,24px)}
-    @media(max-width:600px){#visitorPostsSection{width:calc(100% - 20px)!important;margin:8px auto!important;padding:12px 10px!important;border-radius:18px}#visitorPostsCard{width:min(100%,300px);min-height:56px}}
     #visitorPostsOverlay.open{display:grid}
     #visitorPostsDialog{width:min(1100px,100%);height:min(94dvh,900px);position:relative;border:1px solid #dfc15d;border-radius:18px;overflow:hidden;background:#0b1d24;box-shadow:0 24px 80px #000a}
     #visitorPostsClose{position:absolute;z-index:2;top:8px;inset-inline-end:8px;width:42px;height:42px;border:1px solid #fff7;border-radius:50%;background:#10232beF;color:#fff;font-size:25px;line-height:1;cursor:pointer}
