@@ -9,10 +9,10 @@ function installVisitorPosts() {
 
   const css = document.createElement("style");
   css.textContent = `
-    #visitorPostsCard .visitor-gull{width:48px;height:44px;margin-bottom:4px}
-    html body .cards #visitorPostsCard .visitor-gull path:first-of-type{fill:#ffd447!important;stroke:#ffd447!important}
-    html body .cards #visitorPostsCard .visitor-gull path:last-of-type{fill:#238fe6!important;stroke:#238fe6!important}
-    #visitorPostsCard .visitor-card-label{font-weight:700}
+    #visitorPostsCard .visitor-gull{width:40px!important;height:34px!important;margin:0 auto 3px!important;flex:none!important}
+    html body .cards button#visitorPostsCard svg.visitor-gull path:first-of-type{fill:#ffd447!important;stroke:none!important}
+    html body .cards button#visitorPostsCard svg.visitor-gull path:last-of-type{fill:#238fe6!important;stroke:none!important}
+    #visitorPostsCard .visitor-card-label{display:block!important;width:68px!important;max-width:68px!important;white-space:normal!important;overflow-wrap:anywhere!important;text-align:center!important;line-height:1.1!important;font-size:clamp(7px,2.2vw,9px)!important;font-weight:800!important}
     #visitorPostsOverlay{position:fixed;inset:0;z-index:2147483000;background:rgba(2,10,15,.88);display:none;place-items:center;padding:clamp(6px,2vw,24px)}
     #visitorPostsOverlay.open{display:grid}
     #visitorPostsDialog{width:min(1100px,100%);height:min(94dvh,900px);position:relative;border:1px solid #dfc15d;border-radius:18px;overflow:hidden;background:#0b1d24;box-shadow:0 24px 80px #000a}
