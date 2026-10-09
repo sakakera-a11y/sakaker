@@ -38,6 +38,7 @@ function positionVisitorClock(host) {
   const paymentRect = payment && paymentStyle && paymentStyle.display !== "none" &&
     paymentStyle.visibility !== "hidden" ? payment.getBoundingClientRect() : null;
   const width = Math.min(360, Math.max(180, window.innerWidth - 16));
+  host.style.setProperty("width", width + "px", "important");
   const height = Math.max(host.offsetHeight || 48, 42);
   let left = 8;
   let top = Math.max(8, window.innerHeight - height - 150);
@@ -50,7 +51,6 @@ function positionVisitorClock(host) {
   top = Math.max(8, Math.min(window.innerHeight - height - 8, top));
   host.style.setProperty("left", Math.round(left) + "px", "important");
   host.style.setProperty("top", Math.round(top) + "px", "important");
-  host.style.setProperty("width", width + "px", "important");
 }
 
 function installVisitorPosts() {
@@ -103,6 +103,10 @@ function installVisitorPosts() {
   section.appendChild(card);
   applyCardLanguage();
   const settleVisitorLayout = () => {
+    if (document.body.classList.contains("locked")) {
+      if (!section.isConnected) document.body.appendChild(section);
+      return false;
+    }
     if (clockDock) {
       positionVisitorClock(clockDock);
       return true;
@@ -127,7 +131,7 @@ function installVisitorPosts() {
   const clockObserver = new MutationObserver(() => {
     if (settleVisitorLayout()) clockObserver.disconnect();
   });
-  clockObserver.observe(document.body, { childList: true, subtree: true });
+  clockObserver.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["class", "style", "hidden"] });
   [250, 700, 1500, 3000, 6000].forEach(ms => setTimeout(() => {
     if (settleVisitorLayout()) clockObserver.disconnect();
   }, ms));
