@@ -31,26 +31,17 @@ function findClockNode() {
 
 function positionVisitorClock(host) {
   if (!host || !host.isConnected) return;
-  const payment = document.querySelector("#sakGlobalPayment") ||
-    document.querySelector("#sakPaymentLaunch") ||
-    document.querySelector("#sakPaymentPanel");
-  const paymentStyle = payment ? getComputedStyle(payment) : null;
-  const paymentRect = payment && paymentStyle && paymentStyle.display !== "none" &&
-    paymentStyle.visibility !== "hidden" ? payment.getBoundingClientRect() : null;
-  const width = Math.min(360, Math.max(180, window.innerWidth - 16));
-  host.style.setProperty("width", width + "px", "important");
-  const height = Math.max(host.offsetHeight || 48, 42);
-  let left = 8;
-  let top = Math.max(8, window.innerHeight - height - 150);
-  if (paymentRect && paymentRect.width > 1 && paymentRect.height > 1) {
-    left = paymentRect.left;
-    top = paymentRect.top - height - 8;
-    if (top < 8) top = paymentRect.bottom + 8;
-  }
-  left = Math.max(8, Math.min(window.innerWidth - width - 8, left));
-  top = Math.max(8, Math.min(window.innerHeight - height - 8, top));
-  host.style.setProperty("left", Math.round(left) + "px", "important");
-  host.style.setProperty("top", Math.round(top) + "px", "important");
+  host.style.setProperty("position","fixed","important");
+  host.style.setProperty("left","50%","important");
+  host.style.setProperty("right","auto","important");
+  host.style.setProperty("top","auto","important");
+  host.style.setProperty("bottom","max(8px, env(safe-area-inset-bottom))","important");
+  host.style.setProperty("transform","translateX(-50%)","important");
+  host.style.setProperty("width","58px","important");
+  host.style.setProperty("height","72px","important");
+  host.style.setProperty("max-width","58px","important");
+  const dock=document.getElementById("sakakerAllIconsDock");
+  if(dock)dock.style.setProperty("bottom","max(88px, calc(78px + env(safe-area-inset-bottom)))","important");
 }
 
 function installVisitorPosts() {
@@ -59,18 +50,19 @@ function installVisitorPosts() {
   const css = document.createElement("style");
   css.textContent = `
     html body:has(#visitorPostsSection){display:block!important;min-height:100vh}
-    #visitorPostsSection{box-sizing:border-box;width:min(920px,calc(100% - 24px))!important;max-width:920px!important;margin:10px auto!important;padding:clamp(12px,2.4vw,22px);display:flex!important;flex:0 0 auto;flex-direction:column;align-items:center;gap:13px;text-align:center;direction:inherit;position:relative!important;border:1px solid rgba(255,215,0,.6);border-radius:22px;background:linear-gradient(135deg,rgba(2,39,46,.94),rgba(8,22,37,.97));box-shadow:0 14px 42px #0007,0 0 22px rgba(0,255,204,.12)}
-    #visitorPostsSection .visitor-posts-copy{max-width:720px;width:100%}
-    #visitorClockDock{position:fixed!important;z-index:2147482999!important;box-sizing:border-box!important;max-width:calc(100vw - 16px)!important;padding:8px 12px!important;border:1px solid rgba(255,220,100,.9)!important;border-radius:14px!important;background:linear-gradient(135deg,rgba(4,45,52,.96),rgba(7,20,31,.97))!important;color:#fff!important;text-align:center!important;box-shadow:0 0 14px rgba(0,255,204,.28),0 0 16px rgba(255,215,0,.18)!important;pointer-events:none!important;overflow:hidden!important}
-    #visitorClockDock .visitor-clock-dock-content{box-sizing:border-box!important;max-width:100%!important;margin:0!important;color:#fff!important;font:700 clamp(11px,2.6vw,14px)/1.5 Tahoma,Arial,sans-serif!important;text-align:center!important;overflow-wrap:anywhere!important}
-    @media(max-width:600px){#visitorClockDock{padding:6px 8px!important;border-radius:12px!important}#visitorClockDock .visitor-clock-dock-content{font-size:11px!important}}
-    #visitorPostsSection h2{margin:0 0 7px;color:#ffe27a;font:800 clamp(18px,4vw,24px)/1.35 Tahoma,Arial,sans-serif;text-shadow:0 0 12px rgba(255,215,0,.24)}
-    #visitorPostsSection p{margin:0;color:#e3f4f1;font:500 clamp(13px,3vw,16px)/1.8 Tahoma,Arial,sans-serif}
-    #visitorPostsCard{min-height:52px;max-width:100%;padding:9px 18px;display:flex;align-items:center;justify-content:center;gap:10px;border:1px solid rgba(255,236,150,.8);border-radius:16px;background:linear-gradient(135deg,#15594d,#0b363c);color:#fff3bd;box-shadow:0 0 18px rgba(0,255,204,.2);font:800 15px Tahoma,Arial,sans-serif;cursor:pointer;touch-action:manipulation}
+    :is(.sak-festival,.news-ticker,#visitorPostsSection){box-sizing:border-box!important;width:calc(50vw - 16px)!important;height:82px!important;min-height:82px!important;max-width:calc(50vw - 16px)!important;padding:7px 10px!important;border:1px solid rgba(75,226,199,.88)!important;border-radius:20px!important;background:linear-gradient(135deg,rgba(5,41,50,.88),rgba(20,29,48,.9))!important;box-shadow:0 0 14px rgba(0,255,204,.18),0 0 14px rgba(255,215,0,.12)!important;backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
+    #visitorPostsSection{margin:8px 6px!important;padding:6px!important;display:flex!important;flex:0 0 auto;align-items:stretch;justify-content:stretch;text-align:center;direction:inherit;position:relative!important}
+    #visitorPostsSection .visitor-posts-copy{display:none!important}
+    #visitorClockDock{position:fixed!important;left:50%!important;right:auto!important;top:auto!important;bottom:max(8px,env(safe-area-inset-bottom))!important;transform:translateX(-50%)!important;z-index:2147482999!important;box-sizing:border-box!important;width:58px!important;height:72px!important;max-width:58px!important;min-width:58px!important;padding:3px!important;border:1px solid rgba(75,226,199,.9)!important;border-radius:18px!important;background:linear-gradient(135deg,rgba(5,41,50,.92),rgba(20,29,48,.94))!important;color:#fff!important;text-align:center!important;box-shadow:0 0 14px rgba(0,255,204,.25),0 0 14px rgba(255,215,0,.16)!important;pointer-events:none!important;overflow:hidden!important}
+    #visitorClockDock::before{content:"◷";display:block;height:30px;color:#ffe27a;font:700 26px/30px Arial,sans-serif;text-shadow:0 0 8px rgba(255,215,0,.5)}
+    #visitorClockDock .visitor-clock-dock-content{box-sizing:border-box!important;display:-webkit-box!important;width:100%!important;max-width:100%!important;height:31px!important;margin:0!important;color:#fff!important;font:700 8px/1.3 Tahoma,Arial,sans-serif!important;text-align:center!important;overflow:hidden!important;overflow-wrap:anywhere!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:2!important}
+    #visitorPostsCard{box-sizing:border-box!important;width:100%!important;height:100%!important;min-height:0!important;max-width:100%!important;padding:4px 6px!important;display:flex!important;flex-direction:row;align-items:center;justify-content:center;gap:6px;border:0!important;border-radius:14px!important;background:transparent!important;color:#fff3bd;box-shadow:none!important;font:800 12px Tahoma,Arial,sans-serif;cursor:pointer;touch-action:manipulation}
     #visitorPostsCard:focus-visible{outline:3px solid #fff1a8;outline-offset:3px}
-    #visitorPostsCard .visitor-gull{width:44px;height:34px;flex:none}
+    #visitorPostsCard .visitor-gull{width:36px;height:30px;flex:none}
     #visitorPostsCard .visitor-gull path{stroke:none!important}
-    #visitorPostsCard .visitor-card-label{display:block;white-space:normal;text-align:center;line-height:1.3;font-size:clamp(13px,3.2vw,16px);font-weight:800}
+    #visitorPostsCard .visitor-card-label{display:block;white-space:normal;text-align:center;line-height:1.25;font-size:clamp(10px,2.2vw,13px);font-weight:800}
+    :is(.sak-festival,.news-ticker) :is(p,h1,h2,h3){margin:0!important}
+    @media(max-width:600px){:is(.sak-festival,.news-ticker,#visitorPostsSection){height:76px!important;min-height:76px!important;padding:5px 6px!important;border-radius:16px!important}#visitorPostsSection{margin:6px 4px!important}#visitorPostsCard{gap:4px}#visitorPostsCard .visitor-gull{width:30px;height:26px}#visitorClockDock{width:54px!important;min-width:54px!important;height:68px!important}#visitorClockDock .visitor-clock-dock-content{font-size:7px!important}}
     #visitorPostsOverlay{position:fixed;inset:0;z-index:2147483000;background:rgba(2,10,15,.88);display:none;place-items:center;padding:clamp(6px,2vw,24px)}
     @media(max-width:600px){#visitorPostsSection{width:calc(100% - 20px)!important;margin:8px auto!important;padding:12px 10px!important;border-radius:18px}#visitorPostsCard{width:min(100%,300px);min-height:56px}}
     #visitorPostsOverlay.open{display:grid}
@@ -89,17 +81,12 @@ function installVisitorPosts() {
   card.innerHTML = `<svg class="visitor-gull" viewBox="0 0 100 76" aria-hidden="true" focusable="false"><path fill="#ffd700" d="M5 43c16-16 29-21 43-15 12 5 18 4 26-5-2 14-14 22-29 18-14-4-23 1-40 15 7-1 15-5 21-9-4 7-12 13-21 15 12 1 25-4 34-13 10-9 20-9 31-4-13-1-22 7-31 16C29 80 9 71 5 43Z"/><path fill="#ffd700" d="M30 34c10-18 24-27 46-27-6 8-11 17-14 25-9 7-18 7-32 2Z"/></svg><span class="visitor-card-label"></span>`;
   const applyCardLanguage = () => {
     const english = document.documentElement.lang.toLowerCase().startsWith("en");
-    card.querySelector(".visitor-card-label").textContent = english ? "Open submission form" : "فتح نموذج المشاركة";
+    card.querySelector(".visitor-card-label").textContent = english ? "Visitor Posts" : "مشاركات الزوار";
     card.setAttribute("aria-label", english ? "Open visitor submission form" : "فتح نموذج مشاركات الزوار");
-    section.querySelector("h2").textContent = english ? "Share with the castle visitors" : "شارك زوار القلعة";
-    section.querySelector("p").textContent = english
-      ? "Write a useful post or upload a file. Your submission will wait for moderator review before publication."
-      : "اكتب مشاركة نافعة أو ارفع ملفًا؛ وستبقى بانتظار مراجعة المشرف قبل النشر.";
   };
   const section = document.createElement("section");
   section.id = "visitorPostsSection";
   section.setAttribute("aria-labelledby", "visitorPostsHeading");
-  section.innerHTML = `<div class="visitor-posts-copy"><h2 id="visitorPostsHeading"></h2><p></p></div>`;
   section.appendChild(card);
   applyCardLanguage();
   const settleVisitorLayout = () => {
