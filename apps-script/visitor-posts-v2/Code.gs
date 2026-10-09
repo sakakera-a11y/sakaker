@@ -159,3 +159,10 @@ function cleanFileName_(name) {
     .trim()
     .slice(0, 140);
 }
+
+// One-time privacy setup for the review queue. Run before publishing.
+function restrictPendingAccess() {
+  [CFG.pendingFolderId, CFG.dataFolderId].forEach(function(id) {
+    DriveApp.getFolderById(id).setSharing(DriveApp.Access.PRIVATE, DriveApp.Permission.VIEW);
+  });
+}
