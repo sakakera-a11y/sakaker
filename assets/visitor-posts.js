@@ -261,7 +261,7 @@ function installVisitorPosts() {
   let resolveAuthState;
   const authStateReady = new Promise(resolve => { resolveAuthState = resolve; });
   const isAppsScriptHtmlOrigin = origin => {
-    try { return new URL(origin).hostname.endsWith("-script.googleusercontent.com"); } catch { return false; }
+    try { const host = new URL(origin).hostname; return host === "script.googleusercontent.com" || host.endsWith("-script.googleusercontent.com"); } catch { return false; }
   };
   window.addEventListener("message", async event => {
     const message = event.data || {};
