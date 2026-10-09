@@ -20,23 +20,30 @@ function getVisitorState(idToken) {
 
 function saveVisitorFile(input) {
   const user = verifySiteToken_(input && input.idToken);
+  const category = String((input && input.category) || "");
   const fileName = cleanFileName_(input && input.fileName);
-  const mimeType = String((input && input.mimeType) || "application/octet-stream").slice(0, 150);
+  const mimeType = String((input && input.mimeType) || "").slice(0, 150);
   const base64 = String((input && input.base64) || "");
   if (!fileName || !base64) throw new Error("اختر ملفًا صالحًا أولًا.");
+  if (category !== "video" && category !== "image") throw new Error("نوع المشاركة غير صالح.");
+  if (category === "video" && !/^video\/(mp4|webm|quicktime)$/i.test(mimeType)) throw new Error("اختر ملف فيديو مدعومًا.");
+  if (category === "image" && !/^image\/(jpeg|png|gif|webp|heic)$/i.test(mimeType)) throw new Error("اختر صورة بصيغة مدعومة.");
+  const durationSec = Number((input && input.durationSec) || 0);
+  if (category === "video" && durationSec > 60) throw new Error("مدة الفيديو لا تتجاوز دقيقة واحدة.");
   if (base64.length > Math.ceil(CFG.maxFileBytes * 1.4)) throw new Error("الحد الأقصى لحجم الملف 10 MB.");
 
   const bytes = Utilities.base64Decode(base64);
   if (!bytes.length || bytes.length > CFG.maxFileBytes) throw new Error("الحد الأقصى لحجم الملف 10 MB.");
-
   const file = DriveApp.getFolderById(CFG.pendingFolderId)
     .createFile(Utilities.newBlob(bytes, mimeType, fileName));
   const record = {
     id: Utilities.getUuid(),
+    type: category,
     fileId: file.getId(),
     fileName: file.getName(),
     mimeType: file.getMimeType(),
     size: bytes.length,
+    durationSec: durationSec || null,
     status: "pending",
     submittedBy: user.email,
     uid: user.uid,
@@ -46,12 +53,30 @@ function saveVisitorFile(input) {
   return { ok: true, fileName: record.fileName, status: record.status };
 }
 
+function saveVisitorText(input) {
+  const user = verifySiteToken_(input && input.idToken);
+  const text = String((input && input.text) || "").trim();
+  if (!text) throw new Error("اكتب نص المشاركة أولًا.");
+  if (text.length > 2000) throw new Error("الحد الأقصى للنص 2000 حرف.");
+  const record = {
+    id: Utilities.getUuid(),
+    type: "text",
+    text: text,
+    status: "pending",
+    submittedBy: user.email,
+    uid: user.uid,
+    submittedAt: new Date().toISOString()
+  };
+  dataFolder_().createFile(Utilities.newBlob(JSON.stringify(record), "application/json", record.id + ".json"));
+  return { ok: true, status: record.status };
+}
+
 function approveVisitorFile(idToken, recordId) {
   requireAdmin_(idToken);
   const recordFile = recordFile_(recordId);
   const record = JSON.parse(recordFile.getBlob().getDataAsString());
   if (record.status !== "pending") throw new Error("هذا الملف لم يعد قيد المراجعة.");
-  DriveApp.getFileById(record.fileId).setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+  if (record.fileId) DriveApp.getFileById(record.fileId).setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
   record.status = "approved";
   record.approvedAt = new Date().toISOString();
   recordFile.setContent(JSON.stringify(record));
@@ -103,7 +128,7 @@ function listPending_() {
     try {
       const record = JSON.parse(file.getBlob().getDataAsString());
       if (record.status === "pending") {
-        record.url = DriveApp.getFileById(record.fileId).getUrl();
+        if (record.fileId) record.url = DriveApp.getFileById(record.fileId).getUrl();
         pending.push(record);
       }
     } catch (error) {
