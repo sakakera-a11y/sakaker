@@ -93,7 +93,7 @@ el("languageToggle").addEventListener("click",()=>setLanguage(language==="en"?"a
 el("textInput").addEventListener("input",updateTab);el("fileInput").addEventListener("change",e=>chooseFile(e.target.files[0]));
 el("drop").addEventListener("dragover",e=>{e.preventDefault();el("drop").classList.add("drag")});el("drop").addEventListener("dragleave",()=>el("drop").classList.remove("drag"));el("drop").addEventListener("drop",e=>{e.preventDefault();el("drop").classList.remove("drag");if(e.dataTransfer.files[0])chooseFile(e.dataTransfer.files[0])});
 el("saveBtn").addEventListener("click",()=>{if(!idToken)return status(TEXT[language].signin,true);if(activeTab==="text")sendText();else sendFile()});
-window.addEventListener("message",e=>{if(e.source!==window.parent||!ALLOWED_ORIGINS.has(e.origin))return;const d=e.data||{};if(d.type==="sakakerVisitorLanguage"){setLanguage(d.lang);return}if(d.type!=="sakakerVisitorAuth"||!d.token)return;idToken=String(d.token);setLanguage(d.lang);status(language==="en"?"Signed in to the site.":"تم التحقق من تسجيل دخول الموقع.",false);updateTab();loadState()});
+window.addEventListener("message",e=>{if(!ALLOWED_ORIGINS.has(e.origin))return;const d=e.data||{};if(d.type==="sakakerVisitorLanguage"){setLanguage(d.lang);return}if(d.type!=="sakakerVisitorAuth"||!d.token)return;idToken=String(d.token);setLanguage(d.lang);status(language==="en"?"Signed in to the site.":"تم التحقق من تسجيل دخول الموقع.",false);updateTab();loadState()});
 setLanguage("ar");
 </script>
 </body>
