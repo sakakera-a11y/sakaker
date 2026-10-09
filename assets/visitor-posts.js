@@ -188,7 +188,9 @@ function installVisitorPosts() {
       if (!currentUser) return;
       const siteUser = currentUser;
       const token = await siteUser.getIdToken(true);
-      if (frame.contentWindow) frame.contentWindow.postMessage({ type: "sakakerVisitorAuth", token, lang: english ? "en" : "ar" }, new URL(VISITOR_APP_URL).origin);
+      if (frame.contentWindow) // Apps Script redirects its HTML into script.googleusercontent.com.
+      // The receiver checks both event.source and an explicit sakaker.co origin allowlist.
+      frame.contentWindow.postMessage({ type: "sakakerVisitorAuth", token, lang: english ? "en" : "ar" }, "*");
     };
     frame.src = VISITOR_APP_URL + "?embedded=1";
   });
