@@ -73,7 +73,10 @@ function installVisitorPosts() {
     #visitorPostsCard:focus-visible{outline:3px solid #fff1a8;outline-offset:3px}
     #visitorPostsCard .visitor-gull{width:28px;height:24px;flex:none}
     #visitorPostsCard .visitor-gull path{stroke:none!important}
-    #visitorPostsCard .visitor-card-label{display:block;white-space:nowrap;text-align:center;line-height:1.2;font-size:clamp(9px,2vw,12px);font-weight:800}
+    #visitorPostsCard .visitor-card-label{display:flex;flex-direction:column;align-items:center;white-space:nowrap;text-align:center;line-height:1.2;font-size:clamp(9px,2vw,12px);font-weight:800}
+    #visitorPostsCard .visitor-click-hint{display:block;margin-top:2px;font-size:.9em;animation:visitorPromptFlash 2.4s steps(1,end) infinite}
+    @keyframes visitorPromptFlash{0%,100%{color:#ffeb00;text-shadow:0 0 8px #ffeb00}16.66%{color:#32aaff;text-shadow:0 0 8px #32aaff}33.33%{color:#111;text-shadow:0 0 6px #fff}50%{color:#fff;text-shadow:0 0 8px #fff}66.66%{color:#ff4141;text-shadow:0 0 8px #ff4141}83.33%{color:#43f06b;text-shadow:0 0 8px #43f06b}}
+    @media(prefers-reduced-motion:reduce){#visitorPostsCard .visitor-click-hint{animation:none;color:#ffeb00}}
     :is(.sak-festival,.news-ticker) :is(p,h1,h2,h3){margin:0!important}
     @media(max-width:600px){:is(.sak-festival,.news-ticker,#visitorPostsSection,#visitorClockDock){height:40px!important;min-height:40px!important;max-height:40px!important;padding:4px 6px!important;border-radius:14px!important}#visitorPostsSection{margin:6px 4px!important}#visitorPostsCard{gap:4px}#visitorPostsCard .visitor-gull{width:25px;height:21px}#visitorClockDock{width:calc(50vw - 16px)!important;max-width:calc(50vw - 16px)!important}}
     #visitorPostsOverlay{position:fixed;inset:0;z-index:2147483000;background:rgba(2,10,15,.88);display:none;place-items:center;padding:clamp(6px,2vw,24px)}
@@ -121,7 +124,9 @@ function installVisitorPosts() {
   const applyCardLanguage = () => {
     const english = document.documentElement.lang.toLowerCase().startsWith("en");
     const label = card.querySelector(".visitor-card-label");
-    if (label) label.textContent = english ? "Visitor Posts" : "مشاركات الزوار";
+    if (label) label.innerHTML = english
+      ? '<span class="visitor-main-label">Visitor Posts</span><span class="visitor-click-hint">Click here</span>'
+      : '<span class="visitor-main-label">مشاركات الزوار</span><span class="visitor-click-hint">اضغط هنا</span>';
     card.setAttribute("aria-label", english ? "Open visitor submission form" : "فتح نموذج مشاركات الزوار");
     section.setAttribute("aria-label", english ? "Visitor Posts" : "مشاركات الزوار");
   };
@@ -197,6 +202,17 @@ function installVisitorPosts() {
   } else {
     watchForClock();
   }
+  const clockColors = ["#ffdf46", "#42d9ff", "#f0a4ff", "#ffffff", "#ff6666", "#71ed91"];
+  let clockColorIndex = 0;
+  const updateClockColor = () => {
+    const clockText = document.querySelector("#visitorClockDock .visitor-clock-dock-content");
+    if (clockText) clockText.style.setProperty("color", clockColors[clockColorIndex], "important");
+  };
+  updateClockColor();
+  setInterval(() => {
+    clockColorIndex = (clockColorIndex + 1) % clockColors.length;
+    updateClockColor();
+  }, 5000);
   window.addEventListener("resize", () => positionVisitorClock(clockDock), { passive: true });
   window.addEventListener("orientationchange", () => setTimeout(() => positionVisitorClock(clockDock), 180), { passive: true });
   new MutationObserver(applyCardLanguage).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
