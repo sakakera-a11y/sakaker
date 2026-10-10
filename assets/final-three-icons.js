@@ -11,6 +11,7 @@ const utilityItems=[
   {key:'textLibrary',finder:findTextLibrary},
   {key:'videoLibrary',selectors:['#emeraldLibraryButton']},
   {key:'live',selectors:['#liveFlasher']},
+  {key:'castleTour',selectors:['#sakCastleTourBtn']},
   {key:'pong',selectors:['#pongGame-btn']},
   {key:'siteBackground',selectors:['#sakSiteBackgroundBtn']},
   {key:'ship',selectors:['#shipIcon_new']},
@@ -24,6 +25,7 @@ const labels={
   textLibrary:{ar:'المكتبة النصية',en:'Text Library'},
   videoLibrary:{ar:'مكتبة الفيديو',en:'Video Library'},
   live:{ar:'قنوات مباشرة',en:'Live Channels'},
+  castleTour:{ar:'تجول بالقلعة',en:'Castle Tour'},
   pong:{ar:'لعبة البونج',en:'Pong'},
   siteBackground:{ar:'خلفية الصفحة',en:'Page Background'},
   ship:{ar:'أبوالقمر زمرد',en:'Abwalqmrzmrd'},
@@ -508,7 +510,13 @@ function decorateAsOstrich(el,key){
     art.className='sak-ostrich-art';
     el.prepend(art);
   }
-  art.replaceChildren(ostrichSVG(stableKey));
+  if(stableKey==='castleTour'){
+    art.textContent='🏰';
+    art.style.display='grid';
+    art.style.placeItems='center';
+    art.style.fontSize='37px';
+    art.style.filter='drop-shadow(0 0 10px rgba(255,216,131,.78))';
+  }else art.replaceChildren(ostrichSVG(stableKey));
   art.dataset.key=stableKey;
 
   let name=el.querySelector(':scope > .sak-ostrich-name');
@@ -584,6 +592,72 @@ function loadVisitorCounterModule(){
   document.head.appendChild(script);
 }
 
+
+function ensureCastleTourLauncher(){
+  if(document.getElementById('sakCastleTourBtn'))return;
+  const button=document.createElement('button');
+  button.id='sakCastleTourBtn';
+  button.type='button';
+  button.setAttribute('title','تجول بالقلعة / Castle Tour');
+  button.setAttribute('aria-label','تجول بالقلعة / Castle Tour');
+  button.addEventListener('click',openCastleTour);
+  document.body.appendChild(button);
+}
+function openCastleTour(){
+  if(isLocked()||document.getElementById('sakCastleTourOverlay'))return;
+  const oldFocus=document.activeElement;
+  const mainVideo=document.getElementById('sakSiteBackgroundVideo');
+  const backgroundWasPlaying=!!mainVideo&&!mainVideo.paused;
+  if(backgroundWasPlaying)mainVideo.pause();
+  const previousOverflow=document.documentElement.style.overflow;
+  document.documentElement.style.overflow='hidden';
+  const overlay=document.createElement('div');
+  overlay.id='sakCastleTourOverlay';
+  overlay.setAttribute('role','dialog');
+  overlay.setAttribute('aria-modal','true');
+  overlay.setAttribute('aria-label',document.documentElement.lang==='en'?'Castle Tour':'تجول بالقلعة');
+  overlay.style.cssText='position:fixed;inset:0;width:100%;height:100dvh;z-index:2147483646;background:#06151c;display:block;overflow:hidden';
+  const frame=document.createElement('iframe');
+  frame.src='/castle-tour.html?v=20261010-1';
+  frame.title='تجول بالقلعة / Castle Tour';
+  frame.allow='autoplay';
+  frame.style.cssText='width:100%;height:100%;border:0;display:block;background:#06151c';
+  overlay.appendChild(frame);
+  document.body.appendChild(overlay);
+  const sendGreeting=()=>{
+    if(!frame.contentWindow)return;
+    const user=window.firebaseAuth?.currentUser||null;
+    const displayName=user?.displayName||user?.providerData?.find(p=>p?.displayName)?.displayName||'';
+    const name=String(displayName).replace(/[<>]/g,'').trim().slice(0,70);
+    const lang=(document.documentElement.lang||'ar').startsWith('en')?'en':'ar';
+    frame.contentWindow.postMessage({type:'sak-castle-greeting',name,lang},window.location.origin);
+  };
+  let observer;
+  const close=()=>{
+    window.removeEventListener('message',onMessage);
+    document.removeEventListener('keydown',onKey);
+    if(observer)observer.disconnect();
+    overlay.remove();
+    document.documentElement.style.overflow=previousOverflow;
+    if(backgroundWasPlaying&&mainVideo&&!isLocked())mainVideo.play().catch(()=>{});
+    if(oldFocus&&typeof oldFocus.focus==='function')oldFocus.focus();
+  };
+  const onMessage=e=>{
+    if(e.origin!==window.location.origin||e.source!==frame.contentWindow)return;
+    if(e.data?.type==='sak-castle-close')close();
+    if(e.data?.type==='sak-castle-ready')sendGreeting();
+  };
+  const onKey=e=>{if(e.key==='Escape'){e.preventDefault();close();}};
+  window.addEventListener('message',onMessage);
+  document.addEventListener('keydown',onKey);
+  frame.addEventListener('load',sendGreeting,{once:true});
+  observer=new MutationObserver(()=>{if(isLocked())close();else sendGreeting()});
+  observer.observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  if(document.body)observer.observe(document.body,{attributes:true,attributeFilter:['class']});
+  frame.focus();
+  setTimeout(()=>{if(overlay.isConnected)sendGreeting()},1000);
+}
+
 function settle(){
   loadVisitorCounterModule();
   installSiteBackgroundStyle();
@@ -594,6 +668,7 @@ function settle(){
 
   installFacebookEmbeds();
   ensureSiteBackground();
+  ensureCastleTourLauncher();
   rebuildIconAppearance();
   removeOldSeaSoundControl();
   requestAnimationFrame(placeSiteSoundAboveClock);
@@ -606,6 +681,7 @@ new MutationObserver(()=>{
   if(isLocked())return;
   installFacebookEmbeds();
   ensureSiteBackground();
+  ensureCastleTourLauncher();
   rebuildIconAppearance();
   removeOldSeaSoundControl();
   requestAnimationFrame(placeSiteSoundAboveClock);
