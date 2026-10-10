@@ -595,80 +595,16 @@ function loadVisitorCounterModule(){
 }
 
 
+
 function ensureCastleTourLauncher(){
-  // The mobile dock is horizontally scrollable: the castle must stay first,
-  // rather than being appended after other utilities out of the viewport.
-  const dock=document.getElementById('sakakerAllIconsDock');
-  if(!dock||isLocked())return;
-  let button=document.getElementById('sakCastleTourBtn');
-  if(!button){
-    button=document.createElement('button');
-    button.id='sakCastleTourBtn';
-    button.type='button';
-    button.setAttribute('title','تجول بالقلعة / Castle Tour');
-    button.setAttribute('aria-label','تجول بالقلعة / Castle Tour');
-    button.addEventListener('click',openCastleTour);
-  }
-  if(button.parentElement!==dock||dock.firstElementChild!==button)dock.prepend(button);
-  decorateAsOstrich(button,'castleTour');
-  button.style.setProperty('display','block','important');
-  button.style.setProperty('visibility','visible','important');
-  button.style.setProperty('opacity','1','important');
-  button.style.setProperty('cursor','pointer','important');
-}
-function openCastleTour(){
-  if(isLocked()||document.getElementById('sakCastleTourOverlay'))return;
-  const oldFocus=document.activeElement;
-  const mainVideo=document.getElementById('sakSiteBackgroundVideo');
-  const backgroundWasPlaying=!!mainVideo&&!mainVideo.paused;
-  if(backgroundWasPlaying)mainVideo.pause();
-  const previousOverflow=document.documentElement.style.overflow;
-  document.documentElement.style.overflow='hidden';
-  const overlay=document.createElement('div');
-  overlay.id='sakCastleTourOverlay';
-  overlay.setAttribute('role','dialog');
-  overlay.setAttribute('aria-modal','true');
-  overlay.setAttribute('aria-label',document.documentElement.lang==='en'?'Castle Tour':'تجول بالقلعة');
-  overlay.style.cssText='position:fixed;inset:0;width:100%;height:100dvh;z-index:2147483646;background:#06151c;display:block;overflow:hidden';
-  const frame=document.createElement('iframe');
-  frame.src='/castle-tour.html?v=20261010-1';
-  frame.title='تجول بالقلعة / Castle Tour';
-  frame.allow='autoplay';
-  frame.style.cssText='width:100%;height:100%;border:0;display:block;background:#06151c';
-  overlay.appendChild(frame);
-  document.body.appendChild(overlay);
-  const sendGreeting=()=>{
-    if(!frame.contentWindow)return;
-    const user=window.firebaseAuth?.currentUser||null;
-    const displayName=user?.displayName||user?.providerData?.find(p=>p?.displayName)?.displayName||'';
-    const name=String(displayName).replace(/[<>]/g,'').trim().slice(0,70);
-    const lang=(document.documentElement.lang||'ar').startsWith('en')?'en':'ar';
-    frame.contentWindow.postMessage({type:'sak-castle-greeting',name,lang},window.location.origin);
-  };
-  let observer;
-  const close=()=>{
-    window.removeEventListener('message',onMessage);
-    document.removeEventListener('keydown',onKey);
-    if(observer)observer.disconnect();
-    overlay.remove();
-    document.documentElement.style.overflow=previousOverflow;
-    if(backgroundWasPlaying&&mainVideo&&!isLocked())mainVideo.play().catch(()=>{});
-    if(oldFocus&&typeof oldFocus.focus==='function')oldFocus.focus();
-  };
-  const onMessage=e=>{
-    if(e.origin!==window.location.origin||e.source!==frame.contentWindow)return;
-    if(e.data?.type==='sak-castle-close')close();
-    if(e.data?.type==='sak-castle-ready')sendGreeting();
-  };
-  const onKey=e=>{if(e.key==='Escape'){e.preventDefault();close();}};
-  window.addEventListener('message',onMessage);
-  document.addEventListener('keydown',onKey);
-  frame.addEventListener('load',sendGreeting,{once:true});
-  observer=new MutationObserver(()=>{if(isLocked())close();else sendGreeting()});
-  observer.observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
-  if(document.body)observer.observe(document.body,{attributes:true,attributeFilter:['class']});
-  frame.focus();
-  setTimeout(()=>{if(overlay.isConnected)sendGreeting()},1000);
+  // A dedicated independent launcher is required: the original horizontal
+  // dock clips/scrolls buttons out of view on many phones.
+  if(document.getElementById('sakCastleTourLauncherScript'))return;
+  const script=document.createElement('script');
+  script.id='sakCastleTourLauncherScript';
+  script.src='/assets/castle-tour-launcher.js?v=20261010-visible3';
+  script.async=true;
+  document.head.appendChild(script);
 }
 
 function settle(){
