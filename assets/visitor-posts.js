@@ -257,6 +257,7 @@ function installVisitorPosts() {
   document.addEventListener("keydown", e => { if (e.key === "Escape" && overlay.classList.contains("open")) close(); });
 
   let currentUser = null;
+  let pendingVisitorLogin = false;
   let authReady = false;
   let resolveAuthState;
   const authStateReady = new Promise(resolve => { resolveAuthState = resolve; });
@@ -280,6 +281,39 @@ function installVisitorPosts() {
       overlay.classList.add("needs-signin");
     }
   });
+  const openVisitorPosts = () => {
+    if (!VISITOR_APP_URL.startsWith("https://script.google.com/macros/s/")) {
+      close();
+      const english = document.documentElement.lang.toLowerCase().startsWith("en");
+      alert(english ? "Visitor Posts is still being configured." : "ما زال إعداد مشاركات الزوار جارياً.");
+      return;
+    }
+    overlay.classList.add("open", "loading");
+    frame.onload = () => overlay.classList.remove("loading");
+    frame.src = VISITOR_APP_URL + "?embedded=1";
+  };
+
+  const showSiteLogin = english => {
+    const loginOverlay = document.getElementById("loginOverlay");
+    const loginBox = document.getElementById("loginBox");
+    if (!loginOverlay) return;
+    loginOverlay.hidden = false;
+    loginOverlay.style.setProperty("display", "flex", "important");
+    if (loginBox) {
+      let notice = document.getElementById("visitorLoginNotice");
+      if (!notice) {
+        notice = document.createElement("p");
+        notice.id = "visitorLoginNotice";
+        notice.style.cssText = "margin:10px auto;padding:10px 12px;max-width:520px;border:1px solid #efd276;border-radius:12px;background:#0b2530;color:#fff0b2;font:700 13px/1.7 Tahoma,Arial,sans-serif;text-align:center";
+        const firstLoginButton = loginBox.querySelector(".socialLoginButton");
+        loginBox.insertBefore(notice, firstLoginButton || null);
+      }
+      notice.textContent = english
+        ? "Sign in with your site account. Admin access opens automatically for sakakera@gmail.com."
+        : "سجّل الدخول بحساب الموقع نفسه. تظهر لوحة المشرف تلقائيًا عند الدخول بالبريد sakakera@gmail.com.";
+    }
+  };
+
   const waitForAuth = () => {
     if (!window.firebaseAuth) {
       if (!authReady) setTimeout(waitForAuth, 120);
@@ -291,6 +325,10 @@ function installVisitorPosts() {
     onAuthStateChanged(window.firebaseAuth, user => {
       currentUser = user;
       resolveAuthState(user);
+      if (user && pendingVisitorLogin) {
+        pendingVisitorLogin = false;
+        openVisitorPosts();
+      }
     });
   };
   waitForAuth();
@@ -303,18 +341,12 @@ function installVisitorPosts() {
       if (!authReady) waitForAuth();
       await Promise.race([authStateReady, new Promise(resolve => setTimeout(resolve, 3000))]);
       if (!currentUser) {
-        loading.textContent = english ? "Sign in to the site before posting. Close this window after signing in." : "سجّل الدخول إلى حساب الموقع قبل المشاركة، ثم أغلق هذه النافذة وأعد المحاولة.";
-        overlay.classList.remove("loading");
-        overlay.classList.add("needs-signin");
-        return;
-      }
-      if (!VISITOR_APP_URL.startsWith("https://script.google.com/macros/s/")) {
+        pendingVisitorLogin = true;
+        showSiteLogin(english);
         close();
-        alert(english ? "Visitor Posts is still being configured." : "ما زال إعداد مشاركات الزوار جارياً.");
         return;
       }
-      frame.onload = () => overlay.classList.remove("loading");
-      frame.src = VISITOR_APP_URL + "?embedded=1";
+      openVisitorPosts();
     });
   }
 }
