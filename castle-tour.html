@@ -81,6 +81,36 @@ button,a{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible
 @media(max-width:600px){#museumRail{justify-content:flex-start;bottom:clamp(125px,18dvh,156px);padding:2px 7px 7px}.museumTile{font-size:10px;min-height:46px;padding:5px 8px}.museumTile span[aria-hidden]{font-size:23px}.museumGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.museumFrame img{height:clamp(110px,20vh,160px)}.museumFrame{min-height:130px}}
 @media(orientation:landscape) and (max-height:530px){#museumRail{bottom:108px}.museumTile{min-height:39px}#mainControls .scenePanel{padding:6px 10px}}
 
+
+/* In-site museum window: generous stage on desktops, unobstructed compact controls on phones. */
+#header{max-width:100%;min-width:0;align-items:center}
+#header .top{flex:0 0 auto;max-width:100%;align-items:center}
+#museumRail{max-width:100%;scroll-padding-inline:12px}
+#museumOverlay,#photoViewer,#filmViewer{max-width:100%;max-height:100dvh;overscroll-behavior:contain}
+#museumBody{padding-bottom:max(20px,env(safe-area-inset-bottom))}
+@media(max-width:650px){
+  #header{gap:5px;padding:calc(7px + env(safe-area-inset-top)) 8px 8px}
+  .brand{gap:6px;flex:1;min-width:0}
+  .brand strong{font-size:clamp(11px,3.5vw,15px)}
+  .logo{width:34px;height:34px;font-size:19px;border-radius:10px}
+  .top{gap:4px;flex-shrink:0}
+  .pill{min-height:35px;padding:5px 7px;border-radius:10px;font-size:11px}
+  #soundBtn{max-width:min(40vw,160px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #museumRail{bottom:max(120px,calc(108px + env(safe-area-inset-bottom)));padding:4px 7px;gap:6px}
+  .museumTile{min-height:42px;max-width:152px;gap:5px;padding:4px 7px}
+  #mainControls{bottom:max(7px,env(safe-area-inset-bottom));padding:0 8px}
+  #mainControls .scenePanel{padding:7px 9px;border-radius:13px}
+  #sceneTitle{font-size:clamp(13px,3.4vw,17px)}
+  #sceneDescription{font-size:11px;line-height:1.4}
+  #plaque{max-width:calc(100% - 24px)}
+}
+@media(orientation:landscape) and (max-height:500px){
+  #header{padding-top:4px}
+  #museumRail{bottom:90px}
+  #mainControls .scenePanel{padding:4px 7px}
+  #note{display:none}
+}
+
 </style>
 </head>
 <body>

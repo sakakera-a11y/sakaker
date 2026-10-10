@@ -8,15 +8,12 @@ function installStyle(){
   const style=document.createElement('style');
   style.id=STYLE;
   style.textContent=[
-    'body:not(.locked) #sakCastleTourBtn{position:fixed!important;top:auto!important;right:auto!important;left:50%!important;bottom:max(78px,calc(70px + env(safe-area-inset-bottom)))!important;transform:translateX(-50%)!important;display:flex!important;flex-flow:column nowrap!important;align-items:center!important;justify-content:center!important;gap:3px!important;width:74px!important;height:86px!important;min-width:74px!important;min-height:86px!important;margin:0!important;padding:5px 3px!important;box-sizing:border-box!important;border:2px solid #ffe6a2!important;border-radius:23px!important;background:linear-gradient(145deg,rgba(7,80,84,.98),rgba(3,22,43,.98) 53%,rgba(124,81,18,.98))!important;color:#fff5d2!important;-webkit-text-fill-color:#fff5d2!important;box-shadow:0 0 0 2px rgba(0,0,0,.55),0 0 15px rgba(255,210,100,.72),0 0 28px rgba(37,243,210,.4)!important;filter:none!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;cursor:pointer!important;isolation:isolate!important;white-space:normal!important;overflow:visible!important;clip-path:none!important;z-index:2147482550!important;touch-action:manipulation!important;animation:none!important;}',
-    '#sakCastleTourBtn::before,#sakCastleTourBtn::after{display:none!important;content:none!important;}',
-    '#sakCastleTourBtn .sak-castle-glyph{display:block!important;position:static!important;width:auto!important;height:auto!important;line-height:1!important;font:normal 38px/1 sans-serif!important;transform:none!important;animation:none!important;filter:drop-shadow(0 0 6px #ffe99a)!important;pointer-events:none!important;}',
-    '#sakCastleTourBtn .sak-castle-label{display:block!important;position:static!important;color:#fff!important;-webkit-text-fill-color:#fff!important;font:800 10px/1.2 Tahoma,Arial,sans-serif!important;text-align:center!important;text-shadow:0 1px 3px #000,0 0 6px #000!important;white-space:nowrap!important;max-width:100%!important;overflow:visible!important;transform:none!important;pointer-events:none!important;}',
-    'body.locked #sakCastleTourBtn,body.sak-ebook-layer-open #sakCastleTourBtn,body.sakaker-fb-popup-open #sakCastleTourBtn{display:none!important;visibility:hidden!important;pointer-events:none!important;}',
-    'body:not(.locked) #sakCastleTourBtn:hover,body:not(.locked) #sakCastleTourBtn:focus-visible{outline:2px solid #ffffff!important;outline-offset:2px!important;box-shadow:0 0 0 2px #051923,0 0 24px #ffe083,0 0 34px #44ffe0!important;}',
-    '@media(max-width:500px){body:not(.locked) #sakCastleTourBtn{width:66px!important;min-width:66px!important;height:80px!important;min-height:80px!important;right:auto!important;left:50%!important;bottom:max(76px,calc(68px + env(safe-area-inset-bottom)))!important;}#sakCastleTourBtn .sak-castle-glyph{font-size:34px!important;}#sakCastleTourBtn .sak-castle-label{font-size:9px!important;}}',
-    '@media(orientation:landscape) and (max-height:510px){body:not(.locked) #sakCastleTourBtn{top:auto!important;bottom:max(62px,calc(56px + env(safe-area-inset-bottom)))!important;height:64px!important;min-height:64px!important;width:63px!important;min-width:63px!important;}#sakCastleTourBtn .sak-castle-glyph{font-size:27px!important;}}',
-    '@media(prefers-reduced-motion:reduce){#sakCastleTourBtn{animation:none!important;transition:none!important;}}'
+    'html body #sakakerAllIconsDock #sakCastleTourBtn{position:relative!important;inset:auto!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;transform:none!important;translate:none!important;display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;cursor:pointer!important;touch-action:manipulation!important;}',
+    'html body #sakakerAllIconsDock [data-sakaker-util="castleTour"]{display:block!important;visibility:visible!important;opacity:1!important;}',
+    'html body #sakakerAllIconsDock #sakCastleTourBtn .sak-ostrich-art{filter:drop-shadow(0 0 5px #ffeeb2) drop-shadow(0 0 12px #ffc42b)!important;}',
+    'body.locked #sakCastleTourBtn,body.sak-ebook-layer-open #sakCastleTourBtn,body.sakaker-fb-popup-open #sakCastleTourBtn{visibility:hidden!important;pointer-events:none!important;}',
+    '#sakCastleTourBtn:focus-visible{outline:2px solid #ffe68a!important;outline-offset:3px!important;}',
+    '@media(prefers-reduced-motion:reduce){#sakCastleTourBtn .sak-ostrich-art{animation:none!important;}}'
   ].join('\n');
   document.head.appendChild(style);
 }
@@ -38,12 +35,12 @@ function openTour(){
   host.setAttribute('role','dialog');
   host.setAttribute('aria-modal','true');
   host.setAttribute('aria-label',english()?'Castle Tour':'جولة القلعة');
-  host.style.cssText='position:fixed!important;inset:0!important;display:block!important;width:100vw!important;height:100dvh!important;margin:0!important;padding:0!important;z-index:2147483646!important;background:#06151c!important;overflow:hidden!important;';
+  host.style.cssText='position:fixed!important;inset:0!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:clamp(6px,2vw,22px)!important;margin:0!important;z-index:2147483646!important;background:rgba(1,10,18,.83)!important;backdrop-filter:blur(12px)!important;-webkit-backdrop-filter:blur(12px)!important;overflow:hidden!important;';
   const frame=document.createElement('iframe');
-  frame.src='/castle-tour.html?v=20261010-museum2';
+  frame.src='/castle-tour.html?v=20261010-gull1';
   frame.title='جولة القلعة / Castle Tour';
   frame.allow='autoplay';
-  frame.style.cssText='display:block;width:100%;height:100%;border:0;background:#06151c;';
+  frame.style.cssText='display:block;flex:0 1 auto;width:min(1120px,100%)!important;height:min(92dvh,880px)!important;max-height:calc(100dvh - 12px)!important;min-height:0!important;border:2px solid rgba(255,223,147,.78)!important;border-radius:clamp(14px,2.5vw,24px)!important;background:#06151c!important;box-shadow:0 24px 85px #000d,0 0 26px rgba(65,222,204,.22)!important;overflow:hidden!important;';
   host.appendChild(frame);
   document.body.appendChild(host);
   let finished=false;
@@ -97,7 +94,24 @@ function openTour(){
   window.addEventListener('message',onMessage);
   document.addEventListener('keydown',onKey);
   frame.addEventListener('load',sendGreeting,{once:true});
+  host.addEventListener('click',e=>{if(e.target===host)close()});
   frame.focus();
+}
+function buildGull(){
+  const ns='http://www.w3.org/2000/svg';
+  const el=(tag,attrs={})=>{const x=document.createElementNS(ns,tag);for(const [k,v] of Object.entries(attrs))x.setAttribute(k,v);return x};
+  const svg=el('svg',{class:'sak-ostrich-svg',viewBox:'0 0 120 112','aria-hidden':'true',focusable:'false'});
+  const defs=el('defs'),g=el('linearGradient',{id:'sakCastleYellowGull',x1:'0',y1:'0',x2:'0',y2:'1'});
+  [['0%','#fff9c4'],['46%','#ffe629'],['100%','#f6a700']].forEach(([offset,color])=>g.appendChild(el('stop',{offset,'stop-color':color})));
+  defs.appendChild(g);svg.appendChild(defs);
+  const wing={fill:'url(#sakCastleYellowGull)',stroke:'#fff3ac','stroke-width':'2.2','stroke-linejoin':'round'};
+  svg.appendChild(el('path',{d:'M60 53 C39 27 19 17 3 29 C23 28 35 39 47 58 C30 49 15 56 9 69 C33 60 45 69 57 75 Z',...wing}));
+  svg.appendChild(el('path',{d:'M60 53 C81 27 101 17 117 29 C97 28 85 39 73 58 C90 49 105 56 111 69 C87 60 75 69 63 75 Z',...wing}));
+  svg.appendChild(el('path',{d:'M52 54 Q60 43 68 54 Q71 69 63 92 L60 102 L57 92 Q49 69 52 54Z',...wing}));
+  svg.appendChild(el('circle',{cx:'60',cy:'49',r:'7',fill:'#fff4b5',stroke:'#ffc82c','stroke-width':'2'}));
+  svg.appendChild(el('path',{d:'M60 50 L66 59 L60 64 L54 59Z',fill:'#ffc027'}));
+  svg.appendChild(el('circle',{cx:'57',cy:'48',r:'1.1',fill:'#3b320e'}));
+  return svg;
 }
 function ensure(){
   if(!document.body)return;
@@ -108,24 +122,54 @@ function ensure(){
     button.id=ID;
     button.type='button';
   }
-  // Remove dock styles and detach from overflowing horizontal containers.
-  button.classList.remove('sak-ostrich-icon','sakaker-dock-entry','sak-cycle-hidden');
-  if(button.parentElement!==document.body)document.body.appendChild(button);
-  if(!button.querySelector('.sak-castle-glyph')){
-    const glyph=document.createElement('span');
-    glyph.className='sak-castle-glyph';
-    glyph.textContent='🏰';
-    const title=document.createElement('span');
-    title.className='sak-castle-label';
-    button.replaceChildren(glyph,title);
+  button.classList.add('sak-ostrich-icon','sakaker-dock-entry');
+  button.classList.remove('sak-cycle-hidden');
+  button.dataset.sakakerDockKey='castleTour';
+  let art=button.querySelector(':scope > .sak-ostrich-art');
+  if(!art){
+    art=document.createElement('span');
+    art.className='sak-ostrich-art';
+    button.prepend(art);
+  }
+  if(!art.querySelector('svg'))art.replaceChildren(buildGull());
+  let label=button.querySelector(':scope > .sak-ostrich-name');
+  if(!label){
+    label=document.createElement('span');
+    label.className='sak-ostrich-name';
+    button.appendChild(label);
   }
   const title=english()?'Castle Tour':'جولة القلعة';
-  button.querySelector('.sak-castle-label').textContent=title;
-  button.title=title;
-  button.setAttribute('aria-label',title);
+  if(label.textContent!==title)label.textContent=title;
+  if(button.title!==title)button.title=title;
+  if(button.getAttribute('aria-label')!==title)button.setAttribute('aria-label',title);
   if(button.dataset.sakCastleBound!=='1'){
     button.addEventListener('click',openTour);
     button.dataset.sakCastleBound='1';
+  }
+  const dock=document.getElementById('sakakerAllIconsDock');
+  if(dock&&!document.body.classList.contains('locked')){
+    let utility=dock.querySelector('#sakakerUtilityDock');
+    if(!utility){
+      utility=document.createElement('nav');
+      utility.id='sakakerUtilityDock';
+      utility.setAttribute('aria-label','أدوات وخدمات الموقع');
+      dock.appendChild(utility);
+    }
+    let slot=utility.querySelector('[data-sakaker-util="castleTour"]');
+    if(!slot){
+      slot=document.createElement('div');
+      slot.className='sakaker-utility-slot';
+      slot.dataset.sakakerUtil='castleTour';
+    }
+    const textSlot=utility.querySelector('[data-sakaker-util="textLibrary"]');
+    if(textSlot){
+      if(slot.previousElementSibling!==textSlot)textSlot.after(slot);
+    }else if(slot.parentElement!==utility){
+      utility.prepend(slot);
+    }
+    if(button.parentElement!==slot)slot.appendChild(button);
+  }else if(button.parentElement!==document.body){
+    document.body.appendChild(button);
   }
 }
 function init(){
@@ -135,7 +179,7 @@ function init(){
     new MutationObserver(ensure).observe(document.body,{attributes:true,attributeFilter:['class'],childList:true});
   }
   window.addEventListener('pageshow',ensure);
-  setTimeout(ensure,1200);
+  [600,1300,2500,5000].forEach(ms=>setTimeout(ensure,ms));
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});
 else init();

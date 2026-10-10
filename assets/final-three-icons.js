@@ -9,6 +9,7 @@ let siteSoundUserMuted=true;
 const utilityItems=[
   {key:'facebook',selectors:['#facebookVideoIcon']},
   {key:'textLibrary',finder:findTextLibrary},
+  {key:'castleTour',selectors:['#sakCastleTourBtn']},
   {key:'videoLibrary',selectors:['#emeraldLibraryButton']},
   {key:'live',selectors:['#liveFlasher']},
   {key:'pong',selectors:['#pongGame-btn']},
@@ -512,12 +513,8 @@ function decorateAsOstrich(el,key){
     el.prepend(art);
   }
   if(stableKey==='castleTour'){
-    art.textContent='🏰';
-    art.style.display='grid';
-    art.style.placeItems='center';
-    art.style.setProperty('font-size','37px','important');
-    art.style.setProperty('line-height','1','important');
-    art.style.filter='drop-shadow(0 0 10px rgba(255,216,131,.78))';
+    // The launcher owns the yellow gull illustration; keep it intact.
+    if(!art.querySelector('svg'))art.replaceChildren(ostrichSVG(stableKey));
   }else art.replaceChildren(ostrichSVG(stableKey));
   art.dataset.key=stableKey;
 
@@ -602,7 +599,7 @@ function ensureCastleTourLauncher(){
   if(document.getElementById('sakCastleTourLauncherScript'))return;
   const script=document.createElement('script');
   script.id='sakCastleTourLauncherScript';
-  script.src='/assets/castle-tour-launcher.js?v=20261010-museum2';
+  script.src='/assets/castle-tour-launcher.js?v=20261010-gull1';
   script.async=true;
   document.head.appendChild(script);
 }
