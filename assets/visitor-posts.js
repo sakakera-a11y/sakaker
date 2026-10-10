@@ -321,3 +321,20 @@ function installVisitorPosts() {
 
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", installVisitorPosts, { once: true });
 else installVisitorPosts();
+
+
+// Independent castle-tour launcher: the existing visitor-posts module is
+// already visible in the upper header, so it provides a second reliable
+// bootstrap if the legacy icon dock is delayed or hidden on mobile.
+(function bootstrapCastleTour(){
+  function load(){
+    if(document.getElementById('sakCastleTourLauncherScript'))return;
+    const script=document.createElement('script');
+    script.id='sakCastleTourLauncherScript';
+    script.src='/assets/castle-tour-launcher.js?v=20261010-visible3';
+    script.async=true;
+    document.head.appendChild(script);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});
+  else load();
+})();
