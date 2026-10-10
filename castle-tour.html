@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#06131a">
 <meta name="description" content="جولة القلعة التلقائية بين القاعات الملكية والحدائق والشلالات وإطلالات القمر">
-<title>جولة القلعة | Castle Tour</title>
+<title>جولة القلعة | Castle Museum Tour</title>
 <style>
 :root{color-scheme:dark;--gold:#ffe3a1;--mint:#88efd9;--panel:#031820d9;font-family:Tahoma,Arial,sans-serif}
 *,*::before,*::after{box-sizing:border-box}html,body{margin:0;min-height:100%;overflow:hidden;background:#06151c;color:#fff}
@@ -49,6 +49,38 @@ button,a{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible
 #progressFill.playing{animation:castleAutoProgress 8200ms linear forwards}
 @keyframes castleAutoProgress{from{width:0}to{width:100%}}
 @media(max-width:500px){#mainControls .scenePanel{padding:9px 11px}#sceneDescription{line-height:1.4}#plaque{top:clamp(84px,17vh,145px)}}
+
+/* Castle museum wings, artwork and film — one responsive overlay, no forced autoplay audio */
+#museumRail{position:absolute;z-index:13;left:0;right:0;bottom:clamp(128px,17dvh,162px);padding:2px 10px 7px;display:flex;justify-content:center;gap:8px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;scroll-snap-type:x proximity}
+#museumRail::-webkit-scrollbar{display:none}
+.museumTile{display:flex;flex:0 0 auto;align-items:center;gap:7px;min-height:50px;max-width:185px;padding:5px 9px;border:1px solid #f8d78b99;border-radius:16px;background:linear-gradient(125deg,#041b23eE,#164746dc);color:#fff;text-shadow:0 2px 4px #000;font:800 11px/1.4 Tahoma,Arial,sans-serif;box-shadow:0 0 13px #ffdca534;scroll-snap-align:center;backdrop-filter:blur(7px)}
+.museumTile span[aria-hidden]{font-size:25px}
+#museumOverlay,#photoViewer,#filmViewer{position:fixed;inset:0;z-index:30;display:none;background:rgba(2,15,24,.96);color:#fff;overflow:hidden}
+#museumOverlay.open,#photoViewer.open,#filmViewer.open{display:flex;flex-direction:column}
+#photoViewer,#filmViewer{z-index:42}
+.museumTop{display:flex;align-items:center;gap:8px;justify-content:space-between;padding:calc(9px + env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) 10px max(12px,env(safe-area-inset-left));border-bottom:1px solid #e9c77f88;background:linear-gradient(125deg,#082c32,#0b1529);flex:0 0 auto}
+.museumTop h2{font:900 clamp(16px,4vw,24px)/1.35 Tahoma,Arial,sans-serif;color:#ffe5a7;margin:0}
+.closeMuseum{background:#143b43;color:#fff;border:1px solid #ffeba2;border-radius:14px;min-width:44px;min-height:42px;font-size:21px}
+#museumBody{overflow:auto;overscroll-behavior:contain;flex:1;padding:12px max(12px,3vw);background:radial-gradient(circle at 70% 15%,#17474e5e,transparent 60%)}
+.museumLead{max-width:900px;margin:0 auto 10px;text-align:center;color:#cfe5dd;font-size:13px;line-height:1.6}
+.museumGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,135px),1fr));gap:10px;max-width:1040px;margin:auto}
+.museumFrame{background:#051d29;color:#fff;border:3px ridge #e2bd78;border-radius:13px;overflow:hidden;min-height:148px;text-align:center;box-shadow:inset 0 0 16px #000,0 8px 26px #0008;display:flex;flex-direction:column;padding:0}
+.museumFrame img{width:100%;height:118px;object-fit:cover;display:block}
+.museumFrame strong{display:block;font:800 12px/1.5 Tahoma,Arial,sans-serif;padding:7px;color:#ffe3a1}
+.museumDoor{max-width:550px;margin:10px auto;text-align:center;background:linear-gradient(150deg,#102f39,#081726);border:2px solid #d5a55c;border-radius:22px;overflow:hidden;box-shadow:0 10px 45px #000a}
+.museumDoor img{width:100%;height:clamp(160px,28dvh,280px);object-fit:cover}
+.museumDoor p{font-size:14px;line-height:1.8;padding:0 18px;color:#d8eae6}
+.museumDoor button{border:1px solid #ffdb8f;border-radius:99px;background:linear-gradient(140deg,#d2b36b,#f3e0a6);color:#1d201d;font-weight:900;min-height:48px;margin:2px 0 18px;padding:9px 24px}
+#photoViewer img{max-width:min(96vw,1200px);max-height:64dvh;object-fit:contain;margin:auto;box-shadow:0 0 40px #000}
+#photoCaption{text-align:center;color:#ffe1a4;font-weight:800;padding:7px 15px}
+.viewerNavigation{display:flex;justify-content:center;gap:12px;padding:12px;flex-wrap:wrap}
+.viewerNavigation button{padding:9px 17px;background:#17383c;border:1px solid #ffe1a4;color:#fff;border-radius:15px;min-height:44px}
+#filmViewer video{display:block;max-width:100vw;width:min(95vw,1120px);max-height:70dvh;object-fit:contain;margin:auto;background:#01070b;border:1px solid #dbb76f;border-radius:10px}
+#filmViewer .filmNote{padding:12px;color:#d4e6e6;text-align:center;font-size:12px}
+#soundBtn.needsTouch{box-shadow:0 0 14px #ffdb85,0 0 24px #ffdc92;outline:2px solid #fce2a3}
+@media(max-width:600px){#museumRail{justify-content:flex-start;bottom:clamp(125px,18dvh,156px);padding:2px 7px 7px}.museumTile{font-size:10px;min-height:46px;padding:5px 8px}.museumTile span[aria-hidden]{font-size:23px}.museumGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.museumFrame img{height:clamp(110px,20vh,160px)}.museumFrame{min-height:130px}}
+@media(orientation:landscape) and (max-height:530px){#museumRail{bottom:108px}.museumTile{min-height:39px}#mainControls .scenePanel{padding:6px 10px}}
+
 </style>
 </head>
 <body>
@@ -60,6 +92,16 @@ button,a{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible
 <div id="plaque" role="status" aria-live="polite"><div class="crown">♛</div><span id="welcome">مرحبًا بك في القلعة</span><span id="guestName">ضيفنا العزيز</span></div>
 <div id="gateIntro" aria-hidden="true"></div>
 <div id="mainControls"><div class="scenePanel"><div class="sceneHeading"><h2 id="sceneTitle">بوابة القلعة</h2><span id="sceneIndex" aria-live="polite">1 / 9</span></div><p id="sceneDescription">الرحلة تبدأ تلقائيًا</p><div class="progressTrack" aria-hidden="true"><div id="progressFill"></div></div><p id="note" data-i18n="note">جولة تلقائية تشمل القلعة من الداخل والخارج وتعيد التشغيل باستمرار. لتشغيل الصوت اضغط أيقونة الطبيعة.</p></div></div>
+
+<div id="museumRail" aria-label="أجنحة المتحف / Museum wings"></div>
+<div id="museumOverlay" role="dialog" aria-modal="true" aria-labelledby="museumHeading">
+ <div class="museumTop"><h2 id="museumHeading">متحف القلعة</h2><button type="button" class="closeMuseum" id="museumClose" aria-label="إغلاق">✕</button></div>
+ <div id="museumBody"></div>
+</div>
+<div id="photoViewer" role="dialog" aria-modal="true" aria-labelledby="photoCaption"><div class="museumTop"><h2 id="photoViewerTitle">معرض الصور</h2><button type="button" class="closeMuseum" id="photoClose" aria-label="إغلاق">✕</button></div><img id="photoLarge" alt=""><div id="photoCaption"></div><div class="viewerNavigation"><button id="photoPrev" type="button">❮</button><button id="photoNext" type="button">❯</button></div></div>
+<div id="filmViewer" role="dialog" aria-modal="true" aria-labelledby="filmTitle"><div class="museumTop"><h2 id="filmTitle">الفيلم الفني للقلعة</h2><button type="button" class="closeMuseum" id="filmClose" aria-label="إغلاق">✕</button></div><video id="castleFilm" preload="none" playsinline controls controlsList="nodownload" poster="/assets/castle-tour/gate.jpg"></video><div class="filmNote" id="filmNote">فيلم فني قصير بمشاهد متتابعة وصوت البحر والطيور — شغله بلمسة واحدة.</div></div>
+<audio id="natureAudio" preload="none" loop src="/assets/castle-tour/nature-sound.mp3"></audio>
+
 <div id="toast" role="status" aria-live="polite"></div>
 </div>
 <script>
@@ -81,8 +123,8 @@ const copy={ar:{brand:'جولة القلعة',soundOn:'إيقاف الطبيعة
 const video=$('sceneVideo'),poster=$('poster'),progress=$('progressFill');
 const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const SCENE_MS=reduceMotion?10500:8200;
-let lang=(document.documentElement.lang||'ar').startsWith('en')?'en':'ar',guest='',current=0,entered=false,loadSeq=0,tourTimer=null,doorTimer=null,plaqueTimer=null,sceneStart=0,remaining=SCENE_MS,closing=false;
-const ambient={ctx:null,source:null,noise:null,chirpTimer:null,on:false};
+let lang=(document.documentElement.lang||'ar').startsWith('en')?'en':'ar',guest='',current=0,entered=false,loadSeq=0,tourTimer=null,doorTimer=null,plaqueTimer=null,sceneStart=0,remaining=SCENE_MS,closing=false,photoAt=0;
+const ambient={on:false}; const natureAudio=$('natureAudio'); natureAudio.volume=.64;
 const cleanName=n=>String(n||'').replace(/[\u0000-\u001f\u007f<>]/g,'').trim().slice(0,70);
 function tr(k){return copy[lang][k]||k}
 function renderLanguage(){
@@ -90,7 +132,7 @@ function renderLanguage(){
  $('brandTitle').textContent=tr('brand');document.querySelectorAll('[data-i18n]').forEach(el=>el.textContent=tr(el.dataset.i18n));
  $('langBtn').textContent=lang==='ar'?'EN':'ع';$('langBtn').setAttribute('aria-label',lang==='ar'?'English':'العربية');
  $('welcome').textContent=tr('welcome');$('guestName').textContent=guest||tr('guest');
- $('soundBtn').lastElementChild.textContent=tr(ambient.on?'soundOn':'soundOff');$('closeBtn').setAttribute('aria-label',tr('close'));
+ $('soundBtn').lastElementChild.textContent=tr(ambient.on?'soundOn':'soundOff');$('closeBtn').setAttribute('aria-label',tr('close')); document.querySelectorAll('[data-wing-label]').forEach(el=>{const wing=wings.find(w=>w.id===el.dataset.wingLabel);if(wing)el.textContent=mText(wing.ar,wing.en)});
  renderScene();
 }
 function renderScene(){const sc=scenes[current];$('sceneTitle').textContent=lang==='ar'?sc.ar:sc.en;$('sceneDescription').textContent=lang==='ar'?sc.arDesc:sc.enDesc;$('sceneIndex').textContent=(current+1)+' / '+scenes.length;}
@@ -112,32 +154,106 @@ function start(){
  if(entered||closing)return;entered=true;$('gateIntro').classList.add('open');$('plaque').classList.remove('hidden');$('mainControls').classList.add('on');loadScene(0);
  plaqueTimer=setTimeout(()=>$('plaque').classList.add('hidden'),4400);
 }
-function chirp(){
- if(!ambient.ctx||!ambient.on)return;const ctx=ambient.ctx,now=ctx.currentTime;
- for(let i=0;i<3;i++){const oscillator=ctx.createOscillator(),gain=ctx.createGain(),t=now+i*.14;
- oscillator.type='sine';oscillator.frequency.setValueAtTime(1250+i*120,t);oscillator.frequency.exponentialRampToValueAtTime(1750+i*160,t+.11);
- gain.gain.setValueAtTime(.0001,t);gain.gain.exponentialRampToValueAtTime(.012,t+.035);gain.gain.exponentialRampToValueAtTime(.0001,t+.18);
- oscillator.connect(gain);gain.connect(ctx.destination);oscillator.start(t);oscillator.stop(t+.19);
- }
-}
 function soundOn(){
- try{if(!ambient.ctx){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;const ctx=new AC();ambient.ctx=ctx;
- const buf=ctx.createBuffer(1,ctx.sampleRate*2,ctx.sampleRate),data=buf.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;
- const src=ctx.createBufferSource();src.buffer=buf;src.loop=true;const low=ctx.createBiquadFilter();low.type='lowpass';low.frequency.value=650;const gain=ctx.createGain();gain.gain.value=.065;
- src.connect(low);low.connect(gain);gain.connect(ctx.destination);src.start();ambient.source=src;ambient.noise=gain;}
- ambient.on=true;ambient.ctx.resume();chirp();if(ambient.chirpTimer)clearInterval(ambient.chirpTimer);ambient.chirpTimer=setInterval(chirp,5200);
- }catch(_){ambient.on=false}renderLanguage();
+  // Mobile Chrome requires a direct user gesture. Do not generate fake chirps.
+  natureAudio.muted=false;natureAudio.volume=.72;
+  const result=natureAudio.play();
+  if(result&&typeof result.then==='function')result.then(()=>{
+    ambient.on=true;$('soundBtn').classList.remove('needsTouch');$('soundBtn').setAttribute('aria-pressed','true');renderLanguage();
+  }).catch(()=>{
+    ambient.on=false;$('soundBtn').classList.add('needsTouch');$('soundBtn').setAttribute('aria-pressed','false');renderLanguage();
+    $('soundBtn').focus();
+  });
 }
-function soundOff(){ambient.on=false;clearInterval(ambient.chirpTimer);ambient.chirpTimer=null;if(ambient.ctx)ambient.ctx.suspend();renderLanguage()}
-function shutDown(){closing=true;stopTourTimer();clearTimeout(doorTimer);clearTimeout(plaqueTimer);video.pause();if(ambient.on)soundOff();}
-$('soundBtn').addEventListener('click',()=>{ambient.on?soundOff():soundOn();$('soundBtn').setAttribute('aria-pressed',String(ambient.on))});
+function soundOff(){natureAudio.pause();ambient.on=false;$('soundBtn').setAttribute('aria-pressed','false');renderLanguage()}
+function shutDown(){closing=true;stopTourTimer();clearTimeout(doorTimer);clearTimeout(plaqueTimer);video.pause();$('castleFilm').pause();soundOff();}
+
+// Every wing points to a real existing section; the photo wing lives inside this museum.
+const wings=[
+ {id:'film',icon:'🎬',ar:'الفيلم الفني',en:'Art Film',descAr:'فيلم سينمائي قصير يمر بين أرجاء القلعة مع صوت البحر والطيور.',descEn:'A short cinematic journey with the sounds of sea and birds.',scene:'gate'},
+ {id:'photos',icon:'🖼️',ar:'متحف الصور',en:'Picture Gallery',descAr:'تسع لوحات فوتوغرافية من المناظر الداخلية والخارجية للقلعة.',descEn:'Nine cinematic pictures of the castle interiors and surroundings.',scene:'great-hall'},
+ {id:'stories',icon:'📜',ar:'القصص والخواطر',en:'Stories',descAr:'اكتشف قصص القلعة والخواطر الأصلية الموجودة في الموقع.',descEn:'Explore stories and writings already available on the website.',scene:'moon-gallery'},
+ {id:'books',icon:'📚',ar:'المكتبة النصية',en:'Text Library',descAr:'افتح المكتبة النصية ورفوف الكتب المتوفرة في الموقع.',descEn:'Open the website text and book library.',scene:'great-hall'},
+ {id:'videos',icon:'🎞️',ar:'مكتبة الفيديو',en:'Video Library',descAr:'مجموعة الأفلام والوثائقيات والرياضة والمقاطع المصنفة.',descEn:'Explore films, documentaries, sport and curated videos.',scene:'waterfalls'},
+ {id:'live',icon:'📺',ar:'القنوات المباشرة',en:'Live Channels',descAr:'انتقل إلى نافذة القنوات والإذاعات المباشرة.',descEn:'Visit the live channels and radio collection.',scene:'harbor'},
+ {id:'games',icon:'♟️',ar:'الألعاب',en:'Games',descAr:'ادخل إلى ألعاب القلعة، ومنها البونج والشطرنج.',descEn:'Try castle games, including Pong and chess.',scene:'throne-room'},
+ {id:'creative',icon:'🎨',ar:'الإبداع والرسم',en:'Creative Studio',descAr:'استكشف أدوات الإبداع والرسم والتصميم المتوفرة.',descEn:'Explore the existing drawing and creative tools.',scene:'courtyard'},
+ {id:'maps',icon:'🧭',ar:'الخرائط',en:'Maps',descAr:'تجوّل خارج الأسوار باستخدام قسم الخرائط.',descEn:'Explore places beyond the castle through the maps section.',scene:'balcony'},
+ {id:'visitors',icon:'🕊️',ar:'مشاركات الزوار',en:'Visitor Posts',descAr:'اقرأ مشاركات زوار الموقع، وشارك محتواك وفق نظام المراجعة.',descEn:'Discover visitor contributions and the moderated posting area.',scene:'gardens'},
+ {id:'shopping',icon:'🛍️',ar:'التسوق والعروض',en:'Shopping',descAr:'اطلع على روابط التسوق والعروض المتاحة في الموقع.',descEn:'Browse available shopping and special-offer links.',scene:'harbor'}
+];
+const mText=(ar,en)=>lang==='ar'?ar:en;
+function pauseForMuseum(){
+ if(!entered)return;
+ remaining=Math.max(1200,remaining-(Date.now()-sceneStart));stopTourTimer();video.pause();progress.style.animationPlayState='paused';
+}
+function resumeFromMuseum(){
+ if(!entered||closing||document.hidden||$('museumOverlay').classList.contains('open')||$('filmViewer').classList.contains('open')||$('photoViewer').classList.contains('open'))return;
+ video.play().catch(()=>{});progress.style.animationPlayState='running';advanceAfter(remaining);
+}
+function btn(text,cls){const b=document.createElement('button');b.type='button';if(cls)b.className=cls;b.textContent=text;return b}
+function openMuseum(id){
+ if(id==='film'){openFilm();return}
+ pauseForMuseum();$('museumOverlay').classList.add('open');renderMuseumWing(id);$('museumClose').focus();
+}
+function renderMuseumWing(id){
+ const wing=wings.find(w=>w.id===id)||wings[1],body=$('museumBody');body.replaceChildren();
+ $('museumHeading').textContent=wing.icon+' '+mText(wing.ar,wing.en);
+ const lead=document.createElement('p');lead.className='museumLead';lead.textContent=mText(wing.descAr,wing.descEn);body.appendChild(lead);
+ if(id==='photos'){
+  const grid=document.createElement('div');grid.className='museumGrid';
+  scenes.forEach((sc,i)=>{
+   const b=btn('', 'museumFrame');const img=document.createElement('img');img.loading='lazy';img.src=base+sc.id+'.jpg';img.alt=mText(sc.ar,sc.en);
+   const caption=document.createElement('strong');caption.textContent=mText(sc.ar,sc.en);b.append(img,caption);b.addEventListener('click',()=>openPhoto(i));grid.appendChild(b);
+  });body.appendChild(grid);
+ }else{
+  const card=document.createElement('div');card.className='museumDoor';const img=document.createElement('img');img.loading='lazy';img.src=base+wing.scene+'.jpg';img.alt=mText(wing.ar,wing.en);
+  const p=document.createElement('p');p.textContent=mText(wing.descAr,wing.descEn);
+  const open=btn(mText('ادخل هذا القسم ←','Enter this section →'));open.addEventListener('click',()=>window.parent!==window?window.parent.postMessage({type:'sak-castle-open-section',section:wing.id},location.origin):openStandaloneSection(wing.id));
+  card.append(img,p,open);body.appendChild(card);
+ }
+ const foot=document.createElement('div');foot.className='museumGrid';foot.style.marginTop='20px';
+ wings.filter(w=>w.id!==wing.id).forEach(w=>{const b=btn(w.icon+' '+mText(w.ar,w.en),'museumTile');b.addEventListener('click',()=>{if(w.id==='film'){closeMuseum(false);openFilm()}else renderMuseumWing(w.id)});foot.appendChild(b)});body.appendChild(foot);
+}
+function openStandaloneSection(id){const routes={books:'/books.html',videos:'/videos.html',live:'/live.html',games:'/pong.html',creative:'/draw.html'};if(routes[id])location.assign(routes[id]);else location.assign('/')}
+function closeMuseum(resume=true){$('museumOverlay').classList.remove('open');$('museumBody').replaceChildren();if(resume)resumeFromMuseum();}
+function showPhoto(){const sc=scenes[photoAt];$('photoLarge').src=base+sc.id+'.jpg';$('photoLarge').alt=mText(sc.ar,sc.en);$('photoCaption').textContent=mText(sc.ar,sc.en)+'  •  '+(photoAt+1)+' / '+scenes.length;}
+function openPhoto(i){photoAt=i;$('photoViewer').classList.add('open');showPhoto();$('photoClose').focus()}
+function closePhoto(){$('photoViewer').classList.remove('open');if(!$('museumOverlay').classList.contains('open'))resumeFromMuseum();}
+function openFilm(){
+ if(!$('museumOverlay').classList.contains('open'))pauseForMuseum();
+ $('filmViewer').classList.add('open');$('filmTitle').textContent=mText('الفيلم الفني للقلعة','Castle Art Film');
+ $('filmNote').textContent=mText('فيلم مدته 28 ثانية بمشاهد القلعة وصوت البحر والطيور. يمكن تشغيله أو إيقافه.','A 28-second cinematic castle film with real sea and bird sounds. Play or pause freely.');
+ const film=$('castleFilm');if(!film.getAttribute('src'))film.src=base+'castle-art-film.mp4';
+ if(ambient.on){natureAudio.pause()}
+ const play=film.play();if(play&&typeof play.catch==='function')play.catch(()=>{});
+ $('filmClose').focus();
+}
+function closeFilm(){const film=$('castleFilm');film.pause();film.currentTime=0;$('filmViewer').classList.remove('open');if(ambient.on){natureAudio.play().catch(()=>{})}resumeFromMuseum();}
+const rail=$('museumRail');
+wings.forEach(w=>{const b=document.createElement('button');b.type='button';b.className='museumTile';b.setAttribute('aria-label',w.ar+' / '+w.en);const glyph=document.createElement('span');glyph.setAttribute('aria-hidden','true');glyph.textContent=w.icon;const label=document.createElement('span');label.dataset.wingLabel=w.id;label.textContent=mText(w.ar,w.en);b.append(glyph,label);b.addEventListener('click',()=>openMuseum(w.id));rail.appendChild(b)});
+$('museumClose').addEventListener('click',()=>closeMuseum());
+$('photoClose').addEventListener('click',closePhoto);
+$('photoPrev').addEventListener('click',()=>{photoAt=(photoAt-1+scenes.length)%scenes.length;showPhoto()});
+$('photoNext').addEventListener('click',()=>{photoAt=(photoAt+1)%scenes.length;showPhoto()});
+$('filmClose').addEventListener('click',closeFilm);
+$('castleFilm').addEventListener('ended',closeFilm);
+window.addEventListener('keydown',e=>{
+ if(e.key!=='Escape')return;
+ if($('filmViewer').classList.contains('open')){e.stopPropagation();closeFilm()}
+ else if($('photoViewer').classList.contains('open')){e.stopPropagation();closePhoto()}
+ else if($('museumOverlay').classList.contains('open')){e.stopPropagation();closeMuseum()}
+},true);
+
+$('soundBtn').addEventListener('click',()=>{ambient.on?soundOff():soundOn()});
 $('langBtn').addEventListener('click',()=>{lang=lang==='ar'?'en':'ar';renderLanguage()});
 $('closeBtn').addEventListener('click',()=>{shutDown();if(window.parent!==window){window.parent.postMessage({type:'sak-castle-close'},location.origin)}else window.location.href='/'});
+window.addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==window.parent||e.data?.type!=='sak-castle-open-error')return;const lead=$('museumBody').querySelector('.museumLead');if(lead)lead.textContent=mText('هذا القسم غير ظاهر حاليًا في واجهة الموقع. يمكنك فتحه من الصفحة الرئيسية.','This section is not currently visible in the main website interface. You can open it from the home page.')});
 window.addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==window.parent||!e.data||e.data.type!=='sak-castle-greeting')return;guest=cleanName(e.data.name);if(e.data.lang==='ar'||e.data.lang==='en')lang=e.data.lang;renderLanguage()});
 document.addEventListener('visibilitychange',()=>{
  if(!entered||closing)return;
  if(document.hidden){remaining=Math.max(2000,remaining-(Date.now()-sceneStart));stopTourTimer();video.pause();progress.style.animationPlayState='paused';}
- else{video.play().catch(()=>{});progress.style.animationPlayState='running';advanceAfter(remaining);}
+ else{resumeFromMuseum();}
 });
 window.addEventListener('pagehide',shutDown,{once:true});
 renderLanguage();doorTimer=setTimeout(start,1100);
