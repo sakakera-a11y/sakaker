@@ -11,7 +11,6 @@ const utilityItems=[
   {key:'textLibrary',finder:findTextLibrary},
   {key:'videoLibrary',selectors:['#emeraldLibraryButton']},
   {key:'live',selectors:['#liveFlasher']},
-  {key:'castleTour',selectors:['#sakCastleTourBtn']},
   {key:'pong',selectors:['#pongGame-btn']},
   {key:'siteBackground',selectors:['#sakSiteBackgroundBtn']},
   {key:'ship',selectors:['#shipIcon_new']},
@@ -432,6 +431,8 @@ function syncSiteBackgroundLock(){
   }
 
   startSiteBackgroundSound();
+  ensureCastleTourLauncher();
+  rebuildIconAppearance();
   removeOldSeaSoundControl();
   requestAnimationFrame(placeSiteSoundAboveClock);
   updateSiteBackgroundButton();
@@ -514,7 +515,8 @@ function decorateAsOstrich(el,key){
     art.textContent='🏰';
     art.style.display='grid';
     art.style.placeItems='center';
-    art.style.fontSize='37px';
+    art.style.setProperty('font-size','37px','important');
+    art.style.setProperty('line-height','1','important');
     art.style.filter='drop-shadow(0 0 10px rgba(255,216,131,.78))';
   }else art.replaceChildren(ostrichSVG(stableKey));
   art.dataset.key=stableKey;
@@ -594,14 +596,25 @@ function loadVisitorCounterModule(){
 
 
 function ensureCastleTourLauncher(){
-  if(document.getElementById('sakCastleTourBtn'))return;
-  const button=document.createElement('button');
-  button.id='sakCastleTourBtn';
-  button.type='button';
-  button.setAttribute('title','تجول بالقلعة / Castle Tour');
-  button.setAttribute('aria-label','تجول بالقلعة / Castle Tour');
-  button.addEventListener('click',openCastleTour);
-  document.body.appendChild(button);
+  // The mobile dock is horizontally scrollable: the castle must stay first,
+  // rather than being appended after other utilities out of the viewport.
+  const dock=document.getElementById('sakakerAllIconsDock');
+  if(!dock||isLocked())return;
+  let button=document.getElementById('sakCastleTourBtn');
+  if(!button){
+    button=document.createElement('button');
+    button.id='sakCastleTourBtn';
+    button.type='button';
+    button.setAttribute('title','تجول بالقلعة / Castle Tour');
+    button.setAttribute('aria-label','تجول بالقلعة / Castle Tour');
+    button.addEventListener('click',openCastleTour);
+  }
+  if(button.parentElement!==dock||dock.firstElementChild!==button)dock.prepend(button);
+  decorateAsOstrich(button,'castleTour');
+  button.style.setProperty('display','block','important');
+  button.style.setProperty('visibility','visible','important');
+  button.style.setProperty('opacity','1','important');
+  button.style.setProperty('cursor','pointer','important');
 }
 function openCastleTour(){
   if(isLocked()||document.getElementById('sakCastleTourOverlay'))return;
@@ -667,8 +680,8 @@ function settle(){
   if(isLocked())return;
 
   installFacebookEmbeds();
-  ensureSiteBackground();
   ensureCastleTourLauncher();
+  ensureSiteBackground();
   rebuildIconAppearance();
   removeOldSeaSoundControl();
   requestAnimationFrame(placeSiteSoundAboveClock);
@@ -680,8 +693,8 @@ window.addEventListener('load',settle,{once:true});
 new MutationObserver(()=>{
   if(isLocked())return;
   installFacebookEmbeds();
-  ensureSiteBackground();
   ensureCastleTourLauncher();
+  ensureSiteBackground();
   rebuildIconAppearance();
   removeOldSeaSoundControl();
   requestAnimationFrame(placeSiteSoundAboveClock);
