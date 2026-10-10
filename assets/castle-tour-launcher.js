@@ -8,14 +8,14 @@ function installStyle(){
   const style=document.createElement('style');
   style.id=STYLE;
   style.textContent=[
-    'body:not(.locked) #sakCastleTourBtn{position:fixed!important;top:53dvh!important;right:max(10px,env(safe-area-inset-right))!important;left:auto!important;bottom:auto!important;transform:translateY(-50%)!important;display:flex!important;flex-flow:column nowrap!important;align-items:center!important;justify-content:center!important;gap:3px!important;width:74px!important;height:86px!important;min-width:74px!important;min-height:86px!important;margin:0!important;padding:5px 3px!important;box-sizing:border-box!important;border:2px solid #ffe6a2!important;border-radius:23px!important;background:linear-gradient(145deg,rgba(7,80,84,.98),rgba(3,22,43,.98) 53%,rgba(124,81,18,.98))!important;color:#fff5d2!important;-webkit-text-fill-color:#fff5d2!important;box-shadow:0 0 0 2px rgba(0,0,0,.55),0 0 15px rgba(255,210,100,.72),0 0 28px rgba(37,243,210,.4)!important;filter:none!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;cursor:pointer!important;isolation:isolate!important;white-space:normal!important;overflow:visible!important;clip-path:none!important;z-index:2147482550!important;touch-action:manipulation!important;animation:none!important;}',
+    'body:not(.locked) #sakCastleTourBtn{position:fixed!important;top:64dvh!important;right:max(10px,env(safe-area-inset-right))!important;left:auto!important;bottom:auto!important;transform:translateY(-50%)!important;display:flex!important;flex-flow:column nowrap!important;align-items:center!important;justify-content:center!important;gap:3px!important;width:74px!important;height:86px!important;min-width:74px!important;min-height:86px!important;margin:0!important;padding:5px 3px!important;box-sizing:border-box!important;border:2px solid #ffe6a2!important;border-radius:23px!important;background:linear-gradient(145deg,rgba(7,80,84,.98),rgba(3,22,43,.98) 53%,rgba(124,81,18,.98))!important;color:#fff5d2!important;-webkit-text-fill-color:#fff5d2!important;box-shadow:0 0 0 2px rgba(0,0,0,.55),0 0 15px rgba(255,210,100,.72),0 0 28px rgba(37,243,210,.4)!important;filter:none!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;cursor:pointer!important;isolation:isolate!important;white-space:normal!important;overflow:visible!important;clip-path:none!important;z-index:2147482550!important;touch-action:manipulation!important;animation:none!important;}',
     '#sakCastleTourBtn::before,#sakCastleTourBtn::after{display:none!important;content:none!important;}',
     '#sakCastleTourBtn .sak-castle-glyph{display:block!important;position:static!important;width:auto!important;height:auto!important;line-height:1!important;font:normal 38px/1 sans-serif!important;transform:none!important;animation:none!important;filter:drop-shadow(0 0 6px #ffe99a)!important;pointer-events:none!important;}',
     '#sakCastleTourBtn .sak-castle-label{display:block!important;position:static!important;color:#fff!important;-webkit-text-fill-color:#fff!important;font:800 10px/1.2 Tahoma,Arial,sans-serif!important;text-align:center!important;text-shadow:0 1px 3px #000,0 0 6px #000!important;white-space:nowrap!important;max-width:100%!important;overflow:visible!important;transform:none!important;pointer-events:none!important;}',
     'body.locked #sakCastleTourBtn,body.sak-ebook-layer-open #sakCastleTourBtn,body.sakaker-fb-popup-open #sakCastleTourBtn{display:none!important;visibility:hidden!important;pointer-events:none!important;}',
     'body:not(.locked) #sakCastleTourBtn:hover,body:not(.locked) #sakCastleTourBtn:focus-visible{outline:2px solid #ffffff!important;outline-offset:2px!important;box-shadow:0 0 0 2px #051923,0 0 24px #ffe083,0 0 34px #44ffe0!important;}',
     '@media(max-width:500px){body:not(.locked) #sakCastleTourBtn{width:66px!important;min-width:66px!important;height:80px!important;min-height:80px!important;right:max(8px,env(safe-area-inset-right))!important;}#sakCastleTourBtn .sak-castle-glyph{font-size:34px!important;}#sakCastleTourBtn .sak-castle-label{font-size:9px!important;}}',
-    '@media(orientation:landscape) and (max-height:510px){body:not(.locked) #sakCastleTourBtn{top:48dvh!important;height:64px!important;min-height:64px!important;width:63px!important;min-width:63px!important;}#sakCastleTourBtn .sak-castle-glyph{font-size:27px!important;}}',
+    '@media(orientation:landscape) and (max-height:510px){body:not(.locked) #sakCastleTourBtn{top:54dvh!important;height:64px!important;min-height:64px!important;width:63px!important;min-width:63px!important;}#sakCastleTourBtn .sak-castle-glyph{font-size:27px!important;}}',
     '@media(prefers-reduced-motion:reduce){#sakCastleTourBtn{animation:none!important;transition:none!important;}}'
   ].join('\n');
   document.head.appendChild(style);
@@ -37,11 +37,11 @@ function openTour(){
   host.id=OVERLAY;
   host.setAttribute('role','dialog');
   host.setAttribute('aria-modal','true');
-  host.setAttribute('aria-label',english()?'Castle Tour':'تجول بالقلعة');
+  host.setAttribute('aria-label',english()?'Castle Tour':'جولة القلعة');
   host.style.cssText='position:fixed!important;inset:0!important;display:block!important;width:100vw!important;height:100dvh!important;margin:0!important;padding:0!important;z-index:2147483646!important;background:#06151c!important;overflow:hidden!important;';
   const frame=document.createElement('iframe');
-  frame.src='/castle-tour.html?v=20261010-launcher';
-  frame.title='تجول بالقلعة / Castle Tour';
+  frame.src='/castle-tour.html?v=20261010-auto9';
+  frame.title='جولة القلعة / Castle Tour';
   frame.allow='autoplay';
   frame.style.cssText='display:block;width:100%;height:100%;border:0;background:#06151c;';
   host.appendChild(frame);
@@ -95,7 +95,7 @@ function ensure(){
     title.className='sak-castle-label';
     button.replaceChildren(glyph,title);
   }
-  const title=english()?'Castle Tour':'تجول بالقلعة';
+  const title=english()?'Castle Tour':'جولة القلعة';
   button.querySelector('.sak-castle-label').textContent=title;
   button.title=title;
   button.setAttribute('aria-label',title);

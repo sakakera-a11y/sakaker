@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#06131a">
-<meta name="description" content="جولة أبوالقمرزمرد بين القلاع والشلالات والحدائق وإطلالات القمر">
-<title>تجول بالقلعة | Castle Tour — Abwalqmrzmrd</title>
+<meta name="description" content="جولة القلعة التلقائية بين القاعات الملكية والحدائق والشلالات وإطلالات القمر">
+<title>جولة القلعة | Castle Tour</title>
 <style>
 :root{color-scheme:dark;--gold:#ffe3a1;--mint:#88efd9;--panel:#031820d9;font-family:Tahoma,Arial,sans-serif}
 *,*::before,*::after{box-sizing:border-box}html,body{margin:0;min-height:100%;overflow:hidden;background:#06151c;color:#fff}
@@ -34,6 +34,21 @@ button,a{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible
 #toast{position:absolute;z-index:20;top:85px;left:50%;transform:translateX(-50%);padding:9px 18px;border-radius:13px;background:#042528e8;color:white;opacity:0;transition:opacity .3s;pointer-events:none;max-width:85vw;text-align:center}#toast.show{opacity:1}
 @media(max-width:500px){#header{padding-top:calc(8px + env(safe-area-inset-top))}.logo{width:39px;height:39px;font-size:23px}.brand strong{font-size:13px}.brand small{font-size:9px;letter-spacing:.08em}.pill{min-height:36px;padding:7px 10px;font-size:12px}.top{gap:4px}#plaque{top:clamp(90px,17vh,145px);padding:12px 15px}.scenePanel{padding:10px 12px 13px}.controlRow{gap:5px}.ctrl{padding:8px 10px;font-size:13px}.introPanel{padding:13px 17px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}#gateIntro.open::before{transform:translateX(-100%)}#gateIntro.open::after{transform:translateX(100%)}}
+
+/* Self-running guided castle tour: no start gate or manual scene-selection buttons. */
+#gateIntro{padding:0;pointer-events:none}#gateIntro::before,#gateIntro::after{pointer-events:none}
+#mainControls{bottom:max(13px,env(safe-area-inset-bottom));gap:6px}
+#mainControls .scenePanel{width:min(690px,100%);padding:10px 14px 10px;background:linear-gradient(140deg,rgba(3,21,30,.9),rgba(5,51,57,.78));border:1px solid #f7d68e77;border-radius:17px}
+.sceneHeading{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:5px}
+#sceneTitle{margin:0;font-size:clamp(15px,2.9vw,23px)}
+#sceneDescription{margin:0;font-size:clamp(11px,2vw,13px);min-height:0}
+#sceneIndex{white-space:nowrap;border:1px solid #eac17b69;border-radius:20px;padding:3px 8px;color:#fff3d2;font-size:11px}
+#note{font-size:10px;margin:6px 0 0;color:#cde6dd}
+.progressTrack{height:5px;width:100%;border-radius:99px;background:#b6c5bf66;overflow:hidden;margin-top:9px}
+#progressFill{width:0;height:100%;border-radius:99px;background:linear-gradient(90deg,#70ffe8,#ffe299);box-shadow:0 0 9px #ffe4a3}
+#progressFill.playing{animation:castleAutoProgress 8200ms linear forwards}
+@keyframes castleAutoProgress{from{width:0}to{width:100%}}
+@media(max-width:500px){#mainControls .scenePanel{padding:9px 11px}#sceneDescription{line-height:1.4}#plaque{top:clamp(84px,17vh,145px)}}
 </style>
 </head>
 <body>
@@ -41,45 +56,92 @@ button,a{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible
 <img id="poster" alt="" src="/assets/castle-tour/gate.jpg">
 <video id="sceneVideo" muted loop playsinline webkit-playsinline preload="none" aria-label="مشهد من جولة القلعة"></video>
 <div id="dim"></div><div id="glints" aria-hidden="true"></div>
-<header id="header"><div class="brand"><span class="logo" aria-hidden="true">🏰</span><div><strong id="brandTitle">قلعة أبوالقمرزمرد</strong><small>ABWALQMRZMRD · CASTLE TOUR</small></div></div><div class="top"><button id="langBtn" class="pill" type="button" aria-label="English">EN</button><button id="soundBtn" class="pill" type="button" aria-pressed="false">🔇 <span data-i18n="soundOff">تشغيل الطبيعة</span></button><button id="closeBtn" class="pill" type="button" aria-label="إغلاق">✕</button></div></header>
+<header id="header"><div class="brand"><span class="logo" aria-hidden="true">🏰</span><div><strong id="brandTitle">جولة القلعة</strong></div></div><div class="top"><button id="langBtn" class="pill" type="button" aria-label="English">EN</button><button id="soundBtn" class="pill" type="button" aria-pressed="false">🔇 <span data-i18n="soundOff">تشغيل الطبيعة</span></button><button id="closeBtn" class="pill" type="button" aria-label="إغلاق">✕</button></div></header>
 <div id="plaque" role="status" aria-live="polite"><div class="crown">♛</div><span id="welcome">مرحبًا بك في القلعة</span><span id="guestName">ضيفنا العزيز</span></div>
-<div id="gateIntro"><div class="introPanel"><h1 data-i18n="startTitle">بوابة القلعة الملكية</h1><p data-i18n="startDesc">رحلة هادئة بين القلاع والحدائق والشلالات وشرفة القمر، برفقة أصوات الطبيعة. اضغط لتفتح أبواب القلعة.</p><button id="startBtn" class="goldBtn" type="button" data-i18n="startBtn">ابدأ التجول ✨</button></div></div>
-<div id="mainControls"><div class="scenePanel"><h2 id="sceneTitle">بوابة القلعة</h2><p id="sceneDescription">ادخل عالم القمر والزمرد</p><div class="controlRow"><button id="prevBtn" class="ctrl" type="button" data-i18n="prev">❮ السابق</button><span id="sceneIndex" aria-live="polite">1 / 5</span><button id="nextBtn" class="ctrl" type="button" data-i18n="next">التالي ❯</button><div id="dots" aria-label="المشاهد"></div></div><p id="note" data-i18n="note">مشاهد سينمائية متحركة من صور القلعة، وليست جولة ثلاثية الأبعاد كاملة. الصوت اختياري.</p></div></div>
+<div id="gateIntro" aria-hidden="true"></div>
+<div id="mainControls"><div class="scenePanel"><div class="sceneHeading"><h2 id="sceneTitle">بوابة القلعة</h2><span id="sceneIndex" aria-live="polite">1 / 9</span></div><p id="sceneDescription">الرحلة تبدأ تلقائيًا</p><div class="progressTrack" aria-hidden="true"><div id="progressFill"></div></div><p id="note" data-i18n="note">جولة تلقائية تشمل القلعة من الداخل والخارج وتعيد التشغيل باستمرار. لتشغيل الصوت اضغط أيقونة الطبيعة.</p></div></div>
 <div id="toast" role="status" aria-live="polite"></div>
 </div>
 <script>
 (()=>{'use strict';
-const $=id=>document.getElementById(id);const base='/assets/castle-tour/';
+const $=id=>document.getElementById(id),base='/assets/castle-tour/';
+// Exterior and interior: each lightweight scene is a silent video with a still-image fallback.
 const scenes=[
- {id:'gate',ar:'بوابة القلعة',en:'The Royal Gate',arDesc:'تُفتح أمامك بوابة عالم أبوالقمرزمرد وسط القمر المضيء.',enDesc:'Enter a moonlit world through the royal castle gate.'},
- {id:'gardens',ar:'ممر الحدائق',en:'Enchanted Gardens',arDesc:'تأمل حدائق القلعة وأضواءها وزهورها المطلة على البحيرة.',enDesc:'Take in the sparkling gardens and lakeside flowers.'},
- {id:'waterfalls',ar:'شلالات الزمرد',en:'Emerald Waterfalls',arDesc:'استرح بجوار المياه المتدفقة والشلالات المحيطة بالقلعة.',enDesc:'Pause by cascading waterfalls and shimmering waters.'},
- {id:'balcony',ar:'شرفة القمر',en:'Moon Balcony',arDesc:'إطلالة كلاسيكية على أبراج القلعة والجبال تحت ضوء القمر.',enDesc:'A classical panorama of the moonlit castle and mountains.'},
- {id:'harbor',ar:'ميناء القلعة',en:'Castle Harbor',arDesc:'اختم رحلتك عند السفن والبحر والأنوار المنعكسة على الماء.',enDesc:'End the journey among ships and glowing reflections at sea.'}
+ {id:'gate',ar:'بوابة القلعة',en:'The Castle Gates',arDesc:'تفتح البوابة طريقًا إلى القلعة المضيئة وسط القمر والنجوم.',enDesc:'The gates open towards the castle beneath the stars and moon.'},
+ {id:'courtyard',ar:'الساحة الملكية الخارجية',en:'The Royal Courtyard',arDesc:'ممرات مضيئة وأعمدة رخامية وحدائق متلألئة عند المدخل.',enDesc:'Lantern-lit pathways, marble arches and gardens by the entrance.'},
+ {id:'gardens',ar:'حدائق القلعة',en:'Castle Gardens',arDesc:'الزهور والأشجار والبحيرات في ليلة قمرية هادئة.',enDesc:'Flowers, lakes and greenery on a peaceful moonlit night.'},
+ {id:'waterfalls',ar:'الشلالات والجسور',en:'Waterfalls and Bridges',arDesc:'شلالات متدفقة وجسور كلاسيكية تحيط بالقلعة.',enDesc:'Flowing waterfalls and classical bridges around the castle.'},
+ {id:'great-hall',ar:'القاعة الملكية الكبرى',en:'The Grand Hall',arDesc:'ثريات ذهبية وأقواس كلاسيكية وأرضيات لامعة داخل القلعة.',enDesc:'Golden chandeliers, classical arches and shining marble floors inside.'},
+ {id:'throne-room',ar:'قاعة العرش',en:'The Throne Room',arDesc:'مجلس ملكي زمردي وأضواء الشموع وزخارف القلعة القديمة.',enDesc:'An emerald royal throne, candlelight and ornate castle details.'},
+ {id:'moon-gallery',ar:'رواق القمر الداخلي',en:'Moonlight Gallery',arDesc:'أروقة ومجالس تطل على البحر من داخل القلعة.',enDesc:'An elegant indoor gallery overlooking the moonlit sea.'},
+ {id:'balcony',ar:'شرفة القمر',en:'The Moon Balcony',arDesc:'إطلالة واسعة من القلعة على الجبال والضوء الفضي.',enDesc:'A wide silver-moon panorama of the castle and mountains.'},
+ {id:'harbor',ar:'ميناء القلعة',en:'Castle Harbor',arDesc:'الأشرعة والأمواج وأنوار الساحل تنهي الجولة لتبدأ من جديد.',enDesc:'Sailing ships, waves and shoreline lights close the loop.'}
 ];
-const copy={ar:{brand:'قلعة أبوالقمرزمرد',soundOn:'إيقاف الطبيعة',soundOff:'تشغيل الطبيعة',startTitle:'بوابة القلعة الملكية',startDesc:'رحلة هادئة بين القلاع والحدائق والشلالات وشرفة القمر، برفقة أصوات الطبيعة. اضغط لتفتح أبواب القلعة.',startBtn:'ابدأ التجول ✨',prev:'❮ السابق',next:'التالي ❯',note:'مشاهد سينمائية متحركة من صور القلعة، وليست جولة ثلاثية الأبعاد كاملة. الصوت اختياري.',welcome:'مرحبًا بك في القلعة',guest:'ضيفنا العزيز',err:'تُعرض الصورة عند تعذر تشغيل الفيديو',close:'إغلاق'},en:{brand:'Abwalqmrzmrd Castle',soundOn:'Mute nature',soundOff:'Nature sounds',startTitle:'The Royal Castle Gate',startDesc:'Enjoy a peaceful journey through gardens, waterfalls and moonlit views. Open the gates to begin.',startBtn:'Enter the castle ✨',prev:'❮ Previous',next:'Next ❯',note:'Cinematic motion from castle artwork, not fully navigable 3D. Sound is optional.',welcome:'Welcome to the castle',guest:'Our honored guest',err:'Showing the image while video is unavailable',close:'Close'}};
-let lang=(document.documentElement.lang||'ar').startsWith('en')?'en':'ar',guest='',current=0,entered=false,loadSeq=0,toastTimeout;
-const video=$('sceneVideo'),poster=$('poster');const cleanName=n=>String(n||'').replace(/[\u0000-\u001f\u007f<>]/g,'').trim().slice(0,70);
-function tr(key){return copy[lang][key]||key}
-function showToast(msg){$('toast').textContent=msg;$('toast').classList.add('show');clearTimeout(toastTimeout);toastTimeout=setTimeout(()=>$('toast').classList.remove('show'),2800)}
-function renderLanguage(){document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';$('brandTitle').textContent=tr('brand');document.querySelectorAll('[data-i18n]').forEach(el=>{const key=el.getAttribute('data-i18n');el.textContent=tr(key)});$('langBtn').textContent=lang==='ar'?'EN':'ع';$('langBtn').setAttribute('aria-label',lang==='ar'?'English':'العربية');$('welcome').textContent=tr('welcome');$('guestName').textContent=guest||tr('guest');$('soundBtn').lastElementChild.textContent=tr(ambient.on?'soundOn':'soundOff');$('closeBtn').setAttribute('aria-label',tr('close'));renderScene()}
-function renderScene(){const s=scenes[current];$('sceneTitle').textContent=lang==='ar'?s.ar:s.en;$('sceneDescription').textContent=lang==='ar'?s.arDesc:s.enDesc;$('sceneIndex').textContent=(current+1)+' / '+scenes.length;Array.from($('dots').children).forEach((b,i)=>{b.classList.toggle('active',i===current);b.setAttribute('aria-current',i===current?'step':'false')})}
-function loadScene(index){current=(index+scenes.length)%scenes.length;renderScene();const s=scenes[current],seq=++loadSeq;poster.src=base+s.id+'.jpg';video.pause();video.classList.remove('ready');video.removeAttribute('src');video.load();video.poster=base+s.id+'.jpg';video.src=base+s.id+'.mp4';video.load();const playable=()=>{if(seq!==loadSeq)return;video.classList.add('ready');video.play().catch(()=>{video.classList.remove('ready')})};video.oncanplay=playable;video.onerror=()=>{if(seq!==loadSeq)return;video.classList.remove('ready');showToast(tr('err'))};video.play().then(()=>{if(seq===loadSeq)video.classList.add('ready')}).catch(()=>{});}
-function start(){if(entered)return;entered=true;$('gateIntro').classList.add('open');$('plaque').classList.remove('hidden');$('mainControls').classList.add('on');loadScene(0);setTimeout(()=>$('plaque').classList.add('hidden'),4600);}
+const copy={ar:{brand:'جولة القلعة',soundOn:'إيقاف الطبيعة',soundOff:'تشغيل الطبيعة',note:'جولة تلقائية للمشاهد الداخلية والخارجية؛ تعاد من البداية دون نقر. الصوت اختياري.',welcome:'مرحبًا بك في جولة القلعة',guest:'ضيفنا العزيز',close:'إغلاق'},en:{brand:'Castle Tour',soundOn:'Mute nature',soundOff:'Nature sounds',note:'Automatic interior and exterior tour, looping without taps. Sound is optional.',welcome:'Welcome to the Castle Tour',guest:'Our honored guest',close:'Close'}};
+const video=$('sceneVideo'),poster=$('poster'),progress=$('progressFill');
+const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const SCENE_MS=reduceMotion?10500:8200;
+let lang=(document.documentElement.lang||'ar').startsWith('en')?'en':'ar',guest='',current=0,entered=false,loadSeq=0,tourTimer=null,doorTimer=null,plaqueTimer=null,sceneStart=0,remaining=SCENE_MS,closing=false;
 const ambient={ctx:null,source:null,noise:null,chirpTimer:null,on:false};
-function chirp(){if(!ambient.ctx||!ambient.on)return;const ctx=ambient.ctx,now=ctx.currentTime;for(let i=0;i<3;i++){const o=ctx.createOscillator(),g=ctx.createGain(),t=now+i*.14;o.type='sine';o.frequency.setValueAtTime(1250+i*120,t);o.frequency.exponentialRampToValueAtTime(1750+i*160,t+.11);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.012,t+.035);g.gain.exponentialRampToValueAtTime(.0001,t+.18);o.connect(g);g.connect(ctx.destination);o.start(t);o.stop(t+.19)}}
-function soundOn(){try{if(!ambient.ctx){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;const ctx=new AC();ambient.ctx=ctx;const buf=ctx.createBuffer(1,ctx.sampleRate*2,ctx.sampleRate),data=buf.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1);const src=ctx.createBufferSource();src.buffer=buf;src.loop=true;const low=ctx.createBiquadFilter();low.type='lowpass';low.frequency.value=650;const gain=ctx.createGain();gain.gain.value=.065;src.connect(low);low.connect(gain);gain.connect(ctx.destination);src.start();ambient.source=src;ambient.noise=gain}ambient.ctx.resume();ambient.on=true;chirp();ambient.chirpTimer=setInterval(chirp,5200)}catch(_){ambient.on=false}renderLanguage()}
+const cleanName=n=>String(n||'').replace(/[\u0000-\u001f\u007f<>]/g,'').trim().slice(0,70);
+function tr(k){return copy[lang][k]||k}
+function renderLanguage(){
+ document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';document.title=lang==='ar'?'جولة القلعة':'Castle Tour';
+ $('brandTitle').textContent=tr('brand');document.querySelectorAll('[data-i18n]').forEach(el=>el.textContent=tr(el.dataset.i18n));
+ $('langBtn').textContent=lang==='ar'?'EN':'ع';$('langBtn').setAttribute('aria-label',lang==='ar'?'English':'العربية');
+ $('welcome').textContent=tr('welcome');$('guestName').textContent=guest||tr('guest');
+ $('soundBtn').lastElementChild.textContent=tr(ambient.on?'soundOn':'soundOff');$('closeBtn').setAttribute('aria-label',tr('close'));
+ renderScene();
+}
+function renderScene(){const sc=scenes[current];$('sceneTitle').textContent=lang==='ar'?sc.ar:sc.en;$('sceneDescription').textContent=lang==='ar'?sc.arDesc:sc.enDesc;$('sceneIndex').textContent=(current+1)+' / '+scenes.length;}
+function stopTourTimer(){clearTimeout(tourTimer);tourTimer=null;}
+function progressRestart(){progress.classList.remove('playing');progress.style.animation='none';void progress.offsetWidth;progress.style.animation='';progress.style.animationDuration=SCENE_MS+'ms';progress.classList.add('playing')}
+function advanceAfter(ms){stopTourTimer();remaining=ms;sceneStart=Date.now();tourTimer=setTimeout(()=>loadScene(current+1),ms);}
+function loadScene(index){
+ if(closing)return;
+ current=((index%scenes.length)+scenes.length)%scenes.length;renderScene();
+ const sc=scenes[current],seq=++loadSeq;poster.src=base+sc.id+'.jpg';
+ video.pause();video.classList.remove('ready');video.oncanplay=null;video.onerror=null;
+ video.removeAttribute('src');video.load();video.poster=base+sc.id+'.jpg';
+ video.src=base+sc.id+'.mp4';video.load();
+ video.oncanplay=()=>{if(seq!==loadSeq||document.hidden)return;video.play().then(()=>{if(seq===loadSeq)video.classList.add('ready')}).catch(()=>{video.classList.remove('ready')})};
+ video.onerror=()=>{if(seq===loadSeq)video.classList.remove('ready')};
+ progressRestart();advanceAfter(SCENE_MS);
+}
+function start(){
+ if(entered||closing)return;entered=true;$('gateIntro').classList.add('open');$('plaque').classList.remove('hidden');$('mainControls').classList.add('on');loadScene(0);
+ plaqueTimer=setTimeout(()=>$('plaque').classList.add('hidden'),4400);
+}
+function chirp(){
+ if(!ambient.ctx||!ambient.on)return;const ctx=ambient.ctx,now=ctx.currentTime;
+ for(let i=0;i<3;i++){const oscillator=ctx.createOscillator(),gain=ctx.createGain(),t=now+i*.14;
+ oscillator.type='sine';oscillator.frequency.setValueAtTime(1250+i*120,t);oscillator.frequency.exponentialRampToValueAtTime(1750+i*160,t+.11);
+ gain.gain.setValueAtTime(.0001,t);gain.gain.exponentialRampToValueAtTime(.012,t+.035);gain.gain.exponentialRampToValueAtTime(.0001,t+.18);
+ oscillator.connect(gain);gain.connect(ctx.destination);oscillator.start(t);oscillator.stop(t+.19);
+ }
+}
+function soundOn(){
+ try{if(!ambient.ctx){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;const ctx=new AC();ambient.ctx=ctx;
+ const buf=ctx.createBuffer(1,ctx.sampleRate*2,ctx.sampleRate),data=buf.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;
+ const src=ctx.createBufferSource();src.buffer=buf;src.loop=true;const low=ctx.createBiquadFilter();low.type='lowpass';low.frequency.value=650;const gain=ctx.createGain();gain.gain.value=.065;
+ src.connect(low);low.connect(gain);gain.connect(ctx.destination);src.start();ambient.source=src;ambient.noise=gain;}
+ ambient.on=true;ambient.ctx.resume();chirp();if(ambient.chirpTimer)clearInterval(ambient.chirpTimer);ambient.chirpTimer=setInterval(chirp,5200);
+ }catch(_){ambient.on=false}renderLanguage();
+}
 function soundOff(){ambient.on=false;clearInterval(ambient.chirpTimer);ambient.chirpTimer=null;if(ambient.ctx)ambient.ctx.suspend();renderLanguage()}
+function shutDown(){closing=true;stopTourTimer();clearTimeout(doorTimer);clearTimeout(plaqueTimer);video.pause();if(ambient.on)soundOff();}
 $('soundBtn').addEventListener('click',()=>{ambient.on?soundOff():soundOn();$('soundBtn').setAttribute('aria-pressed',String(ambient.on))});
-$('langBtn').addEventListener('click',()=>{lang=lang==='ar'?'en':'ar';renderLanguage()});$('startBtn').addEventListener('click',start);
-$('prevBtn').addEventListener('click',()=>loadScene(current-1));$('nextBtn').addEventListener('click',()=>loadScene(current+1));
-$('closeBtn').addEventListener('click',()=>{soundOff();video.pause();if(window.parent!==window){window.parent.postMessage({type:'sak-castle-close'},location.origin)}else{window.location.href='/'}});
-scenes.forEach((s,i)=>{const b=document.createElement('button');b.className='dot';b.type='button';b.setAttribute('aria-label',s.ar+' / '+s.en);b.addEventListener('click',()=>loadScene(i));$('dots').appendChild(b)});
-for(let i=0;i<20;i++){const dot=document.createElement('i');dot.className='glint';dot.style.left=((i*53+19)%96)+'%';dot.style.top=((i*37+21)%85)+'%';dot.style.animationDelay='-'+(i%9)+'s';$('glints').appendChild(dot)}
+$('langBtn').addEventListener('click',()=>{lang=lang==='ar'?'en':'ar';renderLanguage()});
+$('closeBtn').addEventListener('click',()=>{shutDown();if(window.parent!==window){window.parent.postMessage({type:'sak-castle-close'},location.origin)}else window.location.href='/'});
 window.addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==window.parent||!e.data||e.data.type!=='sak-castle-greeting')return;guest=cleanName(e.data.name);if(e.data.lang==='ar'||e.data.lang==='en')lang=e.data.lang;renderLanguage()});
-window.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'&&entered)loadScene(current+(lang==='ar'?1:-1));if(e.key==='ArrowRight'&&entered)loadScene(current+(lang==='ar'?-1:1));if(e.key==='Escape'){if(window.parent!==window)window.parent.postMessage({type:'sak-castle-close'},location.origin)}});
-let startX=0;const stage=$('stage');stage.addEventListener('touchstart',e=>{if(e.touches.length===1&&!e.target.closest('button'))startX=e.touches[0].clientX},{passive:true});stage.addEventListener('touchend',e=>{if(!entered||!startX)return;const diff=e.changedTouches[0].clientX-startX;startX=0;if(Math.abs(diff)>75)loadScene(current+(diff>0?-1:1))},{passive:true});
-window.addEventListener('pagehide',()=>{video.pause();soundOff()});renderLanguage();if(window.parent!==window)window.parent.postMessage({type:'sak-castle-ready'},location.origin);
+document.addEventListener('visibilitychange',()=>{
+ if(!entered||closing)return;
+ if(document.hidden){remaining=Math.max(2000,remaining-(Date.now()-sceneStart));stopTourTimer();video.pause();progress.style.animationPlayState='paused';}
+ else{video.play().catch(()=>{});progress.style.animationPlayState='running';advanceAfter(remaining);}
+});
+window.addEventListener('pagehide',shutDown,{once:true});
+renderLanguage();doorTimer=setTimeout(start,1100);
+if(window.parent!==window)window.parent.postMessage({type:'sak-castle-ready'},location.origin);
 })();
 </script>
 </body>
