@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths:
       - 'index.html'
-      - 'archive/03_sakaker_books7_stories5_all-popups_2026-10-06.html'
+      - 'archive/index_emergency_2026-10-08.html'
       - '.github/workflows/index-auto-recovery.yml'
   workflow_dispatch:
 
@@ -33,7 +33,7 @@ jobs:
           import sys
 
           index = Path("index.html")
-          archive = Path("archive/03_sakaker_books7_stories5_all-popups_2026-10-06.html")
+          archive = Path("archive/index_emergency_2026-10-08.html")
 
           errors = []
           if not index.exists():
@@ -105,7 +105,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cp "archive/03_sakaker_books7_stories5_all-popups_2026-10-06.html" index.html
+          cp "archive/index_emergency_2026-10-08.html" index.html
           echo "Stable archive restored into index.html"
 
       - name: Verify restored copy
@@ -113,7 +113,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cmp -s index.html "archive/03_sakaker_books7_stories5_all-popups_2026-10-06.html"
+          cmp -s index.html "archive/index_emergency_2026-10-08.html"
           echo "Restored index matches archive exactly"
 
       - name: Commit automatic recovery
