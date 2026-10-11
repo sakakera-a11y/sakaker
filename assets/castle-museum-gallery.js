@@ -150,6 +150,12 @@ function renderFeatured(){
  browse.textContent='🖼️ '+text('استكشف لوحات القلعة وأقسام الموقع','Explore artwork and site sections');
 }
 browse.addEventListener('click',()=>{filter='all';openGallery()});close.addEventListener('click',()=>closeGallery());input.addEventListener('input',()=>{query=input.value.trim();render()});
+window.addEventListener('message',event=>{
+ if(event.origin!==location.origin||event.source!==window.parent||event.data?.type!=='sak-castle-open-error'||!open)return;
+ intro.textContent=text('هذا القسم غير متاح حاليًا من هذه النافذة. يمكنك العودة إلى الصفحة الرئيسية وزيارته عند توفره.','This section is not available through the current site launcher. Please visit the home page when it becomes available.');
+ intro.setAttribute('role','status');
+ body.scrollTop=0;
+});
 prev.addEventListener('click',()=>{currentPhoto=(currentPhoto-1+photos.length)%photos.length;showPhoto()});next.addEventListener('click',()=>{currentPhoto=(currentPhoto+1)%photos.length;showPhoto()});done.addEventListener('click',closePhoto);
 light.addEventListener('click',e=>{if(e.target===light)closePhoto()});
 window.addEventListener('keydown',e=>{
