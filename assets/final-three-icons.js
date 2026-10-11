@@ -588,7 +588,7 @@ function loadVisitorCounterModule(){
   visitorCounterModuleRequested=true;
   const script=document.createElement('script');
   script.type='module';
-  script.src='/assets/visitor-counter.js?v=20261011-colors1';
+  script.src='/assets/visitor-counter.js?v=20261011-colorlabel2';
   script.onerror=()=>{visitorCounterModuleRequested=false;};
   document.head.appendChild(script);
 }

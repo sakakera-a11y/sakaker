@@ -104,8 +104,10 @@ import {
     return value;
   }
 
+  // Online-presence status stays green; only visitor-total metrics cycle colors.
+  onlineEl.closest(".svc-item")?.classList.add("svc-online-stable");
   configureLabel(onlineEl, "المتواجدون الآن", "Online now");
-  configureLabel(uniqueTotalEl, "الزوار الفريدون (تقديري)", "Estimated unique visitors");
+  configureLabel(uniqueTotalEl, "الزوار الفريدون", "Unique visitors");
   configureLabel(uniqueTodayEl, "زوار فريدون اليوم", "Unique visitors today");
 
   const styleId = "sakakerVisitorCounterV2Style";
@@ -174,6 +176,23 @@ import {
           gap:2px!important;
           padding-inline:2px!important;
         }
+      }
+      /* Override the shared color cycle for the live-presence metric only.
+         Keep its number, icon and label consistently green, including on mobile. */
+      html body #sakakerVisitorCounter .svc-item.svc-online-stable{
+        animation:none!important;
+        color:#75ffa0!important;
+        background:rgba(3,45,26,.45)!important;
+        border:1px solid rgba(86,255,138,.55)!important;
+        text-shadow:0 0 5px rgba(164,255,189,.85),0 0 12px rgba(35,240,99,.65)!important;
+      }
+      html body #sakakerVisitorCounter .svc-item.svc-online-stable .svc-icon,
+      html body #sakakerVisitorCounter .svc-item.svc-online-stable .svc-label,
+      html body #sakakerVisitorCounter .svc-item.svc-online-stable #svcOnline{
+        color:#75ffa0!important;
+        -webkit-text-fill-color:#75ffa0!important;
+        text-shadow:0 0 5px rgba(164,255,189,.9),0 0 12px rgba(35,240,99,.72)!important;
+        animation:none!important;
       }
       @media(prefers-reduced-motion:reduce){
         html body #sakakerVisitorCounter,

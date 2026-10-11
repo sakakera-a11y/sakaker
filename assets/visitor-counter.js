@@ -107,7 +107,7 @@ import {
   // Online-presence status stays green; only visitor-total metrics cycle colors.
   onlineEl.closest(".svc-item")?.classList.add("svc-online-stable");
   configureLabel(onlineEl, "المتواجدون الآن", "Online now");
-  configureLabel(uniqueTotalEl, "الزوار الفريدون (تقديري)", "Estimated unique visitors");
+  configureLabel(uniqueTotalEl, "الزوار الفريدون", "Unique visitors");
   configureLabel(uniqueTodayEl, "زوار فريدون اليوم", "Unique visitors today");
 
   const styleId = "sakakerVisitorCounterV2Style";
