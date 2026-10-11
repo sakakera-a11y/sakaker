@@ -5,7 +5,7 @@ The browser counter uses the Cloudflare Pages Function at `/api/visitor-counter`
 ## Cloudflare Pages setup
 
 1. Create a D1 database for the Sakaker Pages project.
-2. Add a Pages Function D1 binding named `VISITOR_DB` and connect it to that database.
+2. Add a Pages Function D1 binding named `VISITOR_DB` and connect it to that database in production and preview environments. The function accepts the Sakaker production domains and deployment URLs under `sakaker-pages-test.pages.dev`.
 3. Apply `migrations/0001_visitor_counter.sql` to the database.
 4. Deploy the Pages project and verify `POST /api/visitor-counter` returns `online`, `total`, and `today`.
 
