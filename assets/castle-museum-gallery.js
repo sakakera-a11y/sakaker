@@ -40,6 +40,7 @@ const sections=[
 {id:'videoFilms',to:'videos',emoji:'🎥',ar:'الأفلام والكرتون',en:'Films & Cartoons',descAr:'استعرض قسم الأفلام والرسوم المتحركة داخل مكتبة الفيديو.',descEn:'Find movie and animation categories in the video library.',img:'courtyard',tag:'media'},
 {id:'videoSports',to:'videos',emoji:'🏅',ar:'الرياضة',en:'Sports',descAr:'شاهد مختارات المحتوى الرياضي من مكتبة الفيديو.',descEn:'Sports selections from the site video library.',img:'harbor',tag:'media'},
 {id:'videoDocs',to:'videos',emoji:'🌍',ar:'الوثائقيات',en:'Documentaries',descAr:'رحلات ومعارف وأفلام وثائقية ضمن أقسام المكتبة.',descEn:'Educational and documentary collections in the video library.',img:'balcony',tag:'media'},
+{id:'cooking',to:'videos',emoji:'🍳',ar:'المطبخ والوصفات',en:'Cooking & Recipes',descAr:'تعرّف إلى المحتوى الخاص بالطعام والوصفات في قسم المطبخ بمكتبة الفيديو.',descEn:'Visit the video library for cooking, food and recipe content.',img:'gardens',tag:'media'},
 {id:'live',emoji:'📺',ar:'القنوات المباشرة والراديو',en:'Live TV & Radio',descAr:'تابع القنوات والإذاعات والروابط المباشرة المتوفرة.',descEn:'Explore available live channels, radio and streaming links.',img:'harbor',tag:'media'},
 {id:'music',emoji:'🎹',ar:'الموسيقى والاستديو',en:'Music Studio',descAr:'أدوات الاستديو والمحتوى الموسيقي داخل الموقع.',descEn:'Music and studio tools available within the website.',img:'gardens',tag:'media'},
 {id:'audioVideo',emoji:'🎬',ar:'تحويل الصوت والصور',en:'Audio & Image Tools',descAr:'أدوات إنشاء الفيديو ومزج الصوت والصور.',descEn:'Tools for assembling videos from audio and images.',img:'courtyard',tag:'creative'},
@@ -86,7 +87,7 @@ const lightImg=picture(scene('gate'),'',false);const lightCaption=el('div');ligh
 const lightButtons=el('div','sak-ex-light-actions');const prev=el('button',null,'❮');const next=el('button',null,'❯');const done=el('button',null,'✕');
 [prev,next,done].forEach(b=>{b.type='button'});done.setAttribute('aria-label',text('إغلاق الصورة','Close picture'));
 lightButtons.append(prev,done,next);light.append(lightImg,lightCaption,lightButtons);root.append(light);
-let filter='all',query='',currentPhoto=0,open=false,lastFocus=null,featuredIndex=0;
+let filter='all',query='',currentPhoto=0,open=false,lastFocus=null,featuredIndex=0,backdropFrame=null;
 const filters=[['all','جميع اللوحات','All exhibits'],['photos','معرض الصور','Picture gallery'],['sections','أقسام الموقع','Site sections'],['knowledge','الثقافة والكتب','Knowledge'],['media','الفيديو والصوت','Video & Audio'],['entertainment','الألعاب','Games'],['site','الخدمات','Services']];
 function visit(id){
   const sec=get(id),key=sec?.to||id;
@@ -101,8 +102,14 @@ function visit(id){
   const routes={books:'/books.html',videos:'/videos.html',live:'/live.html',pong:'/pong.html',games:'/pong.html',creative:'/draw.html',audioVideo:'/audio-video.html',about:'/',payment:'/'};
   if(routes[key])location.assign(routes[key]);else location.assign('/');
 }
+function backdropURL(image){return 'url('+JSON.stringify(encodeURI(image))+')'}
+function setBackdrop(image){if(image)gallery.style.setProperty('--sak-ex-backdrop-image',backdropURL(image))}
 function panel(image,title,description,emoji,onVisit,onPreview){
- const card=el('article','sak-ex-panel');const art=el('div','sak-ex-art');
+ const card=el('article','sak-ex-panel');card.dataset.backdrop=image;
+ card.style.setProperty('--sak-ex-panel-image',backdropURL(image));
+ card.addEventListener('mouseenter',()=>setBackdrop(image));
+ card.addEventListener('focusin',()=>setBackdrop(image));
+ const art=el('div','sak-ex-art');
  art.append(picture(image,title));if(emoji)art.append(el('span','sak-ex-emblem',emoji));
  const copy=el('div','sak-ex-copy');copy.append(el('h3',null,title),el('p',null,description));
  const actions=el('div','sak-ex-actions');const go=el('button','sak-ex-go',text('زيارة القسم ←','Visit section →'));go.type='button';go.addEventListener('click',onVisit);
@@ -131,11 +138,15 @@ function render(){
  input.placeholder=text('ابحث عن قسم أو صورة...','Search sections or pictures...');
  tabs.replaceChildren();filters.forEach(([id,ar,en2])=>{const b=el('button','sak-ex-tab',text(ar,en2));b.type='button';b.setAttribute('aria-pressed',String(filter===id));b.addEventListener('click',()=>{filter=id;render()});tabs.append(b)});
  list.replaceChildren();let found=false;
- const showPics=filter==='all'||filter==='photos';
+ const showPics=filter==='photos';
  if(showPics){const matches=photos.map((p,i)=>({p,i})).filter(({p})=>hasQuery(p.ar,p.en,p.da,p.de));
  if(matches.length){found=true;list.append(sectionTitle(text('اللوحات والصور المنشورة • '+photos.length,'Published artwork • '+photos.length)));const grid=el('div','sak-ex-grid');matches.forEach(({p,i})=>grid.append(photoCard(p,i)));list.append(grid)}}
  const eligible=sections.filter(s=>(filter==='all'||filter==='sections'||s.tag===filter)&&hasQuery(s.ar,s.en,s.descAr,s.descEn));
- if(eligible.length){found=true;list.append(sectionTitle(text('لوحات الأقسام • '+eligible.length,'Section signboards • '+eligible.length)));const grid=el('div','sak-ex-grid');eligible.forEach(s=>grid.append(sectionCard(s)));list.append(grid)}
+ if(eligible.length){found=true;
+ list.append(sectionTitle(text('أقسام المتحف التفاعلية • '+eligible.length,'Interactive museum sections • '+eligible.length)));
+ const grid=el('div','sak-ex-grid');eligible.forEach(s=>grid.append(sectionCard(s)));list.append(grid);
+ setBackdrop(scene(eligible[0].img));
+}
  if(!found)list.append(el('div','sak-ex-empty',text('لم نجد نتائج مطابقة. جرّب البحث بكلمة أخرى.','No matching exhibits. Try a different search.')));
 }
 function pause(){try{window.SakCastleMuseum?.pause?.()}catch{}}
@@ -198,7 +209,25 @@ function finishOpening(showGallery=false){
 }
 openingSkip.addEventListener('click',()=>finishOpening(true));
 root.append(opening);
-introTimer=setTimeout(()=>finishOpening(false),window.matchMedia('(prefers-reduced-motion:reduce)').matches?2200:7500);
+introTimer=setTimeout(()=>finishOpening(true),window.matchMedia('(prefers-reduced-motion:reduce)').matches?1700:5500);
+// In the visual museum each displayed section chooses its own full-page
+// backdrop as visitors scroll; the same source is used behind its text.
+body.addEventListener('scroll',()=>{
+ if(!open||backdropFrame!==null)return;
+ backdropFrame=requestAnimationFrame(()=>{
+  backdropFrame=null;
+  const panels=[...list.querySelectorAll('.sak-ex-panel')];
+  if(!panels.length)return;
+  const top=body.getBoundingClientRect().top+105;
+  let chosen=panels[0],dist=Infinity;
+  for(const item of panels){
+   const rect=item.getBoundingClientRect();
+   const d=Math.abs(rect.top-top);
+   if(d<dist){dist=d;chosen=item}
+  }
+  setBackdrop(chosen.dataset.backdrop);
+ });
+},{passive:true});
 const oldClose=gallery.querySelector('.sak-ex-x');
 if(oldClose)oldClose.addEventListener('click',()=>finishOpening(false));
 renderFeatured();document.body.classList.add('sak-ex-ready');

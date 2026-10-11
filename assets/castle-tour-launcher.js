@@ -37,7 +37,7 @@ function openTour(){
   host.setAttribute('aria-label',english()?'Castle Tour':'جولة القلعة');
   host.style.cssText='position:fixed!important;inset:0!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:clamp(6px,2vw,22px)!important;margin:0!important;z-index:2147483646!important;background:rgba(1,10,18,.83)!important;backdrop-filter:blur(12px)!important;-webkit-backdrop-filter:blur(12px)!important;overflow:hidden!important;';
   const frame=document.createElement('iframe');
-  frame.src='/castle-tour.html?v=20261011-rev3';
+  frame.src='/castle-tour.html?v=20261011-30scenes';
   frame.title='جولة القلعة / Castle Tour';
   frame.allow='autoplay';
   frame.style.cssText='display:block;flex:0 1 auto;width:min(1120px,100%)!important;height:min(92dvh,880px)!important;max-height:calc(100dvh - 12px)!important;min-height:0!important;border:2px solid rgba(255,223,147,.78)!important;border-radius:clamp(14px,2.5vw,24px)!important;background:#06151c!important;box-shadow:0 24px 85px #000d,0 0 26px rgba(65,222,204,.22)!important;overflow:hidden!important;';

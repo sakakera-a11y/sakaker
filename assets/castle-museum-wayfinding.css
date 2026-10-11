@@ -83,3 +83,25 @@ html[dir="ltr"] #sakExGallery .sak-ex-copy{direction:ltr}
   #sakExGallery .sak-ex-actions{flex-wrap:wrap}
 }
 @media(prefers-reduced-motion:reduce){#sakExOpening{transition:none}}
+
+
+/* Rev4 — immersive picture-based section museum; 30 navigable section plaques. */
+#mainControls{display:none!important}
+#note,#sceneIndex,#sceneDescription,#progressFill{display:none!important}
+#sakExGallery{isolation:isolate;background:#051921}
+#sakExGallery::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(180deg,rgba(2,12,21,.74),rgba(2,13,23,.72)),var(--sak-ex-backdrop-image,url('/assets/castle-tour/castle-entrance.webp'));background-size:cover;background-position:center;filter:saturate(1.12)}
+#sakExGallery>.sak-ex-hdr,#sakExGallery>#sakExGalleryBody{position:relative;z-index:1}
+#sakExGalleryBody{background:transparent!important;overscroll-behavior-y:contain;scrollbar-width:thin}
+#sakExGallery .sak-ex-cover{display:none!important}
+#sakExGallery .sak-ex-intro{max-width:800px;margin:0 auto 10px;padding:9px 14px;border:1px solid #e4c58580;border-radius:14px;background:rgba(3,23,33,.68);color:#f3efe3}
+#sakExGallery .sak-ex-hdr{background:linear-gradient(135deg,rgba(5,29,43,.9),rgba(3,25,34,.88));backdrop-filter:blur(10px)}
+#sakExGallery .sak-ex-tab{background:rgba(3,25,35,.86);backdrop-filter:blur(6px)}
+#sakExGallery .sak-ex-tab[aria-pressed="true"]{background:#ffe3a6;color:#10292f}
+#sakExGallery .sak-ex-sectiontitle{color:#ffebb8;text-shadow:0 2px 6px #00131e}
+#sakExGallery .sak-ex-panel{background-image:linear-gradient(110deg,rgba(2,19,29,.55),rgba(2,15,25,.75)),var(--sak-ex-panel-image);background-position:center;background-size:cover;isolation:isolate}
+#sakExGallery .sak-ex-art{background-color:transparent}
+#sakExGallery .sak-ex-copy{background-image:linear-gradient(90deg,rgba(2,16,25,.87),rgba(2,19,29,.79)),var(--sak-ex-panel-image);background-size:cover;background-position:center;backdrop-filter:blur(1px)}
+#sakExGallery .sak-ex-copy h3{color:#ffe8ad;text-shadow:0 1px 4px #00121b}
+#sakExGallery .sak-ex-copy p{color:#f5f5ee;text-shadow:0 1px 3px #00121b}
+#sakExGallery .sak-ex-art img{filter:saturate(1.17)}
+@media(max-width:650px){#sakExGallery .sak-ex-intro{font-size:11px;margin-bottom:8px}#sakExGallery .sak-ex-copy{padding:9px}}
