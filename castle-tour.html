@@ -112,7 +112,7 @@ button,a{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible
 }
 
 </style>
-<link rel="stylesheet" href="/assets/castle-museum-wayfinding.css?v=20261011-gallery1">
+<link rel="stylesheet" href="/assets/castle-museum-wayfinding.css?v=20261011-rev3">
 </head>
 <body>
 <div id="stage">
@@ -130,7 +130,7 @@ button,a{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible
  <div id="museumBody"></div>
 </div>
 <div id="photoViewer" role="dialog" aria-modal="true" aria-labelledby="photoCaption"><div class="museumTop"><h2 id="photoViewerTitle">معرض الصور</h2><button type="button" class="closeMuseum" id="photoClose" aria-label="إغلاق">✕</button></div><img id="photoLarge" alt=""><div id="photoCaption"></div><div class="viewerNavigation"><button id="photoPrev" type="button">❮</button><button id="photoNext" type="button">❯</button></div></div>
-<div id="filmViewer" role="dialog" aria-modal="true" aria-labelledby="filmTitle"><div class="museumTop"><h2 id="filmTitle">الفيلم الفني للقلعة</h2><button type="button" class="closeMuseum" id="filmClose" aria-label="إغلاق">✕</button></div><video id="castleFilm" preload="none" playsinline controls controlsList="nodownload" poster="/assets/castle-tour/gate.jpg"></video><div class="filmNote" id="filmNote">فيلم فني قصير بمشاهد متتابعة وصوت البحر والطيور — شغله بلمسة واحدة.</div></div>
+<div id="filmViewer" role="dialog" aria-modal="true" aria-labelledby="filmTitle"><div class="museumTop"><h2 id="filmTitle">الفيلم الفني للقلعة</h2><button type="button" class="closeMuseum" id="filmClose" aria-label="إغلاق">✕</button></div><video id="castleFilm" preload="none" playsinline loop controls controlsList="nodownload" poster="/assets/castle-tour/gate.jpg"></video><div class="filmNote" id="filmNote">فيلم فني قصير بمشاهد متتابعة وصوت البحر والطيور — شغله بلمسة واحدة.</div></div>
 <audio id="natureAudio" preload="none" loop src="/assets/castle-tour/nature-sound.mp3"></audio>
 
 <div id="toast" role="status" aria-live="polite"></div>
@@ -153,7 +153,7 @@ const scenes=[
 const copy={ar:{brand:'جولة القلعة',soundOn:'إيقاف الطبيعة',soundOff:'تشغيل الطبيعة',note:'جولة تلقائية للمشاهد الداخلية والخارجية؛ تعاد من البداية دون نقر. الصوت اختياري.',welcome:'مرحبًا بك في جولة القلعة',guest:'ضيفنا العزيز',close:'إغلاق'},en:{brand:'Castle Tour',soundOn:'Mute nature',soundOff:'Nature sounds',note:'Automatic interior and exterior tour, looping without taps. Sound is optional.',welcome:'Welcome to the Castle Tour',guest:'Our honored guest',close:'Close'}};
 const video=$('sceneVideo'),poster=$('poster'),progress=$('progressFill');
 const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const SCENE_MS=reduceMotion?10500:8200;
+const SCENE_MS=reduceMotion?18000:16500;
 let lang=(document.documentElement.lang||'ar').startsWith('en')?'en':'ar',guest='',current=0,entered=false,loadSeq=0,tourTimer=null,doorTimer=null,plaqueTimer=null,sceneStart=0,remaining=SCENE_MS,closing=false,photoAt=0;
 const ambient={on:false}; const natureAudio=$('natureAudio'); natureAudio.volume=.64;
 const cleanName=n=>String(n||'').replace(/[\u0000-\u001f\u007f<>]/g,'').trim().slice(0,70);
@@ -255,7 +255,7 @@ function openFilm(){
  if(!$('museumOverlay').classList.contains('open'))pauseForMuseum();
  $('filmViewer').classList.add('open');$('filmTitle').textContent=mText('الفيلم الفني للقلعة','Castle Art Film');
  $('filmNote').textContent=mText('فيلم مدته 28 ثانية بمشاهد القلعة وصوت البحر والطيور. يمكن تشغيله أو إيقافه.','A 28-second cinematic castle film with real sea and bird sounds. Play or pause freely.');
- const film=$('castleFilm');if(!film.getAttribute('src'))film.src=base+'castle-art-film.mp4';
+ const film=$('castleFilm');film.loop=true;if(!film.getAttribute('src'))film.src=base+'castle-art-film.mp4';
  if(ambient.on){natureAudio.pause()}
  const play=film.play();if(play&&typeof play.catch==='function')play.catch(()=>{});
  $('filmClose').focus();
@@ -292,6 +292,6 @@ renderLanguage();doorTimer=setTimeout(start,1100);
 if(window.parent!==window)window.parent.postMessage({type:'sak-castle-ready'},location.origin);
 })();
 </script>
-<script src="/assets/castle-museum-gallery.js?v=20261011-gallery1"></script>
+<script src="/assets/castle-museum-gallery.js?v=20261011-rev3"></script>
 </body>
 </html>

@@ -9,6 +9,9 @@ const en=()=>String(document.documentElement.lang||'ar').startsWith('en');
 const t=(a,b)=>en()?b:a;
 const scene=(name)=>base+name+'.jpg';
 const photos=[
+{id:'castle-entrance',src:'/assets/castle-tour/castle-entrance.webp',ar:'بوابة المتحف الموحّد',en:'Unified Castle Museum',section:'photos',da:'لوحة الافتتاح الرئيسية المستخدمة في تصميم المتحف.',de:'Original illustrated entrance to the unified museum.'},
+{id:'castle-gallery-wings',src:'/assets/castle-tour/castle-gallery-wings.webp',ar:'لوحات أجنحة المتحف',en:'Museum Wings',section:'books',da:'تصميم الأجنحة الإبداعية للكتب والألعاب والمعارض.',de:'Original illustrated pages for the museum’s books, games and exhibitions.'},
+{id:'castle-gallery-services',src:'/assets/castle-tour/castle-gallery-services.webp',ar:'لوحات خدمات القلعة',en:'Castle Services Art',section:'news',da:'لوحة فنية تعرض أركان الثقافة والخدمات المتنوعة.',de:'Illustrated page showing culture, news and site services.'},
 {id:'gate',src:scene('gate'),ar:'بوابة القلعة',en:'Castle Gate',section:'about',da:'مدخل القلعة في ليلة مضيئة.',de:'A moonlit entrance to the castle.'},
 {id:'courtyard',src:scene('courtyard'),ar:'الساحة الملكية',en:'Royal Courtyard',section:'creative',da:'ممرات القلعة وأقواسها الملكية.',de:'Royal passages and illuminated arches.'},
 {id:'gardens',src:scene('gardens'),ar:'حدائق القلعة',en:'Castle Gardens',section:'culture',da:'أزهار وحدائق وإطلالات على الماء.',de:'Flowers, gardens and peaceful water views.'},
@@ -24,6 +27,11 @@ const photos=[
 {id:'favicon',src:'/favicon.svg',ar:'شعار الموقع',en:'Website Emblem',section:'about',da:'الرمز البصري المنشور للموقع.',de:'The visual emblem published on the site.'}
 ];
 const sections=[
+{id:'tour',emoji:'🏰',ar:'جولة القلعة',en:'Castle Tour',descAr:'استكشف القلعة بالفيديوهات والمشاهد الخارجية والداخلية المتتابعة دون توقف.',descEn:'Enjoy the endlessly looping interior and exterior castle tour.',img:'gate',tag:'site'},
+{id:'chat',emoji:'💬',ar:'الدردشة والتواصل',en:'Chat & Community',descAr:'انتقل إلى قسم التفاعل والدردشة بين زوار الموقع عند توفره.',descEn:'Visit the community chat and social interactions when available.',img:'moon-gallery',tag:'site'},
+{id:'payment',emoji:'💳',ar:'الدفع والدعم',en:'Payments & Support',descAr:'اطلع على خيارات الدفع والدعم الموجودة في الموقع.',descEn:'Review the payment and support options available on the website.',img:'throne-room',tag:'shop'},
+{id:'holidays',emoji:'✨',ar:'مناسبات وعدّادات',en:'Holidays & Countdowns',descAr:'راجع عدّادات رأس السنة والمناسبات في الصفحة الرئيسية.',descEn:'View the site’s New Year and seasonal countdowns.',img:'gardens',tag:'site'},
+{id:'home',emoji:'🏠',ar:'الصفحة الرئيسية',en:'Home',descAr:'عد إلى الواجهة الرئيسية للوصول إلى جميع أيقونات الموقع.',descEn:'Return to the main site dashboard and its icons.',img:'courtyard',tag:'site'},
 {id:'photos',emoji:'🖼️',ar:'المعرض الكامل للصور',en:'Complete Photo Gallery',descAr:'شاهد جميع الصور واللوحات المنشورة بالقلعة والموقع مع نبذة لكل صورة.',descEn:'Browse all published castle and site artwork with picture descriptions.',img:'great-hall',tag:'site'},
 {id:'film',emoji:'🎬',ar:'الفيلم الفني للقلعة',en:'Castle Art Film',descAr:'شاهد الفيلم الفني القصير مع صوت البحر والطيور داخل المتحف.',descEn:'Watch the short castle art film with sea and bird sounds.',img:'gate',tag:'media'},
 {id:'stories',emoji:'📜',ar:'القصص والخواطر',en:'Stories & Reflections',descAr:'حكايات ومغامرات وخواطر أدبية؛ استكشف النصوص والتسلسل داخل الموقع.',descEn:'Literary adventures, stories and reflections available on the website.',img:'moon-gallery',tag:'knowledge'},
@@ -62,6 +70,12 @@ const gallery=el('section');gallery.id='sakExGallery';gallery.setAttribute('role
 const header=el('header','sak-ex-hdr');const heading=el('h2',null,text('متحف القلعة | لوحات الموقع','Castle Museum | Site Gallery'));heading.id='sakExHeading';
 const close=el('button','sak-ex-x','✕');close.type='button';close.setAttribute('aria-label',text('إغلاق','Close'));header.append(heading,close);
 const body=el('div');body.id='sakExGalleryBody';
+const cover=el('div','sak-ex-cover');
+const coverImg=picture('/assets/castle-tour/castle-entrance.webp',t('بوابة جولة القلعة','Castle museum entrance'),false);
+const coverAction=el('button','sak-ex-cover-action',t('استكشف جميع الأقسام','Explore all sections'));coverAction.type='button';
+coverAction.addEventListener('click',()=>document.getElementById('sakExSearch')?.focus());
+cover.append(coverImg,coverAction);
+body.append(cover);
 const intro=el('p','sak-ex-intro');
 const tabs=el('div','sak-ex-tabs');
 const input=el('input');input.id='sakExSearch';input.type='search';input.autocomplete='off';input.placeholder=text('ابحث عن قسم أو صورة...','Search sections or pictures...');
@@ -76,13 +90,15 @@ let filter='all',query='',currentPhoto=0,open=false,lastFocus=null,featuredIndex
 const filters=[['all','جميع اللوحات','All exhibits'],['photos','معرض الصور','Picture gallery'],['sections','أقسام الموقع','Site sections'],['knowledge','الثقافة والكتب','Knowledge'],['media','الفيديو والصوت','Video & Audio'],['entertainment','الألعاب','Games'],['site','الخدمات','Services']];
 function visit(id){
   const sec=get(id),key=sec?.to||id;
+  if(key==='tour'){closeGallery();return}
+  if(key==='home'){if(window.parent!==window)window.parent.postMessage({type:'sak-castle-close'},location.origin);else location.assign('/');return}
   if(key==='film'){closeGallery(false);rail.querySelector('.museumTile')?.click();return}
   if(key==='photos'){filter='photos';openGallery();return}
   if(window.parent!==window){
     window.parent.postMessage({type:'sak-castle-open-section',section:key},location.origin);
     return;
   }
-  const routes={books:'/books.html',videos:'/videos.html',live:'/live.html',pong:'/pong.html',games:'/pong.html',creative:'/draw.html',audioVideo:'/audio-video.html',about:'/'};
+  const routes={books:'/books.html',videos:'/videos.html',live:'/live.html',pong:'/pong.html',games:'/pong.html',creative:'/draw.html',audioVideo:'/audio-video.html',about:'/',payment:'/'};
   if(routes[key])location.assign(routes[key]);else location.assign('/');
 }
 function panel(image,title,description,emoji,onVisit,onPreview){
@@ -109,7 +125,9 @@ function render(){
  if(!open)return;
  heading.textContent=text('متحف القلعة | لوحات الموقع','Castle Museum | Site Gallery');
  close.setAttribute('aria-label',text('إغلاق','Close'));
- intro.textContent=text('كل لوحة باب إلى قسم من الموقع؛ اختر الصورة، اقرأ نبذتها، ثم ادخل القسم مباشرة. الصور من الملفات المنشورة للموقع.','Every artwork is a doorway into the site: enjoy the picture, read its description and visit the section. Images come from published site assets.');
+ intro.textContent=text('كل لوحة باب تفاعلي إلى قسم من الموقع. يمكنك تصفح كل اللوحات بحرية دون حد زمني، وزيارة الأقسام مباشرة.', 'Every artwork is a live doorway to a website section. Browse at your pace without a time limit.');
+ coverImg.alt=text('اللوحة الأصلية لافتتاح متحف القلعة','Original illustrated Castle Museum cover');
+ coverAction.textContent=text('استكشف جميع الأقسام','Explore all sections');
  input.placeholder=text('ابحث عن قسم أو صورة...','Search sections or pictures...');
  tabs.replaceChildren();filters.forEach(([id,ar,en2])=>{const b=el('button','sak-ex-tab',text(ar,en2));b.type='button';b.setAttribute('aria-pressed',String(filter===id));b.addEventListener('click',()=>{filter=id;render()});tabs.append(b)});
  list.replaceChildren();let found=false;
@@ -164,5 +182,24 @@ window.addEventListener('keydown',e=>{
 },true);
 new MutationObserver(()=>{renderFeatured();if(open)render();if(light.classList.contains('sak-ex-open'))showPhoto()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 const sceneTitle=document.getElementById('sceneTitle');if(sceneTitle)new MutationObserver(()=>{featuredIndex=(featuredIndex+2)%sections.length;renderFeatured()}).observe(sceneTitle,{childList:true,characterData:true,subtree:true});
+// The original approved artwork opens the tour; the existing cinematic loop continues behind it.
+const opening=el('div','sak-ex-opening');
+opening.id='sakExOpening';
+opening.append(picture('/assets/castle-tour/castle-entrance.webp',text('بوابة جولة القلعة','Castle Tour opening'),false));
+const openingSkip=el('button','sak-ex-opening-skip',text('استكشف المتحف ←','Explore the museum →'));
+openingSkip.type='button';
+let introTimer;
+function finishOpening(showGallery=false){
+ if(!opening.isConnected)return;
+ clearTimeout(introTimer);
+ opening.classList.add('sak-ex-opening-hide');
+ setTimeout(()=>opening.remove(),500);
+ if(showGallery){filter='all';openGallery();}
+}
+openingSkip.addEventListener('click',()=>finishOpening(true));
+root.append(opening);
+introTimer=setTimeout(()=>finishOpening(false),window.matchMedia('(prefers-reduced-motion:reduce)').matches?2200:7500);
+const oldClose=gallery.querySelector('.sak-ex-x');
+if(oldClose)oldClose.addEventListener('click',()=>finishOpening(false));
 renderFeatured();document.body.classList.add('sak-ex-ready');
 })();

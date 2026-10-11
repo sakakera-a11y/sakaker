@@ -37,7 +37,7 @@ function openTour(){
   host.setAttribute('aria-label',english()?'Castle Tour':'جولة القلعة');
   host.style.cssText='position:fixed!important;inset:0!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:clamp(6px,2vw,22px)!important;margin:0!important;z-index:2147483646!important;background:rgba(1,10,18,.83)!important;backdrop-filter:blur(12px)!important;-webkit-backdrop-filter:blur(12px)!important;overflow:hidden!important;';
   const frame=document.createElement('iframe');
-  frame.src='/castle-tour.html?v=20261010-gull1';
+  frame.src='/castle-tour.html?v=20261011-rev3';
   frame.title='جولة القلعة / Castle Tour';
   frame.allow='autoplay';
   frame.style.cssText='display:block;flex:0 1 auto;width:min(1120px,100%)!important;height:min(92dvh,880px)!important;max-height:calc(100dvh - 12px)!important;min-height:0!important;border:2px solid rgba(255,223,147,.78)!important;border-radius:clamp(14px,2.5vw,24px)!important;background:#06151c!important;box-shadow:0 24px 85px #000d,0 0 26px rgba(65,222,204,.22)!important;overflow:hidden!important;';
@@ -81,10 +81,19 @@ function openTour(){
         visitors:'#visitorPostsCard',
         shopping:'#sakShoppingIcon',
         news:'#sakNewsLaunch',
-        facebook:'#facebookVideoIcon'
+        facebook:'#facebookVideoIcon',
+        chat:'#sakChatOpenBtn,#sakChatLauncher,#sakChatBtn',
+        payment:'#sakGlobalPayment button,#sakGlobalPayment [role="button"],#sakPayPalButton'
       };
       const route={books:'/books.html',videos:'/videos.html',live:'/live.html',games:'/pong.html',pong:'/pong.html',creative:'/draw.html',audioVideo:'/audio-video.html',about:'/'};
-      if(!['books','videos','live','games','chess','pong','music','audioVideo','creative','maps','visitors','shopping','stories','culture','riddles','quiz','news','facebook','about'].includes(key))return;
+      if(key==='tour')return;
+      if(key==='home'){close();return}
+      if(key==='holidays'){
+        close();
+        setTimeout(()=>document.querySelector('#sakHolidayCountdowns,#sakFestiveHeader')?.scrollIntoView({block:'center',behavior:'smooth'}),140);
+        return;
+      }
+      if(!['books','videos','live','games','chess','pong','music','audioVideo','creative','maps','visitors','shopping','stories','culture','riddles','quiz','news','facebook','about','chat','payment'].includes(key))return;
       let target=selectors[key]?document.querySelector(selectors[key]):null;
       if(!target){
         const phrases={
@@ -101,7 +110,9 @@ function openTour(){
           quiz:/اختبر\s*معلوماتك|Quiz|Test\s*Your\s*Knowledge/i,
           news:/الأخبار|أخبار\s*الموقع|News/i,
           facebook:/فيس\s*بوك|Facebook/i,
-          about:/تعريف|About/i
+          about:/تعريف|About/i,
+          chat:/الدردشة|الشات|Chat/i,
+          payment:/الدفع|Pay|Payment/i
         };
         if(phrases[key])target=[...document.querySelectorAll('button,a,.icon-card,[role="button"]')].find(el=>!el.closest('#sakCastleTourOverlay')&&phrases[key].test((el.getAttribute('title')||'')+' '+(el.getAttribute('aria-label')||'')+' '+(el.textContent||'')));
       }
@@ -151,7 +162,14 @@ function ensure(){
     art.className='sak-ostrich-art';
     button.prepend(art);
   }
-  if(!art.querySelector('svg'))art.replaceChildren(buildGull());
+  if(art.dataset.sakCastleGraphic!=='1'){
+    art.replaceChildren();
+    art.textContent='🏰';
+    art.dataset.sakCastleGraphic='1';
+    art.style.setProperty('font-size','39px','important');
+    art.style.setProperty('line-height','1','important');
+    art.style.setProperty('filter','drop-shadow(0 0 8px #ffd975)','important');
+  }
   let label=button.querySelector(':scope > .sak-ostrich-name');
   if(!label){
     label=document.createElement('span');
