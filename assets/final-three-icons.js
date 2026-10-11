@@ -240,8 +240,9 @@ function placeSiteSoundAboveClock(){
   let top=window.innerHeight-btnHeight-10;
 
   if(paymentRect){
-    left=paymentRect.left+(paymentRect.width-btnWidth)/2;
-    top=paymentRect.bottom+8;
+    // Free the area below payment for the larger clock and date.
+    left=paymentRect.right+10;
+    top=paymentRect.top-btnHeight-17;
   }
 
   left=Math.max(8,Math.min(window.innerWidth-btnWidth-8,left));
@@ -420,7 +421,8 @@ function syncSiteBackgroundLock(){
     return;
   }
 
-  /* Install Facebook reels after login too; initial page load skips them while locked. */
+  /* Install Facebook reels and original clock after login; keep the login page light. */
+  loadPaymentClock();
   installFacebookEmbeds();
 
   /* The video is intentionally absent during login. Create it now, once,
@@ -586,7 +588,7 @@ function loadVisitorCounterModule(){
   visitorCounterModuleRequested=true;
   const script=document.createElement('script');
   script.type='module';
-  script.src='/assets/visitor-counter.js?v=20261007-visitor1';
+  script.src='/assets/visitor-counter.js?v=20261011-glowclock1';
   script.onerror=()=>{visitorCounterModuleRequested=false;};
   document.head.appendChild(script);
 }
@@ -604,6 +606,18 @@ function ensureCastleTourLauncher(){
   document.head.appendChild(script);
 }
 
+let sitePaymentClockRequested=false;
+function loadPaymentClock(){
+  if(sitePaymentClockRequested||document.getElementById('sakPaymentClockScript'))return;
+  sitePaymentClockRequested=true;
+  const script=document.createElement('script');
+  script.id='sakPaymentClockScript';
+  script.src='/assets/payment-clock.js?v=20261011-glowclock1';
+  script.async=true;
+  script.onerror=()=>{sitePaymentClockRequested=false;script.remove()};
+  document.head.appendChild(script);
+}
+
 function settle(){
   loadVisitorCounterModule();
   installSiteBackgroundStyle();
@@ -613,6 +627,7 @@ function settle(){
   if(isLocked())return;
 
   installFacebookEmbeds();
+  loadPaymentClock();
   ensureCastleTourLauncher();
   ensureSiteBackground();
   rebuildIconAppearance();
@@ -626,6 +641,7 @@ window.addEventListener('load',settle,{once:true});
 new MutationObserver(()=>{
   if(isLocked())return;
   installFacebookEmbeds();
+  loadPaymentClock();
   ensureCastleTourLauncher();
   ensureSiteBackground();
   rebuildIconAppearance();

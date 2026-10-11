@@ -61,14 +61,13 @@ import {
     const root = $("sakakerVisitorCounter");
     if (!root) return;
     root.setAttribute("aria-label", "إحصاءات زوار موقع سكاكر");
-  }
-
-  function getSessionFlag(key) {
-    try { return sessionStorage.getItem(key); } catch (_) { return null; }
-  }
-
-  function setSessionFlag(key) {
-    try { sessionStorage.setItem(key, "1"); } catch (_) {}
+    for (const id of ["svcSessionTotal", "svcSessionToday"]) {
+      const metric = $(id);
+      if (!metric) continue;
+      const item = metric.closest(".svc-item");
+      if (item?.previousElementSibling?.classList.contains("svc-sep")) item.previousElementSibling.remove();
+      item?.remove();
+    }
   }
 
   function riyadhDayKey(date = new Date()) {
@@ -105,17 +104,6 @@ import {
     return value;
   }
 
-  const sessionTotalEl = addMetric(
-    "svcSessionTotal", "↗️", "جلسات الزيارة منذ التحديث", "Visit sessions since update",
-    "يبدأ هذا الإجمالي من تاريخ تفعيل عداد الجلسات.",
-    "This total starts when session tracking is enabled."
-  );
-  const sessionTodayEl = addMetric(
-    "svcSessionToday", "📈", "جلسات الزيارة اليوم", "Visit sessions today",
-    "عدد جلسات فتح الموقع اليوم.",
-    "Number of site visit sessions today."
-  );
-
   configureLabel(onlineEl, "المتواجدون الآن", "Online now");
   configureLabel(uniqueTotalEl, "الزوار الفريدون إجمالًا", "Unique visitors total");
   configureLabel(uniqueTodayEl, "زوار فريدون اليوم", "Unique visitors today");
@@ -134,7 +122,62 @@ import {
       @media(max-width:650px){html body #sakakerVisitorCounter{bottom:max(6px,env(safe-area-inset-bottom))!important;gap:3px!important;padding:5px!important}
         html body #sakakerVisitorCounter .svc-item{flex:1 1 30%!important;font-size:10px!important;gap:3px!important}
         html body #sakakerVisitorCounter .svc-icon{font-size:11px!important}}
-      @media(max-width:380px){html body #sakakerVisitorCounter .svc-item{flex:1 1 45%!important;font-size:9px!important}}
+      @media(max-width:380px){html body #sakakerVisitorCounter .svc-item{flex:1 1 32%!important;font-size:9px!important}}
+      html body #sakakerVisitorCounter{
+        border:1.5px solid rgba(162,255,227,.88)!important;
+        border-radius:20px!important;
+        background:linear-gradient(110deg,rgba(2,21,40,.86),rgba(8,65,57,.83),rgba(64,28,75,.82))!important;
+        box-shadow:0 0 10px rgba(55,250,227,.65),0 0 20px rgba(235,152,255,.45),inset 0 0 14px rgba(110,252,217,.11)!important;
+        animation:sakCounterGlowShift 12s linear infinite!important;
+        isolation:isolate!important;
+      }
+      html body #sakakerVisitorCounter .svc-item{
+        border-radius:12px!important;
+        background:rgba(4,19,35,.30)!important;
+        color:#fcf8d2!important;
+        text-shadow:0 0 4px #fff9c6,0 0 9px #1cf8db!important;
+        animation:sakCounterTextShift 12s linear infinite!important;
+      }
+      html body #sakakerVisitorCounter strong,
+      html body #sakakerVisitorCounter .svc-label,
+      html body #sakakerVisitorCounter .svc-icon{
+        color:inherit!important;-webkit-text-fill-color:currentColor!important;
+        text-shadow:inherit!important;
+      }
+      html body #sakakerVisitorCounter .svc-item:nth-child(2){animation-delay:-4s!important}
+      html body #sakakerVisitorCounter .svc-item:nth-child(3){animation-delay:-8s!important}
+      @keyframes sakCounterTextShift{
+        0%,100%{color:#b0fff1;text-shadow:0 0 5px #fff,0 0 12px #28ffe2}
+        25%{color:#ffe19b;text-shadow:0 0 5px #fff4d8,0 0 14px #ffd26a}
+        50%{color:#e9c3ff;text-shadow:0 0 5px #fff,0 0 14px #bf7bff}
+        75%{color:#a6d9ff;text-shadow:0 0 5px #fff,0 0 14px #43b6ff}
+      }
+      @keyframes sakCounterGlowShift{
+        0%,100%{border-color:#70ffe2;box-shadow:0 0 11px #40ffe49c,0 0 20px #49b7ffc4}
+        33%{border-color:#ffe9a9;box-shadow:0 0 11px #ffd372b3,0 0 20px #f99ff7a3}
+        66%{border-color:#e4b2ff;box-shadow:0 0 11px #b677ffbc,0 0 20px #52d9ff93}
+      }
+      @media(max-width:700px){
+        html body #sakakerVisitorCounter{
+          left:auto!important;right:max(6px,env(safe-area-inset-right))!important;
+          bottom:max(107px,calc(96px + env(safe-area-inset-bottom)))!important;
+          transform:none!important;
+          width:calc(100vw - 115px)!important;
+          max-width:310px!important;
+          gap:2px!important;padding:5px 4px!important;
+        }
+        html body #sakakerVisitorCounter .svc-item{
+          flex:1 1 31%!important;
+          min-width:0!important;
+          font-size:9px!important;
+          gap:2px!important;
+          padding-inline:2px!important;
+        }
+      }
+      @media(prefers-reduced-motion:reduce){
+        html body #sakakerVisitorCounter,
+        html body #sakakerVisitorCounter .svc-item{animation:none!important}
+      }
     `;
     document.head.append(style);
   }
@@ -144,7 +187,7 @@ import {
     document.querySelectorAll("#sakakerVisitorCounter .svc-label").forEach(label => {
       label.textContent = isEn ? label.dataset.en : label.dataset.ar;
     });
-    [onlineEl, uniqueTotalEl, uniqueTodayEl, sessionTotalEl, sessionTodayEl].forEach(el => {
+    [onlineEl, uniqueTotalEl, uniqueTodayEl].forEach(el => {
       if (!el) return;
       if (el.dataset.titleAr || el.dataset.titleEn) {
         el.title = isEn ? (el.dataset.titleEn || "") : (el.dataset.titleAr || "");
@@ -206,14 +249,6 @@ import {
     });
     watch(`daily_${dayKey}`, snapshot => {
       uniqueTodayEl.dataset.value = String(snapshot.exists() ? Number(snapshot.data().count || 0) : 0);
-      updateCounterLanguage();
-    });
-    watch("sessionVisits", snapshot => {
-      sessionTotalEl.dataset.value = String(snapshot.exists() ? Number(snapshot.data().count || 0) : 0);
-      updateCounterLanguage();
-    });
-    watch(`dailySessionVisits_${dayKey}`, snapshot => {
-      sessionTodayEl.dataset.value = String(snapshot.exists() ? Number(snapshot.data().count || 0) : 0);
       updateCounterLanguage();
     });
   }
@@ -300,7 +335,6 @@ import {
     ]);
 
     const uniqueUid = uniqueCredential.user.uid;
-    const sessionUid = sessionCredential.user.uid;
     let dayKey = riyadhDayKey();
     watchCounters(dayKey);
     const stopPresence = startPresence(sessionCredential.user);
@@ -311,15 +345,6 @@ import {
       { id: `daily_${dayKey}`, date: dayKey }
     ]).catch(error => console.warn("SAKAKER unique visitor write:", error));
 
-    const pageSessionKey = `sakakerVisitSessionRegistered:${dayKey}`;
-    if (getSessionFlag(pageSessionKey) !== "1") {
-      await registerCounterMarks(sessionUid, [
-        { id: "sessionVisits" },
-        { id: `dailySessionVisits_${dayKey}`, date: dayKey }
-      ]).then(() => setSessionFlag(pageSessionKey))
-        .catch(error => console.warn("SAKAKER session visit write:", error));
-    }
-
     window.setInterval(async () => {
       try {
         const nextDay = riyadhDayKey();
@@ -327,11 +352,6 @@ import {
         dayKey = nextDay;
         watchCounters(dayKey);
         await registerCounterMarks(uniqueUid, [{ id: `daily_${dayKey}`, date: dayKey }]);
-        const nextSessionKey = `sakakerVisitSessionRegistered:${dayKey}`;
-        if (getSessionFlag(nextSessionKey) !== "1") {
-          await registerCounterMarks(sessionUid, [{ id: `dailySessionVisits_${dayKey}`, date: dayKey }]);
-          setSessionFlag(nextSessionKey);
-        }
       } catch (error) {
         console.warn("SAKAKER daily visitor rollover:", error);
       }
