@@ -136,8 +136,8 @@ import {
       html body #sakakerVisitorCounter .svc-item{
         border-radius:12px!important;
         background:rgba(4,19,35,.30)!important;
-        color:#fcf8d2!important;
-        text-shadow:0 0 4px #fff9c6,0 0 9px #1cf8db!important;
+        color:#fcf8d2;
+        text-shadow:0 0 4px #fff9c6,0 0 9px #1cf8db;
         animation:sakCounterTextShift 9s steps(1,end) infinite!important;
       }
       html body #sakakerVisitorCounter strong,
