@@ -34,8 +34,13 @@ function update(){
  let originalLink=document.getElementById('sakEbookArabicOriginal');
  if(!originalLink){originalLink=document.createElement('a');originalLink.id='sakEbookArabicOriginal';originalLink.target='_blank';originalLink.rel='noopener';originalLink.style.cssText='color:#d8ffef;text-decoration:underline;padding:5px';reader.querySelector('#sakDirectReaderHead')?.append(originalLink);}
  status.hidden=!lang();originalLink.hidden=!lang();
- if(!lang()){return;}
  const originalId=getOriginalId(selection);
+ if(!lang()){
+   const originalSrc='https://drive.google.com/file/d/'+originalId+'/preview';
+   if(!iframe.src.includes('/'+originalId+'/'))iframe.src=originalSrc;
+   download.href='https://drive.google.com/uc?export=download&id='+originalId;
+   return;
+ }
  status.textContent=note();
  originalLink.textContent='📘 Open Arabic original';
  originalLink.href='https://drive.google.com/file/d/'+originalId+'/view';
