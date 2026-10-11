@@ -25,11 +25,22 @@
   <section id="formPanel" class="panel hidden"><div class="section-title"><h2 id="formTitle"></h2><button id="closeForm" class="quiet" type="button" aria-label="إغلاق">×</button></div><p id="formHint" class="note"></p><form id="postForm" class="formgrid"><select id="category"><option value="story">قصة</option><option value="poetry">شعر</option><option value="opinion">رأي</option><option value="suggestion">اقتراح للموقع</option></select><input id="postTitle" maxlength="100" placeholder="عنوان المنشور" required><textarea id="postBody" maxlength="6000" placeholder="اكتب هنا…" required></textarea><button class="primary" type="submit" data-t="publishNow">نشر فوري</button></form><div id="profileInfo" class="note hidden"></div></section>
   <section id="feedbackPanel" class="panel hidden"><div class="section-title"><h2 data-t="feedback">البلاغات والاقتراحات</h2><button id="closeFeedback" class="quiet" type="button">×</button></div><p class="note" data-t="feedbackHint">تصل الرسالة إلى المشرف فقط، ولا تظهر للعامة.</p><form id="feedbackForm" class="formgrid"><select id="feedbackType"><option value="report" data-t="report">بلاغ</option><option value="suggestion" data-t="suggestion">اقتراح</option></select><textarea id="feedbackText" maxlength="2000" required placeholder="اكتب البلاغ أو الاقتراح"></textarea><button class="primary" type="submit" data-t="sendFeedback">إرسال للمشرف</button></form></section>
   <nav class="tabs" aria-label="التنقل"><button class="tab" data-view="public" aria-selected="true" data-t="publicSpace">الساحة العامة</button><button class="tab" data-view="members" aria-selected="false" data-t="memberPages">صفحات الأعضاء</button><button class="tab hidden" id="repliesTab" data-view="replies" aria-selected="false" data-t="moderatorReplies">ردود المشرف</button><button class="tab hidden" id="adminTab" data-view="admin" aria-selected="false" data-t="adminPanel">لوحة المشرف</button></nav>
-  <section id="publicView" class="panel"><div class="section-title"><h2 data-t="latest">أحدث المشاركات العامة</h2><button id="pagePublishBtn" class="primary hidden" type="button">انشر في صفحتي</button></div><div class="filters" id="filters"></div><div id="posts" class="list"></div></section>
+  <section id="publicView" class="panel"><div class="section-title"><h2 data-t="latest">أحدث المشاركات العامة</h2><button id="pagePublishBtn" class="primary hidden" type="button">انشر في صفحتي</button></div><div class="filters" id="filters"></div>
+  <section id="memberEditor" class="panel hidden">
+    <h3 data-t="memberEditorTitle">النشر في الصفحة الشخصية</h3>
+    <p id="memberEditorHint" class="note" data-t="memberEditorHint">يمكن لصاحب الصفحة إضافة منشورات هنا مباشرة.</p>
+    <form id="memberPostForm" class="formgrid hidden">
+      <select id="memberCategory"><option value="story" data-t="story">قصة</option><option value="poetry" data-t="poetry">شعر</option><option value="opinion" data-t="opinion">رأي</option><option value="suggestion" data-t="suggestion">اقتراح</option></select>
+      <input id="memberPostTitle" maxlength="100" required placeholder="عنوان المنشور">
+      <textarea id="memberPostBody" maxlength="6000" required placeholder="اكتب منشور صفحتك هنا…"></textarea>
+      <button type="submit" class="primary" data-t="publishNow">نشر فوري</button>
+    </form>
+  </section>
+  <div id="posts" class="list"></div></section>
   <section id="membersView" class="panel hidden"><h2 data-t="membersTitle">صفحات الأعضاء</h2><p class="note" data-t="membersHint">تُنشأ الصفحة فقط عندما يطلب صاحب الحساب ذلك.</p><div id="members" class="list"></div></section>
   <section id="repliesView" class="panel hidden"><h2 data-t="repliesTitle">ردود المشرف</h2><p class="note" data-t="repliesHint">تظهر ردود المشرف هنا في مساحة مستقلة.</p><div id="replies" class="list"></div></section>
   <section id="adminView" class="panel moderation hidden"><h2 data-t="adminPanel">لوحة المشرف</h2><p class="note" data-t="adminHint">إدارة المنشورات والحظر والردود. الردود تظهر في قسمها المستقل.</p><h3 data-t="feedback">البلاغات والاقتراحات</h3><div id="adminFeedback" class="list"></div><h3 data-t="latest">أحدث المشاركات العامة</h3><div id="adminPosts" class="list"></div><h3 data-t="banned">الحسابات المحظورة</h3><div id="banned" class="list"></div></section>
 </main>
 <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
-<script type="module" src="/assets/castle-forum.js"></script>
+<script type="module" src="/assets/castle-forum.js?v=20261012-page-editor-2"></script>
 </body></html>
