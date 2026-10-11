@@ -90,12 +90,35 @@ service cloud.firestore {
       allow update: if false;
       allow delete: if isAdmin();
     }
+    match /castleForumProfilePosts/{postId} {
+      allow read: if true;
+      allow create: if isNotBanned()
+        && request.resource.data.keys().hasOnly(["profileUid", "authorUid", "authorName", "title", "body", "category", "createdAt"])
+        && request.resource.data.profileUid == request.auth.uid
+        && request.resource.data.authorUid == request.auth.uid
+        && exists(/databases/$(database)/documents/castleForumProfiles/$(request.auth.uid))
+        && validDisplayName(request.resource.data.authorName)
+        && request.resource.data.title is string
+        && request.resource.data.title.size() > 0
+        && request.resource.data.title.size() <= 100
+        && request.resource.data.body is string
+        && request.resource.data.body.size() > 0
+        && request.resource.data.body.size() <= 6000
+        && request.resource.data.category in ["story", "poetry", "opinion", "suggestion"]
+        && request.resource.data.createdAt == request.time;
+      allow update: if false;
+      allow delete: if isAdmin();
+    }
     match /castleForumReplies/{replyId} {
       allow read: if true;
       allow create: if isAdmin()
-        && request.resource.data.keys().hasOnly(["postId", "postTitle", "text", "authorName", "createdAt"])
+        && request.resource.data.keys().hasOnly(["postId", "postType", "postTitle", "text", "authorName", "createdAt"])
         && request.resource.data.postId is string
-        && exists(/databases/$(database)/documents/castleForumPosts/$(request.resource.data.postId))
+        && request.resource.data.postType in ["public", "profile"]
+        && ((request.resource.data.postType == "public"
+            && exists(/databases/$(database)/documents/castleForumPosts/$(request.resource.data.postId)))
+          || (request.resource.data.postType == "profile"
+            && exists(/databases/$(database)/documents/castleForumProfilePosts/$(request.resource.data.postId))))
         && request.resource.data.postTitle is string
         && request.resource.data.postTitle.size() <= 100
         && request.resource.data.text is string
@@ -104,6 +127,27 @@ service cloud.firestore {
         && request.resource.data.authorName == 'إدارة المنتدى'
         && request.resource.data.createdAt == request.time;
       allow update, delete: if false;
+    }
+    match /castleForumReports/{reportId} {
+      allow read: if isAdmin();
+      allow create: if isNotBanned()
+        && request.resource.data.keys().hasOnly(["reporterUid", "reporterName", "type", "title", "details", "pagePath", "reference", "createdAt"])
+        && request.resource.data.reporterUid == request.auth.uid
+        && validDisplayName(request.resource.data.reporterName)
+        && request.resource.data.type in ["inappropriate", "suggestion", "technical", "other"]
+        && request.resource.data.title is string
+        && request.resource.data.title.size() > 0
+        && request.resource.data.title.size() <= 100
+        && request.resource.data.details is string
+        && request.resource.data.details.size() > 0
+        && request.resource.data.details.size() <= 3000
+        && request.resource.data.pagePath is string
+        && request.resource.data.pagePath.size() <= 200
+        && request.resource.data.reference is string
+        && request.resource.data.reference.size() <= 300
+        && request.resource.data.createdAt == request.time;
+      allow update: if false;
+      allow delete: if isAdmin();
     }
     match /castleForumBans/{uid} {
       allow get: if isAdmin() || (signedIn() && request.auth.uid == uid);
