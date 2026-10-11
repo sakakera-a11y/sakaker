@@ -66,8 +66,9 @@ service cloud.firestore {
     match /castleForumPosts/{postId} {
       allow read: if true;
       allow create: if isNotBanned()
-        && request.resource.data.keys().hasOnly(["authorUid", "authorName", "title", "body", "category", "createdAt"])
+        && request.resource.data.keys().hasOnly(["authorUid", "authorName", "title", "body", "category", "createdAt", "targetUid"])
         && request.resource.data.authorUid == request.auth.uid
+        && (!request.resource.data.keys().hasAny(["targetUid"]) || (request.resource.data.targetUid == request.auth.uid && exists(/databases/$(database)/documents/castleForumProfiles/$(request.auth.uid))))
         && validDisplayName(request.resource.data.authorName)
         && request.resource.data.title is string
         && request.resource.data.title.size() > 0
