@@ -73,16 +73,36 @@ function openTour(){
         videos:'#emeraldLibraryButton',
         live:'#liveFlasher',
         games:'#sakEntertainmentStationBtn,#pongGame-btn',
+        chess:'#sakEmeraldChessIcon',
+        pong:'#pongGame-btn',
         creative:'#sakCreativeIcon',
+        music:'#emOpenBtn',
         maps:'#mapIcon,.launcher[data-map]',
         visitors:'#visitorPostsCard',
-        shopping:'#sakShoppingIcon'
+        shopping:'#sakShoppingIcon',
+        news:'#sakNewsLaunch',
+        facebook:'#facebookVideoIcon'
       };
-      const route={books:'/books.html',videos:'/videos.html',live:'/live.html',games:'/pong.html',creative:'/draw.html'};
-      if(!['books','videos','live','games','creative','maps','visitors','shopping','stories'].includes(key))return;
+      const route={books:'/books.html',videos:'/videos.html',live:'/live.html',games:'/pong.html',pong:'/pong.html',creative:'/draw.html',audioVideo:'/audio-video.html',about:'/'};
+      if(!['books','videos','live','games','chess','pong','music','audioVideo','creative','maps','visitors','shopping','stories','culture','riddles','quiz','news','facebook','about'].includes(key))return;
       let target=selectors[key]?document.querySelector(selectors[key]):null;
       if(!target){
-        const phrases={books:/المكتبة النصية|Text Library/i,stories:/خواطر|قصص|Stories/i,maps:/الخرائط|Maps/i,visitors:/مشاركات الزوار|Visitor Posts/i,shopping:/التسوق والعروض|Shopping/i};
+        const phrases={
+          books:/المكتبة\s*النصية|Text\s*Library|الكتب\s*الإلكترونية/i,
+          stories:/خواطر|قصص|Stories|Reflections/i,
+          maps:/الخرائط|Maps/i,
+          visitors:/مشاركات\s*الزوار|Visitor\s*Posts/i,
+          shopping:/التسوق\s*والعروض|Shopping|Offers/i,
+          chess:/الشطرنج|Chess/i,
+          pong:/البونج|Pong/i,
+          music:/الموسيقى|Music|تحويل\s*الصوت/i,
+          culture:/ثقافة|Culture|معرفة|Knowledge/i,
+          riddles:/ألغاز|Riddles|Puzzle/i,
+          quiz:/اختبر\s*معلوماتك|Quiz|Test\s*Your\s*Knowledge/i,
+          news:/الأخبار|أخبار\s*الموقع|News/i,
+          facebook:/فيس\s*بوك|Facebook/i,
+          about:/تعريف|About/i
+        };
         if(phrases[key])target=[...document.querySelectorAll('button,a,.icon-card,[role="button"]')].find(el=>!el.closest('#sakCastleTourOverlay')&&phrases[key].test((el.getAttribute('title')||'')+' '+(el.getAttribute('aria-label')||'')+' '+(el.textContent||'')));
       }
       if(target){close();setTimeout(()=>target.isConnected?target.click():route[key]&&location.assign(route[key]),110)}

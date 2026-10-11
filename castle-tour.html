@@ -112,6 +112,7 @@ button,a{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible
 }
 
 </style>
+<link rel="stylesheet" href="/assets/castle-museum-wayfinding.css?v=20261011-gallery1">
 </head>
 <body>
 <div id="stage">
@@ -260,6 +261,7 @@ function openFilm(){
  $('filmClose').focus();
 }
 function closeFilm(){const film=$('castleFilm');film.pause();film.currentTime=0;$('filmViewer').classList.remove('open');if(ambient.on){natureAudio.play().catch(()=>{})}resumeFromMuseum();}
+window.SakCastleMuseum={pause:pauseForMuseum,resume:resumeFromMuseum,openFilm};
 const rail=$('museumRail');
 wings.forEach(w=>{const b=document.createElement('button');b.type='button';b.className='museumTile';b.setAttribute('aria-label',w.ar+' / '+w.en);const glyph=document.createElement('span');glyph.setAttribute('aria-hidden','true');glyph.textContent=w.icon;const label=document.createElement('span');label.dataset.wingLabel=w.id;label.textContent=mText(w.ar,w.en);b.append(glyph,label);b.addEventListener('click',()=>openMuseum(w.id));rail.appendChild(b)});
 $('museumClose').addEventListener('click',()=>closeMuseum());
@@ -290,5 +292,6 @@ renderLanguage();doorTimer=setTimeout(start,1100);
 if(window.parent!==window)window.parent.postMessage({type:'sak-castle-ready'},location.origin);
 })();
 </script>
+<script src="/assets/castle-museum-gallery.js?v=20261011-gallery1"></script>
 </body>
 </html>
