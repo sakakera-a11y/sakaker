@@ -10,7 +10,10 @@
   const totalEl = $("svcTotal");
   const todayEl = $("svcToday");
   if (!root || !onlineEl || !totalEl || !todayEl) return;
-  if (!new Set(["sakaker.co", "www.sakaker.co"]).has(location.hostname)) return;
+  const previewHostSuffix = ".sakaker-pages-test.pages.dev";
+  const isPreviewHost = location.hostname === "sakaker-pages-test.pages.dev"
+    || location.hostname.endsWith(previewHostSuffix);
+  if (!new Set(["sakaker.co", "www.sakaker.co"]).has(location.hostname) && !isPreviewHost) return;
 
   const HEARTBEAT_MS = 20_000;
   const visitorId = stableId(localStorage, "sakakerVisitorId");
