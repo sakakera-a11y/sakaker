@@ -1,6 +1,13 @@
 const LEGACY_UNIQUE_VISITORS = 1410;
 const ACTIVE_WINDOW_MS = 60_000;
 const ALLOWED_HOSTS = new Set(["sakaker.co", "www.sakaker.co"]);
+const PREVIEW_HOST_SUFFIX = ".sakaker-pages-test.pages.dev";
+
+function isAllowedHost(hostname) {
+  return ALLOWED_HOSTS.has(hostname)
+    || hostname === "sakaker-pages-test.pages.dev"
+    || hostname.endsWith(PREVIEW_HOST_SUFFIX);
+}
 
 function json(request, body, status = 200) {
   const origin = request.headers.get("Origin");
@@ -19,7 +26,7 @@ function json(request, body, status = 200) {
 function validRequest(request) {
   const url = new URL(request.url);
   const origin = request.headers.get("Origin");
-  return ALLOWED_HOSTS.has(url.hostname)
+  return isAllowedHost(url.hostname)
     && (!origin || origin === url.origin);
 }
 
