@@ -612,7 +612,7 @@ function loadPaymentClock(){
   sitePaymentClockRequested=true;
   const script=document.createElement('script');
   script.id='sakPaymentClockScript';
-  script.src='/assets/payment-clock.js?v=20261011-clockcenter2';
+  script.src='/assets/payment-clock.js?v=20261011-bottomreadable3';
   script.async=true;
   script.onerror=()=>{sitePaymentClockRequested=false;script.remove()};
   document.head.appendChild(script);

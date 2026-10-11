@@ -35,10 +35,10 @@ function positionVisitorClock(host) {
   host.style.setProperty("left","50%","important");
   host.style.setProperty("right","auto","important");
   host.style.setProperty("top","auto","important");
-  host.style.setProperty("bottom","max(8px, env(safe-area-inset-bottom))","important");
+  host.style.setProperty("bottom","max(3px, env(safe-area-inset-bottom))","important");
   host.style.setProperty("transform","translateX(-50%)","important");
   host.style.setProperty("width","calc(50vw - 16px)","important");
-  host.style.setProperty("height","42px","important");
+  host.style.setProperty("height","54px","important");
   host.style.setProperty("max-width","calc(50vw - 16px)","important");
   const dock=document.getElementById("sakakerAllIconsDock");
   if(dock)dock.style.setProperty("bottom","max(62px, calc(54px + env(safe-area-inset-bottom)))","important");
@@ -66,9 +66,9 @@ function installVisitorPosts() {
     @media(max-width:800px){html body #sakFestiveHeader #sakHolidayCountdowns{grid-column:1/-1!important;grid-row:2!important;width:100%!important;max-width:none!important;justify-self:stretch!important}}
     @media(max-width:380px){html body #sakFestiveHeader #sakHolidayCountdowns{gap:4px!important}html body #sakFestiveHeader #sakHolidayCountdowns>:is(.sak-festival,#sakNewsLaunch,#visitorPostsSection){height:64px!important;min-height:64px!important;max-height:64px!important;padding:4px!important}html body #sakFestiveHeader #sakHolidayCountdowns>#visitorPostsSection #visitorPostsCard{gap:2px!important}html body #sakFestiveHeader #sakHolidayCountdowns>#visitorPostsSection .visitor-gull{width:22px!important;height:20px!important}}
     #sakakerNewsSlot:empty,#sakakerNewsSlot.visitor-slot-empty,#sakakerClockSlot:empty{display:none!important;width:0!important;height:0!important;min-height:0!important;max-height:0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
-    #visitorClockDock{position:fixed!important;left:50%!important;right:auto!important;top:auto!important;bottom:max(8px,env(safe-area-inset-bottom))!important;transform:translateX(-50%)!important;z-index:2147482999!important;min-width:0!important;padding:4px 8px!important;color:#fff!important;text-align:center!important;pointer-events:none!important;overflow:hidden!important}
+    #visitorClockDock{position:fixed!important;left:50%!important;right:auto!important;top:auto!important;bottom:max(3px,env(safe-area-inset-bottom))!important;transform:translateX(-50%)!important;z-index:2147482999!important;min-width:0!important;min-height:50px!important;max-height:64px!important;padding:4px 8px!important;color:#fff!important;text-align:center!important;pointer-events:none!important;overflow:visible!important}
     #visitorClockDock::before{content:"◷";display:inline-block;margin-inline-end:6px;color:#ffe27a;font:700 18px/1 Arial,sans-serif;text-shadow:0 0 8px rgba(255,215,0,.5);vertical-align:middle}
-    #visitorClockDock .visitor-clock-dock-content{box-sizing:border-box!important;display:inline-block!important;vertical-align:middle!important;width:auto!important;max-width:calc(100% - 30px)!important;height:auto!important;max-height:30px!important;margin:0!important;color:#fff!important;font:700 9px/1.25 Tahoma,Arial,sans-serif!important;text-align:center!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+    #visitorClockDock .visitor-clock-dock-content{box-sizing:border-box!important;display:inline-block!important;vertical-align:middle!important;width:auto!important;max-width:calc(100% - 30px)!important;height:auto!important;max-height:none!important;margin:0!important;color:#fff!important;font:800 13px/1.35 Tahoma,Arial,sans-serif!important;text-align:center!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important;text-shadow:0 0 4px #fff,0 0 9px #ffb65e!important}
     #visitorPostsCard{box-sizing:border-box!important;width:100%!important;height:100%!important;min-height:0!important;max-width:100%!important;padding:2px 5px!important;display:flex!important;flex-direction:row;align-items:center;justify-content:center;gap:6px;border:0!important;border-radius:12px!important;background:transparent!important;color:#fff3bd;box-shadow:none!important;font:800 11px Tahoma,Arial,sans-serif;cursor:pointer;touch-action:manipulation;pointer-events:auto!important;position:relative!important;z-index:2147482998!important}
     #visitorPostsCard:focus-visible{outline:3px solid #fff1a8;outline-offset:3px}
     #visitorPostsCard .visitor-gull{width:28px;height:24px;flex:none}
@@ -79,7 +79,8 @@ function installVisitorPosts() {
     @media(prefers-reduced-motion:reduce){#visitorPostsCard .visitor-click-hint{animation:none;color:#ffeb00}}
     :is(.sak-festival,.news-ticker) :is(p,h1,h2,h3){margin:0!important}
     @media(max-width:600px){:is(.sak-festival,.news-ticker,#visitorPostsSection,#visitorClockDock){height:40px!important;min-height:40px!important;max-height:40px!important;padding:4px 6px!important;border-radius:14px!important}#visitorPostsSection{margin:6px 4px!important}#visitorPostsCard{gap:4px}#visitorPostsCard .visitor-gull{width:25px;height:21px}#visitorClockDock{width:calc(50vw - 16px)!important;max-width:calc(50vw - 16px)!important}}
-    #visitorPostsOverlay{position:fixed;inset:0;z-index:2147483000;background:rgba(2,10,15,.88);display:none;place-items:center;padding:clamp(6px,2vw,24px)}
+    @media(max-width:700px){html body #visitorClockDock{height:54px!important;min-height:50px!important;max-height:64px!important;padding:5px 4px!important}html body #visitorClockDock .visitor-clock-dock-content{font-size:12px!important;line-height:1.35!important;white-space:normal!important;max-height:none!important;overflow:visible!important}}
+        #visitorPostsOverlay{position:fixed;inset:0;z-index:2147483000;background:rgba(2,10,15,.88);display:none;place-items:center;padding:clamp(6px,2vw,24px)}
     #visitorPostsOverlay.open{display:grid}
     #visitorPostsLoading{display:none;position:absolute;inset:0;z-index:1;place-items:center;margin:0;padding:22px;color:#fff;font:700 16px/1.6 Tahoma,Arial,sans-serif;text-align:center;pointer-events:none}
     #visitorPostsOverlay.loading #visitorPostsLoading,#visitorPostsOverlay.needs-signin #visitorPostsLoading{display:grid}
