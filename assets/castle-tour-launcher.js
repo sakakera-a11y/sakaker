@@ -15,6 +15,8 @@ function installStyle(){
     'html body #sakakerAllIconsDock #sakCastleTourBtn::before,html body #sakakerAllIconsDock #sakCastleTourBtn::after,html body #sakakerAllIconsDock [data-sakaker-util="castleTour"]::before,html body #sakakerAllIconsDock [data-sakaker-util="castleTour"]::after{content:none!important;display:none!important;}',
     'html body #sakakerAllIconsDock #sakCastleTourBtn .sak-ostrich-art,html body #sakakerAllIconsDock #sakCastleTourBtn .sak-ostrich-name{background:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}',
     'html body #sakakerAllIconsDock #sakCastleTourBtn .sak-ostrich-art{filter:drop-shadow(0 0 5px #ffeeb2) drop-shadow(0 0 12px #ffc42b)!important;}',
+    /* Symbol-only launcher. Preserve an accessible name on the button itself. */
+    'html body #sakakerAllIconsDock #sakCastleTourBtn .sak-ostrich-name,html body #sakCastleTourBtn > .sak-ostrich-name{display:none!important;visibility:hidden!important;pointer-events:none!important;}',
     'body.locked #sakCastleTourBtn,body.sak-ebook-layer-open #sakCastleTourBtn,body.sakaker-fb-popup-open #sakCastleTourBtn{visibility:hidden!important;pointer-events:none!important;}',
     '#sakCastleTourBtn:focus-visible{outline:2px solid #ffe68a!important;outline-offset:3px!important;}',
     '@media(prefers-reduced-motion:reduce){#sakCastleTourBtn .sak-ostrich-art{animation:none!important;}}'
@@ -181,7 +183,7 @@ function ensure(){
     button.appendChild(label);
   }
   const title=english()?'Castle Tour':'جولة القلعة';
-  if(label.textContent!==title)label.textContent=title;
+  if(label.textContent)label.textContent=''; // Icon only; aria-label remains descriptive
   if(button.title!==title)button.title=title;
   if(button.getAttribute('aria-label')!==title)button.setAttribute('aria-label',title);
   if(button.dataset.sakCastleBound!=='1'){
