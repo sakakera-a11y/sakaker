@@ -105,7 +105,7 @@ import {
   }
 
   configureLabel(onlineEl, "المتواجدون الآن", "Online now");
-  configureLabel(uniqueTotalEl, "الزوار الفريدون إجمالًا", "Unique visitors total");
+  configureLabel(uniqueTotalEl, "الزوار الفريدون (تقديري)", "Estimated unique visitors");
   configureLabel(uniqueTodayEl, "زوار فريدون اليوم", "Unique visitors today");
 
   const styleId = "sakakerVisitorCounterV2Style";
@@ -128,7 +128,7 @@ import {
         border-radius:20px!important;
         background:linear-gradient(110deg,rgba(2,21,40,.86),rgba(8,65,57,.83),rgba(64,28,75,.82))!important;
         box-shadow:0 0 10px rgba(55,250,227,.65),0 0 20px rgba(235,152,255,.45),inset 0 0 14px rgba(110,252,217,.11)!important;
-        animation:sakCounterGlowShift 12s linear infinite!important;
+        animation:sakCounterGlowShift 9s steps(1,end) infinite!important;
         isolation:isolate!important;
       }
       html body #sakakerVisitorCounter .svc-item{
@@ -136,7 +136,7 @@ import {
         background:rgba(4,19,35,.30)!important;
         color:#fcf8d2!important;
         text-shadow:0 0 4px #fff9c6,0 0 9px #1cf8db!important;
-        animation:sakCounterTextShift 12s linear infinite!important;
+        animation:sakCounterTextShift 9s steps(1,end) infinite!important;
       }
       html body #sakakerVisitorCounter strong,
       html body #sakakerVisitorCounter .svc-label,
@@ -144,18 +144,19 @@ import {
         color:inherit!important;-webkit-text-fill-color:currentColor!important;
         text-shadow:inherit!important;
       }
-      html body #sakakerVisitorCounter .svc-item:nth-child(2){animation-delay:-4s!important}
-      html body #sakakerVisitorCounter .svc-item:nth-child(3){animation-delay:-8s!important}
+      html body #sakakerVisitorCounter .svc-item:nth-child(2){animation-delay:-3s!important}
+      html body #sakakerVisitorCounter .svc-item:nth-child(3){animation-delay:-6s!important}
       @keyframes sakCounterTextShift{
-        0%,100%{color:#b0fff1;text-shadow:0 0 5px #fff,0 0 12px #28ffe2}
-        25%{color:#ffe19b;text-shadow:0 0 5px #fff4d8,0 0 14px #ffd26a}
-        50%{color:#e9c3ff;text-shadow:0 0 5px #fff,0 0 14px #bf7bff}
-        75%{color:#a6d9ff;text-shadow:0 0 5px #fff,0 0 14px #43b6ff}
+        0%,32.999%{color:#b0fff1;text-shadow:0 0 5px #fff,0 0 12px #28ffe2}
+        33.333%,66.665%{color:#ffe19b;text-shadow:0 0 5px #fff4d8,0 0 14px #ffd26a}
+        66.666%,99.999%{color:#e9c3ff;text-shadow:0 0 5px #fff,0 0 14px #bf7bff}
+        100%{color:#b0fff1;text-shadow:0 0 5px #fff,0 0 12px #28ffe2}
       }
       @keyframes sakCounterGlowShift{
-        0%,100%{border-color:#70ffe2;box-shadow:0 0 11px #40ffe49c,0 0 20px #49b7ffc4}
-        33%{border-color:#ffe9a9;box-shadow:0 0 11px #ffd372b3,0 0 20px #f99ff7a3}
-        66%{border-color:#e4b2ff;box-shadow:0 0 11px #b677ffbc,0 0 20px #52d9ff93}
+        0%,32.999%{border-color:#70ffe2;box-shadow:0 0 11px #40ffe49c,0 0 20px #49b7ffc4}
+        33.333%,66.665%{border-color:#ffe9a9;box-shadow:0 0 11px #ffd372b3,0 0 20px #f99ff7a3}
+        66.666%,99.999%{border-color:#e4b2ff;box-shadow:0 0 11px #b677ffbc,0 0 20px #52d9ff93}
+        100%{border-color:#70ffe2;box-shadow:0 0 11px #40ffe49c,0 0 20px #49b7ffc4}
       }
       @media(max-width:700px){
         html body #sakakerVisitorCounter{
@@ -243,8 +244,8 @@ import {
     watch("visits", snapshot => {
       const newUnique = snapshot.exists() ? Number(snapshot.data().count || 0) : 0;
       uniqueTotalEl.dataset.value = String(HISTORICAL_UNIQUE_VISITORS + newUnique);
-      uniqueTotalEl.dataset.titleEn = "Verified Cloudflare historical unique visitors plus Firebase unique visitors";
-      uniqueTotalEl.dataset.titleAr = "زوار فريدون تاريخيون موثقون من Cloudflare مضافًا إليهم زوار Firebase الفريدون";
+      uniqueTotalEl.dataset.titleEn = "Estimate: 1,410 historical Cloudflare unique visitors plus Firebase distinct anonymous accounts. Not a page-view total; overlap may occur.";
+      uniqueTotalEl.dataset.titleAr = "تقدير: ١٤١٠ زائرًا فريدًا تاريخيًا من Cloudflare مضافًا إليهم حسابات Firebase الفريدة؛ لا يمثل إجمالي مشاهدات الصفحات وقد يحدث تداخل.";
       updateCounterLanguage();
     });
     watch(`daily_${dayKey}`, snapshot => {
@@ -299,7 +300,7 @@ import {
       const records = snapshot.val() || {};
       Object.entries(records).forEach(([key, item]) => {
         const lastSeen = Number(item?.lastSeen);
-        if (item && item.uid === key && item.status === "available"
+        if (item && item.uid === key && ["available", "playing", "busy"].includes(item.status)
           && Number.isFinite(lastSeen) && lastSeen >= cutoff) {
           sessions.add(key);
         }

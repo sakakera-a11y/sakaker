@@ -588,7 +588,7 @@ function loadVisitorCounterModule(){
   visitorCounterModuleRequested=true;
   const script=document.createElement('script');
   script.type='module';
-  script.src='/assets/visitor-counter.js?v=20261011-glowclock1';
+  script.src='/assets/visitor-counter.js?v=20261011-clockcenter2';
   script.onerror=()=>{visitorCounterModuleRequested=false;};
   document.head.appendChild(script);
 }
@@ -612,7 +612,7 @@ function loadPaymentClock(){
   sitePaymentClockRequested=true;
   const script=document.createElement('script');
   script.id='sakPaymentClockScript';
-  script.src='/assets/payment-clock.js?v=20261011-glowclock1';
+  script.src='/assets/payment-clock.js?v=20261011-clockcenter2';
   script.async=true;
   script.onerror=()=>{sitePaymentClockRequested=false;script.remove()};
   document.head.appendChild(script);
