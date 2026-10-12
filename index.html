@@ -4357,7 +4357,7 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
 @media(max-width:700px){html,body{max-width:100%;overflow-x:hidden}button,[role="button"],.icon-card{touch-action:manipulation}#shipPopup_new{border-radius:16px!important}#closeShip_new{position:sticky!important;top:0!important;float:inline-end!important;z-index:2!important}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
-<link rel="stylesheet" href="/assets/live-media-refresh.css?v=20261008-window-palette2">
+<link rel="stylesheet" href="/assets/live-media-refresh.css?v=20261008-window-palette4">
 </head>
 <body>
 
@@ -4500,7 +4500,13 @@ birdBtn.addEventListener('click',async e=>{
     </div>
 
 <div class="fbVideoFrame">
-<iframe loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen="true" frameborder="0" height="493" scrolling="no" src="https://www.facebook.com/plugins/video.php?height=378&amp;href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1028563299794826%2F&amp;show_text=true&amp;width=560&amp;t=0" style="border:none;overflow:hidden" width="560">
+<iframe loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen="true" frameborder="0" height="591" scrolling="no" src="https://www.facebook.com/plugins/video.php?height=476&amp;href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1028563299794826%2F&amp;show_text=true&amp;width=267&amp;t=0" style="display:block;border:none;overflow:hidden;width:267px;max-width:100%;height:591px;min-height:591px;margin:0 auto 12px" width="267" title="Facebook Reel 1">
+</iframe>
+<iframe loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen="true" frameborder="0" height="591" scrolling="no" src="https://www.facebook.com/plugins/video.php?height=476&amp;href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1439785018105026%2F&amp;show_text=true&amp;width=267&amp;t=0" style="display:block;border:none;overflow:hidden;width:267px;max-width:100%;height:591px;min-height:591px;margin:0 auto 12px" width="267" title="Facebook Reel 2">
+</iframe>
+<iframe loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen="true" frameborder="0" height="591" scrolling="no" src="https://www.facebook.com/plugins/video.php?height=476&amp;href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1713298586438007%2F&amp;show_text=true&amp;width=267&amp;t=0" style="display:block;border:none;overflow:hidden;width:267px;max-width:100%;height:591px;min-height:591px;margin:0 auto 12px" width="267" title="Facebook Reel 3">
+</iframe>
+<iframe loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen="true" frameborder="0" height="591" scrolling="no" src="https://www.facebook.com/plugins/video.php?height=476&amp;href=https%3A%2F%2Fwww.facebook.com%2Freel%2F2073566429948129%2F&amp;show_text=true&amp;width=267&amp;t=0" style="display:block;border:none;overflow:hidden;width:267px;max-width:100%;height:591px;min-height:591px;margin:0 auto 12px" width="267" title="Facebook Reel 4">
 </iframe>
 </div>
 
@@ -5451,6 +5457,81 @@ birdBtn.addEventListener('click',async e=>{
     <strong id="svcToday">0</strong>
   </div>
 </div>
+
+<script type="module" id="sakaker-visitor-counter-firebase-fix">
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+import {
+  getDatabase, ref, onValue, onDisconnect, set, remove, runTransaction, push
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
+
+(async function(){
+  const onlineEl = document.getElementById('svcOnline');
+  const totalEl = document.getElementById('svcTotal');
+  const todayEl = document.getElementById('svcToday');
+  if(!onlineEl || !totalEl || !todayEl) return;
+
+  const config = {
+    apiKey: "AIzaSyCZw747d_KJa85KTDSOVI8EeX_J9Grpqrk",
+    authDomain: "sakaker-9247f.firebaseapp.com",
+    databaseURL: "https://sakaker-9247f-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "sakaker-9247f",
+    storageBucket: "sakaker-9247f.firebasestorage.app",
+    messagingSenderId: "689588937441",
+    appId: "1:689588937441:web:4d17a1d02e72189bbfcda0",
+    measurementId: "G-RB0V6GTVER"
+  };
+  try {
+    const app = getApps().length ? getApp() : initializeApp(config);
+    const db = getDatabase(app);
+    const day = new Date();
+    const dayKey = day.getFullYear() + '-' + String(day.getMonth()+1).padStart(2,'0') + '-' + String(day.getDate()).padStart(2,'0');
+    const stats = ref(db, 'sakakerVisitorStats');
+    const totalRef = ref(db, 'sakakerVisitorStats/total');
+    const todayRef = ref(db, 'sakakerVisitorStats/daily/' + dayKey);
+    const onlineRef = ref(db, 'sakakerVisitorStats/online');
+    const sessionRef = push(onlineRef);
+
+    // Count each browser once per local day; the database keeps the shared totals.
+    const visitKey = 'sakaker_counter_counted_' + dayKey;
+    if(!localStorage.getItem(visitKey)) {
+      await runTransaction(totalRef, n => (Number(n)||0) + 1);
+      await runTransaction(todayRef, n => (Number(n)||0) + 1);
+      try { localStorage.setItem(visitKey, '1'); } catch(e) {}
+    }
+
+    await set(sessionRef, { since: Date.now() });
+    try { await onDisconnect(sessionRef).remove(); } catch(e) {}
+    onValue(totalRef, snap => {
+      totalEl.textContent = String(Number(snap.val()) || 0);
+      totalEl.removeAttribute('data-state');
+    }, err => {
+      totalEl.textContent = '—'; totalEl.dataset.state = 'error';
+      console.warn('Visitor total counter:', err);
+    });
+    onValue(todayRef, snap => {
+      todayEl.textContent = String(Number(snap.val()) || 0);
+      todayEl.removeAttribute('data-state');
+    }, err => {
+      todayEl.textContent = '—'; todayEl.dataset.state = 'error';
+      console.warn('Visitor daily counter:', err);
+    });
+    onValue(onlineRef, snap => {
+      const data = snap.val() || {};
+      onlineEl.textContent = String(Object.keys(data).length);
+      onlineEl.removeAttribute('data-state');
+    }, err => {
+      onlineEl.textContent = '—'; onlineEl.dataset.state = 'error';
+      console.warn('Visitor online counter:', err);
+    });
+    window.addEventListener('pagehide', () => { remove(sessionRef).catch(()=>{}); }, {once:true});
+  } catch(err) {
+    [onlineEl,totalEl,todayEl].forEach(el => {
+      el.textContent = '—'; el.dataset.state = 'error';
+    });
+    console.error('SAKAKER visitor counter failed. Check Firebase Realtime Database rules and connection.', err);
+  }
+})();
+</script>
 
 <style>
 #sakakerVisitorCounter{
@@ -38573,6 +38654,11 @@ body.locked #sakakerWorldNews{visibility:hidden!important}
   let newsLoadToken = 0;
 
   function currentLang(){
+    let saved = '';
+    try{
+      saved = localStorage.getItem('sakakerLanguage') || '';
+    }catch(e){}
+    if(saved === 'en' || saved === 'ar') return saved;
     return document.documentElement.lang === 'en' ? 'en' : 'ar';
   }
 
@@ -38666,51 +38752,62 @@ body.locked #sakakerWorldNews{visibility:hidden!important}
     }catch(e){}
   }
 
-  async function fetchWithTimeout(url,timeoutMs){
+  async function fetchWithTimeout(url,timeoutMs,provider){
     const controller = new AbortController();
     const timer = setTimeout(function(){controller.abort();},timeoutMs);
+    const requestUrl = provider === 'corsdev'
+      ? 'https://proxy.cors.dev/' + url
+      : 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
 
     try{
-      const proxy = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
-
-      const response = await fetch(proxy,{
+      const response = await fetch(requestUrl,{
         signal:controller.signal,
-        cache:'no-store'
+        cache:'no-store',
+        credentials:'omit'
       });
 
       if(!response.ok) throw new Error('HTTP ' + response.status);
 
-      return await response.json();
+      if(provider === 'corsdev'){
+        return await response.text();
+      }
+
+      const data = await response.json();
+      if(!data || typeof data.contents !== 'string'){
+        throw new Error('Empty RSS response');
+      }
+      return data.contents;
     } finally {
       clearTimeout(timer);
     }
   }
 
-  async function fetchFeed(name,url){
-    try{
-      const data = await fetchWithTimeout(url,9000);
-      if(!data || !data.contents) return [];
+  function parseNewsTitles(raw,name){
+    const xml = new DOMParser().parseFromString(raw,'text/xml');
+    if(xml.querySelector('parsererror')) return [];
 
-      const xml = new DOMParser().parseFromString(data.contents,'text/xml');
-      if(xml.querySelector('parsererror')) return [];
-
-      const nodes = Array.from(xml.querySelectorAll('item, entry')).slice(0,4);
-      const results = [];
-
-      nodes.forEach(function(node){
+    return Array.from(xml.querySelectorAll('item, entry'))
+      .slice(0,4)
+      .map(function(node){
         const titleNode = node.querySelector('title');
-        if(!titleNode) return;
+        const title = titleNode
+          ? (titleNode.textContent || '').replace(/\s+/g,' ').trim()
+          : '';
+        return title ? '(' + name + ') ' + title : '';
+      })
+      .filter(Boolean);
+  }
 
-        const title = (titleNode.textContent || '').replace(/\s+/g,' ').trim();
-        if(!title) return;
-
-        results.push('(' + name + ') ' + title);
-      });
-
-      return results;
-    }catch(e){
-      return [];
+  async function fetchFeed(name,url){
+    /* جرب وسيطين مستقلين؛ تعطل أحدهما لا يوقف بقية المصادر. */
+    for(const provider of ['corsdev','allorigins']){
+      try{
+        const raw = await fetchWithTimeout(url,7000,provider);
+        const items = parseNewsTitles(raw,name);
+        if(items.length) return items;
+      }catch(e){}
     }
+    return [];
   }
 
   async function loadWorldNews(){
@@ -38731,7 +38828,7 @@ body.locked #sakakerWorldNews{visibility:hidden!important}
       );
     }
 
-    const feeds = (NEWS_FEEDS[lang] || NEWS_FEEDS.ar).slice(0,4);
+    const feeds = (NEWS_FEEDS[lang] || NEWS_FEEDS.ar).slice(0,12);
 
     const settled = await Promise.allSettled(
       feeds.map(function(pair){
@@ -38752,7 +38849,7 @@ body.locked #sakakerWorldNews{visibility:hidden!important}
     const seen = new Set();
 
     items = items.filter(function(item){
-      const key = item.toLowerCase().replace(/[^\p{L}\p{N}]+/gu,' ').trim();
+      const key = item.replace(/^\([^)]*\)\s*/,'').toLowerCase().replace(/[^\p{L}\p{N}]+/gu,' ').trim();
 
       if(!key || seen.has(key)) return false;
 
@@ -39544,6 +39641,9 @@ html body #sakFestiveHeader #sakHolidayCountdowns #sakakerWatermarkClock{grid-co
 html body #sakFestiveHeader #sakHolidayCountdowns #sakakerWatermarkClock>time{font-size:9px!important}
 html body #sakNewsLaunch{grid-column:2;grid-row:2;justify-self:stretch;min-height:36px;pointer-events:auto!important;cursor:pointer;border:1px solid #dfbade77;border-radius:10px;padding:4px 5px;color:#fff0fb;background:linear-gradient(120deg,#144757b0,#6b3b64a6);font:700 10px/1.4 Tahoma,Arial,sans-serif;box-shadow:inset 0 1px 0 #ffffff33;text-align:center}
 #sakNewsLaunch:focus-visible{outline:2px solid #fff;outline-offset:3px}
+#sakNewsLaunch .sak-news-prompt{display:block;animation:sakPromptColorFlash 2.4s steps(1,end) infinite}
+@keyframes sakPromptColorFlash{0%,100%{color:#ffeb00;text-shadow:0 0 8px #ffeb00}16.66%{color:#32aaff;text-shadow:0 0 8px #32aaff}33.33%{color:#111;text-shadow:0 0 6px #fff}50%{color:#fff;text-shadow:0 0 8px #fff}66.66%{color:#ff4141;text-shadow:0 0 8px #ff4141}83.33%{color:#43f06b;text-shadow:0 0 8px #43f06b}}
+@media(prefers-reduced-motion:reduce){#sakNewsLaunch .sak-news-prompt{animation:none;color:#ffeb00}}
 html body #sakakerWorldNews{display:none!important}
 html body #sakGlobalPayment{bottom:max(52px,calc(46px + env(safe-area-inset-bottom)))!important}
 html body #sakPaymentPanel{max-height:calc(100dvh - 145px)!important}
@@ -39570,7 +39670,7 @@ html body #sakNewsDialog[open]{display:flex!important;flex-direction:column!impo
  const content=dialog.querySelector('#sakNewsContent'),title=dialog.querySelector('#sakNewsTitle'),close=dialog.querySelector('#sakNewsClose');
  function render(){
   const en=document.documentElement.lang==='en';
-  launch.textContent=en?'📰 News · Click to open ↗':'📰 الأخبار · اضغط للفتح ↗';
+  launch.innerHTML=en?'📰 News <span class="sak-news-prompt">Click to open</span> ↗':'📰 الأخبار <span class="sak-news-prompt">اضغط للفتح</span> ↗';
   launch.setAttribute('aria-label',en?'Open news window':'اضغط لفتح نافذة الأخبار');
   title.textContent=en?'News · Sports · Economy':'الأخبار · الرياضة · الاقتصاد';
   close.setAttribute('aria-label',en?'Close news':'إغلاق الأخبار');dialog.dir=en?'ltr':'rtl';
@@ -40568,6 +40668,32 @@ const stories=[
       ]
     }
   }
+
+  ,
+  {
+    "ar": {
+      "title": "🌱 التقدم والحياة",
+      "lead": "رحلة قصيرة عن التعلم والصبر وصناعة مستقبل أفضل",
+      "paragraphs": [
+        "كان سالم يظن أن التقدم يعني الوصول سريعًا إلى نهاية الطريق، لكنه اكتشف مع الأيام أن الحياة لا تُقاس بسرعة الخطوات وحدها، بل بما نتعلمه في أثناء السير.",
+        "بدأ سالم كل صباح بعادة صغيرة: يقرأ صفحة، ويتعلم مهارة، ويصلح خطأً واحدًا. لم تتغير حياته في يوم واحد، لكن هذه الخطوات البسيطة تراكمت، وصار ما كان صعبًا بالأمس أسهل اليوم.",
+        "وحين واجه الفشل، لم يعد يراه نهايةً للمحاولة؛ بل رسالةً تكشف له ما يحتاج إلى تغييره. استشار أصحاب الخبرة، وأعاد ترتيب أولوياته، وتعلم أن الصبر لا يعني الانتظار بلا عمل، بل الاستمرار مع حسن الاختيار.",
+        "ومع مرور الوقت، فهم أن التقدم الحقيقي لا يكون على حساب الآخرين، وأن النجاح الأجمل هو ما يجمع بين تطوير النفس ونفع الناس. فالحياة تمنح فرصًا كثيرة لمن يلاحظها ويستعد لها ويعامل من حوله باحترام.",
+        "ومنذ ذلك اليوم، صار سالم يقارن نفسه بما كان عليه بالأمس، لا بما يملكه الآخرون. أدرك أن خطوة صادقة كل يوم قد تصنع طريقًا طويلًا، وأن الحياة رحلة تعلم مستمرة، يزداد معناها حين نشارك خيرها مع غيرنا."
+      ]
+    },
+    "en": {
+      "title": "🌱 Progress and Life",
+      "lead": "A short journey about learning, patience, and building a better future",
+      "paragraphs": [
+        "Salem once believed progress meant reaching the end of the road quickly. Over time, he discovered that life is measured not only by the speed of our steps, but also by what we learn along the way.",
+        "Each morning, he began with one small habit: reading a page, learning a skill, or correcting one mistake. His life did not change in a single day, but these modest steps accumulated, and what had been difficult yesterday became easier today.",
+        "When he faced failure, he stopped treating it as the end of an attempt. Instead, he saw it as a message showing what needed to change. He asked experienced people for advice, reordered his priorities, and learned that patience is not passive waiting; it is steady effort guided by good judgment.",
+        "As time passed, he understood that real progress should not come at the expense of others. The most meaningful success combines personal growth with helping people. Life offers many opportunities to those who notice them, prepare for them, and treat others with respect.",
+        "From then on, Salem compared himself with who he had been yesterday, not with what other people owned. He realized that one honest step each day can create a long path, and that life is a continuing journey of learning whose meaning grows when we share its good with others."
+      ]
+    }
+  }
 ];
 window.showKhwater=function(host){
   const body=host || document.getElementById('folderBody');
@@ -41287,7 +41413,37 @@ html body .sak-index-link span{font-size:22px!important}
 }
 </style>
 
+<script type="module" src="/assets/visitor-posts.js?v=20261009-15"></script>
 <script type="module" src="assets/sakaker-live.js"></script>
-<script src="/assets/live-media-refresh.js?v=20261008-window-palette2" defer></script>
+<script src="/assets/live-media-refresh.js?v=20261008-window-palette4" defer></script>
+<style id="facebook-video-mobile-responsive">
+#facebookVideoPopup{
+  box-sizing:border-box!important;width:100vw!important;height:100dvh!important;max-width:100vw!important;max-height:100dvh!important;
+  padding:max(10px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left))!important;
+  overflow:auto!important;overscroll-behavior:contain!important;align-items:center!important;justify-content:center!important
+}
+#facebookVideoPopup .fbVideoBox{
+  box-sizing:border-box!important;width:min(620px,100%)!important;min-width:0!important;max-width:100%!important;
+  max-height:100%!important;overflow:auto!important;overscroll-behavior:contain!important
+}
+#facebookVideoPopup .fbVideoFrame{width:100%!important;min-width:0!important;overflow:hidden!important}
+#facebookVideoPopup .fbVideoFrame iframe{
+  display:block!important;width:min(267px,100%)!important;max-width:100%!important;
+  height:591px!important;min-height:591px!important;max-height:none!important;flex:0 1 267px!important;border:0!important
+}
+@media(max-width:600px){
+  #facebookVideoPopup{align-items:flex-start!important;justify-content:center!important}
+  #facebookVideoPopup .fbVideoBox{
+    width:100%!important;max-width:100%!important;max-height:100%!important;
+    padding:10px!important;border-radius:16px!important
+  }
+  #facebookVideoPopup .fbVideoTitle{padding-inline:42px!important}
+}
+@media(max-width:360px){
+  #facebookVideoPopup .fbVideoBox{padding:8px!important}
+}
+</style>
+<script defer src="/ebook-translation-status.js"></script>
+<script defer src="/assets/castle-forum-launcher.js?v=20261012-auth-local-5"></script>
 </body>
 </html>
