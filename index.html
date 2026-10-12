@@ -5458,81 +5458,6 @@ birdBtn.addEventListener('click',async e=>{
   </div>
 </div>
 
-<script type="module" id="sakaker-visitor-counter-firebase-fix">
-import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-import {
-  getDatabase, ref, onValue, onDisconnect, set, remove, runTransaction, push
-} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
-
-(async function(){
-  const onlineEl = document.getElementById('svcOnline');
-  const totalEl = document.getElementById('svcTotal');
-  const todayEl = document.getElementById('svcToday');
-  if(!onlineEl || !totalEl || !todayEl) return;
-
-  const config = {
-    apiKey: "AIzaSyCZw747d_KJa85KTDSOVI8EeX_J9Grpqrk",
-    authDomain: "sakaker-9247f.firebaseapp.com",
-    databaseURL: "https://sakaker-9247f-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "sakaker-9247f",
-    storageBucket: "sakaker-9247f.firebasestorage.app",
-    messagingSenderId: "689588937441",
-    appId: "1:689588937441:web:4d17a1d02e72189bbfcda0",
-    measurementId: "G-RB0V6GTVER"
-  };
-  try {
-    const app = getApps().length ? getApp() : initializeApp(config);
-    const db = getDatabase(app);
-    const day = new Date();
-    const dayKey = day.getFullYear() + '-' + String(day.getMonth()+1).padStart(2,'0') + '-' + String(day.getDate()).padStart(2,'0');
-    const stats = ref(db, 'sakakerVisitorStats');
-    const totalRef = ref(db, 'sakakerVisitorStats/total');
-    const todayRef = ref(db, 'sakakerVisitorStats/daily/' + dayKey);
-    const onlineRef = ref(db, 'sakakerVisitorStats/online');
-    const sessionRef = push(onlineRef);
-
-    // Count each browser once per local day; the database keeps the shared totals.
-    const visitKey = 'sakaker_counter_counted_' + dayKey;
-    if(!localStorage.getItem(visitKey)) {
-      await runTransaction(totalRef, n => (Number(n)||0) + 1);
-      await runTransaction(todayRef, n => (Number(n)||0) + 1);
-      try { localStorage.setItem(visitKey, '1'); } catch(e) {}
-    }
-
-    await set(sessionRef, { since: Date.now() });
-    try { await onDisconnect(sessionRef).remove(); } catch(e) {}
-    onValue(totalRef, snap => {
-      totalEl.textContent = String(Number(snap.val()) || 0);
-      totalEl.removeAttribute('data-state');
-    }, err => {
-      totalEl.textContent = '—'; totalEl.dataset.state = 'error';
-      console.warn('Visitor total counter:', err);
-    });
-    onValue(todayRef, snap => {
-      todayEl.textContent = String(Number(snap.val()) || 0);
-      todayEl.removeAttribute('data-state');
-    }, err => {
-      todayEl.textContent = '—'; todayEl.dataset.state = 'error';
-      console.warn('Visitor daily counter:', err);
-    });
-    onValue(onlineRef, snap => {
-      const data = snap.val() || {};
-      onlineEl.textContent = String(Object.keys(data).length);
-      onlineEl.removeAttribute('data-state');
-    }, err => {
-      onlineEl.textContent = '—'; onlineEl.dataset.state = 'error';
-      console.warn('Visitor online counter:', err);
-    });
-    window.addEventListener('pagehide', () => { remove(sessionRef).catch(()=>{}); }, {once:true});
-  } catch(err) {
-    [onlineEl,totalEl,todayEl].forEach(el => {
-      el.textContent = '—'; el.dataset.state = 'error';
-    });
-    console.error('SAKAKER visitor counter failed. Check Firebase Realtime Database rules and connection.', err);
-  }
-})();
-</script>
-
 <style>
 #sakakerVisitorCounter{
   position:fixed;
@@ -40667,32 +40592,31 @@ const stories=[
         "At first light the route became clear again, yet the journey left behind something more lasting: adventure is not always about reaching a distant place; sometimes it is about seeing a familiar world differently and discovering yourself when the noise around you fades."
       ]
     }
-  }
-
-  ,
+  },
   {
     "ar": {
       "title": "🌱 التقدم والحياة",
-      "lead": "رحلة قصيرة عن التعلم والصبر وصناعة مستقبل أفضل",
+      "lead": "حكاية عن الصبر والتعلّم والخطوات الصغيرة التي تصنع مستقبلًا أفضل",
       "paragraphs": [
-        "كان سالم يظن أن التقدم يعني الوصول سريعًا إلى نهاية الطريق، لكنه اكتشف مع الأيام أن الحياة لا تُقاس بسرعة الخطوات وحدها، بل بما نتعلمه في أثناء السير.",
-        "بدأ سالم كل صباح بعادة صغيرة: يقرأ صفحة، ويتعلم مهارة، ويصلح خطأً واحدًا. لم تتغير حياته في يوم واحد، لكن هذه الخطوات البسيطة تراكمت، وصار ما كان صعبًا بالأمس أسهل اليوم.",
-        "وحين واجه الفشل، لم يعد يراه نهايةً للمحاولة؛ بل رسالةً تكشف له ما يحتاج إلى تغييره. استشار أصحاب الخبرة، وأعاد ترتيب أولوياته، وتعلم أن الصبر لا يعني الانتظار بلا عمل، بل الاستمرار مع حسن الاختيار.",
-        "ومع مرور الوقت، فهم أن التقدم الحقيقي لا يكون على حساب الآخرين، وأن النجاح الأجمل هو ما يجمع بين تطوير النفس ونفع الناس. فالحياة تمنح فرصًا كثيرة لمن يلاحظها ويستعد لها ويعامل من حوله باحترام.",
-        "ومنذ ذلك اليوم، صار سالم يقارن نفسه بما كان عليه بالأمس، لا بما يملكه الآخرون. أدرك أن خطوة صادقة كل يوم قد تصنع طريقًا طويلًا، وأن الحياة رحلة تعلم مستمرة، يزداد معناها حين نشارك خيرها مع غيرنا."
+        "كان هناك رجل يتمنى أن تتغير حياته بسرعة، فكان ينظر إلى أحلامه الكبيرة ثم يشعر أن الطريق طويل وأن ما يملكه من وقت وإمكانات لا يكفي. وكلما بدأ عملًا جديدًا استعجل النتيجة، فإذا تأخرت تركه وانتقل إلى فكرة أخرى.",
+        "في يوم من الأيام، التقى رجلًا حكيمًا يعتني بحديقة صغيرة. سأله عن سرّ نمو الأشجار، فأجابه: لا تكبر الشجرة لأننا نطلب منها ذلك، بل لأنها تحصل كل يوم على ما تحتاج إليه من ماء وضوء ورعاية. ثم أشار إلى شتلة صغيرة وقال: لا ترى تقدمها من ساعة إلى أخرى، لكنك ستراه إذا منحتها الوقت وواصلت العناية بها.",
+        "عاد الرجل إلى بيته وقرر أن يختار هدفًا واحدًا، وأن يقسمه إلى خطوات بسيطة يستطيع إنجازها كل يوم. كتب ما يريد تعلّمه، وحدد وقتًا للعمل، وسجل ما أنجزه وما يحتاج إلى تحسينه. وحين أخطأ لم يعد يعدّ الخطأ نهاية الطريق، بل صار يسأل نفسه عمّا يمكن أن يتعلمه منه.",
+        "مرت الأيام، ولم تتغير حياته في لحظة واحدة، لكنها بدأت تتغير فعلًا. تحسنت مهاراته، وزادت ثقته بنفسه، وصار أكثر هدوءًا في مواجهة الصعوبات. واكتشف أن الاستمرار لا يعني ألا نتعب، بل أن نرتاح عند الحاجة ثم نعود إلى الطريق.",
+        "وبعد مدة، نظر إلى الوراء فرأى المسافة التي قطعها، فعرف أن الإنجازات الكبيرة كانت مجموعة خطوات صغيرة لم يتوقف عن القيام بها. ومنذ ذلك اليوم فهم أن التقدم ليس سباقًا مع الآخرين، وأن الحياة تمنح ثمارها لمن يجمع بين الصبر والعمل والتعلم، ويحتفل بكل تحسن مهما بدا بسيطًا."
       ]
     },
     "en": {
       "title": "🌱 Progress and Life",
-      "lead": "A short journey about learning, patience, and building a better future",
+      "lead": "A tale about patience, learning, and the small steps that build a better future",
       "paragraphs": [
-        "Salem once believed progress meant reaching the end of the road quickly. Over time, he discovered that life is measured not only by the speed of our steps, but also by what we learn along the way.",
-        "Each morning, he began with one small habit: reading a page, learning a skill, or correcting one mistake. His life did not change in a single day, but these modest steps accumulated, and what had been difficult yesterday became easier today.",
-        "When he faced failure, he stopped treating it as the end of an attempt. Instead, he saw it as a message showing what needed to change. He asked experienced people for advice, reordered his priorities, and learned that patience is not passive waiting; it is steady effort guided by good judgment.",
-        "As time passed, he understood that real progress should not come at the expense of others. The most meaningful success combines personal growth with helping people. Life offers many opportunities to those who notice them, prepare for them, and treat others with respect.",
-        "From then on, Salem compared himself with who he had been yesterday, not with what other people owned. He realized that one honest step each day can create a long path, and that life is a continuing journey of learning whose meaning grows when we share its good with others."
+        "A man wished his life would change quickly. He looked at his big dreams and felt the road was too long and his time and resources too limited. Whenever he began something new, he hurried for results; if they did not come soon, he abandoned it and moved to another idea.",
+        "One day, he met a wise person caring for a small garden. He asked how trees grew. The gardener replied, ‘A tree does not grow because we demand it. It grows because, day after day, it receives the water, light, and care it needs.’ Then he pointed to a tiny seedling: ‘You cannot see its progress from one hour to the next, but you will see it if you give it time and keep caring for it.’",
+        "The man returned home and chose one goal, dividing it into simple steps he could complete each day. He wrote down what he wanted to learn, set aside time to work, and recorded what he achieved and what needed improvement. When he made a mistake, he stopped treating it as the end of the road and began asking what it could teach him.",
+        "Days passed, and his life did not change in a single moment, yet it truly began to change. His skills improved, his confidence grew, and he became calmer when facing difficulties. He discovered that persistence does not mean never getting tired; it means resting when necessary and then returning to the path.",
+        "Later, he looked back and saw how far he had travelled. He understood that great achievements were made of small steps he had continued to take. From then on, he knew progress was not a race against others. Life rewards those who combine patience, effort, and learning—and who celebrate every improvement, however small."
       ]
-    }
+    },
+    "serial": 8
   }
 ];
 window.showKhwater=function(host){
@@ -41445,5 +41369,76 @@ html body .sak-index-link span{font-size:22px!important}
 </style>
 <script defer src="/ebook-translation-status.js"></script>
 <script defer src="/assets/castle-forum-launcher.js?v=20261012-auth-local-5"></script>
+<!-- Visitor counter: uses the site's existing Firebase Realtime Database app. -->
+<script type="module" id="sakaker-visitor-counter-firebase-fix">
+import { getApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+import {
+  getDatabase, ref, onValue, onDisconnect, set, remove, runTransaction
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
+
+const onlineEl = document.getElementById('svcOnline');
+const totalEl = document.getElementById('svcTotal');
+const todayEl = document.getElementById('svcToday');
+const counterEl = document.getElementById('sakakerVisitorCounter');
+if (onlineEl && totalEl && todayEl && counterEl) {
+  const showError = (err) => {
+    console.error('[Sakaker visitor counter]', err);
+    [onlineEl, totalEl, todayEl].forEach(el => {
+      el.textContent = '—';
+      el.dataset.state = 'error';
+      el.title = 'تعذر الاتصال بعداد الزوار؛ تحقق من صلاحيات Firebase Realtime Database.';
+    });
+  };
+  try {
+    const app = getApp();
+    const database = getDatabase(app);
+    const pad = n => String(n).padStart(2, '0');
+    const now = new Date();
+    const dayKey = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
+    const todayVisitKey = `sakaker_counter_day_${dayKey}`;
+    const totalVisitKey = 'sakaker_counter_total_seen_v1';
+    let clientId = localStorage.getItem('sakaker_counter_client_v1');
+    if (!clientId) {
+      clientId = (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}_${Math.random().toString(36).slice(2)}`).replace(/[^a-zA-Z0-9_-]/g,'');
+      localStorage.setItem('sakaker_counter_client_v1', clientId);
+    }
+    const sessionId = `${clientId}_${Date.now().toString(36)}`;
+    const onlineRef = ref(database, `sakakerVisitorCounterV1/online/${sessionId}`);
+    const totalRef = ref(database, 'sakakerVisitorCounterV1/total');
+    const todayRef = ref(database, `sakakerVisitorCounterV1/daily/${dayKey}`);
+
+    // One total increment per browser profile; one daily increment per browser/day.
+    if (!localStorage.getItem(totalVisitKey)) {
+      const result = await runTransaction(totalRef, value => (Number(value) || 0) + 1);
+      if (result.committed) localStorage.setItem(totalVisitKey, '1');
+    }
+    if (!localStorage.getItem(todayVisitKey)) {
+      const result = await runTransaction(todayRef, value => (Number(value) || 0) + 1);
+      if (result.committed) localStorage.setItem(todayVisitKey, '1');
+    }
+
+    await onDisconnect(onlineRef).remove();
+    await set(onlineRef, { connectedAt: Date.now() });
+    onValue(ref(database, 'sakakerVisitorCounterV1/online'), snap => {
+      const val = snap.val();
+      onlineEl.textContent = String(val && typeof val === 'object' ? Object.keys(val).length : 0);
+      delete onlineEl.dataset.state;
+    }, showError);
+    onValue(totalRef, snap => {
+      totalEl.textContent = String(Number(snap.val()) || 0);
+      delete totalEl.dataset.state;
+    }, showError);
+    onValue(todayRef, snap => {
+      todayEl.textContent = String(Number(snap.val()) || 0);
+      delete todayEl.dataset.state;
+    }, showError);
+    const cleanUp = () => { remove(onlineRef).catch(()=>{}); };
+    window.addEventListener('pagehide', cleanUp, { once: true });
+  } catch (err) {
+    showError(err);
+  }
+}
+</script>
+
 </body>
 </html>
