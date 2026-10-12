@@ -38774,7 +38774,7 @@ body.locked #sakakerWorldNews{visibility:hidden!important}
     const seen = new Set();
 
     items = items.filter(function(item){
-      const key = item.replace(/^\\([^)]*\\)\\s*/,'').toLowerCase().replace(/[^\\p{L}\\p{N}]+/gu,' ').trim();
+      const key = item.replace(/^\([^)]*\)\s*/,'').toLowerCase().replace(/[^\p{L}\p{N}]+/gu,' ').trim();
 
       if(!key || seen.has(key)) return false;
 
