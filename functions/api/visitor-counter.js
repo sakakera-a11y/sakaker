@@ -2,14 +2,47 @@ const LEGACY_UNIQUE_VISITORS = 1410;
 const ACTIVE_WINDOW_MS = 60_000;
 const ALLOWED_HOSTS = new Set(["sakaker.co", "www.sakaker.co"]);
 const PREVIEW_HOST_SUFFIX = ".sakaker-pages-test.pages.dev";
+const LOCAL_ALLOWED_HOSTS = new Set(["localhost", "127.0.0.1"]);
+
+function normalizeAllowedOrigins(env = {}) {
+  const values = new Set();
+  const raw = env.ALLOWED_ORIGINS || env.ALLOWED_ORIGIN || "";
+  for (const item of String(raw).split(",")) {
+    const value = item.trim();
+    if (!value) continue;
+    values.add(value);
+    try {
+      values.add(new URL(value).origin);
+      values.add(new URL(value).hostname);
+    } catch (_) {
+      // Ignore malformed values; they are validated later.
+    }
+  }
+  return values;
+}
 
 function isAllowedHost(hostname) {
   return ALLOWED_HOSTS.has(hostname)
     || hostname === "sakaker-pages-test.pages.dev"
-    || hostname.endsWith(PREVIEW_HOST_SUFFIX);
+    || hostname.endsWith(PREVIEW_HOST_SUFFIX)
+    || LOCAL_ALLOWED_HOSTS.has(hostname)
+    || /(^|\.)vercel\.app$/i.test(hostname)
+    || /(^|\.)pages\.dev$/i.test(hostname);
 }
 
-function json(request, body, status = 200) {
+function isAllowedOrigin(origin, env = {}) {
+  if (!origin) return true;
+  try {
+    const url = new URL(origin);
+    const allowed = normalizeAllowedOrigins(env);
+    if (allowed.has(origin) || allowed.has(url.origin) || allowed.has(url.hostname)) return true;
+    return isAllowedHost(url.hostname);
+  } catch (_) {
+    return false;
+  }
+}
+
+function json(request, body, status = 200, env = {}) {
   const origin = request.headers.get("Origin");
   const requestOrigin = new URL(request.url).origin;
   const headers = {
@@ -17,17 +50,23 @@ function json(request, body, status = 200) {
     "Content-Type": "application/json; charset=utf-8",
     "Vary": "Origin"
   };
-  if (origin === requestOrigin) {
+
+  if (origin && isAllowedOrigin(origin, env)) {
+    headers["Access-Control-Allow-Origin"] = origin;
+    headers["Access-Control-Allow-Credentials"] = "true";
+  } else if (origin === requestOrigin) {
     headers["Access-Control-Allow-Origin"] = origin;
   }
+
   return new Response(JSON.stringify(body), { status, headers });
 }
 
-function validRequest(request) {
+function validRequest(request, env = {}) {
   const url = new URL(request.url);
   const origin = request.headers.get("Origin");
-  return isAllowedHost(url.hostname)
-    && (!origin || origin === url.origin);
+  const sameOrigin = !origin || origin === url.origin;
+  const externalOriginAllowed = !!origin && isAllowedOrigin(origin, env);
+  return isAllowedHost(url.hostname) && (sameOrigin || externalOriginAllowed);
 }
 
 function riyadhDayKey(date = new Date()) {
@@ -79,39 +118,42 @@ async function readCounts(db, dayKey, env) {
   };
 }
 
-export async function onRequestOptions({ request }) {
-  if (!validRequest(request)) return json(request, { error: "origin_not_allowed" }, 403);
+export async function onRequestOptions({ request, env }) {
+  if (!validRequest(request, env)) return json(request, { error: "origin_not_allowed" }, 403, env);
   const origin = request.headers.get("Origin");
-  return new Response(null, {
-    status: 204,
-    headers: {
-      "Access-Control-Allow-Origin": origin,
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
-      "Access-Control-Max-Age": "86400",
-      "Vary": "Origin"
-    }
-  });
+  const headers = {
+    "Access-Control-Allow-Origin": origin || new URL(request.url).origin,
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Max-Age": "86400",
+    "Vary": "Origin"
+  };
+
+  if (origin && isAllowedOrigin(origin, env)) {
+    headers["Access-Control-Allow-Credentials"] = "true";
+  }
+
+  return new Response(null, { status: 204, headers });
 }
 
 export async function onRequestGet({ request, env }) {
-  if (!validRequest(request)) return json(request, { error: "origin_not_allowed" }, 403);
-  if (!env.VISITOR_DB) return json(request, { error: "counter_not_configured" }, 503);
+  if (!validRequest(request, env)) return json(request, { error: "origin_not_allowed" }, 403, env);
+  if (!env.VISITOR_DB) return json(request, { error: "counter_not_configured" }, 503, env);
   try {
-    return json(request, await readCounts(env.VISITOR_DB, riyadhDayKey(), env));
+    return json(request, await readCounts(env.VISITOR_DB, riyadhDayKey(), env), 200, env);
   } catch (error) {
     console.error("Visitor counter read failed", error);
-    return json(request, { error: "counter_unavailable" }, 503);
+    return json(request, { error: "counter_unavailable" }, 503, env);
   }
 }
 
 export async function onRequestPost({ request, env }) {
-  if (!validRequest(request)) return json(request, { error: "origin_not_allowed" }, 403);
-  if (!env.VISITOR_DB) return json(request, { error: "counter_not_configured" }, 503);
+  if (!validRequest(request, env)) return json(request, { error: "origin_not_allowed" }, 403, env);
+  if (!env.VISITOR_DB) return json(request, { error: "counter_not_configured" }, 503, env);
   try {
     const body = await request.json();
     if (!validId(body?.visitorId) || !validId(body?.sessionId)) {
-      return json(request, { error: "invalid_visitor_id" }, 400);
+      return json(request, { error: "invalid_visitor_id" }, 400, env);
     }
 
     const now = Date.now();
@@ -136,9 +178,9 @@ export async function onRequestPost({ request, env }) {
       ).bind(now - ACTIVE_WINDOW_MS)
     ]);
 
-    return json(request, await readCounts(env.VISITOR_DB, dayKey, env));
+    return json(request, await readCounts(env.VISITOR_DB, dayKey, env), 200, env);
   } catch (error) {
     console.error("Visitor counter update failed", error);
-    return json(request, { error: "counter_unavailable" }, 503);
+    return json(request, { error: "counter_unavailable" }, 503, env);
   }
 }
