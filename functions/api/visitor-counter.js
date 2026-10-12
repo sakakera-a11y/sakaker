@@ -26,8 +26,21 @@ function json(request, body, status = 200) {
 function validRequest(request) {
   const url = new URL(request.url);
   const origin = request.headers.get("Origin");
-  return isAllowedHost(url.hostname)
-    && (!origin || origin === url.origin);
+
+  if (!isAllowedHost(url.hostname)) {
+    return false;
+  }
+
+  if (!origin) {
+    return true;
+  }
+
+  try {
+    const originUrl = new URL(origin);
+    return isAllowedHost(originUrl.hostname);
+  } catch {
+    return false;
+  }
 }
 
 function riyadhDayKey(date = new Date()) {
