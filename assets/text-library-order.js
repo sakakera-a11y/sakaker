@@ -137,6 +137,27 @@ const stories=[
   },
   {
     "ar": {
+      "title": "💫 حلم لا ينتهي",
+      "lead": "أحلام الإنسان لا تقرأ تقاويم العمر — تبتسم وتبكي في نفس الوقت",
+      "paragraphs": [
+        "ذات صباح قرّر رجل أن يبني قوس قزح في حديقته الصغيرة. جمع الأكواب والوسائد والشموع، ولكنّه نسى أن يسأل السماء عن الإذن فاستعان بجارٍ أعطاه سحابة ورق.",
+        "تذكّر أن عمره محدود واطّلع على جدول حياته فوجد أن خانة "الأحلام" ممتلئة إلى ما بعد تقاعده. ضحك، ثم بكى قليلاً، لأن القلب رفض أن يوافق على ذلك الجدول.",
+        "في النهاية، نام وهو يحلم بأن يواصل الحلم غدًا — لأنّ الأحلام لا تقرأ تاريخ الانتهاء، ولا تتوقف حتى لو توقف الجسم عن العدّ."
+      ]
+    },
+    "en": {
+      "title": "💫 An Endless Dream",
+      "lead": "Human dreams don't check the calendar — they grin and sob at once",
+      "paragraphs": [
+        "One morning a man decided to build a rainbow in his tiny garden. He gathered cups, cushions and candles, but forgot to ask the sky for permission, so a neighbor lent him a paper cloud.",
+        "He glanced at his life schedule and noticed the "dreams" column was booked well past his retirement. He laughed, then cried a little, because his heart refused to sign that timetable.",
+        "At last he went to sleep dreaming he would keep dreaming tomorrow — because dreams don't read expiration dates, and they don't stop simply because the body does."
+      ]
+    },
+    "serial": 7
+  },
+  {
+    "ar": {
       "title": "🌍 أبوالقمرزمرد والحياة والتقدم",
       "lead": "من اتساع الأرض إلى اتساع الفكر: كيف قرّبت وسائل التواصل الحديثة الناس رغم المسافات",
       "paragraphs": [
