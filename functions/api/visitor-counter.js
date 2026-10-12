@@ -51,16 +51,31 @@ async function hashId(value) {
   return [...new Uint8Array(digest)].map(byte => byte.toString(16).padStart(2, "0")).join("");
 }
 
-async function readCounts(db, dayKey) {
+function baselineCount(env, name, fallback = 0) {
+  const raw = env[name];
+  if (raw === undefined || raw === null || raw === "") return fallback;
+  const value = Number(raw);
+  if (!Number.isSafeInteger(value) || value < 0) {
+    throw new Error(`Invalid ${name} baseline`);
+  }
+  return value;
+}
+
+async function readCounts(db, dayKey, env) {
   const [visitors, today, active] = await Promise.all([
     db.prepare("SELECT COUNT(*) AS count FROM visitor_totals").first(),
     db.prepare("SELECT COUNT(*) AS count FROM daily_visitor_marks WHERE day = ?1").bind(dayKey).first(),
     db.prepare("SELECT COUNT(*) AS count FROM active_sessions WHERE last_seen >= ?1").bind(Date.now() - ACTIVE_WINDOW_MS).first()
   ]);
+  const totalBaseline = baselineCount(env, "VISITOR_TOTAL_BASELINE", LEGACY_UNIQUE_VISITORS);
+  const baselineDay = env.VISITOR_BASELINE_DAY || "";
+  const todayBaseline = baselineDay === dayKey
+    ? baselineCount(env, "VISITOR_TODAY_BASELINE", 0)
+    : 0;
   return {
     online: Number(active?.count || 0),
-    total: LEGACY_UNIQUE_VISITORS + Number(visitors?.count || 0),
-    today: Number(today?.count || 0)
+    total: totalBaseline + Number(visitors?.count || 0),
+    today: todayBaseline + Number(today?.count || 0)
   };
 }
 
@@ -83,7 +98,7 @@ export async function onRequestGet({ request, env }) {
   if (!validRequest(request)) return json(request, { error: "origin_not_allowed" }, 403);
   if (!env.VISITOR_DB) return json(request, { error: "counter_not_configured" }, 503);
   try {
-    return json(request, await readCounts(env.VISITOR_DB, riyadhDayKey()));
+    return json(request, await readCounts(env.VISITOR_DB, riyadhDayKey(), env));
   } catch (error) {
     console.error("Visitor counter read failed", error);
     return json(request, { error: "counter_unavailable" }, 503);
@@ -121,7 +136,7 @@ export async function onRequestPost({ request, env }) {
       ).bind(now - ACTIVE_WINDOW_MS)
     ]);
 
-    return json(request, await readCounts(env.VISITOR_DB, dayKey));
+    return json(request, await readCounts(env.VISITOR_DB, dayKey, env));
   } catch (error) {
     console.error("Visitor counter update failed", error);
     return json(request, { error: "counter_unavailable" }, 503);
