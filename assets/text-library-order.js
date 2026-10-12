@@ -33,7 +33,7 @@ const stories=[
       "For Abwalqmrzmrd, progress was not merely faster devices or larger screens. It was people’s ability to know one another, cooperate, and turn a multitude of ideas into shared knowledge instead of conflict. The Earth grows richer through its people, thought grows through dialogue, and technology serves us best when it brings one person closer to another and helps everyone strive, work, and build a better future."
     ]
   },
-  "serial": 7
+  "serial": 8
 },
   {
     "ar": {
