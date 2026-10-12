@@ -38579,6 +38579,11 @@ body.locked #sakakerWorldNews{visibility:hidden!important}
   let newsLoadToken = 0;
 
   function currentLang(){
+    let saved = '';
+    try{
+      saved = localStorage.getItem('sakakerLanguage') || '';
+    }catch(e){}
+    if(saved === 'en' || saved === 'ar') return saved;
     return document.documentElement.lang === 'en' ? 'en' : 'ar';
   }
 
@@ -38672,51 +38677,62 @@ body.locked #sakakerWorldNews{visibility:hidden!important}
     }catch(e){}
   }
 
-  async function fetchWithTimeout(url,timeoutMs){
+  async function fetchWithTimeout(url,timeoutMs,provider){
     const controller = new AbortController();
     const timer = setTimeout(function(){controller.abort();},timeoutMs);
+    const requestUrl = provider === 'corsdev'
+      ? 'https://proxy.cors.dev/' + url
+      : 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
 
     try{
-      const proxy = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
-
-      const response = await fetch(proxy,{
+      const response = await fetch(requestUrl,{
         signal:controller.signal,
-        cache:'no-store'
+        cache:'no-store',
+        credentials:'omit'
       });
 
       if(!response.ok) throw new Error('HTTP ' + response.status);
 
-      return await response.json();
+      if(provider === 'corsdev'){
+        return await response.text();
+      }
+
+      const data = await response.json();
+      if(!data || typeof data.contents !== 'string'){
+        throw new Error('Empty RSS response');
+      }
+      return data.contents;
     } finally {
       clearTimeout(timer);
     }
   }
 
-  async function fetchFeed(name,url){
-    try{
-      const data = await fetchWithTimeout(url,9000);
-      if(!data || !data.contents) return [];
+  function parseNewsTitles(raw,name){
+    const xml = new DOMParser().parseFromString(raw,'text/xml');
+    if(xml.querySelector('parsererror')) return [];
 
-      const xml = new DOMParser().parseFromString(data.contents,'text/xml');
-      if(xml.querySelector('parsererror')) return [];
-
-      const nodes = Array.from(xml.querySelectorAll('item, entry')).slice(0,4);
-      const results = [];
-
-      nodes.forEach(function(node){
+    return Array.from(xml.querySelectorAll('item, entry'))
+      .slice(0,4)
+      .map(function(node){
         const titleNode = node.querySelector('title');
-        if(!titleNode) return;
+        const title = titleNode
+          ? (titleNode.textContent || '').replace(/\s+/g,' ').trim()
+          : '';
+        return title ? '(' + name + ') ' + title : '';
+      })
+      .filter(Boolean);
+  }
 
-        const title = (titleNode.textContent || '').replace(/\s+/g,' ').trim();
-        if(!title) return;
-
-        results.push('(' + name + ') ' + title);
-      });
-
-      return results;
-    }catch(e){
-      return [];
+  async function fetchFeed(name,url){
+    /* جرب وسيطين مستقلين؛ تعطل أحدهما لا يوقف بقية المصادر. */
+    for(const provider of ['corsdev','allorigins']){
+      try{
+        const raw = await fetchWithTimeout(url,7000,provider);
+        const items = parseNewsTitles(raw,name);
+        if(items.length) return items;
+      }catch(e){}
     }
+    return [];
   }
 
   async function loadWorldNews(){
@@ -38737,7 +38753,7 @@ body.locked #sakakerWorldNews{visibility:hidden!important}
       );
     }
 
-    const feeds = (NEWS_FEEDS[lang] || NEWS_FEEDS.ar).slice(0,4);
+    const feeds = (NEWS_FEEDS[lang] || NEWS_FEEDS.ar).slice(0,12);
 
     const settled = await Promise.allSettled(
       feeds.map(function(pair){
@@ -38758,7 +38774,7 @@ body.locked #sakakerWorldNews{visibility:hidden!important}
     const seen = new Set();
 
     items = items.filter(function(item){
-      const key = item.toLowerCase().replace(/[^\p{L}\p{N}]+/gu,' ').trim();
+      const key = item.replace(/^\\([^)]*\\)\\s*/,'').toLowerCase().replace(/[^\\p{L}\\p{N}]+/gu,' ').trim();
 
       if(!key || seen.has(key)) return false;
 
