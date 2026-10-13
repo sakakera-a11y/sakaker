@@ -1,17 +1,34 @@
 (function(){
-'use strict';
-const HOST_ID='sakTextLibrarySections',SHIP_ID='sakShipStoryLibraryBtn',EBOOK_ID='sakEbooksLibraryBtn';
-function classify(btn){const txt=(btn.textContent+' '+(btn.id||'')+' '+(btn.getAttribute('onclick')||'')).toLowerCase();if(/كتب إلكترونية|الكتب الالكترونية|ebooks?|ebook|مكتبة|library/i.test(txt))return 'library';if(/خواطر|قصص|stories|reflections/i.test(txt))return 'stories';if(/مقاطع|videos/i.test(txt))return 'videos';if(/أخبار|news/i.test(txt))return 'news';return 'other'}
-function style(){if(document.getElementById('sakLibraryOrderStyle'))return;const s=document.createElement('style');s.id='sakLibraryOrderStyle';s.textContent=`#${HOST_ID}{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;padding:10px 0}#${HOST_ID} .storyCard{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:14px;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease}#${HOST_ID} .storyCard:hover,#${HOST_ID} .storyCard:focus-visible{transform:translateY(-2px);box-shadow:0 10px 26px rgba(0,0,0,.18)}#${HOST_ID} .storyCard img{display:block;width:100%;height:150px;object-fit:cover;border-radius:9px;margin-bottom:10px}#${HOST_ID} .storyTitle{font-size:1.02rem;font-weight:700;line-height:1.4}`;document.head.appendChild(s)}
+ 'use strict';
+ const HOST_ID='sakTextLibrarySections',SHIP_ID='sakShipStoryLibraryBtn',EBOOK_ID='sakEbooksLibraryBtn';
+
+/* Ensure a minimal folderModal exists so renderThoughts won't return early when the page
+   doesn't include the required modal markup. This prevents the "no cards shown" failure. */
+(function ensureFolderModal(){
+  if (document.getElementById('folderModal')) return;
+  try {
+    const modal = document.createElement('div');
+    modal.id = 'folderModal';
+    modal.className = 'modal sak-generated-folder-modal';
+    modal.innerHTML = '<div class="panel"><h2 id="folderTitle">القصص والخواطر</h2><div id="folderBody"></div></div>';
+    document.body.appendChild(modal);
+  } catch (e) {
+    // If DOM not ready or other error, fail silently; renderThoughts will still guard against absence.
+    console.warn('ensureFolderModal failed to create modal', e);
+  }
+})();
+
+function classify(btn){const txt=(btn.textContent+' '+(btn.id||'')+' '+(btn.getAttribute('onclick')||'')).toLowerCase();if(/كتب إلكترونية|الكتب الالكترونية|ebooks?|ebook[...]
+function style(){if(document.getElementById('sakLibraryOrderStyle'))return;const s=document.createElement('style');s.id='sakLibraryOrderStyle';s.textContent=`#${HOST_ID}{display:grid!important;grid[...]
 const stories=[
   {
       "ar": {
         "title": "🌍 أبوالقمرزمرد والحياة والتقدم",
         "lead": "من اتساع الأرض إلى اتساع الفكر: كيف قرّبت وسائل التواصل الحديثة الناس رغم المسافات",
         "paragraphs": [
-          "تأمل أبوالقمرزمرد الأرض ذات يوم، فرأى اتساع الصحارى والبحار والسهول، وتذكر أن الله أوجد الحياة والأرض المفتوحة على كل أفق.",
-          "ومع مرور الزمن ازداد عدد الناس، وتكاثرت المدن، وتنوعت اللغات والتجارب والأفكار. كانت الأرض واسعة، لكن الإنسان ابتكر أدواتٍ لم تقتصر على المسافة المادية بل وسّعت الفهم واللقاء.",
-          "قال أبوالقمرزمرد: «إذا ضاقت الساحة التي نجتمع فيها، فليس الحل أن نتوقف عن اللقاء؛ بل أن نبتكر طريقًا جديدًا يفتح الحقول والقلوب في وقت واحد.»"
+          "تأمل أبوالقمرزمرد الأرض ذات يوم، فرأى اتساع الصحارى والبحار والسهول، وتذكر أن الله أوجد الحياة والأر[...]
+          "ومع مرور الزمن ازداد عدد الناس، وتكاثرت المدن، وتنوعت اللغات والتجارب والأفكار. كانت الأرض واسعة، لك�[...]
+          "قال أبوالقمرزمرد: «إذا ضاقت الساحة التي نجتمع فيها، فليس الحل أن نتوقف عن اللقاء؛ بل أن نبتكر طريقًا ج[...]
         ]
       },
       "en": {
@@ -19,7 +36,7 @@ const stories=[
         "lead": "From the wide Earth to a wider exchange of ideas: how modern communication brings people closer across distance",
         "paragraphs": [
           "One day, Abwalqmrzmrd looked across the Earth and saw its broad deserts, seas, and plains. He remembered that God created life and an open world full of horizons.",
-          "As time passed, the number of people grew, cities expanded, and languages, experiences, and ideas multiplied. The earth was vast, yet humanity invented tools that reached beyond physical distance and widened understanding and fellowship.",
+          "As time passed, the number of people grew, cities expanded, and languages, experiences, and ideas multiplied. The earth was vast, yet humanity invented tools that reached beyond physica[...]
           "Abwalqmrzmrd said, “If the place where we gather becomes too small, the answer is not to stop meeting; it is to invent another way to reach one another.”"
         ]
       },
@@ -145,18 +162,18 @@ const stories=[
         "title": "🌙 أبوالقمرزمرد والتنين الفضي: سرّ الصحراء والقمر المفقود",
         "lead": "مغامرة مترابطة بين رمالٍ لا تهدأ، وتنينٍ فضي، وصقنقورٍ رملي، ونجمٍ زمردي يقود إلى القمر",
         "paragraphs": [
-          "في ليلةٍ صافية، خرج أبوالقمرزمرد ليتفقد الطريق حول الواحة، فرأى السماء وقد خلت من القمر. لم تكن النجوم قد اختفت، بل بدا أن القمر نفسه رحل في طريقٍ خفي.",
-          "وقبل أن يجمع أهل الواحة، سمعوا خفقان جناحين عظيمين فوق الجبال. هبط أمامهم تنينٌ فضي، وعلى إحدى جناحيه كانت هناك بقعة لامعة كأنها قطعة من الليل المكسور.",
-          "لم يندفع أبوالقمرزمرد خلف التنين على عجل. طلب من أهل الواحة أن يثبتوا الخيام، ويغطوا الماء، ويربطوا الإمدادات، ثم بدأ يتنقل بين الصخور والظل حتى وجد أثرًا ضئيلًا من القمر المفقود."
+          "في ليلةٍ صافية، خرج أبوالقمرزمرد ليتفقد الطريق حول الواحة، فرأى السماء وقد خلت من القمر. لم تكن النجو[...]
+          "وقبل أن يجمع أهل الواحة، سمعوا خفقان جناحين عظيمين فوق الجبال. هبط أمامهم تنينٌ فضي، وعلى إحدى جناحيه[...]
+          "لم يندفع أبوالقمرزمرد خلف التنين على عجل. طلب من أهل الواحة أن يثبتوا الخيام، ويغطوا الماء، ويربطوا ا[...]
         ]
       },
       "en": {
         "title": "🌙 Abwalqmrzmrd and the Silver Dragon: The Secret of the Desert and the Missing Moon",
         "lead": "An intertwined adventure across restless dunes, with a silver dragon, a sand skink, and an emerald star guiding the way to the moon",
         "paragraphs": [
-          "On a clear night, Abwalqmrzmrd went to check the path around the oasis and saw that the moon was gone from the sky. The stars were still there, but the moon itself seemed to have slipped away along a hidden route.",
-          "Before he could gather the people of the oasis, they heard the beat of enormous wings above the mountains. A silver dragon landed before them, and on one of its wings glittered a faint trace like a shard of broken night.",
-          "Abwalqmrzmrd did not rush after the dragon. He asked the people to secure their tents, cover the water, and tie down their supplies, then began following the faint signs left by the missing moon."
+          "On a clear night, Abwalqmrzmrd went to check the path around the oasis and saw that the moon was gone from the sky. The stars were still there, but the moon itself seemed to have slipp[...]
+          "Before he could gather the people of the oasis, they heard the beat of enormous wings above the mountains. A silver dragon landed before them, and on one of its wings glittered a faint[...]
+          "Abwalqmrzmrd did not rush after the dragon. He asked the people to secure their tents, cover the water, and tie down their supplies, then began following the faint signs left by the mi[...]
         ]
       },
       "image": "سفينة القمر فوق المحيطอันว่างเปล่า.png",
@@ -167,17 +184,17 @@ const stories=[
         "title": "💫 حلم لا ينتهي",
         "lead": "أحلام الإنسان لا تقرأ تقاويم العمر — تبتسم وتبكي في نفس الوقت",
         "paragraphs": [
-          "ذات صباح قرّر رجل أن يبني قوس قزح في حديقته الصغيرة. جمع الأكواب والوسائد والشموع، ولكنّه نسى أن يسأل السماء عن الإذن، فاستعار جارٌ له سحابة من ورق.",
-          "تذكّر أن عمره محدود واطّلع على جدول حياته فوجد أن خانة \"الأحلام\" ممتلئة إلى ما بعد تقاعده. ضحك، ثم بكى قليلاً، لأنه لم يرضَ أن تكتب قلوبُه لجدولٍ ضيق.",
-          "في النهاية، نام وهو يحلم بأن يواصل الحلم غدًا — لأنّ الأحلام لا تقرأ تاريخ الانتهاء، ولا تتوقف حتى لو نمت الجسد."
+          "ذات صباح قرّر رجل أن يبني قوس قزح في حديقته الصغيرة. جمع الأكواب والوسائد والشموع، ولكنّه نسى أن يسأل [...]
+          "تذكّر أن عمره محدود واطّلع على جدول حياته فوجد أن خانة \"الأحلام\" ممتلئة إلى ما بعد تقاعده. ضحك، ثم بكى[...]
+          "في النهاية، نام وهو يحلم بأن يواصل الحلم غدًا — لأنّ الأحلام لا تقرأ تاريخ الانتهاء، ولا تتوقف حتى لو[...]
         ]
       },
       "en": {
         "title": "💫 An Endless Dream",
         "lead": "Human dreams don't check the calendar — they grin and sob at once",
         "paragraphs": [
-          "One morning a man decided to build a rainbow in his tiny garden. He gathered cups, cushions and candles, but forgot to ask the sky for permission, so a neighbor lent him a paper cloud.",
-          "He glanced at his life schedule and noticed the \"dreams\" column was booked well past his retirement. He laughed, then cried a little, because his heart refused to sign that timetable.",
+          "One morning a man decided to build a rainbow in his tiny garden. He gathered cups, cushions and candles, but forgot to ask the sky for permission, so a neighbor lent him a paper cloud.[...]
+          "He glanced at his life schedule and noticed the \"dreams\" column was booked well past his retirement. He laughed, then cried a little, because his heart refused to sign that timetable[...]
           "At last he went to sleep dreaming he would keep dreaming tomorrow — because dreams don't read expiration dates, and they don't stop simply because the body does."
         ]
       },
@@ -189,30 +206,30 @@ const stories=[
         "title": "🏔️ حكمة من سفح الجبل",
         "lead": "حكاية طريفة عن النجاة والحكمة التي لا تُنسى",
         "paragraphs": [
-          "كان رجل يصعد سفح جبل برفقة ابنه، وكانا يتأملان جمال الطبيعة وروعة خلق الله؛ ينظران إلى المشاهد الخلابة ويستمتعان بهدوء الطريق.",
-          "وفجأة زلّت قدم الابن وكاد يهوي من السفح، لكنه تدارك نفسه في اللحظة الأخيرة وتشبث بـ[محجوب]، فنجا من السقوط.",
-          "حمد الأب الله على نجاة ابنه، ثم قال له بحكمة م��زجة لا تُنسى: «تذكّر يا بني، لو كنتَ مع أمك لما استطعتَ النجاة بهذه الطريقة!»"
+          "كان رجل يصعد سفح جبل برفقة ابنه، وكانا يتأملان جمال الطبيعة وروعة خلق الله؛ ينظران إلى المشاهد الخلا�[...]
+          "وفجأة زلّت قدم الابن وكاد يهوي من السفح، لكنه تدارك نفسه في اللحظة الأخيرة وتشبث بـ[محجوب]، فنجا من ال[...]
+          "حمد الأب الله على نجاة ابنه، ثم قال له بحكمة م��زجة لا تُنسى: «تذكّر يا بني، لو كنتَ مع أمك لما استطعت[...]
         ]
       },
       "en": {
         "title": "🏔️ A Lesson from the Mountain",
         "lead": "A humorous tale about survival and an unforgettable lesson",
         "paragraphs": [
-          "A man was climbing a mountainside with his son. They paused to admire the beauty of nature and the wonder of God's creation, taking in the magnificent scenery and reflecting on the world around them.",
+          "A man was climbing a mountainside with his son. They paused to admire the beauty of nature and the wonder of God's creation, taking in the magnificent scenery and reflecting on the wor[...]
           "Suddenly, the son's foot slipped and he nearly plunged down the slope. At the last moment, he caught himself by grabbing [redacted], and that is how he escaped the fall.",
-          "The father thanked God that his son was safe, then offered him a joking lesson he would never forget: “Remember, my son, if you had been with your mother, you wouldn’t have been able to save yourself this way!”"
+          "The father thanked God that his son was safe, then offered him a joking lesson he would never forget: “Remember, my son, if you had been with your mother, you wouldn’t have been ab[...]
         ]
       },
       "image": "assets/castle-tour/gardens.jpg",
       "serial": 9
     }
 ];
-function renderThoughts(){const en=document.documentElement.lang==='en',title=document.getElementById('folderTitle'),body=document.getElementById('folderBody'),modal=document.getElementById('folderModal');if(!body||!title||!modal)return;title.textContent=en?'Stories & Reflections':'القصص والخواطر';body.innerHTML='';const list=document.createElement('div');list.id=HOST_ID;stories.forEach((st,index)=>{const card=document.createElement('article');card.className='storyCard';card.tabIndex=0;card.setAttribute('role','button');card.setAttribute('aria-label',(en?'Open story ':'افتح القصة ')+(index+1)+': '+(en?st.en.title:st.ar.title));card.style.cursor='pointer';const number=document.createElement('div');number.className='storyNumber';number.textContent=String(index+1);number.style.cssText='font-size:12px;font-weight:800;opacity:.85;margin-bottom:7px';card.appendChild(number);if(st.image){const img=document.createElement('img');img.src=st.image;img.alt=en?(st.en.title||'Story illustration'):(st.ar.title||'صورة القصة');img.loading='lazy';img.style.cssText='display:block;width:100%;height:150px;object-fit:cover;border-radius:9px;margin-bottom:10px';card.appendChild(img)}const h=document.createElement('div');h.className='storyTitle';h.textContent=en?st.en.title:st.ar.title;card.appendChild(h);const openStory=()=>{const storyText=(en?st.en.paragraphs:st.ar.paragraphs).join('\n\n');const detail=document.getElementById('folderBodyContent')||document.createElement('div');detail.id='folderBodyContent';detail.style.whiteSpace='pre-wrap';detail.textContent=storyText;const oldContent=modal.querySelector('.folderContent');if(oldContent)oldContent.replaceWith(detail);else{body.innerHTML='';body.appendChild(detail)}};card.addEventListener('click',openStory);card.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();openStory()}});list.appendChild(card)});body.appendChild(list);modal.classList.add('show');modal.style.display='block'}
+function renderThoughts(){const en=document.documentElement.lang==='en',title=document.getElementById('folderTitle'),body=document.getElementById('folderBody'),modal=document.getElementById('fold[...]
 window.showKhwater=renderThoughts;
-window.addKhwaterStory=function(story){if(!story||!story.ar||!story.en||!Array.isArray(story.ar.paragraphs)||!Array.isArray(story.en.paragraphs))return false;story.serial=Math.max(0,story.serial||0);stories.push(story);return true};
-function ensureEbooksButton(){const main=document.querySelector('main');if(!main)return null;let b=document.getElementById(EBOOK_ID);if(!b){b=document.createElement('button');b.id=EBOOK_ID;b.type='button';b.textContent='📚 الكتب الإلكترونية';b.addEventListener('click',()=>{const ev=new Event('sak-open-ebooks');window.dispatchEvent(ev)});main.prepend(b)}return b}
-function arrange(){const main=document.querySelector('main');if(!main)return;style();const ebookBtn=ensureEbooksButton();let host=document.getElementById(HOST_ID);if(!host){host=document.createElement('section');host.id=HOST_ID;main.appendChild(host)}}
-function lift(){['sakTextLibraryModal','folderModal','quizModal','puzzleModal','sakakerSiteNewsModal','sakBooksAppLayer'].forEach(id=>{const el=document.getElementById(id);if(el&&el.parentElement)el.parentElement.removeChild(el)})}
-function init(){arrange();lift();document.addEventListener('click',e=>{const b=e.target?.closest?.('button,[role="button"],a');if(!b)return;const m=((b.dataset?.sakSection||'')+' '+(b.getAttribute('title')||'')+' '+(b.getAttribute('aria-label')||'')+' '+(b.textContent||'')).replace(/\s+/g,' ').trim();if(/كتب\s*إلكترونية|الكتب\s*الالكترونية|E-?Books?/i.test(m)){ensureEbooksButton().click()}if(/خواطر|قصص|Stories|Reflections/i.test(m)){showKhwater()}});} 
+window.addKhwaterStory=function(story){if(!story||!story.ar||!story.en||!Array.isArray(story.ar.paragraphs)||!Array.isArray(story.en.paragraphs))return false;story.serial=Math.max(0,story.serial|[...]
+function ensureEbooksButton(){const main=document.querySelector('main');if(!main)return null;let b=document.getElementById(EBOOK_ID);if(!b){b=document.createElement('button');b.id=EBOOK_ID;b.type[...]
+function arrange(){const main=document.querySelector('main');if(!main)return;style();const ebookBtn=ensureEbooksButton();let host=document.getElementById(HOST_ID);if(!host){host=document.createEl[...]
+function lift(){['sakTextLibraryModal','folderModal','quizModal','puzzleModal','sakakerSiteNewsModal','sakBooksAppLayer'].forEach(id=>{const el=document.getElementById(id);if(el&&el.parentElement[...]
+function init(){arrange();lift();document.addEventListener('click',e=>{const b=e.target?.closest?.('button,[role="button"],a');if(!b)return;const m=((b.dataset?.sakSection||'')+' '+(b.getAttribut[...]
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
