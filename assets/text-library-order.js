@@ -40,7 +40,6 @@ const stories=[
           "Abwalqmrzmrd said, “If the place where we gather becomes too small, the answer is not to stop meeting; it is to invent another way to reach one another.”"
         ]
       },
-      "image": "Screenshot_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A1%D9%A0%D9%A0%D9%A6-%D9%A1%D9%A7%D9%A4%D9%A2%D9%A0%D9%A7_1.png",
       "serial": 8
     },
   {
@@ -61,11 +60,6 @@ const stories=[
           "He followed a fixed star and the wind patterns until he found an old well and a path to the oasis.",
           "The caravan arrived safely, and the desert star became a symbol of hope and sound judgment."
         ]
-      },
-      "image": "https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/Screenshot_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A1%D9%A0%D9%A0%D9%A6-%D9%A1%D9%A7%D9%A4%D9%A2%D9%A0%D9%A7_1.png",
-      "imageAlt": {
-        "ar": "صورة أبوالقمرزمرد في الصحراء مرفقة بحكاية نجم الصحراء",
-        "en": "Abwalqmrzmrd in the desert, accompanying the Desert Star story"
       },
       "serial": 1
     },
@@ -88,7 +82,6 @@ const stories=[
           "He reached the island’s heart and brought everyone home safely."
         ]
       },
-      "image": "assets/castle-tour/waterfalls.jpg",
       "serial": 2
     },
   {
@@ -110,7 +103,6 @@ const stories=[
           "The true lighthouse returned to service and the harbor became safe again."
         ]
       },
-      "image": "assets/castle-tour/harbor.jpg",
       "serial": 3
     },
   {
@@ -132,7 +124,6 @@ const stories=[
           "He left knowing that knowledge can be worth more than gold or emeralds."
         ]
       },
-      "image": "assets/castle-tour/castle-entrance.webp",
       "serial": 4
     },
   {
@@ -154,7 +145,6 @@ const stories=[
           "He returned at dawn having shown that true heroism protects others."
         ]
       },
-      "image": "assets/castle-tour/moon-gallery.jpg",
       "serial": 5
     },
   {
@@ -176,7 +166,6 @@ const stories=[
           "Abwalqmrzmrd did not rush after the dragon. He asked the people to secure their tents, cover the water, and tie down their supplies, then began following the faint signs left by the mi[...]
         ]
       },
-      "image": "سفينة القمر فوق المحيطอันว่างเปล่า.png",
       "serial": 6
     },
   {
@@ -198,7 +187,6 @@ const stories=[
           "At last he went to sleep dreaming he would keep dreaming tomorrow — because dreams don't read expiration dates, and they don't stop simply because the body does."
         ]
       },
-      "image": "assets/castle-tour/moon-gallery.jpg",
       "serial": 7
     },
   {
@@ -220,7 +208,6 @@ const stories=[
           "The father thanked God that his son was safe, then offered him a joking lesson he would never forget: “Remember, my son, if you had been with your mother, you wouldn’t have been ab[...]
         ]
       },
-      "image": "assets/castle-tour/gardens.jpg",
       "serial": 9
     }
 ];
