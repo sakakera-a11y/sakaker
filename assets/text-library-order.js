@@ -177,6 +177,27 @@ const stories=[
     },
     "serial": 8
   }
+  {
+    "ar": {
+      "title": "🏔️ حكمة من سفح الجبل",
+      "lead": "حكاية طريفة عن النجاة والحكمة التي لا تُنسى",
+      "paragraphs": [
+        "كان رجل يصعد سفح جبل برفقة ابنه، وكانا يتأملان جمال الطبيعة وروعة خلق الله؛ ينظران إلى المشاهد الخلابة ويتفكران في حسن صنع الكون.",
+        "وفجأة زلّت قدم الابن وكاد يهوي من السفح، لكنه تدارك نفسه في اللحظة الأخيرة وتشبث بعضو والده الذكري، فنجا من السقوط.",
+        "حمد الأب الله على نجاة ابنه، ثم قال له بحكمة مازحة لا تُنسى: «تذكّر يا بني، لو كنتَ مع أمك لما استطعتَ النجاة!»"
+      ]
+    },
+    "en": {
+      "title": "🏔️ A Lesson from the Mountain",
+      "lead": "A humorous tale about survival and an unforgettable lesson",
+      "paragraphs": [
+        "A man was climbing a mountainside with his son. They paused to admire the beauty of nature and the wonder of God's creation, taking in the magnificent scenery and reflecting on the craftsmanship of the universe.",
+        "Suddenly, the son's foot slipped and he nearly plunged down the slope. At the last moment, he caught himself by grabbing his father's penis, and that is how he escaped the fall.",
+        "The father thanked God that his son was safe, then offered him a joking lesson he would never forget: “Remember, my son, if you had been with your mother, you wouldn't have been able to save yourself!”"
+      ]
+    },
+    "serial": 9
+  },
 ];
 function renderThoughts(){const en=document.documentElement.lang==='en',title=document.getElementById('folderTitle'),body=document.getElementById('folderBody'),modal=document.getElementById('folderModal');if(!body||!title||!modal)return;title.textContent=en?'Stories & Reflections':'القصص والخواطر';body.innerHTML='';const list=document.createElement('div');list.id=HOST_ID;stories.forEach(st=>{const card=document.createElement('article');card.className='storyCard';const h=document.createElement('div');h.className='storyTitle';h.textContent=en?st.en.title:st.ar.title;const lead=document.createElement('div');lead.className='storyLead';lead.textContent=en?st.en.lead:st.ar.lead;card.appendChild(h);card.appendChild(lead);const btn=document.createElement('button');btn.type='button';btn.textContent=en?'Read':'اقرأ';btn.addEventListener('click',()=>{const content=(en?st.en.paragraphs:st.ar.paragraphs).join('\n\n');const f=document.getElementById('folderBodyContent')||document.createElement('div');f.id='folderBodyContent';f.textContent='';f.style.whiteSpace='pre-wrap';f.textContent=content;modal.querySelector('.folderContent')?.replaceWith(f);});card.appendChild(btn);list.appendChild(card)});body.appendChild(list);modal.classList.add('show');modal.style.display='block'}
 window.showKhwater=renderThoughts;
