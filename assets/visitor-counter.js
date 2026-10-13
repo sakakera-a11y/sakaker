@@ -42,6 +42,48 @@ import {
   const ACTIVE_WINDOW_MS = 60_000;
   const HEARTBEAT_MS = 20_000;
 
+  const $ = id => document.getElementById(id);
+
+  function ensureVisitorCounterDom() {
+    let root = $("sakakerVisitorCounter");
+    if (!root) {
+      root = document.createElement("div");
+      root.id = "sakakerVisitorCounter";
+      root.setAttribute("role", "status");
+      root.setAttribute("aria-live", "polite");
+      root.setAttribute("aria-label", "إحصاءات زوار موقع سكاكر");
+      const mount = document.body || document.documentElement;
+      if (mount) mount.appendChild(root);
+    }
+
+    const buildMetric = (id, icon, ar, en, titleAr, titleEn) => {
+      let el = $(id);
+      if (!el) {
+        const item = document.createElement("div");
+        item.className = "svc-item";
+        item.innerHTML = `<span class="svc-icon" aria-hidden="true">${icon}</span><span class="svc-label" data-ar="${ar}" data-en="${en}">${ar}</span><strong id="${id}">—</strong>`;
+        root.appendChild(item);
+        el = item.querySelector("strong");
+      }
+      const label = el?.closest(".svc-item")?.querySelector(".svc-label");
+      if (label) {
+        label.dataset.ar = ar;
+        label.dataset.en = en;
+      }
+      el.dataset.titleAr = titleAr;
+      el.dataset.titleEn = titleEn;
+      return el;
+    };
+
+    return {
+      onlineEl: buildMetric("svcOnline", "🟢", "المتواجدون الآن", "Online now", "جلسات الزوار النشطة، سواء زائر أو مستخدم مسجل", "Active anonymous or signed-in visitor sessions"),
+      uniqueTotalEl: buildMetric("svcTotal", "👥", "الزوار الفريدون", "Unique visitors", "تقدير: ١٤١٠ زائرًا فريدًا تاريخيًا من Cloudflare مضافًا إليهم حسابات Firebase الفريدة؛ لا يمثل عدد المشاهدات", "Estimate: 1,410 historical Cloudflare unique visitors plus Firebase distinct anonymous accounts. Not a page-view total; overlap may occur."),
+      uniqueTodayEl: buildMetric("svcToday", "📅", "زوار فريدون اليوم", "Unique visitors today", "عدد الزوار الفريدين في اليوم الحالي بحسب توقيت الرياض", "Unique visitors for the current Riyadh day")
+    };
+  }
+
+  const { onlineEl, uniqueTotalEl, uniqueTodayEl } = ensureVisitorCounterDom();
+
   const uniqueApp = getApps().find(item => item.name === "sakakerVisitorCounter")
     || initializeApp(firebaseConfig, "sakakerVisitorCounter");
   const sessionApp = getApps().find(item => item.name === "sakakerPresenceCounter")
@@ -50,12 +92,6 @@ import {
   const sessionAuth = getAuth(sessionApp);
   const db = getFirestore(uniqueApp);
   const rtdb = getDatabase(sessionApp);
-
-  const $ = id => document.getElementById(id);
-  const onlineEl = $("svcOnline");
-  const uniqueTotalEl = $("svcTotal");
-  const uniqueTodayEl = $("svcToday");
-  if (!onlineEl || !uniqueTotalEl || !uniqueTodayEl) return;
 
   function ensureCounterUi() {
     const root = $("sakakerVisitorCounter");
@@ -264,7 +300,7 @@ import {
       const newUnique = snapshot.exists() ? Number(snapshot.data().count || 0) : 0;
       uniqueTotalEl.dataset.value = String(HISTORICAL_UNIQUE_VISITORS + newUnique);
       uniqueTotalEl.dataset.titleEn = "Estimate: 1,410 historical Cloudflare unique visitors plus Firebase distinct anonymous accounts. Not a page-view total; overlap may occur.";
-      uniqueTotalEl.dataset.titleAr = "تقدير: ١٤١٠ زائرًا فريدًا تاريخيًا من Cloudflare مضافًا إليهم حسابات Firebase الفريدة؛ لا يمثل إجمالي مشاهدات الصفحات وقد يحدث تداخل.";
+      uniqueTotalEl.dataset.titleAr = "تقدير: ١٤١٠ زائرًا فريدًا تاريخيًا من Cloudflare مضافًا إليهم حسابات Firebase الفريدة؛ لا يمثل عدد المشاهدات، وقد يحدث تداخل بين الزيارات.";
       updateCounterLanguage();
     });
     watch(`daily_${dayKey}`, snapshot => {
