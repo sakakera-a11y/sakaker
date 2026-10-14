@@ -6727,229 +6727,83 @@ allowfullscreen>
 ================================================== */
 
 function showKhwater(el){
+  const title = document.getElementById('folderTitle');
+  const english = () => document.documentElement.lang === 'en';
+  title.textContent = english() ? 'Thoughts & Stories' : 'خواطر وقصص';
+  el.innerHTML = '<p class="story-box">' + (english() ? 'Loading stories…' : 'جارٍ تحميل القصص…') + '</p>';
 
-document.getElementById('folderTitle').textContent=
-'خواطر وقصص';
-
-el.innerHTML=`
-
-<h3>
-⚔️ عنترة بن شداد — الفارس الذي أثبت نفسه
-</h3>
-
-<div class="story-box">
-
-<p>
-كان عنترة بن شداد من أشهر فرسان العرب في الجاهلية،
-واشتهر بالشجاعة والفروسية والشعر.
-</p>
-
-<p>
-واجه في بداية حياته ظروفًا اجتماعية صعبة،
-لكنه استطاع أن يفرض مكانته من خلال شجاعته
-ومواقفه في الحروب.
-</p>
-
-<p>
-وارتبط اسمه كذلك بقصة حبه لعبلة، فأصبحت
-سيرته جزءًا مشهورًا من التراث العربي.
-</p>
-
-</div>
-
-<hr>
-
-<h3>
-🏰 المعتمد بن عباد — من الملك إلى الأسر
-</h3>
-
-<div class="story-box">
-
-<p>
-كان المعتمد بن عباد ملكًا على إشبيلية
-في عصر ملوك الطوائف بالأندلس.
-</p>
-
-<p>
-استعان بيوسف بن تاشفين عندما اشتد خطر
-ألفونسو السادس، ووقعت معركة الزلاقة سنة
-1086م وانتهت بانتصار المسلمين.
-</p>
-
-<p>
-لكن التحولات السياسية أدت في النهاية
-إلى سقوط حكم المعتمد ونقله إلى أغمات
-في المغرب، حيث عاش آخر أيامه بعيدًا
-عن ملكه.
-</p>
-
-</div>
-
-<hr>
-
-<h3>
-🦁 صلاح الدين الأيوبي
-</h3>
-
-<div class="story-box">
-
-<p>
-كان صلاح الدين الأيوبي قائدًا بارزًا في
-فترة الحروب الصليبية.
-</p>
-
-<p>
-وفي عام 1187م انتصر المسلمون في معركة حطين،
-ثم استعادوا القدس.
-</p>
-
-<p>
-وبقيت شخصية صلاح الدين حاضرة في كتب التاريخ
-والأدب، واختلفت الروايات في تفاصيل بعض
-المواقف المنسوبة إليه، لذلك ينبغي التمييز
-بين المصادر التاريخية والروايات الأدبية.
-</p>
-
-</div>
-
-<hr>
-
-<h3>
-🐎 خالد بن الوليد
-</h3>
-
-<div class="story-box">
-
-<p>
-كان خالد بن الوليد من أبرز القادة العسكريين
-في صدر الإسلام، وعُرف بالسرعة في المناورة
-وحسن إدارة المعارك.
-</p>
-
-<p>
-شارك في معارك عديدة، ومن أشهر الأحداث
-المرتبطة به معركة مؤتة، حيث تولى القيادة
-بعد استشهاد القادة الثلاثة.
-</p>
-
-</div>
-
-<hr>
-
-<h3>
-🌌 قصص خيالية بأسلوب واقعي
-</h3>
-
-<div class="warning-box">
-
-⚠️ تنبيه مهم:
-القصص التالية خيالية من إعداد الموقع،
-وليست أحداثًا تاريخية حقيقية.
-تمت كتابتها بأسلوب قصصي واقعي للمتعة
-والتشويق، ولا ينبغي نقلها باعتبارها وقائع موثقة.
-
-</div>
-
-<div class="story-box">
-
-<h3>
-🏜️ حكاية حارس البئر القديم
-</h3>
-
-<p>
-في قرية صغيرة على أطراف الصحراء، كان هناك بئر
-قديم يتجنب أهل القرية الاقتراب منه بعد غروب الشمس.
-</p>
-
-<p>
-كان الحارس العجوز يقول إن البئر يخفي سرًا
-يعود إلى زمن القوافل القديمة. وفي إحدى الليالي
-وجد شاب من أهل القرية قطعة معدنية صغيرة قرب
-البئر، محفورًا عليها رمز غريب.
-</p>
-
-<p>
-بدأ الشاب يبحث عن معنى الرمز، حتى اكتشف أن
-القطعة ليست كنزًا ولا أثرًا سحريًا، بل علامة
-تركها مسافر قديم لتحديد اتجاه طريق القافلة.
-</p>
-
-<p>
-وهكذا تحول "سر البئر" الذي تناقلته الأجيال
-إلى درس بسيط: بعض الأسرار التي تكبر مع الزمن
-تبدأ بحادثة صغيرة جدًا.
-</p>
-
-</div>
-
-<div class="story-box">
-
-<h3>
-🚂 القطار الذي وصل متأخرًا
-</h3>
-
-<p>
-في مدينة خيالية، كان موظف أرشيف يحتفظ بسجل
-قديم لقطار قيل إنه وصل إلى المحطة بعد موعده
-بثلاثين عامًا.
-</p>
-
-<p>
-بدأ الرجل يبحث في السجلات، فاكتشف أن القصة
-بدأت بخطأ مطبعي في تاريخ إحدى الرحلات.
-</p>
-
-<p>
-ومع مرور السنوات، تناقل الناس القصة حتى
-أصبحت حكاية عن "قطار الزمن"، بينما الحقيقة
-في هذه القصة الخيالية أن الخطأ كان مجرد رقم
-كُتب بطريقة خاطئة.
-</p>
-
-</div>
-
-<div class="story-box">
-
-<h3>
-🌊 رسالة الجزيرة البعيدة
-</h3>
-
-<p>
-عثر صياد في قصة خيالية على زجاجة طافية
-في البحر، وبداخلها رسالة تقول:
-"إذا وصلت إليك، فقد حان وقت العودة."
-</p>
-
-<p>
-ظل يبحث عن صاحب الرسالة، حتى اكتشف أنها
-كانت جزءًا من لعبة قديمة نظمها مجموعة من
-البحارة لإخفاء خريطة كنز وهمية.
-</p>
-
-<p>
-لم يجد الصياد ذهبًا، لكنه وجد دفترًا قديمًا
-يحوي أسماء رحلات بحرية وقصصًا عن البحر.
-</p>
-
-</div>
-
-<div class="about-box">
-
-<strong>
-أبو القمر زمرد
-</strong>
-
-<br>
-
-نميز في الموقع بين التاريخ الموثق،
-والمعلومات العامة، والقصص الخيالية.
-الهدف أن تكون المتعة حاضرة دون تقديم
-الخيال على أنه حقيقة.
-
-</div>
-
-`;
-
+  fetch('/data/khwater.json?v=10', { cache: 'no-store' })
+    .then(function(response){
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      return response.json();
+    })
+    .then(function(stories){
+      stories = Array.isArray(stories) ? stories.slice().sort(function(a,b){
+        return (Number(a.serial)||0) - (Number(b.serial)||0);
+      }) : [];
+      function renderList(){
+        const en = english();
+        title.textContent = en ? 'Thoughts & Stories' : 'خواطر وقصص';
+        el.innerHTML = '';
+        stories.forEach(function(story){
+          const item = en ? story.en : story.ar;
+          if (!item) return;
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'story-title-button';
+          button.textContent = String(story.serial || '') + '. ' + (item.title || (en ? 'Untitled story' : 'قصة بلا عنوان'));
+          button.style.cssText = 'display:block;width:100%;text-align:start;margin:8px 0;padding:14px 16px;border-radius:12px;border:1px solid rgba(24,167,123,.35);background:rgba(18,42,52,.72);color:inherit;font:inherit;font-weight:800;cursor:pointer;';
+          button.addEventListener('click', function(){ renderStory(story); });
+          el.appendChild(button);
+        });
+        if (!el.childElementCount) {
+          el.textContent = en ? 'No stories are available.' : 'لا توجد قصص متاحة.';
+        }
+      }
+      function renderStory(story){
+        const en = english();
+        const item = en ? story.en : story.ar;
+        if (!item) return renderList();
+        title.textContent = item.title || (en ? 'Story' : 'القصة');
+        el.innerHTML = '';
+        const back = document.createElement('button');
+        back.type = 'button';
+        back.className = 'story-back';
+        back.textContent = en ? '← Back to stories' : '→ العودة إلى القصص';
+        back.style.cssText = 'margin:0 0 14px;padding:10px 14px;border-radius:10px;cursor:pointer;';
+        back.addEventListener('click', renderList);
+        el.appendChild(back);
+        if (item.lead) {
+          const lead = document.createElement('p');
+          lead.className = 'lead';
+          lead.textContent = item.lead;
+          el.appendChild(lead);
+        }
+        (item.paragraphs || []).forEach(function(paragraph){
+          const p = document.createElement('p');
+          p.className = 'story-box';
+          p.textContent = paragraph;
+          p.style.lineHeight = '1.9';
+          el.appendChild(p);
+        });
+      }
+      renderList();
+    })
+    .catch(function(error){
+      console.error('Unable to load Thoughts & Stories:', error);
+      el.innerHTML = '';
+      const message = document.createElement('p');
+      message.className = 'story-box';
+      message.textContent = english()
+        ? 'Stories could not be loaded. Please refresh and try again.'
+        : 'تعذر تحميل القصص. حدّث الصفحة ثم حاول مرة أخرى.';
+      el.appendChild(message);
+      const retry = document.createElement('button');
+      retry.type = 'button';
+      retry.textContent = english() ? 'Try again' : 'إعادة المحاولة';
+      retry.addEventListener('click', function(){ showKhwater(el); });
+      el.appendChild(retry);
+    });
 }
 
 /* ==================================================
