@@ -588,7 +588,7 @@ function loadVisitorCounterModule(){
   visitorCounterModuleRequested=true;
   const script=document.createElement('script');
   script.type='module';
-  script.src='/assets/visitor-counter.js?v=20261011-cloudflare-v1';
+  script.src='/assets/visitor-counter.js?v=20261014-d1-v2';
   script.onerror=()=>{visitorCounterModuleRequested=false;};
   document.head.appendChild(script);
 }
