@@ -1,4 +1,4 @@
-const LEGACY_UNIQUE_VISITORS = 1410;
+const LEGACY_UNIQUE_VISITORS = 4000;
 const ACTIVE_WINDOW_MS = 60_000;
 const ALLOWED_HOSTS = new Set(["sakaker.co", "www.sakaker.co"]);
 const PREVIEW_HOST_SUFFIX = ".sakaker-pages-test.pages.dev";
