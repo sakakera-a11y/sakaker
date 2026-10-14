@@ -18,7 +18,6 @@
         "The caravan arrived safely, and the desert star became a symbol of hope and sound judgment."
       ]
     },
-    "image": "assets/castle-tour/moon-gallery.jpg",
     "serial": 1
   },
   {
@@ -40,7 +39,6 @@
         "He reached the island’s heart and brought everyone home safely."
       ]
     },
-    "image": "assets/castle-tour/waterfalls.jpg",
     "serial": 2
   },
   {
@@ -62,7 +60,6 @@
         "The true lighthouse returned to service and the harbor became safe again."
       ]
     },
-    "image": "assets/castle-tour/harbor.jpg",
     "serial": 3
   },
   {
@@ -84,7 +81,6 @@
         "He left knowing that knowledge can be worth more than gold or emeralds."
       ]
     },
-    "image": "assets/castle-tour/castle-entrance.webp",
     "serial": 4
   },
   {
@@ -106,7 +102,6 @@
         "He returned at dawn having shown that true heroism protects others."
       ]
     },
-    "image": "assets/castle-tour/moon-gallery.jpg",
     "serial": 5
   },
   {
@@ -128,7 +123,6 @@
         "Abwalqmrzmrd did not rush after the dragon. He asked the people to secure their tents and began tracing the signs left by the moon’s missing light."
       ]
     },
-    "image": "assets/castle-tour/moon-gallery.jpg",
     "serial": 6
   },
   {
@@ -150,7 +144,6 @@
         "At last he went to sleep dreaming he would keep dreaming tomorrow, because dreams do not read expiration dates."
       ]
     },
-    "image": "assets/castle-tour/moon-gallery.jpg",
     "serial": 7
   },
   {
@@ -172,7 +165,6 @@
         "Abwalqmrzmrd said, “If the place where we gather becomes too small, the answer is not to stop meeting; it is to invent another way to reach one another.”"
       ]
     },
-    "image": "assets/castle-tour/gardens.jpg",
     "serial": 8
   },
   {
@@ -194,7 +186,67 @@
         "The father thanked God that his son was safe, then joked: “Remember, my son, if you had been with your mother, you would never have had the chance to learn this lesson.”"
       ]
     },
-    "image": "assets/castle-tour/gardens.jpg",
     "serial": 9
+  },
+  {
+    "serial": 10,
+    "ar": {
+      "title": "سندريلا في زمن الشاشات",
+      "lead": "حكاية معاصرة عن الكرامة والفرص والهوية الحقيقية",
+      "paragraphs": [
+        "في مدينة لا تنام، حيث تتحدث الشاشات أكثر مما يتحدث البشر، وتُقاس قيمة الإنسان بعدد متابعيه والإعجابات التي يجمعها، عاشت فتاة تُدعى سندريلا.",
+        "لم تكن تعيش في منزل قديم مليء بالرماد كما في الحكايات، بل في منزل حديث تحيط به الأجهزة الذكية وصور لعائلة تبدو سعيدة أمام الآخرين، بينما كانت الحقيقة خلف الأبواب مختلفة.",
+        "بعد وفاة والدها، عاشت مع زوجة أبيها وابنتيها. كانت زوجة أبيها تهتم بالمظاهر وتعتقد أن النجاح يعني أن يراك الناس، لا أن تعرف أنت من تكون. وكانت ابنتاها تتنافسان على الشهرة وتنشران صورًا لا تشبه دائمًا حياتهما الحقيقية.",
+        "كانت سندريلا تستيقظ مبكرًا وتؤدي أعمال المنزل، ثم تجلس ليلًا أمام حاسوب قديم تركه لها والدها. تعلمت التصميم والبرمجة واللغة الإنجليزية، وحلمت بأن تصنع شيئًا ذا أثر حقيقي، لا أن تصبح صورة أخرى في شاشة أحدهم.",
+        "كلما سألتها زوجة أبيها عن سبب انشغالها بالحاسوب، أجابت بهدوء: «أحاول أن أبني لنفسي بابًا، لأنني لا أريد أن أقضي حياتي أنتظر أن يفتح لي أحدهم نافذة». فضحكت المرأة وقالت إن الأحلام لا تطعم خبزًا، وإن الشهرة وحدها تجعل الناس يحترمونك. لكن سندريلا عرفت أن هناك فرقًا بين أن يراك الناس وأن يروك على حقيقتك.",
+        "في يوم من الأيام، أعلنت مؤسسة عالمية عن أمسية تجمع أصحاب الأفكار والمشروعات المبتكرة، بحضور مستثمرين ومبدعين من أنحاء العالم. لم تكن حفلة للرقص فقط، بل فرصة لاختيار مشروع يحصل صاحبه على التمويل والدعم.",
+        "قررت ابنتا زوجة الأب المشاركة، وانشغلتا بالملابس والصور ومقاطع الفيديو. أما سندريلا، فرأت فرصة لتقديم مشروع عملت عليه سرًا: منصة تساعد الشباب على تعلم المهارات مجانًا، وتفتح لمن لا يملكون المال طريقًا إلى العمل.",
+        "رفضت زوجة أبيها أن تذهب وقالت: «من سيهتم بمشروع فتاة لا يعرفها أحد؟ ابقي هنا؛ فمكانك ليس بين أصحاب النفوذ». عادت سندريلا إلى غرفتها وشعرت أن الطريق قد أُغلق أمامها، ثم وجدت رسالة تركها والدها: «يا ابنتي، لا تجعلي قسوة العالم تقنعك بأنك أقل منه. قد لا تملكين مفاتيح الأبواب كلها، لكنك تستطيعين تعلّم كيف تصنعين مفتاحك». احتضنت الرسالة وقررت أن تحاول.",
+        "لم تظهر لها عرّابة بعصا سحرية، ولم يتحول اليقطين إلى عربة. ظهرت في حياتها امرأة مسنّة تدير ورشة صغيرة لتعليم الفتيات مهارات الحاسوب. كانت قد لاحظت موهبة سندريلا في مشروع تطوعي، فعرضت مساعدتها في إعداد عرض المشروع، وأعطتها حاسوبًا أفضل.",
+        "ثم أخرجت المرأة حذاءً فضيًا أنيقًا احتفظت به منذ شبابها، وقالت: «هذا الحذاء ليس سحرًا يا سندريلا؛ إنه تذكير بأنك لا تحتاجين إلى ارتداء شخصية ليست لك حتى تستحقي مكانك». ارتدت سندريلا الحذاء وثوبًا بسيطًا أنيقًا، وحملت حاسوبها، وتوجهت إلى الأمسية. وقبل أن تغادر، قالت لها المرأة: «عودي قبل منتصف الليل، لا لأن السحر سينتهي، بل حتى لا تنسي لماذا جئتِ».",
+        "وصلت سندريلا إلى مبنى مضاء كأنه قصر من الزجاج. كانت الشاشات تعرض صور الضيوف، والكاميرات تبحث عن الوجوه الأكثر شهرة. لم يلتفت إليها كثيرون بسبب ثوبها البسيط، فدخلت القاعة وجلست أمام حاسوبها تستعد لعرض مشروعها.",
+        "كانت ابنتا زوجة أبيها تلتقطان الصور مع المشاهير وتعرضان مشروعين جميلين في الظاهر، لكنهما لم تكونا قد اهتمتا بما يكفي بما يمكن أن يقدماه للناس. وبينما كانت سندريلا تنتظر دورها، اقترب منها شاب يعمل في تطوير المبادرات التعليمية وسألها عن المشروع المفتوح على شاشتها.",
+        "شرحت له كيف يستطيع طالب لا يملك رسوم الدورات أن يتعلم مهارة مطلوبة، وكيف يصل شخص يعيش في قرية بعيدة إلى فرصة عمل، وكيف تقلل التقنية المسافة بين الموهبة والفرصة. لم تتظاهر بأنها تعرف كل شيء؛ تحدثت عما أتقنته واعترفت بما تحتاج إلى تعلمه، وعرضت تحديات المشروع كما عرضت نجاحاته.",
+        "استمع الشاب وقال: «أتعلمين ما الذي يميز مشروعك؟ إنه لا يسأل كيف نجعل الناس يصفقون لنا، بل كيف نجعل حياة الناس أفضل». وللمرة الأولى في تلك الليلة، شعرت سندريلا أن أحدًا ينظر إلى ما بداخلها، لا إلى ما ترتديه.",
+        "حين بدأ عرض المشاريع، تقدمت إلى المنصة. اهتزت يداها قليلًا، لكنها تذكرت رسالة والدها وبدأت تتحدث. لم تعد فتاة تنتظر الإذن بالحلم؛ أصبحت صاحبة فكرة تشرحها وتدافع عنها. أجابت عن الأسئلة واعترفت بالتحديات التي لم تجد لها حلولًا بعد.",
+        "في نهاية الأمسية، لم تنجح لأنها كانت الأجمل أو لأنها ارتدت أغلى ثوب، بل لأن مشروعها أثبت أن فكرة صغيرة قد تغيّر حياة كثيرين إذا وجدت من يؤمن بها ويساعدها على النمو. وعند خروجها، سقط أحد الحذاءين الفضيّين على الدرج. لاحظته لكنها لم تعد لأخذه؛ فقد كانت تحمل حاسوبها وفرصة حقيقية بدأت للتو.",
+        "في الصباح انتشرت صورة الحذاء على الإنترنت، وبدأ الناس يبحثون عن صاحبته. لكن سندريلا لم تكن تطارد الشهرة؛ كانت في منزلها تطور مشروعها وتستعد للاجتماع الأول مع فريقها الجديد. وحين عرفت المؤسسة اسمها، لم ترسل من يبحث عن فتاة تناسب الحذاء، بل أرسلت دعوة رسمية لتوقيع اتفاقية دعم المشروع. لم يعد الحذاء وسيلة للتعرف إليها؛ فقد عرّفت بنفسها من خلال عملها.",
+        "عادت سندريلا إلى المنزل، فوجدت زوجة أبيها غاضبة تسألها أين كانت، وتتهمها بأنها سرقت الأضواء. أجابت بهدوء: «لم أسرق شيئًا. ذهبت لأقدم عملي، ووجدت أشخاصًا رأوا فيه قيمة». وحين قالت المرأة إن الحظ وحده ساعدها، ابتسمت سندريلا: «ربما فتح الحظ بابًا، لكنني كنت أتعلم منذ زمن طويل كيف أمشي عندما ينفتح».",
+        "لم تتحول زوجة أبيها فجأة إلى امرأة طيبة، ولم تختفِ المشكلات في ليلة واحدة. لكن سندريلا لم تعد تنتظر منها الاعتراف بقيمتها؛ فقد تعلمت أن احترام الإنسان لنفسه لا يحتاج إلى موافقة من أساء إليه.",
+        "كبر المشروع مع مرور الوقت، وساعد آلاف الشباب على اكتساب المهارات والوصول إلى فرص لم يتخيلوها. وكلما سألها أحد عن سر نجاحها، قالت: «لم ينقذني حذاء فضي، ولم يغيّر حياتي أمير. الذي غيّر حياتي أنني توقفت عن انتظار من يختارني، وبدأت أعمل حتى أكون قادرة على اختيار طريقي».",
+        "وفي إحدى الأمسيات، وقفت أمام فتيات بدأن مشروعاتهن الصغيرة وقالت: «لا تجعلوا العالم يقنعكم بأن قيمتكم هي ما يظهر على الشاشات. الصور قد تجذب الأنظار، لكن الأفعال هي التي تصنع الأثر. لا تنتظروا منتصف الليل لتعرفوا إن كان حلمكم حقيقيًا؛ ابدؤوا اليوم، حتى لو كان ما تملكونه مجرد حاسوب قديم وفكرة صغيرة».",
+        "وهكذا لم تنتهِ حكاية سندريلا بزواج من أمير، بل بدأت عندما أصبحت سيدة قرارها. اكتشفت أن أجمل نهاية ليست أن يأتي شخص لينقذك من حياة لا تحبها، بل أن تكتشف قوتك وتبني حياة تختارها بنفسك.",
+        "الحكمة الأخيرة: في زمن يبيع فيه الناس صورهم بحثًا عن الإعجاب، ابنِ حقيقتك. فقد يمنحك الإعجاب لحظة شهرة، أما القيمة الحقيقية فتبقى حتى بعد أن تنطفئ الشاشات."
+      ]
+    },
+    "en": {
+      "title": "Cinderella in the Age of Screens",
+      "lead": "A modern fairy tale about dignity, opportunity, and true identity",
+      "paragraphs": [
+        "In a city that never slept, where screens spoke more often than people did and a person's worth was measured by followers and likes, there lived a young woman named Cinderella.",
+        "She did not live in an old house filled with ashes as in traditional fairy tales. She lived in a modern home surrounded by smart devices and photographs of a family that appeared happy to the outside world, while the truth behind closed doors was very different.",
+        "After her father's death, she lived with her stepmother and two stepsisters. Her stepmother cared about appearances and believed success meant being seen, rather than knowing who you were. Her daughters competed for fame, posting pictures that did not always reflect their real lives.",
+        "Cinderella woke early, completed the household chores, and sat at night before an old computer her father had left her. She learned design, programming, and English, dreaming of creating something meaningful instead of becoming another picture on someone's screen.",
+        "Whenever her stepmother asked why she spent so much time on the computer, Cinderella calmly replied, “I am trying to build a door for myself, because I do not want to spend my life waiting for someone to open a window for me.” Her stepmother laughed, saying dreams could not put food on the table and fame was the only thing that earned respect. But Cinderella knew there was a difference between being seen and being seen for who you truly were.",
+        "One day, an international organization announced an event bringing together innovators and creators from around the world. Investors and creative thinkers would attend. It was not merely a dance party, but an opportunity for one promising project to receive funding and support.",
+        "Her stepsisters decided to participate, busying themselves with outfits, photographs, and videos. Cinderella saw a chance to present a project she had secretly developed: a platform that helped young people learn skills for free and gave those without money a path toward employment.",
+        "Her stepmother refused to let her go. “Who will care about a project created by a girl nobody knows? Stay here; you do not belong among influential people.” Cinderella returned to her room, feeling every path had closed. Then she found a letter from her father: “My daughter, never let the world's cruelty convince you that you are worth less than it is. You may not hold every key, but you can learn to make your own.” She held the letter close and decided to try.",
+        "No fairy appeared with a magic wand, and no pumpkin became a carriage. Instead, an older woman entered her life. She ran a small workshop teaching girls computer skills and had noticed Cinderella's talent through a volunteer project. She offered to help prepare the presentation and gave Cinderella a better computer.",
+        "The woman then took an elegant silver shoe from an old box. “This shoe is not magic, Cinderella. It reminds you that you do not need to wear a false identity to deserve a place in the world.” Cinderella put it on, chose a simple but elegant dress, packed her computer, and left for the event. Before she departed, the woman said, “Return before midnight—not because the magic will end, but so you do not forget why you came.”",
+        "Cinderella arrived at a building illuminated like a palace of glass. Giant screens displayed guests' photographs, while cameras searched for the most famous faces. Few people noticed her simple dress, so she entered the hall and prepared her computer for the presentation.",
+        "Her stepsisters posed with celebrities and presented projects that looked impressive but had not been developed with enough attention to what they could actually do for people. While Cinderella waited, a young man working in educational innovation approached and asked about the project on her screen.",
+        "She explained how a student who could not afford courses might learn an in-demand skill, how someone in a remote village could find a job opportunity, and how technology could shorten the distance between talent and opportunity. She did not pretend to know everything. She described what she had mastered, admitted what she still needed to learn, and presented the project's challenges alongside its successes.",
+        "The young man listened and said, “Do you know what makes your project different? It does not ask how we can make people applaud us. It asks how we can make people's lives better.” For the first time that evening, Cinderella felt someone was looking at what was inside her, not at what she wore.",
+        "When the presentations began, she stepped onto the stage. Her hands trembled, but she remembered her father's letter and began to speak. She was no longer a girl waiting for permission to dream; she was someone ready to explain and defend her idea. She answered questions and admitted the challenges she had not yet solved.",
+        "At the end of the evening, she succeeded not because she was the most beautiful or wore the most expensive dress, but because her project showed that a small idea could change many lives if given support. As she left, one silver shoe slipped off on the stairs. She noticed it but did not return for it; she carried her computer and a genuine opportunity that had only just begun.",
+        "By morning, a photograph of the shoe had spread online and people began searching for its owner. But Cinderella was not chasing fame. She was at home improving her project and preparing for the first meeting with her new team. When the organization learned her identity, it did not send someone to find a girl who fit the shoe. It sent an official invitation to sign an agreement supporting her project. The shoe no longer identified Cinderella; her work did.",
+        "Cinderella returned home to find her stepmother angry, demanding to know where she had been and accusing her of stealing the spotlight. Cinderella replied calmly, “I stole nothing. I went to present my work, and I found people who recognized its value.” When her stepmother said luck had done everything, Cinderella smiled: “Perhaps luck opened a door, but I had been learning how to walk long before it opened.”",
+        "Her stepmother did not suddenly become kind, and every problem did not disappear overnight. But Cinderella no longer waited for her approval. She had learned that self-respect did not require permission from someone who had mistreated her.",
+        "Over time, the project grew and helped thousands of young people gain skills and reach opportunities they had never imagined. Whenever someone asked about her success, she replied, “A silver shoe did not save me, and no prince changed my life. My life changed when I stopped waiting for someone to choose me and started working until I could choose my own path.”",
+        "One evening, she stood before girls who had begun their own small projects. “Do not let the world convince you that your worth is what appears on a screen. Pictures may attract attention, but actions create lasting impact. Do not wait until midnight to find out whether your dream is real. Begin today, even if all you have is an old computer and a small idea.”",
+        "And so Cinderella's story did not end with marriage to a prince. It began when she became the author of her own decisions. She discovered that the most beautiful ending is not someone arriving to rescue you from a life you dislike, but discovering your strength and building a life you choose for yourself.",
+        "Final lesson: In an age when people sell images of themselves in search of approval, build your truth. Admiration may give you a moment of fame, but genuine worth remains even after the screens go dark."
+      ]
+    }
   }
 ]
