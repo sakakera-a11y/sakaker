@@ -27,6 +27,8 @@
       '#' + HOST_ID + '{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:1rem}' +
       '#' + HOST_ID + ' .card{padding:1rem;background:var(--panel-bg,#fff);color:var(--text-color,#222);border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08)}' +
       '#' + HOST_ID + ' .card h3{margin:0 0 .5rem;font-size:1.05rem;line-height:1.5}' +
+      '#' + HOST_ID + ' .story-title-button{font:inherit;font-weight:700;text-align:inherit;line-height:inherit;padding:0;border:0;background:transparent;color:inherit;cursor:pointer}' +
+      '#' + HOST_ID + ' .story-title-button:hover{text-decoration:underline}' +
       '#' + HOST_ID + ' .card .lead{margin:0 0 .85rem;color:var(--text-color,#333);line-height:1.7}' +
       '#' + HOST_ID + ' .story-read{cursor:pointer;border:0;border-radius:8px;padding:.55rem .9rem;background:var(--accent-color,#087f8c);color:#fff}' +
       '#folderBody .story-detail{line-height:1.9;white-space:normal;overflow-wrap:anywhere}' +
@@ -118,7 +120,12 @@
       if (!item) return;
 
       const h = document.createElement('h3');
-      setText(h, item.title || (en ? 'Untitled story' : 'قصة بلا عنوان'));
+      const titleButton = document.createElement('button');
+      titleButton.type = 'button';
+      titleButton.className = 'story-title-button';
+      setText(titleButton, item.title || (en ? 'Untitled story' : 'قصة بلا عنوان'));
+      titleButton.addEventListener('click', function () { openStory(story); });
+      h.appendChild(titleButton);
       card.appendChild(h);
 
       if (item.lead) {
