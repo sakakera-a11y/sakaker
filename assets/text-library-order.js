@@ -61,7 +61,7 @@
     back.type = 'button';
     back.className = 'story-back';
     setText(back, en ? '← Back to stories' : '→ العودة إلى القصص');
-    back.addEventListener('click', renderThoughts);
+    back.addEventListener('click', showThoughts);
     body.appendChild(back);
 
     const detail = document.createElement('article');
@@ -145,6 +145,11 @@
     });
 
     body.appendChild(host);
+  }
+
+  function showThoughts() {
+    renderThoughts();
+    const modal = ensureFolderModal();
     modal.classList.add('show');
     modal.style.display = 'block';
     modal.setAttribute('aria-modal', 'true');
@@ -205,7 +210,7 @@
     lift();
     renderThoughts();
     loadStories();
-    window.showKhwater = renderThoughts;
+    window.showKhwater = showThoughts;
     window.addKhwaterStory = function (story) {
       if (!story || !story.ar || !story.en ||
           !Array.isArray(story.ar.paragraphs) || !Array.isArray(story.en.paragraphs)) return false;
@@ -230,7 +235,7 @@
       ].join(' ');
       if (/story|reflection|خاطرة|قصص|خواطر/i.test(searchable)) {
         event.preventDefault();
-        renderThoughts();
+        showThoughts();
       }
     }, { passive: false });
   }
