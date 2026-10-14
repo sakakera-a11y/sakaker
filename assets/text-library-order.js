@@ -224,7 +224,7 @@
       const button = event.target && event.target.closest
         ? event.target.closest('button,[role="button"],a')
         : null;
-      if (!button || button.classList.contains('story-read') || button.classList.contains('story-back')) return;
+      if (!button || button.classList.contains('story-read') || button.classList.contains('story-title-button') || button.classList.contains('story-back')) return;
       const searchable = [
         button.dataset && button.dataset.sakSection || '',
         button.getAttribute('aria-label') || '',
