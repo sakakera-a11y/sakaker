@@ -111,6 +111,10 @@
     stories.slice().sort(function (a, b) {
       const aSerial = Number(a && a.serial);
       const bSerial = Number(b && b.serial);
+      // Keep the requested featured story (serial 8) first, then preserve
+      // the numeric order of all remaining stories.
+      if (aSerial === 8 && bSerial !== 8) return -1;
+      if (bSerial === 8 && aSerial !== 8) return 1;
       return (Number.isFinite(aSerial) ? aSerial : Number.MAX_SAFE_INTEGER) -
         (Number.isFinite(bSerial) ? bSerial : Number.MAX_SAFE_INTEGER);
     }).forEach(function (story) {
