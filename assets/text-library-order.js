@@ -127,24 +127,10 @@
       const titleButton = document.createElement('button');
       titleButton.type = 'button';
       titleButton.className = 'story-title-button';
-      setText(titleButton, item.title || (en ? 'Untitled story' : 'قصة بلا عنوان'));
+      setText(titleButton, (story.serial ? String(story.serial) + '. ' : '') + (item.title || (en ? 'Untitled story' : 'قصة بلا عنوان')));
       titleButton.addEventListener('click', function () { openStory(story); });
       h.appendChild(titleButton);
       card.appendChild(h);
-
-      if (item.lead) {
-        const lead = document.createElement('p');
-        lead.className = 'lead';
-        setText(lead, item.lead);
-        card.appendChild(lead);
-      }
-
-      const read = document.createElement('button');
-      read.type = 'button';
-      read.className = 'story-read';
-      setText(read, en ? 'Read story' : 'اقرأ القصة');
-      read.addEventListener('click', function () { openStory(story); });
-      card.appendChild(read);
       host.appendChild(card);
     });
 
