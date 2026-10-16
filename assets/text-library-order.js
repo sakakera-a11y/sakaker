@@ -7,11 +7,12 @@
   const LABEL = /^(?:📖\s*)?(?:خواطر|خواطر وقصص|قصص|القصص والخواطر|thoughts|thoughts\s*&\s*stories|stories|reflections)$/i;
 
   function labelOf(item) {
-    return [
+    const values = [
       item.getAttribute('aria-label'),
       item.getAttribute('title'),
       item.textContent
-    ].filter(Boolean).join(' ').replace(/\s+/g, ' ').trim();
+    ].filter(Boolean).map(value => value.replace(/\s+/g, ' ').trim());
+    return values.find(value => LABEL.test(value)) || values.join(' ');
   }
 
   function isEbookArea(item) {
@@ -22,7 +23,6 @@
   }
 
   function removeThoughtsLaunchers() {
-    // The legacy text-library modal may be dynamically rebuilt.
     const modal = document.getElementById('sakTextLibraryModal');
     if (modal) {
       const grid = modal.querySelector('.sak-text-library-grid');
@@ -38,8 +38,7 @@
     document.querySelectorAll('button, a, [role="button"]').forEach(function (item) {
       if (isEbookArea(item) || item.closest('#sakTextLibraryModal')) return;
       if (!LABEL.test(labelOf(item))) return;
-      const launcher = item.closest('button, a, [role="button"]') || item;
-      if (!isEbookArea(launcher)) launcher.remove();
+      if (!isEbookArea(item)) item.remove();
     });
   }
 
