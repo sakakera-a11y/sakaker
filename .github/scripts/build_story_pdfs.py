@@ -2,6 +2,8 @@
 """Build bilingual PDFs from the canonical story data without editing story text."""
 import json, re, os, html
 from pathlib import Path
+from reportlab import rl_config
+rl_config.invariant = 1  # Stable PDF bytes prevent concurrent workflow commits from racing.
 import arabic_reshaper
 from bidi.algorithm import get_display
 from reportlab.lib import colors
