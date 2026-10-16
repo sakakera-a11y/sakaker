@@ -1,6 +1,4 @@
 const GRAPHQL_ENDPOINT = "https://api.cloudflare.com/client/v4/graphql";
-const ALLOWED_HOSTS = new Set(["sakaker.co", "www.sakaker.co"]);
-
 function json(body, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
