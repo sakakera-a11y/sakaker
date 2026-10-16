@@ -79,8 +79,8 @@ jobs:
         run: |
           set -euo pipefail
           echo '=== HTTPS headers ==='
-          curl --fail --silent --show-error --location --max-time 25 \\
-            --user-agent 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36' \\
+          curl --fail --silent --show-error --location --max-time 25 \
+            --user-agent 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36' \
             --output /tmp/sakaker-home.html \
             --write-out 'HTTP %{http_code}\nDNS %{time_namelookup}s\nConnect %{time_connect}s\nTLS %{time_appconnect}s\nTTFB %{time_starttransfer}s\nTotal %{time_total}s\nDownloaded %{size_download} bytes\nFinal %{url_effective}\n' \
             https://sakaker.co/
