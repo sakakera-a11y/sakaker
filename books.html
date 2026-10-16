@@ -76,7 +76,19 @@ const books=[
 {id:'1z1iQDVvxcj49D664-wkCi-H3r2lBpkMs',ar:'قضية زعيم العصابة',en:'The Gang Leader Case',authorAr:'روايات مصرية للجيب',authorEn:'Egyptian Pocket Novels'},
 {id:'1LdhTXBaSSHwOI6XBreWwCd8QqOjy3beu',ar:'فن الحياة',en:'The Art of Life',authorAr:'سلامة موسى',authorEn:'Salama Moussa'},
 {id:'1svg6UMe1yq7d62iola4DHAMkT2dKWfPN',ar:'ألف ليلة وليلة',en:'One Thousand and One Nights',authorAr:'المجلد الأول',authorEn:'Volume One'},
-{id:'1X8LuHDx06ZjSG1TH-Y065i0yVXUUoebu',ar:'قواعد جارتين',en:'Qawaed Jartin',authorAr:'عمرو عبد الحميد',authorEn:'Amr Abdel Hamid'}
+{id:'1X8LuHDx06ZjSG1TH-Y065i0yVXUUoebu',ar:'قواعد جارتين',en:'Qawaed Jartin',authorAr:'عمرو عبد الحميد',authorEn:'Amr Abdel Hamid'},
+{url:'/ebooks/storybook-bilingual.pdf',ar:'كتاب أبوالقمر زمرد — روايات وقصص حديثة',en:'Abwalqmrzmrd Castle — Modern Tales and Stories',authorAr:'الطبعة الثنائية اللغة: 11 قصة',authorEn:'Bilingual edition: 11 stories'},
+{url:'/ebooks/stories/01-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 1',en:'Abwalqmrzmrd Stories — Story 1',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/02-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 2',en:'Abwalqmrzmrd Stories — Story 2',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/03-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 3',en:'Abwalqmrzmrd Stories — Story 3',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/04-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 4',en:'Abwalqmrzmrd Stories — Story 4',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/05-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 5',en:'Abwalqmrzmrd Stories — Story 5',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/06-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 6',en:'Abwalqmrzmrd Stories — Story 6',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/07-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 7',en:'Abwalqmrzmrd Stories — Story 7',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/08-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 8',en:'Abwalqmrzmrd Stories — Story 8',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/09-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 9',en:'Abwalqmrzmrd Stories — Story 9',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/10-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 10',en:'Abwalqmrzmrd Stories — Story 10',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/11-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 11',en:'Abwalqmrzmrd Stories — Story 11',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'}
 ];
 let en=false;
 try{en=(parent!==window&&parent.document.documentElement.lang==='en')||document.documentElement.lang==='en'}catch(e){en=document.documentElement.lang==='en'}
@@ -89,7 +101,7 @@ document.getElementById('note').textContent=t('تُعرض الكتب من Google
 document.getElementById('backBtn').textContent=t('↩ الرئيسية','↩ Home');
 document.getElementById('downloadBtn').textContent=t('⬇ تحميل','⬇ Download');
 books.forEach((b,i)=>{const el=document.createElement('button');el.type='button';el.className='book';el.innerHTML='<span class="ico">📖</span><b></b><small></small><span class="action"></span>';el.querySelector('b').textContent=t(b.ar,b.en);el.querySelector('small').textContent=t(b.authorAr,b.authorEn);el.querySelector('.action').textContent=t('قراءة الكتاب','Read book');el.onclick=()=>openBook(i);grid.appendChild(el)});
-function openBook(i){const b=books[i];title.textContent='📖 '+t(b.ar,b.en);frame.src='https://drive.google.com/file/d/'+b.id+'/preview';download.href='https://drive.google.com/uc?export=download&id='+b.id;reader.classList.add('open');reader.setAttribute('aria-hidden','false');document.documentElement.style.overflow='hidden'}
+function openBook(i){const b=books[i];title.textContent='📖 '+t(b.ar,b.en);frame.src=b.url||('https://drive.google.com/file/d/'+b.id+'/preview');download.href=b.url||('https://drive.google.com/uc?export=download&id='+b.id);reader.classList.add('open');reader.setAttribute('aria-hidden','false');document.documentElement.style.overflow='hidden'}
 function closeReader(){reader.classList.remove('open');reader.setAttribute('aria-hidden','true');frame.src='about:blank';document.documentElement.style.overflow=''}
 document.getElementById('closeBtn').onclick=closeReader;
 reader.addEventListener('click',e=>{if(e.target===reader)closeReader()});
