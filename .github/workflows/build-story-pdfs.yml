@@ -11,7 +11,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: story-pdf-build-\${{ github.ref }}
+  group: story-pdf-build-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   build:
@@ -20,7 +20,7 @@ jobs:
       - name: Check out proposal branch
         uses: actions/checkout@v4
         with:
-          ref: \${{ github.ref_name }}
+          ref: ${{ github.ref_name }}
       - name: Install Arabic font and PDF dependencies
         run: |
           sudo apt-get update
@@ -49,5 +49,5 @@ jobs:
             echo "PDFs are already up to date."
           else
             git commit -m "Generate bilingual story PDFs"
-            git push origin "HEAD:\${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
