@@ -11,9 +11,10 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import mm
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak, Image
 ROOT = Path(__file__).resolve().parents[2]
-SOURCE = ROOT / "data" / "khwater.json"
+SOURCE = ROOT / "data" / "ebook-stories.json"
+COVER = ROOT / "Screenshot_٢٠٢٦١٠٠٦-١٧٤٢٠٧_1.png"
 OUT = ROOT / "ebooks"
 INDIVIDUAL = OUT / "stories"
 OUT.mkdir(parents=True, exist_ok=True)
@@ -51,7 +52,7 @@ stories = sorted(json.loads(SOURCE.read_text(encoding="utf-8")), key=lambda x: i
 if len(stories) != 11: raise SystemExit(f"Expected 11 stories, found {len(stories)}")
 for story in stories:
     if not story.get("ar", {}).get("paragraphs") or not story.get("en", {}).get("paragraphs"): raise SystemExit(f"Missing Arabic/English content: serial {story.get('serial')}")
-combined = [Spacer(1, 45*mm), Paragraph(ptext("كتاب أبوالقمر زمرد", True), styles["CoverTitle"]), Paragraph(ptext("روايات وقصص حديثة", True), styles["CoverSub"]), Spacer(1, 4*mm), Paragraph("Abwalqmrzmrd Castle — Modern Tales and Stories", styles["CoverSub"]), Spacer(1, 12*mm), Paragraph(ptext("الطبعة الثنائية اللغة — العربية والإنجليزية", True), styles["Label"]), Paragraph("Bilingual Edition — Arabic &amp; English", styles["Label"]), PageBreak()]
+combined = [Spacer(1, 5*mm), Image(str(COVER), width=145*mm, height=90*mm, kind="proportional"), Spacer(1, 8*mm), Paragraph(ptext("كتاب أبوالقمر زمرد", True), styles["CoverTitle"]), Paragraph(ptext("روايات وقصص حديثة", True), styles["CoverSub"]), Spacer(1, 4*mm), Paragraph("Abwalqmrzmrd Castle — Modern Tales and Stories", styles["CoverSub"]), Spacer(1, 8*mm), Paragraph(ptext("الطبعة الثنائية اللغة — العربية والإنجليزية", True), styles["Label"]), Paragraph("Bilingual Edition — Arabic &amp; English", styles["Label"]), PageBreak()]
 for i, story in enumerate(stories):
     flow, _, _, _ = make_story(story, i+1); combined.extend(flow)
     if i < len(stories)-1: combined.append(PageBreak())
