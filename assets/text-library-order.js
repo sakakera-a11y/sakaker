@@ -1,66 +1,32 @@
 (function () {
   'use strict';
 
-  const EBOOK_ID = 'sakEbooksLibraryBtn';
-  const REMOVED_SECTION_KEYS = new Set(['stories', 'thoughts', 'reflections', 'khwater']);
+  // Restrict changes to the dedicated text-library modal. Never remove the
+  // main story modal, global buttons, or unrelated site sections.
+  function removeThoughtsFromTextLibrary() {
+    const modal = document.getElementById('sakTextLibraryModal');
+    if (!modal) return;
 
-  function isEnglish() {
-    return (document.documentElement.lang || '').toLowerCase().startsWith('en');
-  }
+    const grid = modal.querySelector('.sak-text-library-grid');
+    if (!grid) return;
 
-  function ensureEbooksButton() {
-    const main = document.querySelector('main');
-    if (!main) return;
-    let button = document.getElementById(EBOOK_ID);
-    if (!button) {
-      button = document.createElement('button');
-      button.id = EBOOK_ID;
-      button.type = 'button';
-      main.appendChild(button);
-    }
-    const label = isEnglish() ? 'E-Books' : 'الكتب الإلكترونية';
-    const ariaLabel = isEnglish() ? 'Open e-books' : 'فتح الكتب الإلكترونية';
-    if (button.textContent !== label) button.textContent = label;
-    if (button.getAttribute('aria-label') !== ariaLabel) button.setAttribute('aria-label', ariaLabel);
-  }
+    grid.querySelectorAll('button, a, [role="button"]').forEach(function (item) {
+      const label = [
+        item.getAttribute('aria-label'),
+        item.getAttribute('title'),
+        item.textContent
+      ].filter(Boolean).join(' ').replace(/\s+/g, ' ').trim();
 
-  function isThoughtsLabel(value) {
-    const label = String(value || '').replace(/\s+/g, ' ').trim();
-    return /^(قصص|خواطر|خاطرة|القصص والخواطر|قصص وخواطر|stories|thoughts|reflections|stories & reflections)$/i.test(label);
-  }
-
-  function removeThoughtsSection() {
-    // Remove the actual text-library category by its stable data key, wherever the
-    // library modal is mounted (it is not necessarily a child of <main>).
-    document.querySelectorAll('[data-sak-section]').forEach(function (element) {
-      const key = String(element.getAttribute('data-sak-section') || '').toLowerCase().trim();
-      if (element.id !== EBOOK_ID && REMOVED_SECTION_KEYS.has(key)) element.remove();
+      if (/^(📖\s*)?(خواطر|خواطر وقصص|قصص|القصص والخواطر|thoughts|thoughts\s*&\s*stories|stories|reflections)$/i.test(label)) {
+        item.remove();
+      }
     });
-
-    // Also remove legacy category controls identified by their visible/accessibility label.
-    document.querySelectorAll('button, a, [role="button"]').forEach(function (element) {
-      if (element.id === EBOOK_ID) return;
-      const labels = [
-        element.getAttribute('aria-label'),
-        element.getAttribute('title'),
-        element.textContent
-      ];
-      if (labels.some(isThoughtsLabel)) element.remove();
-    });
-
-    const obsoleteModal = document.getElementById('folderModal');
-    if (obsoleteModal) obsoleteModal.remove();
   }
 
   function init() {
-    removeThoughtsSection();
-    ensureEbooksButton();
-
+    removeThoughtsFromTextLibrary();
     if (typeof MutationObserver !== 'undefined' && document.body) {
-      const observer = new MutationObserver(function () {
-        removeThoughtsSection();
-        ensureEbooksButton();
-      });
+      const observer = new MutationObserver(removeThoughtsFromTextLibrary);
       observer.observe(document.body, { childList: true, subtree: true });
     }
   }
