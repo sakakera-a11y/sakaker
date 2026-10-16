@@ -30,7 +30,7 @@ export async function onRequestGet({ request, env }) {
   const end = new Date();
   const start = new Date(end.getTime() - 24 * 60 * 60 * 1000);
   const query = `
-    query SakakerTrafficReference($zoneTag: String!, $start: Time!, $end: Time!) {
+    query SakakerTrafficReference($zoneTag: string, $start: Time, $end: Time) {
       viewer {
         zones(filter: { zoneTag: $zoneTag }) {
           httpRequestsAdaptiveGroups(
