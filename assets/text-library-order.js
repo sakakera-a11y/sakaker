@@ -17,8 +17,10 @@
       button.type = 'button';
       main.appendChild(button);
     }
-    button.textContent = isEnglish() ? 'E-Books' : 'الكتب الإلكترونية';
-    button.setAttribute('aria-label', isEnglish() ? 'Open e-books' : 'فتح الكتب الإلكترونية');
+    const label = isEnglish() ? 'E-Books' : 'الكتب الإلكترونية';
+    const ariaLabel = isEnglish() ? 'Open e-books' : 'فتح الكتب الإلكترونية';
+    if (button.textContent !== label) button.textContent = label;
+    if (button.getAttribute('aria-label') !== ariaLabel) button.setAttribute('aria-label', ariaLabel);
   }
 
   function removeThoughtsSection() {
