@@ -5,6 +5,7 @@ on:
       - prepare-story-ebook-pdfs
     paths:
       - "data/khwater.json"
+      - "data/ebook-stories.json"
       - ".github/scripts/build_story_pdfs.py"
       - ".github/workflows/build-story-pdfs.yml"
   workflow_dispatch:
