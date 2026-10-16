@@ -15,7 +15,7 @@ h1{margin:8px 0 4px;color:var(--gold);text-shadow:0 0 14px #00ffd066}
 .grid{max-width:980px;margin:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .book{min-height:165px;border:1px solid #5fffd4aa;border-radius:22px;background:linear-gradient(145deg,rgba(7,47,39,.96),rgba(3,23,28,.98));color:#fff;padding:18px 14px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;box-shadow:0 10px 28px #0008,0 0 20px #00ffd01f;transition:.22s}
 .book:hover,.book:focus-visible{transform:translateY(-5px);box-shadow:0 14px 36px #0009,0 0 30px #00ffd044;outline:2px solid #fff8}
-.book .ico{font-size:42px;margin-bottom:8px}.book b{font-size:16px;color:#fff}.book small{display:block;color:#cdeee6;margin-top:6px;line-height:1.5}.book span.action{margin-top:10px;color:var(--gold);font-weight:800;font-size:12px}
+.book .book-cover{display:block;width:min(100%,210px);height:170px;object-fit:cover;object-position:center;border:1px solid #ffd45c99;border-radius:14px;margin:0 auto 11px;box-shadow:0 6px 18px #0007}.book .ico{font-size:42px;margin-bottom:8px}.book b{font-size:16px;color:#fff}.book small{display:block;color:#cdeee6;margin-top:6px;line-height:1.5}.book span.action{margin-top:10px;color:var(--gold);font-weight:800;font-size:12px}
 #reader{display:none;position:fixed;inset:0;width:100vw;height:100dvh;background:rgba(0,0,0,.88);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);z-index:2147483647;padding:10px}
 #reader.open{display:flex;align-items:center;justify-content:center}
 .readerBox{width:min(1100px,98vw);height:min(94dvh,900px);background:linear-gradient(145deg,#062a23,#03161a);border:1px solid #63ffda;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 0 30px #00ffd044}
@@ -51,7 +51,7 @@ iframe{width:100%;height:100%;border:0;background:#fff;flex:1}
 <button class="back" id="backBtn" type="button">↩ الرئيسية / Home</button>
 <header><h1 id="pageTitle">📚 الكتب الإلكترونية</h1><div class="sub" id="pageSub">قراءة داخل الموقع</div></header>
 <main class="grid" id="booksGrid"></main>
-<div class="note" id="note">تُعرض الكتب من Google Drive داخل قارئ الموقع.</div>
+<div class="note" id="note">تُعرض الكتب من Google Drive والملفات المحلية داخل قارئ الموقع.</div>
 
 <div id="reader" aria-hidden="true">
   <section class="readerBox" role="dialog" aria-modal="true">
@@ -76,7 +76,19 @@ const books=[
 {id:'1z1iQDVvxcj49D664-wkCi-H3r2lBpkMs',ar:'قضية زعيم العصابة',en:'The Gang Leader Case',authorAr:'روايات مصرية للجيب',authorEn:'Egyptian Pocket Novels'},
 {id:'1LdhTXBaSSHwOI6XBreWwCd8QqOjy3beu',ar:'فن الحياة',en:'The Art of Life',authorAr:'سلامة موسى',authorEn:'Salama Moussa'},
 {id:'1svg6UMe1yq7d62iola4DHAMkT2dKWfPN',ar:'ألف ليلة وليلة',en:'One Thousand and One Nights',authorAr:'المجلد الأول',authorEn:'Volume One'},
-{id:'1X8LuHDx06ZjSG1TH-Y065i0yVXUUoebu',ar:'قواعد جارتين',en:'Qawaed Jartin',authorAr:'عمرو عبد الحميد',authorEn:'Amr Abdel Hamid'}
+{id:'1X8LuHDx06ZjSG1TH-Y065i0yVXUUoebu',ar:'قواعد جارتين',en:'Qawaed Jartin',authorAr:'عمرو عبد الحميد',authorEn:'Amr Abdel Hamid'},
+{url:'/ebooks/storybook-bilingual.pdf',cover:'/Screenshot_٢٠٢٦١٠٠٦-١٧٤٢٠٧_1.png',ar:'كتاب أبوالقمر زمرد — روايات وقصص حديثة',en:'Abwalqmrzmrd Castle — Modern Tales and Stories',authorAr:'الطبعة الثنائية اللغة: 11 قصة',authorEn:'Bilingual edition: 11 stories'},
+{url:'/ebooks/stories/01-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 1',en:'Abwalqmrzmrd Stories — Story 1',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/02-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 2',en:'Abwalqmrzmrd Stories — Story 2',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/03-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 3',en:'Abwalqmrzmrd Stories — Story 3',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/04-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 4',en:'Abwalqmrzmrd Stories — Story 4',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/05-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 5',en:'Abwalqmrzmrd Stories — Story 5',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/06-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 6',en:'Abwalqmrzmrd Stories — Story 6',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/07-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 7',en:'Abwalqmrzmrd Stories — Story 7',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/08-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 8',en:'Abwalqmrzmrd Stories — Story 8',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/09-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 9',en:'Abwalqmrzmrd Stories — Story 9',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/10-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 10',en:'Abwalqmrzmrd Stories — Story 10',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/11-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 11',en:'Abwalqmrzmrd Stories — Story 11',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'}
 ];
 let en=false;
 try{en=(parent!==window&&parent.document.documentElement.lang==='en')||document.documentElement.lang==='en'}catch(e){en=document.documentElement.lang==='en'}
@@ -88,8 +100,8 @@ document.getElementById('pageSub').textContent=t('قراءة داخل الموق
 document.getElementById('note').textContent=t('تُعرض الكتب من Google Drive داخل قارئ الموقع.','Books are displayed from Google Drive inside the site reader.');
 document.getElementById('backBtn').textContent=t('↩ الرئيسية','↩ Home');
 document.getElementById('downloadBtn').textContent=t('⬇ تحميل','⬇ Download');
-books.forEach((b,i)=>{const el=document.createElement('button');el.type='button';el.className='book';el.innerHTML='<span class="ico">📖</span><b></b><small></small><span class="action"></span>';el.querySelector('b').textContent=t(b.ar,b.en);el.querySelector('small').textContent=t(b.authorAr,b.authorEn);el.querySelector('.action').textContent=t('قراءة الكتاب','Read book');el.onclick=()=>openBook(i);grid.appendChild(el)});
-function openBook(i){const b=books[i];title.textContent='📖 '+t(b.ar,b.en);frame.src='https://drive.google.com/file/d/'+b.id+'/preview';download.href='https://drive.google.com/uc?export=download&id='+b.id;reader.classList.add('open');reader.setAttribute('aria-hidden','false');document.documentElement.style.overflow='hidden'}
+books.forEach((b,i)=>{const el=document.createElement('button');el.type='button';el.className='book';el.innerHTML='<span class="ico">📖</span><b></b><small></small><span class="action"></span>';if(b.cover){const cover=document.createElement('img');cover.className='book-cover';cover.src=b.cover;cover.alt=t(b.ar,b.en);el.prepend(cover);el.querySelector('.ico').hidden=true;}el.querySelector('b').textContent=t(b.ar,b.en);el.querySelector('small').textContent=t(b.authorAr,b.authorEn);el.querySelector('.action').textContent=t('قراءة الكتاب','Read book');el.onclick=()=>openBook(i);grid.appendChild(el)});
+function openBook(i){const b=books[i];title.textContent='📖 '+t(b.ar,b.en);frame.src=b.url||('https://drive.google.com/file/d/'+b.id+'/preview');download.href=b.url||('https://drive.google.com/uc?export=download&id='+b.id);reader.classList.add('open');reader.setAttribute('aria-hidden','false');document.documentElement.style.overflow='hidden'}
 function closeReader(){reader.classList.remove('open');reader.setAttribute('aria-hidden','true');frame.src='about:blank';document.documentElement.style.overflow=''}
 document.getElementById('closeBtn').onclick=closeReader;
 reader.addEventListener('click',e=>{if(e.target===reader)closeReader()});
