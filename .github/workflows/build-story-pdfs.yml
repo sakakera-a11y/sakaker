@@ -50,5 +50,6 @@ jobs:
             echo "PDFs are already up to date."
           else
             git commit -m "Generate bilingual story PDFs"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
             git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
