@@ -26,13 +26,15 @@
   function removeThoughtsSection() {
     document.querySelectorAll('main button, main a, main [role="button"]').forEach(function (element) {
       if (element.id === EBOOK_ID) return;
-      const label = [
+      const labels = [
         element.getAttribute('aria-label') || '',
         element.getAttribute('title') || '',
         element.dataset && element.dataset.sakSection || '',
         element.textContent || ''
-      ].join(' ').replace(/\\s+/g, ' ').trim();
-      if (/^(قصص|خواطر|خاطرة|القصص والخواطر|stories|reflections|stories & reflections)$/i.test(label)) {
+      ].map(function (value) { return value.replace(/\\s+/g, ' ').trim(); });
+      if (labels.some(function (label) {
+        return /^(قصص|خواطر|خاطرة|القصص والخواطر|stories|reflections|stories & reflections)$/i.test(label);
+      })) {
         element.remove();
       }
     });
