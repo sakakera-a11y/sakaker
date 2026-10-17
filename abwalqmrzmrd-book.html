@@ -217,6 +217,18 @@ iframe{display:block;width:100%;height:min(70vh,800px);border:0;background:#fff}
   document.documentElement.dir=english?'ltr':'rtl';
   document.querySelectorAll('[data-lang-panel]').forEach(el=>{el.hidden=el.dataset.langPanel!==lang;});
   document.querySelectorAll('[data-ar][data-en]').forEach(el=>{el.textContent=english?el.dataset.en:el.dataset.ar;});
+  if(select&&stories.length){
+   const selected=select.value;
+   select.replaceChildren();
+   stories.forEach((story,index)=>{
+    const option=document.createElement('option');
+    option.value=String(index);
+    option.textContent=((story[lang]||story.ar||story.en).title||((english?'Story ':'القصة ')+(index+1)));
+    select.appendChild(option);
+   });
+   select.value=selected;
+   select.setAttribute('aria-label',english?'Choose a story':'اختيار القصة');
+  }else if(select){select.setAttribute('aria-label',english?'Choose a story':'اختيار القصة');}
   buttons.forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.setLang===lang)));
   document.title=english?'The Abwalqmrzmrd Book | Modern Tales and Stories':'كتاب أبوالقمر زمرد | روايات وقصص حديثة';
   renderStory();
