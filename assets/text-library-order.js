@@ -1,10 +1,11 @@
 (function () {
   'use strict';
 
-  // Stories now belong in the dedicated e-book shelf. Keep original story
-  // files intact; remove only standalone Thoughts/Stories launchers from the
-  // site UI and never touch controls inside the e-book shelf/reader.
+  // Replace the former standalone Thoughts launcher with a dedicated
+  // Abwalqmrzmrd book section. Keep the source stories and e-book library intact.
   const LABEL = /^(?:📖\s*)?(?:خواطر|خواطر وقصص|قصص|القصص والخواطر|thoughts|thoughts\s*&\s*stories|stories|reflections)$/i;
+  const BOOK_LABEL = '📚 كتاب أبوالقمر زمرد';
+  const BOOK_URL = '/abwalqmrzmrd-book.html';
 
   function labelOf(item) {
     const values = [
@@ -22,7 +23,39 @@
     );
   }
 
-  function removeThoughtsLaunchers() {
+  function makeBookLauncher(item) {
+    if (item.dataset.sakBookLauncher === 'true') return item;
+    const replacement = item.cloneNode(true);
+    replacement.dataset.sakBookLauncher = 'true';
+    replacement.setAttribute('aria-label', BOOK_LABEL);
+    replacement.setAttribute('title', BOOK_LABEL);
+    replacement.textContent = BOOK_LABEL;
+
+    if (replacement.tagName === 'A') {
+      replacement.setAttribute('href', BOOK_URL);
+      replacement.removeAttribute('target');
+      replacement.removeAttribute('onclick');
+    } else {
+      if (replacement.tagName === 'BUTTON') replacement.type = 'button';
+      replacement.setAttribute('role', replacement.tagName === 'BUTTON' ? 'button' : (replacement.getAttribute('role') || 'button'));
+      if (!replacement.hasAttribute('tabindex') && replacement.tagName !== 'BUTTON') replacement.tabIndex = 0;
+      replacement.onclick = function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        window.location.href = BOOK_URL;
+      };
+      replacement.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          event.stopPropagation();
+          window.location.href = BOOK_URL;
+        }
+      });
+    }
+    item.replaceWith(replacement);
+  }
+
+  function updateLaunchers() {
     const modal = document.getElementById('sakTextLibraryModal');
     if (modal) {
       const grid = modal.querySelector('.sak-text-library-grid');
@@ -33,19 +66,16 @@
       }
     }
 
-    // Remove exact standalone section launchers elsewhere, without touching
-    // story content, generic navigation, or the e-book cards.
     document.querySelectorAll('button, a, [role="button"]').forEach(function (item) {
-      if (isEbookArea(item) || item.closest('#sakTextLibraryModal')) return;
-      if (!LABEL.test(labelOf(item))) return;
-      if (!isEbookArea(item)) item.remove();
+      if (item.dataset.sakBookLauncher === 'true' || isEbookArea(item) || item.closest('#sakTextLibraryModal')) return;
+      if (LABEL.test(labelOf(item))) makeBookLauncher(item);
     });
   }
 
   function init() {
-    removeThoughtsLaunchers();
+    updateLaunchers();
     if (typeof MutationObserver !== 'undefined' && document.body) {
-      const observer = new MutationObserver(removeThoughtsLaunchers);
+      const observer = new MutationObserver(updateLaunchers);
       observer.observe(document.body, { childList: true, subtree: true });
     }
   }
