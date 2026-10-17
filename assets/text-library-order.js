@@ -3,7 +3,7 @@
 
   // Replace the former standalone Thoughts launcher with a dedicated
   // Abwalqmrzmrd book section. Keep the source stories and e-book library intact.
-  const LABEL = /^(?:📖\\s*)?(?:خواطر|خواطر وقصص|قصص|القصص والخواطر|thoughts|thoughts\\s*&\\s*stories|stories|reflections)$/i;
+  const LABEL = /^(?:📖\s*)?(?:خواطر|خواطر وقصص|قصص|القصص والخواطر|thoughts|thoughts\s*&\s*stories|stories|reflections)$/i;
   const BOOK_LABEL = '📚 كتاب أبوالقمر زمرد';
   const BOOK_URL = '/abwalqmrzmrd-book.html';
 
@@ -12,7 +12,7 @@
       item.getAttribute('aria-label'),
       item.getAttribute('title'),
       item.textContent
-    ].filter(Boolean).map(value => value.replace(/\\s+/g, ' ').trim());
+    ].filter(Boolean).map(value => value.replace(/\s+/g, ' ').trim());
     return values.find(value => LABEL.test(value)) || values.join(' ');
   }
 
@@ -29,9 +29,8 @@
     replacement.dataset.sakBookLauncher = 'true';
     replacement.setAttribute('aria-label', BOOK_LABEL);
     replacement.setAttribute('title', BOOK_LABEL);
-
-    // Keep the original placement and styling, but make the action independent.
     replacement.textContent = BOOK_LABEL;
+
     if (replacement.tagName === 'A') {
       replacement.setAttribute('href', BOOK_URL);
       replacement.removeAttribute('target');
@@ -54,7 +53,6 @@
       });
     }
     item.replaceWith(replacement);
-    return replacement;
   }
 
   function updateLaunchers() {
@@ -68,7 +66,6 @@
       }
     }
 
-    // The former section stays in its original place, now as a standalone book.
     document.querySelectorAll('button, a, [role="button"]').forEach(function (item) {
       if (item.dataset.sakBookLauncher === 'true' || isEbookArea(item) || item.closest('#sakTextLibraryModal')) return;
       if (LABEL.test(labelOf(item))) makeBookLauncher(item);
