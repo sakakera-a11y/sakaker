@@ -686,3 +686,37 @@ document.addEventListener('pointerdown',()=>{
 },{capture:true});
 
 })();
+
+/* Synchronized visibility cycle: every visible dock icon fades together. */
+(()=>{
+  'use strict';
+  const ID='sakUnifiedIconVisibilityCycle';
+  function install(){
+    if(document.getElementById(ID))return;
+    const style=document.createElement('style');
+    style.id=ID;
+    style.textContent=`
+      html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon{
+        animation:sakUnifiedIconVisibility 7s ease-in-out infinite!important;
+      }
+      @keyframes sakUnifiedIconVisibility{
+        0%,39%,61%,100%{opacity:1;visibility:visible}
+        44%,56%{opacity:0;visibility:hidden}
+      }
+      @media(prefers-reduced-motion:reduce){
+        html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon{
+          animation:none!important;opacity:1!important;visibility:visible!important
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  function sync(){
+    const dock=document.getElementById('sakakerAllIconsDock');
+    if(!dock)return;
+    dock.querySelectorAll('.sak-cycle-hidden').forEach(el=>el.classList.remove('sak-cycle-hidden'));
+    install();
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});else sync();
+  if(document.body)new MutationObserver(sync).observe(document.body,{childList:true,subtree:true});
+})();
