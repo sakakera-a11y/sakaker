@@ -5,7 +5,7 @@
   // and also add the book as an item in the text library.
   const LABEL = /^(?:📖\s*)?(?:خواطر|خواطر وقصص|قصص|القصص والخواطر|thoughts|thoughts\s*&\s*stories|stories|reflections)$/i;
   const BOOK_LABEL = '📚 كتاب أبوالقمرزمرد';
-  const BOOK_URL = 'https://drive.google.com/file/d/1W5AskSaukXdyo8iLOXm7YyqHznxVqaUf/preview';
+  const BOOK_URL = '/books.html?v=20261018-book-fix';
 
   function labelOf(item) {
     const values = [
@@ -28,7 +28,14 @@
       event.preventDefault();
       event.stopPropagation();
     }
-    window.open(BOOK_URL, '_blank', 'noopener,noreferrer');
+    if (typeof window.openSakakerEbooks === 'function') {
+      try { window.openSakakerEbooks(); return; } catch (_) {}
+    }
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage({ type: 'sak-open-ebooks' }, location.origin);
+      return;
+    }
+    window.location.href = BOOK_URL;
   }
 
   function makeBookLauncher(item) {
@@ -41,9 +48,9 @@
 
     if (replacement.tagName === 'A') {
       replacement.href = BOOK_URL;
-      replacement.target = '_blank';
-      replacement.rel = 'noopener noreferrer';
-      replacement.removeAttribute('onclick');
+      replacement.removeAttribute('target');
+      replacement.removeAttribute('rel');
+      replacement.onclick = openBook;
     } else {
       if (replacement.tagName === 'BUTTON') replacement.type = 'button';
       replacement.setAttribute('role', replacement.tagName === 'BUTTON' ? 'button' : (replacement.getAttribute('role') || 'button'));
@@ -83,8 +90,9 @@
     item.textContent = BOOK_LABEL;
     if (item.tagName === 'A') {
       item.href = BOOK_URL;
-      item.target = '_blank';
-      item.rel = 'noopener noreferrer';
+      item.removeAttribute('target');
+      item.removeAttribute('rel');
+      item.onclick = openBook;
     } else {
       item.type = 'button';
       item.onclick = openBook;
@@ -104,7 +112,7 @@
       addBookToTextLibrary();
     }
 
-    document.querySelectorAll('button, a, [role="button"]').forEach(function (item) {
+    document.querySelectorAll('button, a, [role="button"], .launcher').forEach(function (item) {
       if (item.dataset.sakBookLauncher === 'true' || isEbookArea(item) || item.closest('#sakTextLibraryModal')) return;
       if (LABEL.test(labelOf(item))) makeBookLauncher(item);
     });
