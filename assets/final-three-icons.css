@@ -226,14 +226,18 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-utility-slot > .sak-
   margin:0!important;
 }
 
-/* One common hide transition for any existing cycle system. Nothing is
-   forced visible when the class is absent. */
-html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon.sak-cycle-hidden,
-html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-cycle-hidden .sak-ostrich-icon{
-  opacity:0!important;
-  visibility:hidden!important;
-  pointer-events:none!important;
-  transition:opacity 240ms ease,visibility 0s linear 240ms!important;
+/* Every visible icon uses the same synchronized disappearance cycle. */
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon{
+  animation:sakUnifiedIconVisibility 7s ease-in-out infinite!important;
+}
+@keyframes sakUnifiedIconVisibility{
+  0%,39%,61%,100%{opacity:1;visibility:visible}
+  44%,56%{opacity:0;visibility:hidden}
+}
+@media(prefers-reduced-motion:reduce){
+  html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon{
+    animation:none!important;opacity:1!important;visibility:visible!important
+  }
 }
 
 html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon:hover .sak-ostrich-art,
