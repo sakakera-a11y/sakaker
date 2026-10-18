@@ -1,11 +1,11 @@
 (function () {
   'use strict';
 
-  // Replace the former standalone Thoughts launcher with a dedicated
-  // Abwalqmrzmrd book section. Keep the source stories and e-book library intact.
+  // Replace the former Thoughts launcher with the Abwalqmrzmrd book,
+  // and also add the book as an item in the text library.
   const LABEL = /^(?:📖\s*)?(?:خواطر|خواطر وقصص|قصص|القصص والخواطر|thoughts|thoughts\s*&\s*stories|stories|reflections)$/i;
-  const BOOK_LABEL = '📚 كتاب أبوالقمر زمرد';
-  const BOOK_URL = '/abwalqmrzmrd-book.html';
+  const BOOK_LABEL = '📚 كتاب أبوالقمرزمرد';
+  const BOOK_URL = 'https://drive.google.com/file/d/1W5AskSaukXdyo8iLOXm7YyqHznxVqaUf/preview';
 
   function labelOf(item) {
     const values = [
@@ -23,6 +23,14 @@
     );
   }
 
+  function openBook(event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    window.open(BOOK_URL, '_blank', 'noopener,noreferrer');
+  }
+
   function makeBookLauncher(item) {
     if (item.dataset.sakBookLauncher === 'true') return item;
     const replacement = item.cloneNode(true);
@@ -32,27 +40,56 @@
     replacement.textContent = BOOK_LABEL;
 
     if (replacement.tagName === 'A') {
-      replacement.setAttribute('href', BOOK_URL);
-      replacement.removeAttribute('target');
+      replacement.href = BOOK_URL;
+      replacement.target = '_blank';
+      replacement.rel = 'noopener noreferrer';
       replacement.removeAttribute('onclick');
     } else {
       if (replacement.tagName === 'BUTTON') replacement.type = 'button';
       replacement.setAttribute('role', replacement.tagName === 'BUTTON' ? 'button' : (replacement.getAttribute('role') || 'button'));
       if (!replacement.hasAttribute('tabindex') && replacement.tagName !== 'BUTTON') replacement.tabIndex = 0;
-      replacement.onclick = function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-        window.location.href = BOOK_URL;
-      };
+      replacement.onclick = openBook;
       replacement.addEventListener('keydown', function (event) {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          event.stopPropagation();
-          window.location.href = BOOK_URL;
-        }
+        if (event.key === 'Enter' || event.key === ' ') openBook(event);
       });
     }
     item.replaceWith(replacement);
+    return replacement;
+  }
+
+  function addBookToTextLibrary() {
+    const modal = document.getElementById('sakTextLibraryModal');
+    const grid = modal && modal.querySelector('.sak-text-library-grid');
+    if (!grid || grid.querySelector('[data-sak-book-library-item="true"]')) return;
+
+    // Reuse the library's existing item styling where possible.
+    const sample = grid.querySelector('button, a, [role="button"]');
+    let item;
+    if (sample) {
+      item = sample.cloneNode(true);
+      item.removeAttribute('id');
+      item.removeAttribute('onclick');
+      item.querySelectorAll('[id]').forEach(node => node.removeAttribute('id'));
+      item.classList.add('sak-book-library-item');
+    } else {
+      item = document.createElement('button');
+      item.type = 'button';
+    }
+
+    item.dataset.sakBookLibraryItem = 'true';
+    item.dataset.sakBookLauncher = 'true';
+    item.setAttribute('aria-label', BOOK_LABEL);
+    item.setAttribute('title', BOOK_LABEL);
+    item.textContent = BOOK_LABEL;
+    if (item.tagName === 'A') {
+      item.href = BOOK_URL;
+      item.target = '_blank';
+      item.rel = 'noopener noreferrer';
+    } else {
+      item.type = 'button';
+      item.onclick = openBook;
+    }
+    grid.appendChild(item);
   }
 
   function updateLaunchers() {
@@ -64,6 +101,7 @@
           if (!isEbookArea(item) && LABEL.test(labelOf(item))) item.remove();
         });
       }
+      addBookToTextLibrary();
     }
 
     document.querySelectorAll('button, a, [role="button"]').forEach(function (item) {
@@ -75,7 +113,9 @@
   function init() {
     updateLaunchers();
     if (typeof MutationObserver !== 'undefined' && document.body) {
-      const observer = new MutationObserver(updateLaunchers);
+      const observer = new MutationObserver(function () {
+        updateLaunchers();
+      });
       observer.observe(document.body, { childList: true, subtree: true });
     }
   }
