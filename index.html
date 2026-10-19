@@ -40147,7 +40147,7 @@ let oldOverflow='';
 window.openSakakerEbooks=function(){
   if(!booksLayer||!booksFrame)return;
   oldOverflow=document.documentElement.style.overflow;
-  booksFrame.src='/books.html?v=20261008-books9';
+  booksFrame.src='/books.html?v=20261019-book-shelf';
   booksLayer.classList.add('sak-open');
   booksLayer.setAttribute('aria-hidden','false');
   document.documentElement.style.overflow='hidden';
@@ -40436,6 +40436,7 @@ new MutationObserver(liftOpenLayers).observe(document.body||document.documentEle
   color:#fff;font-family:Tahoma,"Segoe UI",Arial,sans-serif
 }
 #sakDirectBooksTitle{text-align:center;margin:0 0 6px;color:#ffd45c;text-shadow:0 0 14px #00ffd066;font-size:clamp(22px,4vw,34px)}
+.sak-direct-book-cover{display:block;width:min(100%,180px);height:140px;object-fit:cover;object-position:center;border:1px solid #ffd45c99;border-radius:12px;margin:0 auto 10px;box-shadow:0 6px 18px #0007}
 #sakDirectBooksSub{text-align:center;color:#b8d3cc;margin-bottom:18px}
 #sakDirectBooksGrid{max-width:980px;margin:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .sak-direct-book{
@@ -40459,6 +40460,7 @@ new MutationObserver(liftOpenLayers).observe(document.body||document.documentEle
 (()=>{
 'use strict';
 const books=[
+{id:'1W5AskSaukXdyo8iLOXm7YyqHznxVqaUf',cover:'/Screenshot_٢٠٢٦١٠٠٦-١٧٤٢٠٧_1.png',ar:'كتاب أبوالقمر زمرد — روايات وقصص حديثة',en:'Abwalqmrzmrd Castle — Modern Tales and Stories',authorAr:'الطبعة الثنائية اللغة: 11 قصة',authorEn:'Bilingual edition: 11 stories'},
 {id:'1GXTRPWdBrkI8f_x9KmhRpSfJM3HL1Bfy',ar:'الموسوعة العربية العالمية — الجزء 30',en:'The Arab World Encyclopedia — Volume 30',authorAr:'الموسوعة العربية العالمية',authorEn:'Arab World Encyclopedia'},
 {id:'1E8m9p7TKZWoJdNEBn0RbAUZcyofOVQts',ar:'كليلة ودمنة',en:'Kalila wa Dimna',authorAr:'عبد الله بن المقفع',authorEn:'Abdullah ibn al-Muqaffa'},
 {id:'1gwOaOxZe75ADi4lQbjxfvDS-qP4qGEhv',ar:'مغامرة في الصحراء',en:'Adventure in the Desert',authorAr:'مصطفى محمود',authorEn:'Mostafa Mahmoud'},
@@ -40467,7 +40469,18 @@ const books=[
 {id:'1z1iQDVvxcj49D664-wkCi-H3r2lBpkMs',ar:'قضية زعيم العصابة',en:'The Gang Leader Case',authorAr:'روايات مصرية للجيب',authorEn:'Egyptian Pocket Novels'},
 {id:'1LdhTXBaSSHwOI6XBreWwCd8QqOjy3beu',ar:'فن الحياة',en:'The Art of Life',authorAr:'سلامة موسى',authorEn:'Salama Moussa'},
 {id:'1svg6UMe1yq7d62iola4DHAMkT2dKWfPN',ar:'ألف ليلة وليلة',en:'One Thousand and One Nights',authorAr:'المجلد الأول',authorEn:'Volume One'},
-{id:'1X8LuHDx06ZjSG1TH-Y065i0yVXUUoebu',ar:'قواعد جارتين',en:'Qawaed Jartin',authorAr:'عمرو عبد الحميد',authorEn:'Amr Abdel Hamid'}
+{id:'1X8LuHDx06ZjSG1TH-Y065i0yVXUUoebu',ar:'قواعد جارتين',en:'Qawaed Jartin',authorAr:'عمرو عبد الحميد',authorEn:'Amr Abdel Hamid'},
+{url:'/ebooks/stories/01-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 1',en:'Abwalqmrzmrd Stories — Story 1',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/02-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 2',en:'Abwalqmrzmrd Stories — Story 2',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/03-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 3',en:'Abwalqmrzmrd Stories — Story 3',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/04-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 4',en:'Abwalqmrzmrd Stories — Story 4',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/05-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 5',en:'Abwalqmrzmrd Stories — Story 5',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/06-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 6',en:'Abwalqmrzmrd Stories — Story 6',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/07-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 7',en:'Abwalqmrzmrd Stories — Story 7',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/08-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 8',en:'Abwalqmrzmrd Stories — Story 8',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/09-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 9',en:'Abwalqmrzmrd Stories — Story 9',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/10-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 10',en:'Abwalqmrzmrd Stories — Story 10',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
+{url:'/ebooks/stories/11-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 11',en:'Abwalqmrzmrd Stories — Story 11',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'}
 ];
 const layer=document.getElementById('sakBooksAppLayer');
 const legacyFrame=document.getElementById('sakBooksAppFrame');
@@ -40490,7 +40503,7 @@ function render(){
  shell.querySelector('#sakDirectBooksTitle').textContent=t('📚 الكتب الإلكترونية','📚 E-Books');
  shell.querySelector('#sakDirectBooksSub').textContent=t('اختر كتابًا للقراءة','Choose a book to read');
  const grid=shell.querySelector('#sakDirectBooksGrid');grid.replaceChildren();
- books.forEach((b,i)=>{const btn=document.createElement('button');btn.type='button';btn.className='sak-direct-book';btn.innerHTML='<span class="ico">📖</span><b></b><small></small><em></em>';btn.querySelector('b').textContent=t(b.ar,b.en);btn.querySelector('small').textContent=t(b.authorAr,b.authorEn);btn.querySelector('em').textContent=t('قراءة الكتاب','Read book');btn.onclick=()=>openBook(i);grid.appendChild(btn)});
+ books.forEach((b,i)=>{const btn=document.createElement('button');btn.type='button';btn.className='sak-direct-book';btn.innerHTML='<span class="ico">📖</span><b></b><small></small><em></em>';if(b.cover){const cover=document.createElement('img');cover.className='sak-direct-book-cover';cover.src=b.cover;cover.alt=t(b.ar,b.en);btn.prepend(cover);btn.querySelector('.ico').hidden=true;}btn.querySelector('b').textContent=t(b.ar,b.en);btn.querySelector('small').textContent=t(b.authorAr,b.authorEn);btn.querySelector('em').textContent=t('قراءة الكتاب','Read book');btn.onclick=()=>openBook(i);grid.appendChild(btn)});
  shell.querySelector('#sakDirectReaderBack').textContent=t('↩ الكتب','↩ Books');
  download.textContent=t('⬇ تحميل','⬇ Download');
 }
@@ -40501,8 +40514,8 @@ function showShelf(){
 function openBook(i){
  const b=books[i];if(!b)return;
  readerTitle.textContent='📖 '+t(b.ar,b.en);
- readerFrame.src='https://drive.google.com/file/d/'+b.id+'/preview';
- download.href='https://drive.google.com/uc?export=download&id='+b.id;
+ readerFrame.src=b.url||('https://drive.google.com/file/d/'+b.id+'/preview');
+ download.href=b.url||('https://drive.google.com/uc?export=download&id='+b.id);
  reader.classList.add('open');
 }
 window.openSakakerEbooks=function(){
