@@ -4236,7 +4236,6 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
   'use strict';
   const textItems = [
     {icon:'📚', ar:'الكتب الإلكترونية', en:'E-Books', run:function(){window.openSakakerEbooks();}},
-    {icon:'📖', ar:'خواطر وقصص', en:'Thoughts & Stories', run:function(){window.openFolder(1);}},
     {icon:'❓', ar:'اختبر معلوماتك', en:'Test Your Knowledge', run:function(){window.startQuiz();}},
     {icon:'🌍', ar:'ثقافة عامة', en:'General Culture', run:function(){window.openFolder(4);}},
     {icon:'💡', ar:'معلومة اليوم', en:'Fact of the Day', run:function(){window.openTodayFact();}},
@@ -4357,7 +4356,7 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
 @media(max-width:700px){html,body{max-width:100%;overflow-x:hidden}button,[role="button"],.icon-card{touch-action:manipulation}#shipPopup_new{border-radius:16px!important}#closeShip_new{position:sticky!important;top:0!important;float:inline-end!important;z-index:2!important}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
-<link rel="stylesheet" href="/assets/live-media-refresh.css?v=20261008-window-palette2">
+<link rel="stylesheet" href="/assets/live-media-refresh.css?v=20261008-window-palette4">
 </head>
 <body>
 
@@ -6720,231 +6719,7 @@ allowfullscreen>
    الخواطر والقصص
 ================================================== */
 
-function showKhwater(el){
-
-document.getElementById('folderTitle').textContent=
-'خواطر وقصص';
-
-el.innerHTML=`
-
-<h3>
-⚔️ عنترة بن شداد — الفارس الذي أثبت نفسه
-</h3>
-
-<div class="story-box">
-
-<p>
-كان عنترة بن شداد من أشهر فرسان العرب في الجاهلية،
-واشتهر بالشجاعة والفروسية والشعر.
-</p>
-
-<p>
-واجه في بداية حياته ظروفًا اجتماعية صعبة،
-لكنه استطاع أن يفرض مكانته من خلال شجاعته
-ومواقفه في الحروب.
-</p>
-
-<p>
-وارتبط اسمه كذلك بقصة حبه لعبلة، فأصبحت
-سيرته جزءًا مشهورًا من التراث العربي.
-</p>
-
-</div>
-
-<hr>
-
-<h3>
-🏰 المعتمد بن عباد — من الملك إلى الأسر
-</h3>
-
-<div class="story-box">
-
-<p>
-كان المعتمد بن عباد ملكًا على إشبيلية
-في عصر ملوك الطوائف بالأندلس.
-</p>
-
-<p>
-استعان بيوسف بن تاشفين عندما اشتد خطر
-ألفونسو السادس، ووقعت معركة الزلاقة سنة
-1086م وانتهت بانتصار المسلمين.
-</p>
-
-<p>
-لكن التحولات السياسية أدت في النهاية
-إلى سقوط حكم المعتمد ونقله إلى أغمات
-في المغرب، حيث عاش آخر أيامه بعيدًا
-عن ملكه.
-</p>
-
-</div>
-
-<hr>
-
-<h3>
-🦁 صلاح الدين الأيوبي
-</h3>
-
-<div class="story-box">
-
-<p>
-كان صلاح الدين الأيوبي قائدًا بارزًا في
-فترة الحروب الصليبية.
-</p>
-
-<p>
-وفي عام 1187م انتصر المسلمون في معركة حطين،
-ثم استعادوا القدس.
-</p>
-
-<p>
-وبقيت شخصية صلاح الدين حاضرة في كتب التاريخ
-والأدب، واختلفت الروايات في تفاصيل بعض
-المواقف المنسوبة إليه، لذلك ينبغي التمييز
-بين المصادر التاريخية والروايات الأدبية.
-</p>
-
-</div>
-
-<hr>
-
-<h3>
-🐎 خالد بن الوليد
-</h3>
-
-<div class="story-box">
-
-<p>
-كان خالد بن الوليد من أبرز القادة العسكريين
-في صدر الإسلام، وعُرف بالسرعة في المناورة
-وحسن إدارة المعارك.
-</p>
-
-<p>
-شارك في معارك عديدة، ومن أشهر الأحداث
-المرتبطة به معركة مؤتة، حيث تولى القيادة
-بعد استشهاد القادة الثلاثة.
-</p>
-
-</div>
-
-<hr>
-
-<h3>
-🌌 قصص خيالية بأسلوب واقعي
-</h3>
-
-<div class="warning-box">
-
-⚠️ تنبيه مهم:
-القصص التالية خيالية من إعداد الموقع،
-وليست أحداثًا تاريخية حقيقية.
-تمت كتابتها بأسلوب قصصي واقعي للمتعة
-والتشويق، ولا ينبغي نقلها باعتبارها وقائع موثقة.
-
-</div>
-
-<div class="story-box">
-
-<h3>
-🏜️ حكاية حارس البئر القديم
-</h3>
-
-<p>
-في قرية صغيرة على أطراف الصحراء، كان هناك بئر
-قديم يتجنب أهل القرية الاقتراب منه بعد غروب الشمس.
-</p>
-
-<p>
-كان الحارس العجوز يقول إن البئر يخفي سرًا
-يعود إلى زمن القوافل القديمة. وفي إحدى الليالي
-وجد شاب من أهل القرية قطعة معدنية صغيرة قرب
-البئر، محفورًا عليها رمز غريب.
-</p>
-
-<p>
-بدأ الشاب يبحث عن معنى الرمز، حتى اكتشف أن
-القطعة ليست كنزًا ولا أثرًا سحريًا، بل علامة
-تركها مسافر قديم لتحديد اتجاه طريق القافلة.
-</p>
-
-<p>
-وهكذا تحول "سر البئر" الذي تناقلته الأجيال
-إلى درس بسيط: بعض الأسرار التي تكبر مع الزمن
-تبدأ بحادثة صغيرة جدًا.
-</p>
-
-</div>
-
-<div class="story-box">
-
-<h3>
-🚂 القطار الذي وصل متأخرًا
-</h3>
-
-<p>
-في مدينة خيالية، كان موظف أرشيف يحتفظ بسجل
-قديم لقطار قيل إنه وصل إلى المحطة بعد موعده
-بثلاثين عامًا.
-</p>
-
-<p>
-بدأ الرجل يبحث في السجلات، فاكتشف أن القصة
-بدأت بخطأ مطبعي في تاريخ إحدى الرحلات.
-</p>
-
-<p>
-ومع مرور السنوات، تناقل الناس القصة حتى
-أصبحت حكاية عن "قطار الزمن"، بينما الحقيقة
-في هذه القصة الخيالية أن الخطأ كان مجرد رقم
-كُتب بطريقة خاطئة.
-</p>
-
-</div>
-
-<div class="story-box">
-
-<h3>
-🌊 رسالة الجزيرة البعيدة
-</h3>
-
-<p>
-عثر صياد في قصة خيالية على زجاجة طافية
-في البحر، وبداخلها رسالة تقول:
-"إذا وصلت إليك، فقد حان وقت العودة."
-</p>
-
-<p>
-ظل يبحث عن صاحب الرسالة، حتى اكتشف أنها
-كانت جزءًا من لعبة قديمة نظمها مجموعة من
-البحارة لإخفاء خريطة كنز وهمية.
-</p>
-
-<p>
-لم يجد الصياد ذهبًا، لكنه وجد دفترًا قديمًا
-يحوي أسماء رحلات بحرية وقصصًا عن البحر.
-</p>
-
-</div>
-
-<div class="about-box">
-
-<strong>
-أبو القمر زمرد
-</strong>
-
-<br>
-
-نميز في الموقع بين التاريخ الموثق،
-والمعلومات العامة، والقصص الخيالية.
-الهدف أن تكون المتعة حاضرة دون تقديم
-الخيال على أنه حقيقة.
-
-</div>
-
-`;
-
-}
+function showKhwater(){if(typeof window.openSakakerEbooks==='function'){window.openSakakerEbooks();return;}window.location.href='/books.html';}
 
 /* ==================================================
    الثقافة العامة
@@ -38221,26 +37996,18 @@ html body #sakUtilityRow :is(.launcher span,#sakMusicIcon *,#emeraldMusicHost #e
   html body #sakakerAllIconsDock :is(.icon-label,.sub,.fbIconText,.pong-label,.emOpenText,.sbIconCore,.launcher span){font-size:7px!important;max-width:44px!important;}
 }
 
-/* الدورة لا تمس النوافذ، الساعة، العداد أو شريط الأخبار؛ تُطبّق على أزرار الأيقونات فقط. */
-.sak-icon-cycle{transition:opacity .55s ease,visibility .55s ease!important;}
-.sak-icon-cycle:not(.sak-cycle-hidden){visibility:visible!important;opacity:1!important;pointer-events:auto!important;}
-.sak-icon-cycle.sak-cycle-hidden{visibility:hidden!important;opacity:0!important;pointer-events:none!important;}
-@media(prefers-reduced-motion:reduce){.sak-icon-cycle{transition:none!important;}}
+/* One synchronized visibility animation for every launcher/icon. */
+.sak-icon-cycle{animation:sakUnifiedIconVisibility 7s ease-in-out infinite!important;transition:none!important;}
+@keyframes sakUnifiedIconVisibility{0%,39%,61%,100%{opacity:1;visibility:visible}44%,56%{opacity:0;visibility:hidden}}
+@media(prefers-reduced-motion:reduce){.sak-icon-cycle{animation:none!important;opacity:1!important;visibility:visible!important;transition:none!important}}
 </style>
 <script id="sak-mobile-grid-and-icon-cycle-js">
 (()=>{'use strict';
- const selectors=[
-  '#sakakerAllIconsDock .icon-card','#facebookVideoIcon','#liveFlasher','#emeraldLibraryButton','#pongGame-btn','#shipIcon_new',
-  '#emeraldMusicHost #emOpenBtn','#sakakerBusinessIcon','.launcher','#sakMusicIcon',
-  '.video-top-container-fixed','#sakSecondStreamCorner','#sakCreativeIcon','#sakChatIcon'
- ];
- const findIcons=()=>[...new Set(selectors.flatMap(s=>[...document.querySelectorAll(s)]))].filter(el=>!el.closest('#facebookVideoPopup,#livePopup,#shipPopup_new,#sakakerBusinessPopup,#emeraldLibraryContent,#sakMusicPlayer'));
+ const selectors=['#sakakerAllIconsDock .icon-card','#facebookVideoIcon','#liveFlasher','#emeraldLibraryButton','#pongGame-btn','#shipIcon_new','#emeraldMusicHost #emOpenBtn','#sakakerBusinessIcon','.launcher','#sakMusicIcon','.video-top-container-fixed','#sakSecondStreamCorner','#sakCreativeIcon','#sakChatIcon','#sakCastleIndexIcon'];
+ const findIcons=()=>[...new Set(selectors.flatMap(sel=>[...document.querySelectorAll(sel)]))].filter(el=>!el.closest('#facebookVideoPopup,#livePopup,#shipPopup_new,#sakakerBusinessPopup,#emeraldLibraryContent,#sakMusicPlayer'));
  function mark(){findIcons().forEach(el=>el.classList.add('sak-icon-cycle'));}
- let shown=true,timer=null;
- function phase(show){shown=show;mark();findIcons().forEach(el=>el.classList.toggle('sak-cycle-hidden',!show));clearTimeout(timer);timer=setTimeout(()=>phase(!show),show?120000:30000);}
- mark();phase(true);
- [300,1200,3000,7000].forEach(ms=>setTimeout(()=>{mark();findIcons().forEach(el=>el.classList.toggle('sak-cycle-hidden',!shown));},ms));
- const dock=document.getElementById('sakakerAllIconsDock');if(dock)new MutationObserver(()=>{mark();findIcons().forEach(el=>el.classList.toggle('sak-cycle-hidden',!shown));}).observe(dock,{childList:true,subtree:true});
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mark,{once:true});else mark();
+ const observer=new MutationObserver(mark);observer.observe(document.body||document.documentElement,{childList:true,subtree:true});
 })();
 </script>
 
@@ -40569,61 +40336,7 @@ const stories=[
     }
   }
 ];
-window.showKhwater=function(host){
-  const body=host || document.getElementById('folderBody');
-  if(!body)return;
-  const en=document.documentElement.lang==='en';
-  const title=document.getElementById('folderTitle');
-  if(title)title.textContent=en?'Thoughts & Stories':'خواطر وقصص';
-
-  const wrap=document.createElement('div');
-  wrap.id='sakThoughtsStories';
-
-  const mast=document.createElement('header');
-  mast.className='sak-story-blog-head';
-  mast.innerHTML='<span>✦</span><h2>'+(en?'Stories & Tales Blog':'مدونة القصص والحكايات')+'</h2><p>'+(en?'Journeys, adventures, and tales from the world of Abwalqmrzmrd':'رحلات ومغامرات وحكايات من عالم أبوالقمرزمرد')+'</p>';
-  wrap.appendChild(mast);
-
-  stories.forEach((st,i)=>{
-    const c=en?st.en:st.ar;
-    const article=document.createElement('article');
-    article.className='sak-story-card'+(i===0?' sak-story-featured':'');
-    article.dir=en?'ltr':'rtl';
-
-    if(st.image){
-      const figure=document.createElement('figure');
-      figure.className='sak-story-cover';
-      const img=document.createElement('img');
-      img.src=st.image; img.alt=c.title; img.loading='eager'; img.decoding='async';
-      const cap=document.createElement('figcaption');
-      cap.textContent=en?'From the desert journey':'من رحلة الصحراء';
-      figure.append(img,cap); article.appendChild(figure);
-    }
-
-    const meta=document.createElement('div');
-    meta.className='sak-story-meta';
-    meta.textContent=(en?'Story ':'الحكاية ')+String(stories.length-i).padStart(2,'0');
-
-    const h=document.createElement('h2');
-    h.textContent=c.title;
-    const lead=document.createElement('p');
-    lead.className='sak-story-note';
-    lead.textContent=c.lead;
-    article.append(meta,h,lead);
-
-    const bodyWrap=document.createElement('div');
-    bodyWrap.className='sak-story-body';
-    c.paragraphs.forEach(t=>{
-      const p=document.createElement('p');
-      p.textContent=t;
-      bodyWrap.appendChild(p);
-    });
-    article.appendChild(bodyWrap);
-    wrap.appendChild(article);
-  });
-
-  body.replaceChildren(wrap);
-};
+window.showKhwater=function(){if(typeof window.openSakakerEbooks==='function'){window.openSakakerEbooks();return;}window.location.href='/books.html';};
 
 window.addKhwaterStory=function(story){
   if(!story||!story.ar||!story.en||!Array.isArray(story.ar.paragraphs)||!Array.isArray(story.en.paragraphs))return false;
@@ -40636,17 +40349,12 @@ window.addKhwaterStory=function(story){
 const oldOpenFolder=window.openFolder;
 if(typeof oldOpenFolder==='function'){
   window.openFolder=function(n){
-    const result=oldOpenFolder.apply(this,arguments);
     if(Number(n)===1){
-      const body=document.getElementById('folderBody');
-      window.showKhwater(body);
-      const modal=document.getElementById('folderModal');
-      if(modal){
-        if(modal.parentElement!==document.body)document.body.appendChild(modal);
-        modal.style.zIndex='2147483647';
-      }
+      if(typeof window.openSakakerEbooks==='function')window.openSakakerEbooks();
+      else window.location.href='/books.html';
+      return;
     }
-    return result;
+    return oldOpenFolder.apply(this,arguments);
   };
 }
 
@@ -41143,7 +40851,6 @@ html body .sak-index-link span{font-size:22px!important}
   ['🎥','مكتبة الفيديو','Video Library',()=>click('emeraldLibraryButton')],
   ['📚','المكتبة النصية','Text Library',()=>call('openSakakerTextLibrary')],
   ['📖','الكتب الإلكترونية','E-Books',()=>call('openSakakerEbooks')],
-  ['📝','خواطر وقصص','Thoughts & Stories',()=>folder(1)],
   ['❓','اختبر معلوماتك','Test Your Knowledge',()=>call('startQuiz')],
   ['🌍','ثقافة عامة','General Culture',()=>folder(4)],
   ['💡','معلومة اليوم','Fact of the Day',()=>call('openTodayFact')],
@@ -41289,5 +40996,19 @@ html body .sak-index-link span{font-size:22px!important}
 
 <script type="module" src="assets/sakaker-live.js"></script>
 <script src="/assets/live-media-refresh.js?v=20261008-window-palette2" defer></script>
+<script id="sakaker-visitor-counter-d1">
+(()=>{
+ 'use strict';
+ const onlineEl=document.getElementById('svcOnline'),totalEl=document.getElementById('svcTotal'),todayEl=document.getElementById('svcToday'),counterEl=document.getElementById('sakakerVisitorCounter');
+ if(!onlineEl||!totalEl||!todayEl||!counterEl)return;
+ const validId=v=>typeof v==='string'&&/^[a-f0-9-]{36}$/i.test(v);
+ const newId=()=>crypto.randomUUID?crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16)});
+ function stableId(storage,key){try{let v=storage.getItem(key);if(!validId(v)){v=newId();storage.setItem(key,v)}return v}catch(_){return newId()}}
+ const visitorId=stableId(localStorage,'sakaker_d1_visitor_id_v1'),sessionId=stableId(sessionStorage,'sakaker_d1_session_id_v1');
+ function showError(error){console.error('[Sakaker D1 visitor counter]',error);[onlineEl,totalEl,todayEl].forEach(el=>{el.textContent='—';el.dataset.state='error';el.title='تعذر الاتصال بعداد Cloudflare D1؛ حاول تحديث الصفحة.'})}
+ async function updateCounter(){const response=await fetch('/api/visitor-counter',{method:'POST',cache:'no-store',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({visitorId,sessionId})});if(!response.ok)throw new Error('Visitor counter API returned '+response.status);const data=await response.json();for(const [el,value] of [[onlineEl,data.online],[totalEl,data.total],[todayEl,data.today]]){const n=Number(value);if(!Number.isFinite(n)||n<0)throw new Error('Invalid counter response');el.textContent=String(Math.floor(n));delete el.dataset.state;el.title=''}counterEl.dataset.source='cloudflare-d1'}
+ updateCounter().catch(showError);window.setInterval(()=>updateCounter().catch(showError),30000);
+})();
+</script>
 </body>
 </html>
