@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#062c31"><title>القنوات المباشرة والراديو</title>
+<meta name="theme-color" content="#062c31"><meta name="description" content="قنوات عربية إخبارية واقتصادية مباشرة من المصادر المتاحة."><title>قنوات العربية | الأخبار والاقتصاد</title>
 <style>
 :root{color-scheme:dark;--sea:#062c31;--glass:rgba(5,34,40,.78);--line:rgba(142,241,212,.23);--mint:#caffeb;--gold:#dfbd70}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Tajawal,Cairo,Tahoma,Arial,sans-serif;color:#f4fff9;background:#03171d}
@@ -58,12 +58,12 @@ h1{color:#fff0fa!important;text-shadow:0 0 16px rgba(255,99,190,.46)!important}p
 </head>
 <body>
 <video id="siteBg" autoplay muted loop playsinline aria-hidden="true" src="/gemini_generated_video_34118154.mp4"></video>
-<header><div class="top"><div class="brand">🌸 قنوات مباشرة</div><a class="back" href="index.html">↩ الرئيسية</a></div></header>
-<main><section class="hero"><h1>القنوات المباشرة والراديو</h1><p>دليل بث متجدد للقنوات العالمية ومحطات الراديو، مع حالة التشغيل ومفضّلتك.</p>
+<header><div class="top"><div class="brand">📺 قنوات العربية</div><a class="back" href="index.html">↩ الرئيسية</a></div></header>
+<main><section class="hero"><h1>قنوات العربية</h1><p>قائمة مركّزة للقنوات العربية الإخبارية والاقتصادية. روابط البث قد تتغير أو تتوقف بحسب المصدر، ويمكن فتح الموقع الرسمي عند تعذّر التشغيل.</p>
 <div class="tabs"><button class="tab active" data-panel="tv">📺 القنوات</button><button class="tab" data-panel="radio">📻 الراديو</button></div>
 <section class="panel active" id="tv">
 <div class="controls"><input id="tvSearch" type="search" placeholder="ابحث عن قناة أو دولة أو لغة"><select id="country"><option value="">كل الدول</option></select><select id="language"><option value="">كل اللغات</option></select></div>
-<div class="filters"><button class="active" data-filter="all">الكل</button><button data-filter="online">🟢 يعمل</button><button data-filter="favorites">★ المفضلة</button></div>
+<div class="filters"><button class="active" data-filter="all">📺 قنوات العربية</button><button data-filter="economy">📈 الاقتصادية</button><button data-filter="news">📰 الأخبار</button></div>
 <div class="meta" id="tvMeta">جارٍ تحميل الدليل…</div><div class="grid" id="tvGrid"></div><button id="tvMore" class="action" style="width:100%;margin-top:14px">عرض المزيد</button>
 </section>
 <section class="panel" id="radio">
@@ -75,9 +75,8 @@ h1{color:#fff0fa!important;text-shadow:0 0 16px rgba(255,99,190,.46)!important}p
 <div id="player" role="dialog" aria-modal="true" aria-label="مشغل القناة"><div class="playerbox"><button class="close" id="close" aria-label="إغلاق">×</button><h2 id="playerTitle"></h2><video id="tvVideo" controls playsinline autoplay></video><p id="playerMsg"></p></div></div>
 <script>
 (()=>{'use strict';
-const BASE='https://dearbulut.github.io/iptv',FKEY='sakaker-live-favorites-v1',RADIO_HOSTS=['https://de1.api.radio-browser.info','https://nl1.api.radio-browser.info','https://at1.api.radio-browser.info'];
-const $=id=>document.getElementById(id);let tvRows=[],radioRows=[],tvVisible=60,radioVisible=60,filter='all',favorites={};
-try{favorites=JSON.parse(localStorage.getItem(FKEY)||'{}')}catch(_){}
+const BASE='https://dearbulut.github.io/iptv',RADIO_HOSTS=['https://de1.api.radio-browser.info','https://nl1.api.radio-browser.info','https://at1.api.radio-browser.info'];
+const $=id=>document.getElementById(id);let tvRows=[],radioRows=[],tvVisible=60,radioVisible=60,filter='all';
 const fields={};
 function parse(v){if(Array.isArray(v))return v;if(!v)return[];try{return JSON.parse(v)}catch(_){return String(v).split(',').filter(Boolean)}}
 function status(ok){return Number(ok)>0}
@@ -87,12 +86,12 @@ function setGrid(kind){
   const langs=kind==='tv'?x.languages:String(x.languagecodes||x.language||'').split(',').map(a=>a.trim());
   const cc=kind==='tv'?x.country:x.countrycode;
   if(country&&cc!==country)return false;if(language&&!langs.includes(language))return false;
-  if(kind==='tv'&&filter==='online'&&!x.online)return false;if(kind==='tv'&&filter==='favorites'&&!favorites[x.id])return false;
+  if(kind==='tv'&&filter==='economy'&&!x.economy)return false;if(kind==='tv'&&filter==='news'&&!x.news)return false;
   if(search&&!String([x.name,x.country,x.countrycode,x.languages,x.tags,x.state].join(' ')).toLowerCase().includes(search))return false;return true
  });
  grid.replaceChildren();found.slice(0,limit).forEach(x=>grid.appendChild(card(kind,x)));
  const more=$(kind==='tv'?'tvMore':'radioMore');more.style.display=found.length>limit?'block':'none';
- const meta=$(kind==='tv'?'tvMeta':'radioMeta');meta.textContent=kind==='tv'?found.length+' قناة · '+rows.filter(x=>x.online).length+' تعمل الآن':found.length+' محطة متاحة';
+ const meta=$(kind==='tv'?'tvMeta':'radioMeta');meta.textContent=kind==='tv'?found.length+' قناة عربية إخبارية واقتصادية':found.length+' محطة متاحة';
 }
 function card(kind,x){
  const b=document.createElement('button');b.className='card';b.type='button';
@@ -100,10 +99,8 @@ function card(kind,x){
  if(x.logo||x.favicon){logo=document.createElement('img');logo.className='logo';logo.loading='lazy';logo.src=x.logo||x.favicon;logo.alt='';logo.onerror=()=>{const d=document.createElement('span');d.className='logo fallback';d.textContent=kind==='tv'?'📺':'📻';logo.replaceWith(d)}}
  else{logo=document.createElement('span');logo.className='logo fallback';logo.textContent=kind==='tv'?'📺':'📻'}
  const d=document.createElement('div');d.className='details';const n=document.createElement('div');n.className='name';n.textContent=x.name||'—';const sub=document.createElement('div');sub.className='sub';sub.textContent=kind==='tv'?[x.country,x.languages.join(', ')].filter(Boolean).join(' · '):[x.country,x.codec].filter(Boolean).join(' · ');
- const st=document.createElement('div');st.className='state';st.textContent=kind==='tv'?(x.online?'🟢 البث متاح':'⚪ لم يؤكد آخر فحص'):((x.lastcheckok===1)?'🟢 يعمل':'⚪ يفتح خارجيًا');d.append(n,sub,st);b.append(logo,d);
- if(kind==='tv'){
-  const star=document.createElement('span');star.className='star';star.textContent=favorites[x.id]?'★':'☆';star.title='المفضلة';star.addEventListener('click',e=>{e.stopPropagation();favorites[x.id]=!favorites[x.id];if(!favorites[x.id])delete favorites[x.id];try{localStorage.setItem(FKEY,JSON.stringify(favorites))}catch(_){}setGrid('tv')});b.append(star);b.addEventListener('click',()=>playTv(x))
- }else b.addEventListener('click',()=>playRadio(x));
+ const st=document.createElement('div');st.className='state';st.textContent=kind==='tv'?'قناة إخبارية عربية · تحقق من المصدر عند التشغيل':((x.lastcheckok===1)?'🟢 يعمل':'⚪ يفتح خارجيًا');d.append(n,sub,st);b.append(logo,d);
+ if(kind==='tv')b.addEventListener('click',()=>playTv(x));else b.addEventListener('click',()=>playRadio(x));
  return b
 }
 async function playTv(x){
@@ -113,7 +110,7 @@ async function playTv(x){
 function close(){const p=$('player');p.classList.remove('open');const v=$('tvVideo');v.pause();v.removeAttribute('src');v.load();if(window._hls){window._hls.destroy();window._hls=null}}
 $('close').onclick=close;$('player').onclick=e=>{if(e.target===$('player'))close()};document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
 function options(select,values,placeholder){select.replaceChildren(new Option(placeholder,''));[...new Set(values.filter(Boolean))].sort().forEach(v=>select.add(new Option(v,v)))}
-async function loadTv(){try{const r=await fetch(BASE+'/api/v1/search.json',{cache:'no-cache'});if(!r.ok)throw Error();const d=await r.json();d.fields.forEach((f,i)=>fields[f]=i);tvRows=(d.channels||[]).map(row=>{const val=k=>row[fields[k]];return{id:String(val('id')||''),name:String(val('name')||''),country:String(val('country')||''),languages:parse(val('languages')),logo:String(val('logo')||''),online:status(val('online'))}});options($('country'),tvRows.map(x=>x.country),'كل الدول');options($('language'),tvRows.flatMap(x=>x.languages),'كل اللغات');setGrid('tv')}catch(_){$('tvMeta').textContent='تعذر تحميل دليل القنوات؛ تحقق من الاتصال ثم حدّث الصفحة.'}}
+async function loadTv(){try{const r=await fetch(BASE+'/api/v1/search.json',{cache:'no-cache'});if(!r.ok)throw Error();const d=await r.json();d.fields.forEach((f,i)=>fields[f]=i);const curated=/al\s*arabiya|al\s*hadath|hadath|العربية|الحدث|al\s*ekhbariya|الإخبارية|al\s*jazeera|الجزيرة|sky\s*news\s*arabia|سكاي\s*نيوز\s*عربية|asharq|الشرق|cnbc\s*arabia|سي\s*إن\s*بي\s*سي\s*عربية|arabia\s*business|اقتصاد|business\s*arabic/i;const economy=/asharq|الشرق|cnbc|سي\s*إن\s*بي\s*سي|business|اقتصاد|economic|الاقتصادية/i;const news=/al\s*arabiya|al\s*hadath|hadath|العربية|الحدث|al\s*ekhbariya|الإخبارية|al\s*jazeera|الجزيرة|sky\s*news\s*arabia|سكاي\s*نيوز|news|أخبار|الاخبار/i;tvRows=(d.channels||[]).map(row=>{const val=k=>row[fields[k]];const name=String(val('name')||'');const languages=parse(val('languages'));return{id:String(val('id')||''),name,country:String(val('country')||''),languages,logo:String(val('logo')||''),online:status(val('online')),economy:economy.test(name),news:news.test(name)}}).filter(x=>curated.test(x.name)&&(x.languages.some(l=>/arabic|ara|العربية/i.test(l))||/العربية|الحدث|الإخبارية|الجزيرة|الشرق|سكاي|اقتصاد/i.test(x.name)));options($('country'),tvRows.map(x=>x.country),'كل الدول');options($('language'),tvRows.flatMap(x=>x.languages),'كل اللغات');setGrid('tv')}catch(_){$('tvMeta').textContent='تعذر تحميل دليل القنوات؛ تحقق من الاتصال ثم حدّث الصفحة.'}}
 async function loadRadio(){for(const host of RADIO_HOSTS){try{const u=host+'/json/stations/search?hidebroken=true&order=clickcount&reverse=true&limit=500';const r=await fetch(u,{cache:'no-cache'});if(!r.ok)continue;radioRows=(await r.json()).filter(x=>x.name&&(x.url_resolved||x.url));options($('radioCountry'),radioRows.map(x=>x.countrycode),'كل الدول');options($('radioLanguage'),radioRows.flatMap(x=>String(x.languagecodes||'').split(',').filter(Boolean)),'كل اللغات');setGrid('radio');return}catch(_){}}$('radioMeta').textContent='تعذر تحديث دليل الراديو الآن.'}
 function playRadio(x){const a=$('radioAudio');$('radioNow').textContent=x.name;a.src=x.url_resolved||x.url;a.load();a.play().catch(()=>{$('radioNow').textContent='تعذر التشغيل المباشر · افتح الموقع الرسمي للمحطة'})}
 $('cairo').onclick=()=>playRadio({name:'إذاعة القرآن الكريم من القاهرة',url:'https://stream.radiojar.com/8s5u5tpdtwzuv',url_resolved:'https://stream.radiojar.com/8s5u5tpdtwzuv'});
