@@ -87,15 +87,15 @@ jobs:
                   errors.append("missing critical markers: " + ", ".join(missing))
 
               if "sakakerVisitorCounterV1/total" in text:
-              errors.append("legacy Firebase visitor counter is still active")
-          if "show?120000:30000" in text:
-              errors.append("legacy uneven icon visibility cycle is still active")
-          if "wrap.id='sakThoughtsStories'" in text:
-              errors.append("legacy standalone Thoughts renderer is still active")
-          if "خواطر وقصص', en:'Thoughts & Stories'" in text:
-              errors.append("standalone Thoughts entry remains in the text library")
+                  errors.append("legacy Firebase visitor counter is still active")
+              if "show?120000:30000" in text:
+                  errors.append("legacy uneven icon visibility cycle is still active")
+              if "wrap.id='sakThoughtsStories'" in text:
+                  errors.append("legacy standalone Thoughts renderer is still active")
+              if "خواطر وقصص', en:'Thoughts & Stories'" in text:
+                  errors.append("standalone Thoughts entry remains in the text library")
 
-          if text.count("<html") != 1:
+              if text.count("<html") != 1:
                   errors.append("unexpected html root count")
               if text.count("</html>") != 1:
                   errors.append("unexpected closing html count")
