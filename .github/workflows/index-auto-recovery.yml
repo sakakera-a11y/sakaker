@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths:
       - 'index.html'
-      - 'archive/index_emergency_2026-10-08.html'
+      - 'archive/index_stable_2026-10-19.html'
       - '.github/workflows/index-auto-recovery.yml'
   workflow_dispatch:
 
@@ -33,7 +33,7 @@ jobs:
           import sys
 
           index = Path("index.html")
-          archive = Path("archive/index_emergency_2026-10-08.html")
+          archive = Path("archive/index_stable_2026-10-19.html")
 
           errors = []
           if not index.exists():
@@ -66,13 +66,14 @@ jobs:
                   'id="sakakerBusinessAd"',
                   'id="sakBooksAppLayer"',
                   "window.openSakakerEbooks",
+                  "sakaker-visitor-counter-d1",
+                  "fetch('/api/visitor-counter'",
+                  "@keyframes sakUnifiedIconVisibility",
+                  "كتاب أبوالقمرزمرد — روايات وقصص حديثة",
+                  "/ebooks/stories/01-story-bilingual.pdf",
+                  "/ebooks/stories/11-story-bilingual.pdf",
                   "sakaker-direct-seven-books-20261006",
                   "sakaker-all-popups-top-layer-20261006",
-                  "أبوالقمرزمرد وسفينة الضباب",
-                  "أبوالقمرزمرد وقلعة الزمرد الخفية",
-                  "أبوالقمرزمرد وحارس الميناء الأسود",
-                  "أبوالقمرزمرد وجزيرة الرياح السبع",
-                  "أبوالقمرزمرد ونجم الصحراء",
                   "مغامرة في الصحراء",
                   "أنت لي",
                   "إيكادولي",
@@ -85,7 +86,16 @@ jobs:
               if missing:
                   errors.append("missing critical markers: " + ", ".join(missing))
 
-              if text.count("<html") != 1:
+              if "sakakerVisitorCounterV1/total" in text:
+              errors.append("legacy Firebase visitor counter is still active")
+          if "show?120000:30000" in text:
+              errors.append("legacy uneven icon visibility cycle is still active")
+          if "wrap.id='sakThoughtsStories'" in text:
+              errors.append("legacy standalone Thoughts renderer is still active")
+          if "خواطر وقصص', en:'Thoughts & Stories'" in text:
+              errors.append("standalone Thoughts entry remains in the text library")
+
+          if text.count("<html") != 1:
                   errors.append("unexpected html root count")
               if text.count("</html>") != 1:
                   errors.append("unexpected closing html count")
@@ -105,7 +115,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cp "archive/index_emergency_2026-10-08.html" index.html
+          cp "archive/index_stable_2026-10-19.html" index.html
           echo "Stable archive restored into index.html"
 
       - name: Verify restored copy
@@ -113,7 +123,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cmp -s index.html "archive/index_emergency_2026-10-08.html"
+          cmp -s index.html "archive/index_stable_2026-10-19.html"
           echo "Restored index matches archive exactly"
 
       - name: Commit automatic recovery
