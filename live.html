@@ -72,11 +72,21 @@ h1{color:#fff0fa!important;text-shadow:0 0 16px rgba(255,99,190,.46)!important}p
 <div class="controls"><input id="radioSearch" type="search" placeholder="ابحث عن إذاعة أو دولة أو نوع"><select id="radioCountry"><option value="">كل الدول</option></select><select id="radioLanguage"><option value="">كل اللغات</option></select></div><div class="meta" id="radioMeta">جارٍ تحميل المحطات…</div><div class="grid" id="radioGrid"></div><button id="radioMore" class="action" style="width:100%;margin-top:14px">عرض المزيد</button>
 </section>
 </section></main>
-<div id="player" role="dialog" aria-modal="true" aria-label="مشغل القناة"><div class="playerbox"><button class="close" id="close" aria-label="إغلاق">×</button><h2 id="playerTitle"></h2><video id="tvVideo" controls playsinline autoplay></video><p id="playerMsg"></p></div></div>
+<div id="player" role="dialog" aria-modal="true" aria-label="مشغل القناة"><div class="playerbox"><button class="close" id="close" aria-label="إغلاق">×</button><h2 id="playerTitle"></h2><iframe id="tvFrame" title="بث القناة" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="display:none;width:100%;aspect-ratio:16/9;background:#000;border:0;border-radius:14px"></iframe><video id="tvVideo" controls playsinline autoplay style="display:none"></video><p id="playerMsg"></p></div></div>
 <script>
 (()=>{'use strict';
 const RADIO_HOSTS=['https://de1.api.radio-browser.info','https://nl1.api.radio-browser.info','https://at1.api.radio-browser.info'];
 const $=id=>document.getElementById(id);let tvRows=[],radioRows=[],tvVisible=60,radioVisible=60,filter='all';
+const STATIC_TV=[
+{id:'aljazeera-ar',name:'الجزيرة الإخبارية',country:'قطر',languages:['العربية'],category:'news',youtube:'UCfiwzLy-8yKzIbsmZTzxDgw'},
+{id:'alarabiya',name:'العربية',country:'السعودية',languages:['العربية'],category:'news',youtube:'UCahpxixMCwoANAftn6IxkTg'},
+{id:'skynewsarabia',name:'سكاي نيوز عربية',country:'الإمارات',languages:['العربية'],category:'news',stream:'https://stream.skynewsarabia.com/hls/sna_720.m3u8'},
+{id:'france24ar',name:'فرانس 24 العربية',country:'فرنسا',languages:['العربية'],category:'news',youtube:'UCdTyuXgmJkG_O8_75eqej-w'},
+{id:'asharq',name:'الشرق للأخبار',country:'السعودية',languages:['العربية'],category:'news',youtube:'UCRJUVYt9gjg8MnlGacySUdg'},
+{id:'cnbcarabia',name:'CNBC عربية',country:'الإمارات',languages:['العربية'],category:'economy',youtube:'UCsHdPPJXT-yKVTLGkn3DSvQ'},
+{id:'alekhbariya',name:'الإخبارية السعودية',country:'السعودية',languages:['العربية'],category:'news',youtube:'UCV01ajGl6nt09h40iDoHDNg'},
+{id:'asharq-business',name:'الشرق اقتصاد',country:'السعودية',languages:['العربية'],category:'economy',youtube:'UCRJUVYt9gjg8MnlGacySUdg'}
+];
 const fields={};
 function parse(v){if(Array.isArray(v))return v;if(!v)return[];try{return JSON.parse(v)}catch(_){return String(v).split(',').filter(Boolean)}}
 function status(ok){return Number(ok)>0}
@@ -86,7 +96,7 @@ function setGrid(kind){
   const langs=kind==='tv'?x.languages:String(x.languagecodes||x.language||'').split(',').map(a=>a.trim());
   const cc=kind==='tv'?x.country:x.countrycode;
   if(country&&cc!==country)return false;if(language&&!langs.includes(language))return false;
-  if(kind==='tv'&&filter==='economy'&&!x.economy)return false;if(kind==='tv'&&filter==='news'&&!x.news)return false;
+  if(kind==='tv'&&filter==='economy'&&x.category!=='economy')return false;if(kind==='tv'&&filter==='news'&&x.category!=='news')return false;
   if(search&&!String([x.name,x.country,x.countrycode,x.languages,x.tags,x.state].join(' ')).toLowerCase().includes(search))return false;return true
  });
  grid.replaceChildren();found.slice(0,limit).forEach(x=>grid.appendChild(card(kind,x)));
@@ -98,16 +108,19 @@ function card(kind,x){
  let logo;
  if(x.logo||x.favicon){logo=document.createElement('img');logo.className='logo';logo.loading='lazy';logo.src=x.logo||x.favicon;logo.alt='';logo.onerror=()=>{const d=document.createElement('span');d.className='logo fallback';d.textContent=kind==='tv'?'📺':'📻';logo.replaceWith(d)}}
  else{logo=document.createElement('span');logo.className='logo fallback';logo.textContent=kind==='tv'?'📺':'📻'}
- const d=document.createElement('div');d.className='details';const n=document.createElement('div');n.className='name';n.textContent=x.name||'—';const sub=document.createElement('div');sub.className='sub';sub.textContent=kind==='tv'?[x.country,x.languages.join(', ')].filter(Boolean).join(' · '):[x.country,x.codec].filter(Boolean).join(' · ');
+ const d=document.createElement('div');d.className='details';const n=document.createElement('div');n.className='name';n.textContent=x.name||'—';const sub=document.createElement('div');sub.className='sub';sub.textContent=kind==='tv'?[x.country,(x.category==='economy'?'اقتصادية':'إخبارية')].filter(Boolean).join(' · '):[x.country,x.codec].filter(Boolean).join(' · ');
  const st=document.createElement('div');st.className='state';st.textContent=kind==='tv'?'قناة إخبارية عربية · تحقق من المصدر عند التشغيل':((x.lastcheckok===1)?'🟢 يعمل':'⚪ يفتح خارجيًا');d.append(n,sub,st);b.append(logo,d);
  if(kind==='tv')b.addEventListener('click',()=>playTv(x));else b.addEventListener('click',()=>playRadio(x));
  return b
 }
 async function playTv(x){
- $('playerTitle').textContent=x.name;$('playerMsg').textContent='جارٍ التحقق من البث…';$('player').classList.add('open');
- try{const r=await fetch(BASE+'/api/v1/channels/'+encodeURIComponent(x.id)+'.json',{cache:'no-cache'});if(!r.ok)throw Error('stream unavailable');const data=await r.json();const s=(data.streams||[]).find(z=>z.url&&(!z.health||z.health.status==='online'))||(data.streams||[]).find(z=>z.url);if(!s)throw Error('no stream');const v=$('tvVideo');if(window._hls){window._hls.destroy();window._hls=null}v.pause();v.removeAttribute('src');const url=s.url;if(window.Hls&&Hls.isSupported()&&/\.m3u8($|\?)/i.test(url)){window._hls=new Hls();window._hls.loadSource(url);window._hls.attachMedia(v)}else v.src=url;$('playerMsg').textContent='';try{await v.play()}catch(_){} }catch(e){$('playerMsg').textContent='تعذر تشغيل البث داخل المشغل. جرّب موقع القناة أو افتحها في الموقع الرئيسي.'}
+ $('playerTitle').textContent=x.name;$('playerMsg').textContent='إذا لم يبدأ البث، فقد لا تكون القناة تبث مباشرة الآن أو قد تمنع التضمين.';$('player').classList.add('open');
+ const v=$('tvVideo'),frame=$('tvFrame');if(window._hls){window._hls.destroy();window._hls=null}v.pause();v.removeAttribute('src');v.load();frame.removeAttribute('src');
+ if(x.stream){frame.style.display='none';v.style.display='block';v.src=x.stream;if(window.Hls&&Hls.isSupported()){window._hls=new Hls();window._hls.loadSource(x.stream);window._hls.attachMedia(v)}$('playerMsg').textContent='';try{await v.play()}catch(_){}}
+ else if(x.youtube){v.style.display='none';frame.style.display='block';frame.src='https://www.youtube-nocookie.com/embed/live_stream?channel='+encodeURIComponent(x.youtube)+'&autoplay=1&playsinline=1';$('playerMsg').textContent=''}
+ else $('playerMsg').textContent='لا يتوفر رابط تشغيل مضمّن لهذه القناة.';
 }
-function close(){const p=$('player');p.classList.remove('open');const v=$('tvVideo');v.pause();v.removeAttribute('src');v.load();if(window._hls){window._hls.destroy();window._hls=null}}
+function close(){const p=$('player');p.classList.remove('open');const v=$('tvVideo'),frame=$('tvFrame');v.pause();v.removeAttribute('src');v.load();frame.removeAttribute('src');if(window._hls){window._hls.destroy();window._hls=null}}
 $('close').onclick=close;$('player').onclick=e=>{if(e.target===$('player'))close()};document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
 function options(select,values,placeholder){select.replaceChildren(new Option(placeholder,''));[...new Set(values.filter(Boolean))].sort().forEach(v=>select.add(new Option(v,v)))}
 async function loadTv(){tvRows=STATIC_TV.slice();options($('country'),tvRows.map(x=>x.country),'كل الدول');options($('language'),tvRows.flatMap(x=>x.languages),'كل اللغات');setGrid('tv')}
