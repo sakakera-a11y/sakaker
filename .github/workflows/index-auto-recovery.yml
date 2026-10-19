@@ -34,16 +34,17 @@ jobs:
 
           index = Path("index.html")
           archive = Path("archive/index_stable_2026-10-19.html")
-
           errors = []
+
           if not index.exists():
               errors.append("index.html is missing")
           if not archive.exists():
               errors.append("recovery archive is missing")
 
+          text = ""
+          archive_text = ""
           if index.exists():
               text = index.read_text(encoding="utf-8", errors="replace")
-
               if len(text) < 900_000:
                   errors.append("index.html is unexpectedly small")
 
@@ -70,6 +71,7 @@ jobs:
                   "fetch('/api/visitor-counter'",
                   "@keyframes sakUnifiedIconVisibility",
                   "كتاب أبوالقمرزمرد — روايات وقصص حديثة",
+                  "1W5AskSaukXdyo8iLOXm7YyqHznxVqaUf",
                   "/ebooks/stories/01-story-bilingual.pdf",
                   "/ebooks/stories/11-story-bilingual.pdf",
                   "sakaker-direct-seven-books-20261006",
@@ -86,63 +88,36 @@ jobs:
               if missing:
                   errors.append("missing critical markers: " + ", ".join(missing))
 
+              if "1B-vS6hT8gWeL0NhVLXLUGbdYk1BhdmKv" in text:
+                  errors.append("stale book Drive ID remains in index.html")
               if "sakakerVisitorCounterV1/total" in text:
-              errors.append("legacy Firebase visitor counter is still active")
-          if "show?120000:30000" in text:
-              errors.append("legacy uneven icon visibility cycle is still active")
-          if "wrap.id='sakThoughtsStories'" in text:
-              errors.append("legacy standalone Thoughts renderer is still active")
-          if "خواطر وقصص', en:'Thoughts & Stories'" in text:
-              errors.append("standalone Thoughts entry remains in the text library")
-
-          if text.count("<html") != 1:
+                  errors.append("legacy Firebase visitor counter is still active")
+              if "show?120000:30000" in text:
+                  errors.append("legacy uneven icon visibility cycle is still active")
+              if "wrap.id='sakThoughtsStories'" in text:
+                  errors.append("legacy standalone Thoughts renderer is still active")
+              if "خواطر وقصص', en:'Thoughts & Stories'" in text:
+                  errors.append("standalone Thoughts entry remains in the text library")
+              if text.count("<html") != 1:
                   errors.append("unexpected html root count")
               if text.count("</html>") != 1:
                   errors.append("unexpected closing html count")
 
+          if archive.exists():
+              archive_text = archive.read_text(encoding="utf-8", errors="replace")
+              if "1W5AskSaukXdyo8iLOXm7YyqHznxVqaUf" not in archive_text:
+                  errors.append("recovery archive does not contain the current book Drive ID")
+              if "1B-vS6hT8gWeL0NhVLXLUGbdYk1BhdmKv" in archive_text:
+                  errors.append("stale book Drive ID remains in recovery archive")
+              if index.exists() and text != archive_text:
+                  errors.append("index.html differs from the stable recovery archive")
+
           if errors:
               print("RECOVERY_REQUIRED=1")
-              for e in errors:
-                  print("ERROR:", e)
+              for error in errors:
+                  print("ERROR:", error)
               Path("recovery_required.txt").write_text("\n".join(errors), encoding="utf-8")
               sys.exit(1)
 
           print("RECOVERY_REQUIRED=0")
-          print("index.html passed critical validation")
-
-      - name: Restore stable archive
-        if: failure() && steps.validate.outcome == 'failure'
-        shell: bash
-        run: |
-          set -euo pipefail
-          cp "archive/index_stable_2026-10-19.html" index.html
-          echo "Stable archive restored into index.html"
-
-      - name: Verify restored copy
-        if: failure() && steps.validate.outcome == 'failure'
-        shell: bash
-        run: |
-          set -euo pipefail
-          cmp -s index.html "archive/index_stable_2026-10-19.html"
-          echo "Restored index matches archive exactly"
-
-      - name: Commit automatic recovery
-        if: failure() && steps.validate.outcome == 'failure'
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name "sakaker-auto-recovery"
-          git config user.email "actions@users.noreply.github.com"
-          git add index.html
-          if git diff --cached --quiet; then
-            echo "No recovery commit needed."
-            exit 0
-          fi
-          git commit -m "Auto-recover index.html from stable archive"
-          git push origin HEAD:main
-
-      - name: Mark job successful after recovery
-        if: failure() && steps.validate.outcome == 'failure'
-        shell: bash
-        run: |
-          echo "Automatic recovery completed successfully."
+          print("index.html and stable recovery archive passed critical validation")
