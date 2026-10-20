@@ -70,7 +70,7 @@ iframe{width:100%;height:100%;border:0;background:#fff;flex:1}
 (()=>{
 'use strict';
 const books=[
-{url:'/ebooks/storybook-bilingual.pdf',cover:'/Screenshot_٢٠٢٦١٠٠٦-١٧٤٢٠٧_1.png',ar:'كتاب أبو القمر زمرد — الكتاب الكامل',en:'Abwalqmrzmrd — The Complete Book',authorAr:'النص الكامل مع الترجمة الإنجليزية',authorEn:'Complete Arabic text with English translation'},
+{url:'/ebooks/storybook-bilingual.pdf',readerUrl:'/abwalqmrzmrd-book.html',cover:'/Screenshot_٢٠٢٦١٠٠٦-١٧٤٢٠٧_1.png',ar:'كتاب أبو القمر زمرد — الكتاب الكامل باللغتين',en:'Abwalqmrzmrd — Complete Bilingual Book',authorAr:'قراءة عربية وإنجليزية داخل الموقع؛ استخدم زر اللغة لتبديل النص',authorEn:'Full Arabic and English story reader; use the language switch to change text'},
 {id:'1GXTRPWdBrkI8f_x9KmhRpSfJM3HL1Bfy',ar:'الموسوعة العربية العالمية — الجزء 30',en:'The Arab World Encyclopedia — Volume 30',authorAr:'الموسوعة العربية العالمية',authorEn:'Arab World Encyclopedia'},
 {id:'1E8m9p7TKZWoJdNEBn0RbAUZcyofOVQts',ar:'كليلة ودمنة',en:'Kalila wa Dimna',authorAr:'عبد الله بن المقفع',authorEn:'Abdullah ibn al-Muqaffa'},
 {id:'1gwOaOxZe75ADi4lQbjxfvDS-qP4qGEhv',ar:'مغامرة في الصحراء',en:'Adventure in the Desert',authorAr:'مصطفى محمود',authorEn:'Mostafa Mahmoud'},
@@ -101,7 +101,7 @@ function applyLanguage(next){
  en=!!next;document.documentElement.lang=en?'en':'ar';document.documentElement.dir=en?'ltr':'rtl';
  document.getElementById('pageTitle').textContent=t('📚 الكتب الإلكترونية','📚 E-Books');
  document.getElementById('pageSub').textContent=t('قراءة داخل الموقع','Read inside the site');
- document.getElementById('note').textContent=t('الكتاب الكامل لأبي القمر زمرد وترجمته أولًا، ثم الموسوعة العربية وبقية الكتب. إذا تعذر عرض كتاب خارجي، استخدم زر الفتح الخارجي.','Books open in the site reader. If an external book does not load, use Open externally.');
+ document.getElementById('note').textContent=t('كتاب أبوالقمرزمرد الكامل يظهر أولًا بقارئ تفاعلي يدعم العربية والإنجليزية وتبديل لغة القصص؛ تبقى نسخة PDF متاحة عبر زر التحميل.','The complete book opens first in an interactive Arabic/English reader with a story-language switch. A PDF copy remains available through Download.');
  document.getElementById('backBtn').textContent=t('↩ الرئيسية','↩ Home');
  document.getElementById('langBtn').textContent=t('English','العربية');
  document.getElementById('langBtn').setAttribute('aria-label',t('Switch to English','التبديل إلى العربية'));
@@ -120,10 +120,10 @@ try{
 }catch(e){/* Cross-origin parent: the visible language button remains available. */}
 
 function openBook(i){
- const b=books[i];activeBook=i;const src=b.url||('https://drive.google.com/file/d/'+b.id+'/preview');
+ const b=books[i];activeBook=i;const src=b.readerUrl||b.url||('https://drive.google.com/file/d/'+b.id+'/preview');
  title.textContent='📖 '+t(b.ar,b.en);frame.src=src;
  download.href=b.url||('https://drive.google.com/uc?export=download&id='+b.id);
- openBtn.href=b.url||('https://drive.google.com/file/d/'+b.id+'/view');
+ openBtn.href=b.readerUrl||b.url||('https://drive.google.com/file/d/'+b.id+'/view');
  openBtn.hidden=false;download.hidden=false;
  reader.classList.add('open');reader.setAttribute('aria-hidden','false');document.documentElement.style.overflow='hidden';
 }
