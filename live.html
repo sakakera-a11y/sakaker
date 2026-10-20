@@ -80,6 +80,8 @@ const $=id=>document.getElementById(id);let tvRows=[],radioRows=[],tvVisible=60,
 const STATIC_TV=[
 {id:'aljazeera-ar',name:'الجزيرة الإخبارية',country:'قطر',languages:['العربية'],category:'news',youtube:'UCfiwzLy-8yKzIbsmZTzxDgw'},
 {id:'alarabiya',name:'العربية',country:'السعودية',languages:['العربية'],category:'news',youtube:'UCahpxixMCwoANAftn6IxkTg'},
+{id:'alhadath',name:'الحدث',country:'السعودية',languages:['العربية'],category:'news',officialUrl:'https://www.alhadath.net/live-stream'},
+{id:'asharq-business',name:'اقتصاد الشرق مع بلومبرغ',country:'السعودية',languages:['العربية'],category:'economy',officialUrl:'https://asharq.com/socials/'},
 {id:'skynewsarabia',name:'سكاي نيوز عربية',country:'الإمارات',languages:['العربية'],category:'news',stream:'https://stream.skynewsarabia.com/hls/sna_720.m3u8'},
 {id:'france24ar',name:'فرانس 24 العربية',country:'فرنسا',languages:['العربية'],category:'news',youtube:'UCdTyuXgmJkG_O8_75eqej-w'},
 {id:'asharq',name:'الشرق للأخبار',country:'السعودية',languages:['العربية'],category:'news',youtube:'UCRJUVYt9gjg8MnlGacySUdg'},
@@ -117,6 +119,7 @@ async function playTv(x){
  const v=$('tvVideo'),frame=$('tvFrame');if(window._hls){window._hls.destroy();window._hls=null}v.pause();v.removeAttribute('src');v.load();frame.removeAttribute('src');
  if(x.stream){frame.style.display='none';v.style.display='block';v.src=x.stream;if(window.Hls&&Hls.isSupported()){window._hls=new Hls();window._hls.loadSource(x.stream);window._hls.attachMedia(v)}$('playerMsg').textContent='';try{await v.play()}catch(_){}}
  else if(x.youtube){v.style.display='none';frame.style.display='block';frame.src='https://www.youtube-nocookie.com/embed/live_stream?channel='+encodeURIComponent(x.youtube)+'&autoplay=1&playsinline=1';$('playerMsg').textContent=''}
+ else if(x.officialUrl){v.style.display='none';frame.style.display='block';frame.src=x.officialUrl;$('playerMsg').innerHTML='إذا لم يظهر البث داخل المشغّل، <a href="'+x.officialUrl+'" target="_blank" rel="noopener" style="color:#ffd5ef;text-decoration:underline">افتح المصدر الرسمي للقناة</a>.'}
  else $('playerMsg').textContent='لا يتوفر رابط تشغيل مضمّن لهذه القناة.';
 }
 function close(){const p=$('player');p.classList.remove('open');const v=$('tvVideo'),frame=$('tvFrame');v.pause();v.removeAttribute('src');v.load();frame.removeAttribute('src');if(window._hls){window._hls.destroy();window._hls=null}}
