@@ -52,7 +52,7 @@ iframe{width:100%;height:100%;border:0;background:#fff;flex:1}
 <button class="langSwitch" id="langBtn" type="button" aria-label="Switch language">English</button>
 <header><h1 id="pageTitle">📚 الكتب الإلكترونية</h1><div class="sub" id="pageSub">قراءة داخل الموقع</div></header>
 <main class="grid" id="booksGrid"></main>
-<div class="note" id="note">تُعرض الكتب من ملفات PDF المحلية وGoogle Drive داخل قارئ الموقع.</div>
+<div class="note" id="note">يأتي كتاب أبو القمر زمرد الكامل بترجمته أولًا، ثم الموسوعة العربية وبقية الكتب.</div>
 
 <div id="reader" aria-hidden="true">
   <section class="readerBox" role="dialog" aria-modal="true">
@@ -70,7 +70,7 @@ iframe{width:100%;height:100%;border:0;background:#fff;flex:1}
 (()=>{
 'use strict';
 const books=[
-{url:'/ebooks/storybook-bilingual.pdf',cover:'/Screenshot_٢٠٢٦١٠٠٦-١٧٤٢٠٧_1.png',ar:'كتاب أبوالقمر زمرد — روايات وقصص حديثة',en:'Abwalqmrzmrd Castle — Modern Tales and Stories',authorAr:'الطبعة الثنائية اللغة: 11 قصة',authorEn:'Bilingual edition: 11 stories'},
+{url:'/ebooks/storybook-bilingual.pdf',cover:'/Screenshot_٢٠٢٦١٠٠٦-١٧٤٢٠٧_1.png',ar:'كتاب أبو القمر زمرد — الكتاب الكامل',en:'Abwalqmrzmrd — The Complete Book',authorAr:'النص الكامل مع الترجمة الإنجليزية',authorEn:'Complete Arabic text with English translation'},
 {id:'1GXTRPWdBrkI8f_x9KmhRpSfJM3HL1Bfy',ar:'الموسوعة العربية العالمية — الجزء 30',en:'The Arab World Encyclopedia — Volume 30',authorAr:'الموسوعة العربية العالمية',authorEn:'Arab World Encyclopedia'},
 {id:'1E8m9p7TKZWoJdNEBn0RbAUZcyofOVQts',ar:'كليلة ودمنة',en:'Kalila wa Dimna',authorAr:'عبد الله بن المقفع',authorEn:'Abdullah ibn al-Muqaffa'},
 {id:'1gwOaOxZe75ADi4lQbjxfvDS-qP4qGEhv',ar:'مغامرة في الصحراء',en:'Adventure in the Desert',authorAr:'مصطفى محمود',authorEn:'Mostafa Mahmoud'},
@@ -80,17 +80,7 @@ const books=[
 {id:'1LdhTXBaSSHwOI6XBreWwCd8QqOjy3beu',ar:'فن الحياة',en:'The Art of Life',authorAr:'سلامة موسى',authorEn:'Salama Moussa'},
 {id:'1svg6UMe1yq7d62iola4DHAMkT2dKWfPN',ar:'ألف ليلة وليلة',en:'One Thousand and One Nights',authorAr:'المجلد الأول',authorEn:'Volume One'},
 {id:'1X8LuHDx06ZjSG1TH-Y065i0yVXUUoebu',ar:'قواعد جارتين',en:'Qawaed Jartin',authorAr:'عمرو عبد الحميد',authorEn:'Amr Abdel Hamid'},
-{url:'/ebooks/stories/01-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 1',en:'Abwalqmrzmrd Stories — Story 1',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
-{url:'/ebooks/stories/02-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 2',en:'Abwalqmrzmrd Stories — Story 2',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
-{url:'/ebooks/stories/03-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 3',en:'Abwalqmrzmrd Stories — Story 3',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
-{url:'/ebooks/stories/04-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 4',en:'Abwalqmrzmrd Stories — Story 4',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
-{url:'/ebooks/stories/05-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 5',en:'Abwalqmrzmrd Stories — Story 5',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
-{url:'/ebooks/stories/06-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 6',en:'Abwalqmrzmrd Stories — Story 6',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
-{url:'/ebooks/stories/07-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 7',en:'Abwalqmrzmrd Stories — Story 7',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
-{url:'/ebooks/stories/08-story-bilingual.pdf',ar:'أبوالقمرزمرد والحياة والتقدم',en:'Abwalqmrzmrd, Life, and Progress',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
-{url:'/ebooks/stories/09-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 9',en:'Abwalqmrzmrd Stories — Story 9',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
-{url:'/ebooks/stories/10-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 10',en:'Abwalqmrzmrd Stories — Story 10',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
-{url:'/ebooks/stories/11-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 11',en:'Abwalqmrzmrd Stories — Story 11',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'}
+
 ];
 let en=false;
 try{en=(parent!==window&&parent.document.documentElement.lang==='en')||document.documentElement.lang==='en'}catch(e){en=document.documentElement.lang==='en'}
@@ -111,7 +101,7 @@ function applyLanguage(next){
  en=!!next;document.documentElement.lang=en?'en':'ar';document.documentElement.dir=en?'ltr':'rtl';
  document.getElementById('pageTitle').textContent=t('📚 الكتب الإلكترونية','📚 E-Books');
  document.getElementById('pageSub').textContent=t('قراءة داخل الموقع','Read inside the site');
- document.getElementById('note').textContent=t('تُعرض الكتب من ملفات الموقع وGoogle Drive داخل قارئ الموقع. إذا تعذر عرض كتاب خارجي، استخدم زر الفتح الخارجي.','Books open in the site reader. If an external book does not load, use Open externally.');
+ document.getElementById('note').textContent=t('الكتاب الكامل لأبي القمر زمرد وترجمته أولًا، ثم الموسوعة العربية وبقية الكتب. إذا تعذر عرض كتاب خارجي، استخدم زر الفتح الخارجي.','Books open in the site reader. If an external book does not load, use Open externally.');
  document.getElementById('backBtn').textContent=t('↩ الرئيسية','↩ Home');
  document.getElementById('langBtn').textContent=t('English','العربية');
  document.getElementById('langBtn').setAttribute('aria-label',t('Switch to English','التبديل إلى العربية'));
