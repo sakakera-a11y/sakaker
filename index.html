@@ -21573,7 +21573,6 @@ html body #sakGlobalStreamDetails{
       ['news','📰 أخبار','📰 News'],
       ['sports','⚽ رياضة','⚽ Sports'],
       ['favorites','★ المفضلة','★ Favorites'],
-      ['saved','⭐ المحفوظة','⭐ Saved']
     ].forEach(function(row){
       const btn =
         document.createElement('button');
@@ -40806,6 +40805,12 @@ html body .sak-index-link span{font-size:22px!important}
 })();
 </script>
 
+
+<style id="sak-hide-legacy-home-stories">
+/* القصص تُعرض من قسم الكتب الإلكترونية فقط، وليس كقسم مستقل في الصفحة الرئيسية. */
+#sakThoughtsStories{display:none!important}
+.sak-story-blog-head{display:none!important}
+</style>
 
 <style id="sak-stories-blog-final">
 #sakThoughtsStories{
