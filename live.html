@@ -63,7 +63,7 @@ h1{color:#fff0fa!important;text-shadow:0 0 16px rgba(255,99,190,.46)!important}p
 <div class="tabs"><button class="tab active" data-panel="tv">📺 القنوات</button><button class="tab" data-panel="radio">📻 الراديو</button></div>
 <section class="panel active" id="tv">
 <div class="controls"><input id="tvSearch" type="search" placeholder="ابحث عن قناة أو دولة أو لغة"><select id="country"><option value="">كل الدول</option></select><select id="language"><option value="">كل اللغات</option></select></div>
-<div class="filters"><button class="active" data-filter="all">📺 قنوات العربية</button><button data-filter="economy">📈 الاقتصادية</button><button data-filter="news">📰 الأخبار</button></div>
+<div class="filters"><button class="active" data-filter="all">📺 قنوات العربية</button><button data-filter="economy">📈 الاقتصادية</button><button data-filter="hadath">🔴 الحدث</button><button data-filter="news">📰 الأخبار</button></div>
 <div class="meta" id="tvMeta">جارٍ تحميل الدليل…</div><div class="grid" id="tvGrid"></div><button id="tvMore" class="action" style="width:100%;margin-top:14px">عرض المزيد</button>
 </section>
 <section class="panel" id="radio">
@@ -80,6 +80,8 @@ const $=id=>document.getElementById(id);let tvRows=[],radioRows=[],tvVisible=60,
 const STATIC_TV=[
 {id:'aljazeera-ar',name:'الجزيرة الإخبارية',country:'قطر',languages:['العربية'],category:'news',youtube:'UCfiwzLy-8yKzIbsmZTzxDgw'},
 {id:'alarabiya',name:'العربية',country:'السعودية',languages:['العربية'],category:'news',youtube:'UCahpxixMCwoANAftn6IxkTg'},
+{id:'alhadath',name:'الحدث',country:'السعودية',languages:['العربية'],category:'news',officialUrl:'https://www.alhadath.net/live-stream'},
+
 {id:'skynewsarabia',name:'سكاي نيوز عربية',country:'الإمارات',languages:['العربية'],category:'news',stream:'https://stream.skynewsarabia.com/hls/sna_720.m3u8'},
 {id:'france24ar',name:'فرانس 24 العربية',country:'فرنسا',languages:['العربية'],category:'news',youtube:'UCdTyuXgmJkG_O8_75eqej-w'},
 {id:'asharq',name:'الشرق للأخبار',country:'السعودية',languages:['العربية'],category:'news',youtube:'UCRJUVYt9gjg8MnlGacySUdg'},
@@ -95,7 +97,7 @@ function setGrid(kind){
   const langs=kind==='tv'?x.languages:String(x.languagecodes||x.language||'').split(',').map(a=>a.trim());
   const cc=kind==='tv'?x.country:x.countrycode;
   if(country&&cc!==country)return false;if(language&&!langs.includes(language))return false;
-  if(kind==='tv'&&filter==='economy'&&x.category!=='economy')return false;if(kind==='tv'&&filter==='news'&&x.category!=='news')return false;
+  if(kind==='tv'&&filter==='economy'&&x.category!=='economy')return false;if(kind==='tv'&&filter==='hadath'&&x.id!=='alhadath')return false;if(kind==='tv'&&filter==='news'&&x.category!=='news')return false;
   if(search&&!String([x.name,x.country,x.countrycode,x.languages,x.tags,x.state].join(' ')).toLowerCase().includes(search))return false;return true
  });
  grid.replaceChildren();found.slice(0,limit).forEach(x=>grid.appendChild(card(kind,x)));
@@ -117,6 +119,8 @@ async function playTv(x){
  const v=$('tvVideo'),frame=$('tvFrame');if(window._hls){window._hls.destroy();window._hls=null}v.pause();v.removeAttribute('src');v.load();frame.removeAttribute('src');
  if(x.stream){frame.style.display='none';v.style.display='block';v.src=x.stream;if(window.Hls&&Hls.isSupported()){window._hls=new Hls();window._hls.loadSource(x.stream);window._hls.attachMedia(v)}$('playerMsg').textContent='';try{await v.play()}catch(_){}}
  else if(x.youtube){v.style.display='none';frame.style.display='block';frame.src='https://www.youtube-nocookie.com/embed/live_stream?channel='+encodeURIComponent(x.youtube)+'&autoplay=1&playsinline=1';$('playerMsg').textContent=''}
+ else if(x.officialUrl){v.style.display='none';frame.style.display='block';frame.src=x.officialUrl;$('playerMsg').textContent='إذا منع المصدر الرسمي التضمين، فقد لا يعمل داخل المشغّل.'}
+ else if(x.officialUrl){v.style.display='none';frame.style.display='block';frame.src=x.officialUrl;$('playerMsg').innerHTML='إذا لم يظهر البث داخل المشغّل، <a href="'+x.officialUrl+'" target="_blank" rel="noopener" style="color:#ffd5ef;text-decoration:underline">افتح المصدر الرسمي للقناة</a>.'}
  else $('playerMsg').textContent='لا يتوفر رابط تشغيل مضمّن لهذه القناة.';
 }
 function close(){const p=$('player');p.classList.remove('open');const v=$('tvVideo'),frame=$('tvFrame');v.pause();v.removeAttribute('src');v.load();frame.removeAttribute('src');if(window._hls){window._hls.destroy();window._hls=null}}
