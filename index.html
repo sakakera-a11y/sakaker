@@ -21573,6 +21573,7 @@ html body #sakGlobalStreamDetails{
       ['news','📰 أخبار','📰 News'],
       ['sports','⚽ رياضة','⚽ Sports'],
       ['favorites','★ المفضلة','★ Favorites'],
+      ['arabic-channels','قنوات العربية','Arabic Channels'],
     ].forEach(function(row){
       const btn =
         document.createElement('button');
@@ -22302,6 +22303,8 @@ html body #sakGlobalStreamDetails{
       ? Object.values(favorites).map(function(ch){ return allRows.find(function(row){return row.id === ch.id;}) || ch; })
       : allRows;
     return candidates.filter(function(ch){
+      if(currentFilter === 'arabic-channels' && !Array.isArray(ch.languages)) return false;
+      if(currentFilter === 'arabic-channels' && !ch.languages.some(function(language){return /(^ar(?:[-_]|$)|arabic|العربية)/i.test(String(language).trim());})) return false;
       if(currentFilter === 'sports' && !ch.categories.some(function(category){return /sport/i.test(category);})) return false;
       if(
         countryCode &&
@@ -40304,7 +40307,7 @@ new MutationObserver(liftOpenLayers).observe(document.body||document.documentEle
 (()=>{
 'use strict';
 const books=[
-{id:'1W5AskSaukXdyo8iLOXm7YyqHznxVqaUf',cover:'/Screenshot_٢٠٢٦١٠٠٦-١٧٤٢٠٧_1.png',ar:'كتاب أبوالقمرزمرد — روايات وقصص حديثة',en:'Abwalqmrzmrd Castle — Modern Tales and Stories',authorAr:'11 قصة بالعربية والإنجليزية',authorEn:'11 bilingual stories'},
+{url:'/ebooks/storybook-bilingual.pdf',readerUrl:'/abwalqmrzmrd-book.html',cover:'/Screenshot_٢٠٢٦١٠٠٦-١٧٤٢٠٧_1.png',ar:'كتاب أبوالقمرزمرد — النسخة الكاملة باللغتين',en:'Abwalqmrzmrd — Complete Bilingual Edition',authorAr:'11 قصة بالعربية والإنجليزية',authorEn:'11 bilingual stories'},
 {url:'/ebooks/stories/01-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 1',en:'Abwalqmrzmrd Stories — Story 1',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
 {url:'/ebooks/stories/02-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 2',en:'Abwalqmrzmrd Stories — Story 2',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
 {url:'/ebooks/stories/03-story-bilingual.pdf',ar:'قصص أبوالقمرزمرد — القصة 3',en:'Abwalqmrzmrd Stories — Story 3',authorAr:'العربية والإنجليزية',authorEn:'Arabic and English'},
@@ -40808,8 +40811,8 @@ html body .sak-index-link span{font-size:22px!important}
 
 <style id="sak-hide-legacy-home-stories">
 /* القصص تُعرض من قسم الكتب الإلكترونية فقط، وليس كقسم مستقل في الصفحة الرئيسية. */
-#sakThoughtsStories{display:none!important}
-.sak-story-blog-head{display:none!important}
+html body #sakThoughtsStories{display:none!important}
+html body .sak-story-blog-head{display:none!important}
 </style>
 
 <style id="sak-stories-blog-final">
