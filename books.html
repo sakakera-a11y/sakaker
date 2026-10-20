@@ -121,6 +121,14 @@ function applyLanguage(next){
  if(activeBook>=0 && reader.classList.contains('open')) title.textContent='📖 '+t(books[activeBook].ar,books[activeBook].en);
 }
 document.getElementById('langBtn').addEventListener('click',()=>applyLanguage(!en));
+try{
+ if(parent!==window){
+  const syncParentLanguage=()=>{const parentLang=parent.document.documentElement.lang;const next=parentLang.toLowerCase().startsWith('en');if(next!==en)applyLanguage(next)};
+  new parent.MutationObserver(syncParentLanguage).observe(parent.document.documentElement,{attributes:true,attributeFilter:['lang','dir']});
+  window.addEventListener('message',event=>{if(event.origin===location.origin&&event.data&&typeof event.data.lang==='string')applyLanguage(event.data.lang.toLowerCase().startsWith('en'))});
+ }
+}catch(e){/* Cross-origin parent: the visible language button remains available. */}
+
 function openBook(i){
  const b=books[i];activeBook=i;const src=b.url||('https://drive.google.com/file/d/'+b.id+'/preview');
  title.textContent='📖 '+t(b.ar,b.en);frame.src=src;
