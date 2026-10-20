@@ -11,7 +11,7 @@ body{padding:18px 14px 32px}
 header{max-width:980px;margin:0 auto 18px;text-align:center;position:relative}
 h1{margin:8px 0 4px;color:var(--gold);text-shadow:0 0 14px #00ffd066}
 .sub{color:var(--muted);font-size:14px}
-.back{position:fixed;top:12px;left:12px;z-index:2147483646;border:1px solid #8fffe7;border-radius:999px;background:#06231e;color:#fff;padding:9px 14px;cursor:pointer;box-shadow:0 0 14px #00ffd044}
+.langSwitch{position:fixed;top:12px;right:12px;z-index:2147483646;border:1px solid #8fffe7;border-radius:999px;background:#06231e;color:#fff;padding:9px 14px;cursor:pointer;box-shadow:0 0 14px #00ffd044}.back{position:fixed;top:12px;left:12px;z-index:2147483646;border:1px solid #8fffe7;border-radius:999px;background:#06231e;color:#fff;padding:9px 14px;cursor:pointer;box-shadow:0 0 14px #00ffd044}
 .grid{max-width:980px;margin:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .book{min-height:165px;border:1px solid #5fffd4aa;border-radius:22px;background:linear-gradient(145deg,rgba(7,47,39,.96),rgba(3,23,28,.98));color:#fff;padding:18px 14px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;box-shadow:0 10px 28px #0008,0 0 20px #00ffd01f;transition:.22s}
 .book:hover,.book:focus-visible{transform:translateY(-5px);box-shadow:0 14px 36px #0009,0 0 30px #00ffd044;outline:2px solid #fff8}
@@ -49,6 +49,7 @@ iframe{width:100%;height:100%;border:0;background:#fff;flex:1}
 </head>
 <body>
 <button class="back" id="backBtn" type="button">↩ الرئيسية / Home</button>
+<button class="langSwitch" id="langBtn" type="button" aria-label="Switch language">English</button>
 <header><h1 id="pageTitle">📚 الكتب الإلكترونية</h1><div class="sub" id="pageSub">قراءة داخل الموقع</div></header>
 <main class="grid" id="booksGrid"></main>
 <div class="note" id="note">تُعرض الكتب من ملفات PDF المحلية وGoogle Drive داخل قارئ الموقع.</div>
@@ -58,6 +59,7 @@ iframe{width:100%;height:100%;border:0;background:#fff;flex:1}
     <div class="readerHead">
       <button class="readerBtn readerClose" id="closeBtn" type="button" aria-label="إغلاق">×</button>
       <div class="readerTitle" id="readerTitle">كتاب إلكتروني</div>
+      <a class="readerBtn" id="openBtn" href="#" target="_blank" rel="noopener">↗ فتح خارجي</a>
       <a class="readerBtn" id="downloadBtn" href="#" target="_blank" rel="noopener">⬇ تحميل</a>
     </div>
     <iframe id="readerFrame" title="قارئ الكتاب" loading="eager"></iframe>
@@ -68,7 +70,7 @@ iframe{width:100%;height:100%;border:0;background:#fff;flex:1}
 (()=>{
 'use strict';
 const books=[
-{id:'1W5AskSaukXdyo8iLOXm7YyqHznxVqaUf',cover:'/Screenshot_٢٠٢٦١٠٠٦-١٧٤٢٠٧_1.png',ar:'كتاب أبوالقمر زمرد — روايات وقصص حديثة',en:'Abwalqmrzmrd Castle — Modern Tales and Stories',authorAr:'الطبعة الثنائية اللغة: 11 قصة',authorEn:'Bilingual edition: 11 stories'},
+{url:'/ebooks/storybook-bilingual.pdf',cover:'/Screenshot_٢٠٢٦١٠٠٦-١٧٤٢٠٧_1.png',ar:'كتاب أبوالقمر زمرد — روايات وقصص حديثة',en:'Abwalqmrzmrd Castle — Modern Tales and Stories',authorAr:'الطبعة الثنائية اللغة: 11 قصة',authorEn:'Bilingual edition: 11 stories'},
 {id:'1GXTRPWdBrkI8f_x9KmhRpSfJM3HL1Bfy',ar:'الموسوعة العربية العالمية — الجزء 30',en:'The Arab World Encyclopedia — Volume 30',authorAr:'الموسوعة العربية العالمية',authorEn:'Arab World Encyclopedia'},
 {id:'1E8m9p7TKZWoJdNEBn0RbAUZcyofOVQts',ar:'كليلة ودمنة',en:'Kalila wa Dimna',authorAr:'عبد الله بن المقفع',authorEn:'Abdullah ibn al-Muqaffa'},
 {id:'1gwOaOxZe75ADi4lQbjxfvDS-qP4qGEhv',ar:'مغامرة في الصحراء',en:'Adventure in the Desert',authorAr:'مصطفى محمود',authorEn:'Mostafa Mahmoud'},
@@ -94,18 +96,52 @@ let en=false;
 try{en=(parent!==window&&parent.document.documentElement.lang==='en')||document.documentElement.lang==='en'}catch(e){en=document.documentElement.lang==='en'}
 document.documentElement.lang=en?'en':'ar';document.documentElement.dir=en?'ltr':'rtl';
 const t=(ar,enText)=>en?enText:ar;
-const grid=document.getElementById('booksGrid'),reader=document.getElementById('reader'),frame=document.getElementById('readerFrame'),title=document.getElementById('readerTitle'),download=document.getElementById('downloadBtn');
+const grid=document.getElementById('booksGrid'),reader=document.getElementById('reader'),frame=document.getElementById('readerFrame'),title=document.getElementById('readerTitle'),download=document.getElementById('downloadBtn'),openBtn=document.getElementById('openBtn');
+let activeBook=-1;
 document.getElementById('pageTitle').textContent=t('📚 الكتب الإلكترونية','📚 E-Books');
 document.getElementById('pageSub').textContent=t('قراءة داخل الموقع','Read inside the site');
 document.getElementById('note').textContent=t('تُعرض الكتب من Google Drive داخل قارئ الموقع.','Books are displayed from local PDF files and Google Drive inside the site reader.');
 document.getElementById('backBtn').textContent=t('↩ الرئيسية','↩ Home');
 document.getElementById('downloadBtn').textContent=t('⬇ تحميل','⬇ Download');
-books.forEach((b,i)=>{const el=document.createElement('button');el.type='button';el.className='book';el.innerHTML='<span class="ico">📖</span><b></b><small></small><span class="action"></span>';if(b.cover){const cover=document.createElement('img');cover.className='book-cover';cover.src=b.cover;cover.alt=t(b.ar,b.en);el.prepend(cover);el.querySelector('.ico').hidden=true;}el.querySelector('b').textContent=t(b.ar,b.en);el.querySelector('small').textContent=t(b.authorAr,b.authorEn);el.querySelector('.action').textContent=t('قراءة الكتاب','Read book');el.onclick=()=>openBook(i);grid.appendChild(el)});
-function openBook(i){const b=books[i];title.textContent='📖 '+t(b.ar,b.en);frame.src=b.url||('https://drive.google.com/file/d/'+b.id+'/preview');download.href=b.url||('https://drive.google.com/uc?export=download&id='+b.id);reader.classList.add('open');reader.setAttribute('aria-hidden','false');document.documentElement.style.overflow='hidden'}
-function closeReader(){reader.classList.remove('open');reader.setAttribute('aria-hidden','true');frame.src='about:blank';document.documentElement.style.overflow=''}
+function renderBooks(){
+ grid.replaceChildren();
+ books.forEach((b,i)=>{const el=document.createElement('button');el.type='button';el.className='book';el.innerHTML='<span class="ico">📖</span><b></b><small></small><span class="action"></span>';if(b.cover){const cover=document.createElement('img');cover.className='book-cover';cover.src=b.cover;cover.alt=t(b.ar,b.en);el.prepend(cover);el.querySelector('.ico').hidden=true;}el.querySelector('b').textContent=t(b.ar,b.en);el.querySelector('small').textContent=t(b.authorAr,b.authorEn);el.querySelector('.action').textContent=t('اضغط لفتح الكتاب','Tap to open book');el.onclick=()=>openBook(i);grid.appendChild(el)});
+}
+function applyLanguage(next){
+ en=!!next;document.documentElement.lang=en?'en':'ar';document.documentElement.dir=en?'ltr':'rtl';
+ document.getElementById('pageTitle').textContent=t('📚 الكتب الإلكترونية','📚 E-Books');
+ document.getElementById('pageSub').textContent=t('قراءة داخل الموقع','Read inside the site');
+ document.getElementById('note').textContent=t('تُعرض الكتب من ملفات الموقع وGoogle Drive داخل قارئ الموقع. إذا تعذر عرض كتاب خارجي، استخدم زر الفتح الخارجي.','Books open in the site reader. If an external book does not load, use Open externally.');
+ document.getElementById('backBtn').textContent=t('↩ الرئيسية','↩ Home');
+ document.getElementById('langBtn').textContent=t('English','العربية');
+ document.getElementById('langBtn').setAttribute('aria-label',t('Switch to English','التبديل إلى العربية'));
+ document.getElementById('downloadBtn').textContent=t('⬇ تحميل','⬇ Download');
+ document.getElementById('openBtn').textContent=t('↗ فتح خارجي','↗ Open externally');
+ renderBooks();
+ if(activeBook>=0 && reader.classList.contains('open')) title.textContent='📖 '+t(books[activeBook].ar,books[activeBook].en);
+}
+document.getElementById('langBtn').addEventListener('click',()=>applyLanguage(!en));
+try{
+ if(parent!==window){
+  const syncParentLanguage=()=>{const parentLang=parent.document.documentElement.lang;const next=parentLang.toLowerCase().startsWith('en');if(next!==en)applyLanguage(next)};
+  new parent.MutationObserver(syncParentLanguage).observe(parent.document.documentElement,{attributes:true,attributeFilter:['lang','dir']});
+  window.addEventListener('message',event=>{if(event.origin===location.origin&&event.data&&typeof event.data.lang==='string')applyLanguage(event.data.lang.toLowerCase().startsWith('en'))});
+ }
+}catch(e){/* Cross-origin parent: the visible language button remains available. */}
+
+function openBook(i){
+ const b=books[i];activeBook=i;const src=b.url||('https://drive.google.com/file/d/'+b.id+'/preview');
+ title.textContent='📖 '+t(b.ar,b.en);frame.src=src;
+ download.href=b.url||('https://drive.google.com/uc?export=download&id='+b.id);
+ openBtn.href=b.url||('https://drive.google.com/file/d/'+b.id+'/view');
+ openBtn.hidden=false;download.hidden=false;
+ reader.classList.add('open');reader.setAttribute('aria-hidden','false');document.documentElement.style.overflow='hidden';
+}
+function closeReader(){reader.classList.remove('open');reader.setAttribute('aria-hidden','true');frame.src='about:blank';document.documentElement.style.overflow='';activeBook=-1}
 document.getElementById('closeBtn').onclick=closeReader;
 reader.addEventListener('click',e=>{if(e.target===reader)closeReader()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeReader()});
+applyLanguage(en);
 document.getElementById('backBtn').onclick=()=>{try{if(parent!==window){parent.postMessage({type:'sakaker-close-app',app:'books'},location.origin);return}}catch(e){}location.href='index.html'};
 })();
 </script>
