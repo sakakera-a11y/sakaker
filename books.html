@@ -70,7 +70,7 @@ iframe{width:100%;height:100%;border:0;background:#fff;flex:1}
 (()=>{
 'use strict';
 const books=[
-{url:'/ebooks/storybook-bilingual.pdf',readerUrl:'/abwalqmrzmrd-book.html',cover:'/Screenshot_٢٠٢٦١٠٠٦-١٧٤٢٠٧_1.png',ar:'كتاب أبو القمر زمرد — الكتاب الكامل باللغتين',en:'Abwalqmrzmrd — Complete Bilingual Book',authorAr:'قراءة عربية وإنجليزية داخل الموقع؛ استخدم زر اللغة لتبديل النص',authorEn:'Full Arabic and English story reader; use the language switch to change text'},
+{url:'/abwalqmrzmrd-book.html',readerUrl:'/abwalqmrzmrd-book.html',cover:'/Screenshot_٢٠٢٦١٠٠٦-١٧٤٢٠٧_1.png',ar:'كتاب أبو القمر زمرد — الكتاب الكامل باللغتين',en:'Abwalqmrzmrd — Complete Bilingual Book',authorAr:'قراءة عربية وإنجليزية داخل الموقع؛ استخدم زر اللغة لتبديل النص',authorEn:'Full Arabic and English story reader; use the language switch to change text'},
 {id:'1GXTRPWdBrkI8f_x9KmhRpSfJM3HL1Bfy',ar:'الموسوعة العربية العالمية — الجزء 30',en:'The Arab World Encyclopedia — Volume 30',authorAr:'الموسوعة العربية العالمية',authorEn:'Arab World Encyclopedia'},
 {id:'1E8m9p7TKZWoJdNEBn0RbAUZcyofOVQts',ar:'كليلة ودمنة',en:'Kalila wa Dimna',authorAr:'عبد الله بن المقفع',authorEn:'Abdullah ibn al-Muqaffa'},
 {id:'1gwOaOxZe75ADi4lQbjxfvDS-qP4qGEhv',ar:'مغامرة في الصحراء',en:'Adventure in the Desert',authorAr:'مصطفى محمود',authorEn:'Mostafa Mahmoud'},
@@ -92,7 +92,7 @@ document.getElementById('pageTitle').textContent=t('📚 الكتب الإلكت
 document.getElementById('pageSub').textContent=t('قراءة داخل الموقع','Read inside the site');
 document.getElementById('note').textContent=t('تُعرض الكتب من Google Drive داخل قارئ الموقع.','Books are displayed from local PDF files and Google Drive inside the site reader.');
 document.getElementById('backBtn').textContent=t('↩ الرئيسية','↩ Home');
-document.getElementById('downloadBtn').textContent=t('⬇ تحميل','⬇ Download');
+document.getElementById('downloadBtn').textContent=t('↗ فتح النسخة الجديدة','↗ Open new edition');
 function renderBooks(){
  grid.replaceChildren();
  books.forEach((b,i)=>{const el=document.createElement('button');el.type='button';el.className='book';el.innerHTML='<span class="ico">📖</span><b></b><small></small><span class="action"></span>';if(b.cover){const cover=document.createElement('img');cover.className='book-cover';cover.src=b.cover;cover.alt=t(b.ar,b.en);el.prepend(cover);el.querySelector('.ico').hidden=true;}el.querySelector('b').textContent=t(b.ar,b.en);el.querySelector('small').textContent=t(b.authorAr,b.authorEn);el.querySelector('.action').textContent=t('اضغط لفتح الكتاب','Tap to open book');el.onclick=()=>openBook(i);grid.appendChild(el)});
@@ -122,7 +122,7 @@ try{
 function openBook(i){
  const b=books[i];activeBook=i;const src=b.readerUrl||b.url||('https://drive.google.com/file/d/'+b.id+'/preview');
  title.textContent='📖 '+t(b.ar,b.en);frame.src=src;
- download.href=b.url||('https://drive.google.com/uc?export=download&id='+b.id);
+ download.href=b.url||('https://drive.google.com/uc?export=download&id='+b.id);download.removeAttribute('download');
  openBtn.href=b.readerUrl||b.url||('https://drive.google.com/file/d/'+b.id+'/view');
  openBtn.hidden=false;download.hidden=false;
  reader.classList.add('open');reader.setAttribute('aria-hidden','false');document.documentElement.style.overflow='hidden';
