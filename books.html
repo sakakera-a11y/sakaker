@@ -88,6 +88,7 @@ document.documentElement.lang=en?'en':'ar';document.documentElement.dir=en?'ltr'
 const t=(ar,enText)=>en?enText:ar;
 const grid=document.getElementById('booksGrid'),reader=document.getElementById('reader'),frame=document.getElementById('readerFrame'),title=document.getElementById('readerTitle'),download=document.getElementById('downloadBtn'),openBtn=document.getElementById('openBtn');
 let activeBook=-1;
+let pageScrollY=0;
 document.getElementById('pageTitle').textContent=t('📚 الكتب الإلكترونية','📚 E-Books');
 document.getElementById('pageSub').textContent=t('قراءة داخل الموقع','Read inside the site');
 document.getElementById('note').textContent=t('تُعرض الكتب من Google Drive داخل قارئ الموقع.','Books are displayed from local PDF files and Google Drive inside the site reader.');
@@ -120,14 +121,16 @@ try{
 }catch(e){/* Cross-origin parent: the visible language button remains available. */}
 
 function openBook(i){
- const b=books[i];activeBook=i;const src=b.readerUrl||b.url||('https://drive.google.com/file/d/'+b.id+'/preview');
+ const b=books[i];if(!b)return;activeBook=i;pageScrollY=window.scrollY||document.documentElement.scrollTop||0;
+ const src=b.readerUrl||b.url||('https://drive.google.com/file/d/'+b.id+'/preview');
  title.textContent='📖 '+t(b.ar,b.en);frame.src=src;
  download.href=b.url||('https://drive.google.com/uc?export=download&id='+b.id);download.removeAttribute('download');
  openBtn.href=b.readerUrl||b.url||('https://drive.google.com/file/d/'+b.id+'/view');
  openBtn.hidden=false;download.hidden=false;
  reader.classList.add('open');reader.setAttribute('aria-hidden','false');document.documentElement.style.overflow='hidden';
+ document.getElementById('closeBtn').focus({preventScroll:true});
 }
-function closeReader(){reader.classList.remove('open');reader.setAttribute('aria-hidden','true');frame.src='about:blank';document.documentElement.style.overflow='';activeBook=-1}
+function closeReader(){reader.classList.remove('open');reader.setAttribute('aria-hidden','true');frame.src='about:blank';document.documentElement.style.overflow='';activeBook=-1;window.scrollTo({top:pageScrollY,behavior:'instant'});}
 document.getElementById('closeBtn').onclick=closeReader;
 reader.addEventListener('click',e=>{if(e.target===reader)closeReader()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeReader()});
