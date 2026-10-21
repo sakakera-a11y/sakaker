@@ -45,6 +45,7 @@ function pinRefreshStyles(){
 function boot(){
  pinRefreshStyles();
  enhance();
+ enhanceGlobalChannelShortcuts();
  const root=document.getElementById('liveVideosContainer');
  if(root&&!root.dataset.sakSeaStyleObserver){
    root.dataset.sakSeaStyleObserver='1';
