@@ -46,7 +46,7 @@ function pinRefreshStyles(){
 function enhanceGlobalChannelShortcuts(){
  const filters=document.getElementById('sakGlobalLiveFilters');
  if(!filters||filters.dataset.sakNewsShortcuts==='1')return;
- const dw=[...filters.querySelectorAll('button')].find(b=>/\\bDW\\b/i.test(b.textContent||''));
+ const dw=[...filters.querySelectorAll('button')].find(b=>/DW/i.test(b.textContent||''));
  if(!dw)return;
  const input=document.getElementById('sakGlobalLiveSearch');
  const searchBtn=document.getElementById('sakGlobalLiveSearchBtn');
