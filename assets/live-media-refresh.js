@@ -42,6 +42,37 @@ function pinRefreshStyles(){
  };
  if(link.sheet)apply();else link.addEventListener('load',apply,{once:true});
 }
+
+function enhanceGlobalChannelShortcuts(){
+ const filters=document.getElementById('sakGlobalLiveFilters');
+ if(!filters||filters.dataset.sakNewsShortcuts==='1')return;
+ const dw=[...filters.querySelectorAll('button')].find(b=>/\\bDW\\b/i.test(b.textContent||''));
+ if(!dw)return;
+ const input=document.getElementById('sakGlobalLiveSearch');
+ const searchBtn=document.getElementById('sakGlobalLiveSearchBtn');
+ const shortcuts=[
+  {ar:'الحدث',en:'Al Hadath',query:'الحدث'},
+  {ar:'الاقتصادية',en:'Economy',query:'الاقتصادية'},
+  {ar:'الإخبارية',en:'Al Ekhbariya',query:'الإخبارية'}
+ ];
+ let anchor=dw;
+ shortcuts.forEach(item=>{
+  const b=document.createElement('button');b.type='button';b.className='sak-global-filter sak-global-channel-shortcut';
+  b.textContent=text(item.ar,item.en);b.setAttribute('aria-label',text('تصفية القنوات: '+item.ar,'Filter channels: '+item.en));
+  b.addEventListener('click',()=>{
+   if(!input)return;
+   input.value=text(item.query,item.en);
+   input.dispatchEvent(new Event('input',{bubbles:true}));
+   input.dispatchEvent(new Event('change',{bubbles:true}));
+   if(searchBtn)searchBtn.click();
+   else input.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}));
+   filters.querySelectorAll('.sak-global-channel-shortcut').forEach(x=>x.classList.toggle('active',x===b));
+  });
+  anchor.insertAdjacentElement('afterend',b);anchor=b;
+ });
+ filters.dataset.sakNewsShortcuts='1';
+}
+
 function boot(){
  pinRefreshStyles();
  enhance();
