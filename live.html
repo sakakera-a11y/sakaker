@@ -13,6 +13,7 @@ main{width:min(1240px,calc(100% - 24px));margin:24px auto 70px}.hero{padding:cla
 h1{font-size:clamp(25px,4.5vw,42px);margin:0 0 8px;color:#e7fff5}p{color:#c8e4db;line-height:1.7;margin:0}
 .tabs{display:flex;gap:10px;margin:20px 0 14px}.tab{flex:1;min-height:48px;font-size:15px}.tab.active{background:linear-gradient(110deg,#087b65,#0c5459,#94712d);border-color:#a4f2d3}
 .controls{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:9px;margin:14px 0}.controls input,.controls select{min-width:0;min-height:46px;padding:10px 13px;border:1px solid var(--line);border-radius:13px;background:#031e25dc;color:white;font:inherit}.filters{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.filters button{border:1px solid var(--line);border-radius:999px;background:#092f34;color:#eafff5;padding:8px 13px;cursor:pointer}.filters button.active{background:#087860;border-color:#a2f2d1}
+.directChannels{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0}.directChannels button{flex:1 1 160px;min-height:44px;padding:10px 14px;border:1px solid var(--line);border-radius:13px;background:rgba(5,42,48,.94);color:#effff8;font:700 14px inherit;cursor:pointer;box-shadow:0 5px 14px #0002}.directChannels button:focus-visible{outline:2px solid #b8f5dd;outline-offset:2px}.directChannels button:active{transform:translateY(1px)}
 .meta{font-size:13px;color:#c3e8da;padding:4px 2px 12px}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,195px),1fr));gap:12px}
 .card{position:relative;display:flex;min-height:125px;align-items:center;gap:12px;text-align:start;padding:14px;border:1px solid var(--line);border-radius:18px;color:#f7fff9;background:linear-gradient(145deg,rgba(11,60,61,.89),rgba(4,25,34,.94));box-shadow:0 10px 24px #0003;cursor:pointer;transition:.18s}
 .card:hover{transform:translateY(-3px);border-color:#88f0c5;box-shadow:0 14px 30px #0005,0 0 20px #25cd9c22}.logo{width:48px;height:48px;flex:none;object-fit:contain;border-radius:13px;background:#fff;padding:3px}.fallback{display:grid;place-items:center;background:#12454a;color:#dbfff1;font-size:24px}.details{min-width:0}.name{font-size:14px;font-weight:800;line-height:1.4}.sub{font-size:11px;color:#c0ded4;margin-top:4px;line-height:1.5}.state{font-size:10px;color:#a7f3c8;margin-top:7px}.star{position:absolute;top:8px;inset-inline-end:9px;border:0;background:transparent;color:#ffe18b;font-size:22px;cursor:pointer}
@@ -63,7 +64,7 @@ h1{color:#fff0fa!important;text-shadow:0 0 16px rgba(255,99,190,.46)!important}p
 <div class="tabs"><button class="tab active" data-panel="tv">📺 القنوات</button><button class="tab" data-panel="radio">📻 الراديو</button></div>
 <section class="panel active" id="tv">
 <div class="controls"><input id="tvSearch" type="search" placeholder="ابحث عن قناة أو دولة أو لغة"><select id="country"><option value="">كل الدول</option></select><select id="language"><option value="">كل اللغات</option></select></div>
-<div class="filters"><button class="active" data-filter="all">📺 قنوات العربية</button><button data-filter="economy">📈 الاقتصادية</button><button data-filter="hadath">🔴 الحدث</button><button data-filter="news">📰 الأخبار</button></div>
+<div class="directChannels" aria-label="القنوات العربية المباشرة"><button type="button" data-direct-channel="alhadath">الحدث</button><button type="button" data-direct-channel="alarabiya-business">العربية الاقتصادية</button><button type="button" data-direct-channel="alarabiya">العربية الإخبارية</button></div>
 <div class="meta" id="tvMeta">جارٍ تحميل الدليل…</div><div class="grid" id="tvGrid"></div><button id="tvMore" class="action" style="width:100%;margin-top:14px">عرض المزيد</button>
 </section>
 <section class="panel" id="radio">
@@ -81,6 +82,7 @@ const STATIC_TV=[
 {id:'aljazeera-ar',name:'الجزيرة الإخبارية',country:'قطر',languages:['العربية'],category:'news',youtube:'UCfiwzLy-8yKzIbsmZTzxDgw'},
 {id:'alarabiya',name:'العربية',country:'السعودية',languages:['العربية'],category:'news',youtube:'UCahpxixMCwoANAftn6IxkTg'},
 {id:'alhadath',name:'الحدث',country:'السعودية',languages:['العربية'],category:'news',officialUrl:'https://www.alhadath.net/live-stream'},
+{id:'alarabiya-business',name:'العربية Business',country:'السعودية',languages:['العربية'],category:'economy',officialUrl:'https://shahid.mbc.net/ar/livestream/%C3%98%C2%A7%C3%99%E2%80%9E%C3%98%C2%B9%C3%98%C2%B1%C3%99%E2%80%A0%C3%98%C2%A9-Business/livechannel-1003218'},
 
 {id:'skynewsarabia',name:'سكاي نيوز عربية',country:'الإمارات',languages:['العربية'],category:'news',stream:'https://stream.skynewsarabia.com/hls/sna_720.m3u8'},
 {id:'france24ar',name:'فرانس 24 العربية',country:'فرنسا',languages:['العربية'],category:'news',youtube:'UCdTyuXgmJkG_O8_75eqej-w'},
@@ -119,8 +121,7 @@ async function playTv(x){
  const v=$('tvVideo'),frame=$('tvFrame');if(window._hls){window._hls.destroy();window._hls=null}v.pause();v.removeAttribute('src');v.load();frame.removeAttribute('src');
  if(x.stream){frame.style.display='none';v.style.display='block';v.src=x.stream;if(window.Hls&&Hls.isSupported()){window._hls=new Hls();window._hls.loadSource(x.stream);window._hls.attachMedia(v)}$('playerMsg').textContent='';try{await v.play()}catch(_){}}
  else if(x.youtube){v.style.display='none';frame.style.display='block';frame.src='https://www.youtube-nocookie.com/embed/live_stream?channel='+encodeURIComponent(x.youtube)+'&autoplay=1&playsinline=1';$('playerMsg').textContent=''}
- else if(x.officialUrl){v.style.display='none';frame.style.display='block';frame.src=x.officialUrl;$('playerMsg').textContent='إذا منع المصدر الرسمي التضمين، فقد لا يعمل داخل المشغّل.'}
- else if(x.officialUrl){v.style.display='none';frame.style.display='block';frame.src=x.officialUrl;$('playerMsg').innerHTML='إذا لم يظهر البث داخل المشغّل، <a href="'+x.officialUrl+'" target="_blank" rel="noopener" style="color:#ffd5ef;text-decoration:underline">افتح المصدر الرسمي للقناة</a>.'}
+ else if(x.officialUrl){v.style.display='none';frame.style.display='block';frame.src=x.officialUrl;$('playerMsg').innerHTML='إذا لم يظهر البث داخل المشغّل، <a href="'+x.officialUrl+'" target="_blank" rel="noopener noreferrer" style="color:#ffd5ef;text-decoration:underline">افتح المصدر الرسمي للقناة</a>.'}
  else $('playerMsg').textContent='لا يتوفر رابط تشغيل مضمّن لهذه القناة.';
 }
 function close(){const p=$('player');p.classList.remove('open');const v=$('tvVideo'),frame=$('tvFrame');v.pause();v.removeAttribute('src');v.load();frame.removeAttribute('src');if(window._hls){window._hls.destroy();window._hls=null}}
@@ -132,6 +133,7 @@ function playRadio(x){const a=$('radioAudio');$('radioNow').textContent=x.name;a
 $('cairo').onclick=()=>playRadio({name:'إذاعة القرآن الكريم من القاهرة',url:'https://stream.radiojar.com/8s5u5tpdtwzuv',url_resolved:'https://stream.radiojar.com/8s5u5tpdtwzuv'});
 ['tvSearch','country','language'].forEach(id=>$(id).addEventListener('input',()=>{tvVisible=60;setGrid('tv')}));['radioSearch','radioCountry','radioLanguage'].forEach(id=>$(id).addEventListener('input',()=>{radioVisible=60;setGrid('radio')}));
 document.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{filter=b.dataset.filter;document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('active',x===b));tvVisible=60;setGrid('tv')});
+document.querySelectorAll('[data-direct-channel]').forEach(b=>b.addEventListener('click',()=>{const channel=STATIC_TV.find(x=>x.id===b.dataset.directChannel);if(channel){playTv(channel)}else{$('tvSearch').value=b.textContent.trim();filter='all';tvVisible=60;setGrid('tv')}}));
 $('tvMore').onclick=()=>{tvVisible+=60;setGrid('tv')};$('radioMore').onclick=()=>{radioVisible+=60;setGrid('radio')};
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===b.dataset.panel));if(b.dataset.panel==='radio'&&!radioRows.length)loadRadio()});
 loadTv();loadRadio();
