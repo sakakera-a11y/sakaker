@@ -27269,6 +27269,20 @@ html body #sakKitchenNote{
 
 
 
+<script id="sakaker-preserve-icon-ordering-js">
+(function(){
+  'use strict';
+  function preserveIconOrdering(){
+    document.querySelectorAll('.cards .icon-card').forEach(function(card){
+      const text=(card.textContent||'').replace(/\\s+/g,' ').trim();
+      if(text.includes('خواطر')||text.includes('Thoughts'))card.classList.add('sak-order-thoughts');
+    });
+  }
+  preserveIconOrdering();
+  [400,1400,2800].forEach(function(ms){setTimeout(preserveIconOrdering,ms);});
+})();
+</script>
+
 <style id="sakaker-music-studio-clean-final">
 
 /* =========================================================
