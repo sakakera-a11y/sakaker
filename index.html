@@ -21410,8 +21410,8 @@ html body #sakGlobalStreamDetails{
     if(m){
       legacyStreams.push({
         id:'legacy-' + index,
-        nameAr:'قناة محفوظة ' + (index + 1),
-        nameEn:'Saved channel ' + (index + 1),
+        nameAr:'قناة أرشيفية ' + (index + 1),
+        nameEn:'Archive channel ' + (index + 1),
         videoId:m[1]
       });
     }
@@ -21565,15 +21565,10 @@ html body #sakGlobalStreamDetails{
 
     [
       ['all','الكل','All'],
-      ['online','🟢 يعمل','🟢 Online'],
-      ['intermittent','🟠 متقطع','🟠 Intermittent'],
-      ['offline','🔴 متوقف','🔴 Offline'],
-      ['unchecked','⚪ غير مفحوص','⚪ Unchecked'],
       ['dw','DW','DW'],
-      ['news','📰 أخبار','📰 News'],
-      ['sports','⚽ رياضة','⚽ Sports'],
-      ['favorites','★ المفضلة','★ Favorites'],
-      ['arabic-channels','قنوات العربية','Arabic Channels'],
+      ['alhadath','الحدث','Al Hadath'],
+      ['alarabiya-business','الاقتصادية العربية','Al Arabiya Business'],
+      ['alarabiya-news','العربية الإخبارية','Al Arabiya News'],
     ].forEach(function(row){
       const btn =
         document.createElement('button');
@@ -22303,9 +22298,10 @@ html body #sakGlobalStreamDetails{
       ? Object.values(favorites).map(function(ch){ return allRows.find(function(row){return row.id === ch.id;}) || ch; })
       : allRows;
     return candidates.filter(function(ch){
-      if(currentFilter === 'arabic-channels' && !Array.isArray(ch.languages)) return false;
-      if(currentFilter === 'arabic-channels' && !ch.languages.some(function(language){return /(^ar(?:[-_]|$)|arabic|العربية)/i.test(String(language).trim());})) return false;
-      if(currentFilter === 'sports' && !ch.categories.some(function(category){return /sport/i.test(category);})) return false;
+      const channelText = normalize(ch.name + ' ' + ch.search);
+      if(currentFilter === 'alhadath' && !channelText.includes('alhadath') && !channelText.includes('الحدث')) return false;
+      if(currentFilter === 'alarabiya-business' && !channelText.includes('alarabiyabusiness') && !channelText.includes('الاقتصاديةالعربية') && !channelText.includes('alarabiyaeconomic')) return false;
+      if(currentFilter === 'alarabiya-news' && !channelText.includes('alarabiya') && !channelText.includes('العربيةالإخبارية')) return false;
       if(
         countryCode &&
         ch.country !== countryCode
