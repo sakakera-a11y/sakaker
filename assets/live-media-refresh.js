@@ -46,7 +46,14 @@ function pinRefreshStyles(){
 function enhanceGlobalChannelShortcuts(){
  const filters=document.getElementById('sakGlobalLiveFilters');
  if(!filters||filters.dataset.sakNewsShortcuts==='1')return;
- const dw=[...filters.querySelectorAll('button')].find(b=>/DW/i.test(b.textContent||''));
+ const existingButtons=[...filters.querySelectorAll('button')];
+ // The current index.html now renders the three named Arabic channels itself.
+ // Do not inject the older duplicate shortcuts beside DW.
+ if(existingButtons.some(b=>/الحدث|Al Hadath/i.test(b.textContent||''))){
+  filters.dataset.sakNewsShortcuts='1';
+  return;
+ }
+ const dw=existingButtons.find(b=>/DW/i.test(b.textContent||''));
  if(!dw)return;
  const input=document.getElementById('sakGlobalLiveSearch');
  const searchBtn=document.getElementById('sakGlobalLiveSearchBtn');
