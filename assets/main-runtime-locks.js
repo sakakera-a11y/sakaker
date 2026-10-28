@@ -8,11 +8,16 @@ function installStableLoginVideo(){
   const overlay=document.getElementById('loginOverlay');
   if(!overlay)return;
 
+  /* Remove only the login-page video. Keep sakSiteBackgroundVideo untouched. */
   const legacyLogin=document.getElementById('sakLoginBackgroundVideo');
-  if(!legacyLogin)return;
+  if(legacyLogin){
+    try{legacyLogin.pause();}catch(_){}
+    legacyLogin.querySelectorAll('source').forEach(n=>n.remove());
+    legacyLogin.removeAttribute('src');
+    legacyLogin.remove();
+  }
 
-  /* Remove the known old duplicate of the main-site background, while keeping
-     sakSiteBackgroundVideo which is the current main background. */
+  /* Remove only the known obsolete duplicate, never the main-site background. */
   const legacyMain=document.getElementById('sakakerMainVideoBackground');
   if(legacyMain){
     try{legacyMain.pause();}catch(_){}
@@ -26,37 +31,18 @@ function installStableLoginVideo(){
     style=document.createElement('style');
     style.id='sakStableLoginVideoStyle';
     style.textContent=`
-      /* Keep the authored login video and its own sound button. Replacing it
-         late in startup caused a black screen whenever the replacement was
-         still buffering or a browser cancelled its second media request. */
-      #loginOverlay{isolation:isolate!important;background:transparent!important}
+      #loginOverlay{
+        isolation:isolate!important;
+        background-color:#020807!important;
+        background-image:url('/file_0000000080848210a4da056ef9b4c3a4.png')!important;
+        background-position:center center!important;
+        background-size:cover!important;
+        background-repeat:no-repeat!important;
+      }
+      #loginOverlay #sakLoginBackgroundVideo{display:none!important}
     `;
     document.head.appendChild(style);
   }
-
-  const v=legacyLogin;
-  if(!v.getAttribute('src'))v.src=LOGIN_VIDEO;
-  v.autoplay=true;
-  v.loop=true;
-  v.playsInline=true;
-  v.preload='metadata';
-
-  /* The login background always starts muted. Ordinary clicks/touches on the
-     login page must never unmute it. Sound is controlled only by the button. */
-  v.muted=true;
-  v.defaultMuted=true;
-  const playMuted=()=>{
-    v.muted=true;
-    const p=v.play();
-    if(p&&typeof p.catch==='function')p.catch(()=>{});
-  };
-
-  if(v.readyState>=2) playMuted();
-  else {
-    v.addEventListener('loadeddata',playMuted,{once:true});
-    v.addEventListener('canplay',playMuted,{once:true});
-  }
-
 }
 
 function ensureLibraryOverlay(){
