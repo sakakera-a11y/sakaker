@@ -7,17 +7,19 @@ let siteSoundUserMuted=true;
 
 /* Requested row order first, then the remaining site tools. */
 const utilityItems=[
-  {key:'facebook',selectors:['#facebookVideoIcon']},
-  {key:'textLibrary',finder:findTextLibrary},
+  /* Visible order: explore the castle, play, audio, maps, then business. */
   {key:'castleTour',selectors:['#sakCastleTourBtn']},
-  {key:'videoLibrary',selectors:['#emeraldLibraryButton']},
-  {key:'live',selectors:['#liveFlasher']},
   {key:'pong',selectors:['#pongGame-btn']},
-  {key:'siteBackground',selectors:['#sakSiteBackgroundBtn']},
-  {key:'ship',selectors:['#shipIcon_new']},
   {key:'music',selectors:['#emOpenBtn','#emeraldMusicHost #emOpenBtn','#emeraldMusicHost button','#emeraldMusicHost [role="button"]']},
   {key:'map',selectors:['#mapIcon','.launcher[data-map]','.launcher[aria-label*="خريطة"]','.launcher[title*="خريطة"]','.launcher']},
-  {key:'business',selectors:['#sakakerBusinessAd']}
+  {key:'business',selectors:['#sakakerBusinessAd']},
+  /* Keep the hidden launchers registered without affecting the visible order. */
+  {key:'facebook',selectors:['#facebookVideoIcon']},
+  {key:'textLibrary',finder:findTextLibrary},
+  {key:'videoLibrary',selectors:['#emeraldLibraryButton']},
+  {key:'live',selectors:['#liveFlasher']},
+  {key:'siteBackground',selectors:['#sakSiteBackgroundBtn']},
+  {key:'ship',selectors:['#shipIcon_new']}
 ];
 
 const labels={
