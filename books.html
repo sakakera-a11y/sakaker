@@ -25,8 +25,33 @@ h1{margin:8px 0 4px;color:var(--gold);text-shadow:0 0 14px #00ffd066}
 .readerClose{width:42px;height:42px;border-radius:50%;padding:0;font-size:24px;background:#62172c;border-color:#ff9ab6}
 iframe{width:100%;height:100%;border:0;background:#fff;flex:1}
 .note{max-width:980px;margin:18px auto 0;text-align:center;color:#b9d7d0;font-size:12px}
-@media(max-width:720px){body{padding:65px 10px 24px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.book{min-height:145px;padding:13px 8px;border-radius:17px}.book .ico{font-size:34px}.book b{font-size:14px}.readerHead{flex-wrap:wrap}.readerTitle{order:3;flex-basis:100%;font-size:13px}.readerBtn{font-size:12px;padding:8px 9px}}
-@media(max-width:360px){.grid{grid-template-columns:1fr}.book{min-height:125px}}
+html,body{width:100%;max-width:100%;overflow-x:hidden}
+img,iframe{max-width:100%}
+button,a{touch-action:manipulation}
+@media(max-width:720px){
+ body{padding:calc(68px + env(safe-area-inset-top)) 10px calc(24px + env(safe-area-inset-bottom))}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;width:100%}
+ .book{min-width:0;min-height:140px;padding:12px 8px;border-radius:16px;overflow-wrap:anywhere}
+ .book .book-cover{width:100%;max-width:170px;height:clamp(100px,34vw,150px);object-fit:cover}
+ .book .ico{font-size:32px}.book b{font-size:clamp(12px,3.6vw,14px);line-height:1.5}
+ .book small{font-size:12px;overflow-wrap:anywhere}
+ .readerHead{flex-wrap:wrap;gap:7px;padding:8px}
+ .readerTitle{order:3;flex-basis:100%;font-size:13px;white-space:normal}
+ .readerBtn{font-size:12px;padding:8px 9px;min-height:40px}
+ #reader{padding:max(5px,env(safe-area-inset-top)) 5px max(5px,env(safe-area-inset-bottom))}
+ .readerBox{width:100%;height:calc(100dvh - max(10px,env(safe-area-inset-top)) - max(10px,env(safe-area-inset-bottom)));max-height:100%;border-radius:15px}
+ #reader iframe{min-height:0}
+ .langSwitch,.back{top:max(8px,env(safe-area-inset-top));padding:8px 10px;font-size:12px;max-width:46vw}
+}
+@media(max-width:360px){
+ body{padding-left:8px;padding-right:8px}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+ .book{min-height:125px;padding:9px 5px}
+ .book .book-cover{height:96px}
+ .book .ico{font-size:27px}
+ .readerHead{gap:5px}
+ .readerBtn{padding:7px;font-size:11px}
+}
 </style>
 
 <style id="sak-window-palette-books">
