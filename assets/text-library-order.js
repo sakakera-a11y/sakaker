@@ -100,16 +100,39 @@
     grid.appendChild(item);
   }
 
+  function addLibraryAction(key, label) {
+    const modal = document.getElementById('sakTextLibraryModal');
+    const grid = modal && modal.querySelector('.sak-text-library-grid');
+    if (!grid || grid.querySelector('[data-sak-library-action="' + key + '"]')) return;
+    const sample = grid.querySelector('button, a, [role="button"]');
+    const item = sample ? sample.cloneNode(true) : document.createElement('button');
+    item.removeAttribute('id');
+    item.removeAttribute('onclick');
+    item.querySelectorAll('[id]').forEach(node => node.removeAttribute('id'));
+    item.classList.add('sak-text-library-action');
+    item.dataset.sakLibraryAction = key;
+    item.setAttribute('aria-label', label);
+    item.setAttribute('title', label);
+    item.textContent = label;
+    if (item.tagName === 'A') {
+      item.href = '#';
+      item.removeAttribute('target');
+      item.removeAttribute('rel');
+    } else {
+      item.type = 'button';
+      item.setAttribute('role', 'button');
+    }
+    grid.appendChild(item);
+  }
+
   function updateLaunchers() {
     const modal = document.getElementById('sakTextLibraryModal');
     if (modal) {
-      const grid = modal.querySelector('.sak-text-library-grid');
-      if (grid) {
-        grid.querySelectorAll('button, a, [role="button"]').forEach(function (item) {
-          if (!isEbookArea(item) && LABEL.test(labelOf(item))) item.remove();
-        });
-      }
+      // Preserve every existing text-library section; only add the requested
+      // quiz and riddles launchers alongside the existing library entries.
       addBookToTextLibrary();
+      addLibraryAction('riddles', '🧩 الألغاز');
+      addLibraryAction('quiz', '🧠 اختبر معلوماتك');
     }
 
     document.querySelectorAll('button, a, [role="button"], .launcher').forEach(function (item) {
