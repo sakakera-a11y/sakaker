@@ -41,3 +41,31 @@ body:not(.locked) #sakakerAllIconsDock [data-sak-entertainment-grouped="1"]{
     padding-bottom:4px!important;
   }
 }
+
+/* Hide the six launchers requested by the site owner; keep their features and popup code intact. */
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-utility-slot[data-sakaker-util="textLibrary"],
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-utility-slot[data-sakaker-util="facebook"],
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-utility-slot[data-sakaker-util="ship"],
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-utility-slot[data-sakaker-util="videoLibrary"],
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-utility-slot[data-sakaker-util="live"],
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon[data-sakaker-dock-key="textLibrary"],
+html body #sakakerAllIconsDock#sakakerAllIconsDock #facebookVideoIcon,
+html body #sakakerAllIconsDock#sakakerAllIconsDock #shipIcon_new,
+html body #sakakerAllIconsDock#sakakerAllIconsDock #emeraldLibraryButton,
+html body #sakakerAllIconsDock#sakakerAllIconsDock #liveFlasher,
+html body #sakakerAllIconsDock#sakakerAllIconsDock #sakCreativeIcon {
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+  width:0!important;
+  min-width:0!important;
+  max-width:0!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  flex:0 0 0!important;
+}
