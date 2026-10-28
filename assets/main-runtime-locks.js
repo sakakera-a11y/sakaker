@@ -123,9 +123,16 @@ window.addEventListener('message',e=>{
 });
 
 function installLibraryBridge(){
-  ensureLibraryOverlay();
+  /*
+   * The original text-library modal contains multiple sections and launchers.
+   * Never replace it with the standalone e-book page: doing so hides every
+   * other text-library section. Use the iframe only as a fallback when the
+   * original modal is genuinely absent.
+   */
+  if(document.getElementById('sakTextLibraryModal'))return;
   document.addEventListener('click',e=>{
     if(!isLibraryLauncher(e.target))return;
+    if(document.getElementById('sakTextLibraryModal'))return;
     e.preventDefault();
     e.stopPropagation();
     e.stopImmediatePropagation();
