@@ -687,17 +687,23 @@ document.addEventListener('pointerdown',()=>{
 
 })();
 
-/* Hide only the text-library launcher icon; keep the library content and other icons intact. */
+/* Keep the text-library launcher visible and static while other icons animate. */
 (()=> {
-  const ID='sakHideTextLibraryLauncher';
+  const ID='sakKeepTextLibraryLauncherVisible';
   function install(){
-    if(document.getElementById(ID))return;
-    const style=document.createElement('style');
-    style.id=ID;
-    style.textContent='#sakakerUtilityDock [data-sakaker-util="textLibrary"]{display:none!important;visibility:hidden!important;pointer-events:none!important}';
-    document.head.appendChild(style);
+    let style=document.getElementById(ID);
+    if(!style){style=document.createElement('style');style.id=ID;document.head.appendChild(style);}
+    style.textContent=`
+      html body #sakakerUtilityDock [data-sakaker-util="textLibrary"]{
+        display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important
+      }
+      html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon[data-sakaker-dock-key="textLibrary"]{
+        display:flex!important;visibility:visible!important;opacity:1!important;animation:none!important
+      }
+    `;
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
+  new MutationObserver(install).observe(document.documentElement,{childList:true,subtree:true});
 })();
 
 /* Synchronized visibility cycle: every visible dock icon fades together. */
