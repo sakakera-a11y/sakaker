@@ -9,8 +9,9 @@ if '<html' not in text.lower() or '</html>' not in text.lower():
     raise SystemExit('Refusing to patch incomplete index.html')
 
 TITLE = 'abwalqmrzmrd castle'
-STYLE = '<link id="sak-compact-main-icons" rel="stylesheet" href="/assets/compact-main-icons.css?v=20261002-1">'
+STYLE = '<link id="sak-compact-main-icons" rel="stylesheet" href="/assets/compact-main-icons.css?v=20261029-icons1">'
 LOADER = '<script id="sak-entertainment-runtime-loader" src="/assets/entertainment-station.js?v=20261002-2" defer></script>'
+ICONS_SCRIPT = '<script id="sak-final-three-icons-loader" src="/assets/final-three-icons.js?v=20261029-icons1" defer></script>'
 
 # Replace the old site name anywhere it remains in visible/page metadata text.
 legacy_names = [
@@ -48,9 +49,10 @@ text = re.sub(
     flags=re.IGNORECASE,
 )
 
+text = re.sub(r'\s*<script\b[^>]*(?:id=["\']sak-final-three-icons-loader["\']|src=["\'][^"\']*assets/final-three-icons\.js[^"\']*["\'])[^>]*>\s*</script>\s*', '\n', text, flags=re.IGNORECASE)
 body_close = re.search(r'</body\s*>', text, re.IGNORECASE)
 if body_close:
-    text = text[:body_close.start()] + '\n' + LOADER + '\n' + text[body_close.start():]
+    text = text[:body_close.start()] + '\n' + LOADER + '\n' + ICONS_SCRIPT + '\n' + text[body_close.start():]
 else:
     html_close = re.search(r'</html\s*>', text, re.IGNORECASE)
     if not html_close:
