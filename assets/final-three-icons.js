@@ -687,6 +687,19 @@ document.addEventListener('pointerdown',()=>{
 
 })();
 
+/* Hide only the text-library launcher icon; keep the library content and other icons intact. */
+(()=> {
+  const ID='sakHideTextLibraryLauncher';
+  function install(){
+    if(document.getElementById(ID))return;
+    const style=document.createElement('style');
+    style.id=ID;
+    style.textContent='#sakakerUtilityDock [data-sakaker-util="textLibrary"]{display:none!important;visibility:hidden!important;pointer-events:none!important}';
+    document.head.appendChild(style);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
+})();
+
 /* Synchronized visibility cycle: every visible dock icon fades together. */
 (()=>{
   'use strict';
