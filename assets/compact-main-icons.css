@@ -25,10 +25,8 @@ html body #sakakerAllIconsDock #emeraldMusicHost #emOpenBtn{
   margin:0!important;padding:0!important;overflow:hidden!important;flex:0 0 0!important;
 }
 
-/* The current request is to remove the old background-sound button above the clock. */
-html body:not(.locked) #sakSiteSoundBtn{
-  display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
-}
+/* Keep the background-sound text button beside the language switch.
+   The JS placement routine positions it; do not hide the entire control here. */
 
 /* Keep the castle-tour icon visible even if an older dock rule hid it. */
 html body #sakakerAllIconsDock #sakCastleTourBtn,
