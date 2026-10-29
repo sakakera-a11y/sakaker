@@ -336,3 +336,43 @@ html body.locked #sakGlobalPayment{
     animation:none!important;
   }
 }
+
+
+/* Castle Stories gets a modestly larger emblem and a little extra breathing
+   room. The dock remains horizontally scrollable on narrow screens. */
+html body #sakakerAllIconsDock#sakakerAllIconsDock
+  [data-sakaker-util="castleStories"]{
+  flex:0 0 68px!important;
+  width:68px!important;
+  min-width:68px!important;
+  max-width:68px!important;
+}
+html body #sakakerAllIconsDock#sakakerAllIconsDock
+  [data-sakaker-util="castleStories"] .sak-ostrich-art{
+  width:min(calc(var(--sak-ostrich-art) * 1.1),60px)!important;
+  min-width:min(calc(var(--sak-ostrich-art) * 1.1),60px)!important;
+  max-width:min(calc(var(--sak-ostrich-art) * 1.1),60px)!important;
+}
+@media(max-width:900px){
+  :root{--sak-ostrich-gap:9px}
+}
+@media(max-width:600px){
+  :root{--sak-ostrich-gap:8px}
+  html body #sakakerAllIconsDock#sakakerAllIconsDock
+    [data-sakaker-util="castleStories"]{
+    flex-basis:64px!important;
+    width:64px!important;
+    min-width:64px!important;
+    max-width:64px!important;
+  }
+}
+@media(max-width:370px){
+  :root{--sak-ostrich-gap:7px}
+  html body #sakakerAllIconsDock#sakakerAllIconsDock
+    [data-sakaker-util="castleStories"]{
+    flex-basis:60px!important;
+    width:60px!important;
+    min-width:60px!important;
+    max-width:60px!important;
+  }
+}
