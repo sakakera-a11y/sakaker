@@ -38,3 +38,21 @@ html body #sakakerAllIconsDock .sak-ostrich-icon[data-sakaker-dock-key="castleTo
   width:auto!important;min-width:0!important;height:auto!important;min-height:0!important;max-height:none!important;
   animation:none!important;
 }
+
+
+/* Follow-up: remove the Business label and hide only the five requested launchers. */
+html body #sakakerAllIconsDock .sakaker-utility-slot[data-sakaker-util="business"] .sakaker-utility-label,
+html body #sakakerAllIconsDock .sakaker-utility-slot[data-sakaker-util="business"] .label,
+html body #sakakerAllIconsDock .sakaker-utility-slot[data-sakaker-util="business"] span,
+html body #sakakerAllIconsDock #sakakerBusinessAd::after{
+  display:none!important;visibility:hidden!important;opacity:0!important;
+}
+
+html body #sakakerAllIconsDock .sakaker-utility-slot[data-sakaker-util="videoLibrary"],
+html body #sakakerAllIconsDock #emeraldLibraryButton,
+html body #sakakerAllIconsDock .sakaker-utility-slot[data-sakaker-util="ship"],
+html body #sakakerAllIconsDock #shipIcon_new{
+  display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
+  width:0!important;min-width:0!important;max-width:0!important;height:0!important;min-height:0!important;max-height:0!important;
+  margin:0!important;padding:0!important;overflow:hidden!important;flex:0 0 0!important;
+}
