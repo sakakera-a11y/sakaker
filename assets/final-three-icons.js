@@ -80,7 +80,8 @@ function installFacebookEmbeds(){
 
 function watchFacebookEmbeds(){
   const popup=document.getElementById('facebookVideoPopup');
-  if(!popup)return;
+  if(!popup||popup.dataset.sakFacebookWatcherInstalled==='1')return;
+  popup.dataset.sakFacebookWatcherInstalled='1';
   let observer;
   const loadWhenVisible=()=>{
     const style=getComputedStyle(popup);
