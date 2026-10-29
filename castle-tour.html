@@ -201,6 +201,7 @@ function shutDown(){closing=true;stopTourTimer();clearTimeout(doorTimer);clearTi
 
 // Every wing points to a real existing section; the photo wing lives inside this museum.
 const wings=[
+ {id:'castle',icon:'🏰',ar:'القلعة',en:'The Castle',descAr:'استكشف القلعة وجولتها المصوّرة، وقاعاتها الملكية وحدائقها وشلالاتها وإطلالاتها البحرية، مع متحف الصور والفيلم الفني.',descEn:'Explore the castle tour, royal halls, gardens, waterfalls and sea views, together with its picture gallery and art film.',scene:'gate'},
  {id:'film',icon:'🎬',ar:'الفيلم الفني',en:'Art Film',descAr:'فيلم سينمائي قصير يمر بين أرجاء القلعة مع صوت البحر والطيور.',descEn:'A short cinematic journey with the sounds of sea and birds.',scene:'gate'},
  {id:'photos',icon:'🖼️',ar:'متحف الصور',en:'Picture Gallery',descAr:'تسع لوحات فوتوغرافية من المناظر الداخلية والخارجية للقلعة.',descEn:'Nine cinematic pictures of the castle interiors and surroundings.',scene:'great-hall'},
  {id:'stories',icon:'📜',ar:'القصص والخواطر',en:'Stories',descAr:'اكتشف قصص القلعة والخواطر الأصلية الموجودة في الموقع.',descEn:'Explore stories and writings already available on the website.',scene:'moon-gallery'},
@@ -231,7 +232,15 @@ function renderMuseumWing(id){
  const wing=wings.find(w=>w.id===id)||wings[1],body=$('museumBody');body.replaceChildren();
  $('museumHeading').textContent=wing.icon+' '+mText(wing.ar,wing.en);
  const lead=document.createElement('p');lead.className='museumLead';lead.textContent=mText(wing.descAr,wing.descEn);body.appendChild(lead);
- if(id==='photos'){
+ if(id==='castle'){
+  const card=document.createElement('div');card.className='museumDoor';
+  const img=document.createElement('img');img.loading='lazy';img.src=base+'gate.jpg';img.alt=mText('بوابة القلعة','Castle gate');
+  const p=document.createElement('p');p.textContent=mText('تضم القلعة جولة تلقائية بين المشاهد الداخلية والخارجية، والقاعات الملكية والحدائق والشلالات والمرفأ والشرفة، إضافة إلى متحف الصور والفيلم الفني وأقسام الموقع المرتبطة بالقلعة.','The castle offers an automatic journey through its interior and exterior scenes, royal halls, gardens, waterfalls, harbor and balcony, alongside its picture gallery, art film and connected site sections.');
+  const features=document.createElement('div');features.className='museumGrid';features.style.margin='12px auto';
+  [['👑','القاعات الملكية','Royal Halls'],['🌿','الحدائق','Gardens'],['💧','الشلالات','Waterfalls'],['🌙','إطلالات القمر','Moon Views'],['🖼️','متحف الصور','Picture Gallery'],['🎬','الفيلم الفني','Art Film']].forEach(item=>{const tile=btn(item[0]+' '+mText(item[1],item[2]),'museumTile');tile.disabled=true;features.appendChild(tile)});
+  const open=btn(mText('متابعة جولة القلعة ←','Continue the Castle Tour →'));open.addEventListener('click',()=>closeMuseum());
+  card.append(img,p,features,open);body.appendChild(card);
+ }else if(id==='photos'){
   const grid=document.createElement('div');grid.className='museumGrid';
   scenes.forEach((sc,i)=>{
    const b=btn('', 'museumFrame');const img=document.createElement('img');img.loading='lazy';img.src=base+sc.id+'.jpg';img.alt=mText(sc.ar,sc.en);
