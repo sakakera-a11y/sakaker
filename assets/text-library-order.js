@@ -113,9 +113,16 @@
   function init() {
     updateLaunchers();
     if (typeof MutationObserver !== 'undefined' && document.body) {
-      const observer = new MutationObserver(function () {
-        updateLaunchers();
-      });
+      let updateScheduled = false;
+      const scheduleUpdate = function () {
+        if (updateScheduled) return;
+        updateScheduled = true;
+        requestAnimationFrame(function () {
+          updateScheduled = false;
+          updateLaunchers();
+        });
+      };
+      const observer = new MutationObserver(scheduleUpdate);
       observer.observe(document.body, { childList: true, subtree: true });
     }
   }
