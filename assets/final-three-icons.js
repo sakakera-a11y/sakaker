@@ -562,15 +562,14 @@ function decorateAsOstrich(el,key){
     el.prepend(art);
   }
   if(stableKey==='castleStories'){
-    if(!art.querySelector('img')){
-      const img=document.createElement('img');
-      img.src='https://raw.githubusercontent.com/sakakera-a11y/sakaker/refs/heads/main/file_000000007f288208bce7556015d427f9.png';
-      img.alt='';
-      img.loading='lazy';
-      img.decoding='async';
-      img.style.cssText='display:block;width:100%;height:100%;object-fit:contain;border-radius:50%;';
-      art.replaceChildren(img);
-    }
+    // Always show the approved Castle Stories image, never the generic gull SVG.
+    const img=document.createElement('img');
+    img.src='https://raw.githubusercontent.com/sakakera-a11y/sakaker/refs/heads/main/file_000000007f288208bce7556015d427f9.png';
+    img.alt='حكايات القلعة';
+    img.loading='eager';
+    img.decoding='async';
+    img.style.cssText='display:block;width:100%;height:100%;object-fit:contain;border-radius:50%;';
+    art.replaceChildren(img);
   }else if(stableKey==='castleTour'){
     // The launcher owns the yellow gull illustration; keep it intact.
     if(!art.querySelector('svg'))art.replaceChildren(ostrichSVG(stableKey));
