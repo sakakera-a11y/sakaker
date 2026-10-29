@@ -78,6 +78,25 @@ function installFacebookEmbeds(){
   });
 }
 
+function watchFacebookEmbeds(){
+  const popup=document.getElementById('facebookVideoPopup');
+  if(!popup)return;
+  let observer;
+  const loadWhenVisible=()=>{
+    const style=getComputedStyle(popup);
+    const rect=popup.getBoundingClientRect();
+    if(style.display==='none'||style.visibility==='hidden'||rect.width<2||rect.height<2)return;
+    observer?.disconnect();
+    document.removeEventListener('click',checkAfterClick,true);
+    installFacebookEmbeds();
+  };
+  const checkAfterClick=()=>requestAnimationFrame(loadWhenVisible);
+  observer=new MutationObserver(loadWhenVisible);
+  observer.observe(popup,{attributes:true,attributeFilter:['class','style','hidden','aria-hidden']});
+  document.addEventListener('click',checkAfterClick,true);
+  loadWhenVisible();
+}
+
 function isLocked(){return document.body?.classList.contains('locked');}
 
 function installSiteBackgroundStyle(){
@@ -423,9 +442,9 @@ function syncSiteBackgroundLock(){
     return;
   }
 
-  /* Install Facebook reels and original clock after login; keep the login page light. */
+  /* Load the clock after login, but defer heavy Facebook embeds until requested. */
   loadPaymentClock();
-  installFacebookEmbeds();
+  watchFacebookEmbeds();
 
   /* The video is intentionally absent during login. Create it now, once,
      immediately after Firebase unlocks the page. */
