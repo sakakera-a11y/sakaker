@@ -16,6 +16,7 @@ const utilityItems=[
   /* Keep the hidden launchers registered without affecting the visible order. */
   {key:'facebook',selectors:['#facebookVideoIcon']},
   {key:'textLibrary',finder:findTextLibrary},
+  {key:'castleStories',selectors:['#sakCastleStoriesBtn']},
   {key:'videoLibrary',selectors:['#emeraldLibraryButton']},
   {key:'live',selectors:['#liveFlasher']},
   {key:'siteBackground',selectors:['#sakSiteBackgroundBtn']},
@@ -25,6 +26,7 @@ const utilityItems=[
 const labels={
   facebook:{ar:'فيس بوك',en:'Facebook'},
   textLibrary:{ar:'المكتبة النصية',en:'Text Library'},
+  castleStories:{ar:'حكايات القلعة',en:'Castle Stories'},
   videoLibrary:{ar:'مكتبة الفيديو',en:'Video Library'},
   live:{ar:'قنوات مباشرة',en:'Live Channels'},
   castleTour:{ar:'تجول بالقلعة',en:'Castle Tour'},
@@ -479,6 +481,7 @@ function syncSiteBackgroundLock(){
 
   startSiteBackgroundSound();
   ensureCastleTourLauncher();
+  ensureCastleStoriesLauncher();
   rebuildIconAppearance();
   removeOldSeaSoundControl();
   requestAnimationFrame(placeSiteSoundAboveClock);
@@ -558,7 +561,17 @@ function decorateAsOstrich(el,key){
     art.className='sak-ostrich-art';
     el.prepend(art);
   }
-  if(stableKey==='castleTour'){
+  if(stableKey==='castleStories'){
+    if(!art.querySelector('img')){
+      const img=document.createElement('img');
+      img.src='/file_000000007f288208bce7556015d427f9.png';
+      img.alt='';
+      img.loading='lazy';
+      img.decoding='async';
+      img.style.cssText='display:block;width:100%;height:100%;object-fit:contain;border-radius:50%;';
+      art.replaceChildren(img);
+    }
+  }else if(stableKey==='castleTour'){
     // The launcher owns the yellow gull illustration; keep it intact.
     if(!art.querySelector('svg'))art.replaceChildren(ostrichSVG(stableKey));
   }else art.replaceChildren(ostrichSVG(stableKey));
@@ -639,6 +652,15 @@ function loadVisitorCounterModule(){
 
 
 
+function ensureCastleStoriesLauncher(){
+  if(document.getElementById('sakCastleStoriesLauncherScript'))return;
+  const script=document.createElement('script');
+  script.id='sakCastleStoriesLauncherScript';
+  script.src='/assets/castle-stories-launcher.js?v=20261030-1';
+  script.async=true;
+  document.head.appendChild(script);
+}
+
 function ensureCastleTourLauncher(){
   // A dedicated independent launcher is required: the original horizontal
   // dock clips/scrolls buttons out of view on many phones.
@@ -673,6 +695,7 @@ function settle(){
   watchFacebookEmbeds();
   loadPaymentClock();
   ensureCastleTourLauncher();
+  ensureCastleStoriesLauncher();
   ensureSiteBackground();
   rebuildIconAppearance();
   removeOldSeaSoundControl();
