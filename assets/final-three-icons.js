@@ -647,7 +647,7 @@ function settle(){
      background-video creation until the authenticated page is visible. */
   if(isLocked())return;
 
-  installFacebookEmbeds();
+  watchFacebookEmbeds();
   loadPaymentClock();
   ensureCastleTourLauncher();
   ensureSiteBackground();
@@ -661,7 +661,7 @@ window.addEventListener('load',settle,{once:true});
 [500,1500,3500,7000].forEach(ms=>setTimeout(settle,ms));
 new MutationObserver(()=>{
   if(isLocked())return;
-  installFacebookEmbeds();
+  watchFacebookEmbeds();
   loadPaymentClock();
   ensureCastleTourLauncher();
   ensureSiteBackground();
