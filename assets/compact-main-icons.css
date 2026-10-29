@@ -55,8 +55,7 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-utility-slot[data-sa
 html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon[data-sakaker-dock-key="music"],
 html body #sakakerAllIconsDock#sakakerAllIconsDock #emOpenBtn,
 html body #sakakerAllIconsDock#sakakerAllIconsDock #emeraldMusicHost #emOpenBtn,
-html body #sakakerAllIconsDock#sakakerAllIconsDock #emeraldMusicHost button,
-html body #sakakerAllIconsDock#sakakerAllIconsDock #emeraldMusicHost [role="button"]{
+{
   display:none!important;
   visibility:hidden!important;
   opacity:0!important;
