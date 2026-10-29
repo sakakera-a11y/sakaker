@@ -641,13 +641,13 @@ function loadPaymentClock(){
 }
 
 function settle(){
-  loadVisitorCounterModule();
   installSiteBackgroundStyle();
 
-  /* Keep the login screen light: no Facebook scanning, icon rebuilding or
-     background-video creation until the authenticated page is visible. */
+  /* Keep login lightweight: do not start visitor tracking or rebuild launchers
+     until the authenticated page is visible. */
   if(isLocked())return;
 
+  loadVisitorCounterModule();
   watchFacebookEmbeds();
   loadPaymentClock();
   ensureCastleTourLauncher();
@@ -707,57 +707,4 @@ document.addEventListener('pointerdown',()=>{
   if(!isLocked()&&!siteSoundUserMuted)startSiteBackgroundSound();
 },{capture:true});
 
-})();
-
-/* Keep the text-library launcher visible and static while other icons animate. */
-(()=> {
-  const ID='sakKeepTextLibraryLauncherVisible';
-  function install(){
-    let style=document.getElementById(ID);
-    if(!style){style=document.createElement('style');style.id=ID;document.head.appendChild(style);}
-    style.textContent=`
-      html body #sakakerUtilityDock [data-sakaker-util="textLibrary"]{
-        display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important
-      }
-      html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon[data-sakaker-dock-key="textLibrary"]{
-        display:flex!important;visibility:visible!important;opacity:1!important;animation:none!important
-      }
-    `;
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
-  new MutationObserver(install).observe(document.documentElement,{childList:true,subtree:true});
-})();
-
-/* Synchronized visibility cycle: every visible dock icon fades together. */
-(()=>{
-  'use strict';
-  const ID='sakUnifiedIconVisibilityCycle';
-  function install(){
-    if(document.getElementById(ID))return;
-    const style=document.createElement('style');
-    style.id=ID;
-    style.textContent=`
-      html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon{
-        animation:sakUnifiedIconVisibility 7s ease-in-out infinite!important;
-      }
-      @keyframes sakUnifiedIconVisibility{
-        0%,39%,61%,100%{opacity:1;visibility:visible}
-        44%,56%{opacity:0;visibility:hidden}
-      }
-      @media(prefers-reduced-motion:reduce){
-        html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon{
-          animation:none!important;opacity:1!important;visibility:visible!important
-        }
-      }
-    `;
-    document.head.appendChild(style);
-  }
-  function sync(){
-    const dock=document.getElementById('sakakerAllIconsDock');
-    if(!dock)return;
-    dock.querySelectorAll('.sak-cycle-hidden').forEach(el=>el.classList.remove('sak-cycle-hidden'));
-    install();
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});else sync();
-  if(document.body)new MutationObserver(sync).observe(document.body,{childList:true,subtree:true});
 })();

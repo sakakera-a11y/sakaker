@@ -1,18 +1,5 @@
-/* Compact the main icon area after removed/grouped launchers. */
-body:not(.locked) #sakakerAllIconsDock{
-  display:flex!important;
-  flex-wrap:wrap!important;
-  align-items:flex-start!important;
-  justify-content:center!important;
-  align-content:flex-start!important;
-  column-gap:10px!important;
-  row-gap:8px!important;
-  height:auto!important;
-  min-height:0!important;
-  max-height:none!important;
-  padding-top:6px!important;
-  padding-bottom:6px!important;
-}
+/* Main dock placement is owned by final-three-icons.css.
+   Keep this stylesheet focused on retiring launchers and empty slots. */
 body:not(.locked) #sakakerAllIconsDock .sakaker-utility-slot{
   margin:0!important;
 }
@@ -32,14 +19,6 @@ body:not(.locked) #sakakerAllIconsDock [data-sak-entertainment-grouped="1"]{
   padding:0!important;
   border:0!important;
   overflow:hidden!important;
-}
-@media(max-width:700px){
-  body:not(.locked) #sakakerAllIconsDock{
-    column-gap:7px!important;
-    row-gap:6px!important;
-    padding-top:4px!important;
-    padding-bottom:4px!important;
-  }
 }
 
 /* Hide the six launchers requested by the site owner; keep their features and popup code intact. */
