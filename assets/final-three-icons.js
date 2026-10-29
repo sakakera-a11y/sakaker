@@ -260,8 +260,8 @@ function placeSiteSoundAboveClock(){
   const languageControl=controls.find(el=>{
     const meta=((el.id||'')+' '+(el.className&&typeof el.className==='string'?el.className:'')+' '+
       (el.getAttribute('aria-label')||'')+' '+(el.getAttribute('title')||'')+' '+(el.textContent||''))
-      .replace(/\\s+/g,' ').trim();
-    return /language|switch language|تبديل اللغة|تغيير اللغة|التبديل إلى|switch to english|\\benglish\\b|\\barabic\\b|العربية|^\\s*EN\\s*$/i.test(meta);
+      .replace(/\s+/g,' ').trim();
+    return /language|switch language|تبديل اللغة|تغيير اللغة|التبديل إلى|switch to english|\benglish\b|\barabic\b|العربية|^\s*EN\s*$/i.test(meta);
   });
 
   const btnWidth=Math.max(btn.offsetWidth||150,120);
