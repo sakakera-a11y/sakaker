@@ -247,29 +247,48 @@ function visibleRect(el){
   return r;
 }
 
-/* Keep the main-site sound button directly below the payment control. */
+/* Place the background-sound control beside the visible language switch.
+   If no language switch can be identified, retain the safe legacy placement. */
 function placeSiteSoundAboveClock(){
   if(isLocked())return;
   const btn=document.getElementById('sakSiteSoundBtn');
   if(!btn)return;
 
-  const payment=document.getElementById('sakGlobalPayment');
-  const paymentRect=visibleRect(payment);
+  const controls=[...document.querySelectorAll('button,[role="button"],a,[tabindex]')]
+    .filter(el=>el!==btn&&!el.closest('#loginOverlay')&&!el.closest('#sakakerAllIconsDock')&&
+      !el.closest('[role="dialog"],dialog')&&visibleRect(el));
+  const languageControl=controls.find(el=>{
+    const meta=((el.id||'')+' '+(el.className&&typeof el.className==='string'?el.className:'')+' '+
+      (el.getAttribute('aria-label')||'')+' '+(el.getAttribute('title')||'')+' '+(el.textContent||''))
+      .replace(/\\s+/g,' ').trim();
+    return /language|switch language|تبديل اللغة|تغيير اللغة|التبديل إلى|switch to english|\\benglish\\b|\\barabic\\b|العربية|^\\s*EN\\s*$/i.test(meta);
+  });
+
   const btnWidth=Math.max(btn.offsetWidth||150,120);
   const btnHeight=Math.max(btn.offsetHeight||44,38);
-
   let left=Math.max(8,Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--safe-left')||'0')||8);
   let top=window.innerHeight-btnHeight-10;
 
-  if(paymentRect){
-    // Free the area below payment for the larger clock and date.
-    left=paymentRect.right+10;
-    top=paymentRect.top-btnHeight-17;
+  const languageRect=languageControl&&visibleRect(languageControl);
+  if(languageRect){
+    const gap=8;
+    const centerY=languageRect.top+languageRect.height/2;
+    // Put the sound control immediately beside the language control, toward
+    // the center of the screen, and keep both controls inside the viewport.
+    left=languageRect.left>window.innerWidth/2
+      ? languageRect.left-btnWidth-gap
+      : languageRect.right+gap;
+    top=centerY-btnHeight/2;
+  }else{
+    const paymentRect=visibleRect(document.getElementById('sakGlobalPayment'));
+    if(paymentRect){
+      left=paymentRect.right+10;
+      top=paymentRect.top-btnHeight-17;
+    }
   }
 
   left=Math.max(8,Math.min(window.innerWidth-btnWidth-8,left));
   top=Math.max(8,Math.min(window.innerHeight-btnHeight-8,top));
-
   btn.style.setProperty('position','fixed','important');
   btn.style.setProperty('left',Math.round(left)+'px','important');
   btn.style.setProperty('right','auto','important');
