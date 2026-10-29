@@ -564,7 +564,7 @@ function decorateAsOstrich(el,key){
   if(stableKey==='castleStories'){
     if(!art.querySelector('img')){
       const img=document.createElement('img');
-      img.src='/file_000000007f288208bce7556015d427f9.png';
+      img.src='https://raw.githubusercontent.com/sakakera-a11y/sakaker/refs/heads/main/file_000000007f288208bce7556015d427f9.png';
       img.alt='';
       img.loading='lazy';
       img.decoding='async';
