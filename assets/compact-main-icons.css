@@ -50,6 +50,7 @@ html body #sakakerAllIconsDock #sakakerBusinessAd::after{
 
 html body #sakakerAllIconsDock .sakaker-utility-slot[data-sakaker-util="videoLibrary"],
 html body #sakakerAllIconsDock #emeraldLibraryButton,
+html body #sakakerAllIconsDock #sakCreativeIcon,
 html body #sakakerAllIconsDock .sakaker-utility-slot[data-sakaker-util="ship"],
 html body #sakakerAllIconsDock #shipIcon_new{
   display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
