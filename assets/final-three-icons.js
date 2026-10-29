@@ -443,6 +443,9 @@ function syncSiteBackgroundLock(){
     return;
   }
 
+  /* A login may complete after settle()'s startup retries have finished. */
+  loadVisitorCounterModule();
+
   /* Load the clock after login, but defer heavy Facebook embeds until requested. */
   loadPaymentClock();
   watchFacebookEmbeds();
