@@ -201,6 +201,7 @@ function shutDown(){closing=true;stopTourTimer();clearTimeout(doorTimer);clearTi
 
 // Every wing points to a real existing section; the photo wing lives inside this museum.
 const wings=[
+ {id:'castleStories',icon:'📖',ar:'حكايات القلعة',en:'Castle Stories',descAr:'افتح كتاب أبوالقمر زمرد الكامل باللغتين العربية والإنجليزية، مع مقدمة المؤلف والحكاية.',descEn:'Open the complete bilingual Abwalqmrzmrd book, including the author’s introduction and story.',scene:'gate'},
  {id:'castle',icon:'🏰',ar:'القلعة',en:'The Castle',descAr:'استكشف القلعة وجولتها المصوّرة، وقاعاتها الملكية وحدائقها وشلالاتها وإطلالاتها البحرية، مع متحف الصور والفيلم الفني.',descEn:'Explore the castle tour, royal halls, gardens, waterfalls and sea views, together with its picture gallery and art film.',scene:'gate'},
  {id:'film',icon:'🎬',ar:'الفيلم الفني',en:'Art Film',descAr:'فيلم سينمائي قصير يمر بين أرجاء القلعة مع صوت البحر والطيور.',descEn:'A short cinematic journey with the sounds of sea and birds.',scene:'gate'},
  {id:'photos',icon:'🖼️',ar:'متحف الصور',en:'Picture Gallery',descAr:'تسع لوحات فوتوغرافية من المناظر الداخلية والخارجية للقلعة.',descEn:'Nine cinematic pictures of the castle interiors and surroundings.',scene:'great-hall'},
@@ -253,7 +254,7 @@ function renderMuseumWing(id){
   card.append(img,p,open);body.appendChild(card);
  }
  const foot=document.createElement('div');foot.className='museumGrid';foot.style.marginTop='20px';
- wings.filter(w=>w.id!==wing.id).forEach(w=>{const b=btn(w.icon+' '+mText(w.ar,w.en),'museumTile');b.addEventListener('click',()=>{if(w.id==='film'){closeMuseum(false);openFilm()}else renderMuseumWing(w.id)});foot.appendChild(b)});body.appendChild(foot);
+ wings.filter(w=>w.id!==wing.id).forEach(w=>{const b=btn('','museumTile');if(w.id==='castleStories'){const img=document.createElement('img');img.src='https://raw.githubusercontent.com/sakakera-a11y/sakaker/refs/heads/main/file_000000007f288208bce7556015d427f9.png';img.alt='';img.width=28;img.height=28;img.style.cssText='width:28px;height:28px;object-fit:contain;border-radius:50%';b.append(img,document.createTextNode(mText(w.ar,w.en)))}else b.textContent=w.icon+' '+mText(w.ar,w.en);b.addEventListener('click',()=>{if(w.id==='castleStories'){window.top.location.assign('/abwalqmrzmrd-book.html')}else if(w.id==='film'){closeMuseum(false);openFilm()}else renderMuseumWing(w.id)});foot.appendChild(b)});body.appendChild(foot);
 }
 function openStandaloneSection(id){const routes={books:'/books.html',videos:'/videos.html',live:'/live.html',games:'/pong.html',creative:'/draw.html'};if(routes[id])location.assign(routes[id]);else location.assign('/')}
 function closeMuseum(resume=true){$('museumOverlay').classList.remove('open');$('museumBody').replaceChildren();if(resume)resumeFromMuseum();}
@@ -272,7 +273,7 @@ function openFilm(){
 function closeFilm(){const film=$('castleFilm');film.pause();film.currentTime=0;$('filmViewer').classList.remove('open');if(ambient.on){natureAudio.play().catch(()=>{})}resumeFromMuseum();}
 window.SakCastleMuseum={pause:pauseForMuseum,resume:resumeFromMuseum,openFilm};
 const rail=$('museumRail');
-wings.forEach(w=>{const b=document.createElement('button');b.type='button';b.className='museumTile';b.setAttribute('aria-label',w.ar+' / '+w.en);const glyph=document.createElement('span');glyph.setAttribute('aria-hidden','true');glyph.textContent=w.icon;const label=document.createElement('span');label.dataset.wingLabel=w.id;label.textContent=mText(w.ar,w.en);b.append(glyph,label);b.addEventListener('click',()=>openMuseum(w.id));rail.appendChild(b)});
+wings.forEach(w=>{const b=document.createElement('button');b.type='button';b.className='museumTile';b.setAttribute('aria-label',w.ar+' / '+w.en);if(w.id==='castleStories'){const img=document.createElement('img');img.src='https://raw.githubusercontent.com/sakakera-a11y/sakaker/refs/heads/main/file_000000007f288208bce7556015d427f9.png';img.alt='';img.width=28;img.height=28;img.style.cssText='width:28px;height:28px;object-fit:contain;border-radius:50%';b.appendChild(img)}else{const glyph=document.createElement('span');glyph.setAttribute('aria-hidden','true');glyph.textContent=w.icon;b.appendChild(glyph)}const label=document.createElement('span');label.dataset.wingLabel=w.id;label.textContent=mText(w.ar,w.en);b.append(label);b.addEventListener('click',()=>{if(w.id==='castleStories')window.top.location.assign('/abwalqmrzmrd-book.html');else openMuseum(w.id)});rail.appendChild(b)});
 $('museumClose').addEventListener('click',()=>closeMuseum());
 $('photoClose').addEventListener('click',closePhoto);
 $('photoPrev').addEventListener('click',()=>{photoAt=(photoAt-1+scenes.length)%scenes.length;showPhoto()});
