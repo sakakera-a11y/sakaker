@@ -7,7 +7,8 @@ let siteSoundUserMuted=true;
 
 /* Requested row order first, then the remaining site tools. */
 const utilityItems=[
-  /* Visible order: explore the castle, play, audio, maps, then business. */
+  /* The Castle Stories book is the first visible button in the index. */
+  {key:'castleStories',selectors:['#sakCastleStoriesBtn']},
   {key:'castleTour',selectors:['#sakCastleTourBtn']},
   {key:'pong',selectors:['#pongGame-btn']},
   {key:'music',selectors:['#emOpenBtn','#emeraldMusicHost #emOpenBtn','#emeraldMusicHost button','#emeraldMusicHost [role="button"]']},
@@ -16,7 +17,6 @@ const utilityItems=[
   /* Keep the hidden launchers registered without affecting the visible order. */
   {key:'facebook',selectors:['#facebookVideoIcon']},
   {key:'textLibrary',finder:findTextLibrary},
-  {key:'castleStories',selectors:['#sakCastleStoriesBtn']},
   {key:'videoLibrary',selectors:['#emeraldLibraryButton']},
   {key:'live',selectors:['#liveFlasher']},
   {key:'siteBackground',selectors:['#sakSiteBackgroundBtn']},
