@@ -72,6 +72,8 @@ function ensure(){
   }
   const en=isEn();
   const name=en?'Castle Book':'كتاب القلعة';
+  const visibleLabel=button.querySelector(':scope > .sak-ostrich-name');
+  if(visibleLabel)visibleLabel.textContent=name;
   const description=en
     ?'The complete bilingual Abwalqmrzmrd book, including the author’s introduction and story in Arabic and English.'
     :'كتاب أبوالقمر زمرد الكامل باللغتين، ويضم مقدمة المؤلف والحكاية بالعربية والإنجليزية.';
