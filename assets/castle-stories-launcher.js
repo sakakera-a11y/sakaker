@@ -26,7 +26,7 @@ function installStyle(){
     html body #sakCastleStoriesBtn .sak-ostrich-art{width:52px!important;height:52px!important;min-height:52px!important;max-height:52px!important}
     html body #sakCastleStoriesBtn .sak-ostrich-name{display:block!important;visibility:visible!important;opacity:1!important;color:#fff4bf!important;-webkit-text-fill-color:#fff4bf!important;text-shadow:0 1px 3px #000,0 0 8px #a66b09,0 0 10px #ffc83d!important;white-space:nowrap!important}
     @media(max-width:600px){html body #sakCastleStoriesBtn{min-height:78px!important;margin:4px auto 6px!important;font-size:12px!important}html body #sakCastleStoriesBtn .sak-ostrich-art{width:44px!important;height:44px!important;min-height:44px!important;max-height:44px!important}}
-    html body #sakakerAllIconsDock #${ID} .sak-ostrich-art{
+    html body #${ID} .sak-ostrich-art{
       display:flex!important;align-items:center!important;justify-content:center!important;
       width:var(--sak-ostrich-art)!important;height:var(--sak-ostrich-art)!important;
       min-height:var(--sak-ostrich-art)!important;max-height:var(--sak-ostrich-art)!important;
@@ -36,17 +36,17 @@ function installStyle(){
       box-shadow:inset 0 0 8px #fff8,0 0 10px #ffc83d,0 0 20px #f0a91f!important;
       padding:4px!important;filter:drop-shadow(0 0 4px #ffdf70)!important;
     }
-    html body #sakakerAllIconsDock #${ID} .sak-ostrich-art img{
+    html body #${ID} .sak-ostrich-art img{
       display:block!important;width:100%!important;height:100%!important;object-fit:contain!important;
       border-radius:50%!important;filter:drop-shadow(0 1px 2px #452b00)!important;
     }
-    html body #sakakerAllIconsDock #${ID} .sak-ostrich-name{
+    html body #${ID} .sak-ostrich-name{
       color:#fff4bf!important;-webkit-text-fill-color:#fff4bf!important;
       text-shadow:0 1px 3px #000,0 0 7px #a66b09,0 0 10px #ffc83d!important;
     }
     html body #sakakerAllIconsDock [data-sakaker-util="castleStories"]{display:block!important;visibility:visible!important;opacity:1!important}
-    html body #sakakerAllIconsDock #${ID}:focus-visible{outline:2px solid #ffe88a!important;outline-offset:3px!important}
-    @media(prefers-reduced-motion:reduce){html body #sakakerAllIconsDock #${ID} .sak-ostrich-art{animation:none!important}}
+    html body #${ID}:focus-visible{outline:2px solid #ffe88a!important;outline-offset:3px!important}
+    @media(prefers-reduced-motion:reduce){html body #${ID} .sak-ostrich-art{animation:none!important}}
   `;
   document.head.appendChild(style);
 }
