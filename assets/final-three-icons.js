@@ -7,8 +7,7 @@ let siteSoundUserMuted=true;
 
 /* Requested row order first, then the remaining site tools. */
 const utilityItems=[
-  /* Visible order: explore the castle, play, audio, maps, then business. */
-  {key:'castleTour',selectors:['#sakCastleTourBtn']},
+  /* Castle Tour is positioned independently at the top-center of the page. */
   {key:'pong',selectors:['#pongGame-btn']},
   {key:'music',selectors:['#emOpenBtn','#emeraldMusicHost #emOpenBtn','#emeraldMusicHost button','#emeraldMusicHost [role="button"]']},
   {key:'map',selectors:['#mapIcon','.launcher[data-map]','.launcher[aria-label*="خريطة"]','.launcher[title*="خريطة"]','.launcher']},
