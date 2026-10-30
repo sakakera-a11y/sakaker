@@ -41346,5 +41346,33 @@ html body .cards #castleStoriesIndexCard:focus-visible{
 })();
 </script>
 
+
+
+<!-- Restore only the three requested launchers: shopping, castle forum, and visitor posts. -->
+<script type="module" src="/assets/visitor-posts.js?v=20261019-login-resume-47"></script>
+<script defer src="/assets/castle-forum-launcher.js?v=20261012-auth-local-5"></script>
+<script type="module" id="sak-shopping-click-recovery">
+(()=>{
+  'use strict';
+  document.addEventListener('click',async event=>{
+    const button=event.target instanceof Element?event.target.closest('#sakShoppingIcon'):null;
+    if(!button)return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if(button.dataset.sakShoppingOpening==='1')return;
+    button.dataset.sakShoppingOpening='1';
+    try{
+      const shop=await import('/assets/shopping/shop.js?v=20260930-shopping-6');
+      shop.openShop();
+    }catch(error){
+      console.error('[Sakaker shopping]',error);
+      alert(document.documentElement.lang==='en'?'Could not load shopping. Please retry.':'تعذر تحميل التسوق. حاول مرة أخرى.');
+    }finally{
+      button.dataset.sakShoppingOpening='0';
+    }
+  },true);
+})();
+</script>
+
 </body>
 </html>
