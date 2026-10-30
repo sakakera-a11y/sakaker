@@ -157,7 +157,14 @@ function ensureStationButton(){
   if(!unlocked())return null;
   const dock=$('sakakerAllIconsDock');if(!dock)return null;
   let current=$('sakEmeraldChessIcon');
-  if(current&&current.dataset.sakRole!=='entertainment-station'){
+  /* The legacy inline launcher used the same ID and already attached its own
+     click handler. Clone once before binding the runtime handler so the two
+     full-screen station dialogs cannot open on the same tap. */
+  if(current&&current.dataset.sakRole==='entertainment-station'&&!current.dataset.sakStationBound){
+    const replacement=current.cloneNode(true);
+    current.replaceWith(replacement);
+    current=replacement;
+  }else if(current&&current.dataset.sakRole!=='entertainment-station'){
     const replacement=current.cloneNode(true);
     current.replaceWith(replacement);
     current=replacement;
@@ -170,6 +177,8 @@ function ensureStationButton(){
     current.dataset.sakStationBound='1';
     current.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();openPanel()});
   }
+  /* Retire the duplicate legacy panel; the runtime panel is the sole owner. */
+  $('sakEntertainmentStation')?.remove();
   stationButton=current;
   updateLanguage();
   return current;
