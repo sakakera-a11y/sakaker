@@ -69,7 +69,7 @@ jobs:
                   "window.openSakakerEbooks",
                   "sakaker-visitor-counter-d1",
                   "fetch('/api/visitor-counter'",
-                  "assets/visitor-posts.js?v=20261019-login-resume-47",
+                  "assets/visitor-posts.js?v=20261030-castle-loading1",
                   "ebook-translation-status.js",
                   "assets/castle-forum-launcher.js?v=20261012-auth-local-5",
                   "assets/live-media-refresh.js?v=20261008-window-palette4",
