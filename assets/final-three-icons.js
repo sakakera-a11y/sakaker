@@ -15,7 +15,6 @@ const utilityItems=[
   /* Keep the hidden launchers registered without affecting the visible order. */
   {key:'facebook',selectors:['#facebookVideoIcon']},
   {key:'textLibrary',finder:findTextLibrary},
-  {key:'castleStories',selectors:['#sakCastleStoriesBtn']},
   {key:'videoLibrary',selectors:['#emeraldLibraryButton']},
   {key:'live',selectors:['#liveFlasher']},
   {key:'siteBackground',selectors:['#sakSiteBackgroundBtn']},
@@ -25,7 +24,6 @@ const utilityItems=[
 const labels={
   facebook:{ar:'فيس بوك',en:'Facebook'},
   textLibrary:{ar:'المكتبة النصية',en:'Text Library'},
-  castleStories:{ar:'حكايات القلعة',en:'Castle Stories'},
   videoLibrary:{ar:'مكتبة الفيديو',en:'Video Library'},
   live:{ar:'قنوات مباشرة',en:'Live Channels'},
   castleTour:{ar:'تجول بالقلعة',en:'Castle Tour'},
@@ -656,7 +654,7 @@ function ensureCastleStoriesLauncher(){
   if(document.getElementById('sakCastleStoriesLauncherScript'))return;
   const script=document.createElement('script');
   script.id='sakCastleStoriesLauncherScript';
-  script.src='/assets/castle-stories-launcher.js?v=20261030-1';
+  script.src='/assets/castle-stories-launcher.js?v=20261030-2';
   script.async=true;
   document.head.appendChild(script);
 }
@@ -667,7 +665,7 @@ function ensureCastleTourLauncher(){
   if(document.getElementById('sakCastleTourLauncherScript'))return;
   const script=document.createElement('script');
   script.id='sakCastleTourLauncherScript';
-  script.src='/assets/castle-tour-launcher.js?v=20261011-icononly1';
+  script.src='/assets/castle-tour-launcher.js?v=20261030-loading1';
   script.async=true;
   document.head.appendChild(script);
 }
