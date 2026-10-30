@@ -8,15 +8,14 @@ function installStyle(){
   const style=document.createElement('style');
   style.id=STYLE;
   style.textContent=[
-    'html body #sakakerAllIconsDock #sakCastleTourBtn{position:relative!important;inset:auto!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;transform:none!important;translate:none!important;display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;cursor:pointer!important;touch-action:manipulation!important;}',
-    'html body #sakakerAllIconsDock [data-sakaker-util="castleTour"]{display:block!important;visibility:visible!important;opacity:1!important;}',
-    /* The Castle Tour button and its dock slot have no visible backing at all. */
-    'html body #sakakerAllIconsDock [data-sakaker-util="castleTour"],html body #sakakerAllIconsDock [data-sakaker-util="castleTour"] #sakCastleTourBtn,html body #sakakerAllIconsDock #sakCastleTourBtn{background:transparent!important;background-color:transparent!important;background-image:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;filter:none!important;clip-path:none!important;}',
-    'html body #sakakerAllIconsDock #sakCastleTourBtn::before,html body #sakakerAllIconsDock #sakCastleTourBtn::after,html body #sakakerAllIconsDock [data-sakaker-util="castleTour"]::before,html body #sakakerAllIconsDock [data-sakaker-util="castleTour"]::after{content:none!important;display:none!important;}',
-    'html body #sakakerAllIconsDock #sakCastleTourBtn .sak-ostrich-art,html body #sakakerAllIconsDock #sakCastleTourBtn .sak-ostrich-name{background:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}',
-    'html body #sakakerAllIconsDock #sakCastleTourBtn .sak-ostrich-art{filter:drop-shadow(0 0 5px #ffeeb2) drop-shadow(0 0 12px #ffc42b)!important;}',
+    /* Existing Castle Tour icon: top-center, directly above the festive/visitor row. */
+    'html body #sakCastleTourBtn{position:relative!important;inset:auto!important;display:flex!important;flex:0 0 auto!important;align-items:center!important;justify-content:center!important;width:72px!important;min-width:72px!important;max-width:72px!important;height:78px!important;min-height:78px!important;max-height:78px!important;margin:8px auto 4px!important;padding:0!important;transform:none!important;translate:none!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;cursor:pointer!important;touch-action:manipulation!important;background:transparent!important;background-color:transparent!important;background-image:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;filter:none!important;clip-path:none!important;z-index:40!important;}',
+    'html body #sakCastleTourBtn::before,html body #sakCastleTourBtn::after{content:none!important;display:none!important;}',
+    'html body #sakCastleTourBtn .sak-ostrich-art,html body #sakCastleTourBtn .sak-ostrich-name{background:transparent!important;background-image:none!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}',
+    'html body #sakCastleTourBtn .sak-ostrich-art{filter:drop-shadow(0 0 5px #ffeeb2) drop-shadow(0 0 12px #ffc42b)!important;}',
     /* Symbol-only launcher. Preserve an accessible name on the button itself. */
-    'html body #sakakerAllIconsDock #sakCastleTourBtn .sak-ostrich-name,html body #sakCastleTourBtn > .sak-ostrich-name{display:none!important;visibility:hidden!important;pointer-events:none!important;}',
+    'html body #sakCastleTourBtn .sak-ostrich-name{display:none!important;visibility:hidden!important;pointer-events:none!important;}',
+    '@media(max-width:600px){html body #sakCastleTourBtn{width:64px!important;min-width:64px!important;height:70px!important;min-height:70px!important;margin:6px auto 3px!important;}}',
     'body.locked #sakCastleTourBtn,body.sak-ebook-layer-open #sakCastleTourBtn,body.sakaker-fb-popup-open #sakCastleTourBtn{visibility:hidden!important;pointer-events:none!important;}',
     '#sakCastleTourBtn:focus-visible{outline:2px solid #ffe68a!important;outline-offset:3px!important;}',
     '@media(prefers-reduced-motion:reduce){#sakCastleTourBtn .sak-ostrich-art{animation:none!important;}}'
@@ -190,30 +189,15 @@ function ensure(){
     button.addEventListener('click',openTour);
     button.dataset.sakCastleBound='1';
   }
-  const dock=document.getElementById('sakakerAllIconsDock');
-  if(dock&&!document.body.classList.contains('locked')){
-    let utility=dock.querySelector('#sakakerUtilityDock');
-    if(!utility){
-      utility=document.createElement('nav');
-      utility.id='sakakerUtilityDock';
-      utility.setAttribute('aria-label','أدوات وخدمات الموقع');
-      dock.appendChild(utility);
+  /* Keep the existing Castle Tour button at the top of the page,
+     centered immediately before the visitor/festive counters. */
+  const festiveHeader=document.getElementById('sakFestiveHeader');
+  if(festiveHeader&&festiveHeader.parentElement){
+    if(button.parentElement!==festiveHeader.parentElement||button.nextElementSibling!==festiveHeader){
+      festiveHeader.parentElement.insertBefore(button,festiveHeader);
     }
-    let slot=utility.querySelector('[data-sakaker-util="castleTour"]');
-    if(!slot){
-      slot=document.createElement('div');
-      slot.className='sakaker-utility-slot';
-      slot.dataset.sakakerUtil='castleTour';
-    }
-    const textSlot=utility.querySelector('[data-sakaker-util="textLibrary"]');
-    if(textSlot){
-      if(slot.previousElementSibling!==textSlot)textSlot.after(slot);
-    }else if(slot.parentElement!==utility){
-      utility.prepend(slot);
-    }
-    if(button.parentElement!==slot)slot.appendChild(button);
-  }else if(button.parentElement!==document.body){
-    document.body.appendChild(button);
+  }else if(button.parentElement!==document.body||document.body.firstElementChild!==button){
+    document.body.prepend(button);
   }
 }
 function init(){
