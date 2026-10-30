@@ -9,9 +9,9 @@ if '<html' not in text.lower() or '</html>' not in text.lower():
     raise SystemExit('Refusing to patch incomplete index.html')
 
 TITLE = 'abwalqmrzmrd castle'
-STYLE = '<link id="sak-compact-main-icons" rel="stylesheet" href="/assets/compact-main-icons.css?v=20261029-icons1">'
+STYLE = '<link id="sak-compact-main-icons" rel="stylesheet" href="/assets/compact-main-icons.css?v=20261030-tapfix1">'
 LOADER = '<script id="sak-entertainment-runtime-loader" src="/assets/entertainment-station.js?v=20261002-2" defer></script>'
-ICONS_SCRIPT = '<script id="sak-final-three-icons-loader" src="/assets/final-three-icons.js?v=20261029-icons1" defer></script>'
+ICONS_SCRIPT = '<script id="sak-final-three-icons-loader" src="/assets/final-three-icons.js?v=20261030-tapfix1" defer></script>'
 
 # Replace the old site name anywhere it remains in visible/page metadata text.
 legacy_names = [
