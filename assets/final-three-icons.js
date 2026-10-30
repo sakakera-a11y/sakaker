@@ -406,7 +406,7 @@ function ensureSiteBackground(){
     video.playsInline=true;
     /* Metadata is enough before playback begins; play() will stream the
        actual video once the authenticated site is visible. */
-    video.preload='metadata';
+    video.preload='none';
     video.muted=false;
     video.setAttribute('playsinline','');
     video.setAttribute('webkit-playsinline','');
@@ -446,11 +446,10 @@ function ensureSiteBackground(){
     document.body.appendChild(btn);
   }
 
-  if(isLocked()){
-    video.pause();
-  }else{
-    startSiteBackgroundSound();
-  }
+  /* لا تبدأ تنزيل/تشغيل فيديو خلفية الموقع تلقائيًا بعد الدخول.
+     يبقى متاحًا من زر الخلفية عند طلب المستخدم فقط. */
+  video.muted=true;
+  video.pause();
   updateSiteBackgroundButton();
   requestAnimationFrame(placeSiteSoundAboveClock);
 }
@@ -478,7 +477,10 @@ function syncSiteBackgroundLock(){
     if(!video)return;
   }
 
-  startSiteBackgroundSound();
+  /* إبقاء الخلفية متوقفة حتى يضغط المستخدم زر تشغيل الخلفية. */
+  video.muted=true;
+  video.pause();
+  updateSiteBackgroundButton();
   ensureCastleTourLauncher();
   ensureCastleStoriesLauncher();
   rebuildIconAppearance();
