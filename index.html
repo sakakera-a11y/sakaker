@@ -5094,6 +5094,20 @@ birdBtn.addEventListener('click',async e=>{
     </div>
 
     <div
+      class="icon-card sak-castle-stories-card"
+      id="castleStoriesIndexCard"
+      onclick="window.location.href='/abwalqmrzmrd-book.html'"
+      role="link"
+      tabindex="0"
+      aria-label="حكايات القلعة Castle Stories"
+      title="حكايات القلعة"
+    >
+      <div class="icon-svg" aria-hidden="true" style="font-size:32px;display:flex;align-items:center;justify-content:center;">📜</div>
+      <div class="icon-label">حكايات القلعة</div>
+      <div class="sub">Castle Stories · حكايات وروايات</div>
+    </div>
+
+    <div
       class="icon-card"
       onclick="openFolder(2)"
       role="button"
@@ -40397,6 +40411,49 @@ if(onlineEl&&totalEl&&todayEl&&counterEl){
  async function updateCounter(){const response=await fetch('/api/visitor-counter',{method:'POST',cache:'no-store',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({visitorId,sessionId})});if(!response.ok)throw new Error('Visitor counter API returned '+response.status);const data=await response.json();for(const [el,value] of [[onlineEl,data.online],[totalEl,data.total],[todayEl,data.today]]){const n=Number(value);if(!Number.isFinite(n)||n<0)throw new Error('Invalid counter response');el.textContent=String(Math.floor(n));delete el.dataset.state;el.title=''}counterEl.dataset.source='cloudflare-d1'}
  updateCounter().catch(showError);window.setInterval(()=>updateCounter().catch(showError),30000);
 }
+</script>
+
+
+<style id="sakaker-castle-stories-icon-style">
+/* حكايات القلعة: بطاقة مستقلة ضمن شبكة الأيقونات الرئيسية */
+html body .cards #castleStoriesIndexCard{
+  display:flex !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  background:linear-gradient(145deg,rgba(28,18,8,.94),rgba(105,72,25,.88)) !important;
+  border:1px solid rgba(232,199,106,.72) !important;
+  color:#fff4d2 !important;
+  box-shadow:0 0 13px rgba(232,199,106,.24),inset 0 0 12px rgba(255,220,140,.08) !important;
+}
+html body .cards #castleStoriesIndexCard .icon-svg{
+  color:#f4d27a !important;
+  filter:drop-shadow(0 0 6px rgba(255,205,90,.55));
+}
+html body .cards #castleStoriesIndexCard .icon-label{
+  color:#fff1c5 !important;
+}
+html body .cards #castleStoriesIndexCard .sub{
+  color:#ead7a7 !important;
+}
+html body .cards #castleStoriesIndexCard:focus-visible{
+  outline:3px solid #00e6c3;
+  outline-offset:4px;
+}
+</style>
+<script id="sakaker-castle-stories-keyboard">
+(function(){
+  var card=document.getElementById('castleStoriesIndexCard');
+  if(!card) return;
+  card.addEventListener('keydown',function(event){
+    if(event.key==='Enter'||event.key===' '){
+      event.preventDefault();
+      window.location.href='/abwalqmrzmrd-book.html';
+    }
+  });
+})();
 </script>
 
 </body>
