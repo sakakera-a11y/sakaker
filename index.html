@@ -4352,7 +4352,7 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
 </style>
 <link rel="stylesheet" href="/assets/live-media-refresh.css?v=20261008-window-palette4">
 <link id="sak-compact-main-icons" rel="stylesheet" href="/assets/compact-main-icons.css?v=20261029-icons1">
-<script id="sak-final-three-icons-loader" src="/assets/final-three-icons.js?v=20261030-castlebook2" defer></script>
+<script id="sak-final-three-icons-loader" src="/assets/final-three-icons.js?v=20261029-icons1" defer></script>
 </head>
 <body>
 
@@ -6373,15 +6373,6 @@ onAuthStateChanged(auth, (user) => {
     const profile = document.getElementById("userProfile");
 
     if(user){
-        /* أوقف فيديو شاشة الدخول بعد نجاح الدخول لتحرير الشبكة والموارد. */
-        const loginBackgroundVideo = document.getElementById("sakLoginBackgroundVideo");
-        if(loginBackgroundVideo){
-            try{
-                loginBackgroundVideo.pause();
-                loginBackgroundVideo.muted = true;
-            }catch(e){}
-        }
-
         /* أولًا نفتح الموقع ثم نخفي صفحة الدخول */
         document.body.classList.remove("locked");
 
@@ -6408,16 +6399,6 @@ onAuthStateChanged(auth, (user) => {
         const errorEl = document.getElementById("loginError");
         if(errorEl) errorEl.textContent = "";
     }else{
-        /* إعادة تشغيل فيديو شاشة الدخول عند تسجيل الخروج، مع كتم الصوت. */
-        const loginBackgroundVideo = document.getElementById("sakLoginBackgroundVideo");
-        if(loginBackgroundVideo){
-            try{
-                loginBackgroundVideo.muted = true;
-                const playAttempt = loginBackgroundVideo.play();
-                if(playAttempt && typeof playAttempt.catch === "function") playAttempt.catch(()=>{});
-            }catch(e){}
-        }
-
         /* أولًا نقفل الموقع ثم نظهر صفحة الدخول */
         document.body.classList.add("locked");
 
@@ -40387,7 +40368,7 @@ html body .sak-story-blog-head{display:none!important}
 
 
 
-<script type="module" src="/assets/visitor-posts.js?v=20261030-castle-loading1"></script>
+<script type="module" src="/assets/visitor-posts.js?v=20261019-login-resume-47"></script>
 <script type="module" src="assets/sakaker-live.js"></script>
 <script src="/assets/live-media-refresh.js?v=20261008-window-palette4" defer></script>
 <style id="facebook-video-mobile-responsive">
