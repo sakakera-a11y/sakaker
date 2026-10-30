@@ -716,11 +716,22 @@ new MutationObserver(()=>{
   requestAnimationFrame(placeSiteSoundAboveClock);
 }).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 
+/* Run the expensive icon/layout reconciliation only when the login
+   lock actually changes. Other body class updates must not rebuild every icon. */
+let lastObservedLoginLock=isLocked();
+function handleLoginLockChange(){
+  const locked=isLocked();
+  if(locked===lastObservedLoginLock)return;
+  lastObservedLoginLock=locked;
+  syncSiteBackgroundLock();
+}
+
 if(document.body){
-  new MutationObserver(syncSiteBackgroundLock).observe(document.body,{attributes:true,attributeFilter:['class']});
+  new MutationObserver(handleLoginLockChange).observe(document.body,{attributes:true,attributeFilter:['class']});
 }else{
   document.addEventListener('DOMContentLoaded',()=>{
-    new MutationObserver(syncSiteBackgroundLock).observe(document.body,{attributes:true,attributeFilter:['class']});
+    lastObservedLoginLock=isLocked();
+    new MutationObserver(handleLoginLockChange).observe(document.body,{attributes:true,attributeFilter:['class']});
   },{once:true});
 }
 
