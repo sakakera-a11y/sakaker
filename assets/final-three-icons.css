@@ -226,13 +226,12 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-utility-slot > .sak-
   margin:0!important;
 }
 
-/* Every visible icon uses the same synchronized disappearance cycle. */
+/* All launchers remain visible and tappable; no synchronized hide cycle. */
 html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon{
-  animation:sakUnifiedIconVisibility 7s ease-in-out infinite!important;
-}
-@keyframes sakUnifiedIconVisibility{
-  0%,39%,61%,100%{opacity:1;visibility:visible}
-  44%,56%{opacity:0;visibility:hidden}
+  animation:none!important;
+  opacity:1!important;
+  visibility:visible!important;
+  pointer-events:auto!important;
 }
 @media(prefers-reduced-motion:reduce){
   html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon{
