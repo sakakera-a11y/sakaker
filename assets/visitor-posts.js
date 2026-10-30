@@ -364,7 +364,7 @@ else installVisitorPosts();
     if(document.getElementById('sakCastleTourLauncherScript'))return;
     const script=document.createElement('script');
     script.id='sakCastleTourLauncherScript';
-    script.src='/assets/castle-tour-launcher.js?v=20261011-icononly1';
+    script.src='/assets/castle-tour-launcher.js?v=20261030-loading1';
     script.async=true;
     document.head.appendChild(script);
   }
