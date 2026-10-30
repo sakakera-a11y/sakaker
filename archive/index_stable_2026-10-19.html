@@ -2045,18 +2045,12 @@ footer strong{
 </style>
 
 <style>
-body{
-            margin: 0;
-            padding: 0;
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: white;
-
-        }
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: white;
+}
 
         h1 {
             margin: 0 0 15px 0;
@@ -4358,7 +4352,7 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
 </style>
 <link rel="stylesheet" href="/assets/live-media-refresh.css?v=20261008-window-palette4">
 <link id="sak-compact-main-icons" rel="stylesheet" href="/assets/compact-main-icons.css?v=20261029-icons1">
-<script id="sak-final-three-icons-loader" src="/assets/final-three-icons.js?v=20261029-icons1" defer></script>
+<script id="sak-final-three-icons-loader" src="/assets/final-three-icons.js?v=20261030-castle-stories1" defer></script>
 </head>
 <body>
 
@@ -5097,6 +5091,20 @@ birdBtn.addEventListener('click',async e=>{
       <div class="icon-svg" aria-hidden="true" style="font-size:30px;display:flex;align-items:center;justify-content:center;">🏰</div>
       <div class="icon-label">جولة القلعة</div>
       <div class="sub">Castle Tour · القاعات الملكية والحدائق والشلالات وإطلالات القمر</div>
+    </div>
+
+    <div
+      class="icon-card sak-castle-stories-card"
+      id="castleStoriesIndexCard"
+      onclick="window.location.href='/abwalqmrzmrd-book.html'"
+      role="link"
+      tabindex="0"
+      aria-label="حكايات القلعة Castle Stories"
+      title="حكايات القلعة"
+    >
+      <div class="icon-svg" aria-hidden="true" style="font-size:32px;display:flex;align-items:center;justify-content:center;">📜</div>
+      <div class="icon-label">حكايات القلعة</div>
+      <div class="sub">Castle Stories · حكايات وروايات</div>
     </div>
 
     <div
@@ -40404,5 +40412,49 @@ if(onlineEl&&totalEl&&todayEl&&counterEl){
  updateCounter().catch(showError);window.setInterval(()=>updateCounter().catch(showError),30000);
 }
 </script>
+
+
+<style id="sakaker-castle-stories-icon-style">
+/* حكايات القلعة: بطاقة مستقلة ضمن شبكة الأيقونات الرئيسية */
+html body .cards #castleStoriesIndexCard{
+  display:flex !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  background:linear-gradient(145deg,rgba(28,18,8,.94),rgba(105,72,25,.88)) !important;
+  border:1px solid rgba(232,199,106,.72) !important;
+  color:#fff4d2 !important;
+  box-shadow:0 0 13px rgba(232,199,106,.24),inset 0 0 12px rgba(255,220,140,.08) !important;
+}
+html body .cards #castleStoriesIndexCard .icon-svg{
+  color:#f4d27a !important;
+  filter:drop-shadow(0 0 6px rgba(255,205,90,.55));
+}
+html body .cards #castleStoriesIndexCard .icon-label{
+  color:#fff1c5 !important;
+}
+html body .cards #castleStoriesIndexCard .sub{
+  color:#ead7a7 !important;
+}
+html body .cards #castleStoriesIndexCard:focus-visible{
+  outline:3px solid #00e6c3;
+  outline-offset:4px;
+}
+</style>
+<script id="sakaker-castle-stories-keyboard">
+(function(){
+  var card=document.getElementById('castleStoriesIndexCard');
+  if(!card) return;
+  card.addEventListener('keydown',function(event){
+    if(event.key==='Enter'||event.key===' '){
+      event.preventDefault();
+      window.location.href='/abwalqmrzmrd-book.html';
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
