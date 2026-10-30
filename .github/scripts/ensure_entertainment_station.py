@@ -10,7 +10,7 @@ if '<html' not in text.lower() or '</html>' not in text.lower():
 
 TITLE = 'abwalqmrzmrd castle'
 STYLE = '<link id="sak-compact-main-icons" rel="stylesheet" href="/assets/compact-main-icons.css?v=20261030-tapfix1">'
-LOADER = '<script id="sak-entertainment-runtime-loader" src="/assets/entertainment-station.js?v=20261002-2" defer></script>'
+LOADER = '<script id="sak-entertainment-runtime-loader" src="/assets/entertainment-station.js?v=20261030-tapfix2" defer></script>'
 ICONS_SCRIPT = '<script id="sak-final-three-icons-loader" src="/assets/final-three-icons.js?v=20261030-tapfix1" defer></script>'
 
 # Replace the old site name anywhere it remains in visible/page metadata text.
@@ -33,6 +33,15 @@ else:
         text = text[:head_open.end()] + f'\n<title>{TITLE}</title>' + text[head_open.end():]
     else:
         raise SystemExit('No <head> element found')
+
+# Retire the old inline launcher implementation. It used the same button ID
+# as the runtime loader and attached a second click handler that opened a
+# second full-screen dialog, leaving an invisible modal layer over the page.
+legacy_pattern = (
+    r'\s*<!--\s*SAKAKER ENTERTAINMENT STATION — flying gull launcher\s*-->'
+    r'.*?<script\b[^>]*id=["\']sakaker-chess-launcher-js["\'][^>]*>.*?</script>\s*'
+)
+text = re.sub(legacy_pattern, '\n', text, count=1, flags=re.IGNORECASE | re.DOTALL)
 
 # Keep one authoritative compact-icons stylesheet.
 text = re.sub(r'\s*<link\b[^>]*(?:id=["\']sak-compact-main-icons["\']|href=["\'][^"\']*assets/compact-main-icons\.css[^"\']*["\'])[^>]*>\s*', '\n', text, flags=re.IGNORECASE)
