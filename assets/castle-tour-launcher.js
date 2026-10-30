@@ -41,6 +41,18 @@ function openTour(){
   host.setAttribute('aria-modal','true');
   host.setAttribute('aria-label',english()?'Castle Tour':'جولة القلعة');
   host.style.cssText='position:fixed!important;inset:0!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:clamp(6px,2vw,22px)!important;margin:0!important;z-index:2147483646!important;background:rgba(1,10,18,.83)!important;backdrop-filter:blur(12px)!important;-webkit-backdrop-filter:blur(12px)!important;overflow:hidden!important;';
+  const loader=document.createElement('div');
+  loader.id='sakCastleTourLoading';
+  loader.setAttribute('role','status');
+  loader.setAttribute('aria-live','polite');
+  loader.style.cssText='position:absolute;inset:0;z-index:2;display:grid;place-items:center;padding:20px;background:rgba(2,12,19,.9);color:#fff0b8;font:800 16px/1.7 Tahoma,Arial,sans-serif;text-align:center;';
+  loader.innerHTML='<div><span aria-hidden="true" style="display:block;width:38px;height:38px;margin:0 auto 12px;border:4px solid rgba(255,232,160,.25);border-top-color:#ffe27a;border-radius:50%;animation:sakCastleTourSpin .8s linear infinite"></span>'+(english()?'Loading the castle tour…':'جارٍ تحميل جولة القلعة…')+'</div>';
+  if(!document.getElementById('sakCastleTourLoadingStyle')){
+    const style=document.createElement('style');style.id='sakCastleTourLoadingStyle';
+    style.textContent='@keyframes sakCastleTourSpin{to{transform:rotate(360deg)}}@media(prefers-reduced-motion:reduce){#sakCastleTourLoading span{animation:none!important}}';
+    document.head.appendChild(style);
+  }
+  host.appendChild(loader);
   const frame=document.createElement('iframe');
   frame.src='/castle-tour.html?v=20261011-30scenes';
   frame.title='جولة القلعة / Castle Tour';
@@ -129,7 +141,7 @@ function openTour(){
   const onKey=e=>{if(e.key==='Escape'){e.preventDefault();close();}};
   window.addEventListener('message',onMessage);
   document.addEventListener('keydown',onKey);
-  frame.addEventListener('load',sendGreeting,{once:true});
+  frame.addEventListener('load',()=>{loader.remove();sendGreeting();},{once:true});
   host.addEventListener('click',e=>{if(e.target===host)close()});
   frame.focus();
 }
