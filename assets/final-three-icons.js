@@ -101,6 +101,35 @@ function watchFacebookEmbeds(){
 
 function isLocked(){return document.body?.classList.contains('locked');}
 
+/* Keep every launcher reliably tappable on touch screens.
+   The previous synchronized cycle set visibility:hidden for every icon at once,
+   which removed all launchers from hit-testing during that interval. */
+function installIconInteractionStyle(){
+  if(document.getElementById('sakIconInteractionFixStyle'))return;
+  const style=document.createElement('style');
+  style.id='sakIconInteractionFixStyle';
+  style.textContent=`
+    html body #sakakerAllIconsDock .sak-ostrich-icon,
+    html body #sakakerAllIconsDock .sakaker-utility-slot{
+      visibility:visible!important;
+      pointer-events:auto!important;
+      touch-action:manipulation!important;
+    }
+    html body #sakakerAllIconsDock .sak-ostrich-icon{
+      animation:sakIconTapVisibility 7s ease-in-out infinite!important;
+    }
+    @keyframes sakIconTapVisibility{
+      0%,39%,61%,100%{opacity:1;visibility:visible;pointer-events:auto}
+      44%,56%{opacity:.82;visibility:visible;pointer-events:auto}
+    }
+    html body #sakCastleTourBtn{
+      pointer-events:auto!important;
+      touch-action:manipulation!important;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
 function installSiteBackgroundStyle(){
   if(document.getElementById('sakSiteBackgroundStyle'))return;
   const style=document.createElement('style');
@@ -683,6 +712,7 @@ function loadPaymentClock(){
 }
 
 function settle(){
+  installIconInteractionStyle();
   installSiteBackgroundStyle();
 
   /* Keep login lightweight: do not start visitor tracking or rebuild launchers
