@@ -1,45 +1,9 @@
-/* Main dock placement is owned by final-three-icons.css.
-   Keep this stylesheet focused on retiring only the launchers requested. */
-body:not(.locked) #sakakerAllIconsDock .sakaker-utility-slot{margin:0!important}
-body:not(.locked) #sakakerAllIconsDock .sakaker-utility-slot:empty,
-body:not(.locked) #sakakerAllIconsDock .sakaker-utility-slot[data-sak-entertainment-hidden="1"],
-body:not(.locked) #sakakerAllIconsDock .sakaker-utility-slot[data-sakaker-util="siteBackground"],
-body:not(.locked) #sakakerAllIconsDock [data-sak-entertainment-grouped="1"]{
-  display:none!important;flex:0 0 0!important;width:0!important;min-width:0!important;max-width:0!important;
-  height:0!important;min-height:0!important;max-height:0!important;margin:0!important;padding:0!important;border:0!important;overflow:hidden!important;
-}
-
-/* Hide only Facebook. Music and the text library remain available. */
-html body #sakakerAllIconsDock #facebookVideoIcon,
-html body #sakakerAllIconsDock .sakaker-utility-slot[data-sakaker-util="facebook"]{
-  display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
-  width:0!important;min-width:0!important;max-width:0!important;height:0!important;min-height:0!important;max-height:0!important;
-  margin:0!important;padding:0!important;overflow:hidden!important;flex:0 0 0!important;
-}
-
-/* Keep the background-sound text button beside the language switch.
-   The JS placement routine positions it; do not hide the entire control here. */
-
-/* Keep the castle-tour icon visible even if an older dock rule hid it. */
-html body #sakakerAllIconsDock #sakCastleTourBtn,
-html body #sakakerAllIconsDock .sakaker-utility-slot:has(#sakCastleTourBtn),
-html body #sakakerAllIconsDock .sak-ostrich-icon[data-sakaker-dock-key="castleTour"]{
-  display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;
-  width:auto!important;min-width:0!important;height:auto!important;min-height:0!important;max-height:none!important;
-  animation:none!important;
-}
-
-
-/* Keep the Business label cleanup, while hiding only the requested Facebook and image-to-video launchers. */
-html body #sakakerAllIconsDock .sakaker-utility-slot[data-sakaker-util="business"] .sakaker-utility-label,
-html body #sakakerAllIconsDock .sakaker-utility-slot[data-sakaker-util="business"] .label,
-html body #sakakerAllIconsDock .sakaker-utility-slot[data-sakaker-util="business"] span,
-html body #sakakerAllIconsDock #sakakerBusinessAd::after{
-  display:none!important;visibility:hidden!important;opacity:0!important;
-}
-
-html body #sakakerAllIconsDock #sakCreativeIcon{
-  display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
-  width:0!important;min-width:0!important;max-width:0!important;height:0!important;min-height:0!important;max-height:0!important;
-  margin:0!important;padding:0!important;overflow:hidden!important;flex:0 0 0!important;
+/* Icon visibility reset: do not hide any site launcher here.
+   Keep this file as a compatibility stylesheet; placement and appearance
+   remain controlled by final-three-icons.css and the original launchers. */
+html body #sakakerAllIconsDock .sakaker-utility-slot,
+html body #sakakerAllIconsDock .sak-ostrich-icon{
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
 }
