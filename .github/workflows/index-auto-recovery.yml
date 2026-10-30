@@ -75,10 +75,6 @@ jobs:
                   "assets/live-media-refresh.js?v=20261008-window-palette4",
                   "assets/live-media-refresh.css?v=20261008-window-palette4",
                   "@keyframes sakUnifiedIconVisibility",
-                  "كتاب أبوالقمرزمرد — روايات وقصص حديثة",
-                  "1W5AskSaukXdyo8iLOXm7YyqHznxVqaUf",
-                  "/ebooks/stories/01-story-bilingual.pdf",
-                  "/ebooks/stories/11-story-bilingual.pdf",
                   "sakaker-direct-seven-books-20261006",
                   "sakaker-all-popups-top-layer-20261006",
                   "مغامرة في الصحراء",
@@ -108,10 +104,35 @@ jobs:
               if text.count("</html>") != 1:
                   errors.append("unexpected closing html count")
 
+          # Validate book details in their actual page and individual story PDFs.
+          book_page = Path("abwalqmrzmrd-book.html")
+          if not book_page.exists():
+              errors.append("book page is missing: abwalqmrzmrd-book.html")
+          else:
+              book_text = book_page.read_text(encoding="utf-8", errors="replace")
+              book_required = [
+                  "كتاب أبوالقمر زمرد",
+                  "روايات وقصص حديثة",
+                  "1W5AskSaukXdyo8iLOXm7YyqHznxVqaUf",
+              ]
+              missing_book = [item for item in book_required if item not in book_text]
+              if missing_book:
+                  errors.append("missing book-page markers: " + ", ".join(missing_book))
+              if "1B-vS6hT8gWeL0NhVLXLUGbdYk1BhdmKv" in book_text:
+                  errors.append("stale book Drive ID remains in the book page")
+
+          story_files = [
+              Path("ebooks/stories/01-story-bilingual.pdf"),
+              Path("ebooks/stories/11-story-bilingual.pdf"),
+          ]
+          for story_file in story_files:
+              if not story_file.exists():
+                  errors.append("required story PDF is missing: " + str(story_file))
+              elif story_file.stat().st_size == 0:
+                  errors.append("required story PDF is empty: " + str(story_file))
+
           if archive.exists():
               archive_text = archive.read_text(encoding="utf-8", errors="replace")
-              if "1W5AskSaukXdyo8iLOXm7YyqHznxVqaUf" not in archive_text:
-                  errors.append("recovery archive does not contain the current book Drive ID")
               if "1B-vS6hT8gWeL0NhVLXLUGbdYk1BhdmKv" in archive_text:
                   errors.append("stale book Drive ID remains in recovery archive")
               if index.exists() and text != archive_text:
