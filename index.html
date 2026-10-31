@@ -4282,20 +4282,20 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
     card.setAttribute('onclick','openSakakerTextLibrary()');
     card.setAttribute('role','button');
     card.setAttribute('tabindex','0');
-    card.setAttribute('aria-label',label('المكتبة النصية','Text Library'));
-    card.setAttribute('data-aria-ar','المكتبة النصية');
-    card.setAttribute('data-aria-en','Text Library');
-    card.setAttribute('data-title-ar','المكتبة النصية');
-    card.setAttribute('data-title-en','Text Library');
-    card.title=label('المكتبة النصية','Text Library');
+    card.setAttribute('aria-label',label('الألغاز','Riddles'));
+    card.setAttribute('data-aria-ar','الألغاز');
+    card.setAttribute('data-aria-en','Riddles');
+    card.setAttribute('data-title-ar','الألغاز');
+    card.setAttribute('data-title-en','Riddles');
+    card.title=label('الألغاز','Riddles');
 
     card.innerHTML=
       '<svg class="icon-svg" fill="none" viewBox="0 0 24 24">' +
         '<path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 0-3 3V4Z" stroke-width="1.4"></path>' +
         '<path d="M8 8h8M8 12h8M8 16h5" stroke-linecap="round" stroke-width="1.4"></path>' +
       '</svg>' +
-      '<div class="icon-label" data-ar="المكتبة النصية" data-en="Text Library">'+label('المكتبة النصية','Text Library')+'</div>' +
-      '<div class="sub" data-ar="قصص • معرفة • ألغاز" data-en="Stories • Knowledge • Riddles">'+label('قصص • معرفة • ألغاز','Stories • Knowledge • Riddles')+'</div>';
+      '<div class="icon-label" data-ar="الألغاز" data-en="Riddles">'+label('الألغاز','Riddles')+'</div>' +
+      '<div class="sub" data-ar="ألغاز وتحديات" data-en="Riddles & Challenges">'+label('ألغاز وتحديات','Riddles & Challenges')+'</div>';
 
     const legacySelectors=[
       '.cards .icon-card[onclick="openFolder(1)"]',
@@ -5052,7 +5052,7 @@ birdBtn.addEventListener('click',async e=>{
       onclick="openSakakerTextLibrary()"
       role="button"
       tabindex="0"
-      aria-label="المكتبة النصية"
+      aria-label="الألغاز"
     >
       <svg
         class="icon-svg"
@@ -5071,11 +5071,11 @@ birdBtn.addEventListener('click',async e=>{
       </svg>
 
       <div class="icon-label">
-        المكتبة النصية
+        الألغاز
       </div>
 
       <div class="sub">
-        قصص • معرفة • ألغاز
+        ألغاز وتحديات
       </div>
     </div>
 
@@ -5455,7 +5455,7 @@ birdBtn.addEventListener('click',async e=>{
   <div class="svc-sep"></div>
   <div class="svc-item">
     <span class="svc-icon">👁️</span>
-    <span class="svc-label" data-ar="إجمالي الزيارات" data-en="Total Visits">إجمالي الزيارات</span>
+    <span class="svc-label" data-ar="إجمالي الزوار الفريدين" data-en="Unique Visitors">إجمالي الزوار الفريدين</span>
     <strong id="svcTotal">0</strong>
   </div>
   <div class="svc-sep"></div>
@@ -6009,6 +6009,8 @@ import {
     updateDoc,
     writeBatch,
     increment,
+    runTransaction,
+    onSnapshot,
     serverTimestamp
 }
 from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
@@ -6351,6 +6353,78 @@ if(facebookButton){
 }
 
 /* =========================================================
+   📊 عداد الزوار الفريدين عبر Cloud Firestore
+   المسار: siteStats/visits
+   علامة منع التكرار: siteStats/visits/visitorMarks/{uid}
+========================================================= */
+async function recordNewVisit(uid){
+    if(!uid) return;
+
+    const visitsDocRef = doc(db, "siteStats", "visits");
+    const markDocRef = doc(db, "siteStats", "visits", "visitorMarks", uid);
+
+    try{
+        await runTransaction(db, async (transaction) => {
+            // قراءة علامة المستخدم أولاً لمنع احتسابه أكثر من مرة.
+            const markSnap = await transaction.get(markDocRef);
+            if(markSnap.exists()){
+                console.log("الزائر مسجل مسبقاً؛ لن تتم زيادة العداد.");
+                return;
+            }
+
+            // قراءة العداد الحالي قبل تنفيذ أي كتابة في المعاملة.
+            const visitsSnap = await transaction.get(visitsDocRef);
+            const currentCount = visitsSnap.exists()
+                ? Number(visitsSnap.data().count || 0)
+                : 0;
+
+            // إنشاء علامة المستخدم وزيادة الإجمالي في المعاملة نفسها.
+            transaction.set(markDocRef, {
+                createdAt: serverTimestamp()
+            });
+
+            if(!visitsSnap.exists()){
+                transaction.set(visitsDocRef, {
+                    count: 1,
+                    updatedAt: serverTimestamp()
+                });
+            }else{
+                transaction.update(visitsDocRef, {
+                    count: currentCount + 1,
+                    updatedAt: serverTimestamp()
+                });
+            }
+        });
+        console.log("تم التحقق من زيارة المستخدم وتحديث العداد عند الحاجة.");
+    }catch(error){
+        console.error("تعذر تسجيل الزائر في Firestore:", error);
+    }
+}
+
+function listenToCounter(){
+    const visitsDocRef = doc(db, "siteStats", "visits");
+    const counterEl = document.getElementById("svcTotal") ||
+                      document.getElementById("visitor-counter");
+
+    return onSnapshot(visitsDocRef, (docSnap) => {
+        const currentCount = docSnap.exists()
+            ? Number(docSnap.data().count || 0)
+            : 0;
+        const target = document.getElementById("svcTotal") ||
+                       document.getElementById("visitor-counter");
+        if(target) target.textContent = currentCount.toLocaleString(
+            document.documentElement.lang === "en" ? "en-US" : "ar-SA"
+        );
+    }, (error) => {
+        console.error("تعذر الاستماع إلى عداد Firestore:", error);
+        if(counterEl) counterEl.setAttribute("data-state", "error");
+    });
+}
+
+// يبدأ الاستماع بعد تأكيد تسجيل الدخول، لتفادي رفض القراءة إذا كانت القواعد تشترط المصادقة.
+let stopListeningToCounter = null;
+
+/* =========================================================
    👤 مراقبة حالة الدخول
 ========================================================= */
 
@@ -6359,6 +6433,12 @@ onAuthStateChanged(auth, (user) => {
     const profile = document.getElementById("userProfile");
 
     if(user){
+        // يسجل كل حساب موثق مرة واحدة فقط، وتمنع visitorMarks تكرار الزيادة.
+        void recordNewVisit(user.uid);
+        if(!stopListeningToCounter){
+            stopListeningToCounter = listenToCounter();
+        }
+
         /* أولًا نفتح الموقع ثم نخفي صفحة الدخول */
         document.body.classList.remove("locked");
 
@@ -6385,6 +6465,11 @@ onAuthStateChanged(auth, (user) => {
         const errorEl = document.getElementById("loginError");
         if(errorEl) errorEl.textContent = "";
     }else{
+        if(stopListeningToCounter){
+            stopListeningToCounter();
+            stopListeningToCounter = null;
+        }
+
         /* أولًا نقفل الموقع ثم نظهر صفحة الدخول */
         document.body.classList.add("locked");
 
@@ -41352,9 +41437,9 @@ html body .sak-index-link span{font-size:22px!important}
    const en=document.documentElement.lang==='en';
    const label=card.querySelector('.icon-label');
    const sub=card.querySelector('.sub');
-   if(label)label.textContent=en?'Text Library':'المكتبة النصية';
-   if(sub)sub.textContent=en?'Stories • Knowledge • Riddles':'قصص • معرفة • ألغاز';
-   const title=en?'Text Library':'المكتبة النصية';
+   if(label)label.textContent=en?'Riddles':'الألغاز';
+   if(sub)sub.textContent=en?'Riddles & Challenges':'ألغاز وتحديات';
+   const title=en?'Riddles':'الألغاز';
    card.setAttribute('aria-label',title);
    card.setAttribute('title',title);
  }
