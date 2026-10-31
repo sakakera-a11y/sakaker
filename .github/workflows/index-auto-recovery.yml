@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths:
       - 'index.html'
-      - 'archive/index_stable_2026-10-19.html'
+      - 'archive/index_stable_2026-10-31.html'
       - '.github/workflows/index-auto-recovery.yml'
   workflow_dispatch:
 
@@ -33,7 +33,7 @@ jobs:
           import sys
 
           index = Path("index.html")
-          archive = Path("archive/index_stable_2026-10-19.html")
+          archive = Path("archive/index_stable_2026-10-31.html")
           errors = []
 
           if not index.exists():
