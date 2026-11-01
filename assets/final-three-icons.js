@@ -511,6 +511,64 @@ function safeKey(value){return String(value||'icon').replace(/[^a-zA-Z0-9_-]/g,'
 
 function ostrichSVG(key){
   const k=safeKey(key);
+
+  // The ship is an original, transparent side-profile ocean-liner emblem.
+  // It deliberately has no circle, plate, badge, or background fill.
+  if(k==='ship'){
+    const svg=make('svg',{viewBox:'0 0 160 100','aria-hidden':'true',focusable:'false',class:'sak-ostrich-svg sak-titanic-ship-svg'});
+    const defs=make('defs');
+    const hull=make('linearGradient',{id:'sakShipHullGradient',x1:'0',y1:'0',x2:'0',y2:'1'});
+    hull.append(
+      make('stop',{offset:'0','stop-color':'#263c50'}),
+      make('stop',{offset:'.55','stop-color':'#0b1b2b'}),
+      make('stop',{offset:'1','stop-color':'#030b13'})
+    );
+    const ivory=make('linearGradient',{id:'sakShipIvoryGradient',x1:'0',y1:'0',x2:'0',y2:'1'});
+    ivory.append(
+      make('stop',{offset:'0','stop-color':'#fffef0'}),
+      make('stop',{offset:'.58','stop-color':'#e9e0c5'}),
+      make('stop',{offset:'1','stop-color':'#b7a77f'})
+    );
+    const gold=make('linearGradient',{id:'sakShipGoldGradient',x1:'0',y1:'0',x2:'1',y2:'1'});
+    gold.append(
+      make('stop',{offset:'0','stop-color':'#fff5b5'}),
+      make('stop',{offset:'.48','stop-color':'#e7bd55'}),
+      make('stop',{offset:'1','stop-color':'#9a6822'})
+    );
+    defs.append(hull,ivory,gold);
+    svg.appendChild(defs);
+
+    const liner=make('g',{class:'sak-titanic-ship'});
+    liner.append(
+      // Long, tapered black-and-gold hull.
+      make('path',{d:'M8 62 L151 62 L139 79 Q133 87 116 88 L43 88 Q23 85 8 62Z',fill:'url(#sakShipHullGradient)',stroke:'#e4bd62','stroke-width':'2.2','stroke-linejoin':'round'}),
+      make('path',{d:'M12 64 Q75 70 148 64',fill:'none',stroke:'#fff0ae','stroke-width':'1.4',opacity:'.9'}),
+      // Main white superstructure and promenade decks.
+      make('path',{d:'M20 58 L30 43 L123 43 L139 60Z',fill:'url(#sakShipIvoryGradient)',stroke:'#d7b45e','stroke-width':'1.5','stroke-linejoin':'round'}),
+      make('path',{d:'M31 43 L39 34 L116 34 L126 43Z',fill:'#f8f1dc',stroke:'#b88b3e','stroke-width':'1.2'}),
+      make('path',{d:'M43 34 L49 26 L107 26 L116 34Z',fill:'#fff8e5',stroke:'#c49a4d','stroke-width':'1.1'}),
+      make('path',{d:'M112 26 L122 19 L132 26 L132 43 L116 43Z',fill:'url(#sakShipIvoryGradient)',stroke:'#c49a4d','stroke-width':'1.1'}),
+      // Four classic ocean-liner funnels with dark caps and warm ochre bands.
+      ...[37,59,81,103].flatMap((x,i)=>[
+        make('rect',{x:String(x),y:String(i===3?12:14),width:'10',height:String(i===3?17:20),rx:'1.6',fill:'#c78b43',stroke:'#f5d68a','stroke-width':'1'}),
+        make('rect',{x:String(x-1),y:String(i===3?11:13),width:'12',height:'4',rx:'1',fill:'#172536',stroke:'#d8b15a','stroke-width':'.8'}),
+        make('path',{d:`M${x+1} ${i===3?19:21} L${x+9} ${i===3?19:21}`,stroke:'#f5e0a1','stroke-width':'1',opacity:'.85'})
+      ]),
+      // Fine deck rails and mast.
+      make('path',{d:'M25 41 L122 41 M35 32 L113 32 M49 25 L108 25',fill:'none',stroke:'#8c713f','stroke-width':'1'}),
+      make('path',{d:'M25 41 L25 35 M44 32 L44 27 M110 32 L110 27 M130 43 L130 35',fill:'none',stroke:'#a98a4d','stroke-width':'1'}),
+      make('path',{d:'M22 43 L22 22 M22 22 L31 27 M22 28 L16 33',fill:'none',stroke:'#d9b96b','stroke-width':'1.3','stroke-linecap':'round'}),
+      // Rows of dark portholes and lit cabin windows.
+      ...Array.from({length:13},(_,i)=>make('circle',{cx:String(29+i*8.1),cy:'75',r:'1.55',fill:i%3===0?'#ffe9a0':'#b8c7cb',stroke:'#e5c16b','stroke-width':'.35'})),
+      ...[36,48,60,72,84,96,108,120].map(x=>make('rect',{x:String(x),y:'49',width:'5',height:'4',rx:'.7',fill:'#253b4a',stroke:'#b99a59','stroke-width':'.5'})),
+      // Gold wake and two restrained sea lines under the hull.
+      make('path',{d:'M10 91 Q34 87 57 91 T105 91 T151 91',fill:'none',stroke:'#e5c16b','stroke-width':'1.8','stroke-linecap':'round',opacity:'.95'}),
+      make('path',{d:'M24 96 Q48 93 70 96 T119 96 T145 96',fill:'none',stroke:'#8ed8d2','stroke-width':'1.2','stroke-linecap':'round',opacity:'.75'})
+    );
+    svg.appendChild(liner);
+    return svg;
+  }
+
   const gid='sakOstrichGold_'+k;
   const svg=make('svg',{viewBox:'0 0 100 120','aria-hidden':'true',focusable:'false',class:'sak-ostrich-svg'});
   const defs=make('defs');
