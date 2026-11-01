@@ -13,14 +13,14 @@ function installStyle(){
   .sakaker-utility-slot[data-sakaker-util="ship"],
   .sakaker-utility-slot[data-sakaker-util="business"],
   #sakakerAllIconsDock .sak-hide-legacy-ship{
-    display:none!important;visibility:hidden!important;opacity:1!important;pointer-events:none!important;
+    display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
   }
   #${LAUNCHER_ID}{
     position:fixed!important;inset:auto!important;
     width:82px!important;height:58px!important;min-width:82px!important;min-height:58px!important;
     max-width:82px!important;max-height:58px!important;margin:0!important;padding:0!important;
     display:grid!important;place-items:center!important;
-    visibility:hidden!important;opacity:0!important;pointer-events:none!important;
+    visibility:hidden!important;opacity:1!important;pointer-events:none!important;
     border:0!important;border-radius:0!important;background:transparent!important;
     background-image:none!important;box-shadow:none!important;backdrop-filter:none!important;
     overflow:visible!important;z-index:2147483005!important;cursor:pointer!important;
