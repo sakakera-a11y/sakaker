@@ -80,6 +80,35 @@ function installVisitorPosts() {
     :is(.sak-festival,.news-ticker) :is(p,h1,h2,h3){margin:0!important}
     @media(max-width:600px){:is(.sak-festival,.news-ticker,#visitorPostsSection,#visitorClockDock){height:40px!important;min-height:40px!important;max-height:40px!important;padding:4px 6px!important;border-radius:14px!important}#visitorPostsSection{margin:6px 4px!important}#visitorPostsCard{gap:4px}#visitorPostsCard .visitor-gull{width:25px;height:21px}#visitorClockDock{width:calc(50vw - 16px)!important;max-width:calc(50vw - 16px)!important}}
     @media(max-width:700px){html body #visitorClockDock{height:54px!important;min-height:50px!important;max-height:64px!important;padding:5px 4px!important}html body #visitorClockDock .visitor-clock-dock-content{font-size:12px!important;line-height:1.35!important;white-space:normal!important;max-height:none!important;overflow:visible!important}}
+    /* Portrait phones: keep the visitor launcher inside its grid cell and let Arabic/English labels wrap. */
+    @media(max-width:600px) and (orientation:portrait){
+      html body #sakFestiveHeader #sakHolidayCountdowns{
+        grid-template-columns:repeat(2,minmax(0,1fr))!important;
+        grid-template-areas:"newyear visitor" "christmas news"!important;
+        gap:6px!important;width:100%!important;max-width:100%!important;min-width:0!important;
+      }
+      html body #sakFestiveHeader #sakHolidayCountdowns>:is(.sak-festival,#sakNewsLaunch,#visitorPostsSection){
+        box-sizing:border-box!important;width:100%!important;min-width:0!important;max-width:100%!important;
+        height:68px!important;min-height:68px!important;max-height:68px!important;padding:4px!important;
+      }
+      html body #sakFestiveHeader #sakHolidayCountdowns>#visitorPostsSection{
+        grid-area:visitor!important;min-width:0!important;overflow:hidden!important;
+      }
+      html body #sakFestiveHeader #sakHolidayCountdowns>#visitorPostsSection #visitorPostsCard{
+        display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;align-items:center!important;
+        justify-content:center!important;gap:4px!important;width:100%!important;min-width:0!important;
+        max-width:100%!important;padding:2px!important;overflow:hidden!important;
+      }
+      html body #visitorPostsCard .visitor-gull{
+        width:clamp(22px,7vw,28px)!important;height:auto!important;max-width:32%!important;flex:0 0 auto!important;
+      }
+      html body #visitorPostsCard .visitor-card-label{
+        min-width:0!important;max-width:100%!important;white-space:normal!important;
+        overflow-wrap:anywhere!important;font-size:clamp(9px,2.8vw,12px)!important;
+      }
+      html body #visitorPostsCard .visitor-main-label,
+      html body #visitorPostsCard .visitor-click-hint{white-space:normal!important;overflow-wrap:anywhere!important}
+    }
         #visitorPostsOverlay{position:fixed;inset:0;z-index:2147483000;background:rgba(2,10,15,.88);display:none;place-items:center;padding:clamp(6px,2vw,24px)}
     #visitorPostsOverlay.open{display:grid}
     #visitorPostsLoading{display:none;position:absolute;inset:0;z-index:1;place-items:center;margin:0;padding:22px;color:#fff;font:700 16px/1.6 Tahoma,Arial,sans-serif;text-align:center;pointer-events:none}
