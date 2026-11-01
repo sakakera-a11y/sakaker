@@ -16,6 +16,26 @@ html,body{
   overflow-x:hidden;
 }
 
+/* Facebook stays hidden; the ship launcher remains in the dock. */
+html body #sakakerAllIconsDock #facebookVideoIcon,
+html body #sakakerAllIconsDock [data-sakaker-util="facebook"]{
+  display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
+  width:0!important;min-width:0!important;max-width:0!important;height:0!important;min-height:0!important;max-height:0!important;
+  margin:0!important;padding:0!important;overflow:hidden!important;flex:0 0 0!important;
+}
+
+/* The forum launcher uses the same responsive footprint as the other dock icons. */
+html body #sakakerAllIconsDock #sakCastleForumIcon{
+  box-sizing:border-box!important;flex:0 0 var(--sak-ostrich-cell)!important;
+  width:var(--sak-ostrich-cell)!important;min-width:var(--sak-ostrich-cell)!important;max-width:var(--sak-ostrich-cell)!important;
+  height:var(--sak-ostrich-height)!important;min-height:var(--sak-ostrich-height)!important;max-height:var(--sak-ostrich-height)!important;
+  margin:0!important;padding:0!important;overflow:visible!important;background:transparent!important;border:0!important;
+}
+html body #sakakerAllIconsDock #sakCastleForumIcon svg{
+  width:min(100%,var(--sak-ostrich-art))!important;height:min(100%,var(--sak-ostrich-art))!important;
+  max-width:100%!important;max-height:100%!important;object-fit:contain!important;
+}
+
 /* One placement engine only. No visible container and no wrapping. */
 html body #sakakerAllIconsDock#sakakerAllIconsDock{
   position:fixed!important;
