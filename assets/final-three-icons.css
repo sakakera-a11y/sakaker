@@ -70,7 +70,7 @@ html body .sakaker-utility-slot[data-sakaker-util="facebook"]{
     width:44px!important;height:44px!important;max-width:44px!important;max-height:44px!important;
   }
 }
-/* Facebook stays hidden; the ship launcher remains in the dock. */
+/* Facebook launcher and standalone ship duplicates are hidden everywhere. */
 html body #sakakerAllIconsDock #facebookVideoIcon,
 html body #sakakerAllIconsDock [data-sakaker-util="facebook"]{
   display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
@@ -449,4 +449,16 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock
     min-width:60px!important;
     max-width:60px!important;
   }
+}
+/* Last-resort global guard for launchers re-created outside the shared dock. */
+html body :is(#facebookVideoIcon,.facebookVideoIcon,[data-sakaker-util="facebook"],[data-sakaker-dock-key="facebook"],button[aria-label*="Facebook" i],a[aria-label*="Facebook" i],button[title*="Facebook" i],a[title*="Facebook" i],button[aria-label*="فيس بوك"],a[aria-label*="فيس بوك"],button[title*="فيس بوك"],a[title*="فيس بوك"]):not(#facebookVideoPopup *){
+  display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
+}
+html body #sakTitanicShipLauncher,
+html body #sakakerAllIconsDock [data-sakaker-util="ship"],
+html body #sakakerAllIconsDock [data-sakaker-dock-key="ship"],
+html body #shipIcon_new{
+  display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
+  width:0!important;min-width:0!important;max-width:0!important;height:0!important;min-height:0!important;max-height:0!important;
+  margin:0!important;padding:0!important;overflow:hidden!important;flex:0 0 0!important;
 }
