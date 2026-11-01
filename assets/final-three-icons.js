@@ -17,7 +17,7 @@ const utilityItems=[
   {key:'videoLibrary',selectors:['#emeraldLibraryButton']},
   {key:'live',selectors:['#liveFlasher']},
   {key:'siteBackground',selectors:['#sakSiteBackgroundBtn']},
-  {key:'ship',selectors:['#shipIcon_new']}
+  {key:'ship',selectors:['#sakTitanicShipLauncher']}
 ];
 
 const labels={
@@ -605,6 +605,24 @@ function deriveLabel(el,key){
   return en?'Icon':'أيقونة';
 }
 
+function titanicShipSVG(){
+  return '<svg class="sak-titanic-liner" viewBox="0 0 180 110" role="img" aria-label="Titanic style ocean liner" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="sakTitanicHull" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#43596b"/><stop offset=".55" stop-color="#142638"/><stop offset="1" stop-color="#050b12"/></linearGradient><linearGradient id="sakTitanicDeck" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffdf0"/><stop offset="1" stop-color="#c8b58c"/></linearGradient><linearGradient id="sakTitanicGold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0a8"/><stop offset=".5" stop-color="#c99b42"/><stop offset="1" stop-color="#fff0a8"/></linearGradient></defs><g stroke-linejoin="round"><path d="M7 65H173L154 88Q145 97 121 99H48Q20 94 7 65Z" fill="url(#sakTitanicHull)" stroke="url(#sakTitanicGold)" stroke-width="2.7"/><path d="M14 68Q87 76 166 68" fill="none" stroke="#f7e4ad" stroke-width="1.7"/><path d="M23 62L37 43H143L159 65Z" fill="url(#sakTitanicDeck)" stroke="#c69c51" stroke-width="1.6"/><path d="M39 43L49 33H133L144 43Z" fill="#fff9e9" stroke="#c69c51" stroke-width="1.4"/><path d="M53 33L62 25H119L130 33Z" fill="#fffdf3" stroke="#c69c51" stroke-width="1.2"/><path d="M67 25L73 19H111L119 25Z" fill="#f7edcf" stroke="#b58b46"/><g fill="#b86e32" stroke="url(#sakTitanicGold)" stroke-width="1.5"><path d="M51 27V9H65V27Z"/><path d="M75 25V6H89V25Z"/><path d="M99 25V6H113V25Z"/><path d="M123 27V9H137V27Z"/></g><g fill="#152536"><path d="M49 8H67V13H49Z"/><path d="M73 5H91V10H73Z"/><path d="M97 5H115V10H97Z"/><path d="M121 8H139V13H121Z"/></g><path d="M19 61H154M34 44H146" stroke="#9e7b42" stroke-width="1"/><g fill="#f5dfa4" stroke="#a67d3c" stroke-width=".5">'+Array.from({length:16},(_,i)=>'<circle cx="'+(29+i*8)+'" cy="81" r="1.7"/>').join('')+'</g><path d="M10 101Q42 95 73 101T136 101T173 101" fill="none" stroke="#e8c875" stroke-width="2" stroke-linecap="round"/><path d="M27 107Q59 102 91 107T153 107" fill="none" stroke="#8edbd3" stroke-width="1.4" stroke-linecap="round"/></g></svg>';
+}
+
+function ensureTitanicShipLauncher(){
+  let btn=document.getElementById('sakTitanicShipLauncher');
+  if(!btn){
+    btn=document.createElement('button');
+    btn.id='sakTitanicShipLauncher';
+    btn.type='button';
+    btn.addEventListener('click',()=>{window.location.href='https://business.sakaker.co/';});
+    btn.setAttribute('aria-label','فتح موقع سكاكر بزنس');
+    btn.title='فتح موقع سكاكر بزنس';
+    document.body.appendChild(btn);
+  }
+  return btn;
+}
+
 function decorateAsOstrich(el,key){
   if(!el)return;
   const stableKey=safeKey(key||el.id||el.dataset.sakakerDockKey||'icon');
@@ -626,6 +644,8 @@ function decorateAsOstrich(el,key){
     img.decoding='async';
     img.style.cssText='display:block;width:100%;height:100%;object-fit:contain;border-radius:50%;';
     art.replaceChildren(img);
+  }else if(stableKey==='ship'){
+    art.innerHTML=titanicShipSVG();
   }else if(stableKey==='castleTour'){
     // The launcher owns the yellow gull illustration; keep it intact.
     if(!art.querySelector('svg'))art.replaceChildren(ostrichSVG(stableKey));
@@ -746,6 +766,7 @@ function settle(){
      until the authenticated page is visible. */
   if(isLocked())return;
 
+  ensureTitanicShipLauncher();
   loadVisitorCounterModule();
   watchFacebookEmbeds();
   loadPaymentClock();
