@@ -16,8 +16,7 @@ const utilityItems=[
   {key:'textLibrary',finder:findTextLibrary},
   {key:'videoLibrary',selectors:['#emeraldLibraryButton']},
   {key:'live',selectors:['#liveFlasher']},
-  {key:'siteBackground',selectors:['#sakSiteBackgroundBtn']},
-  {key:'ship',selectors:['#sakTitanicShipLauncher']}
+  {key:'siteBackground',selectors:['#sakSiteBackgroundBtn']}
 ];
 
 const labels={
@@ -97,6 +96,22 @@ function watchFacebookEmbeds(){
 }
 
 function isLocked(){return document.body?.classList.contains('locked');}
+
+function hideFacebookLaunchers(){
+  const candidates=document.querySelectorAll(
+    '#facebookVideoIcon,.facebookVideoIcon,[data-sakaker-util="facebook"],[data-sakaker-dock-key="facebook"],' +
+    'button[aria-label*="Facebook" i],a[aria-label*="Facebook" i],button[title*="Facebook" i],a[title*="Facebook" i],' +
+    'button[aria-label*="فيس بوك"],a[aria-label*="فيس بوك"],button[title*="فيس بوك"],a[title*="فيس بوك"]'
+  );
+  candidates.forEach(el=>{
+    if(el.closest('#facebookVideoPopup'))return;
+    el.style.setProperty('display','none','important');
+    el.style.setProperty('visibility','hidden','important');
+    el.style.setProperty('opacity','0','important');
+    el.style.setProperty('pointer-events','none','important');
+    if(el.matches('.sakaker-utility-slot')&&!el.querySelector(':scope > *'))el.remove();
+  });
+}
 
 function installSiteBackgroundStyle(){
   if(document.getElementById('sakSiteBackgroundStyle'))return;
@@ -480,6 +495,8 @@ function syncSiteBackgroundLock(){
   updateSiteBackgroundButton();
   ensureCastleTourLauncher();
   ensureCastleStoriesLauncher();
+  ensureTitanicShipLauncher();
+  hideFacebookLaunchers();
   rebuildIconAppearance();
   removeOldSeaSoundControl();
   requestAnimationFrame(placeSiteSoundAboveClock);
@@ -610,17 +627,13 @@ function titanicShipSVG(){
 }
 
 function ensureTitanicShipLauncher(){
-  let btn=document.getElementById('sakTitanicShipLauncher');
-  if(!btn){
-    btn=document.createElement('button');
-    btn.id='sakTitanicShipLauncher';
-    btn.type='button';
-    btn.addEventListener('click',()=>{window.location.href='https://business.sakaker.co/';});
-    btn.setAttribute('aria-label','فتح موقع سكاكر بزنس');
-    btn.title='فتح موقع سكاكر بزنس';
-    document.body.appendChild(btn);
-  }
-  return btn;
+  /* The ship launcher was requested hidden. Older scripts can leave it in
+     the DOM, so remove every known standalone copy and its now-empty slot. */
+  document.querySelectorAll('#sakTitanicShipLauncher,#shipIcon_new,[data-sakaker-dock-key="ship"]').forEach(el=>el.remove());
+  document.querySelectorAll('#sakakerAllIconsDock [data-sakaker-util="ship"]').forEach(slot=>{
+    if(!slot.querySelector(':scope > *'))slot.remove();
+  });
+  return null;
 }
 
 function decorateAsOstrich(el,key){
@@ -684,8 +697,23 @@ function ensureSlot(utility,key){
 }
 
 function rebuildIconAppearance(){
-  const dock=document.getElementById('sakakerAllIconsDock');
+  const docks=[...document.querySelectorAll('#sakakerAllIconsDock')];
+  const dock=docks[0]||null;
   if(!dock)return;
+
+  /* If a legacy script produced a second dock, collapse it into the primary
+     dock without duplicating entries that already exist. */
+  docks.slice(1).forEach(extra=>{
+    [...extra.children].forEach(child=>{
+      const id=child.id;
+      const key=child.dataset?.sakakerDockKey;
+      const duplicate=(id&&dock.querySelector('#'+CSS.escape(id)))||
+        (key&&dock.querySelector('[data-sakaker-dock-key="'+key+'"]'));
+      if(duplicate){child.remove();return;}
+      dock.appendChild(child);
+    });
+    extra.remove();
+  });
 
   const cards=[...document.querySelectorAll('.cards')].find(el=>!el.closest(EXCLUDED)&&el.querySelector('.icon-card'));
   if(cards){
@@ -767,6 +795,7 @@ function settle(){
   if(isLocked())return;
 
   ensureTitanicShipLauncher();
+  hideFacebookLaunchers();
   loadVisitorCounterModule();
   watchFacebookEmbeds();
   loadPaymentClock();
@@ -783,6 +812,8 @@ window.addEventListener('load',settle,{once:true});
 [500,1500,3500,7000].forEach(ms=>setTimeout(settle,ms));
 new MutationObserver(()=>{
   if(isLocked())return;
+  hideFacebookLaunchers();
+  ensureTitanicShipLauncher();
   watchFacebookEmbeds();
   loadPaymentClock();
   ensureCastleTourLauncher();
