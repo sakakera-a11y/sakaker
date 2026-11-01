@@ -43,3 +43,12 @@ html body #sakakerAllIconsDock #sakCreativeIcon{
   width:0!important;min-width:0!important;max-width:0!important;height:0!important;min-height:0!important;max-height:0!important;
   margin:0!important;padding:0!important;overflow:hidden!important;flex:0 0 0!important;
 }
+
+
+/* Final fallback: remove any Facebook launcher variant even if an older script
+   recreates it outside the shared icon dock. The Facebook popup itself is untouched. */
+html body :is(#facebookVideoIcon,[data-sakaker-util="facebook"],[data-sakaker-dock-key="facebook"],.facebookVideoIcon,[aria-label*="فيس بوك"],[title*="فيس بوك"],[aria-label*="Facebook"],[title*="Facebook"]){
+  display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
+  width:0!important;min-width:0!important;max-width:0!important;height:0!important;min-height:0!important;max-height:0!important;
+  margin:0!important;padding:0!important;border:0!important;overflow:hidden!important;flex:0 0 0!important;
+}
