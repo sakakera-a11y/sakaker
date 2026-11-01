@@ -13,7 +13,6 @@ const utilityItems=[
   {key:'map',selectors:['#mapIcon','.launcher[data-map]','.launcher[aria-label*="خريطة"]','.launcher[title*="خريطة"]','.launcher']},
   {key:'business',selectors:['#sakakerBusinessAd']},
   /* Keep the hidden launchers registered without affecting the visible order. */
-  {key:'facebook',selectors:['#facebookVideoIcon']},
   {key:'textLibrary',finder:findTextLibrary},
   {key:'videoLibrary',selectors:['#emeraldLibraryButton']},
   {key:'live',selectors:['#liveFlasher']},
