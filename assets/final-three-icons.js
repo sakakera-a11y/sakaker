@@ -104,7 +104,7 @@ function hideFacebookLaunchers(){
     'button[aria-label*="فيس بوك"],a[aria-label*="فيس بوك"],button[title*="فيس بوك"],a[title*="فيس بوك"]'
   );
   candidates.forEach(el=>{
-    if(el.closest('#facebookVideoPopup'))return;
+    if(el.closest('#facebookVideoPopup,.sak-gull-hub'))return;
     el.style.setProperty('display','none','important');
     el.style.setProperty('visibility','hidden','important');
     el.style.setProperty('opacity','0','important');
@@ -627,9 +627,11 @@ function titanicShipSVG(){
 }
 
 function ensureTitanicShipLauncher(){
-  /* The ship launcher was requested hidden. Older scripts can leave it in
-     the DOM, so remove every known standalone copy and its now-empty slot. */
-  document.querySelectorAll('#sakTitanicShipLauncher,#shipIcon_new,[data-sakaker-dock-key="ship"]').forEach(el=>el.remove());
+  /* Retire duplicate standalone ship launchers; the ship action now lives
+     beside the Facebook videos inside the existing shared gull icon. */
+  document.querySelectorAll('#sakTitanicShipLauncher,#shipIcon_new,[data-sakaker-dock-key="ship"]').forEach(el=>{
+    if(!el.closest('.sak-gull-hub'))el.remove();
+  });
   document.querySelectorAll('#sakakerAllIconsDock [data-sakaker-util="ship"]').forEach(slot=>{
     if(!slot.querySelector(':scope > *'))slot.remove();
   });
@@ -696,6 +698,49 @@ function ensureSlot(utility,key){
   return slot;
 }
 
+function openSakPopup(popup){
+  if(!popup)return;
+  popup.hidden=false;
+  popup.removeAttribute('aria-hidden');
+  popup.classList.add('active','open','show');
+  popup.style.setProperty('display','flex','important');
+  popup.style.setProperty('visibility','visible','important');
+  popup.style.setProperty('opacity','1','important');
+  popup.style.setProperty('pointer-events','auto','important');
+}
+function ensureSeagullHub(utility){
+  if(!utility)return;
+  let hub=utility.querySelector(':scope > .sak-gull-hub');
+  if(!hub){
+    hub=document.createElement('div');
+    hub.className='sak-gull-hub';
+    hub.setAttribute('role','group');
+    hub.setAttribute('aria-label','فيسبوك والسفينة');
+    const bird=document.createElement('span');
+    bird.className='sak-gull-hub-art';
+    bird.innerHTML=ostrichSVG('facebook').outerHTML;
+    const actions=document.createElement('div');
+    actions.className='sak-gull-hub-actions';
+    const facebook=document.createElement('button');
+    facebook.type='button';facebook.className='sak-gull-action sak-gull-facebook';
+    facebook.textContent='Facebook';facebook.setAttribute('aria-label','عرض مقاطع الفيديو');
+    facebook.addEventListener('click',e=>{
+      e.preventDefault();e.stopPropagation();
+      const popup=document.getElementById('facebookVideoPopup');
+      if(popup){openSakPopup(popup);watchFacebookEmbeds();installFacebookEmbeds();}
+    });
+    const ship=document.createElement('button');
+    ship.type='button';ship.className='sak-gull-action sak-gull-ship';
+    ship.textContent='السفينة';ship.setAttribute('aria-label','فتح نافذة السفينة');
+    ship.addEventListener('click',e=>{
+      e.preventDefault();e.stopPropagation();
+      openSakPopup(document.getElementById('shipPopup_new'));
+    });
+    actions.append(facebook,ship);
+    hub.append(bird,actions);
+    utility.appendChild(hub);
+  }
+}
 function rebuildIconAppearance(){
   const docks=[...document.querySelectorAll('#sakakerAllIconsDock')];
   const dock=docks[0]||null;
@@ -729,6 +774,8 @@ function rebuildIconAppearance(){
     if(item.parentElement!==slot)slot.appendChild(item);
     decorateAsOstrich(item,info.key);
   });
+
+  ensureSeagullHub(utility);
 
   utility.querySelectorAll('.sakaker-utility-slot').forEach(slot=>{
     if(!slot.firstElementChild)slot.remove();
