@@ -462,3 +462,38 @@ html body #shipIcon_new{
   width:0!important;min-width:0!important;max-width:0!important;height:0!important;min-height:0!important;max-height:0!important;
   margin:0!important;padding:0!important;overflow:hidden!important;flex:0 0 0!important;
 }
+
+
+/* One existing shared gull launcher with two independent actions. */
+html body #sakakerAllIconsDock .sak-gull-hub{
+  position:relative!important;display:flex!important;flex:0 0 84px!important;
+  width:84px!important;min-width:84px!important;max-width:84px!important;
+  min-height:86px!important;align-items:center!important;justify-content:flex-start!important;
+  flex-direction:column!important;gap:2px!important;margin:0!important;padding:0!important;
+  border:0!important;background:transparent!important;overflow:visible!important;
+}
+html body #sakakerAllIconsDock .sak-gull-hub-art{display:block!important;width:44px!important;height:40px!important;filter:drop-shadow(0 0 5px #ffe27a)!important}
+html body #sakakerAllIconsDock .sak-gull-hub-art svg{display:block!important;width:100%!important;height:100%!important}
+html body #sakakerAllIconsDock .sak-gull-hub-actions{display:flex!important;gap:3px!important;width:100%!important;justify-content:center!important;align-items:center!important}
+html body #sakakerAllIconsDock .sak-gull-action{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  flex:1 1 0!important;min-width:0!important;min-height:26px!important;max-width:100%!important;
+  margin:0!important;padding:3px 4px!important;border-radius:8px!important;border:1px solid #fff9!important;
+  font:800 9px/1.1 Tajawal,Tahoma,Arial,sans-serif!important;white-space:nowrap!important;
+  cursor:pointer!important;touch-action:manipulation!important;pointer-events:auto!important;
+  text-shadow:0 1px 2px #000!important;box-shadow:0 0 8px #ffffff25!important;
+}
+html body #sakakerAllIconsDock .sak-gull-action.sak-gull-facebook{
+  color:#fff!important;background:linear-gradient(135deg,#7c3aed,#4c1d95)!important;
+  border-color:#d8b4fe!important;box-shadow:0 0 10px #8b5cf6a0!important;
+}
+html body #sakakerAllIconsDock .sak-gull-action.sak-gull-ship{
+  color:#042b32!important;background:linear-gradient(135deg,#67f5e5,#13b8bd)!important;
+  border-color:#b8fff7!important;box-shadow:0 0 10px #2dd4bf99!important;
+}
+html body #sakakerAllIconsDock .sak-gull-action:focus-visible{outline:2px solid #fff!important;outline-offset:2px!important}
+@media(max-width:600px){
+ html body #sakakerAllIconsDock .sak-gull-hub{flex-basis:80px!important;width:80px!important;min-width:80px!important;max-width:80px!important;min-height:78px!important}
+ html body #sakakerAllIconsDock .sak-gull-hub-art{width:40px!important;height:35px!important}
+ html body #sakakerAllIconsDock .sak-gull-action{font-size:8px!important;min-height:25px!important;padding:3px 2px!important}
+}
