@@ -16,6 +16,40 @@ html,body{
   overflow-x:hidden;
 }
 
+/* Hide obsolete standalone ship/payment badge launchers; the Titanic liner now lives in the shared dock. */
+html body #shipIcon_new,
+html body #sakYachtPaymentLauncher,
+html body #sakakerAllIconsDock .sakaker-utility-slot[data-sakaker-util="ship"] > #shipIcon_new{
+  display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
+}
+
+/* Transparent Titanic-style liner: no circle, badge, tile or background. */
+html body #sakakerAllIconsDock #sakTitanicShipLauncher{
+  display:block!important;position:relative!important;
+  border:0!important;border-radius:0!important;outline:0!important;
+  background:transparent!important;background-image:none!important;
+  box-shadow:none!important;backdrop-filter:none!important;
+  overflow:visible!important;cursor:pointer!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+html body #sakakerAllIconsDock #sakTitanicShipLauncher .sak-ostrich-art{
+  width:calc(var(--sak-ostrich-art) * 1.18)!important;
+  max-width:calc(var(--sak-ostrich-cell) + 2px)!important;
+  height:calc(var(--sak-ostrich-art) * .78)!important;
+  min-height:calc(var(--sak-ostrich-art) * .78)!important;
+  max-height:calc(var(--sak-ostrich-art) * .78)!important;
+  top:7px!important;
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.8)) drop-shadow(0 0 5px rgba(255,213,105,.65))!important;
+}
+html body #sakakerAllIconsDock #sakTitanicShipLauncher .sak-titanic-liner{
+  display:block!important;width:100%!important;height:100%!important;
+  min-width:100%!important;min-height:100%!important;max-width:100%!important;max-height:100%!important;
+  overflow:visible!important;background:transparent!important;pointer-events:none!important;
+}
+html body #sakakerAllIconsDock #sakTitanicShipLauncher .sak-ostrich-name{
+  color:#ffe58a!important;-webkit-text-fill-color:#ffe58a!important;
+  text-shadow:0 1px 3px #000,0 0 6px #000!important;
+}
 /* Facebook launcher: hide it everywhere, not only when nested in the utility dock. */
 html body #facebookVideoIcon,
 html body .sakaker-utility-slot[data-sakaker-util="facebook"]{
