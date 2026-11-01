@@ -497,3 +497,49 @@ html body #sakakerAllIconsDock .sak-gull-action:focus-visible{outline:2px solid 
  html body #sakakerAllIconsDock .sak-gull-hub-art{width:40px!important;height:35px!important}
  html body #sakakerAllIconsDock .sak-gull-action{font-size:8px!important;min-height:25px!important;padding:3px 2px!important}
 }
+
+
+/* Professional icon finish — no frames, circles, tiles, or position changes.
+   Keep the existing dock geometry and each launcher's click/visibility logic. */
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon,
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-utility-slot,
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-gull-hub{
+  border:0!important;
+  outline:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon{
+  animation:none!important;
+  opacity:1!important;
+  visibility:visible!important;
+}
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-art{
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.8))
+         drop-shadow(0 0 3px rgba(218,190,112,.32))!important;
+  animation:none!important;
+}
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-name{
+  color:#f4ead0!important;
+  -webkit-text-fill-color:#f4ead0!important;
+  font:700 clamp(7px,.68vw,9px)/1.2 Tajawal,Tahoma,Arial,sans-serif!important;
+  letter-spacing:.05px!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.95)!important;
+}
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-gull-hub-art{
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.8))!important;
+}
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-gull-action{
+  border-radius:5px!important;
+  box-shadow:none!important;
+}
+@media(prefers-reduced-motion:reduce){
+  html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon,
+  html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-art{
+    animation:none!important;
+  }
+}
