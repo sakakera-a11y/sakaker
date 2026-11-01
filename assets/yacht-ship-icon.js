@@ -13,7 +13,7 @@ function installStyle(){
   .sakaker-utility-slot[data-sakaker-util="ship"],
   .sakaker-utility-slot[data-sakaker-util="business"],
   #sakakerAllIconsDock .sak-hide-legacy-ship{
-    display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
+    display:none!important;visibility:hidden!important;opacity:1!important;pointer-events:none!important;
   }
   #${LAUNCHER_ID}{
     position:fixed!important;inset:auto!important;
