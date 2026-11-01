@@ -16,6 +16,26 @@ html,body{
   overflow-x:hidden;
 }
 
+/* Facebook launcher: hide it everywhere, not only when nested in the utility dock. */
+html body #facebookVideoIcon,
+html body .sakaker-utility-slot[data-sakaker-util="facebook"]{
+  display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
+  width:0!important;min-width:0!important;max-width:0!important;height:0!important;min-height:0!important;max-height:0!important;
+  margin:0!important;padding:0!important;overflow:hidden!important;flex:0 0 0!important;
+}
+
+/* Portrait phones: keep the forum trigger compact and inside its dock cell. */
+@media(max-width:600px) and (orientation:portrait){
+  html body #sakakerAllIconsDock #sakCastleForumIcon{
+    box-sizing:border-box!important;flex:0 0 50px!important;
+    width:50px!important;min-width:50px!important;max-width:50px!important;
+    height:62px!important;min-height:62px!important;max-height:62px!important;
+    margin:0!important;padding:0!important;align-self:flex-end!important;
+  }
+  html body #sakakerAllIconsDock #sakCastleForumIcon svg{
+    width:44px!important;height:44px!important;max-width:44px!important;max-height:44px!important;
+  }
+}
 /* Facebook stays hidden; the ship launcher remains in the dock. */
 html body #sakakerAllIconsDock #facebookVideoIcon,
 html body #sakakerAllIconsDock [data-sakaker-util="facebook"]{
