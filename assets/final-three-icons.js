@@ -129,6 +129,10 @@ function watchFacebookEmbeds(){
   observer=new MutationObserver(loadWhenVisible);
   observer.observe(popup,{attributes:true,attributeFilter:['class','style','hidden','aria-hidden']});
   document.addEventListener('click',checkAfterClick,true);
+  if(popup.dataset.sakFacebookResizeInstalled!=='1'){
+    popup.dataset.sakFacebookResizeInstalled='1';
+    window.addEventListener('resize',()=>requestAnimationFrame(loadWhenVisible),{passive:true});
+  }
   loadWhenVisible();
 }
 
