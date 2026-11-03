@@ -60,20 +60,32 @@ function installFacebookEmbeds(){
     box.insertBefore(featured,frame);
   }
   const postFrame=featured.querySelector('.fbPostFrame');
-  if(postFrame&&!postFrame.querySelector('iframe[data-sak-featured-facebook-post="1"]')){
-    const iframe=document.createElement('iframe');
-    iframe.dataset.sakFeaturedFacebookPost='1';
-    iframe.src='https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FAbwAlqmrZmrd%2Fposts%2Fpfbid02BHiNmDHAJCzDNmiTq6DbdPsDfsiJ4f6KwFyHL1mRSucNKYgUD3pjfe6B3DQb5wJdl&show_text=true&width=500';
-    iframe.width='500';
-    iframe.height='333';
-    iframe.style.cssText='display:block;width:100%;max-width:500px;height:clamp(333px,52dvh,560px);min-width:0;border:0;overflow:hidden;margin:0 auto';
-    iframe.scrolling='no';
-    iframe.frameBorder='0';
-    iframe.allowFullscreen=true;
-    iframe.allow='autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share';
-    iframe.setAttribute('allowfullscreen','true');
-    iframe.setAttribute('title','منشور أبو القمر زمرد على فيسبوك');
-    postFrame.appendChild(iframe);
+  if(postFrame){
+    let iframe=postFrame.querySelector('iframe[data-sak-featured-facebook-post="1"]');
+    if(!iframe){
+      iframe=document.createElement('iframe');
+      iframe.dataset.sakFeaturedFacebookPost='1';
+      iframe.scrolling='no';
+      iframe.frameBorder='0';
+      iframe.allowFullscreen=true;
+      iframe.allow='autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share';
+      iframe.setAttribute('allowfullscreen','true');
+      iframe.setAttribute('title','منشور أبو القمر زمرد على فيسبوك');
+      postFrame.appendChild(iframe);
+    }
+    /* Facebook's post plugin renders at its URL width; a 500px internal
+       canvas inside a narrow phone iframe gets clipped. Match plugin width
+       to the actual visible dialog width (Facebook minimum: 350px). */
+    const availableWidth=postFrame.clientWidth||box.clientWidth||window.innerWidth;
+    const postWidth=Math.max(350,Math.min(500,Math.floor(availableWidth-16)));
+    const postUrl='https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FAbwAlqmrZmrd%2Fposts%2Fpfbid02BHiNmDHAJCzDNmiTq6DbdPsDfsiJ4f6KwFyHL1mRSucNKYgUD3pjfe6B3DQb5wJdl&show_text=true&width='+postWidth;
+    iframe.width=String(postWidth);
+    iframe.height='520';
+    iframe.style.cssText='display:block;width:100%;max-width:500px;min-width:0;height:clamp(420px,65dvh,600px);border:0;overflow:hidden;margin:0 auto';
+    if(iframe.dataset.sakPostWidth!==String(postWidth)){
+      iframe.dataset.sakPostWidth=String(postWidth);
+      iframe.src=postUrl;
+    }
   }
 
   const reels=[
@@ -117,6 +129,10 @@ function watchFacebookEmbeds(){
   observer=new MutationObserver(loadWhenVisible);
   observer.observe(popup,{attributes:true,attributeFilter:['class','style','hidden','aria-hidden']});
   document.addEventListener('click',checkAfterClick,true);
+  if(popup.dataset.sakFacebookResizeInstalled!=='1'){
+    popup.dataset.sakFacebookResizeInstalled='1';
+    window.addEventListener('resize',()=>requestAnimationFrame(loadWhenVisible),{passive:true});
+  }
   loadWhenVisible();
 }
 
