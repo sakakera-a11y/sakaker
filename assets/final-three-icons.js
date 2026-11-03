@@ -49,6 +49,33 @@ function installFacebookEmbeds(){
   const frame=box?.querySelector('.fbVideoFrame');
   if(!box||!frame)return;
 
+  /* The requested featured post always leads the existing Facebook content.
+     The Facebook plugin itself renders the post text beneath the post media. */
+  let featured=box.querySelector('.sakFeaturedFacebookPost');
+  if(!featured){
+    featured=document.createElement('section');
+    featured.className='sakFeaturedFacebookPost fbPostSection';
+    featured.setAttribute('aria-label','Featured Facebook post');
+    featured.innerHTML='<div class="fbPostFrame sakFeaturedFacebookPostFrame"></div>';
+    box.insertBefore(featured,frame);
+  }
+  const postFrame=featured.querySelector('.fbPostFrame');
+  if(postFrame&&!postFrame.querySelector('iframe[data-sak-featured-facebook-post="1"]')){
+    const iframe=document.createElement('iframe');
+    iframe.dataset.sakFeaturedFacebookPost='1';
+    iframe.src='https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FAbwAlqmrZmrd%2Fposts%2Fpfbid02BHiNmDHAJCzDNmiTq6DbdPsDfsiJ4f6KwFyHL1mRSucNKYgUD3pjfe6B3DQb5wJdl&show_text=true&width=500';
+    iframe.width='500';
+    iframe.height='333';
+    iframe.style.cssText='display:block;width:100%;max-width:500px;height:clamp(333px,52dvh,560px);min-width:0;border:0;overflow:hidden;margin:0 auto';
+    iframe.scrolling='no';
+    iframe.frameBorder='0';
+    iframe.allowFullscreen=true;
+    iframe.allow='autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share';
+    iframe.setAttribute('allowfullscreen','true');
+    iframe.setAttribute('title','منشور أبو القمر زمرد على فيسبوك');
+    postFrame.appendChild(iframe);
+  }
+
   const reels=[
     {id:'1713298586438007',title:'Facebook Reel'},
     {id:'1028563299794826',title:'Facebook Reel (restored)'},
@@ -57,7 +84,6 @@ function installFacebookEmbeds(){
 
   reels.forEach(({id,title})=>{
     if(box.querySelector('iframe[data-sak-facebook-reel="'+id+'"]'))return;
-
     const iframe=document.createElement('iframe');
     iframe.dataset.sakFacebookReel=id;
     iframe.src='https://www.facebook.com/plugins/video.php?height=476&href='+encodeURIComponent('https://www.facebook.com/reel/'+id+'/')+'&show_text=true&width=267&t=0';
@@ -70,7 +96,6 @@ function installFacebookEmbeds(){
     iframe.allow='autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share';
     iframe.setAttribute('allowfullscreen','true');
     iframe.setAttribute('title',title);
-
     frame.appendChild(iframe);
   });
 }
