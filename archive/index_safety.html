@@ -4266,7 +4266,7 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
       modal.querySelector('.sak-text-library-close').addEventListener('click',closeTextLibrary);
     }
     const title=modal.querySelector('h2'), grid=modal.querySelector('.sak-text-library-grid');
-    title.textContent=label('📖 المكتبة النصية','📖 Text Library');
+    title.textContent=label('🧩 الألغاز','🧩 Riddles');
     grid.innerHTML='';
     textItems.forEach(function(item){
       const button=document.createElement('button'); button.type='button'; button.className='sak-text-library-item';
@@ -4279,23 +4279,20 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
     const card=document.querySelector('.cards .sak-text-library-card');
     if(!card) return;
 
-    card.setAttribute('onclick','openSakakerTextLibrary()');
+    card.setAttribute('onclick','window.sakakerOpenVisitorPostsWindow && window.sakakerOpenVisitorPostsWindow()');
     card.setAttribute('role','button');
     card.setAttribute('tabindex','0');
-    card.setAttribute('aria-label',label('المكتبة النصية','Text Library'));
-    card.setAttribute('data-aria-ar','المكتبة النصية');
-    card.setAttribute('data-aria-en','Text Library');
-    card.setAttribute('data-title-ar','المكتبة النصية');
-    card.setAttribute('data-title-en','Text Library');
-    card.title=label('المكتبة النصية','Text Library');
+    card.setAttribute('aria-label',label('مشاركات الزوار','Visitor Posts'));
+    card.setAttribute('data-aria-ar','مشاركات الزوار');
+    card.setAttribute('data-aria-en','Visitor Posts');
+    card.setAttribute('data-title-ar','مشاركات الزوار');
+    card.setAttribute('data-title-en','Visitor Posts');
+    card.title=label('مشاركات الزوار','Visitor Posts');
 
     card.innerHTML=
-      '<svg class="icon-svg" fill="none" viewBox="0 0 24 24">' +
-        '<path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 0-3 3V4Z" stroke-width="1.4"></path>' +
-        '<path d="M8 8h8M8 12h8M8 16h5" stroke-linecap="round" stroke-width="1.4"></path>' +
-      '</svg>' +
-      '<div class="icon-label" data-ar="المكتبة النصية" data-en="Text Library">'+label('المكتبة النصية','Text Library')+'</div>' +
-      '<div class="sub" data-ar="قصص • معرفة • ألغاز" data-en="Stories • Knowledge • Riddles">'+label('قصص • معرفة • ألغاز','Stories • Knowledge • Riddles')+'</div>';
+      '<div class="icon-svg" aria-hidden="true" style="font-size:30px">🕊️</div>' +
+      '<div class="icon-label" data-ar="مشاركات الزوار" data-en="Visitor Posts">'+label('مشاركات الزوار','Visitor Posts')+'</div>' +
+      '<div class="sub" data-ar="شارك محتواك مع زوار الموقع" data-en="Share with site visitors">'+label('شارك محتواك مع زوار الموقع','Share with site visitors')+'</div>';
 
     const legacySelectors=[
       '.cards .icon-card[onclick="openFolder(1)"]',
@@ -4358,6 +4355,41 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
 <link rel="stylesheet" href="/assets/live-media-refresh.css?v=20261008-window-palette2">
+
+<style>
+  /* إخفاء أيقونة وفيسبوك والسفينة مهما كانت طريقة إنشاؤها */
+  html body #sakakerAllIconsDock #facebookVideoIcon,
+  html body #sakakerAllIconsDock [data-sakaker-util="facebook"],
+  html body #sakakerAllIconsDock [data-sakaker-dock-key="facebook"],
+  html body #sakakerAllIconsDock .sak-gull-hub,
+  html body #sakakerAllIconsDock .sak-gull-action.sak-gull-facebook,
+  html body #sakakerAllIconsDock .sak-gull-action.sak-gull-ship,
+  html body #sakakerAllIconsDock [data-sakaker-util="ship"],
+  html body #sakakerAllIconsDock [data-sakaker-dock-key="ship"],
+  html body #shipIcon_new,
+  html body #sakTitanicShipLauncher,
+  html body [aria-label*="فيس بوك" i],
+  html body [title*="فيس بوك" i],
+  html body [aria-label*="Facebook" i],
+  html body [title*="Facebook" i]{
+    display:none !important;
+    visibility:hidden !important;
+    opacity:0 !important;
+    pointer-events:none !important;
+    width:0 !important;
+    min-width:0 !important;
+    max-width:0 !important;
+    height:0 !important;
+    min-height:0 !important;
+    max-height:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+    border:0 !important;
+    overflow:hidden !important;
+    flex:0 0 0 !important;
+  }
+</style>
+
 </head>
 <body>
 
@@ -4481,7 +4513,7 @@ birdBtn.addEventListener('click',async e=>{
 
   <div class="fbPostFrame">
     <iframe loading="lazy"
-      src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FAbwAlqmrZmrd%2Fposts%2Fpfbid0i17uDRMnqqhTpS4uZxmApmEj24LQXzaM5EeRat581PUZhqcqj3SayNTMkqsY1pQWl&show_text=true&width=500"
+      src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FAbwAlqmrZmrd%2Fposts%2Fpfbid07k5Br3eoSwyNP3dF73eRVjYcZjTJmESbZZk1y6GYMCBvPHWhgbV7h11u317Copv9l&show_text=true&width=500"
       width="500"
       height="333"
       style="border:none;overflow:hidden"
@@ -5052,7 +5084,7 @@ birdBtn.addEventListener('click',async e=>{
       onclick="openSakakerTextLibrary()"
       role="button"
       tabindex="0"
-      aria-label="المكتبة النصية"
+      aria-label="الألغاز"
     >
       <svg
         class="icon-svg"
@@ -5071,11 +5103,11 @@ birdBtn.addEventListener('click',async e=>{
       </svg>
 
       <div class="icon-label">
-        المكتبة النصية
+        الألغاز
       </div>
 
       <div class="sub">
-        قصص • معرفة • ألغاز
+        ألغاز وتحديات
       </div>
     </div>
 
@@ -5455,7 +5487,7 @@ birdBtn.addEventListener('click',async e=>{
   <div class="svc-sep"></div>
   <div class="svc-item">
     <span class="svc-icon">👁️</span>
-    <span class="svc-label" data-ar="إجمالي الزيارات" data-en="Total Visits">إجمالي الزيارات</span>
+    <span class="svc-label" data-ar="إجمالي الزوار الفريدين" data-en="Unique Visitors">إجمالي الزوار الفريدين</span>
     <strong id="svcTotal">0</strong>
   </div>
   <div class="svc-sep"></div>
@@ -5886,6 +5918,7 @@ html body #loginBox #loginCopyright{
       cartoon 🎨 كرتون
     </div>
 <div id="cartoonSection" style="display:none;flex-wrap:wrap;">
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/qaGrlcDCGWw')">🎬 المقطع الجديد</div>
 <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/U5sBC9Fr0fA')">كرتون</div>
 <div class="emeraldVideoCircle sak-moved-picks-video" data-sak-video-id="jtT5Ifr-3VA" onclick="openEmeraldVideo('https://www.youtube.com/embed/jtT5Ifr-3VA')">مختارات سابقة — Previous Selection</div>
 </div>
@@ -6009,6 +6042,8 @@ import {
     updateDoc,
     writeBatch,
     increment,
+    runTransaction,
+    onSnapshot,
     serverTimestamp
 }
 from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
@@ -6351,6 +6386,78 @@ if(facebookButton){
 }
 
 /* =========================================================
+   📊 عداد الزوار الفريدين عبر Cloud Firestore
+   المسار: siteStats/visits
+   علامة منع التكرار: siteStats/visits/visitorMarks/{uid}
+========================================================= */
+async function recordNewVisit(uid){
+    if(!uid) return;
+
+    const visitsDocRef = doc(db, "siteStats", "visits");
+    const markDocRef = doc(db, "siteStats", "visits", "visitorMarks", uid);
+
+    try{
+        await runTransaction(db, async (transaction) => {
+            // قراءة علامة المستخدم أولاً لمنع احتسابه أكثر من مرة.
+            const markSnap = await transaction.get(markDocRef);
+            if(markSnap.exists()){
+                console.log("الزائر مسجل مسبقاً؛ لن تتم زيادة العداد.");
+                return;
+            }
+
+            // قراءة العداد الحالي قبل تنفيذ أي كتابة في المعاملة.
+            const visitsSnap = await transaction.get(visitsDocRef);
+            const currentCount = visitsSnap.exists()
+                ? Number(visitsSnap.data().count || 0)
+                : 0;
+
+            // إنشاء علامة المستخدم وزيادة الإجمالي في المعاملة نفسها.
+            transaction.set(markDocRef, {
+                createdAt: serverTimestamp()
+            });
+
+            if(!visitsSnap.exists()){
+                transaction.set(visitsDocRef, {
+                    count: 1,
+                    updatedAt: serverTimestamp()
+                });
+            }else{
+                transaction.update(visitsDocRef, {
+                    count: currentCount + 1,
+                    updatedAt: serverTimestamp()
+                });
+            }
+        });
+        console.log("تم التحقق من زيارة المستخدم وتحديث العداد عند الحاجة.");
+    }catch(error){
+        console.error("تعذر تسجيل الزائر في Firestore:", error);
+    }
+}
+
+function listenToCounter(){
+    const visitsDocRef = doc(db, "siteStats", "visits");
+    const counterEl = document.getElementById("svcTotal") ||
+                      document.getElementById("visitor-counter");
+
+    return onSnapshot(visitsDocRef, (docSnap) => {
+        const currentCount = docSnap.exists()
+            ? Number(docSnap.data().count || 0)
+            : 0;
+        const target = document.getElementById("svcTotal") ||
+                       document.getElementById("visitor-counter");
+        if(target) target.textContent = currentCount.toLocaleString(
+            document.documentElement.lang === "en" ? "en-US" : "ar-SA"
+        );
+    }, (error) => {
+        console.error("تعذر الاستماع إلى عداد Firestore:", error);
+        if(counterEl) counterEl.setAttribute("data-state", "error");
+    });
+}
+
+// يبدأ الاستماع بعد تأكيد تسجيل الدخول، لتفادي رفض القراءة إذا كانت القواعد تشترط المصادقة.
+let stopListeningToCounter = null;
+
+/* =========================================================
    👤 مراقبة حالة الدخول
 ========================================================= */
 
@@ -6359,6 +6466,12 @@ onAuthStateChanged(auth, (user) => {
     const profile = document.getElementById("userProfile");
 
     if(user){
+        // يسجل كل حساب موثق مرة واحدة فقط، وتمنع visitorMarks تكرار الزيادة.
+        void recordNewVisit(user.uid);
+        if(!stopListeningToCounter){
+            stopListeningToCounter = listenToCounter();
+        }
+
         /* أولًا نفتح الموقع ثم نخفي صفحة الدخول */
         document.body.classList.remove("locked");
 
@@ -6385,6 +6498,11 @@ onAuthStateChanged(auth, (user) => {
         const errorEl = document.getElementById("loginError");
         if(errorEl) errorEl.textContent = "";
     }else{
+        if(stopListeningToCounter){
+            stopListeningToCounter();
+            stopListeningToCounter = null;
+        }
+
         /* أولًا نقفل الموقع ثم نظهر صفحة الدخول */
         document.body.classList.add("locked");
 
@@ -38541,287 +38659,7 @@ html body #sakakerWorldNews{position:fixed!important;top:calc(68px + env(safe-ar
 @keyframes sakRestoredNews{from{transform:translateX(35vw)}to{transform:translateX(-100%)}}
 body.locked #sakakerWorldNews{visibility:hidden!important}
 @media(prefers-reduced-motion:reduce){#sakakerWorldNewsTrack{animation:none}html body #sakakerWorldNews{overflow-x:auto}}
-</style><script id="sakaker-bouncing-video-world-news-js">
-(function(){
-  'use strict';
-
-  const NEWS_FEEDS = {
-    ar: [
-      ['📰 عام - Google','https://news.google.com/rss?hl=ar&gl=SA&ceid=SA:ar'],
-      ['🌍 عالم - Google','https://news.google.com/rss/headlines/section/topic/WORLD?hl=ar&gl=SA&ceid=SA:ar'],
-      ['⚽ رياضة - Google','https://news.google.com/rss/headlines/section/topic/SPORTS?hl=ar&gl=SA&ceid=SA:ar'],
-      ['💹 اقتصاد - Google','https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=ar&gl=SA&ceid=SA:ar'],
-
-      ['📰 الجزيرة','https://www.aljazeera.net/aljazeerarss/arabe.xml'],
-      ['📰 العربية','https://www.alarabiya.net/.mrss/ar.xml'],
-      ['📰 BBC عربي','https://www.bbc.com/arabic/index.xml'],
-      ['📰 CNN عربي','https://arabic.cnn.com/rss.xml'],
-      ['📰 الشرق الأوسط','https://aawsat.com/rss.xml'],
-      ['📰 سكاي نيوز عربية','https://www.skynewsarabia.com/web/rss'],
-      ['📰 فرانس 24 عربي','https://www.france24.com/ar/rss'],
-      ['📰 روسيا اليوم عربي','https://arabic.rt.com/rss/'],
-      ['📰 TRT عربي','https://www.trtarabi.com/rss'],
-      ['📰 DW عربي','https://rss.dw.com/rdf/rss-ar-all']
-    ],
-
-    en: [
-      ['📰 General - Google','https://news.google.com/rss?hl=en-US&gl=US&ceid=US:en'],
-      ['🌍 World - Google','https://news.google.com/rss/headlines/section/topic/WORLD?hl=en-US&gl=US&ceid=US:en'],
-      ['⚽ Sports - Google','https://news.google.com/rss/headlines/section/topic/SPORTS?hl=en-US&gl=US&ceid=US:en'],
-      ['💹 Economy - Google','https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=en-US&gl=US&ceid=US:en'],
-
-      ['📰 BBC','https://feeds.bbci.co.uk/news/rss.xml'],
-      ['⚽ BBC Sport','https://feeds.bbci.co.uk/sport/rss.xml?edition=uk'],
-      ['💹 BBC Business','https://feeds.bbci.co.uk/news/business/rss.xml'],
-      ['📰 Al Jazeera English','https://www.aljazeera.com/xml/rss/all.xml'],
-      ['📰 France 24','https://www.france24.com/en/rss'],
-      ['📰 DW','https://rss.dw.com/rdf/rss-en-all'],
-      ['📰 NPR','https://feeds.npr.org/1001/rss.xml'],
-      ['🌍 Guardian World','https://www.theguardian.com/world/rss'],
-      ['⚽ Guardian Sport','https://www.theguardian.com/sport/rss'],
-      ['💹 Guardian Business','https://www.theguardian.com/business/rss'],
-      ['🌍 Sky News','https://feeds.skynews.com/feeds/rss/world.xml']
-    ]
-  };
-
-  let newsLoadToken = 0;
-
-  function currentLang(){
-    return document.documentElement.lang === 'en' ? 'en' : 'ar';
-  }
-
-  function ensureWorldNews(){
-    const clockBox = document.body;
-    if(!clockBox) return null;
-
-    let news = document.getElementById('sakakerWorldNews');
-
-    if(!news){
-      news = document.createElement('div');
-      news.id = 'sakakerWorldNews';
-      news.setAttribute('role','status');
-      news.setAttribute('aria-live','polite');
-
-      const track = document.createElement('div');
-      track.id = 'sakakerWorldNewsTrack';
-
-      news.appendChild(track);
-      clockBox.appendChild(news);
-    }
-
-    return news;
-  }
-
-  function setNewsText(items, lang){
-    window.sakLatestWorldNews={items:Array.isArray(items)?items.slice():[],lang};
-    window.dispatchEvent(new Event('sak-world-news-updated'));
-    const news = ensureWorldNews();
-    const track = document.getElementById('sakakerWorldNewsTrack');
-    if(!news || !track) return;
-
-    const title = lang === 'en' ? '📰 News  ⚽ Sports  💹 Economy' : '📰 أخبار  ⚽ رياضة  💹 اقتصاد';
-    const fallback = lang === 'en'
-      ? 'News is temporarily unavailable — automatic refresh will retry.'
-      : 'تعذّر تحميل الأخبار مؤقتاً — ستتم إعادة المحاولة تلقائياً.';
-
-    const bodyText = items && items.length ? items.join('   ◆   ') : fallback;
-
-    track.innerHTML = '';
-
-    const titleSpan = document.createElement('span');
-    titleSpan.className = 'sak-news-title';
-    titleSpan.textContent = title;
-
-    const textSpan = document.createElement('span');
-    textSpan.textContent = bodyText;
-
-    track.appendChild(titleSpan);
-    track.appendChild(textSpan);
-
-    news.style.setProperty('--sak-news-dir',lang === 'ar' ? 'rtl' : 'ltr');
-
-    const chars = (title + bodyText).length;
-    const duration = Math.max(120,Math.min(420,Math.round(chars * .48)));
-    news.style.setProperty('--sak-news-duration',duration + 's');
-
-    track.style.animation = 'none';
-    void track.offsetWidth;
-    track.style.animation = '';
-  }
-
-  function cacheKey(lang){
-    return 'sakakerWorldNewsCacheV3-' + lang;
-  }
-
-  function readNewsCache(lang){
-    try{
-      const raw = localStorage.getItem(cacheKey(lang));
-      if(!raw) return null;
-
-      const data = JSON.parse(raw);
-      if(!data || !Array.isArray(data.items)) return null;
-
-      if(Date.now() - Number(data.time || 0) > 90 * 60 * 1000){
-        return null;
-      }
-
-      return data.items;
-    }catch(e){
-      return null;
-    }
-  }
-
-  function writeNewsCache(lang,items){
-    try{
-      localStorage.setItem(
-        cacheKey(lang),
-        JSON.stringify({time:Date.now(),items:items})
-      );
-    }catch(e){}
-  }
-
-  async function fetchWithTimeout(url,timeoutMs){
-    const controller = new AbortController();
-    const timer = setTimeout(function(){controller.abort();},timeoutMs);
-
-    try{
-      const proxy = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
-
-      const response = await fetch(proxy,{
-        signal:controller.signal,
-        cache:'no-store'
-      });
-
-      if(!response.ok) throw new Error('HTTP ' + response.status);
-
-      return await response.json();
-    } finally {
-      clearTimeout(timer);
-    }
-  }
-
-  async function fetchFeed(name,url){
-    try{
-      const data = await fetchWithTimeout(url,9000);
-      if(!data || !data.contents) return [];
-
-      const xml = new DOMParser().parseFromString(data.contents,'text/xml');
-      if(xml.querySelector('parsererror')) return [];
-
-      const nodes = Array.from(xml.querySelectorAll('item, entry')).slice(0,4);
-      const results = [];
-
-      nodes.forEach(function(node){
-        const titleNode = node.querySelector('title');
-        if(!titleNode) return;
-
-        const title = (titleNode.textContent || '').replace(/\s+/g,' ').trim();
-        if(!title) return;
-
-        results.push('(' + name + ') ' + title);
-      });
-
-      return results;
-    }catch(e){
-      return [];
-    }
-  }
-
-  async function loadWorldNews(){
-    if(document.hidden)return;
-    const token = ++newsLoadToken;
-    const lang = currentLang();
-
-    ensureWorldNews();
-
-    const cached = readNewsCache(lang);
-
-    if(cached && cached.length){
-      setNewsText(cached,lang);
-    }else{
-      setNewsText(
-        [lang === 'en' ? 'Loading global headlines…' : 'جاري تحميل أبرز الأخبار العالمية…'],
-        lang
-      );
-    }
-
-    const feeds = (NEWS_FEEDS[lang] || NEWS_FEEDS.ar).slice(0,4);
-
-    const settled = await Promise.allSettled(
-      feeds.map(function(pair){
-        return fetchFeed(pair[0],pair[1]);
-      })
-    );
-
-    if(token !== newsLoadToken) return;
-
-    let items = [];
-
-    settled.forEach(function(result){
-      if(result.status === 'fulfilled'){
-        items = items.concat(result.value || []);
-      }
-    });
-
-    const seen = new Set();
-
-    items = items.filter(function(item){
-      const key = item.toLowerCase().replace(/[^\p{L}\p{N}]+/gu,' ').trim();
-
-      if(!key || seen.has(key)) return false;
-
-      seen.add(key);
-      return true;
-    }).slice(0,64);
-
-    if(items.length){
-      writeNewsCache(lang,items);
-      setNewsText(items,lang);
-    }else if(!(cached && cached.length)){
-      setNewsText([],lang);
-    }
-  }
-
-  /* تم تعطيل الحركة المتجولة للفيديو — أصبح ثابتاً في الزاوية السفلية */
-
-  function initNews(){
-    ensureWorldNews();
-
-    const lang = currentLang();
-    const cached = readNewsCache(lang);
-
-    if(cached && cached.length){
-      setNewsText(cached,lang);
-    }
-
-    loadWorldNews();
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded',function(){
-      setTimeout(initNews,500);
-    });
-  }else{
-    setTimeout(initNews,200);
-  }
-
-  new MutationObserver(function(mutations){
-    const changed = mutations.some(function(m){
-      return m.attributeName === 'lang';
-    });
-
-    if(changed){
-      setTimeout(loadWorldNews,120);
-    }
-  }).observe(document.documentElement,{
-    attributes:true,
-    attributeFilter:['lang']
-  });
-
-  setInterval(loadWorldNews,10 * 60 * 1000);
-
-})();
-</script>
+</style><!-- News loading is handled by assets/news-recovery.js -->
 
 <!-- إصلاحات الطبقات، التمرير، وترتيب العناصر الثابتة -->
 <style id="sakaker-requested-layout-fixes">
@@ -41352,9 +41190,9 @@ html body .sak-index-link span{font-size:22px!important}
    const en=document.documentElement.lang==='en';
    const label=card.querySelector('.icon-label');
    const sub=card.querySelector('.sub');
-   if(label)label.textContent=en?'Text Library':'المكتبة النصية';
-   if(sub)sub.textContent=en?'Stories • Knowledge • Riddles':'قصص • معرفة • ألغاز';
-   const title=en?'Text Library':'المكتبة النصية';
+   if(label)label.textContent=en?'Riddles':'الألغاز';
+   if(sub)sub.textContent=en?'Riddles & Challenges':'ألغاز وتحديات';
+   const title=en?'Riddles':'الألغاز';
    card.setAttribute('aria-label',title);
    card.setAttribute('title',title);
  }
@@ -41472,7 +41310,7 @@ html body .cards #castleStoriesIndexCard:focus-visible{
 
 
 <!-- Restore only the three requested launchers: shopping, castle forum, and visitor posts. -->
-<script type="module" src="/assets/visitor-posts.js?v=20261019-login-resume-47"></script>
+<script type="module" src="/assets/visitor-posts.js?v=20261030-castle-loading1&swap=20261104"></script>
 <script defer src="/assets/castle-forum-launcher.js?v=20261012-auth-local-5"></script>
 <script type="module" id="sak-shopping-click-recovery">
 (()=>{
@@ -41496,6 +41334,8 @@ html body .cards #castleStoriesIndexCard:focus-visible{
   },true);
 })();
 </script>
+
+<script src="/assets/news-recovery.js?v=20261104-news-recovery-1" defer></script>
 
 </body>
 </html>
