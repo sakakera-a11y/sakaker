@@ -46,70 +46,53 @@ function findTextLibrary(){
 function installFacebookEmbeds(){
   const popup=document.getElementById('facebookVideoPopup');
   const box=popup?.querySelector('.fbVideoBox');
-  const frame=box?.querySelector('.fbVideoFrame');
-  if(!box||!frame)return;
+  if(!box)return;
 
-  /* The requested featured post always leads the existing Facebook content.
-     The Facebook plugin itself renders the post text beneath the post media. */
+  /* Replace the old Facebook window contents with the single requested post.
+     Keep the existing close control so the popup remains dismissible. */
+  const close=box.querySelector('#facebookVideoClose');
+  [...box.children].forEach(node=>{if(node!==close)node.remove();});
+
   let featured=box.querySelector('.sakFeaturedFacebookPost');
   if(!featured){
     featured=document.createElement('section');
     featured.className='sakFeaturedFacebookPost fbPostSection';
-    featured.setAttribute('aria-label','Featured Facebook post');
-    featured.innerHTML='<div class="fbPostFrame sakFeaturedFacebookPostFrame"></div>';
-    box.insertBefore(featured,frame);
-  }
-  const postFrame=featured.querySelector('.fbPostFrame');
-  if(postFrame){
-    let iframe=postFrame.querySelector('iframe[data-sak-featured-facebook-post="1"]');
-    if(!iframe){
-      iframe=document.createElement('iframe');
-      iframe.dataset.sakFeaturedFacebookPost='1';
-      iframe.scrolling='no';
-      iframe.frameBorder='0';
-      iframe.allowFullscreen=true;
-      iframe.allow='autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share';
-      iframe.setAttribute('allowfullscreen','true');
-      iframe.setAttribute('title','منشور أبو القمر زمرد على فيسبوك');
-      postFrame.appendChild(iframe);
-    }
-    /* Facebook's post plugin renders at its URL width; a 500px internal
-       canvas inside a narrow phone iframe gets clipped. Match plugin width
-       to the actual visible dialog width (Facebook minimum: 350px). */
-    const availableWidth=postFrame.clientWidth||box.clientWidth||window.innerWidth;
-    const postWidth=Math.max(350,Math.min(500,Math.floor(availableWidth-16)));
-    const postUrl='https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FAbwAlqmrZmrd%2Fposts%2Fpfbid02BHiNmDHAJCzDNmiTq6DbdPsDfsiJ4f6KwFyHL1mRSucNKYgUD3pjfe6B3DQb5wJdl&show_text=true&width='+postWidth;
-    iframe.width=String(postWidth);
-    iframe.height='520';
-    iframe.style.cssText='display:block;width:100%;max-width:500px;min-width:0;height:clamp(420px,65dvh,600px);border:0;overflow:hidden;margin:0 auto';
-    if(iframe.dataset.sakPostWidth!==String(postWidth)){
-      iframe.dataset.sakPostWidth=String(postWidth);
-      iframe.src=postUrl;
-    }
+    featured.setAttribute('aria-label','Facebook post');
+    featured.innerHTML='<div class="sakFeaturedFacebookPostFrame"></div>';
+    if(close) close.insertAdjacentElement('afterend',featured);
+    else box.appendChild(featured);
   }
 
-  const reels=[
-    {id:'1713298586438007',title:'Facebook Reel'},
-    {id:'1028563299794826',title:'Facebook Reel (restored)'},
-    {id:'2073566429948129',title:'Facebook Reel'}
-  ];
-
-  reels.forEach(({id,title})=>{
-    if(box.querySelector('iframe[data-sak-facebook-reel="'+id+'"]'))return;
-    const iframe=document.createElement('iframe');
-    iframe.dataset.sakFacebookReel=id;
-    iframe.src='https://www.facebook.com/plugins/video.php?height=476&href='+encodeURIComponent('https://www.facebook.com/reel/'+id+'/')+'&show_text=true&width=267&t=0';
-    iframe.width='267';
-    iframe.height='591';
-    iframe.style.cssText='display:block;border:none;overflow:hidden;width:267px;max-width:100%;height:591px;min-height:591px;margin:0 auto 12px';
+  const frame=featured.querySelector('.sakFeaturedFacebookPostFrame');
+  if(!frame)return;
+  let iframe=frame.querySelector('iframe[data-sak-featured-facebook-post="1"]');
+  if(!iframe){
+    iframe=document.createElement('iframe');
+    iframe.dataset.sakFeaturedFacebookPost='1';
     iframe.scrolling='no';
     iframe.frameBorder='0';
     iframe.allowFullscreen=true;
     iframe.allow='autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share';
     iframe.setAttribute('allowfullscreen','true');
-    iframe.setAttribute('title',title);
+    iframe.setAttribute('title','منشور أبو القمر زمرد على فيسبوك');
     frame.appendChild(iframe);
-  });
+  }
+
+  const availableWidth=Math.max(280,Math.floor(frame.getBoundingClientRect().width||box.getBoundingClientRect().width||window.innerWidth)-12);
+  const pluginWidth=Math.max(350,Math.min(500,availableWidth));
+  const scale=Math.min(1,availableWidth/pluginWidth);
+  const postUrl='https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FAbwAlqmrZmrd%2Fposts%2Fpfbid07k5Br3eoSwyNP3dF73eRVjYcZjTJmESbZZk1y6GYMCBvPHWhgbV7h11u317Copv9l&show_text=true&width='+pluginWidth;
+
+  frame.style.cssText='display:flex;justify-content:center;align-items:flex-start;width:100%;max-width:100%;min-width:0;overflow:hidden;box-sizing:border-box';
+  iframe.width=String(pluginWidth);
+  iframe.height='650';
+  iframe.style.cssText='display:block;flex:0 0 '+pluginWidth+'px;width:'+pluginWidth+'px;max-width:none;min-width:'+pluginWidth+'px;height:650px;border:0;overflow:hidden;margin:0 auto;transform:scale('+scale+');transform-origin:top center';
+  frame.style.height=Math.ceil(650*scale)+'px';
+
+  if(iframe.dataset.sakPostUrl!==postUrl){
+    iframe.dataset.sakPostUrl=postUrl;
+    iframe.src=postUrl;
+  }
 }
 
 function watchFacebookEmbeds(){
