@@ -407,3 +407,63 @@ else installVisitorPosts();
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});
   else load();
 })();
+
+
+// Ensure the original riddles/library icon becomes the Visitor Posts launcher.
+// Kept here as a final guard so delayed legacy scripts cannot restore its old label.
+function enforceVisitorPostsOnRiddlesIcon() {
+  const card = document.querySelector(".cards .sak-text-library-card");
+  if (!card) return;
+  const english = document.documentElement.lang.toLowerCase().startsWith("en");
+  const title = english ? "Visitor Posts" : "مشاركات الزوار";
+  const subtitle = english ? "Share your content with site visitors" : "شارك محتواك مع زوار الموقع";
+  const icon = card.querySelector(".icon-svg");
+  const label = card.querySelector(".icon-label");
+  const sub = card.querySelector(".sub");
+  if (!icon || icon.textContent.trim() !== "🕊️" ||
+      !label || label.textContent.trim() !== title ||
+      !sub || sub.textContent.trim() !== subtitle) {
+    card.innerHTML =
+      '<div class="icon-svg" aria-hidden="true" style="font-size:30px">🕊️</div>' +
+      '<div class="icon-label" data-ar="مشاركات الزوار" data-en="Visitor Posts">' + title + '</div>' +
+      '<div class="sub" data-ar="شارك محتواك مع زوار الموقع" data-en="Share your content with site visitors">' + subtitle + '</div>';
+  }
+  card.setAttribute("role", "button");
+  card.setAttribute("tabindex", "0");
+  card.setAttribute("aria-label", title);
+  card.setAttribute("data-aria-ar", "مشاركات الزوار");
+  card.setAttribute("data-aria-en", "Visitor Posts");
+  card.setAttribute("data-title-ar", "مشاركات الزوار");
+  card.setAttribute("data-title-en", "Visitor Posts");
+  card.title = title;
+  card.removeAttribute("onclick");
+  if (card.dataset.visitorPostsSwapBound !== "1") {
+    card.dataset.visitorPostsSwapBound = "1";
+    const launch = () => {
+      if (typeof window.sakakerOpenVisitorPostsWindow === "function") {
+        window.sakakerOpenVisitorPostsWindow();
+      }
+    };
+    card.addEventListener("click", launch);
+    card.addEventListener("keydown", event => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        launch();
+      }
+    });
+  }
+}
+
+function installVisitorPostsIconSwapGuard() {
+  enforceVisitorPostsOnRiddlesIcon();
+  if (document.documentElement && !document.documentElement.dataset.visitorPostsSwapObserver) {
+    document.documentElement.dataset.visitorPostsSwapObserver = "1";
+    new MutationObserver(() => enforceVisitorPostsOnRiddlesIcon())
+      .observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ["lang"] });
+  }
+}
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", installVisitorPostsIconSwapGuard, { once: true });
+} else {
+  installVisitorPostsIconSwapGuard();
+}
