@@ -71,7 +71,7 @@ function installVisitorPosts() {
     #visitorClockDock .visitor-clock-dock-content{box-sizing:border-box!important;display:inline-block!important;vertical-align:middle!important;width:auto!important;max-width:calc(100% - 30px)!important;height:auto!important;max-height:none!important;margin:0!important;color:#fff!important;font:800 13px/1.35 Tahoma,Arial,sans-serif!important;text-align:center!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important;text-shadow:0 0 4px #fff,0 0 9px #ffb65e!important}
     #visitorPostsCard{box-sizing:border-box!important;width:100%!important;height:100%!important;min-height:0!important;max-width:100%!important;padding:2px 5px!important;display:flex!important;flex-direction:row;align-items:center;justify-content:center;gap:6px;border:0!important;border-radius:12px!important;background:transparent!important;color:#fff3bd;box-shadow:none!important;font:800 11px Tahoma,Arial,sans-serif;cursor:pointer;touch-action:manipulation;pointer-events:auto!important;position:relative!important;z-index:2147482998!important}
     #visitorPostsCard:focus-visible{outline:3px solid #fff1a8;outline-offset:3px}
-    #visitorPostsCard .visitor-gull{width:28px;height:24px;flex:none}
+    #visitorPostsCard .visitor-gull{width:28px;height:24px;flex:none;display:grid;place-items:center;font-size:23px;line-height:1}
     #visitorPostsCard .visitor-gull path{stroke:none!important}
     #visitorPostsCard .visitor-card-label{display:flex;flex-direction:column;align-items:center;white-space:nowrap;text-align:center;line-height:1.2;font-size:clamp(9px,2vw,12px);font-weight:800}
     #visitorPostsCard .visitor-click-hint{display:block;margin-top:2px;font-size:.9em;animation:visitorPromptFlash 2.4s steps(1,end) infinite}
@@ -137,13 +137,13 @@ function installVisitorPosts() {
     card.id = "visitorPostsCard";
     card.className = "visitor-posts-launcher";
     card.setAttribute("aria-haspopup", "dialog");
-    card.innerHTML = `<svg class="visitor-gull" viewBox="0 0 100 76" aria-hidden="true" focusable="false"><path fill="#ffd700" d="M5 43c16-16 29-21 43-15 12 5 18 4 26-5-2 14-14 22-29 18-14-4-23 1-40 15 7-1 15-5 21-9-4 7-12 13-21 15 12 1 25-4 34-13 10-9 20-9 31-4-13-1-22 7-31 16C29 80 9 71 5 43Z"/><path fill="#ffd700" d="M30 34c10-18 24-27 46-27-6 8-11 17-14 25-9 7-18 7-32 2Z"/></svg><span class="visitor-card-label"></span>`;
+    card.innerHTML = `<span class="visitor-gull" aria-hidden="true">🧩</span><span class="visitor-card-label"></span>`;
     section.appendChild(card);
   } else {
     card.type = "button";
     card.setAttribute("aria-haspopup", "dialog");
     if (!card.querySelector(".visitor-gull")) {
-      card.insertAdjacentHTML("afterbegin", `<svg class="visitor-gull" viewBox="0 0 100 76" aria-hidden="true" focusable="false"><path fill="#ffd700" d="M5 43c16-16 29-21 43-15 12 5 18 4 26-5-2 14-14 22-29 18-14-4-23 1-40 15 7-1 15-5 21-9-4 7-12 13-21 15 12 1 25-4 34-13 10-9 20-9 31-4-13-1-22 7-31 16C29 80 9 71 5 43Z"/><path fill="#ffd700" d="M30 34c10-18 24-27 46-27-6 8-11 17-14 25-9 7-18 7-32 2Z"/></svg>`);
+      card.insertAdjacentHTML("afterbegin", `<span class="visitor-gull" aria-hidden="true">🧩</span>`);
     }
     if (!card.querySelector(".visitor-card-label")) {
       const label = document.createElement("span");
@@ -155,10 +155,10 @@ function installVisitorPosts() {
     const english = document.documentElement.lang.toLowerCase().startsWith("en");
     const label = card.querySelector(".visitor-card-label");
     if (label) label.innerHTML = english
-      ? '<span class="visitor-main-label">Visitor Posts</span><span class="visitor-click-hint">Click here</span>'
-      : '<span class="visitor-main-label">مشاركات الزوار</span><span class="visitor-click-hint">اضغط هنا</span>';
-    card.setAttribute("aria-label", english ? "Open visitor submission form" : "فتح نموذج مشاركات الزوار");
-    section.setAttribute("aria-label", english ? "Visitor Posts" : "مشاركات الزوار");
+      ? '<span class="visitor-main-label">Riddles</span><span class="visitor-click-hint">Click here</span>'
+      : '<span class="visitor-main-label">الألغاز</span><span class="visitor-click-hint">اضغط هنا</span>';
+    card.setAttribute("aria-label", english ? "Open riddles window" : "فتح نافذة الألغاز");
+    section.setAttribute("aria-label", english ? "Riddles" : "الألغاز");
   };
   applyCardLanguage();
   const hideEmptyNewsSlot = () => {
@@ -278,7 +278,7 @@ function installVisitorPosts() {
   const close = () => {
     overlay.classList.remove("open", "loading", "needs-signin");
     frame.src = "about:blank";
-    card.focus();
+    document.querySelector(".cards .sak-text-library-card")?.focus();
   };
   const loading = overlay.querySelector("#visitorPostsLoading");
   if (loading) loading.textContent = document.documentElement.lang.toLowerCase().startsWith("en") ? "Checking your site sign-in…" : "جارٍ التحقق من تسجيل الدخول…";
@@ -363,20 +363,27 @@ function installVisitorPosts() {
   };
   waitForAuth();
 
+  const launchVisitorPostsWithAuth = async () => {
+    const english = document.documentElement.lang.toLowerCase().startsWith("en");
+    overlay.classList.add("open", "loading");
+    if (!authReady) waitForAuth();
+    await Promise.race([authStateReady, new Promise(resolve => setTimeout(resolve, 3000))]);
+    if (!currentUser) {
+      pendingVisitorLogin = true;
+      showSiteLogin(english);
+      close();
+      return;
+    }
+    openVisitorPosts();
+  };
+  window.sakakerOpenVisitorPostsWindow = launchVisitorPostsWithAuth;
+
   if (card.dataset.visitorPostsBound !== "1") {
     card.dataset.visitorPostsBound = "1";
-    card.addEventListener("click", async () => {
-      const english = document.documentElement.lang.toLowerCase().startsWith("en");
-      overlay.classList.add("open", "loading");
-      if (!authReady) waitForAuth();
-      await Promise.race([authStateReady, new Promise(resolve => setTimeout(resolve, 3000))]);
-      if (!currentUser) {
-        pendingVisitorLogin = true;
-        showSiteLogin(english);
-        close();
-        return;
+    card.addEventListener("click", () => {
+      if (typeof window.openSakakerTextLibrary === "function") {
+        window.openSakakerTextLibrary();
       }
-      openVisitorPosts();
     });
   }
 }
