@@ -9,7 +9,8 @@ if '<html' not in text.lower() or '</html>' not in text.lower():
     raise SystemExit('Refusing to patch incomplete index.html')
 
 TITLE = 'abwalqmrzmrd castle'
-STYLE = '<link id="sak-compact-main-icons" rel="stylesheet" href="/assets/compact-main-icons.css?v=20261101-gull-hub1">'
+STYLE = '<link id="sak-compact-main-icons" rel="stylesheet" href="/assets/compact-main-icons.css?v=20261104-hide-facebook-ship1">'
+EXTRA_HIDE_STYLE = '<link id="sak-hide-facebook-ship-launchers" rel="stylesheet" href="/assets/hide-facebook-ship-launchers.css?v=20261104-global1">'
 LOADER = '<script id="sak-entertainment-runtime-loader" src="/assets/entertainment-station.js?v=20261002-2" defer></script>'
 ICONS_SCRIPT = '<script id="sak-final-three-icons-loader" src="/assets/final-three-icons.js?v=20261103-facebook-post2" defer></script>'
 
@@ -34,22 +35,29 @@ else:
     else:
         raise SystemExit('No <head> element found')
 
-# Keep one authoritative compact-icons stylesheet.
-text = re.sub(r'\s*<link\b[^>]*(?:id=["\']sak-compact-main-icons["\']|href=["\'][^"\']*assets/compact-main-icons\.css[^"\']*["\'])[^>]*>\s*', '\n', text, flags=re.IGNORECASE)
+# Keep one authoritative compact-icons stylesheet and the global launcher guard.
+text = re.sub(
+    r'\s*<link\b[^>]*(?:id=["\']sak-compact-main-icons["\']|href=["\'][^"\']*assets/compact-main-icons\.css[^"\']*["\'])[^>]*>\s*',
+    '\n', text, flags=re.IGNORECASE
+)
+text = re.sub(
+    r'\s*<link\b[^>]*(?:id=["\']sak-hide-facebook-ship-launchers["\']|href=["\'][^"\']*assets/hide-facebook-ship-launchers\.css[^"\']*["\'])[^>]*>\s*',
+    '\n', text, flags=re.IGNORECASE
+)
 head_close = re.search(r'</head\s*>', text, re.IGNORECASE)
 if not head_close:
     raise SystemExit('No closing </head> found')
-text = text[:head_close.start()] + '\n' + STYLE + '\n' + text[head_close.start():]
+text = text[:head_close.start()] + '\n' + STYLE + '\n' + EXTRA_HIDE_STYLE + '\n' + text[head_close.start():]
 
-# Remove any older runtime loader, then add one cache-busted authoritative loader.
+# Remove duplicate runtime loaders, then add one authoritative loader for each script.
 text = re.sub(
     r'\s*<script\b[^>]*(?:id=["\']sak-entertainment-runtime-loader["\']|src=["\'][^"\']*assets/entertainment-station\.js[^"\']*["\'])[^>]*>\s*</script>\s*',
-    '\n',
-    text,
-    flags=re.IGNORECASE,
+    '\n', text, flags=re.IGNORECASE
 )
-
-text = re.sub(r'\s*<script\b[^>]*(?:id=["\']sak-final-three-icons-loader["\']|src=["\'][^"\']*assets/final-three-icons\.js[^"\']*["\'])[^>]*>\s*</script>\s*', '\n', text, flags=re.IGNORECASE)
+text = re.sub(
+    r'\s*<script\b[^>]*(?:id=["\']sak-final-three-icons-loader["\']|src=["\'][^"\']*assets/final-three-icons\.js[^"\']*["\'])[^>]*>\s*</script>\s*',
+    '\n', text, flags=re.IGNORECASE
+)
 body_close = re.search(r'</body\s*>', text, re.IGNORECASE)
 if body_close:
     text = text[:body_close.start()] + '\n' + LOADER + '\n' + ICONS_SCRIPT + '\n' + text[body_close.start():]
@@ -57,6 +65,6 @@ else:
     html_close = re.search(r'</html\s*>', text, re.IGNORECASE)
     if not html_close:
         raise SystemExit('No closing </body> or </html> found')
-    text = text[:html_close.start()] + '\n' + LOADER + '\n' + text[html_close.start():]
+    text = text[:html_close.start()] + '\n' + LOADER + '\n' + ICONS_SCRIPT + '\n' + text[html_close.start():]
 
 page.write_text(text, encoding='utf-8')
