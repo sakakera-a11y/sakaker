@@ -46,18 +46,25 @@ function findTextLibrary(){
 function installFacebookEmbeds(){
   const popup=document.getElementById('facebookVideoPopup');
   const box=popup?.querySelector('.fbVideoBox');
-  const legacyFrame=box?.querySelector('.fbVideoFrame');
-  if(!box||!legacyFrame)return;
+  if(!box)return;
 
-  /* Keep the existing popup structure, preview, header and close button.
-     Replace only the old Facebook reel embeds with the requested post. */
+  /* Keep the popup shell, preview/header and close button.
+     The old .fbVideoFrame is the complete legacy clips area shown below
+     the post; remove that area only after inserting the replacement post. */
+  const legacyFrame=box.querySelector('.fbVideoFrame');
   let featured=box.querySelector('.sakFeaturedFacebookPost');
   if(!featured){
     featured=document.createElement('section');
     featured.className='sakFeaturedFacebookPost fbPostSection';
     featured.setAttribute('aria-label','Facebook post');
     featured.innerHTML='<div class="fbPostFrame sakFeaturedFacebookPostFrame"></div>';
-    box.insertBefore(featured,legacyFrame);
+    if(legacyFrame) box.insertBefore(featured,legacyFrame);
+    else box.appendChild(featured);
+  }
+
+  /* Remove the old Facebook clips section completely, not the popup. */
+  if(legacyFrame && legacyFrame!==featured && !featured.contains(legacyFrame)){
+    legacyFrame.remove();
   }
 
   let postFrame=featured.querySelector('.sakFeaturedFacebookPostFrame');
@@ -68,9 +75,6 @@ function installFacebookEmbeds(){
   }else{
     postFrame.classList.add('fbPostFrame');
   }
-
-  /* Remove only the old reel iframes; do not clear popup children. */
-  legacyFrame.querySelectorAll('iframe[data-sak-facebook-reel]').forEach(el=>el.remove());
 
   let iframe=postFrame.querySelector('iframe[data-sak-featured-facebook-post="1"]');
   if(!iframe){
