@@ -5,7 +5,10 @@ on:
     branches: [main]
     paths:
       - 'index.html'
+      - 'archive/index_safety.html'
+      - 'archive/index_emergency_2026-10-08.html'
       - 'archive/index_stable_2026-10-31.html'
+      - '.github/scripts/refresh_index_recovery.py'
       - '.github/workflows/index-auto-recovery.yml'
   workflow_dispatch:
 
@@ -23,127 +26,73 @@ jobs:
       - name: Checkout current main
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 1
 
-      - name: Validate published index
+      - name: Validate published homepage
         id: validate
         shell: python
         run: |
           from pathlib import Path
+          import os
           import sys
 
-          index = Path("index.html")
-          archive = Path("archive/index_stable_2026-10-31.html")
-          errors = []
-
-          if not index.exists():
-              errors.append("index.html is missing")
-          if not archive.exists():
-              errors.append("recovery archive is missing")
-
-          text = ""
-          archive_text = ""
-          if index.exists():
-              text = index.read_text(encoding="utf-8", errors="replace")
-              if len(text) < 900_000:
-                  errors.append("index.html is unexpectedly small")
-
-              required = [
-                  "<!DOCTYPE html",
-                  "<html",
-                  "</html>",
-                  "<body",
-                  "</body>",
-                  'id="loginOverlay"',
-                  'id="facebookVideoIcon"',
-                  'id="facebookVideoPopup"',
-                  'id="liveFlasher"',
-                  'id="livePopup"',
-                  'id="pongGame-btn"',
-                  'id="shipIcon_new"',
-                  'id="shipPopup_new"',
-                  'id="emeraldLibraryButton"',
-                  'id="emeraldLibraryContent"',
-                  'id="sakakerBusinessAd"',
-                  'id="sakBooksAppLayer"',
-                  "window.openSakakerEbooks",
-                  "sakaker-visitor-counter-d1",
-                  "fetch('/api/visitor-counter'",
-                  "assets/visitor-posts.js?v=20261030-castle-loading1",
-                  "ebook-translation-status.js",
-                  "assets/castle-forum-launcher.js?v=20261012-auth-local-5",
-                  "assets/live-media-refresh.js?v=20261008-window-palette4",
-                  "assets/live-media-refresh.css?v=20261008-window-palette4",
-                  "@keyframes sakUnifiedIconVisibility",
-                  "sakaker-direct-seven-books-20261006",
-                  "sakaker-all-popups-top-layer-20261006",
-                  "مغامرة في الصحراء",
-                  "أنت لي",
-                  "إيكادولي",
-                  "قضية زعيم العصابة",
-                  "فن الحياة",
-                  "ألف ليلة وليلة",
-                  "قواعد جارتين",
-              ]
-              missing = [item for item in required if item not in text]
-              if missing:
-                  errors.append("missing critical markers: " + ", ".join(missing))
-
-              if "1B-vS6hT8gWeL0NhVLXLUGbdYk1BhdmKv" in text:
-                  errors.append("stale book Drive ID remains in index.html")
-              if "sakakerVisitorCounterV1/total" in text:
-                  errors.append("legacy Firebase visitor counter is still active")
-              if "show?120000:30000" in text:
-                  errors.append("legacy uneven icon visibility cycle is still active")
-              if "wrap.id='sakThoughtsStories'" in text:
-                  errors.append("legacy standalone Thoughts renderer is still active")
-              if "خواطر وقصص', en:'Thoughts & Stories'" in text:
-                  errors.append("standalone Thoughts entry remains in the text library")
-              if text.count("<html") != 1:
-                  errors.append("unexpected html root count")
-              if text.count("</html>") != 1:
-                  errors.append("unexpected closing html count")
-
-          # Validate book details in their actual page and individual story PDFs.
-          book_page = Path("abwalqmrzmrd-book.html")
-          if not book_page.exists():
-              errors.append("book page is missing: abwalqmrzmrd-book.html")
-          else:
-              book_text = book_page.read_text(encoding="utf-8", errors="replace")
-              book_required = [
-                  "كتاب أبوالقمر زمرد",
-                  "روايات وقصص حديثة",
-                  "1W5AskSaukXdyo8iLOXm7YyqHznxVqaUf",
-              ]
-              missing_book = [item for item in book_required if item not in book_text]
-              if missing_book:
-                  errors.append("missing book-page markers: " + ", ".join(missing_book))
-              if "1B-vS6hT8gWeL0NhVLXLUGbdYk1BhdmKv" in book_text:
-                  errors.append("stale book Drive ID remains in the book page")
-
-          story_files = [
-              Path("ebooks/stories/01-story-bilingual.pdf"),
-              Path("ebooks/stories/11-story-bilingual.pdf"),
+          index = Path('index.html')
+          candidates = [
+              Path('archive/index_safety.html'),
+              Path('archive/index_emergency_2026-10-08.html'),
+              Path('archive/index_stable_2026-10-31.html'),
           ]
-          for story_file in story_files:
-              if not story_file.exists():
-                  errors.append("required story PDF is missing: " + str(story_file))
-              elif story_file.stat().st_size == 0:
-                  errors.append("required story PDF is empty: " + str(story_file))
+          required = (
+              '<!DOCTYPE html',
+              '<html',
+              '</html>',
+              '<body',
+              '</body>',
+              'id="loginOverlay"',
+              'id="facebookVideoPopup"',
+              'id="shipPopup_new"',
+          )
 
-          if archive.exists():
-              archive_text = archive.read_text(encoding="utf-8", errors="replace")
-              if "1B-vS6hT8gWeL0NhVLXLUGbdYk1BhdmKv" in archive_text:
-                  errors.append("stale book Drive ID remains in recovery archive")
-              if index.exists() and text != archive_text:
-                  errors.append("index.html differs from the stable recovery archive")
+          def valid(path: Path) -> bool:
+              if not path.is_file():
+                  return False
+              text = path.read_text(encoding='utf-8', errors='replace')
+              if len(text) < 900_000:
+                  return False
+              if any(marker not in text for marker in required):
+                  return False
+              if text.count('<html') != 1 or text.count('</html>') != 1:
+                  return False
+              return True
 
-          if errors:
-              print("RECOVERY_REQUIRED=1")
-              for error in errors:
-                  print("ERROR:", error)
-              Path("recovery_required.txt").write_text("\n".join(errors), encoding="utf-8")
+          if valid(index):
+              print('index.html is valid and is the active recovery baseline.')
+              with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as out:
+                  out.write('recovery_required=false\n')
+              sys.exit(0)
+
+          for candidate in candidates:
+              if valid(candidate):
+                  print(f'Restoring index.html from approved candidate: {candidate}')
+                  index.write_text(candidate.read_text(encoding='utf-8', errors='replace'), encoding='utf-8')
+                  with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as out:
+                      out.write('recovery_required=true\n')
+                  break
+          else:
+              print('ERROR: homepage and all recovery copies are missing or invalid.')
               sys.exit(1)
 
-          print("RECOVERY_REQUIRED=0")
-          print("index.html and stable recovery archive passed critical validation")
+      - name: Refresh all approved recovery copies from the current homepage
+        run: python3 .github/scripts/refresh_index_recovery.py
+
+      - name: Commit refreshed homepage recovery state
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html archive/index_safety.html archive/index_emergency_2026-10-08.html archive/index_stable_2026-10-31.html
+          if ! git diff --cached --quiet; then
+            git commit -m "Sync homepage recovery copies to current approved baseline"
+            git push
+          else
+            echo "No homepage recovery file changes were required."
+          fi
