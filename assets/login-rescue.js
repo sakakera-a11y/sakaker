@@ -4,21 +4,13 @@ window.__sakakerLoginRescueLoaded=true;
 
 const $=id=>document.getElementById(id);
 
-function lightenLoginVideo(){
+function disableLoginVideo(){
   const v=$('sakLoginBackgroundVideo');
   if(!v)return;
-  try{
-    v.removeAttribute('fetchpriority');
-    v.preload='metadata';
-    const src=v.getAttribute('src')||'';
-    if(!src||src.includes('raw.githubusercontent.com')){
-      v.src='/gemini_video_birds_login.mp4';
-      v.load();
-    }
-    v.muted=true;
-    const p=v.play();
-    if(p&&p.catch)p.catch(()=>{});
-  }catch(_){}
+  try{v.pause();}catch(_){}
+  v.querySelectorAll('source').forEach(n=>n.remove());
+  v.removeAttribute('src');
+  v.remove();
 }
 
 function removeExtraSounds(){
@@ -52,7 +44,7 @@ function placePostLoginSoundButton(){
 }
 
 function init(){
-  lightenLoginVideo();
+  disableLoginVideo();
   removeExtraSounds();
   installPostLoginSoundStyle();
   placePostLoginSoundButton();
