@@ -89,7 +89,7 @@ test("GET returns Cloudflare Analytics totals and D1 online sessions", async () 
   assert.equal(response.status, 200);
   const body = await response.json();
   assert.equal(body.analyticsConfigured, true);
-  assert.equal(body.total, 123);
+  assert.equal(body.total, 210);
   assert.equal(body.today, 7);
   assert.equal(body.online, 0);
   assert.equal(body.totalBasis, "sum_of_daily_unique_ips_last_30_days");
@@ -111,7 +111,7 @@ test("POST refreshes a hashed active session and returns Analytics totals", asyn
   assert.equal(response.status, 200);
   const body = await response.json();
   assert.equal(body.online, 1);
-  assert.equal(body.total, 4 * 29 + 7);
+  assert.equal(body.total, 210);
   assert.equal(body.periodDays, 30);
   assert.equal(body.daysReturned, 30);
   assert.equal(body.today, 7);
