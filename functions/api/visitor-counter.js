@@ -66,7 +66,7 @@ async function fetchAnalyticsCounts(env) {
   if (!env.CF_ANALYTICS_API_TOKEN || !env.CF_ZONE_ID) {
     return { total: null, today: null, analyticsConfigured: false };
   }
-  const settingsQuery = `query CounterDatasetSettings($zoneTag: string) {
+  const settingsQuery = `query CounterDatasetSettings($zoneTag: String) {
     viewer { zones(filter: { zoneTag: $zoneTag }) {
       settings { httpRequests1dGroups { enabled maxDuration maxPageSize notOlderThan availableFields } }
     } }
@@ -83,7 +83,7 @@ async function fetchAnalyticsCounts(env) {
   }
   const now = new Date(), startDay = utcDate(new Date(now.getTime() - retention * 1000));
   const endDay = utcDate(now), daysPerQuery = Math.max(1, Math.floor(maxDuration / 86400));
-  const dailyQuery = `query DailyUniqueVisitors($zoneTag: string, $start: Date, $end: Date, $limit: Int) {
+  const dailyQuery = `query DailyUniqueVisitors($zoneTag: String, $start: Date, $end: Date, $limit: Int) {
     viewer { zones(filter: { zoneTag: $zoneTag }) {
       httpRequests1dGroups(
         limit: $limit
