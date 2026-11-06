@@ -81,8 +81,11 @@ async function fetchAnalyticsCounts(env) {
   if (![maxDuration, retention, maxPageSize].every(value => Number.isFinite(value) && value > 0)) {
     throw new Error("Cloudflare returned invalid Analytics dataset limits");
   }
-  const now = new Date(), startDay = utcDate(new Date(now.getTime() - retention * 1000));
-  const endDay = utcDate(now), daysPerQuery = Math.max(1, Math.floor(maxDuration / 86400));
+  const now = new Date(), endDay = utcDate(now);
+  // Count the latest 30 UTC calendar days, including today.
+  const startDay = addUtcDays(endDay, -29);
+  const daysPerQuery = Math.max(1, Math.floor(maxDuration / 86400));
+  if (retention < 30 * 86400) throw new Error("Cloudflare Analytics retention is shorter than the requested 30-day counter window");
   const dailyQuery = `query DailyUniqueVisitors($zoneTag: String, $start: Date, $end: Date, $limit: Int) {
     viewer { zones(filter: { zoneTag: $zoneTag }) {
       httpRequests1dGroups(
@@ -112,7 +115,8 @@ async function fetchAnalyticsCounts(env) {
     cursor = addUtcDays(chunkEnd, 1);
   }
   return {
-    total, today, analyticsConfigured: true, totalBasis: "sum_of_daily_unique_ips",
+    total, today, analyticsConfigured: true, totalBasis: "sum_of_daily_unique_ips_last_30_days",
+    periodDays: 30,
     timezone: "UTC", historyStart: startDay, historyEnd: endDay, daysReturned: dayCount
   };
 }
