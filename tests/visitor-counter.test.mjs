@@ -65,7 +65,7 @@ function mockAnalyticsFetch(calls = []) {
       return Response.json({ data: { viewer: { zones: [{ settings: {
         httpRequests1dGroups: {
           enabled: true, maxDuration: 86400, maxPageSize: 100,
-          notOlderThan: 86400, availableFields: ["uniq_uniques"]
+          notOlderThan: 90 * 86400, availableFields: ["uniq_uniques"]
         }
       } }] } } });
     }
@@ -89,10 +89,12 @@ test("GET returns Cloudflare Analytics totals and D1 online sessions", async () 
   assert.equal(response.status, 200);
   const body = await response.json();
   assert.equal(body.analyticsConfigured, true);
-  assert.equal(body.total, 14);
+  assert.equal(body.total, 123);
   assert.equal(body.today, 7);
   assert.equal(body.online, 0);
-  assert.equal(body.totalBasis, "sum_of_daily_unique_ips");
+  assert.equal(body.totalBasis, "sum_of_daily_unique_ips_last_30_days");
+  assert.equal(body.periodDays, 30);
+  assert.equal(body.daysReturned, 30);
   assert.equal(calls.length, body.daysReturned + 1);
   assert.match(calls[0].query, /\$zoneTag: String/);
   assert.match(calls[1].query, /\$zoneTag: String/);
@@ -109,7 +111,9 @@ test("POST refreshes a hashed active session and returns Analytics totals", asyn
   assert.equal(response.status, 200);
   const body = await response.json();
   assert.equal(body.online, 1);
-  assert.equal(body.total, 4 * (body.daysReturned - 1) + 7);
+  assert.equal(body.total, 4 * 29 + 7);
+  assert.equal(body.periodDays, 30);
+  assert.equal(body.daysReturned, 30);
   assert.equal(body.today, 7);
   assert.equal(db.sessions.size, 1);
   assert.equal([...db.sessions.keys()][0].length, 64);
