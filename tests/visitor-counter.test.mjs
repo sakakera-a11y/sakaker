@@ -1,130 +1,143 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
 import { webcrypto } from "node:crypto";
 
 globalThis.crypto ??= webcrypto;
 
-const source = await readFile(new URL("../functions/api/visitor-counter.js", import.meta.url), "utf8");
+const source = await (await import("node:fs/promises")).readFile(
+  new URL("../functions/api/visitor-counter.js", import.meta.url), "utf8"
+);
 const counter = await import(`data:text/javascript;base64,${Buffer.from(source).toString("base64")}`);
 
-function riyadhDayKey(date = new Date()) {
-  const parts = new Intl.DateTimeFormat("en-GB", {
-    timeZone: "Asia/Riyadh", year: "numeric", month: "2-digit", day: "2-digit"
-  }).formatToParts(date);
-  const values = Object.fromEntries(parts.map(part => [part.type, part.value]));
-  return `${values.year}-${values.month}-${values.day}`;
-}
-
 function fakeD1() {
-  const visitors = new Set();
-  const daily = new Set();
   const sessions = new Map();
-
   function statement(sql, params = []) {
     return {
+      sql, params,
       bind(...values) { return statement(sql, values); },
       async first() {
-        if (sql.includes("FROM visitor_totals")) return { count: visitors.size };
-        if (sql.includes("FROM daily_visitor_marks")) {
-          const day = params[0];
-          return { count: [...daily].filter(mark => mark.startsWith(`${day}:`)).length };
-        }
         if (sql.includes("FROM active_sessions")) {
           const cutoff = Number(params[0]);
           return { count: [...sessions.values()].filter(lastSeen => lastSeen >= cutoff).length };
         }
-        throw new Error(`Unexpected query: ${sql}`);
-      },
-      sql,
-      params
+        throw new Error("Unexpected D1 query: " + sql);
+      }
     };
   }
-
   return {
+    sessions,
     prepare: sql => statement(sql),
-    async batch(statements) {
-      for (const item of statements) {
-        const [a, b, c] = item.params;
-        if (item.sql.includes("INSERT OR IGNORE INTO visitor_totals")) visitors.add(a);
-        else if (item.sql.includes("INSERT OR IGNORE INTO daily_visitor_marks")) daily.add(`${a}:${b}`);
-        else if (item.sql.includes("INSERT INTO active_sessions")) sessions.set(a, b);
+    async batch(items) {
+      for (const item of items) {
+        const [id, value] = item.params;
+        if (item.sql.includes("INSERT INTO active_sessions")) sessions.set(id, value);
         else if (item.sql.includes("DELETE FROM active_sessions")) {
-          for (const [key, lastSeen] of sessions) if (lastSeen < a) sessions.delete(key);
-        } else throw new Error(`Unexpected batch statement: ${item.sql}`);
+          for (const [key, lastSeen] of sessions) if (lastSeen < item.params[0]) sessions.delete(key);
+        } else throw new Error("Unexpected D1 statement: " + item.sql);
       }
     }
   };
 }
 
-function request(path = "/api/visitor-counter", { method = "GET", origin = "https://sakaker-pages-test.pages.dev", body } = {}) {
-  return new Request(`https://sakaker-pages-test.pages.dev${path}`, {
+function makeRequest(method = "GET", body) {
+  return new Request("https://sakaker-pages-test.pages.dev/api/visitor-counter", {
     method,
     headers: {
-      Origin: origin,
+      Origin: "https://sakaker-pages-test.pages.dev",
       ...(body === undefined ? {} : { "Content-Type": "application/json" })
     },
     ...(body === undefined ? {} : { body: JSON.stringify(body) })
   });
 }
 
-test("GET reports a clear configuration error when D1 is not bound", async () => {
-  const response = await counter.onRequestGet({ request: request(), env: {} });
+function utcDay(date) { return date.toISOString().slice(0, 10); }
+function addDays(day, amount) {
+  const date = new Date(day + "T00:00:00.000Z");
+  date.setUTCDate(date.getUTCDate() + amount);
+  return utcDay(date);
+}
+
+function mockAnalyticsFetch(calls = []) {
+  globalThis.fetch = async (_url, init) => {
+    const payload = JSON.parse(init.body);
+    calls.push(payload);
+    if (payload.query.includes("CounterDatasetSettings")) {
+      return Response.json({ data: { viewer: { zones: [{ settings: {
+        httpRequests1dGroups: {
+          enabled: true, maxDuration: 86400, maxPageSize: 100,
+          notOlderThan: 86400, availableFields: ["uniq_uniques"]
+        }
+      } }] } } });
+    }
+    const { start, end } = payload.variables;
+    const rows = [];
+    for (let day = start; day <= end; day = addDays(day, 1)) {
+      rows.push({ dimensions: { date: day }, uniq: { uniques: day === end ? 7 : 4 } });
+    }
+    return Response.json({ data: { viewer: { zones: [{ httpRequests1dGroups: rows }] } } });
+  };
+  return calls;
+}
+
+test("GET returns Cloudflare Analytics totals and D1 online sessions", async () => {
+  const calls = mockAnalyticsFetch();
+  const db = fakeD1();
+  const response = await counter.onRequestGet({
+    request: makeRequest(),
+    env: { VISITOR_DB: db, CF_ANALYTICS_API_TOKEN: "test-token", CF_ZONE_ID: "test-zone" }
+  });
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.equal(body.analyticsConfigured, true);
+  assert.equal(body.total, 11);
+  assert.equal(body.today, 7);
+  assert.equal(body.online, 0);
+  assert.equal(body.totalBasis, "sum_of_daily_unique_ips");
+  assert.equal(calls.length, 3);
+  assert.match(calls[0].query, /\$zoneTag: String/);
+  assert.match(calls[1].query, /\$zoneTag: String/);
+  assert.match(calls[1].query, /\$start: Date/);
+});
+
+test("POST refreshes a hashed active session and returns Analytics totals", async () => {
+  mockAnalyticsFetch();
+  const db = fakeD1();
+  const response = await counter.onRequestPost({
+    request: makeRequest("POST", { sessionId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa" }),
+    env: { VISITOR_DB: db, CF_ANALYTICS_API_TOKEN: "test-token", CF_ZONE_ID: "test-zone" }
+  });
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.equal(body.online, 1);
+  assert.equal(body.total, 11);
+  assert.equal(body.today, 7);
+  assert.equal(db.sessions.size, 1);
+  assert.equal([...db.sessions.keys()][0].length, 64);
+});
+
+test("GET returns a configuration error when D1 is not bound", async () => {
+  const response = await counter.onRequestGet({ request: makeRequest(), env: {} });
   assert.equal(response.status, 503);
   assert.deepEqual(await response.json(), { error: "counter_not_configured" });
 });
 
 test("rejects cross-origin requests", async () => {
-  const response = await counter.onRequestGet({
-    request: request("/api/visitor-counter", { origin: "https://attacker.example" }),
-    env: { VISITOR_DB: fakeD1() }
+  const request = new Request("https://sakaker-pages-test.pages.dev/api/visitor-counter", {
+    headers: { Origin: "https://attacker.example" }
   });
+  const response = await counter.onRequestGet({ request, env: { VISITOR_DB: fakeD1() } });
   assert.equal(response.status, 403);
   assert.deepEqual(await response.json(), { error: "origin_not_allowed" });
 });
 
-test("counts a visitor once per day and preserves same-day cutover baselines", async () => {
-  const day = riyadhDayKey();
-  const env = {
-    VISITOR_DB: fakeD1(),
-    VISITOR_TOTAL_BASELINE: "1410",
-    VISITOR_TODAY_BASELINE: "7",
-    VISITOR_BASELINE_DAY: day
-  };
-  const visitorA = "11111111-1111-4111-8111-111111111111";
-  const visitorB = "22222222-2222-4222-8222-222222222222";
-  const session = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
-
-  const first = await counter.onRequestPost({
-    request: request("/api/visitor-counter", { method: "POST", body: { visitorId: visitorA, sessionId: session } }),
-    env
-  });
-  assert.equal(first.status, 200);
-  assert.deepEqual(await first.json(), { online: 1, total: 1411, today: 8 });
-
-  const repeated = await counter.onRequestPost({
-    request: request("/api/visitor-counter", { method: "POST", body: { visitorId: visitorA, sessionId: session } }),
-    env
-  });
-  assert.equal(repeated.status, 200);
-  assert.deepEqual(await repeated.json(), { online: 1, total: 1411, today: 8 });
-
-  const newVisitor = await counter.onRequestPost({
-    request: request("/api/visitor-counter", { method: "POST", body: { visitorId: visitorB, sessionId: session } }),
-    env
-  });
-  assert.equal(newVisitor.status, 200);
-  assert.deepEqual(await newVisitor.json(), { online: 1, total: 1412, today: 9 });
-});
-
-test("rejects malformed visitor and session identifiers", async () => {
-  const response = await counter.onRequestPost({
-    request: request("/api/visitor-counter", {
-      method: "POST",
-      body: { visitorId: "not-a-uuid", sessionId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa" }
-    }),
+test("returns unavailable rather than a fabricated Analytics total when credentials are missing", async () => {
+  const response = await counter.onRequestGet({
+    request: makeRequest(),
     env: { VISITOR_DB: fakeD1() }
   });
-  assert.equal(response.status, 400);
-  assert.deepEqual(await response.json(), { error: "invalid_visitor_id" });
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.equal(body.analyticsConfigured, false);
+  assert.equal(body.total, null);
+  assert.equal(body.today, null);
 });
