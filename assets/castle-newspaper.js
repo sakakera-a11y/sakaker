@@ -149,9 +149,19 @@ const puzzles=[
 {a:'باب',d:'بحر',ac:'مدخل المنزل',dc:'ماء واسع مالح'},
 {a:'عين',d:'علم',ac:'عضو الإبصار',dc:'راية الدولة'},
 {a:'جمل',d:'جبل',ac:'حيوان سفينة الصحراء',dc:'مرتفع صخري كبير'}];
-function norm(s){return String(s||'').replace(/[\u064B-\u065F\u0670\u0640]/g,'').replace(/[أإآ]/g,'ا').replace(/ى/g,'ي').replace(/\s/g,'').trim();}
+function norm(s){return String(s||'').toLowerCase().replace(/[\u064B-\u065F\u0670\u0640]/g,'').replace(/[أإآ]/g,'ا').replace(/ى/g,'ي').replace(/\s/g,'').trim();}
+const englishPuzzles=[
+{a:'sea',d:'sun',ac:'A large body of salt water',dc:'The star that lights our day'},
+{a:'cat',d:'car',ac:'A common household pet',dc:'A road vehicle'},
+{a:'map',d:'man',ac:'A drawing that shows places',dc:'An adult person'},
+{a:'pen',d:'pig',ac:'A tool used for writing',dc:'A farm animal that oinks'},
+{a:'sky',d:'sun',ac:'The space above the earth',dc:'The star at the center of our solar system'},
+{a:'box',d:'bat',ac:'A container with sides',dc:'A flying mammal'},
+{a:'cup',d:'cow',ac:'A vessel used for drinking',dc:'A farm animal that gives milk'},
+{a:'dog',d:'day',ac:'A loyal four-legged pet',dc:'The time between sunrise and sunset'}
+];
 function crossword(panel){
- const q=puzzles[Number(day().replace(/-/g,''))%puzzles.length],w=document.createElement('div');w.className='cn-game';w.innerHTML='<h3>🧩 الكلمات المتقاطعة اليومية</h3><p>حل الكلمتين؛ تشتركان في الحرف الأول داخل المربع المشترك.</p>';
+ const bank=language==='en'?englishPuzzles:puzzles,q=bank[Number(day().replace(/-/g,''))%bank.length],w=document.createElement('div');w.className='cn-game';w.innerHTML='<h3>🧩 الكلمات المتقاطعة اليومية</h3><p>حل الكلمتين؛ تشتركان في الحرف الأول داخل المربع المشترك.</p>';
  const grid=document.createElement('div');grid.className='cn-grid';for(let r=0;r<4;r++)for(let c=0;c<3;c++){const cell=document.createElement('div');const active=(r===1&&c<3)||(c===0&&r>=2);cell.className='cn-cell'+(active?'':' blank');cell.textContent=active?'؟':'';grid.appendChild(cell);}w.appendChild(grid);
  const ca=document.createElement('p');ca.textContent='أفقي: '+q.ac;w.appendChild(ca);const a=document.createElement('input');a.maxLength=3;a.placeholder='الإجابة الأفقية';w.appendChild(a);
  const cd=document.createElement('p');cd.textContent='عمودي: '+q.dc;w.appendChild(cd);const d=document.createElement('input');d.maxLength=3;d.placeholder='الإجابة العمودية';w.appendChild(d);
