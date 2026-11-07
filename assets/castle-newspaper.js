@@ -1,6 +1,27 @@
 (()=>{'use strict';
 if(window.__sakCastleNewspaperLoaded)return;window.__sakCastleNewspaperLoaded=true;
 const $=id=>document.getElementById(id);
+let language=(()=>{try{return localStorage.getItem('sakCastleNewspaperLang')==='en'?'en':'ar';}catch(_){return 'ar';}})();
+const enText={
+'صحيفة القلعة':'Castle Newspaper','الأخبار':'News','الكلمات المتقاطعة':'Daily Crossword','الاختلافات الخمسة':'Find Five Differences','حظك اليوم':'Daily Horoscope','إغلاق':'Close',
+'الكل':'All','السعودية':'Saudi Arabia','العالم':'World','الاقتصاد':'Business','الرياضة':'Sports','التقنية':'Technology','الثقافة والفنون':'Arts & Culture','العلوم':'Science','الترفيه':'Entertainment',
+'جارٍ التحديث…':'Updating…','تحديث الأخبار':'Refresh News','آخر تحديث: ':'Last updated: ','مصادر الصحيفة':'Newspaper sources',
+'جارٍ جلب الأخبار من المصادر…':'Loading headlines from sources…','لا توجد أخبار متاحة حالياً؛ حاول التحديث لاحقاً.':'No headlines are available right now. Please try again later.',
+'🧩 الكلمات المتقاطعة اليومية':'🧩 Daily Crossword','حل الكلمتين؛ تشتركان في الحرف الأول داخل المربع المشترك.':'Solve both words. They share the first letter in the intersecting square.',
+'الإجابة الأفقية':'Across answer','الإجابة العمودية':'Down answer','أفقي: ':'Across: ','عمودي: ':'Down: ',
+'تحقق من الحل':'Check answers','أحسنت! إجابتك صحيحة.':'Excellent! Both answers are correct.','ليست الإجابة صحيحة بعد؛ حاول مرة أخرى.':'Not quite. Try again.',
+'لغز يوم':'Puzzle for ','🔎 اكتشف الاختلافات الخمسة':'🔎 Find the Five Differences','قارن الصورتين، ثم اضغط على موضع الاختلاف في الصورة اليمنى.':'Compare the pictures, then tap a difference in the right-hand picture.',
+'تم العثور على 0 من 5':'Found 0 of 5','ممتاز! اكتشفت الاختلافات الخمسة كلها.':'Great! You found all five differences.','أحسنت! ':'Well done! ',' من 5':' of 5','تحدي يوم':'Challenge for ',
+'✨ حظك اليوم':'✨ Daily Horoscope','اختر برجك لقراءة عبارة يومية خفيفة للتسلية.':'Choose your zodiac sign for a light daily entertainment message.',
+'للتسلية فقط؛ الأبراج والتوقعات ليست علماً ولا وسيلة لمعرفة المستقبل.':'For entertainment only. Astrology is not science and cannot predict the future.',
+'الحمل':'Aries','الثور':'Taurus','الجوزاء':'Gemini','السرطان':'Cancer','الأسد':'Leo','العذراء':'Virgo','الميزان':'Libra','العقرب':'Scorpio','القوس':'Sagittarius','الجدي':'Capricorn','الدلو':'Aquarius','الحوت':'Pisces',
+'يوم مناسب لترتيب الأولويات وإنجاز خطوة مؤجلة.':'A good day to set priorities and complete a postponed task.','امنح نفسك وقتاً للتفكير قبل اتخاذ قرار جديد.':'Take time to think before making a new decision.','قد يحمل اليوم فرصة لحوار لطيف أو فكرة مفيدة.':'Today may bring a pleasant conversation or a useful idea.','حافظ على هدوئك ووزع وقتك بين العمل والراحة.':'Stay calm and balance work with rest.','ركز على هدف واحد وستشعر بتقدم أوضح.':'Focus on one goal and you may notice clearer progress.','التفاصيل الصغيرة تستحق الانتباه اليوم.':'Small details deserve your attention today.','وازن بين رغباتك والتزاماتك ولا تتعجل.':'Balance your wishes with your commitments; do not rush.','اجعل الصراحة واللطف أساس تعاملاتك.':'Let honesty and kindness guide your interactions.','جرب طريقة جديدة في التعلم أو العمل.':'Try a new approach to learning or work.','التخطيط الهادئ أفضل من الاستعجال.':'Calm planning is better than rushing.','استمع لوجهة نظر مختلفة فقد تلهمك.':'Listen to a different point of view; it may inspire you.','خصص وقتاً للراحة وتجديد النشاط.':'Make time to rest and recharge.'
+};
+const originalText=new WeakMap();
+function translateTextNode(n){if(!originalText.has(n))originalText.set(n,n.nodeValue);const original=originalText.get(n);let value=original;if(language==='en'){for(const [ar,en] of Object.entries(enText)){if(value===ar){value=en;break;}if(value.startsWith(ar)&&ar.endsWith(' ')){value=en+value.slice(ar.length);break;}}}n.nodeValue=value;}
+function applyLanguage(root=document){const d=$('sakCastleNewspaperDialog');if(d){d.dir=language==='ar'?'rtl':'ltr';d.lang=language;}const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);while(walker.nextNode())translateTextNode(walker.currentNode);if(d){d.querySelectorAll('[placeholder],[aria-label],[title]').forEach(el=>{for(const attr of ['placeholder','aria-label','title'])if(el.hasAttribute(attr)){const key='__cn_'+attr;if(!el.dataset[key])el.dataset[key]=el.getAttribute(attr);const v=el.dataset[key];el.setAttribute(attr,language==='en'?(enText[v]||v):v);}});}}
+function setLanguage(next){language=next;try{localStorage.setItem('sakCastleNewspaperLang',language);}catch(_){}applyLanguage();const b=$('cnLangToggle');if(b)b.textContent=language==='ar'?'English':'العربية';}
+
 const day=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');};
 const feeds=[
 {name:'Google News · السعودية',url:'https://news.google.com/rss?hl=ar&gl=SA&ceid=SA:ar',category:'saudi'},
@@ -10,7 +31,7 @@ const feeds=[
 {name:'Google News · التقنية',url:'https://news.google.com/rss/headlines/section/topic/TECHNOLOGY?hl=ar&gl=SA&ceid=SA:ar',category:'tech'},
 {name:'Google News · الثقافة والفنون',url:'https://news.google.com/rss/headlines/section/topic/ARTS?hl=ar&gl=SA&ceid=SA:ar',category:'culture'},
 {name:'Google News · العلوم',url:'https://news.google.com/rss/headlines/section/topic/SCIENCE?hl=ar&gl=SA&ceid=SA:ar',category:'science'},
-{name:'Google News · الترفيه',url:'https://news.google.com/rss/headlines/section/topic/ENTERTAINMENT?hl=ar&gl=SA&ceid=SA:ar',category:'entertainment'},
+{name:'Google News · الترفيه',url:'https://news.google.com/rss/headlines/section/topic/ENTERTAINMENT?hl=ar&gl=SA&ceid=SA:ar',category:'entertainment'},\n{name:'BBC World News',url:'https://feeds.bbci.co.uk/news/world/rss.xml',category:'world'},\n{name:'BBC Business',url:'https://feeds.bbci.co.uk/news/business/rss.xml',category:'economy'},\n{name:'BBC Technology',url:'https://feeds.bbci.co.uk/news/technology/rss.xml',category:'tech'},\n{name:'BBC Science & Environment',url:'https://feeds.bbci.co.uk/news/science_and_environment/rss.xml',category:'science'},\n{name:'BBC Sport',url:'https://feeds.bbci.co.uk/sport/rss.xml',category:'sports'},\n{name:'The Guardian · World',url:'https://www.theguardian.com/world/rss',category:'world'},
 {name:'العربية',url:'https://www.alarabiya.net/feed/rss2',category:'world'},
 {name:'عرب نيوز · English',url:'https://www.arabnews.com/rss.xml',category:'world'},
 {name:'عاجل',url:'https://ajel.sa/rss.xml',category:'saudi'},
@@ -70,9 +91,9 @@ function styles(){
 function dialog(){
  let d=$('sakCastleNewspaperDialog');if(d)return d;
  d=document.createElement('dialog');d.id='sakCastleNewspaperDialog';d.dir='rtl';
- d.innerHTML='<div class="cn-head"><h2>📰 صحيفة القلعة</h2><button class="cn-close" type="button" aria-label="إغلاق">×</button></div><div class="cn-body"><div class="cn-tabs" id="cnMainTabs"><button data-tab="news" aria-pressed="true">الأخبار</button><button data-tab="crossword" aria-pressed="false">الكلمات المتقاطعة</button><button data-tab="differences" aria-pressed="false">الاختلافات الخمسة</button><button data-tab="horoscope" aria-pressed="false">حظك اليوم</button></div><section id="cnPanel"></section></div>';
- document.body.appendChild(d);d.querySelector('.cn-close').addEventListener('click',()=>d.close());d.addEventListener('click',e=>{if(e.target===d)d.close();});
- d.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));return d;
+ d.innerHTML='<div class="cn-head"><h2>📰 صحيفة القلعة</h2><div style="display:flex;gap:8px;align-items:center"><button id="cnLangToggle" class="cn-close" type="button">English</button><button class="cn-close" type="button" aria-label="إغلاق">×</button></div></div><div class="cn-body"><div class="cn-tabs" id="cnMainTabs"><button data-tab="news" aria-pressed="true">الأخبار</button><button data-tab="crossword" aria-pressed="false">الكلمات المتقاطعة</button><button data-tab="differences" aria-pressed="false">الاختلافات الخمسة</button><button data-tab="horoscope" aria-pressed="false">حظك اليوم</button></div><section id="cnPanel"></section></div>';
+ document.body.appendChild(d);d.querySelector('.cn-close[aria-label="إغلاق"]').addEventListener('click',()=>d.close());d.querySelector('#cnLangToggle').addEventListener('click',()=>setLanguage(language==='ar'?'en':'ar'));d.addEventListener('click',e=>{if(e.target===d)d.close();});
+ d.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));applyLanguage(d);setLanguage(language);return d;
 }
 function open(){styles();const d=dialog();try{d.showModal();}catch(_){d.setAttribute('open','');}showTab('news');if(!items.length||Date.now()-lastLoad>15*60*1000)loadNews();}
 function safeUrl(v){try{const u=new URL(v,location.href);return u.protocol==='https:'?u.href:'';}catch(_){return '';}}
@@ -112,7 +133,7 @@ async function loadNews(force=false){
  }finally{loading=false;renderNews();}
 }
 function tabButton(tab){dialog().querySelectorAll('[data-tab]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tab===tab)));}
-function showTab(tab){tabButton(tab);const p=$('cnPanel');p.replaceChildren();if(tab==='news'){category='all';renderNews();}else if(tab==='crossword')crossword(p);else if(tab==='differences')differences(p);else horoscope(p);}
+function showTab(tab){tabButton(tab);const p=$('cnPanel');p.replaceChildren();if(tab==='news'){category='all';renderNews();}else if(tab==='crossword')crossword(p);else if(tab==='differences')differences(p);else horoscope(p);applyLanguage(p);}
 const puzzles=[
  {a:'بحر',d:'بيت',ac:'ماء واسع مالح',dc:'مكان يسكن فيه الإنسان'},
  {a:'قمر',d:'قلم',ac:'جرم نراه ليلاً',dc:'أداة نكتب بها'},
@@ -151,6 +172,6 @@ function horoscope(panel){
  signs.forEach((v,i)=>{const b=document.createElement('button');b.textContent=v;b.setAttribute('aria-pressed',String(i===0));b.addEventListener('click',()=>{selected=i;row.querySelectorAll('button').forEach((x,j)=>x.setAttribute('aria-pressed',String(i===j)));show();});row.appendChild(b);});
  w.append(row,out);const note=document.createElement('div');note.className='cn-meta';note.textContent='للتسلية فقط؛ الأبراج والتوقعات ليست علماً ولا وسيلة لمعرفة المستقبل.';w.appendChild(note);show();panel.appendChild(w);
 }
-function start(){styles();mount();new MutationObserver(mount).observe(document.body,{childList:true,subtree:true});}
+function start(){styles();mount();new MutationObserver(m=>{mount();if(language==='en')for(const x of m)for(const n of x.addedNodes)if(n.nodeType===Node.ELEMENT_NODE)applyLanguage(n);}).observe(document.body,{childList:true,subtree:true});}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
