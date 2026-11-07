@@ -18,7 +18,7 @@ export async function onRequestGet({ request }) {
     });
     if (!response.ok) throw new Error(source.name + " returned HTTP " + response.status);
     const xml = await response.text();
-    if (!/<(?:rss|feed|rdf:RDF)\\b/i.test(xml.slice(0, 2500)) || !/<(?:item|entry)\\b/i.test(xml)) {
+    if (!/<(?:rss|feed|rdf:RDF)\b/i.test(xml.slice(0, 2500)) || !/<(?:item|entry)\b/i.test(xml)) {
       throw new Error(source.name + " returned an invalid RSS document");
     }
     return { name: source.name, url: source.url, category: source.category, xml };
