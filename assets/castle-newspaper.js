@@ -8,21 +8,25 @@ const feeds=[
 {name:'Google News · الاقتصاد',url:'https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=ar&gl=SA&ceid=SA:ar',category:'economy'},
 {name:'Google News · الرياضة',url:'https://news.google.com/rss/headlines/section/topic/SPORTS?hl=ar&gl=SA&ceid=SA:ar',category:'sports'},
 {name:'Google News · التقنية',url:'https://news.google.com/rss/headlines/section/topic/TECHNOLOGY?hl=ar&gl=SA&ceid=SA:ar',category:'tech'},
-{name:'عرب نيوز',url:'https://www.arabnews.com/rss.xml',category:'world'},
+{name:'Google News · الثقافة والفنون',url:'https://news.google.com/rss/headlines/section/topic/ARTS?hl=ar&gl=SA&ceid=SA:ar',category:'culture'},
+{name:'Google News · العلوم',url:'https://news.google.com/rss/headlines/section/topic/SCIENCE?hl=ar&gl=SA&ceid=SA:ar',category:'science'},
+{name:'Google News · الترفيه',url:'https://news.google.com/rss/headlines/section/topic/ENTERTAINMENT?hl=ar&gl=SA&ceid=SA:ar',category:'entertainment'},
+{name:'العربية',url:'https://www.alarabiya.net/feed/rss2',category:'world'},
+{name:'عرب نيوز · English',url:'https://www.arabnews.com/rss.xml',category:'world'},
 {name:'عاجل',url:'https://ajel.sa/rss.xml',category:'saudi'},
 {name:'الوطن',url:'https://www.alwatan.com.sa/rssFeed/1',category:'saudi'},
 {name:'المدينة',url:'https://www.al-madina.com/rssFeed/193',category:'saudi'},
 {name:'أم القرى',url:'https://www.uqn.gov.sa/rssFeed/20',category:'saudi'},
 {name:'اليوم',url:'https://www.alyaum.com/rssFeed/1005',category:'saudi'}];
-const categories={all:'الكل',saudi:'السعودية',world:'العالم',economy:'الاقتصاد',sports:'الرياضة',tech:'التقنية'};
+const categories={all:'الكل',saudi:'السعودية',world:'العالم',economy:'الاقتصاد',sports:'الرياضة',tech:'التقنية',culture:'الثقافة والفنون',science:'العلوم',entertainment:'الترفيه'};
 let items=[],category='all',loading=false,lastLoad=0,found=new Set();
 function mount(){
  const dock=$('sakakerUtilityDock');if(!dock||$('sakCastleNewspaperLauncher'))return;
- const b=document.createElement('button');b.id='sakCastleNewspaperLauncher';b.type='button';b.className='sak-ostrich-icon sakaker-dock-entry';b.dataset.sakakerDockKey='newspaper';b.title='صحيفة القلعة';b.setAttribute('aria-label','صحيفة القلعة');
+ const b=document.createElement('button');b.id='sakCastleNewspaperLauncher';b.type='button';b.className='sak-ostrich-icon sakaker-dock-entry';b.dataset.sakakerDockKey='newspaper';b.title='صحيفة القلعة';b.setAttribute('aria-label','صحيفة القلعة');b.setAttribute('aria-haspopup','dialog');b.setAttribute('aria-controls','sakCastleNewspaperDialog');
  const art=document.createElement('span');art.className='sak-ostrich-art';const src=document.querySelector('#sakakerAllIconsDock .sak-ostrich-art svg');
  if(src)art.append(src.cloneNode(true));else art.innerHTML='<svg viewBox="0 0 160 100" aria-hidden="true"><path d="M12 55 Q58 5 82 45 Q110 5 148 38 Q110 32 88 61 Q56 25 12 55Z" fill="#f4d7ff" stroke="#fff" stroke-width="3"/></svg>';
  const label=document.createElement('span');label.className='sak-ostrich-name';label.textContent='صحيفة القلعة';b.append(art,label);
- b.style.cssText='display:flex!important;flex:0 0 76px!important;width:76px!important;min-width:76px!important;max-width:76px!important;min-height:76px!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:3px!important;cursor:pointer!important;touch-action:manipulation!important;position:relative!important;z-index:3!important;';
+ b.style.cssText='display:flex!important;flex:0 0 76px!important;width:76px!important;min-width:76px!important;max-width:76px!important;min-height:76px!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:3px!important;cursor:pointer!important;touch-action:manipulation!important;position:relative!important;z-index:3!important;border:0!important;background:transparent!important;padding:0!important;box-shadow:none!important;outline:0!important;';
  art.style.cssText='display:block!important;width:46px!important;height:42px!important;filter:hue-rotate(225deg) saturate(1.7) brightness(1.25) drop-shadow(0 0 5px #d9a7ff) drop-shadow(0 0 11px #8c45d8)!important;';
  label.style.cssText='display:block!important;color:#f1d9ff!important;-webkit-text-fill-color:#f1d9ff!important;text-shadow:0 0 5px #a85cff,0 1px 3px #000!important;font:800 9px/1.2 Tahoma,Arial,sans-serif!important;text-align:center!important;white-space:nowrap!important;';
  b.addEventListener('click',open);const hub=dock.querySelector(':scope > .sak-gull-hub');if(hub)dock.insertBefore(b,hub);else dock.appendChild(b);
@@ -128,7 +132,7 @@ function scene(alt){
 }
 function differences(panel){
  found=new Set();const w=document.createElement('div');w.className='cn-game';w.innerHTML='<h3>🔎 اكتشف الاختلافات الخمسة</h3><p>قارن الصورتين، ثم اضغط على موضع الاختلاف في الصورة اليمنى.</p>';
- const pics=document.createElement('div');pics.className='cn-pictures';const l=document.createElement('div'),r=document.createElement('div');l.innerHTML=scene(false);r.innerHTML=scene(true);const svg=r.querySelector('svg');pics.append(l,r);w.appendChild(pics);
+ const pics=document.createElement('div');pics.className='cn-pictures';const l=document.createElement('div'),r=document.createElement('div');l.innerHTML=scene(false);r.innerHTML=scene(true);const svg=r.querySelector('svg'),hue=(Number(day().replace(/-/g,''))%5)*19; l.querySelector('svg').style.filter='hue-rotate('+hue+'deg)';svg.style.filter='hue-rotate('+hue+'deg)';pics.append(l,r);w.appendChild(pics);
  const points=[{x:260,y:35},{x:60,y:30},{x:170,y:12},{x:160,y:112},{x:287,y:88}],out=document.createElement('p');out.className='cn-picture-hint';out.textContent='تم العثور على 0 من 5';w.appendChild(out);
  svg.addEventListener('click',e=>{const rect=svg.getBoundingClientRect(),x=(e.clientX-rect.left)/rect.width*320,y=(e.clientY-rect.top)/rect.height*190;let idx=-1,dist=999;points.forEach((v,i)=>{const n=Math.hypot(x-v.x,y-v.y);if(n<dist){dist=n;idx=i;}});if(dist<19&&!found.has(idx)){found.add(idx);const mark=document.createElementNS('http://www.w3.org/2000/svg','circle');mark.setAttribute('cx',points[idx].x);mark.setAttribute('cy',points[idx].y);mark.setAttribute('r','12');mark.setAttribute('fill','none');mark.setAttribute('stroke','#ffdf5e');mark.setAttribute('stroke-width','4');svg.appendChild(mark);out.textContent=found.size===5?'ممتاز! اكتشفت الاختلافات الخمسة كلها.':'أحسنت! '+found.size+' من 5';}});
  const date=document.createElement('div');date.className='cn-meta';date.textContent='تحدي يوم '+day();w.appendChild(date);panel.appendChild(w);
