@@ -20,7 +20,7 @@ const enText={
 const originalText=new WeakMap();
 function translateTextNode(n){if(!originalText.has(n))originalText.set(n,n.nodeValue);const original=originalText.get(n);let value=original;if(language==='en'){for(const [ar,en] of Object.entries(enText)){if(value===ar){value=en;break;}if(value.startsWith(ar)&&ar.endsWith(' ')){value=en+value.slice(ar.length);break;}}}n.nodeValue=value;}
 function applyLanguage(root=document){const d=$('sakCastleNewspaperDialog');if(d){d.dir=language==='ar'?'rtl':'ltr';d.lang=language;}const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);while(walker.nextNode())translateTextNode(walker.currentNode);if(d){d.querySelectorAll('[placeholder],[aria-label],[title]').forEach(el=>{for(const attr of ['placeholder','aria-label','title'])if(el.hasAttribute(attr)){const key='__cn_'+attr;if(!el.dataset[key])el.dataset[key]=el.getAttribute(attr);const v=el.dataset[key];el.setAttribute(attr,language==='en'?(enText[v]||v):v);}});}}
-function setLanguage(next){language=next;try{localStorage.setItem('sakCastleNewspaperLang',language);}catch(_){}applyLanguage();const b=$('cnLangToggle');if(b)b.textContent=language==='ar'?'English':'العربية';}
+function setLanguage(next){language=next;try{localStorage.setItem('sakCastleNewspaperLang',language);}catch(_){}const d=$('sakCastleNewspaperDialog');if(d)applyLanguage(d);const b=$('cnLangToggle');if(b)b.textContent=language==='ar'?'English':'العربية';}
 
 const day=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');};
 const feeds=[
@@ -117,7 +117,7 @@ function renderNews(){
  const tabs=document.createElement('div');tabs.className='cn-tabs';
  Object.entries(categories).forEach(([k,v])=>{const b=document.createElement('button');b.textContent=v;b.setAttribute('aria-pressed',String(category===k));b.addEventListener('click',()=>{category=k;renderNews();});tabs.appendChild(b);});
  const refresh=document.createElement('button');refresh.className='cn-refresh';refresh.textContent=loading?'جارٍ التحديث…':'تحديث الأخبار';refresh.disabled=loading;refresh.addEventListener('click',()=>loadNews(true));tabs.appendChild(refresh);p.appendChild(tabs);
- const meta=document.createElement('div');meta.className='cn-meta';meta.textContent=lastLoad?'آخر تحديث: '+new Date(lastLoad).toLocaleString('ar-SA'):'مصادر الصحيفة';p.appendChild(meta);
+ const meta=document.createElement('div');meta.className='cn-meta';meta.textContent=lastLoad?'آخر تحديث: '+new Date(lastLoad).toLocaleString(language==='ar'?'ar-SA':'en-GB'):'مصادر الصحيفة';p.appendChild(meta);
  const list=items.filter(x=>category==='all'||x.category===category);
  if(!list.length){const e=document.createElement('div');e.className='cn-empty';e.textContent=loading?'جارٍ جلب الأخبار من المصادر…':'لا توجد أخبار متاحة حالياً؛ حاول التحديث لاحقاً.';p.appendChild(e);}
  list.forEach(x=>{const card=document.createElement('article');card.className='cn-story';const a=document.createElement('a');a.href=x.link;a.target='_blank';a.rel='noopener noreferrer';a.textContent=x.title;card.appendChild(a);const m=document.createElement('div');m.className='cn-meta';m.textContent=x.source+(x.date?' · '+x.date:'');card.appendChild(m);if(x.desc){const d=document.createElement('div');d.className='cn-desc';d.textContent=x.desc;card.appendChild(d);}p.appendChild(card);});
@@ -172,6 +172,6 @@ function horoscope(panel){
  signs.forEach((v,i)=>{const b=document.createElement('button');b.textContent=v;b.setAttribute('aria-pressed',String(i===0));b.addEventListener('click',()=>{selected=i;row.querySelectorAll('button').forEach((x,j)=>x.setAttribute('aria-pressed',String(i===j)));show();});row.appendChild(b);});
  w.append(row,out);const note=document.createElement('div');note.className='cn-meta';note.textContent='للتسلية فقط؛ الأبراج والتوقعات ليست علماً ولا وسيلة لمعرفة المستقبل.';w.appendChild(note);show();panel.appendChild(w);
 }
-function start(){styles();mount();new MutationObserver(m=>{mount();if(language==='en')for(const x of m)for(const n of x.addedNodes)if(n.nodeType===Node.ELEMENT_NODE)applyLanguage(n);}).observe(document.body,{childList:true,subtree:true});}
+function start(){styles();mount();new MutationObserver(m=>{mount();if(language==='en'){const d=$('sakCastleNewspaperDialog');for(const x of m)for(const n of x.addedNodes)if(n.nodeType===Node.ELEMENT_NODE&&(d?.contains(n)||n.contains?.(d)))applyLanguage(n);}}).observe(document.body,{childList:true,subtree:true});}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
