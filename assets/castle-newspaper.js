@@ -116,7 +116,11 @@ const puzzles=[
  {a:'بحر',d:'بيت',ac:'ماء واسع مالح',dc:'مكان يسكن فيه الإنسان'},
  {a:'قمر',d:'قلم',ac:'جرم نراه ليلاً',dc:'أداة نكتب بها'},
  {a:'ورد',d:'وقت',ac:'زهرة جميلة',dc:'زمن أو موعد'},
- {a:'نجم',d:'نهر',ac:'جرم يلمع في السماء',dc:'مجرى ماء عذب'}];
+ {a:'نجم',d:'نهر',ac:'جرم يلمع في السماء',dc:'مجرى ماء عذب'},
+{a:'شمس',d:'شعر',ac:'مصدر الضوء والدفء نهاراً',dc:'ما ينبت على الرأس'},
+{a:'باب',d:'بحر',ac:'مدخل المنزل',dc:'ماء واسع مالح'},
+{a:'عين',d:'علم',ac:'عضو الإبصار',dc:'راية الدولة'},
+{a:'جمل',d:'جبل',ac:'حيوان سفينة الصحراء',dc:'مرتفع صخري كبير'}];
 function norm(s){return String(s||'').replace(/[\u064B-\u065F\u0670\u0640]/g,'').replace(/[أإآ]/g,'ا').replace(/ى/g,'ي').replace(/\s/g,'').trim();}
 function crossword(panel){
  const q=puzzles[Number(day().replace(/-/g,''))%puzzles.length],w=document.createElement('div');w.className='cn-game';w.innerHTML='<h3>🧩 الكلمات المتقاطعة اليومية</h3><p>حل الكلمتين؛ تشتركان في الحرف الأول داخل المربع المشترك.</p>';
@@ -126,9 +130,10 @@ function crossword(panel){
  const result=document.createElement('p');result.setAttribute('aria-live','polite');w.appendChild(result);const check=document.createElement('button');check.className='cn-action';check.textContent='تحقق من الحل';check.addEventListener('click',()=>{const ok=norm(a.value)===q.a&&norm(d.value)===q.d;result.textContent=ok?'أحسنت! إجابتك صحيحة.':'ليست الإجابة صحيحة بعد؛ حاول مرة أخرى.';result.style.color=ok?'#a6f2c5':'#ffd4a6';if(ok)grid.querySelectorAll('.cn-cell:not(.blank)').forEach((x,i)=>x.textContent=[...q.a][i]||[...q.d][i-2]||'');});w.appendChild(check);const date=document.createElement('div');date.className='cn-meta';date.textContent='لغز يوم '+day();w.appendChild(date);panel.appendChild(w);
 }
 function scene(alt){
+ const variant=Number(day().replace(/-/g,''))%3,sky=['#a9dbe5','#d8c9ed','#f4d6b8'][variant],grass=['#74aa71','#829ac0','#85ae8c'][variant],wall=['#d9c49b','#d7c5dc','#e5d1a5'][variant];
  const sun=alt?'':'<circle cx="260" cy="35" r="16" fill="#ffe48b"/>',cloud=alt?'':'<path d="M35 47 Q28 31 45 28 Q54 10 70 27 Q88 24 91 43Z" fill="#fff"/>',flag=alt?'':'<path d="M160 20 L160 4 L180 10 L160 15Z" fill="#e24b65"/>',door=alt?'#4b8a8d':'#6d3d29';
  const palm=alt?'<circle cx="282" cy="92" r="4" fill="#e5a34c"/><circle cx="292" cy="92" r="4" fill="#e5a34c"/>':'<circle cx="282" cy="92" r="4" fill="#e5a34c"/><circle cx="292" cy="92" r="4" fill="#e5a34c"/><circle cx="287" cy="84" r="4" fill="#e5a34c"/>';
- return '<svg class="cn-picture" viewBox="0 0 320 190" role="img" aria-label="مشهد القلعة"><rect width="320" height="190" fill="#a9dbe5"/><rect y="130" width="320" height="60" fill="#74aa71"/>'+sun+cloud+'<path d="M100 130 L100 72 L130 72 L130 48 L190 48 L190 72 L220 72 L220 130Z" fill="#d9c49b" stroke="#765e47" stroke-width="3"/><path d="M125 48 L160 25 L195 48Z" fill="#a95b50"/>'+flag+'<rect x="118" y="88" width="18" height="18" fill="#557c91"/><rect x="184" y="88" width="18" height="18" fill="#557c91"/><path d="M146 130 V104 Q160 88 174 104 V130Z" fill="'+door+'"/><path d="M277 133 L284 73" stroke="#704b2e" stroke-width="8"/><path d="M284 78 Q250 50 264 68 Q280 48 286 70 Q303 46 303 70 Q321 63 300 84Z" fill="#28784f"/>'+palm+'<path d="M0 160 Q65 145 115 163 T230 159 T320 161" fill="none" stroke="#e6d9a2" stroke-width="3"/></svg>';
+ return '<svg class="cn-picture" viewBox="0 0 320 190" role="img" aria-label="مشهد القلعة"><rect width="320" height="190" fill="'+sky+'"/><rect y="130" width="320" height="60" fill="'+grass+'"/>'+sun+cloud+'<path d="M100 130 L100 72 L130 72 L130 48 L190 48 L190 72 L220 72 L220 130Z" fill="'+wall+'" stroke="#765e47" stroke-width="3"/><path d="M125 48 L160 25 L195 48Z" fill="#a95b50"/>'+flag+'<rect x="118" y="88" width="18" height="18" fill="#557c91"/><rect x="184" y="88" width="18" height="18" fill="#557c91"/><path d="M146 130 V104 Q160 88 174 104 V130Z" fill="'+door+'"/><path d="M277 133 L284 73" stroke="#704b2e" stroke-width="8"/><path d="M284 78 Q250 50 264 68 Q280 48 286 70 Q303 46 303 70 Q321 63 300 84Z" fill="#28784f"/>'+palm+'<path d="M0 160 Q65 145 115 163 T230 159 T320 161" fill="none" stroke="#e6d9a2" stroke-width="3"/></svg>';
 }
 function differences(panel){
  found=new Set();const w=document.createElement('div');w.className='cn-game';w.innerHTML='<h3>🔎 اكتشف الاختلافات الخمسة</h3><p>قارن الصورتين، ثم اضغط على موضع الاختلاف في الصورة اليمنى.</p>';
