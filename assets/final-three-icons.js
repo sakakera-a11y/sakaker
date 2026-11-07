@@ -846,6 +846,16 @@ function ensureCastleStoriesLauncher(){
   document.head.appendChild(script);
 }
 
+function ensureCastleNewspaperLauncher(){
+  if(document.getElementById('sakCastleNewspaperLauncherScript'))return;
+  const script=document.createElement('script');
+  script.id='sakCastleNewspaperLauncherScript';
+  script.src='/assets/castle-newspaper.js?v=20261108-1';
+  script.async=true;
+  script.onerror=()=>script.remove();
+  document.head.appendChild(script);
+}
+
 function ensureCastleTourLauncher(){
   // A dedicated independent launcher is required: the original horizontal
   // dock clips/scrolls buttons out of view on many phones.
@@ -883,6 +893,7 @@ function settle(){
   loadPaymentClock();
   ensureCastleTourLauncher();
   ensureCastleStoriesLauncher();
+  ensureCastleNewspaperLauncher();
   ensureSiteBackground();
   rebuildIconAppearance();
   removeOldSeaSoundControl();
@@ -899,6 +910,7 @@ new MutationObserver(()=>{
   watchFacebookEmbeds();
   loadPaymentClock();
   ensureCastleTourLauncher();
+  ensureCastleNewspaperLauncher();
   ensureSiteBackground();
   rebuildIconAppearance();
   removeOldSeaSoundControl();
