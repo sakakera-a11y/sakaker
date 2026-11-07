@@ -53,7 +53,7 @@ function installVisitorPosts() {
     #visitorPostsSection{margin:8px 6px!important;padding:3px 6px!important;display:flex!important;flex:0 0 auto;align-items:stretch;justify-content:stretch;text-align:center;direction:inherit;position:relative!important;z-index:30!important;pointer-events:auto!important}
     #visitorPostsSection .visitor-posts-copy{display:none!important}
     /* Four top widgets share two aligned rows; the visitor button sits beside the New Year counter. */
-    html body #sakFestiveHeader #sakHolidayCountdowns{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-areas:"newyear visitor" "christmas news"!important;align-items:stretch!important;gap:6px!important;width:100%!important;max-width:100%!important;min-width:0!important}
+    html body #sakFestiveHeader #sakHolidayCountdowns{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-areas:"newyear visitor" "christmas christmas"!important;align-items:stretch!important;gap:6px!important;width:100%!important;max-width:100%!important;min-width:0!important}
     html body #sakFestiveHeader #sakHolidayCountdowns>:is(.sak-festival,#sakNewsLaunch,#visitorPostsSection){box-sizing:border-box!important;width:100%!important;height:clamp(64px,10vw,74px)!important;min-height:clamp(64px,10vw,74px)!important;max-height:clamp(64px,10vw,74px)!important;min-width:0!important;max-width:100%!important;margin:0!important;padding:5px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;overflow:hidden!important}
     html body #sakFestiveHeader #sakHolidayCountdowns>.sak-festival:first-of-type{grid-area:newyear;display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:center!important;text-align:center!important}
     html body #sakFestiveHeader #sakHolidayCountdowns>.sak-festival:nth-of-type(2){grid-area:christmas;display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:center!important;text-align:center!important}
@@ -84,7 +84,7 @@ function installVisitorPosts() {
     @media(max-width:600px) and (orientation:portrait){
       html body #sakFestiveHeader #sakHolidayCountdowns{
         grid-template-columns:repeat(2,minmax(0,1fr))!important;
-        grid-template-areas:"newyear visitor" "christmas news"!important;
+        grid-template-areas:"newyear visitor" "christmas christmas"!important;
         gap:6px!important;width:100%!important;max-width:100%!important;min-width:0!important;
       }
       html body #sakFestiveHeader #sakHolidayCountdowns>:is(.sak-festival,#sakNewsLaunch,#visitorPostsSection){
