@@ -21,6 +21,7 @@ const feeds=[
 const categories={all:'الكل',saudi:'السعودية',world:'العالم',economy:'الاقتصاد',sports:'الرياضة',tech:'التقنية',culture:'الثقافة والفنون',science:'العلوم',entertainment:'الترفيه'};
 let items=[],category='all',loading=false,lastLoad=0,found=new Set();
 function mount(){
+ const oldTopButton=$('sakNewsLaunch');if(oldTopButton)oldTopButton.remove();
  const dock=$('sakakerUtilityDock');if(!dock||$('sakCastleNewspaperLauncher'))return;
  const b=document.createElement('button');b.id='sakCastleNewspaperLauncher';b.type='button';b.className='sak-ostrich-icon sakaker-dock-entry';b.dataset.sakakerDockKey='newspaper';b.title='صحيفة القلعة';b.setAttribute('aria-label','صحيفة القلعة');b.setAttribute('aria-haspopup','dialog');b.setAttribute('aria-controls','sakCastleNewspaperDialog');
  const art=document.createElement('span');art.className='sak-ostrich-art';const src=document.querySelector('#sakakerAllIconsDock .sak-ostrich-art svg');
