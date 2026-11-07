@@ -696,6 +696,9 @@ function decorateAsOstrich(el,key){
     art.replaceChildren(img);
   }else if(stableKey==='ship'){
     art.innerHTML=titanicShipSVG();
+  }else if(stableKey==='map'){
+    // Folded map with a location pin: recognizable at dock-icon size.
+    art.innerHTML='<svg viewBox="0 0 100 100" role="img" aria-label="خريطة" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="sakMapPaper" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f4f0d2"/><stop offset="1" stop-color="#b7d8c9"/></linearGradient><linearGradient id="sakMapPin" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffe59a"/><stop offset="1" stop-color="#d88b35"/></linearGradient></defs><path d="M12 24 37 13 64 23 88 13 88 76 63 87 37 77 12 88Z" fill="url(#sakMapPaper)" stroke="#f8e6a5" stroke-width="4" stroke-linejoin="round"/><path d="M37 13V77M64 23V87" fill="none" stroke="#477c77" stroke-width="3"/><path d="m20 35 10-5m18 2 9 4m-36 17 9-5m20 8 8 3m-37 15 10-5" stroke="#6c9e8d" stroke-width="2.5" stroke-linecap="round"/><path d="M65 9c-12 0-21 9-21 21 0 15 21 38 21 38s21-23 21-38C86 18 77 9 65 9Z" fill="url(#sakMapPin)" stroke="#fff1bc" stroke-width="3"/><circle cx="65" cy="30" r="7" fill="#173d43" stroke="#fff" stroke-width="2.5"/></svg>';
   }else if(stableKey==='castleTour'){
     // The launcher owns the yellow gull illustration; keep it intact.
     if(!art.querySelector('svg'))art.replaceChildren(ostrichSVG(stableKey));
