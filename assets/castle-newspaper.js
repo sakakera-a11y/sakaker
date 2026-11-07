@@ -1,16 +1,16 @@
 (()=>{'use strict';
 if(window.__sakCastleNewspaperLoaded)return;window.__sakCastleNewspaperLoaded=true;
 const $=id=>document.getElementById(id);
-let language=(()=>{try{return localStorage.getItem('sakCastleNewspaperLang')==='en'?'en':'ar';}catch(_){return 'ar';}})();
+let language=(()=>{const page=String(document.documentElement.lang||'').toLowerCase();if(page.startsWith('en'))return 'en';if(page.startsWith('ar'))return 'ar';try{return localStorage.getItem('sakCastleNewspaperLang')==='en'?'en':'ar';}catch(_){return 'ar';}})();
 const enText={
-'صحيفة القلعة':'Castle Newspaper','الأخبار':'News','الكلمات المتقاطعة':'Daily Crossword','الاختلافات الخمسة':'Find Five Differences','حظك اليوم':'Daily Horoscope','إغلاق':'Close',
+'صحيفة القلعة':'Castle Newspaper','الأخبار':'News','الكلمات المتقاطعة':'Daily Crossword','الاختلافات الخمسة':'Find Five Differences','حظك اليوم':'Daily Horoscope','إغلاق':'Close','عاجل':'Ajel','BBC News · World':'BBC News · World','تعذر الاتصال بمصادر الأخبار الآن. حاول التحديث بعد قليل.':'Could not connect to news sources. Please try again shortly.','جارٍ فتح الصحيفة…':'Opening the newspaper…','مصدر الخبر':'News source',
 'الكل':'All','السعودية':'Saudi Arabia','العالم':'World','الاقتصاد':'Business','الرياضة':'Sports','التقنية':'Technology','الثقافة والفنون':'Arts & Culture','العلوم':'Science','الترفيه':'Entertainment',
 'جارٍ التحديث…':'Updating…','تحديث الأخبار':'Refresh News','آخر تحديث: ':'Last updated: ','مصادر الصحيفة':'Newspaper sources',
 'جارٍ جلب الأخبار من المصادر…':'Loading headlines from sources…','لا توجد أخبار متاحة حالياً؛ حاول التحديث لاحقاً.':'No headlines are available right now. Please try again later.',
 '🧩 الكلمات المتقاطعة اليومية':'🧩 Daily Crossword','حل الكلمتين؛ تشتركان في الحرف الأول داخل المربع المشترك.':'Solve both words. They share the first letter in the intersecting square.',
 'الإجابة الأفقية':'Across answer','الإجابة العمودية':'Down answer','أفقي: ':'Across: ','عمودي: ':'Down: ',
 'تحقق من الحل':'Check answers','أحسنت! إجابتك صحيحة.':'Excellent! Both answers are correct.','ليست الإجابة صحيحة بعد؛ حاول مرة أخرى.':'Not quite. Try again.',
-'لغز يوم':'Puzzle for ','🔎 اكتشف الاختلافات الخمسة':'🔎 Find the Five Differences','قارن الصورتين، ثم اضغط على موضع الاختلاف في الصورة اليمنى.':'Compare the pictures, then tap a difference in the right-hand picture.',
+'لغز يوم':'Puzzle for ','حل الكلمتين؛ تشتركان في الحرف الأول داخل المربع المشترك.':'Solve both words; they share their first letter in the crossing square.','أفقي: ':'Across: ','عمودي: ':'Down: ','لغز يوم':'Puzzle for ','تحدي يوم':'Challenge for ','مشهد القلعة':'Castle scene','تم العثور على 0 من 5':'Found 0 of 5','🔎 اكتشف الاختلافات الخمسة':'🔎 Find the Five Differences','قارن الصورتين، ثم اضغط على موضع الاختلاف في الصورة اليمنى.':'Compare the pictures, then tap a difference in the right-hand picture.',
 'تم العثور على 0 من 5':'Found 0 of 5','ممتاز! اكتشفت الاختلافات الخمسة كلها.':'Great! You found all five differences.','أحسنت! ':'Well done! ',' من 5':' of 5','تحدي يوم':'Challenge for ',
 '✨ حظك اليوم':'✨ Daily Horoscope','اختر برجك لقراءة عبارة يومية خفيفة للتسلية.':'Choose your zodiac sign for a light daily entertainment message.',
 'للتسلية فقط؛ الأبراج والتوقعات ليست علماً ولا وسيلة لمعرفة المستقبل.':'For entertainment only. Astrology is not science and cannot predict the future.',
@@ -20,7 +20,7 @@ const enText={
 const originalText=new WeakMap();
 function translateTextNode(n){if(!originalText.has(n))originalText.set(n,n.nodeValue);const original=originalText.get(n);let value=original;if(language==='en'){for(const [ar,en] of Object.entries(enText)){if(value===ar){value=en;break;}if(value.startsWith(ar)&&ar.endsWith(' ')){value=en+value.slice(ar.length);break;}}}n.nodeValue=value;}
 function applyLanguage(root=document){const d=$('sakCastleNewspaperDialog');if(d){d.dir=language==='ar'?'rtl':'ltr';d.lang=language;}const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);while(walker.nextNode())translateTextNode(walker.currentNode);if(d){d.querySelectorAll('[placeholder],[aria-label],[title]').forEach(el=>{for(const attr of ['placeholder','aria-label','title'])if(el.hasAttribute(attr)){const key='__cn_'+attr;if(!el.dataset[key])el.dataset[key]=el.getAttribute(attr);const v=el.dataset[key];el.setAttribute(attr,language==='en'?(enText[v]||v):v);}});}}
-function setLanguage(next){language=next;try{localStorage.setItem('sakCastleNewspaperLang',language);}catch(_){}const d=$('sakCastleNewspaperDialog');if(d)applyLanguage(d);const b=$('cnLangToggle');if(b)b.textContent=language==='ar'?'English':'العربية';}
+function setLanguage(next){language=next;try{localStorage.setItem('sakCastleNewspaperLang',language);}catch(_){}const d=$('sakCastleNewspaperDialog');if(d)applyLanguage(d);const b=$('cnLangToggle');if(b)b.textContent=language==='ar'?'English':'العربية';const pageLang=String(document.documentElement.lang||'').toLowerCase();if(pageLang.startsWith('en')!== (language==='en')){const siteToggle=[...document.querySelectorAll('button,[role="button"],a')].find(el=>/language|تبديل اللغة|تغيير اللغة|العربية|english|^\s*EN\s*$/i.test([el.id,el.title,el.getAttribute('aria-label'),el.textContent].join(' ')));if(siteToggle&&d&&!d.contains(siteToggle))siteToggle.click();}}
 
 const day=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');};
 const feeds=[
@@ -32,10 +32,10 @@ let items=[],category='all',loading=false,lastLoad=0,found=new Set();
 function mount(){
  const oldTopButton=$('sakNewsLaunch');if(oldTopButton)oldTopButton.remove();
  const dock=$('sakakerUtilityDock');if(!dock||$('sakCastleNewspaperLauncher'))return;
- const b=document.createElement('button');b.id='sakCastleNewspaperLauncher';b.type='button';b.className='sak-ostrich-icon sakaker-dock-entry';b.dataset.sakakerDockKey='newspaper';b.title='صحيفة القلعة';b.setAttribute('aria-label','صحيفة القلعة');b.setAttribute('aria-haspopup','dialog');b.setAttribute('aria-controls','sakCastleNewspaperDialog');
+ const b=document.createElement('button');b.id='sakCastleNewspaperLauncher';b.type='button';b.className='sak-ostrich-icon sakaker-dock-entry';b.dataset.sakakerDockKey='newspaper';const pageEn=String(document.documentElement.lang||'ar').toLowerCase().startsWith('en');const launchLabel=pageEn?'Castle Newspaper':'صحيفة القلعة';b.title=launchLabel;b.setAttribute('aria-label',launchLabel);b.setAttribute('aria-haspopup','dialog');b.setAttribute('aria-controls','sakCastleNewspaperDialog');
  const art=document.createElement('span');art.className='sak-ostrich-art';const src=document.querySelector('#sakakerAllIconsDock .sak-ostrich-art svg');
  if(src)art.append(src.cloneNode(true));else art.innerHTML='<svg viewBox="0 0 160 100" aria-hidden="true"><path d="M12 55 Q58 5 82 45 Q110 5 148 38 Q110 32 88 61 Q56 25 12 55Z" fill="#f4d7ff" stroke="#fff" stroke-width="3"/></svg>';
- const label=document.createElement('span');label.className='sak-ostrich-name';label.textContent='صحيفة القلعة';b.append(art,label);
+ const label=document.createElement('span');label.className='sak-ostrich-name';label.textContent=launchLabel;b.append(art,label);
  b.style.cssText='display:flex!important;flex:0 0 76px!important;width:76px!important;min-width:76px!important;max-width:76px!important;min-height:76px!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:3px!important;cursor:pointer!important;touch-action:manipulation!important;position:relative!important;z-index:3!important;border:0!important;background:transparent!important;padding:0!important;box-shadow:none!important;outline:0!important;';
  art.style.cssText='display:block!important;width:46px!important;height:42px!important;filter:hue-rotate(225deg) saturate(1.7) brightness(1.25) drop-shadow(0 0 5px #d9a7ff) drop-shadow(0 0 11px #8c45d8)!important;';
  label.style.cssText='display:block!important;color:#f1d9ff!important;-webkit-text-fill-color:#f1d9ff!important;text-shadow:0 0 5px #a85cff,0 1px 3px #000!important;font:800 9px/1.2 Tahoma,Arial,sans-serif!important;text-align:center!important;white-space:nowrap!important;';
@@ -109,6 +109,7 @@ function renderNews(){
  const list=items.filter(x=>category==='all'||x.category===category);
  if(!list.length){const e=document.createElement('div');e.className='cn-empty';e.textContent=loading?'جارٍ جلب الأخبار من المصادر…':'لا توجد أخبار متاحة حالياً؛ حاول التحديث لاحقاً.';p.appendChild(e);}
  list.forEach(x=>{const card=document.createElement('article');card.className='cn-story';const a=document.createElement('a');a.href=x.link;a.target='_blank';a.rel='noopener noreferrer';a.textContent=x.title;card.appendChild(a);const m=document.createElement('div');m.className='cn-meta';m.textContent=x.source+(x.date?' · '+x.date:'');card.appendChild(m);if(x.desc){const d=document.createElement('div');d.className='cn-desc';d.textContent=x.desc;card.appendChild(d);}p.appendChild(card);});
+ applyLanguage(p);
 }
 async function loadNews(force=false){
  if(loading||(!force&&Date.now()-lastLoad<3*60*1000))return;
@@ -186,6 +187,6 @@ function horoscope(panel){
  signs.forEach((v,i)=>{const b=document.createElement('button');b.textContent=v;b.setAttribute('aria-pressed',String(i===0));b.addEventListener('click',()=>{selected=i;row.querySelectorAll('button').forEach((x,j)=>x.setAttribute('aria-pressed',String(i===j)));show();});row.appendChild(b);});
  w.append(row,out);const note=document.createElement('div');note.className='cn-meta';note.textContent='للتسلية فقط؛ الأبراج والتوقعات ليست علماً ولا وسيلة لمعرفة المستقبل.';w.appendChild(note);show();panel.appendChild(w);
 }
-function start(){styles();mount();new MutationObserver(m=>{mount();if(language==='en'){const d=$('sakCastleNewspaperDialog');for(const x of m)for(const n of x.addedNodes)if(n.nodeType===Node.ELEMENT_NODE&&(d?.contains(n)||n.contains?.(d)))applyLanguage(n);}}).observe(document.body,{childList:true,subtree:true});}
+function start(){styles();mount();const syncPageLanguage=()=>{const next=String(document.documentElement.lang||'ar').toLowerCase().startsWith('en')?'en':'ar';if(next!==language){language=next;try{localStorage.setItem('sakCastleNewspaperLang',language);}catch(_){}const d=$('sakCastleNewspaperDialog');if(d)applyLanguage(d);const toggle=$('cnLangToggle');if(toggle)toggle.textContent=language==='ar'?'English':'العربية';const launcher=$('sakCastleNewspaperLauncher');if(launcher){const label=language==='en'?'Castle Newspaper':'صحيفة القلعة';const name=launcher.querySelector('.sak-ostrich-name');if(name)name.textContent=label;launcher.title=label;launcher.setAttribute('aria-label',label);}}};new MutationObserver(m=>{mount();syncPageLanguage();const d=$('sakCastleNewspaperDialog');for(const x of m)for(const n of x.addedNodes)if(n.nodeType===Node.ELEMENT_NODE&&(d?.contains(n)||n.contains?.(d)))applyLanguage(n);}).observe(document.body,{childList:true,subtree:true});new MutationObserver(syncPageLanguage).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});syncPageLanguage();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
