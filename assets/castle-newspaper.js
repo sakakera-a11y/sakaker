@@ -24,35 +24,9 @@ function setLanguage(next){language=next;try{localStorage.setItem('sakCastleNews
 
 const day=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');};
 const feeds=[
-{name:'Google News · السعودية',url:'https://news.google.com/rss?hl=ar&gl=SA&ceid=SA:ar',category:'saudi'},
-{name:'Google News · العالم',url:'https://news.google.com/rss/headlines/section/topic/WORLD?hl=ar&gl=SA&ceid=SA:ar',category:'world'},
-{name:'Google News · الاقتصاد',url:'https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=ar&gl=SA&ceid=SA:ar',category:'economy'},
-{name:'Google News · الرياضة',url:'https://news.google.com/rss/headlines/section/topic/SPORTS?hl=ar&gl=SA&ceid=SA:ar',category:'sports'},
-{name:'Google News · التقنية',url:'https://news.google.com/rss/headlines/section/topic/TECHNOLOGY?hl=ar&gl=SA&ceid=SA:ar',category:'tech'},
-{name:'Google News · الثقافة والفنون',url:'https://news.google.com/rss/headlines/section/topic/ARTS?hl=ar&gl=SA&ceid=SA:ar',category:'culture'},
-{name:'Google News · العلوم',url:'https://news.google.com/rss/headlines/section/topic/SCIENCE?hl=ar&gl=SA&ceid=SA:ar',category:'science'},
-{name:'Google News · الترفيه',url:'https://news.google.com/rss/headlines/section/topic/ENTERTAINMENT?hl=ar&gl=SA&ceid=SA:ar',category:'entertainment'},
-{name:'BBC World News',url:'https://feeds.bbci.co.uk/news/world/rss.xml',category:'world'},
-{name:'BBC Business',url:'https://feeds.bbci.co.uk/news/business/rss.xml',category:'economy'},
-{name:'BBC Technology',url:'https://feeds.bbci.co.uk/news/technology/rss.xml',category:'tech'},
-{name:'BBC Science & Environment',url:'https://feeds.bbci.co.uk/news/science_and_environment/rss.xml',category:'science'},
-{name:'BBC Sport',url:'https://feeds.bbci.co.uk/sport/rss.xml',category:'sports'},
-{name:'The Guardian · World',url:'https://www.theguardian.com/world/rss',category:'world'},
-{name:'الجزيرة نت',url:'https://www.aljazeera.net/aljazeerarss/a7c186be-1baa-4bd4-9d80-a84db769f779/73d0e1b4-532f-45ef-b135-bfdff8b8cab9',category:'world'},
-{name:'Al Jazeera English',url:'https://www.aljazeera.com/xml/rss/all.xml',category:'world'},
-{name:'الشرق الأوسط · كل الأخبار',url:'https://aawsat.com/feed/news',category:'world'},
-{name:'الشرق الأوسط · الخليج',url:'https://aawsat.com/feed/gulf',category:'saudi'},
-{name:'الشرق الأوسط · الاقتصاد',url:'https://aawsat.com/feed/economy',category:'economy'},
-{name:'الشرق الأوسط · الرياضة',url:'https://aawsat.com/feed/sport',category:'sports'},
-{name:'الشرق الأوسط · التقنية',url:'https://aawsat.com/feed/information-technology',category:'tech'},
-{name:'الشرق الأوسط · الثقافة',url:'https://aawsat.com/feed/culture',category:'culture'},
-{name:'العربية',url:'https://www.alarabiya.net/feed/rss2',category:'world'},
-{name:'عرب نيوز · English',url:'https://www.arabnews.com/rss.xml',category:'world'},
 {name:'عاجل',url:'https://ajel.sa/rss.xml',category:'saudi'},
-{name:'الوطن',url:'https://www.alwatan.com.sa/rssFeed/1',category:'saudi'},
-{name:'المدينة',url:'https://www.al-madina.com/rssFeed/193',category:'saudi'},
-{name:'أم القرى',url:'https://www.uqn.gov.sa/rssFeed/20',category:'saudi'},
-{name:'اليوم',url:'https://www.alyaum.com/rssFeed/1005',category:'saudi'}];
+{name:'BBC News · World',url:'https://feeds.bbci.co.uk/news/world/rss.xml',category:'world'}
+];
 const categories={all:'الكل',saudi:'السعودية',world:'العالم',economy:'الاقتصاد',sports:'الرياضة',tech:'التقنية',culture:'الثقافة والفنون',science:'العلوم',entertainment:'الترفيه'};
 let items=[],category='all',loading=false,lastLoad=0,found=new Set();
 function mount(){
@@ -109,7 +83,7 @@ function dialog(){
  document.body.appendChild(d);d.querySelector('.cn-close[aria-label="إغلاق"]').addEventListener('click',()=>d.close());d.querySelector('#cnLangToggle').addEventListener('click',()=>setLanguage(language==='ar'?'en':'ar'));d.addEventListener('click',e=>{if(e.target===d)d.close();});
  d.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));applyLanguage(d);setLanguage(language);return d;
 }
-function open(){styles();const d=dialog();try{d.showModal();}catch(_){d.setAttribute('open','');}showTab('news');if(!items.length||Date.now()-lastLoad>15*60*1000)loadNews();}
+function open(){styles();const d=dialog();try{d.showModal();}catch(_){d.setAttribute('open','');}showTab('news');if(!items.length||Date.now()-lastLoad>3*60*1000)loadNews();}
 function safeUrl(v){try{const u=new URL(v,location.href);return u.protocol==='https:'?u.href:'';}catch(_){return '';}}
 async function fetchText(url){const c=new AbortController(),t=setTimeout(()=>c.abort(),6500);try{const r=await fetch(url,{signal:c.signal,cache:'no-store'});if(!r.ok)throw Error();return await r.text();}finally{clearTimeout(t);}}
 async function fetchXml(feed){
@@ -137,13 +111,29 @@ function renderNews(){
  list.forEach(x=>{const card=document.createElement('article');card.className='cn-story';const a=document.createElement('a');a.href=x.link;a.target='_blank';a.rel='noopener noreferrer';a.textContent=x.title;card.appendChild(a);const m=document.createElement('div');m.className='cn-meta';m.textContent=x.source+(x.date?' · '+x.date:'');card.appendChild(m);if(x.desc){const d=document.createElement('div');d.className='cn-desc';d.textContent=x.desc;card.appendChild(d);}p.appendChild(card);});
 }
 async function loadNews(force=false){
- if(loading||(!force&&Date.now()-lastLoad<15*60*1000))return;loading=true;const c=cache();if(!items.length&&c?.items?.length)items=c.items;renderNews();
+ if(loading||(!force&&Date.now()-lastLoad<3*60*1000))return;
+ loading=true;
+ const c=cache();
+ if(!items.length&&c?.items?.length){items=c.items;lastLoad=Number(c.savedAt)||0;}
+ renderNews();
  try{
- const results=await Promise.allSettled(feeds.map(async f=>{const x=await fetchXml(f);return x?parse(x,f):[];}));
- const unique=new Map();results.forEach(r=>{if(r.status==='fulfilled')r.value.forEach(x=>{if(!unique.has(x.link))unique.set(x.link,x);});});
- const fresh=[...unique.values()].sort((a,b)=>(Date.parse(b.date)||0)-(Date.parse(a.date)||0));
- if(fresh.length){items=fresh.slice(0,100);try{localStorage.setItem('sakCastleNewspaperCacheV1',JSON.stringify({savedAt:Date.now(),items}));}catch(_){}}
- lastLoad=Date.now();
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),6500);
+  let payload;
+  try{
+   const response=await fetch('/api/news',{signal:controller.signal,cache:'no-store',headers:{'Accept':'application/json'}});
+   if(!response.ok)throw new Error('news endpoint unavailable');
+   payload=await response.json();
+  }finally{clearTimeout(timer);}
+  if(!Array.isArray(payload?.feeds)||!payload.feeds.length)throw new Error('no verified news feed responded');
+  const fresh=payload.feeds.flatMap(feed=>parse(feed.xml,feed));
+  if(!fresh.length)throw new Error('news feed returned no readable headlines');
+  const unique=new Map();
+  fresh.forEach(item=>{if(!unique.has(item.link))unique.set(item.link,item);});
+  items=[...unique.values()].sort((a,b)=>(Date.parse(b.date)||0)-(Date.parse(a.date)||0)).slice(0,100);
+  lastLoad=Date.now();
+  try{localStorage.setItem('sakCastleNewspaperCacheV1',JSON.stringify({savedAt:lastLoad,items}));}catch(_){}
+ }catch(_){
+  if(!items.length){const p=$('cnPanel');if(p){const e=document.createElement('div');e.className='cn-empty';e.textContent='تعذر الاتصال بمصادر الأخبار الآن. حاول التحديث بعد قليل.';p.appendChild(e);}}
  }finally{loading=false;renderNews();}
 }
 function tabButton(tab){dialog().querySelectorAll('[data-tab]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tab===tab)));}

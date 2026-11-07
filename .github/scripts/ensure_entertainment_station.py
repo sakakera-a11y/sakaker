@@ -12,7 +12,7 @@ TITLE = 'abwalqmrzmrd castle'
 STYLE = '<link id="sak-compact-main-icons" rel="stylesheet" href="/assets/compact-main-icons.css?v=20261104-hide-facebook-ship1">'
 EXTRA_HIDE_STYLE = '<link id="sak-hide-facebook-ship-launchers" rel="stylesheet" href="/assets/hide-facebook-ship-launchers.css?v=20261104-global1">'
 LOADER = '<script id="sak-entertainment-runtime-loader" src="/assets/entertainment-station.js?v=20261002-2" defer></script>'
-ICONS_SCRIPT = '<script id="sak-final-three-icons-loader" src="/assets/final-three-icons.js?v=20261108-castle-newspaper1" defer></script>'
+ICONS_SCRIPT = '<script id="sak-final-three-icons-loader" src="/assets/final-three-icons.js?v=20261108-map-icon1" defer></script>'
 
 # Replace the old site name anywhere it remains in visible/page metadata text.
 legacy_names = [
