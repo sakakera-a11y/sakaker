@@ -71,12 +71,12 @@ function ensure(){
     });
   }
   const en=isEn();
-  const name=en?'Castle Book':'كتاب القلعة';
+  const name=en?'Castle Stories':'حكايات القلعة';
   const visibleLabel=button.querySelector(':scope > .sak-ostrich-name');
   if(visibleLabel)visibleLabel.textContent=name;
   const description=en
-    ?'The complete bilingual Abwalqmrzmrd book, including the author’s introduction and story in Arabic and English.'
-    :'كتاب أبوالقمر زمرد الكامل باللغتين، ويضم مقدمة المؤلف والحكاية بالعربية والإنجليزية.';
+    ?'The complete bilingual Abwalqmrzmrd stories collection, including the author's introduction and story in Arabic and English.'
+    :'مجموعة حكايات أبوالقمر زمرد باللغتين، وتضم مقدمة المؤلف والحكاية بالعربية والإنجليزية.';
   button.title=name+' — '+description;
   button.setAttribute('aria-label',button.title);
   button.setAttribute('aria-describedby','sakCastleStoriesDescription');
