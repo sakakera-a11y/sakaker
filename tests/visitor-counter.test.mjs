@@ -72,7 +72,7 @@ function mockAnalyticsFetch(calls = []) {
     const { start, end } = payload.variables;
     const rows = [];
     for (let day = start; day <= end; day = addDays(day, 1)) {
-      rows.push({ dimensions: { date: day }, uniq: { uniques: day === end ? 7 : 4 } });
+      rows.push({ dimensions: { date: day }, uniq: { uniques: day === utcDay(new Date()) ? 7 : 4 } });
     }
     return Response.json({ data: { viewer: { zones: [{ httpRequests1dGroups: rows }] } } });
   };
