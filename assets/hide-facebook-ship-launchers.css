@@ -1,0 +1,39 @@
+/* Hide the Facebook and ship launchers globally, including controls recreated outside the dock. */
+html body :is(
+  #facebookVideoIcon,
+  .facebookVideoIcon,
+  [data-sakaker-util="facebook"],
+  [data-sakaker-dock-key="facebook"],
+  .sak-gull-hub,
+  .sak-gull-action.sak-gull-facebook,
+  .sak-gull-action.sak-gull-ship,
+  #sakTitanicShipLauncher,
+  #shipIcon_new,
+  #sakYachtPaymentLauncher,
+  [data-sakaker-util="ship"],
+  [data-sakaker-dock-key="ship"],
+  button[aria-label*="Facebook" i],
+  a[aria-label*="Facebook" i],
+  button[title*="Facebook" i],
+  a[title*="Facebook" i],
+  button[aria-label*="فيس بوك"],
+  a[aria-label*="فيس بوك"],
+  button[title*="فيس بوك"],
+  a[title*="فيس بوك"]
+){
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+  width:0!important;
+  min-width:0!important;
+  max-width:0!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  overflow:hidden!important;
+  flex:0 0 0!important;
+}

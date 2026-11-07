@@ -11,11 +11,11 @@ body{padding:18px 14px 32px}
 header{max-width:980px;margin:0 auto 18px;text-align:center;position:relative}
 h1{margin:8px 0 4px;color:var(--gold);text-shadow:0 0 14px #00ffd066}
 .sub{color:var(--muted);font-size:14px}
-.back{position:fixed;top:12px;left:12px;z-index:2147483646;border:1px solid #8fffe7;border-radius:999px;background:#06231e;color:#fff;padding:9px 14px;cursor:pointer;box-shadow:0 0 14px #00ffd044}
+.langSwitch{position:fixed;top:12px;right:12px;z-index:2147483646;border:1px solid #8fffe7;border-radius:999px;background:#06231e;color:#fff;padding:9px 14px;cursor:pointer;box-shadow:0 0 14px #00ffd044}.back{position:fixed;top:12px;left:12px;z-index:2147483646;border:1px solid #8fffe7;border-radius:999px;background:#06231e;color:#fff;padding:9px 14px;cursor:pointer;box-shadow:0 0 14px #00ffd044}
 .grid{max-width:980px;margin:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .book{min-height:165px;border:1px solid #5fffd4aa;border-radius:22px;background:linear-gradient(145deg,rgba(7,47,39,.96),rgba(3,23,28,.98));color:#fff;padding:18px 14px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;box-shadow:0 10px 28px #0008,0 0 20px #00ffd01f;transition:.22s}
 .book:hover,.book:focus-visible{transform:translateY(-5px);box-shadow:0 14px 36px #0009,0 0 30px #00ffd044;outline:2px solid #fff8}
-.book .ico{font-size:42px;margin-bottom:8px}.book b{font-size:16px;color:#fff}.book small{display:block;color:#cdeee6;margin-top:6px;line-height:1.5}.book span.action{margin-top:10px;color:var(--gold);font-weight:800;font-size:12px}
+.book .book-cover{display:block;width:min(100%,210px);height:170px;object-fit:cover;object-position:center;border:1px solid #ffd45c99;border-radius:14px;margin:0 auto 11px;box-shadow:0 6px 18px #0007}.book .ico{font-size:42px;margin-bottom:8px}.book b{font-size:16px;color:#fff}.book small{display:block;color:#cdeee6;margin-top:6px;line-height:1.5}.book span.action{margin-top:10px;color:var(--gold);font-weight:800;font-size:12px}
 #reader{display:none;position:fixed;inset:0;width:100vw;height:100dvh;background:rgba(0,0,0,.88);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);z-index:2147483647;padding:10px}
 #reader.open{display:flex;align-items:center;justify-content:center}
 .readerBox{width:min(1100px,98vw);height:min(94dvh,900px);background:linear-gradient(145deg,#062a23,#03161a);border:1px solid #63ffda;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 0 30px #00ffd044}
@@ -25,8 +25,33 @@ h1{margin:8px 0 4px;color:var(--gold);text-shadow:0 0 14px #00ffd066}
 .readerClose{width:42px;height:42px;border-radius:50%;padding:0;font-size:24px;background:#62172c;border-color:#ff9ab6}
 iframe{width:100%;height:100%;border:0;background:#fff;flex:1}
 .note{max-width:980px;margin:18px auto 0;text-align:center;color:#b9d7d0;font-size:12px}
-@media(max-width:720px){body{padding:65px 10px 24px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.book{min-height:145px;padding:13px 8px;border-radius:17px}.book .ico{font-size:34px}.book b{font-size:14px}.readerHead{flex-wrap:wrap}.readerTitle{order:3;flex-basis:100%;font-size:13px}.readerBtn{font-size:12px;padding:8px 9px}}
-@media(max-width:360px){.grid{grid-template-columns:1fr}.book{min-height:125px}}
+html,body{width:100%;max-width:100%;overflow-x:hidden}
+img,iframe{max-width:100%}
+button,a{touch-action:manipulation}
+@media(max-width:720px){
+ body{padding:calc(68px + env(safe-area-inset-top)) 10px calc(24px + env(safe-area-inset-bottom))}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;width:100%}
+ .book{min-width:0;min-height:140px;padding:12px 8px;border-radius:16px;overflow-wrap:anywhere}
+ .book .book-cover{width:100%;max-width:170px;height:clamp(100px,34vw,150px);object-fit:cover}
+ .book .ico{font-size:32px}.book b{font-size:clamp(12px,3.6vw,14px);line-height:1.5}
+ .book small{font-size:12px;overflow-wrap:anywhere}
+ .readerHead{flex-wrap:wrap;gap:7px;padding:8px}
+ .readerTitle{order:3;flex-basis:100%;font-size:13px;white-space:normal}
+ .readerBtn{font-size:12px;padding:8px 9px;min-height:40px}
+ #reader{padding:max(5px,env(safe-area-inset-top)) 5px max(5px,env(safe-area-inset-bottom))}
+ .readerBox{width:100%;height:calc(100dvh - max(10px,env(safe-area-inset-top)) - max(10px,env(safe-area-inset-bottom)));max-height:100%;border-radius:15px}
+ #reader iframe{min-height:0}
+ .langSwitch,.back{top:max(8px,env(safe-area-inset-top));padding:8px 10px;font-size:12px;max-width:46vw}
+}
+@media(max-width:360px){
+ body{padding-left:8px;padding-right:8px}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+ .book{min-height:125px;padding:9px 5px}
+ .book .book-cover{height:96px}
+ .book .ico{font-size:27px}
+ .readerHead{gap:5px}
+ .readerBtn{padding:7px;font-size:11px}
+}
 </style>
 
 <style id="sak-window-palette-books">
@@ -49,15 +74,17 @@ iframe{width:100%;height:100%;border:0;background:#fff;flex:1}
 </head>
 <body>
 <button class="back" id="backBtn" type="button">↩ الرئيسية / Home</button>
+<button class="langSwitch" id="langBtn" type="button" aria-label="Switch language">English</button>
 <header><h1 id="pageTitle">📚 الكتب الإلكترونية</h1><div class="sub" id="pageSub">قراءة داخل الموقع</div></header>
 <main class="grid" id="booksGrid"></main>
-<div class="note" id="note">تُعرض الكتب من Google Drive داخل قارئ الموقع.</div>
+<div class="note" id="note">يأتي كتاب أبو القمر زمرد الكامل بترجمته أولًا، ثم الموسوعة العربية وبقية الكتب.</div>
 
 <div id="reader" aria-hidden="true">
   <section class="readerBox" role="dialog" aria-modal="true">
     <div class="readerHead">
       <button class="readerBtn readerClose" id="closeBtn" type="button" aria-label="إغلاق">×</button>
       <div class="readerTitle" id="readerTitle">كتاب إلكتروني</div>
+      <a class="readerBtn" id="openBtn" href="#" target="_blank" rel="noopener">↗ فتح خارجي</a>
       <a class="readerBtn" id="downloadBtn" href="#" target="_blank" rel="noopener">⬇ تحميل</a>
     </div>
     <iframe id="readerFrame" title="قارئ الكتاب" loading="eager"></iframe>
@@ -68,6 +95,7 @@ iframe{width:100%;height:100%;border:0;background:#fff;flex:1}
 (()=>{
 'use strict';
 const books=[
+{url:'/abwalqmrzmrd-book.html',readerUrl:'/abwalqmrzmrd-book.html',cover:'/Screenshot_٢٠٢٦١٠٠٦-١٧٤٢٠٧_1.png',ar:'كتاب أبو القمر زمرد — الكتاب الكامل باللغتين',en:'Abwalqmrzmrd — Complete Bilingual Book',authorAr:'مقدمة المؤلف وقصة الذكرى السنوية كاملة بالعربية والإنجليزية',authorEn:'Author introduction and anniversary story in Arabic and English'},
 {id:'1GXTRPWdBrkI8f_x9KmhRpSfJM3HL1Bfy',ar:'الموسوعة العربية العالمية — الجزء 30',en:'The Arab World Encyclopedia — Volume 30',authorAr:'الموسوعة العربية العالمية',authorEn:'Arab World Encyclopedia'},
 {id:'1E8m9p7TKZWoJdNEBn0RbAUZcyofOVQts',ar:'كليلة ودمنة',en:'Kalila wa Dimna',authorAr:'عبد الله بن المقفع',authorEn:'Abdullah ibn al-Muqaffa'},
 {id:'1gwOaOxZe75ADi4lQbjxfvDS-qP4qGEhv',ar:'مغامرة في الصحراء',en:'Adventure in the Desert',authorAr:'مصطفى محمود',authorEn:'Mostafa Mahmoud'},
@@ -76,24 +104,62 @@ const books=[
 {id:'1z1iQDVvxcj49D664-wkCi-H3r2lBpkMs',ar:'قضية زعيم العصابة',en:'The Gang Leader Case',authorAr:'روايات مصرية للجيب',authorEn:'Egyptian Pocket Novels'},
 {id:'1LdhTXBaSSHwOI6XBreWwCd8QqOjy3beu',ar:'فن الحياة',en:'The Art of Life',authorAr:'سلامة موسى',authorEn:'Salama Moussa'},
 {id:'1svg6UMe1yq7d62iola4DHAMkT2dKWfPN',ar:'ألف ليلة وليلة',en:'One Thousand and One Nights',authorAr:'المجلد الأول',authorEn:'Volume One'},
-{id:'1X8LuHDx06ZjSG1TH-Y065i0yVXUUoebu',ar:'قواعد جارتين',en:'Qawaed Jartin',authorAr:'عمرو عبد الحميد',authorEn:'Amr Abdel Hamid'}
+{id:'1X8LuHDx06ZjSG1TH-Y065i0yVXUUoebu',ar:'قواعد جارتين',en:'Qawaed Jartin',authorAr:'عمرو عبد الحميد',authorEn:'Amr Abdel Hamid'},
+
 ];
 let en=false;
 try{en=(parent!==window&&parent.document.documentElement.lang==='en')||document.documentElement.lang==='en'}catch(e){en=document.documentElement.lang==='en'}
 document.documentElement.lang=en?'en':'ar';document.documentElement.dir=en?'ltr':'rtl';
 const t=(ar,enText)=>en?enText:ar;
-const grid=document.getElementById('booksGrid'),reader=document.getElementById('reader'),frame=document.getElementById('readerFrame'),title=document.getElementById('readerTitle'),download=document.getElementById('downloadBtn');
+const grid=document.getElementById('booksGrid'),reader=document.getElementById('reader'),frame=document.getElementById('readerFrame'),title=document.getElementById('readerTitle'),download=document.getElementById('downloadBtn'),openBtn=document.getElementById('openBtn');
+let activeBook=-1;
+let pageScrollY=0;
 document.getElementById('pageTitle').textContent=t('📚 الكتب الإلكترونية','📚 E-Books');
 document.getElementById('pageSub').textContent=t('قراءة داخل الموقع','Read inside the site');
-document.getElementById('note').textContent=t('تُعرض الكتب من Google Drive داخل قارئ الموقع.','Books are displayed from Google Drive inside the site reader.');
+document.getElementById('note').textContent=t('تُعرض الكتب من Google Drive داخل قارئ الموقع.','Books are displayed from local PDF files and Google Drive inside the site reader.');
 document.getElementById('backBtn').textContent=t('↩ الرئيسية','↩ Home');
-document.getElementById('downloadBtn').textContent=t('⬇ تحميل','⬇ Download');
-books.forEach((b,i)=>{const el=document.createElement('button');el.type='button';el.className='book';el.innerHTML='<span class="ico">📖</span><b></b><small></small><span class="action"></span>';el.querySelector('b').textContent=t(b.ar,b.en);el.querySelector('small').textContent=t(b.authorAr,b.authorEn);el.querySelector('.action').textContent=t('قراءة الكتاب','Read book');el.onclick=()=>openBook(i);grid.appendChild(el)});
-function openBook(i){const b=books[i];title.textContent='📖 '+t(b.ar,b.en);frame.src='https://drive.google.com/file/d/'+b.id+'/preview';download.href='https://drive.google.com/uc?export=download&id='+b.id;reader.classList.add('open');reader.setAttribute('aria-hidden','false');document.documentElement.style.overflow='hidden'}
-function closeReader(){reader.classList.remove('open');reader.setAttribute('aria-hidden','true');frame.src='about:blank';document.documentElement.style.overflow=''}
+document.getElementById('downloadBtn').textContent=t('↗ فتح النسخة الجديدة','↗ Open new edition');
+function renderBooks(){
+ grid.replaceChildren();
+ books.forEach((b,i)=>{const el=document.createElement('button');el.type='button';el.className='book';el.innerHTML='<span class="ico">📖</span><b></b><small></small><span class="action"></span>';if(b.cover){const cover=document.createElement('img');cover.className='book-cover';cover.src=b.cover;cover.alt=t(b.ar,b.en);el.prepend(cover);el.querySelector('.ico').hidden=true;}el.querySelector('b').textContent=t(b.ar,b.en);el.querySelector('small').textContent=t(b.authorAr,b.authorEn);el.querySelector('.action').textContent=t('اضغط لفتح الكتاب','Tap to open book');el.onclick=()=>openBook(i);grid.appendChild(el)});
+}
+function applyLanguage(next){
+ en=!!next;document.documentElement.lang=en?'en':'ar';document.documentElement.dir=en?'ltr':'rtl';
+ document.getElementById('pageTitle').textContent=t('📚 الكتب الإلكترونية','📚 E-Books');
+ document.getElementById('pageSub').textContent=t('قراءة داخل الموقع','Read inside the site');
+ document.getElementById('note').textContent=t('يفتح كتاب أبوالقمرزمرد الكامل باللغتين العربية والإنجليزية داخل قارئ الموقع.','The complete bilingual book opens inside the site reader. Arabic and English are included in the same edition.');
+ document.getElementById('backBtn').textContent=t('↩ الرئيسية','↩ Home');
+ document.getElementById('langBtn').textContent=t('English','العربية');
+ document.getElementById('langBtn').setAttribute('aria-label',t('Switch to English','التبديل إلى العربية'));
+ document.getElementById('downloadBtn').textContent=t('⬇ تحميل','⬇ Download');
+ document.getElementById('openBtn').textContent=t('↗ فتح خارجي','↗ Open externally');
+ renderBooks();
+ if(activeBook>=0 && reader.classList.contains('open')) title.textContent='📖 '+t(books[activeBook].ar,books[activeBook].en);
+}
+document.getElementById('langBtn').addEventListener('click',()=>applyLanguage(!en));
+try{
+ if(parent!==window){
+  const syncParentLanguage=()=>{const parentLang=parent.document.documentElement.lang;const next=parentLang.toLowerCase().startsWith('en');if(next!==en)applyLanguage(next)};
+  new parent.MutationObserver(syncParentLanguage).observe(parent.document.documentElement,{attributes:true,attributeFilter:['lang','dir']});
+  window.addEventListener('message',event=>{if(event.origin===location.origin&&event.data&&typeof event.data.lang==='string')applyLanguage(event.data.lang.toLowerCase().startsWith('en'))});
+ }
+}catch(e){/* Cross-origin parent: the visible language button remains available. */}
+
+function openBook(i){
+ const b=books[i];if(!b)return;activeBook=i;pageScrollY=window.scrollY||document.documentElement.scrollTop||0;
+ const src=b.readerUrl||b.url||('https://drive.google.com/file/d/'+b.id+'/preview');
+ title.textContent='📖 '+t(b.ar,b.en);frame.src=src;
+ download.href=b.url||('https://drive.google.com/uc?export=download&id='+b.id);download.removeAttribute('download');
+ openBtn.href=b.readerUrl||b.url||('https://drive.google.com/file/d/'+b.id+'/view');
+ openBtn.hidden=false;download.hidden=false;
+ reader.classList.add('open');reader.setAttribute('aria-hidden','false');document.documentElement.style.overflow='hidden';
+ document.getElementById('closeBtn').focus({preventScroll:true});
+}
+function closeReader(){reader.classList.remove('open');reader.setAttribute('aria-hidden','true');frame.src='about:blank';document.documentElement.style.overflow='';activeBook=-1;window.scrollTo({top:pageScrollY,behavior:'instant'});}
 document.getElementById('closeBtn').onclick=closeReader;
 reader.addEventListener('click',e=>{if(e.target===reader)closeReader()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeReader()});
+applyLanguage(en);
 document.getElementById('backBtn').onclick=()=>{try{if(parent!==window){parent.postMessage({type:'sakaker-close-app',app:'books'},location.origin);return}}catch(e){}location.href='index.html'};
 })();
 </script>

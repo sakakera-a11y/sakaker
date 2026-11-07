@@ -5,7 +5,10 @@ on:
     branches: [main]
     paths:
       - 'index.html'
-      - 'archive/03_sakaker_books7_stories5_all-popups_2026-10-06.html'
+      - 'archive/index_safety.html'
+      - 'archive/index_emergency_2026-10-08.html'
+      - 'archive/index_stable_2026-10-31.html'
+      - '.github/scripts/refresh_index_recovery.py'
       - '.github/workflows/index-auto-recovery.yml'
   workflow_dispatch:
 
@@ -23,116 +26,73 @@ jobs:
       - name: Checkout current main
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 1
 
-      - name: Validate published index
+      - name: Validate published homepage
         id: validate
         shell: python
         run: |
           from pathlib import Path
+          import os
           import sys
 
-          index = Path("index.html")
-          archive = Path("archive/03_sakaker_books7_stories5_all-popups_2026-10-06.html")
+          index = Path('index.html')
+          candidates = [
+              Path('archive/index_safety.html'),
+              Path('archive/index_emergency_2026-10-08.html'),
+              Path('archive/index_stable_2026-10-31.html'),
+          ]
+          required = (
+              '<!DOCTYPE html',
+              '<html',
+              '</html>',
+              '<body',
+              '</body>',
+              'id="loginOverlay"',
+              'id="facebookVideoPopup"',
+              'id="shipPopup_new"',
+          )
 
-          errors = []
-          if not index.exists():
-              errors.append("index.html is missing")
-          if not archive.exists():
-              errors.append("recovery archive is missing")
-
-          if index.exists():
-              text = index.read_text(encoding="utf-8", errors="replace")
-
+          def valid(path: Path) -> bool:
+              if not path.is_file():
+                  return False
+              text = path.read_text(encoding='utf-8', errors='replace')
               if len(text) < 900_000:
-                  errors.append("index.html is unexpectedly small")
+                  return False
+              if any(marker not in text for marker in required):
+                  return False
+              if text.count('<html') != 1 or text.count('</html>') != 1:
+                  return False
+              return True
 
-              required = [
-                  "<!DOCTYPE html",
-                  "<html",
-                  "</html>",
-                  "<body",
-                  "</body>",
-                  'id="loginOverlay"',
-                  'id="facebookVideoIcon"',
-                  'id="facebookVideoPopup"',
-                  'id="liveFlasher"',
-                  'id="livePopup"',
-                  'id="pongGame-btn"',
-                  'id="shipIcon_new"',
-                  'id="shipPopup_new"',
-                  'id="emeraldLibraryButton"',
-                  'id="emeraldLibraryContent"',
-                  'id="sakakerBusinessAd"',
-                  'id="sakBooksAppLayer"',
-                  "window.openSakakerEbooks",
-                  "sakaker-direct-seven-books-20261006",
-                  "sakaker-all-popups-top-layer-20261006",
-                  "أبوالقمرزمرد وسفينة الضباب",
-                  "أبوالقمرزمرد وقلعة الزمرد الخفية",
-                  "أبوالقمرزمرد وحارس الميناء الأسود",
-                  "أبوالقمرزمرد وجزيرة الرياح السبع",
-                  "أبوالقمرزمرد ونجم الصحراء",
-                  "مغامرة في الصحراء",
-                  "أنت لي",
-                  "إيكادولي",
-                  "قضية زعيم العصابة",
-                  "فن الحياة",
-                  "ألف ليلة وليلة",
-                  "قواعد جارتين",
-              ]
-              missing = [item for item in required if item not in text]
-              if missing:
-                  errors.append("missing critical markers: " + ", ".join(missing))
+          if valid(index):
+              print('index.html is valid and is the active recovery baseline.')
+              with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as out:
+                  out.write('recovery_required=false\n')
+              sys.exit(0)
 
-              if text.count("<html") != 1:
-                  errors.append("unexpected html root count")
-              if text.count("</html>") != 1:
-                  errors.append("unexpected closing html count")
-
-          if errors:
-              print("RECOVERY_REQUIRED=1")
-              for e in errors:
-                  print("ERROR:", e)
-              Path("recovery_required.txt").write_text("\n".join(errors), encoding="utf-8")
+          for candidate in candidates:
+              if valid(candidate):
+                  print(f'Restoring index.html from approved candidate: {candidate}')
+                  index.write_text(candidate.read_text(encoding='utf-8', errors='replace'), encoding='utf-8')
+                  with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as out:
+                      out.write('recovery_required=true\n')
+                  break
+          else:
+              print('ERROR: homepage and all recovery copies are missing or invalid.')
               sys.exit(1)
 
-          print("RECOVERY_REQUIRED=0")
-          print("index.html passed critical validation")
+      - name: Refresh all approved recovery copies from the current homepage
+        run: python3 .github/scripts/refresh_index_recovery.py
 
-      - name: Restore stable archive
-        if: failure() && steps.validate.outcome == 'failure'
-        shell: bash
+      - name: Commit refreshed homepage recovery state
         run: |
-          set -euo pipefail
-          cp "archive/03_sakaker_books7_stories5_all-popups_2026-10-06.html" index.html
-          echo "Stable archive restored into index.html"
-
-      - name: Verify restored copy
-        if: failure() && steps.validate.outcome == 'failure'
-        shell: bash
-        run: |
-          set -euo pipefail
-          cmp -s index.html "archive/03_sakaker_books7_stories5_all-popups_2026-10-06.html"
-          echo "Restored index matches archive exactly"
-
-      - name: Commit automatic recovery
-        if: failure() && steps.validate.outcome == 'failure'
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name "sakaker-auto-recovery"
-          git config user.email "actions@users.noreply.github.com"
-          git add index.html
-          if git diff --cached --quiet; then
-            echo "No recovery commit needed."
-            exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html archive/index_safety.html archive/index_emergency_2026-10-08.html archive/index_stable_2026-10-31.html
+          if ! git diff --cached --quiet; then
+            git commit -m "Sync homepage recovery copies to current approved baseline"
+            git push
+          else
+            echo "No homepage recovery file changes were required."
           fi
-          git commit -m "Auto-recover index.html from stable archive"
-          git push origin HEAD:main
-
-      - name: Mark job successful after recovery
-        if: failure() && steps.validate.outcome == 'failure'
-        shell: bash
-        run: |
-          echo "Automatic recovery completed successfully."

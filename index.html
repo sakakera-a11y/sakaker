@@ -4266,7 +4266,7 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
       modal.querySelector('.sak-text-library-close').addEventListener('click',closeTextLibrary);
     }
     const title=modal.querySelector('h2'), grid=modal.querySelector('.sak-text-library-grid');
-    title.textContent=label('📖 المكتبة النصية','📖 Text Library');
+    title.textContent=label('🧩 الألغاز','🧩 Riddles');
     grid.innerHTML='';
     textItems.forEach(function(item){
       const button=document.createElement('button'); button.type='button'; button.className='sak-text-library-item';
@@ -4279,23 +4279,20 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
     const card=document.querySelector('.cards .sak-text-library-card');
     if(!card) return;
 
-    card.setAttribute('onclick','openSakakerTextLibrary()');
+    card.setAttribute('onclick','window.sakakerOpenVisitorPostsWindow && window.sakakerOpenVisitorPostsWindow()');
     card.setAttribute('role','button');
     card.setAttribute('tabindex','0');
-    card.setAttribute('aria-label',label('المكتبة النصية','Text Library'));
-    card.setAttribute('data-aria-ar','المكتبة النصية');
-    card.setAttribute('data-aria-en','Text Library');
-    card.setAttribute('data-title-ar','المكتبة النصية');
-    card.setAttribute('data-title-en','Text Library');
-    card.title=label('المكتبة النصية','Text Library');
+    card.setAttribute('aria-label',label('مشاركات الزوار','Visitor Posts'));
+    card.setAttribute('data-aria-ar','مشاركات الزوار');
+    card.setAttribute('data-aria-en','Visitor Posts');
+    card.setAttribute('data-title-ar','مشاركات الزوار');
+    card.setAttribute('data-title-en','Visitor Posts');
+    card.title=label('مشاركات الزوار','Visitor Posts');
 
     card.innerHTML=
-      '<svg class="icon-svg" fill="none" viewBox="0 0 24 24">' +
-        '<path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 0-3 3V4Z" stroke-width="1.4"></path>' +
-        '<path d="M8 8h8M8 12h8M8 16h5" stroke-linecap="round" stroke-width="1.4"></path>' +
-      '</svg>' +
-      '<div class="icon-label" data-ar="المكتبة النصية" data-en="Text Library">'+label('المكتبة النصية','Text Library')+'</div>' +
-      '<div class="sub" data-ar="قصص • معرفة • ألغاز" data-en="Stories • Knowledge • Riddles">'+label('قصص • معرفة • ألغاز','Stories • Knowledge • Riddles')+'</div>';
+      '<div class="icon-svg" aria-hidden="true" style="font-size:30px">🕊️</div>' +
+      '<div class="icon-label" data-ar="مشاركات الزوار" data-en="Visitor Posts">'+label('مشاركات الزوار','Visitor Posts')+'</div>' +
+      '<div class="sub" data-ar="شارك محتواك مع زوار الموقع" data-en="Share with site visitors">'+label('شارك محتواك مع زوار الموقع','Share with site visitors')+'</div>';
 
     const legacySelectors=[
       '.cards .icon-card[onclick="openFolder(1)"]',
@@ -4357,7 +4354,42 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
 @media(max-width:700px){html,body{max-width:100%;overflow-x:hidden}button,[role="button"],.icon-card{touch-action:manipulation}#shipPopup_new{border-radius:16px!important}#closeShip_new{position:sticky!important;top:0!important;float:inline-end!important;z-index:2!important}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
-<link rel="stylesheet" href="/assets/live-media-refresh.css?v=20261008-window-palette4">
+<link rel="stylesheet" href="/assets/live-media-refresh.css?v=20261008-window-palette2">
+
+<style>
+  /* إخفاء أيقونة وفيسبوك والسفينة مهما كانت طريقة إنشاؤها */
+  html body #sakakerAllIconsDock #facebookVideoIcon,
+  html body #sakakerAllIconsDock [data-sakaker-util="facebook"],
+  html body #sakakerAllIconsDock [data-sakaker-dock-key="facebook"],
+  html body #sakakerAllIconsDock .sak-gull-hub,
+  html body #sakakerAllIconsDock .sak-gull-action.sak-gull-facebook,
+  html body #sakakerAllIconsDock .sak-gull-action.sak-gull-ship,
+  html body #sakakerAllIconsDock [data-sakaker-util="ship"],
+  html body #sakakerAllIconsDock [data-sakaker-dock-key="ship"],
+  html body #shipIcon_new,
+  html body #sakTitanicShipLauncher,
+  html body [aria-label*="فيس بوك" i],
+  html body [title*="فيس بوك" i],
+  html body [aria-label*="Facebook" i],
+  html body [title*="Facebook" i]{
+    display:none !important;
+    visibility:hidden !important;
+    opacity:0 !important;
+    pointer-events:none !important;
+    width:0 !important;
+    min-width:0 !important;
+    max-width:0 !important;
+    height:0 !important;
+    min-height:0 !important;
+    max-height:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+    border:0 !important;
+    overflow:hidden !important;
+    flex:0 0 0 !important;
+  }
+</style>
+
 </head>
 <body>
 
@@ -4481,7 +4513,7 @@ birdBtn.addEventListener('click',async e=>{
 
   <div class="fbPostFrame">
     <iframe loading="lazy"
-      src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FAbwAlqmrZmrd%2Fposts%2Fpfbid0i17uDRMnqqhTpS4uZxmApmEj24LQXzaM5EeRat581PUZhqcqj3SayNTMkqsY1pQWl&show_text=true&width=500"
+      src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FAbwAlqmrZmrd%2Fposts%2Fpfbid07k5Br3eoSwyNP3dF73eRVjYcZjTJmESbZZk1y6GYMCBvPHWhgbV7h11u317Copv9l&show_text=true&width=500"
       width="500"
       height="333"
       style="border:none;overflow:hidden"
@@ -4500,7 +4532,7 @@ birdBtn.addEventListener('click',async e=>{
     </div>
 
 <div class="fbVideoFrame">
-<iframe loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen="true" frameborder="0" height="591" scrolling="no" src="https://www.facebook.com/plugins/video.php?height=476&amp;href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1439785018105026%2F&amp;show_text=true&amp;width=267&amp;t=0" style="border:none;overflow:hidden" width="267">
+<iframe loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen="true" frameborder="0" height="493" scrolling="no" src="https://www.facebook.com/plugins/video.php?height=378&amp;href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1028563299794826%2F&amp;show_text=true&amp;width=560&amp;t=0" style="border:none;overflow:hidden" width="560">
 </iframe>
 </div>
 
@@ -5052,7 +5084,7 @@ birdBtn.addEventListener('click',async e=>{
       onclick="openSakakerTextLibrary()"
       role="button"
       tabindex="0"
-      aria-label="المكتبة النصية"
+      aria-label="الألغاز"
     >
       <svg
         class="icon-svg"
@@ -5071,12 +5103,26 @@ birdBtn.addEventListener('click',async e=>{
       </svg>
 
       <div class="icon-label">
-        المكتبة النصية
+        الألغاز
       </div>
 
       <div class="sub">
-        قصص • معرفة • ألغاز
+        ألغاز وتحديات
       </div>
+    </div>
+
+    <div
+      class="icon-card sak-castle-stories-card"
+      id="castleStoriesIndexCard"
+      onclick="window.location.href='/abwalqmrzmrd-book.html'"
+      role="link"
+      tabindex="0"
+      aria-label="حكايات القلعة Castle Stories"
+      title="حكايات القلعة"
+    >
+      <div class="icon-svg" aria-hidden="true" style="font-size:32px;display:flex;align-items:center;justify-content:center;">📜</div>
+      <div class="icon-label">حكايات القلعة</div>
+      <div class="sub">Castle Stories · حكايات وروايات</div>
     </div>
 
     <div
@@ -5441,14 +5487,14 @@ birdBtn.addEventListener('click',async e=>{
   <div class="svc-sep"></div>
   <div class="svc-item">
     <span class="svc-icon">👁️</span>
-    <span class="svc-label" data-ar="إجمالي الزيارات" data-en="Total Visits">إجمالي الزيارات</span>
-    <strong id="svcTotal">0</strong>
+    <span class="svc-label" data-ar="إجمالي الزوار الفريدين" data-en="Unique Visitors">إجمالي الزوار الفريدين</span>
+    <strong id="svcTotal">—</strong>
   </div>
   <div class="svc-sep"></div>
   <div class="svc-item">
     <span class="svc-icon">📅</span>
     <span class="svc-label" data-ar="زيارات اليوم" data-en="Today's Visits">زيارات اليوم</span>
-    <strong id="svcToday">0</strong>
+    <strong id="svcToday">—</strong>
   </div>
 </div>
 
@@ -5872,6 +5918,7 @@ html body #loginBox #loginCopyright{
       cartoon 🎨 كرتون
     </div>
 <div id="cartoonSection" style="display:none;flex-wrap:wrap;">
+<div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/qaGrlcDCGWw')">🎬 المقطع الجديد</div>
 <div class="emeraldVideoCircle" onclick="openEmeraldVideo('https://www.youtube.com/embed/U5sBC9Fr0fA')">كرتون</div>
 <div class="emeraldVideoCircle sak-moved-picks-video" data-sak-video-id="jtT5Ifr-3VA" onclick="openEmeraldVideo('https://www.youtube.com/embed/jtT5Ifr-3VA')">مختارات سابقة — Previous Selection</div>
 </div>
@@ -5995,6 +6042,8 @@ import {
     updateDoc,
     writeBatch,
     increment,
+    runTransaction,
+    onSnapshot,
     serverTimestamp
 }
 from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
@@ -38527,287 +38576,7 @@ html body #sakakerWorldNews{position:fixed!important;top:calc(68px + env(safe-ar
 @keyframes sakRestoredNews{from{transform:translateX(35vw)}to{transform:translateX(-100%)}}
 body.locked #sakakerWorldNews{visibility:hidden!important}
 @media(prefers-reduced-motion:reduce){#sakakerWorldNewsTrack{animation:none}html body #sakakerWorldNews{overflow-x:auto}}
-</style><script id="sakaker-bouncing-video-world-news-js">
-(function(){
-  'use strict';
-
-  const NEWS_FEEDS = {
-    ar: [
-      ['📰 عام - Google','https://news.google.com/rss?hl=ar&gl=SA&ceid=SA:ar'],
-      ['🌍 عالم - Google','https://news.google.com/rss/headlines/section/topic/WORLD?hl=ar&gl=SA&ceid=SA:ar'],
-      ['⚽ رياضة - Google','https://news.google.com/rss/headlines/section/topic/SPORTS?hl=ar&gl=SA&ceid=SA:ar'],
-      ['💹 اقتصاد - Google','https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=ar&gl=SA&ceid=SA:ar'],
-
-      ['📰 الجزيرة','https://www.aljazeera.net/aljazeerarss/arabe.xml'],
-      ['📰 العربية','https://www.alarabiya.net/.mrss/ar.xml'],
-      ['📰 BBC عربي','https://www.bbc.com/arabic/index.xml'],
-      ['📰 CNN عربي','https://arabic.cnn.com/rss.xml'],
-      ['📰 الشرق الأوسط','https://aawsat.com/rss.xml'],
-      ['📰 سكاي نيوز عربية','https://www.skynewsarabia.com/web/rss'],
-      ['📰 فرانس 24 عربي','https://www.france24.com/ar/rss'],
-      ['📰 روسيا اليوم عربي','https://arabic.rt.com/rss/'],
-      ['📰 TRT عربي','https://www.trtarabi.com/rss'],
-      ['📰 DW عربي','https://rss.dw.com/rdf/rss-ar-all']
-    ],
-
-    en: [
-      ['📰 General - Google','https://news.google.com/rss?hl=en-US&gl=US&ceid=US:en'],
-      ['🌍 World - Google','https://news.google.com/rss/headlines/section/topic/WORLD?hl=en-US&gl=US&ceid=US:en'],
-      ['⚽ Sports - Google','https://news.google.com/rss/headlines/section/topic/SPORTS?hl=en-US&gl=US&ceid=US:en'],
-      ['💹 Economy - Google','https://news.google.com/rss/headlines/section/topic/BUSINESS?hl=en-US&gl=US&ceid=US:en'],
-
-      ['📰 BBC','https://feeds.bbci.co.uk/news/rss.xml'],
-      ['⚽ BBC Sport','https://feeds.bbci.co.uk/sport/rss.xml?edition=uk'],
-      ['💹 BBC Business','https://feeds.bbci.co.uk/news/business/rss.xml'],
-      ['📰 Al Jazeera English','https://www.aljazeera.com/xml/rss/all.xml'],
-      ['📰 France 24','https://www.france24.com/en/rss'],
-      ['📰 DW','https://rss.dw.com/rdf/rss-en-all'],
-      ['📰 NPR','https://feeds.npr.org/1001/rss.xml'],
-      ['🌍 Guardian World','https://www.theguardian.com/world/rss'],
-      ['⚽ Guardian Sport','https://www.theguardian.com/sport/rss'],
-      ['💹 Guardian Business','https://www.theguardian.com/business/rss'],
-      ['🌍 Sky News','https://feeds.skynews.com/feeds/rss/world.xml']
-    ]
-  };
-
-  let newsLoadToken = 0;
-
-  function currentLang(){
-    return document.documentElement.lang === 'en' ? 'en' : 'ar';
-  }
-
-  function ensureWorldNews(){
-    const clockBox = document.body;
-    if(!clockBox) return null;
-
-    let news = document.getElementById('sakakerWorldNews');
-
-    if(!news){
-      news = document.createElement('div');
-      news.id = 'sakakerWorldNews';
-      news.setAttribute('role','status');
-      news.setAttribute('aria-live','polite');
-
-      const track = document.createElement('div');
-      track.id = 'sakakerWorldNewsTrack';
-
-      news.appendChild(track);
-      clockBox.appendChild(news);
-    }
-
-    return news;
-  }
-
-  function setNewsText(items, lang){
-    window.sakLatestWorldNews={items:Array.isArray(items)?items.slice():[],lang};
-    window.dispatchEvent(new Event('sak-world-news-updated'));
-    const news = ensureWorldNews();
-    const track = document.getElementById('sakakerWorldNewsTrack');
-    if(!news || !track) return;
-
-    const title = lang === 'en' ? '📰 News  ⚽ Sports  💹 Economy' : '📰 أخبار  ⚽ رياضة  💹 اقتصاد';
-    const fallback = lang === 'en'
-      ? 'News is temporarily unavailable — automatic refresh will retry.'
-      : 'تعذّر تحميل الأخبار مؤقتاً — ستتم إعادة المحاولة تلقائياً.';
-
-    const bodyText = items && items.length ? items.join('   ◆   ') : fallback;
-
-    track.innerHTML = '';
-
-    const titleSpan = document.createElement('span');
-    titleSpan.className = 'sak-news-title';
-    titleSpan.textContent = title;
-
-    const textSpan = document.createElement('span');
-    textSpan.textContent = bodyText;
-
-    track.appendChild(titleSpan);
-    track.appendChild(textSpan);
-
-    news.style.setProperty('--sak-news-dir',lang === 'ar' ? 'rtl' : 'ltr');
-
-    const chars = (title + bodyText).length;
-    const duration = Math.max(120,Math.min(420,Math.round(chars * .48)));
-    news.style.setProperty('--sak-news-duration',duration + 's');
-
-    track.style.animation = 'none';
-    void track.offsetWidth;
-    track.style.animation = '';
-  }
-
-  function cacheKey(lang){
-    return 'sakakerWorldNewsCacheV3-' + lang;
-  }
-
-  function readNewsCache(lang){
-    try{
-      const raw = localStorage.getItem(cacheKey(lang));
-      if(!raw) return null;
-
-      const data = JSON.parse(raw);
-      if(!data || !Array.isArray(data.items)) return null;
-
-      if(Date.now() - Number(data.time || 0) > 90 * 60 * 1000){
-        return null;
-      }
-
-      return data.items;
-    }catch(e){
-      return null;
-    }
-  }
-
-  function writeNewsCache(lang,items){
-    try{
-      localStorage.setItem(
-        cacheKey(lang),
-        JSON.stringify({time:Date.now(),items:items})
-      );
-    }catch(e){}
-  }
-
-  async function fetchWithTimeout(url,timeoutMs){
-    const controller = new AbortController();
-    const timer = setTimeout(function(){controller.abort();},timeoutMs);
-
-    try{
-      const proxy = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
-
-      const response = await fetch(proxy,{
-        signal:controller.signal,
-        cache:'no-store'
-      });
-
-      if(!response.ok) throw new Error('HTTP ' + response.status);
-
-      return await response.json();
-    } finally {
-      clearTimeout(timer);
-    }
-  }
-
-  async function fetchFeed(name,url){
-    try{
-      const data = await fetchWithTimeout(url,9000);
-      if(!data || !data.contents) return [];
-
-      const xml = new DOMParser().parseFromString(data.contents,'text/xml');
-      if(xml.querySelector('parsererror')) return [];
-
-      const nodes = Array.from(xml.querySelectorAll('item, entry')).slice(0,4);
-      const results = [];
-
-      nodes.forEach(function(node){
-        const titleNode = node.querySelector('title');
-        if(!titleNode) return;
-
-        const title = (titleNode.textContent || '').replace(/\s+/g,' ').trim();
-        if(!title) return;
-
-        results.push('(' + name + ') ' + title);
-      });
-
-      return results;
-    }catch(e){
-      return [];
-    }
-  }
-
-  async function loadWorldNews(){
-    if(document.hidden)return;
-    const token = ++newsLoadToken;
-    const lang = currentLang();
-
-    ensureWorldNews();
-
-    const cached = readNewsCache(lang);
-
-    if(cached && cached.length){
-      setNewsText(cached,lang);
-    }else{
-      setNewsText(
-        [lang === 'en' ? 'Loading global headlines…' : 'جاري تحميل أبرز الأخبار العالمية…'],
-        lang
-      );
-    }
-
-    const feeds = (NEWS_FEEDS[lang] || NEWS_FEEDS.ar).slice(0,4);
-
-    const settled = await Promise.allSettled(
-      feeds.map(function(pair){
-        return fetchFeed(pair[0],pair[1]);
-      })
-    );
-
-    if(token !== newsLoadToken) return;
-
-    let items = [];
-
-    settled.forEach(function(result){
-      if(result.status === 'fulfilled'){
-        items = items.concat(result.value || []);
-      }
-    });
-
-    const seen = new Set();
-
-    items = items.filter(function(item){
-      const key = item.toLowerCase().replace(/[^\p{L}\p{N}]+/gu,' ').trim();
-
-      if(!key || seen.has(key)) return false;
-
-      seen.add(key);
-      return true;
-    }).slice(0,64);
-
-    if(items.length){
-      writeNewsCache(lang,items);
-      setNewsText(items,lang);
-    }else if(!(cached && cached.length)){
-      setNewsText([],lang);
-    }
-  }
-
-  /* تم تعطيل الحركة المتجولة للفيديو — أصبح ثابتاً في الزاوية السفلية */
-
-  function initNews(){
-    ensureWorldNews();
-
-    const lang = currentLang();
-    const cached = readNewsCache(lang);
-
-    if(cached && cached.length){
-      setNewsText(cached,lang);
-    }
-
-    loadWorldNews();
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded',function(){
-      setTimeout(initNews,500);
-    });
-  }else{
-    setTimeout(initNews,200);
-  }
-
-  new MutationObserver(function(mutations){
-    const changed = mutations.some(function(m){
-      return m.attributeName === 'lang';
-    });
-
-    if(changed){
-      setTimeout(loadWorldNews,120);
-    }
-  }).observe(document.documentElement,{
-    attributes:true,
-    attributeFilter:['lang']
-  });
-
-  setInterval(loadWorldNews,10 * 60 * 1000);
-
-})();
-</script>
+</style><!-- News loading is handled by assets/news-recovery.js -->
 
 <!-- إصلاحات الطبقات، التمرير، وترتيب العناصر الثابتة -->
 <style id="sakaker-requested-layout-fixes">
@@ -39544,9 +39313,6 @@ html body #sakFestiveHeader #sakHolidayCountdowns #sakakerWatermarkClock{grid-co
 html body #sakFestiveHeader #sakHolidayCountdowns #sakakerWatermarkClock>time{font-size:9px!important}
 html body #sakNewsLaunch{grid-column:2;grid-row:2;justify-self:stretch;min-height:36px;pointer-events:auto!important;cursor:pointer;border:1px solid #dfbade77;border-radius:10px;padding:4px 5px;color:#fff0fb;background:linear-gradient(120deg,#144757b0,#6b3b64a6);font:700 10px/1.4 Tahoma,Arial,sans-serif;box-shadow:inset 0 1px 0 #ffffff33;text-align:center}
 #sakNewsLaunch:focus-visible{outline:2px solid #fff;outline-offset:3px}
-#sakNewsLaunch .sak-news-prompt{display:block;animation:sakPromptColorFlash 2.4s steps(1,end) infinite}
-@keyframes sakPromptColorFlash{0%,100%{color:#ffeb00;text-shadow:0 0 8px #ffeb00}16.66%{color:#32aaff;text-shadow:0 0 8px #32aaff}33.33%{color:#111;text-shadow:0 0 6px #fff}50%{color:#fff;text-shadow:0 0 8px #fff}66.66%{color:#ff4141;text-shadow:0 0 8px #ff4141}83.33%{color:#43f06b;text-shadow:0 0 8px #43f06b}}
-@media(prefers-reduced-motion:reduce){#sakNewsLaunch .sak-news-prompt{animation:none;color:#ffeb00}}
 html body #sakakerWorldNews{display:none!important}
 html body #sakGlobalPayment{bottom:max(52px,calc(46px + env(safe-area-inset-bottom)))!important}
 html body #sakPaymentPanel{max-height:calc(100dvh - 145px)!important}
@@ -39573,7 +39339,7 @@ html body #sakNewsDialog[open]{display:flex!important;flex-direction:column!impo
  const content=dialog.querySelector('#sakNewsContent'),title=dialog.querySelector('#sakNewsTitle'),close=dialog.querySelector('#sakNewsClose');
  function render(){
   const en=document.documentElement.lang==='en';
-  launch.innerHTML=en?'📰 News <span class="sak-news-prompt">Click to open</span> ↗':'📰 الأخبار <span class="sak-news-prompt">اضغط للفتح</span> ↗';
+  launch.textContent=en?'📰 News · Click to open ↗':'📰 الأخبار · اضغط للفتح ↗';
   launch.setAttribute('aria-label',en?'Open news window':'اضغط لفتح نافذة الأخبار');
   title.textContent=en?'News · Sports · Economy':'الأخبار · الرياضة · الاقتصاد';
   close.setAttribute('aria-label',en?'Close news':'إغلاق الأخبار');dialog.dir=en?'ltr':'rtl';
@@ -39595,6 +39361,7 @@ html body #sakNewsDialog[open]{display:flex!important;flex-direction:column!impo
 })();
 </script>
 <style id="sak-pong-arena-style">
+#sakPongVideoBox{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0;padding:8px;border:1px solid #80e6c588;border-radius:12px;background:#041a1dcc}#sakPongVideoBox[hidden]{display:none!important}#sakPongVideoBox video{width:min(48%,360px);min-width:130px;aspect-ratio:16/9;object-fit:cover;border-radius:10px;background:#000;border:1px solid #8cebd188}#sakPongActions{align-items:center}#sakPongCallStatus{color:#ffe2a0;font-weight:700}
 #sakPongArena{position:fixed!important;inset:0!important;margin:auto!important;width:min(1180px,96vw)!important;height:min(840px,94dvh)!important;max-width:96vw!important;max-height:94dvh!important;padding:12px!important;box-sizing:border-box!important;border:1px solid #8fdba9!important;border-radius:18px!important;background:linear-gradient(145deg,#09261d,#102e36)!important;color:#ecfff1!important;overflow:auto!important;font:13px/1.6 Tahoma,Arial,sans-serif}
 #sakPongArena::backdrop{background:#00110ee8;backdrop-filter:blur(5px)}
 #sakPongArena:not([open]){display:none!important}
@@ -39603,7 +39370,7 @@ html body #sakNewsDialog[open]{display:flex!important;flex-direction:column!impo
 #sakPongArena .sp-row{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-bottom:8px}
 #sakPongArena h2{font-size:18px;margin:0;flex:1}
 #sakPongArena .sp-layout{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:12px;direction:ltr}
-#sakPongCourt{width:100%;height:auto;aspect-ratio:8/5;display:block;touch-action:none;border-radius:12px;box-shadow:0 8px 25px #0007;outline-offset:3px}
+#sakPongCourt{width:100%;height:auto;aspect-ratio:8/5;display:block;touch-action:none;border-radius:16px;border:1px solid #7dffe0aa;box-shadow:0 0 0 1px #f4d37b44,0 0 24px #00e6b944,0 16px 38px #0009;outline-offset:3px;background:#061c22}
 #sakPongArena aside{min-width:0;display:flex;flex-direction:column;gap:6px;max-height:520px}
 #sakPongMessages{flex:1;min-height:120px;max-height:320px;overflow:auto;overscroll-behavior:contain;background:#031c1e88;border:1px solid #a6cfbf44;border-radius:10px;padding:8px;overflow-wrap:anywhere}
 #sakPongMessages p{margin:0 0 8px;border-bottom:1px solid #ffffff18;padding-bottom:6px}
@@ -39616,32 +39383,137 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock .sak-shor
 <script id="sak-pong-arena-js">
 (()=>{
  const $=id=>document.getElementById(id),arena=document.createElement('dialog');arena.id='sakPongArena';arena.setAttribute('aria-labelledby','sakPongTitle');
- arena.innerHTML='<div class="sp-row"><h2 id="sakPongTitle"></h2><button id="sakPongAudio" type="button"></button><button id="sakPongExit" type="button">×</button></div><div class="sp-row"><label><span data-sp="duration"></span> <select id="sakPongDuration"><option value="10">10</option><option value="20">20</option></select></label><button id="sakPongSolo" data-sp="solo"></button><button id="sakPongCreate" data-sp="create"></button><input id="sakPongCode" maxlength="12" autocomplete="off" spellcheck="false" dir="ltr"><button id="sakPongJoin" data-sp="join"></button><button id="sakPongCopy" data-sp="copy"></button><button id="sakPongLeave" data-sp="leave"></button></div><div class="sp-row"><span id="sakPongScore">0 : 0</span><span id="sakPongTimer">10:00</span></div><div id="sakPongStatus" role="status"></div><div class="sp-layout"><div><canvas id="sakPongCourt" width="800" height="500" tabindex="0"></canvas><p data-sp="help"></p></div><aside><b data-sp="chat"></b><div id="sakPongMessages" role="log" aria-live="polite"></div><form id="sakPongSendForm"><input id="sakPongMessage" maxlength="240" autocomplete="off"><button type="submit" data-sp="send"></button></form></aside></div>';
+ arena.innerHTML='<div class="sp-row"><h2 id="sakPongTitle"></h2><button id="sakPongAudio" type="button"></button><button id="sakPongExit" type="button">×</button></div><div class="sp-row"><label><span data-sp="duration"></span> <select id="sakPongDuration"><option value="10">10</option><option value="20">20</option><option value="30">30</option></select></label><button id="sakPongSolo" data-sp="solo"></button><button id="sakPongCreate" data-sp="create"></button><input id="sakPongCode" maxlength="12" autocomplete="off" spellcheck="false" dir="ltr"><button id="sakPongJoin" data-sp="join"></button><button id="sakPongCopy" data-sp="copy"></button><button id="sakPongLeave" data-sp="leave"></button></div><div class="sp-row"><span id="sakPongScore">0 : 0</span><span id="sakPongTimer">10:00</span></div><div id="sakPongStatus" role="status"></div><div class="sp-row" id="sakPongActions"><button type="button" id="sakPongCall"></button><button type="button" id="sakPongAccept" hidden></button><button type="button" id="sakPongDecline" hidden></button><button type="button" id="sakPongStopCall" hidden></button><button type="button" id="sakPongRematch" hidden></button><button type="button" id="sakPongNoRematch" hidden></button><span id="sakPongCallStatus" role="status"></span></div><div id="sakPongVideoBox" hidden><video id="sakPongLocalVideo" autoplay muted playsinline></video><video id="sakPongRemoteVideo" autoplay playsinline></video></div><div class="sp-layout"><div><canvas id="sakPongCourt" width="800" height="500" tabindex="0"></canvas><p data-sp="help"></p></div><aside><b data-sp="chat"></b><div id="sakPongMessages" role="log" aria-live="polite"></div><form id="sakPongSendForm"><input id="sakPongMessage" maxlength="240" autocomplete="off"><button type="submit" data-sp="send"></button></form></aside></div>';
  document.body.append(arena);
- const text={ar:{title:'🏓 بونج — الملعب الأخضر',duration:'المدة بالدقائق',solo:'ضد الكمبيوتر',create:'إنشاء غرفة',join:'انضمام',copy:'نسخ الرمز',leave:'إنهاء / مغادرة',chat:'محادثة المباراة',send:'إرسال',help:'حرّك المضرب بالسحب أو الفأرة أو ↑ ↓ / W S. صاحب الغرفة يسار، والضيف يمين. تنتهي المباراة حسب التوقيت حتى عند إخفاء الصفحة.',idle:'اختر التدريب أو أنشئ غرفة وشارك رمزها مع صديق.',waiting:'بانتظار صديق — رمز الغرفة: ',playing:'المباراة جارية',ended:'انتهت المباراة',offline:'انقطع اتصال أحد اللاعبين. أُوقفت المباراة.',error:'تعذر الاتصال. تحقق من تسجيل الدخول والإنترنت وقواعد غرف البونج في Firebase.',login:'سجّل الدخول أولًا ثم أعد المحاولة.',invalid:'الرمز غير صالح أو الغرفة ممتلئة أو منتهية.',busy:'جارٍ الاتصال…',copied:'تم نسخ الرمز',copyFail:'انسخ رمز الغرفة من الحقل يدويًا.',sound:'🔊 تشغيل صوت الخلفية',mute:'🔇 إيقاف الصوت',code:'رمز الغرفة',message:'اكتب رسالة…',draw:'تعادل',left:'فاز اللاعب الأيسر',right:'فاز اللاعب الأيمن'},en:{title:'🏓 Pong — Green Court',duration:'Minutes',solo:'Vs computer',create:'Create room',join:'Join',copy:'Copy code',leave:'End / leave',chat:'Match chat',send:'Send',help:'Drag, move the mouse, or use ↑ ↓ / W S. Host plays left; guest plays right. The match clock continues in background tabs.',idle:'Practice or create a room and share its code with a friend.',waiting:'Waiting for a friend — room: ',playing:'Match in progress',ended:'Match ended',offline:'A player disconnected. The match has stopped.',error:'Connection failed. Check sign-in, internet and Firebase Pong room rules.',login:'Sign in first, then try again.',invalid:'Invalid code, or the room is full or closed.',busy:'Connecting…',copied:'Code copied',copyFail:'Copy the code manually from the field.',sound:'🔊 Play background audio',mute:'🔇 Stop audio',code:'Room code',message:'Type a message…',draw:'Draw',left:'Left player wins',right:'Right player wins'}};
+ const text={ar:{title:'🏓 بونج — الملعب الأخضر',duration:'المدة بالدقائق',solo:'ضد الكمبيوتر',create:'إنشاء غرفة',join:'انضمام',copy:'نسخ الرمز',leave:'إنهاء / مغادرة',chat:'محادثة المباراة',send:'إرسال',help:'حرّك المضرب بالسحب أو الفأرة أو ↑ ↓ / W S. صاحب الغرفة يسار، والضيف يمين. تنتهي المباراة حسب التوقيت حتى عند إخفاء الصفحة.',idle:'اختر التدريب أو أنشئ غرفة وشارك رمزها مع صديق.',waiting:'بانتظار صديق — رمز الغرفة: ',playing:'المباراة جارية',ended:'انتهت المباراة',offline:'انقطع اتصال أحد اللاعبين. أُوقفت المباراة.',error:'تعذر الاتصال. تحقق من تسجيل الدخول والإنترنت وقواعد غرف البونج في Firebase.',login:'سجّل الدخول أولًا ثم أعد المحاولة.',invalid:'الرمز غير صالح أو الغرفة ممتلئة أو منتهية.',busy:'جارٍ الاتصال…',copied:'تم نسخ الرمز',copyFail:'انسخ رمز الغرفة من الحقل يدويًا.',sound:'🔊 تشغيل صوت الخلفية',mute:'🔇 إيقاف الصوت',code:'رمز الغرفة',message:'اكتب رسالة…',draw:'تعادل',left:'فاز اللاعب الأيسر',right:'فاز اللاعب الأيمن',call:'📹 طلب مكالمة فيديو',accept:'قبول المكالمة',decline:'رفض',stopCall:'إنهاء المكالمة',incoming:'يريد خصمك بدء مكالمة فيديو',callWaiting:'بانتظار قبول المكالمة…',callOn:'المكالمة متصلة',callOff:'المكالمة غير نشطة',rematch:'🔁 أوافق على مباراة جديدة',noRematch:'لا، شكرًا',rematchWait:'بانتظار موافقة اللاعبين على الإعادة…',rematchReady:'وافق اللاعبان — تبدأ مباراة جديدة',rematchNo:'لم تتم الموافقة على إعادة المباراة'},en:{title:'🏓 Pong — Green Court',duration:'Minutes',solo:'Vs computer',create:'Create room',join:'Join',copy:'Copy code',leave:'End / leave',chat:'Match chat',send:'Send',help:'Drag, move the mouse, or use ↑ ↓ / W S. Host plays left; guest plays right. The match clock continues in background tabs.',idle:'Practice or create a room and share its code with a friend.',waiting:'Waiting for a friend — room: ',playing:'Match in progress',ended:'Match ended',offline:'A player disconnected. The match has stopped.',error:'Connection failed. Check sign-in, internet and Firebase Pong room rules.',login:'Sign in first, then try again.',invalid:'Invalid code, or the room is full or closed.',busy:'Connecting…',copied:'Code copied',copyFail:'Copy the code manually from the field.',sound:'🔊 Play background audio',mute:'🔇 Stop audio',code:'Room code',message:'Type a message…',draw:'Draw',left:'Left player wins',right:'Right player wins',call:'📹 Request video call',accept:'Accept call',decline:'Decline',stopCall:'End call',incoming:'Your opponent wants to start a video call',callWaiting:'Waiting for call acceptance…',callOn:'Video call connected',callOff:'No active call',rematch:'🔁 Agree to rematch',noRematch:'No, thanks',rematchWait:'Waiting for both players to agree…',rematchReady:'Both players agreed — new match starting',rematchNo:'Rematch was declined'}};
  const lang=()=>document.documentElement.lang==='en'?'en':'ar',t=k=>text[lang()][k];
- const canvas=$('sakPongCourt'),ctx=canvas.getContext('2d');let statusKey='idle',statusExtra='',mode='',role='',room='',api,db,uid,unsubs=[],disconnectHook,heartbeat,offset=0,roomData=null,busy=false,generation=0,ended=false,endAt=0,lastFrame=0,lastSend=0,raf=0,lastChat=0;
+ const canvas=$('sakPongCourt'),ctx=canvas.getContext('2d');let statusKey='idle',statusExtra='',mode='',role='',room='',api,db,uid,unsubs=[],disconnectHook,heartbeat,offset=0,roomData=null,busy=false,generation=0,ended=false,endAt=0,lastFrame=0,lastSend=0,raf=0,lastChat=0,callPC=null,localStream=null,callUnsubs=[],callToken=0,callBusy=false,rematchBusy=false,pendingIce=[];
  const keys=new Set();let y1=210,y2=210,ball={x:400,y:250,vx:300,vy:110},scores=[0,0],audio=false;
  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
  function status(key,extra=''){statusKey=key;statusExtra=extra;$('sakPongStatus').textContent=t(key)+extra;}
- function labels(){arena.dir=lang()==='ar'?'rtl':'ltr';$('sakPongTitle').textContent=t('title');arena.querySelectorAll('[data-sp]').forEach(el=>el.textContent=t(el.dataset.sp));$('sakPongCode').placeholder=t('code');$('sakPongCode').setAttribute('aria-label',t('code'));$('sakPongMessage').placeholder=t('message');$('sakPongMessage').setAttribute('aria-label',t('message'));$('sakPongExit').setAttribute('aria-label',lang()==='ar'?'إغلاق اللعبة':'Close game');canvas.setAttribute('aria-label',t('help'));$('sakPongAudio').textContent=t(audio?'mute':'sound');status(statusKey,statusExtra);}
- function controls(){for(const id of ['sakPongCreate','sakPongJoin','sakPongSolo','sakPongDuration'])$(id).disabled=busy||!!mode;$('sakPongLeave').disabled=busy||!mode;$('sakPongCopy').disabled=!room;$('sakPongMessage').disabled=mode!=='online'||ended||!endAt;updateShare();}
- function reset(){y1=y2=210;ball={x:400,y:250,vx:300,vy:110};scores=[0,0];ended=false;lastFrame=0;lastSend=0;}
- function serve(direction){ball={x:400,y:250,vx:300*direction,vy:(Math.random()-.5)*280};}
+ function labels(){arena.dir=lang()==='ar'?'rtl':'ltr';$('sakPongTitle').textContent=t('title');arena.querySelectorAll('[data-sp]').forEach(el=>el.textContent=t(el.dataset.sp));$('sakPongCode').placeholder=t('code');$('sakPongCode').setAttribute('aria-label',t('code'));$('sakPongMessage').placeholder=t('message');$('sakPongMessage').setAttribute('aria-label',t('message'));$('sakPongExit').setAttribute('aria-label',lang()==='ar'?'إغلاق اللعبة':'Close game');canvas.setAttribute('aria-label',t('help'));$('sakPongAudio').textContent=t(audio?'mute':'sound');$('sakPongCall').textContent=t('call');$('sakPongAccept').textContent=t('accept');$('sakPongDecline').textContent=t('decline');$('sakPongStopCall').textContent=t('stopCall');$('sakPongRematch').textContent=t('rematch');$('sakPongNoRematch').textContent=t('noRematch');status(statusKey,statusExtra);}
+ function controls(){for(const id of ['sakPongCreate','sakPongJoin','sakPongSolo','sakPongDuration'])$(id).disabled=busy||!!mode;$('sakPongLeave').disabled=busy||!mode;$('sakPongCopy').disabled=!room;$('sakPongMessage').disabled=mode!=='online'||ended||!endAt;$('sakPongCall').disabled=mode!=='online'||!roomData?.guest||ended||callBusy||!!callPC||(roomData?.callRequest?.to===uid&&roomData?.callRequest?.status==='ringing');$('sakPongRematch').disabled=mode!=='online'||!ended||rematchBusy;$('sakPongNoRematch').disabled=mode!=='online'||!ended||rematchBusy;updateShare();}
+ function reset(){y1=y2=210;ball={x:400,y:250,vx:300,vy:110};scores=[0,0];ballTrail.length=0;ended=false;lastFrame=0;lastSend=0;}
+ function serve(direction){ball={x:400,y:250,vx:360*direction,vy:(Math.random()-.5)*300};ballTrail.length=0;}
  function simulate(dt){
-  ball.x+=ball.vx*dt;ball.y+=ball.vy*dt;
-  if(ball.y<19){ball.y=19;ball.vy=Math.abs(ball.vy)}if(ball.y>481){ball.y=481;ball.vy=-Math.abs(ball.vy)}
-  for(const [x,y,dir] of [[36,y1,1],[750,y2,-1]])if(ball.vx*dir<0&&ball.x+7>x&&ball.x-7<x+14&&ball.y+7>y&&ball.y-7<y+80){const angle=clamp((ball.y-y-40)/40,-1,1)*1.05,speed=Math.min(650,Math.hypot(ball.vx,ball.vy)*1.045);ball.vx=Math.cos(angle)*speed*dir;ball.vy=Math.sin(angle)*speed;ball.x=dir===1?x+22:x-8;}
-  if(ball.x<0){scores[1]++;serve(1)}if(ball.x>800){scores[0]++;serve(-1)}
+  const r=9;
+  ball.x+=ball.vx*dt;
+  ball.y+=ball.vy*dt;
+  if(ball.y-r<18){ball.y=18+r;ball.vy=Math.abs(ball.vy)}
+  if(ball.y+r>482){ball.y=482-r;ball.vy=-Math.abs(ball.vy)}
+  for(const [x,y,dir] of [[36,y1,1],[750,y2,-1]]){
+   const hit=ball.vx*dir<0 && ball.x+r>=x && ball.x-r<=x+14 && ball.y+r>=y && ball.y-r<=y+80;
+   if(hit){
+    const offset=clamp((ball.y-(y+40))/40,-1,1);
+    const speed=Math.min(760,Math.max(340,Math.hypot(ball.vx,ball.vy)*1.035));
+    const angle=offset*1.12;
+    ball.vx=Math.cos(angle)*speed*dir;
+    ball.vy=Math.sin(angle)*speed;
+    ball.x=dir===1?x+14+r+1:x-r-1;
+   }
+  }
+  if(ball.x<-12){scores[1]++;serve(1)}
+  if(ball.x>812){scores[0]++;serve(-1)}
+ }
+ const ballTrail=[];
+ function roundedRect(x,y,w,h,r,fill,stroke){
+  ctx.beginPath();
+  if(ctx.roundRect)ctx.roundRect(x,y,w,h,r);
+  else{ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);}
+  if(fill){ctx.fillStyle=fill;ctx.fill()}
+  if(stroke){ctx.strokeStyle=stroke;ctx.stroke()}
+ }
+ function drawPaddle(x,y,primary,secondary){
+  const g=ctx.createLinearGradient(x,y,x+18,y+80);
+  g.addColorStop(0,primary);g.addColorStop(.48,'#ffffff');g.addColorStop(1,secondary);
+  ctx.save();
+  ctx.shadowColor=primary;ctx.shadowBlur=26;
+  roundedRect(x-3,y-2,20,84,10,'#071b1a','#ffffff99');
+  ctx.shadowBlur=0;
+  roundedRect(x,y,14,80,7,g,'#ffffffcc');
+  const shine=ctx.createLinearGradient(x,y,x+14,y);
+  shine.addColorStop(0,'#ffffff99');shine.addColorStop(.35,'#ffffff10');shine.addColorStop(1,'#ffffff55');
+  roundedRect(x+2,y+4,4,72,3,shine,null);
+  ctx.restore();
  }
  function draw(){
-  const gradient=ctx.createLinearGradient(0,0,0,500);gradient.addColorStop(0,'#164f38');gradient.addColorStop(1,'#26744b');ctx.fillStyle=gradient;ctx.fillRect(0,0,800,500);
-  for(let i=0;i<10;i++){ctx.fillStyle=i%2?'#ffffff06':'#00000008';ctx.fillRect(i*80,0,80,500)}
-  ctx.strokeStyle='#e4f4d9';ctx.lineWidth=3;ctx.strokeRect(12,12,776,476);ctx.beginPath();ctx.moveTo(400,12);ctx.lineTo(400,488);ctx.stroke();ctx.strokeStyle='#ffffff55';ctx.lineWidth=1;for(let y=14;y<488;y+=12){ctx.strokeRect(395,y,10,10)}
-  ctx.shadowBlur=12;ctx.shadowColor='#0009';ctx.fillStyle='#ffdf88';ctx.fillRect(36,y1,14,80);ctx.fillStyle='#95e8ff';ctx.fillRect(750,y2,14,80);ctx.shadowColor='#fff9';ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(ball.x,ball.y,7,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
-  $('sakPongScore').textContent=scores[0]+' : '+scores[1];const seconds=Math.max(0,Math.ceil((endAt-(Date.now()+offset))/1000));$('sakPongTimer').textContent=mode?`${Math.floor(seconds/60).toString().padStart(2,'0')}:${(seconds%60).toString().padStart(2,'0')}`:$('sakPongDuration').value+':00';
+  const now=performance.now(),pulse=.5+.5*Math.sin(now/420);
+  const bg=ctx.createLinearGradient(0,0,800,500);
+  bg.addColorStop(0,'#031b20');bg.addColorStop(.48,'#082f32');bg.addColorStop(1,'#061a27');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,800,500);
+
+  /* عمق الملعب وشبكة تقنية دقيقة */
+  ctx.save();
+  for(let x=24;x<800;x+=40){ctx.strokeStyle=x%80===24?'#8df7df0b':'#8df7df07';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,18);ctx.lineTo(x,482);ctx.stroke()}
+  for(let y=24;y<500;y+=40){ctx.strokeStyle='#8df7df08';ctx.beginPath();ctx.moveTo(18,y);ctx.lineTo(782,y);ctx.stroke()}
+  const halo=ctx.createRadialGradient(400,250,30,400,250,420);
+  halo.addColorStop(0,'#00e6b90c');halo.addColorStop(1,'#00e6b900');
+  ctx.fillStyle=halo;ctx.fillRect(0,0,800,500);
+  ctx.restore();
+
+  /* إطار الملعب المضيء */
+  ctx.save();
+  ctx.shadowColor='#00f5c8';ctx.shadowBlur=22;
+  roundedRect(10,10,780,480,18,'rgba(2,17,24,.16)','#6effd7');
+  ctx.shadowBlur=0;ctx.strokeStyle='#f8d77a88';ctx.lineWidth=1;
+  roundedRect(16,16,768,468,14,null,'#f8d77a55');
+  ctx.restore();
+
+  /* خط المنتصف ومناطق الإرسال */
+  ctx.save();
+  ctx.setLineDash([9,12]);ctx.lineWidth=2;ctx.strokeStyle='#b5fff477';
+  ctx.shadowColor='#00ffd0';ctx.shadowBlur=12;
+  ctx.beginPath();ctx.moveTo(400,28);ctx.lineTo(400,472);ctx.stroke();
+  ctx.setLineDash([]);ctx.shadowBlur=0;
+  ctx.strokeStyle='#ffffff22';ctx.lineWidth=1;
+  ctx.beginPath();ctx.arc(400,250,74,0,Math.PI*2);ctx.stroke();
+  ctx.beginPath();ctx.arc(400,250,4,0,Math.PI*2);ctx.fillStyle='#f9d978';ctx.fill();
+  ctx.restore();
+
+  /* بطاقات النتيجة داخل الملعب */
+  ctx.save();
+  ctx.font='800 38px Arial';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.shadowBlur=18;ctx.shadowColor='#00ffd0';ctx.fillStyle='#eafff8';
+  ctx.fillText(String(scores[0]),330,66);
+  ctx.shadowColor='#69cfff';ctx.fillStyle='#dff7ff';ctx.fillText(String(scores[1]),470,66);
+  ctx.font='700 10px Arial';ctx.shadowBlur=0;ctx.fillStyle='#9de8d8aa';
+  ctx.fillText(lang()==='en'?'PLAYER 1':'اللاعب 1',330,91);
+  ctx.fillText(lang()==='en'?'PLAYER 2':'اللاعب 2',470,91);
+  ctx.restore();
+
+  /* أثر حركة الكرة */
+  ballTrail.push({x:ball.x,y:ball.y,a:1});
+  if(ballTrail.length>12)ballTrail.shift();
+  ctx.save();
+  ballTrail.forEach((pt,i)=>{
+   const a=(i+1)/ballTrail.length;
+   ctx.globalAlpha=a*.28;ctx.fillStyle='#8effe5';
+   ctx.beginPath();ctx.arc(pt.x,pt.y,2+a*5,0,Math.PI*2);ctx.fill();
+  });
+  ctx.restore();
+
+  /* المضارب الاحترافية */
+  drawPaddle(36,y1,'#ffe9a0','#b47c22');
+  drawPaddle(750,y2,'#a5f0ff','#1689c9');
+
+  /* كرة نيون ثلاثية الطبقات */
+  ctx.save();
+  const glow=ctx.createRadialGradient(ball.x-3,ball.y-4,1,ball.x,ball.y,23);
+  glow.addColorStop(0,'#ffffff');glow.addColorStop(.22,'#d8fff8');glow.addColorStop(.48,'#53ffe0');glow.addColorStop(1,'#00a98b00');
+  ctx.globalAlpha=.75+.25*pulse;ctx.fillStyle=glow;
+  ctx.beginPath();ctx.arc(ball.x,ball.y,23,0,Math.PI*2);ctx.fill();
+  ctx.globalAlpha=1;ctx.shadowColor='#cafff5';ctx.shadowBlur=22;
+  const core=ctx.createRadialGradient(ball.x-3,ball.y-4,1,ball.x,ball.y,10);
+  core.addColorStop(0,'#ffffff');core.addColorStop(.55,'#d9fff7');core.addColorStop(1,'#4cebd0');
+  ctx.fillStyle=core;ctx.beginPath();ctx.arc(ball.x,ball.y,9,0,Math.PI*2);ctx.fill();
+  ctx.restore();
+
+  /* عداد الوقت */
+  const seconds=Math.max(0,Math.ceil((endAt-(Date.now()+offset))/1000));
+  $('sakPongScore').textContent=scores[0]+' : '+scores[1];
+  $('sakPongTimer').textContent=mode?`${Math.floor(seconds/60).toString().padStart(2,'0')}:${(seconds%60).toString().padStart(2,'0')}`:$('sakPongDuration').value+':00';
  }
- function finish(reason='ended'){if(ended)return;ended=true;status(reason,reason==='ended'?' — '+t(scores[0]===scores[1]?'draw':scores[0]>scores[1]?'left':'right'):'');controls();}
+ function finish(reason='ended'){if(ended)return;ended=true;status(reason,reason==='ended'?' — '+t(scores[0]===scores[1]?'draw':scores[0]>scores[1]?'left':'right'):'');if(mode==='online'&&role==='host'&&room){api.set(path('meta'),{...roomData,status:'ended',finalA:scores[0],finalB:scores[1],endedAt:api.serverTimestamp()}).catch(()=>status('error'));}if(mode==='online'&&reason==='ended'){$('sakPongRematch').hidden=false;$('sakPongNoRematch').hidden=false;}controls();}
  function frame(now){if(!arena.open)return;const dt=Math.min(.025,(now-lastFrame)/1000||0);lastFrame=now;
   if(mode&&!ended&&endAt){
    const dy=((keys.has('ArrowDown')||keys.has('s')?1:0)-(keys.has('ArrowUp')||keys.has('w')?1:0))*370*dt;
@@ -39680,16 +39552,33 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsDock .sak-shor
  async function connect(){await ensureGameAccount();if(!window.firebaseAuth?.currentUser){$('sakPongLogin').focus();throw Error('login')}if(!arena.open||!gameSession)throw Error('error');if(!api)api=await import('https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js');db=window.firebaseRTDB;uid=window.firebaseAuth.currentUser.uid;if(!db)throw Error('error');}
  const path=p=>api.ref(db,'pongRoomsV1/'+room+(p?'/'+p:''));
  async function sendState(){if(!room||!api)return;const state=role==='host'?{x:ball.x,y:ball.y,left:y1,right:y2,a:scores[0],b:scores[1]}:{y:y2};try{await api.set(path(role==='host'?'state':'paddle'),state)}catch(e){finish('offline')}}
- async function release(){generation++;clearInterval(heartbeat);unsubs.forEach(fn=>fn());unsubs=[];if(disconnectHook){try{await disconnectHook.cancel()}catch(e){}disconnectHook=null}if(room&&api){try{await api.set(path('meta/status'),'closed')}catch(e){}}room='';mode='';role='';endAt=0;roomData=null;keys.clear();controls();}
+ async function release(){await stopVideoCall(false);generation++;clearInterval(heartbeat);unsubs.forEach(fn=>fn());unsubs=[];if(disconnectHook){try{await disconnectHook.cancel()}catch(e){}disconnectHook=null}if(room&&api){try{await api.set(path('meta/status'),'closed')}catch(e){}}room='';mode='';role='';endAt=0;roomData=null;keys.clear();controls();}
  async function watch(token){
   unsubs.push(api.onValue(api.ref(db,'.info/serverTimeOffset'),s=>{offset=Number(s.val())||0}));
   disconnectHook=api.onDisconnect(path('meta/status'));await disconnectHook.set('closed');
   if(token!==generation)return;
-  unsubs.push(api.onValue(path('meta'),snap=>{if(token!==generation)return;const data=snap.val();if(!data){finish('offline');return}roomData=data;if(data.status==='closed'){finish('offline');return}if(data.guest&&data.start){endAt=data.start+data.minutes*60000;$('sakPongDuration').value=String(data.minutes);status('playing')}else status('waiting',room);controls();},()=>finish('offline')));
+  unsubs.push(api.onValue(path('meta'),snap=>{if(token!==generation)return;const data=snap.val();if(!data){finish('offline');return}roomData=data;if(data.status==='closed'){finish('offline');return}if(data.minutes)$('sakPongDuration').value=String(data.minutes);if(data.guest&&data.start&&data.status==='playing'){endAt=data.start+data.minutes*60000;ended=false;$('sakPongRematch').hidden=true;$('sakPongNoRematch').hidden=true;status('playing')}else if(data.status==='ended'){endAt=0;ended=true;scores=[Number(data.finalA)||scores[0],Number(data.finalB)||scores[1]];status('ended',' — '+t(scores[0]===scores[1]?'draw':scores[0]>scores[1]?'left':'right'));$('sakPongRematch').hidden=false;$('sakPongNoRematch').hidden=false;}else if(data.status==='waiting')status('waiting',room);controls();},()=>finish('offline')));
   unsubs.push(api.onValue(path(role==='host'?'paddle':'state'),snap=>{const s=snap.val();if(!s||token!==generation)return;if(role==='host'){if(Number.isFinite(s.y))y2=clamp(s.y,15,405)}else if([s.x,s.y,s.left,s.a,s.b].every(Number.isFinite)){ball.x=clamp(s.x,-10,810);ball.y=clamp(s.y,0,500);y1=clamp(s.left,15,405);scores=[Math.max(0,s.a),Math.max(0,s.b)];}},()=>finish('offline')));
+  /* نحافظ على مسار المحادثة الحالي دون تغييره: pongRoomsV1/<room>/chat */
   unsubs.push(api.onValue(api.query(path('chat'),api.limitToLast(50)),snap=>{const box=$('sakPongMessages');box.replaceChildren();Object.values(snap.val()||{}).forEach(m=>{const p=document.createElement('p');p.textContent=String(m.name||'Player').slice(0,40)+': '+String(m.text||'').slice(0,240);box.append(p)});box.scrollTop=box.scrollHeight;},()=>status('error')));
   unsubs.push(api.onValue(api.ref(db,'.info/connected'),s=>{if(s.val()===false&&endAt)finish('offline')}));
+  watchCall(token);watchRematch(token);
  }
+ async function stopVideoCall(writeClose=true){callToken++;callUnsubs.forEach(fn=>fn());callUnsubs=[];if(callPC){try{callPC.onicecandidate=null;callPC.ontrack=null;callPC.close()}catch(e){}callPC=null}if(localStream){localStream.getTracks().forEach(t=>t.stop());localStream=null}$('sakPongLocalVideo').srcObject=null;$('sakPongRemoteVideo').srcObject=null;$('sakPongVideoBox').hidden=true;$('sakPongAccept').hidden=true;$('sakPongDecline').hidden=true;$('sakPongStopCall').hidden=true;$('sakPongCallStatus').textContent=t('callOff');callBusy=false;pendingIce=[];if(writeClose&&room&&api){try{await api.set(path('call/status'),{state:'closed',by:uid,at:api.serverTimestamp()})}catch(e){}}controls();}
+ function callStatus(k){$('sakPongCallStatus').textContent=t(k)}
+ function makePeer(remoteUid){const pc=new RTCPeerConnection({iceServers:[{urls:['stun:stun.l.google.com:19302','stun:stun1.l.google.com:19302']}]});callPC=pc;pc.ontrack=e=>{const stream=e.streams?.[0];if(stream){$('sakPongRemoteVideo').srcObject=stream;$('sakPongVideoBox').hidden=false;callStatus('callOn')}};pc.onicecandidate=e=>{if(e.candidate&&room&&uid)api.push(path('call/candidates/'+uid),e.candidate.toJSON()).catch(()=>callStatus('error'))};pc.onconnectionstatechange=()=>{if(['failed','disconnected','closed'].includes(pc.connectionState)){if(pc.connectionState==='failed')callStatus('error');else if(pc.connectionState==='closed')callStatus('callOff')}};return pc;}
+ async function attachLocal(pc){if(!navigator.mediaDevices?.getUserMedia)throw Error('camera');localStream=await navigator.mediaDevices.getUserMedia({video:true,audio:true});$('sakPongLocalVideo').srcObject=localStream;localStream.getTracks().forEach(track=>pc.addTrack(track,localStream));$('sakPongVideoBox').hidden=false;}
+ function flushIce(){if(!callPC?.remoteDescription)return;const queued=pendingIce.splice(0);queued.forEach(c=>callPC.addIceCandidate(new RTCIceCandidate(c)).catch(()=>{}));}
+ function watchCandidates(remoteUid,token){const ref=path('call/candidates/'+remoteUid);callUnsubs.push(api.onChildAdded(ref,snap=>{if(token!==callToken||!callPC||!snap.val())return;if(callPC.remoteDescription)callPC.addIceCandidate(new RTCIceCandidate(snap.val())).catch(()=>{});else pendingIce.push(snap.val());}));}
+ async function requestVideoCall(){if(callBusy||callPC||mode!=='online'||!roomData?.guest)return;callBusy=true;controls();callStatus('callWaiting');const token=++callToken;try{const remote=role==='host'?roomData.guest:roomData.host;if(!remote)throw Error('error');await api.set(path('call'),null);const pc=makePeer(remote);await attachLocal(pc);const offer=await pc.createOffer();await pc.setLocalDescription(offer);await api.set(path('call/offer'),{type:offer.type,sdp:offer.sdp,from:uid});await api.set(path('call/request'),{from:uid,to:remote,status:'ringing',at:api.serverTimestamp()});watchCandidates(remote,token);callStatus('callWaiting');$('sakPongStopCall').hidden=false;}catch(e){await stopVideoCall(false);callStatus(e.message==='camera'?'error':'error');}}
+ async function acceptVideoCall(){if(callBusy||callPC)return;callBusy=true;controls();const token=++callToken;try{const request=roomData?.callRequest;if(!request?.from)throw Error('error');const snap=await api.get(path('call/offer'));const offer=snap.val();if(!offer?.sdp)throw Error('error');const pc=makePeer(request.from);await attachLocal(pc);await pc.setRemoteDescription(new RTCSessionDescription(offer));flushIce();const answer=await pc.createAnswer();await pc.setLocalDescription(answer);await api.set(path('call/answer'),{type:answer.type,sdp:answer.sdp,from:uid});await api.set(path('call/request'),{...request,status:'accepted',acceptedAt:api.serverTimestamp()});watchCandidates(request.from,token);$('sakPongStopCall').hidden=false;callStatus('callOn');}catch(e){await stopVideoCall(false);callStatus('error');}}
+ function watchCall(token){callUnsubs.forEach(fn=>fn());callUnsubs=[];unsubs.push(api.onValue(path('call/request'),snap=>{if(token!==generation)return;const req=snap.val();if(!req||req.status==='closed')return;roomData=roomData||{};roomData.callRequest=req;if(req.status==='declined'){callStatus('callOff');if(callPC)stopVideoCall(false);return}if(req.to===uid&&req.status==='ringing'){callStatus('incoming');$('sakPongAccept').hidden=false;$('sakPongDecline').hidden=false;}else if(req.from===uid&&req.status==='ringing'){callStatus('callWaiting');}else if(req.status==='accepted'){callStatus('callOn');$('sakPongAccept').hidden=true;$('sakPongDecline').hidden=true;}},()=>callStatus('error')));
+  unsubs.push(api.onValue(path('call/status'),snap=>{const v=snap.val();if(token===generation&&v?.state==='closed'&&v.by!==uid&&callPC)stopVideoCall(false)}));
+  unsubs.push(api.onValue(path('call/answer'),snap=>{const a=snap.val();if(token!==generation||!a?.sdp||!callPC||role==='guest'&&roomData?.callRequest?.from!==uid)return;if(callPC.signalingState==='have-local-offer')callPC.setRemoteDescription(new RTCSessionDescription(a)).then(()=>{flushIce();callStatus('callOn')}).catch(()=>callStatus('error'));}));
+ }
+ function watchRematch(token){unsubs.push(api.onValue(path('rematch'),snap=>{if(token!==generation)return;const votes=snap.val()||{};if(!ended)return;if(votes[uid]===true){$('sakPongRematch').textContent=lang()==='en'?'✓ Vote recorded':'✓ تم تسجيل موافقتك';callStatus('rematchWait')}if(votes[uid]===false||votes[roomData?.host]===false||votes[roomData?.guest]===false)callStatus('rematchNo');if(role==='host'&&votes[roomData?.host]===true&&votes[roomData?.guest]===true&&!rematchBusy){rematchBusy=true;api.runTransaction(path('meta'),m=>{if(!m||m.status!=='ended')return;return {...m,status:'playing',start:api.serverTimestamp(),round:(Number(m.round)||1)+1,finalA:null,finalB:null};}).then(async r=>{if(r.committed){reset();await api.set(path('state'),{x:400,y:250,left:210,right:210,a:0,b:0});await api.set(path('rematch'),null);status('playing');}}).finally(()=>{rematchBusy=false;controls()});}},()=>status('error')));}
+ async function voteRematch(yes){if(mode!=='online'||!ended||!room)return;rematchBusy=true;controls();try{await api.set(path('rematch/'+uid),yes);if(!yes){status('rematchNo');$('sakPongRematch').hidden=true;$('sakPongNoRematch').hidden=true;}else status('rematchWait');}catch(e){status('error')}finally{rematchBusy=false;controls()}}
+ $('sakPongCall').onclick=requestVideoCall;$('sakPongAccept').onclick=acceptVideoCall;$('sakPongDecline').onclick=async()=>{try{const req=roomData?.callRequest||{};await api.set(path('call/request'),{...req,status:'declined',declinedAt:api.serverTimestamp()})}catch(e){}$('sakPongAccept').hidden=true;$('sakPongDecline').hidden=true;callStatus('callOff')};$('sakPongStopCall').onclick=()=>stopVideoCall(true);$('sakPongRematch').onclick=()=>voteRematch(true);$('sakPongNoRematch').onclick=()=>voteRematch(false);
  async function online(join){if(busy||mode)return;busy=true;controls();status('busy');let token=++generation;
   try{await connect();if(token!==generation)return;reset();
    if(join){room=$('sakPongCode').value.trim().toUpperCase();if(!/^[A-F0-9]{12}$/.test(room))throw Error('invalid');role='guest';const result=await api.runTransaction(path('meta'),m=>{if(!m)return m;if(m.status!=='waiting'||m.guest||m.host===uid)return;return {...m,guest:uid,status:'playing',start:api.serverTimestamp()};});if(!result.committed||result.snapshot.val()?.guest!==uid){room='';throw Error('invalid')}}
@@ -41218,9 +41107,9 @@ html body .sak-index-link span{font-size:22px!important}
    const en=document.documentElement.lang==='en';
    const label=card.querySelector('.icon-label');
    const sub=card.querySelector('.sub');
-   if(label)label.textContent=en?'Text Library':'المكتبة النصية';
-   if(sub)sub.textContent=en?'Stories • Knowledge • Riddles':'قصص • معرفة • ألغاز';
-   const title=en?'Text Library':'المكتبة النصية';
+   if(label)label.textContent=en?'Riddles':'الألغاز';
+   if(sub)sub.textContent=en?'Riddles & Challenges':'ألغاز وتحديات';
+   const title=en?'Riddles':'الألغاز';
    card.setAttribute('aria-label',title);
    card.setAttribute('title',title);
  }
@@ -41290,35 +41179,80 @@ html body .sak-index-link span{font-size:22px!important}
 }
 </style>
 
-<script type="module" src="/assets/visitor-posts.js?v=20261009-14"></script>
 <script type="module" src="assets/sakaker-live.js"></script>
-<script src="/assets/live-media-refresh.js?v=20261008-window-palette4" defer></script>
-<style id="facebook-video-mobile-responsive">
-#facebookVideoPopup{
-  box-sizing:border-box!important;width:100vw!important;height:100dvh!important;max-width:100vw!important;max-height:100dvh!important;
-  padding:max(10px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left))!important;
-  overflow:auto!important;overscroll-behavior:contain!important;align-items:center!important;justify-content:center!important
+<script src="/assets/live-media-refresh.js?v=20261008-window-palette2" defer></script>
+
+<style id="sakaker-castle-stories-icon-style">
+/* حكايات القلعة: البطاقة الأصلية المعتمدة ضمن شبكة الأيقونات الرئيسية */
+html body .cards #castleStoriesIndexCard{
+  display:flex !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  background:linear-gradient(145deg,rgba(28,18,8,.94),rgba(105,72,25,.88)) !important;
+  border:1px solid rgba(232,199,106,.72) !important;
+  color:#fff4d2 !important;
+  box-shadow:0 0 13px rgba(232,199,106,.24),inset 0 0 12px rgba(255,220,140,.08) !important;
 }
-#facebookVideoPopup .fbVideoBox{
-  box-sizing:border-box!important;width:min(620px,100%)!important;min-width:0!important;max-width:100%!important;
-  max-height:100%!important;overflow:auto!important;overscroll-behavior:contain!important
+html body .cards #castleStoriesIndexCard .icon-svg{
+  color:#f4d27a !important;
+  filter:drop-shadow(0 0 6px rgba(255,205,90,.55));
 }
-#facebookVideoPopup .fbVideoFrame{width:100%!important;min-width:0!important;overflow:hidden!important}
-#facebookVideoPopup .fbVideoFrame iframe{
-  display:block!important;width:min(267px,100%)!important;max-width:100%!important;
-  height:591px!important;min-height:591px!important;max-height:none!important;flex:0 1 267px!important;border:0!important
+html body .cards #castleStoriesIndexCard .icon-label{
+  color:#fff1c5 !important;
 }
-@media(max-width:600px){
-  #facebookVideoPopup{align-items:flex-start!important;justify-content:center!important}
-  #facebookVideoPopup .fbVideoBox{
-    width:100%!important;max-width:100%!important;max-height:100%!important;
-    padding:10px!important;border-radius:16px!important
-  }
-  #facebookVideoPopup .fbVideoTitle{padding-inline:42px!important}
+html body .cards #castleStoriesIndexCard .sub{
+  color:#ead7a7 !important;
 }
-@media(max-width:360px){
-  #facebookVideoPopup .fbVideoBox{padding:8px!important}
+html body .cards #castleStoriesIndexCard:focus-visible{
+  outline:3px solid #00e6c3;
+  outline-offset:4px;
 }
 </style>
+<script id="sakaker-castle-stories-keyboard">
+(function(){
+  var card=document.getElementById('castleStoriesIndexCard');
+  if(!card) return;
+  card.addEventListener('keydown',function(event){
+    if(event.key==='Enter'||event.key===' '){
+      event.preventDefault();
+      window.location.href='/abwalqmrzmrd-book.html';
+    }
+  });
+})();
+</script>
+
+
+
+<!-- Restore only the three requested launchers: shopping, castle forum, and visitor posts. -->
+<script type="module" src="/assets/visitor-posts.js?v=20261030-castle-loading1&swap=20261104"></script>
+<script defer src="/assets/castle-forum-launcher.js?v=20261012-auth-local-5"></script>
+<script type="module" id="sak-shopping-click-recovery">
+(()=>{
+  'use strict';
+  document.addEventListener('click',async event=>{
+    const button=event.target instanceof Element?event.target.closest('#sakShoppingIcon'):null;
+    if(!button)return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if(button.dataset.sakShoppingOpening==='1')return;
+    button.dataset.sakShoppingOpening='1';
+    try{
+      const shop=await import('/assets/shopping/shop.js?v=20260930-shopping-6');
+      shop.openShop();
+    }catch(error){
+      console.error('[Sakaker shopping]',error);
+      alert(document.documentElement.lang==='en'?'Could not load shopping. Please retry.':'تعذر تحميل التسوق. حاول مرة أخرى.');
+    }finally{
+      button.dataset.sakShoppingOpening='0';
+    }
+  },true);
+})();
+</script>
+
+<script src="/assets/news-recovery.js?v=20261104-news-recovery-1" defer></script>
+
 </body>
 </html>

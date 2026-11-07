@@ -143,3 +143,64 @@ html body #facebookVideoPopup .fbPostFrame{max-width:100% !important;overflow-x:
   lift();
 })();
 </script>
+
+
+<!-- FEATURED FACEBOOK POST + TRUE MOBILE PORTRAIT FIT -->
+<style id="sakaker-facebook-featured-responsive">
+html body #facebookVideoPopup .sakFeaturedFacebookPost{
+  display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;
+  box-sizing:border-box!important;margin:0 0 16px!important;padding:clamp(8px,2vw,14px)!important;
+  border:1px solid rgba(120,235,210,.22)!important;border-radius:16px!important;
+  background:rgba(2,20,27,.58)!important;overflow:hidden!important;
+}
+html body #facebookVideoPopup .sakFeaturedFacebookPostFrame{
+  display:flex!important;justify-content:center!important;align-items:flex-start!important;
+  width:100%!important;max-width:100%!important;min-width:0!important;overflow:hidden!important;box-sizing:border-box!important;
+}
+html body #facebookVideoPopup .sakFeaturedFacebookPostFrame iframe{
+  display:block!important;width:100%!important;max-width:500px!important;min-width:0!important;
+  height:clamp(333px,52dvh,560px)!important;margin:0 auto!important;border:0!important;box-sizing:border-box!important;
+}
+html body #facebookVideoPopup .fbPostFrame:not(.sakFeaturedFacebookPostFrame){
+  width:100%!important;max-width:100%!important;min-width:0!important;overflow-x:hidden!important;
+}
+html body #facebookVideoPopup .fbPostFrame:not(.sakFeaturedFacebookPostFrame) iframe{
+  width:100%!important;max-width:500px!important;min-width:0!important;
+}
+html body #facebookVideoPopup .fbVideoBox{
+  width:min(720px,100%)!important;max-width:100%!important;min-width:0!important;
+  max-height:calc(100dvh - 16px)!important;box-sizing:border-box!important;overflow-x:hidden!important;overflow-y:auto!important;
+}
+@media(max-width:700px){
+  html body #facebookVideoPopup{
+    padding:max(6px,env(safe-area-inset-top)) max(6px,env(safe-area-inset-right)) max(6px,env(safe-area-inset-bottom)) max(6px,env(safe-area-inset-left))!important;
+    overflow-x:hidden!important;overflow-y:auto!important;
+  }
+  html body #facebookVideoPopup .fbVideoBox{
+    width:100%!important;max-width:100%!important;max-height:calc(100dvh - 12px)!important;
+    margin:0 auto!important;padding:10px!important;border-radius:14px!important;
+    overflow-x:hidden!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch!important;
+  }
+  html body #facebookVideoPopup .sakFeaturedFacebookPost{
+    width:100%!important;max-width:100%!important;min-width:0!important;margin:0 0 12px!important;padding:6px!important;
+  }
+  html body #facebookVideoPopup .sakFeaturedFacebookPostFrame,
+  html body #facebookVideoPopup .fbPostFrame,
+  html body #facebookVideoPopup .fbVideoFrame{
+    width:100%!important;max-width:100%!important;min-width:0!important;overflow-x:hidden!important;
+  }
+  html body #facebookVideoPopup .sakFeaturedFacebookPostFrame iframe{
+    width:100%!important;max-width:100%!important;min-width:0!important;height:clamp(333px,58dvh,520px)!important;
+  }
+  html body #facebookVideoPopup .fbPostFrame iframe{
+    width:100%!important;max-width:100%!important;min-width:0!important;
+  }
+  html body #facebookVideoPopup .fbPostFrame:not(.sakFeaturedFacebookPostFrame) iframe{
+    height:min(330px,43dvh)!important;min-height:185px!important;
+  }
+}
+@media(max-width:380px){
+  html body #facebookVideoPopup .fbVideoBox{padding:7px!important}
+  html body #facebookVideoPopup .sakFeaturedFacebookPost{padding:4px!important}
+}
+</style>

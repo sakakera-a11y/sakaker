@@ -35,10 +35,10 @@ function positionVisitorClock(host) {
   host.style.setProperty("left","50%","important");
   host.style.setProperty("right","auto","important");
   host.style.setProperty("top","auto","important");
-  host.style.setProperty("bottom","max(8px, env(safe-area-inset-bottom))","important");
+  host.style.setProperty("bottom","max(3px, env(safe-area-inset-bottom))","important");
   host.style.setProperty("transform","translateX(-50%)","important");
   host.style.setProperty("width","calc(50vw - 16px)","important");
-  host.style.setProperty("height","42px","important");
+  host.style.setProperty("height","54px","important");
   host.style.setProperty("max-width","calc(50vw - 16px)","important");
   const dock=document.getElementById("sakakerAllIconsDock");
   if(dock)dock.style.setProperty("bottom","max(62px, calc(54px + env(safe-area-inset-bottom)))","important");
@@ -66,12 +66,12 @@ function installVisitorPosts() {
     @media(max-width:800px){html body #sakFestiveHeader #sakHolidayCountdowns{grid-column:1/-1!important;grid-row:2!important;width:100%!important;max-width:none!important;justify-self:stretch!important}}
     @media(max-width:380px){html body #sakFestiveHeader #sakHolidayCountdowns{gap:4px!important}html body #sakFestiveHeader #sakHolidayCountdowns>:is(.sak-festival,#sakNewsLaunch,#visitorPostsSection){height:64px!important;min-height:64px!important;max-height:64px!important;padding:4px!important}html body #sakFestiveHeader #sakHolidayCountdowns>#visitorPostsSection #visitorPostsCard{gap:2px!important}html body #sakFestiveHeader #sakHolidayCountdowns>#visitorPostsSection .visitor-gull{width:22px!important;height:20px!important}}
     #sakakerNewsSlot:empty,#sakakerNewsSlot.visitor-slot-empty,#sakakerClockSlot:empty{display:none!important;width:0!important;height:0!important;min-height:0!important;max-height:0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
-    #visitorClockDock{position:fixed!important;left:50%!important;right:auto!important;top:auto!important;bottom:max(8px,env(safe-area-inset-bottom))!important;transform:translateX(-50%)!important;z-index:2147482999!important;min-width:0!important;padding:4px 8px!important;color:#fff!important;text-align:center!important;pointer-events:none!important;overflow:hidden!important}
+    #visitorClockDock{position:fixed!important;left:50%!important;right:auto!important;top:auto!important;bottom:max(3px,env(safe-area-inset-bottom))!important;transform:translateX(-50%)!important;z-index:2147482999!important;min-width:0!important;min-height:50px!important;max-height:64px!important;padding:4px 8px!important;color:#fff!important;text-align:center!important;pointer-events:none!important;overflow:visible!important}
     #visitorClockDock::before{content:"◷";display:inline-block;margin-inline-end:6px;color:#ffe27a;font:700 18px/1 Arial,sans-serif;text-shadow:0 0 8px rgba(255,215,0,.5);vertical-align:middle}
-    #visitorClockDock .visitor-clock-dock-content{box-sizing:border-box!important;display:inline-block!important;vertical-align:middle!important;width:auto!important;max-width:calc(100% - 30px)!important;height:auto!important;max-height:30px!important;margin:0!important;color:#fff!important;font:700 9px/1.25 Tahoma,Arial,sans-serif!important;text-align:center!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+    #visitorClockDock .visitor-clock-dock-content{box-sizing:border-box!important;display:inline-block!important;vertical-align:middle!important;width:auto!important;max-width:calc(100% - 30px)!important;height:auto!important;max-height:none!important;margin:0!important;color:#fff!important;font:800 13px/1.35 Tahoma,Arial,sans-serif!important;text-align:center!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important;text-shadow:0 0 4px #fff,0 0 9px #ffb65e!important}
     #visitorPostsCard{box-sizing:border-box!important;width:100%!important;height:100%!important;min-height:0!important;max-width:100%!important;padding:2px 5px!important;display:flex!important;flex-direction:row;align-items:center;justify-content:center;gap:6px;border:0!important;border-radius:12px!important;background:transparent!important;color:#fff3bd;box-shadow:none!important;font:800 11px Tahoma,Arial,sans-serif;cursor:pointer;touch-action:manipulation;pointer-events:auto!important;position:relative!important;z-index:2147482998!important}
     #visitorPostsCard:focus-visible{outline:3px solid #fff1a8;outline-offset:3px}
-    #visitorPostsCard .visitor-gull{width:28px;height:24px;flex:none}
+    #visitorPostsCard .visitor-gull{width:28px;height:24px;flex:none;display:grid;place-items:center;font-size:23px;line-height:1}
     #visitorPostsCard .visitor-gull path{stroke:none!important}
     #visitorPostsCard .visitor-card-label{display:flex;flex-direction:column;align-items:center;white-space:nowrap;text-align:center;line-height:1.2;font-size:clamp(9px,2vw,12px);font-weight:800}
     #visitorPostsCard .visitor-click-hint{display:block;margin-top:2px;font-size:.9em;animation:visitorPromptFlash 2.4s steps(1,end) infinite}
@@ -79,7 +79,37 @@ function installVisitorPosts() {
     @media(prefers-reduced-motion:reduce){#visitorPostsCard .visitor-click-hint{animation:none;color:#ffeb00}}
     :is(.sak-festival,.news-ticker) :is(p,h1,h2,h3){margin:0!important}
     @media(max-width:600px){:is(.sak-festival,.news-ticker,#visitorPostsSection,#visitorClockDock){height:40px!important;min-height:40px!important;max-height:40px!important;padding:4px 6px!important;border-radius:14px!important}#visitorPostsSection{margin:6px 4px!important}#visitorPostsCard{gap:4px}#visitorPostsCard .visitor-gull{width:25px;height:21px}#visitorClockDock{width:calc(50vw - 16px)!important;max-width:calc(50vw - 16px)!important}}
-    #visitorPostsOverlay{position:fixed;inset:0;z-index:2147483000;background:rgba(2,10,15,.88);display:none;place-items:center;padding:clamp(6px,2vw,24px)}
+    @media(max-width:700px){html body #visitorClockDock{height:54px!important;min-height:50px!important;max-height:64px!important;padding:5px 4px!important}html body #visitorClockDock .visitor-clock-dock-content{font-size:12px!important;line-height:1.35!important;white-space:normal!important;max-height:none!important;overflow:visible!important}}
+    /* Portrait phones: keep the visitor launcher inside its grid cell and let Arabic/English labels wrap. */
+    @media(max-width:600px) and (orientation:portrait){
+      html body #sakFestiveHeader #sakHolidayCountdowns{
+        grid-template-columns:repeat(2,minmax(0,1fr))!important;
+        grid-template-areas:"newyear visitor" "christmas news"!important;
+        gap:6px!important;width:100%!important;max-width:100%!important;min-width:0!important;
+      }
+      html body #sakFestiveHeader #sakHolidayCountdowns>:is(.sak-festival,#sakNewsLaunch,#visitorPostsSection){
+        box-sizing:border-box!important;width:100%!important;min-width:0!important;max-width:100%!important;
+        height:68px!important;min-height:68px!important;max-height:68px!important;padding:4px!important;
+      }
+      html body #sakFestiveHeader #sakHolidayCountdowns>#visitorPostsSection{
+        grid-area:visitor!important;min-width:0!important;overflow:hidden!important;
+      }
+      html body #sakFestiveHeader #sakHolidayCountdowns>#visitorPostsSection #visitorPostsCard{
+        display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;align-items:center!important;
+        justify-content:center!important;gap:4px!important;width:100%!important;min-width:0!important;
+        max-width:100%!important;padding:2px!important;overflow:hidden!important;
+      }
+      html body #visitorPostsCard .visitor-gull{
+        width:clamp(22px,7vw,28px)!important;height:auto!important;max-width:32%!important;flex:0 0 auto!important;
+      }
+      html body #visitorPostsCard .visitor-card-label{
+        min-width:0!important;max-width:100%!important;white-space:normal!important;
+        overflow-wrap:anywhere!important;font-size:clamp(9px,2.8vw,12px)!important;
+      }
+      html body #visitorPostsCard .visitor-main-label,
+      html body #visitorPostsCard .visitor-click-hint{white-space:normal!important;overflow-wrap:anywhere!important}
+    }
+        #visitorPostsOverlay{position:fixed;inset:0;z-index:2147483000;background:rgba(2,10,15,.88);display:none;place-items:center;padding:clamp(6px,2vw,24px)}
     #visitorPostsOverlay.open{display:grid}
     #visitorPostsLoading{display:none;position:absolute;inset:0;z-index:1;place-items:center;margin:0;padding:22px;color:#fff;font:700 16px/1.6 Tahoma,Arial,sans-serif;text-align:center;pointer-events:none}
     #visitorPostsOverlay.loading #visitorPostsLoading,#visitorPostsOverlay.needs-signin #visitorPostsLoading{display:grid}
@@ -107,13 +137,13 @@ function installVisitorPosts() {
     card.id = "visitorPostsCard";
     card.className = "visitor-posts-launcher";
     card.setAttribute("aria-haspopup", "dialog");
-    card.innerHTML = `<svg class="visitor-gull" viewBox="0 0 100 76" aria-hidden="true" focusable="false"><path fill="#ffd700" d="M5 43c16-16 29-21 43-15 12 5 18 4 26-5-2 14-14 22-29 18-14-4-23 1-40 15 7-1 15-5 21-9-4 7-12 13-21 15 12 1 25-4 34-13 10-9 20-9 31-4-13-1-22 7-31 16C29 80 9 71 5 43Z"/><path fill="#ffd700" d="M30 34c10-18 24-27 46-27-6 8-11 17-14 25-9 7-18 7-32 2Z"/></svg><span class="visitor-card-label"></span>`;
+    card.innerHTML = `<span class="visitor-gull" aria-hidden="true">🧩</span><span class="visitor-card-label"></span>`;
     section.appendChild(card);
   } else {
     card.type = "button";
     card.setAttribute("aria-haspopup", "dialog");
     if (!card.querySelector(".visitor-gull")) {
-      card.insertAdjacentHTML("afterbegin", `<svg class="visitor-gull" viewBox="0 0 100 76" aria-hidden="true" focusable="false"><path fill="#ffd700" d="M5 43c16-16 29-21 43-15 12 5 18 4 26-5-2 14-14 22-29 18-14-4-23 1-40 15 7-1 15-5 21-9-4 7-12 13-21 15 12 1 25-4 34-13 10-9 20-9 31-4-13-1-22 7-31 16C29 80 9 71 5 43Z"/><path fill="#ffd700" d="M30 34c10-18 24-27 46-27-6 8-11 17-14 25-9 7-18 7-32 2Z"/></svg>`);
+      card.insertAdjacentHTML("afterbegin", `<span class="visitor-gull" aria-hidden="true">🧩</span>`);
     }
     if (!card.querySelector(".visitor-card-label")) {
       const label = document.createElement("span");
@@ -125,10 +155,10 @@ function installVisitorPosts() {
     const english = document.documentElement.lang.toLowerCase().startsWith("en");
     const label = card.querySelector(".visitor-card-label");
     if (label) label.innerHTML = english
-      ? '<span class="visitor-main-label">Visitor Posts</span><span class="visitor-click-hint">Click here</span>'
-      : '<span class="visitor-main-label">مشاركات الزوار</span><span class="visitor-click-hint">اضغط هنا</span>';
-    card.setAttribute("aria-label", english ? "Open visitor submission form" : "فتح نموذج مشاركات الزوار");
-    section.setAttribute("aria-label", english ? "Visitor Posts" : "مشاركات الزوار");
+      ? '<span class="visitor-main-label">Riddles</span><span class="visitor-click-hint">Click here</span>'
+      : '<span class="visitor-main-label">الألغاز</span><span class="visitor-click-hint">اضغط هنا</span>';
+    card.setAttribute("aria-label", english ? "Open riddles window" : "فتح نافذة الألغاز");
+    section.setAttribute("aria-label", english ? "Riddles" : "الألغاز");
   };
   applyCardLanguage();
   const hideEmptyNewsSlot = () => {
@@ -225,10 +255,30 @@ function installVisitorPosts() {
     document.body.appendChild(overlay);
   }
   const frame = overlay.querySelector("iframe");
+  const syncOverlayLanguage = () => {
+    const english = document.documentElement.lang.toLowerCase().startsWith("en");
+    const dialog = overlay.querySelector("#visitorPostsDialog");
+    const closeButton = overlay.querySelector("#visitorPostsClose");
+    if (dialog) dialog.setAttribute("aria-label", english ? "Visitor Posts" : "مشاركات الزوار");
+    if (closeButton) closeButton.setAttribute("aria-label", english ? "Close" : "إغلاق");
+    frame.title = english ? "Visitor Posts" : "مشاركات الزوار";
+    const frameUrl = frame.getAttribute("src") || "";
+    if (frame.contentWindow && frameUrl && frameUrl !== "about:blank") {
+      frame.contentWindow.postMessage({
+        type: "sakakerVisitorLanguage",
+        lang: english ? "en" : "ar"
+      }, "*");
+    }
+  };
+  syncOverlayLanguage();
+  new MutationObserver(syncOverlayLanguage).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["lang"]
+  });
   const close = () => {
     overlay.classList.remove("open", "loading", "needs-signin");
     frame.src = "about:blank";
-    card.focus();
+    document.querySelector(".cards .sak-text-library-card")?.focus();
   };
   const loading = overlay.querySelector("#visitorPostsLoading");
   if (loading) loading.textContent = document.documentElement.lang.toLowerCase().startsWith("en") ? "Checking your site sign-in…" : "جارٍ التحقق من تسجيل الدخول…";
@@ -237,9 +287,63 @@ function installVisitorPosts() {
   document.addEventListener("keydown", e => { if (e.key === "Escape" && overlay.classList.contains("open")) close(); });
 
   let currentUser = null;
+  let pendingVisitorLogin = false;
   let authReady = false;
   let resolveAuthState;
   const authStateReady = new Promise(resolve => { resolveAuthState = resolve; });
+  const isAppsScriptHtmlOrigin = origin => {
+    try { const host = new URL(origin).hostname; return host === "script.googleusercontent.com" || host.endsWith("-script.googleusercontent.com"); } catch { return false; }
+  };
+  window.addEventListener("message", async event => {
+    const message = event.data || {};
+    if (message.type !== "sakakerVisitorReady" || !isAppsScriptHtmlOrigin(event.origin) ||
+        !overlay.classList.contains("open") || !String(frame.getAttribute("src") || "").startsWith(VISITOR_APP_URL)) return;
+    if (!currentUser || !event.source) return;
+    try {
+      const siteUser = currentUser;
+      const token = await siteUser.getIdToken(true);
+      if (currentUser?.uid !== siteUser.uid || !overlay.classList.contains("open")) return;
+      event.source.postMessage({ type: "sakakerVisitorAuth", token, lang: document.documentElement.lang.toLowerCase().startsWith("en") ? "en" : "ar" }, event.origin);
+      overlay.classList.remove("loading", "needs-signin");
+    } catch (error) {
+      overlay.classList.remove("loading");
+      loading.textContent = document.documentElement.lang.toLowerCase().startsWith("en") ? "Could not verify your site sign-in. Please close and retry." : "تعذر التحقق من تسجيل الدخول. أغلق النافذة ثم حاول مجددًا.";
+      overlay.classList.add("needs-signin");
+    }
+  });
+  const openVisitorPosts = () => {
+    if (!VISITOR_APP_URL.startsWith("https://script.google.com/macros/s/")) {
+      close();
+      const english = document.documentElement.lang.toLowerCase().startsWith("en");
+      alert(english ? "Visitor Posts is still being configured." : "ما زال إعداد مشاركات الزوار جارياً.");
+      return;
+    }
+    overlay.classList.add("open", "loading");
+    frame.onload = () => overlay.classList.remove("loading");
+    frame.src = VISITOR_APP_URL + "?embedded=1";
+  };
+
+  const showSiteLogin = english => {
+    const loginOverlay = document.getElementById("loginOverlay");
+    const loginBox = document.getElementById("loginBox");
+    if (!loginOverlay) return;
+    loginOverlay.hidden = false;
+    loginOverlay.style.setProperty("display", "flex", "important");
+    if (loginBox) {
+      let notice = document.getElementById("visitorLoginNotice");
+      if (!notice) {
+        notice = document.createElement("p");
+        notice.id = "visitorLoginNotice";
+        notice.style.cssText = "margin:10px auto;padding:10px 12px;max-width:520px;border:1px solid #efd276;border-radius:12px;background:#0b2530;color:#fff0b2;font:700 13px/1.7 Tahoma,Arial,sans-serif;text-align:center";
+        const firstLoginButton = loginBox.querySelector(".socialLoginButton");
+        loginBox.insertBefore(notice, firstLoginButton || null);
+      }
+      notice.textContent = english
+        ? "Sign in with your site account. Admin access opens automatically for sakakera@gmail.com."
+        : "سجّل الدخول بحساب الموقع نفسه. تظهر لوحة المشرف تلقائيًا عند الدخول بالبريد sakakera@gmail.com.";
+    }
+  };
+
   const waitForAuth = () => {
     if (!window.firebaseAuth) {
       if (!authReady) setTimeout(waitForAuth, 120);
@@ -251,48 +355,115 @@ function installVisitorPosts() {
     onAuthStateChanged(window.firebaseAuth, user => {
       currentUser = user;
       resolveAuthState(user);
+      if (user && pendingVisitorLogin) {
+        pendingVisitorLogin = false;
+        openVisitorPosts();
+      }
     });
   };
   waitForAuth();
 
+  const launchVisitorPostsWithAuth = async () => {
+    const english = document.documentElement.lang.toLowerCase().startsWith("en");
+    overlay.classList.add("open", "loading");
+    if (!authReady) waitForAuth();
+    await Promise.race([authStateReady, new Promise(resolve => setTimeout(resolve, 3000))]);
+    if (!currentUser) {
+      pendingVisitorLogin = true;
+      showSiteLogin(english);
+      close();
+      return;
+    }
+    openVisitorPosts();
+  };
+  window.sakakerOpenVisitorPostsWindow = launchVisitorPostsWithAuth;
+
   if (card.dataset.visitorPostsBound !== "1") {
     card.dataset.visitorPostsBound = "1";
-    card.addEventListener("click", async () => {
-      const english = document.documentElement.lang.toLowerCase().startsWith("en");
-      overlay.classList.add("open", "loading");
-      if (!authReady) waitForAuth();
-      await Promise.race([authStateReady, new Promise(resolve => setTimeout(resolve, 3000))]);
-      if (!currentUser) {
-        loading.textContent = english ? "Sign in to the site before posting. Close this window after signing in." : "سجّل الدخول إلى حساب الموقع قبل المشاركة، ثم أغلق هذه النافذة وأعد المحاولة.";
-        overlay.classList.remove("loading");
-        overlay.classList.add("needs-signin");
-        return;
+    card.addEventListener("click", () => {
+      if (typeof window.openSakakerTextLibrary === "function") {
+        window.openSakakerTextLibrary();
       }
-      if (!VISITOR_APP_URL.startsWith("https://script.google.com/macros/s/")) {
-        close();
-        alert(english ? "Visitor Posts is still being configured." : "ما زال إعداد مشاركات الزوار جارياً.");
-        return;
-      }
-      frame.onload = async () => {
-        overlay.classList.remove("loading");
-        if (!currentUser) return;
-        try {
-          const siteUser = currentUser;
-          const token = await siteUser.getIdToken(true);
-          if (frame.contentWindow) {
-            // Apps Script serves its HTML from script.googleusercontent.com.
-            // The receiver validates event.source and an explicit sakaker.co origin allowlist.
-            frame.contentWindow.postMessage({ type: "sakakerVisitorAuth", token, lang: english ? "en" : "ar" }, "*");
-          }
-        } catch (error) {
-          close();
-          alert(english ? "Could not verify your site sign-in. Please try again." : "تعذر التحقق من تسجيل الدخول للموقع. حاول مرة أخرى.");
-        }
-      };
-      frame.src = VISITOR_APP_URL + "?embedded=1";
     });
   }
 }
 
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", installVisitorPosts, { once: true });
 else installVisitorPosts();
+
+
+// Independent castle-tour launcher: the existing visitor-posts module is
+// already visible in the upper header, so it provides a second reliable
+// bootstrap if the legacy icon dock is delayed or hidden on mobile.
+(function bootstrapCastleTour(){
+  function load(){
+    if(document.getElementById('sakCastleTourLauncherScript'))return;
+    const script=document.createElement('script');
+    script.id='sakCastleTourLauncherScript';
+    script.src='/assets/castle-tour-launcher.js?v=20261030-loading1';
+    script.async=true;
+    document.head.appendChild(script);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});
+  else load();
+})();
+
+
+// Ensure the original riddles/library icon becomes the Visitor Posts launcher.
+// Kept here as a final guard so delayed legacy scripts cannot restore its old label.
+function enforceVisitorPostsOnRiddlesIcon() {
+  const card = document.querySelector(".cards .sak-text-library-card");
+  if (!card) return;
+  const english = document.documentElement.lang.toLowerCase().startsWith("en");
+  const title = english ? "Visitor Posts" : "مشاركات الزوار";
+  const subtitle = english ? "Share your content with site visitors" : "شارك محتواك مع زوار الموقع";
+  const icon = card.querySelector(".icon-svg");
+  const label = card.querySelector(".icon-label");
+  const sub = card.querySelector(".sub");
+  if (!icon || icon.textContent.trim() !== "🕊️" ||
+      !label || label.textContent.trim() !== title ||
+      !sub || sub.textContent.trim() !== subtitle) {
+    card.innerHTML =
+      '<div class="icon-svg" aria-hidden="true" style="font-size:30px">🕊️</div>' +
+      '<div class="icon-label" data-ar="مشاركات الزوار" data-en="Visitor Posts">' + title + '</div>' +
+      '<div class="sub" data-ar="شارك محتواك مع زوار الموقع" data-en="Share your content with site visitors">' + subtitle + '</div>';
+  }
+  card.setAttribute("role", "button");
+  card.setAttribute("tabindex", "0");
+  card.setAttribute("aria-label", title);
+  card.setAttribute("data-aria-ar", "مشاركات الزوار");
+  card.setAttribute("data-aria-en", "Visitor Posts");
+  card.setAttribute("data-title-ar", "مشاركات الزوار");
+  card.setAttribute("data-title-en", "Visitor Posts");
+  card.title = title;
+  card.removeAttribute("onclick");
+  if (card.dataset.visitorPostsSwapBound !== "1") {
+    card.dataset.visitorPostsSwapBound = "1";
+    const launch = () => {
+      if (typeof window.sakakerOpenVisitorPostsWindow === "function") {
+        window.sakakerOpenVisitorPostsWindow();
+      }
+    };
+    card.addEventListener("click", launch);
+    card.addEventListener("keydown", event => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        launch();
+      }
+    });
+  }
+}
+
+function installVisitorPostsIconSwapGuard() {
+  enforceVisitorPostsOnRiddlesIcon();
+  if (document.documentElement && !document.documentElement.dataset.visitorPostsSwapObserver) {
+    document.documentElement.dataset.visitorPostsSwapObserver = "1";
+    new MutationObserver(() => enforceVisitorPostsOnRiddlesIcon())
+      .observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ["lang"] });
+  }
+}
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", installVisitorPostsIconSwapGuard, { once: true });
+} else {
+  installVisitorPostsIconSwapGuard();
+}

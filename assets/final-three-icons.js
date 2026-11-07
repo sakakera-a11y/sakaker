@@ -7,16 +7,16 @@ let siteSoundUserMuted=true;
 
 /* Requested row order first, then the remaining site tools. */
 const utilityItems=[
-  {key:'facebook',selectors:['#facebookVideoIcon']},
+  /* Castle Tour is positioned independently at the top-center of the page. */
+  {key:'pong',selectors:['#pongGame-btn']},
+  {key:'music',selectors:['#emOpenBtn','#emeraldMusicHost #emOpenBtn','#emeraldMusicHost button','#emeraldMusicHost [role="button"]']},
+  {key:'map',selectors:['#mapIcon','.launcher[data-map]','.launcher[aria-label*="خريطة"]','.launcher[title*="خريطة"]','.launcher']},
+  {key:'business',selectors:['#sakakerBusinessAd']},
+  /* Keep the hidden launchers registered without affecting the visible order. */
   {key:'textLibrary',finder:findTextLibrary},
   {key:'videoLibrary',selectors:['#emeraldLibraryButton']},
   {key:'live',selectors:['#liveFlasher']},
-  {key:'pong',selectors:['#pongGame-btn']},
-  {key:'siteBackground',selectors:['#sakSiteBackgroundBtn']},
-  {key:'ship',selectors:['#shipIcon_new']},
-  {key:'music',selectors:['#emOpenBtn','#emeraldMusicHost #emOpenBtn','#emeraldMusicHost button','#emeraldMusicHost [role="button"]']},
-  {key:'map',selectors:['#mapIcon','.launcher[data-map]','.launcher[aria-label*="خريطة"]','.launcher[title*="خريطة"]','.launcher']},
-  {key:'business',selectors:['#sakakerBusinessAd']}
+  {key:'siteBackground',selectors:['#sakSiteBackgroundBtn']}
 ];
 
 const labels={
@@ -24,6 +24,7 @@ const labels={
   textLibrary:{ar:'المكتبة النصية',en:'Text Library'},
   videoLibrary:{ar:'مكتبة الفيديو',en:'Video Library'},
   live:{ar:'قنوات مباشرة',en:'Live Channels'},
+  castleTour:{ar:'تجول بالقلعة',en:'Castle Tour'},
   pong:{ar:'لعبة البونج',en:'Pong'},
   siteBackground:{ar:'خلفية الصفحة',en:'Page Background'},
   ship:{ar:'أبوالقمر زمرد',en:'Abwalqmrzmrd'},
@@ -41,33 +42,111 @@ function findTextLibrary(){
   })||null;
 }
 
-/* Add only the requested reel. Existing Facebook media in the popup is left
-   exactly as-is and stays after this new first item. */
+/* Preserve every reel already in the popup, restore the original reel, and add the newly requested reel. */
 function installFacebookEmbeds(){
   const popup=document.getElementById('facebookVideoPopup');
   const box=popup?.querySelector('.fbVideoBox');
   if(!box)return;
 
-  const reelId='1713298586438007';
-  if(box.querySelector('iframe[data-sak-facebook-reel="'+reelId+'"]'))return;
+  /* Keep the popup shell, preview/header and close button.
+     The old .fbVideoFrame is the complete legacy clips area shown below
+     the post; remove that area only after inserting the replacement post. */
+  const legacyFrame=box.querySelector('.fbVideoFrame');
+  let featured=box.querySelector('.sakFeaturedFacebookPost');
+  if(!featured){
+    featured=document.createElement('section');
+    featured.className='sakFeaturedFacebookPost fbPostSection';
+    featured.setAttribute('aria-label','Facebook post');
+    featured.innerHTML='<div class="fbPostFrame sakFeaturedFacebookPostFrame"></div>';
+    if(legacyFrame) box.insertBefore(featured,legacyFrame);
+    else box.appendChild(featured);
+  }
 
-  const iframe=document.createElement('iframe');
-  iframe.dataset.sakFacebookReel=reelId;
-  iframe.src='https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1713298586438007%2F&show_text=true&width=267&t=0';
-  iframe.width='267';
-  iframe.height='591';
-  iframe.style.cssText='display:block;border:none;overflow:hidden;width:267px;max-width:100%;height:591px;min-height:591px;margin:0 auto 12px';
-  iframe.scrolling='no';
-  iframe.frameBorder='0';
-  iframe.allowFullscreen=true;
-  iframe.allow='autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share';
-  iframe.setAttribute('allowfullscreen','true');
-  iframe.setAttribute('title','Facebook Reel');
+  /* Remove the old Facebook clips section completely, not the popup. */
+  if(legacyFrame && legacyFrame!==featured && !featured.contains(legacyFrame)){
+    legacyFrame.remove();
+  }
 
-  box.insertBefore(iframe,box.firstChild);
+  let postFrame=featured.querySelector('.sakFeaturedFacebookPostFrame');
+  if(!postFrame){
+    postFrame=document.createElement('div');
+    postFrame.className='fbPostFrame sakFeaturedFacebookPostFrame';
+    featured.appendChild(postFrame);
+  }else{
+    postFrame.classList.add('fbPostFrame');
+  }
+
+  let iframe=postFrame.querySelector('iframe[data-sak-featured-facebook-post="1"]');
+  if(!iframe){
+    iframe=document.createElement('iframe');
+    iframe.dataset.sakFeaturedFacebookPost='1';
+    iframe.scrolling='no';
+    iframe.frameBorder='0';
+    iframe.allowFullscreen=true;
+    iframe.allow='autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share';
+    iframe.setAttribute('allowfullscreen','true');
+    iframe.setAttribute('title','منشور أبو القمر زمرد على فيسبوك');
+    postFrame.appendChild(iframe);
+  }
+
+  const availableWidth=Math.max(280,Math.floor(postFrame.clientWidth||box.clientWidth||window.innerWidth)-12);
+  const pluginWidth=Math.max(350,Math.min(500,availableWidth));
+  const scale=Math.min(1,availableWidth/pluginWidth);
+  const postUrl='https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FAbwAlqmrZmrd%2Fposts%2Fpfbid07k5Br3eoSwyNP3dF73eRVjYcZjTJmESbZZk1y6GYMCBvPHWhgbV7h11u317Copv9l&show_text=true&width='+pluginWidth;
+
+  postFrame.style.cssText='display:flex;justify-content:center;align-items:flex-start;width:100%;max-width:100%;min-width:0;overflow:hidden;box-sizing:border-box';
+  iframe.width=String(pluginWidth);
+  iframe.height='650';
+  iframe.style.cssText='display:block;flex:0 0 '+pluginWidth+'px;width:'+pluginWidth+'px;max-width:none;min-width:'+pluginWidth+'px;height:650px;border:0;overflow:hidden;margin:0 auto;transform:scale('+scale+');transform-origin:top center';
+  postFrame.style.height=Math.ceil(650*scale)+'px';
+
+  if(iframe.dataset.sakPostUrl!==postUrl){
+    iframe.dataset.sakPostUrl=postUrl;
+    iframe.src=postUrl;
+  }
+}
+
+function watchFacebookEmbeds(){
+  const popup=document.getElementById('facebookVideoPopup');
+  if(!popup||popup.dataset.sakFacebookWatcherInstalled==='1')return;
+  popup.dataset.sakFacebookWatcherInstalled='1';
+  let observer;
+  const loadWhenVisible=()=>{
+    const style=getComputedStyle(popup);
+    const rect=popup.getBoundingClientRect();
+    if(style.display==='none'||style.visibility==='hidden'||rect.width<2||rect.height<2)return;
+    observer?.disconnect();
+    document.removeEventListener('click',checkAfterClick,true);
+    installFacebookEmbeds();
+  };
+  const checkAfterClick=()=>requestAnimationFrame(loadWhenVisible);
+  observer=new MutationObserver(loadWhenVisible);
+  observer.observe(popup,{attributes:true,attributeFilter:['class','style','hidden','aria-hidden']});
+  document.addEventListener('click',checkAfterClick,true);
+  if(popup.dataset.sakFacebookResizeInstalled!=='1'){
+    popup.dataset.sakFacebookResizeInstalled='1';
+    window.addEventListener('resize',()=>requestAnimationFrame(loadWhenVisible),{passive:true});
+  }
+  loadWhenVisible();
 }
 
 function isLocked(){return document.body?.classList.contains('locked');}
+
+function hideFacebookLaunchers(){
+  const candidates=document.querySelectorAll(
+    '#facebookVideoIcon,.facebookVideoIcon,[data-sakaker-util="facebook"],[data-sakaker-dock-key="facebook"],' +
+    'button[aria-label*="Facebook" i],a[aria-label*="Facebook" i],button[title*="Facebook" i],a[title*="Facebook" i],' +
+    'button[aria-label*="فيس بوك"],a[aria-label*="فيس بوك"],button[title*="فيس بوك"],a[title*="فيس بوك"]'
+  );
+  candidates.forEach(el=>{
+    if(el.closest('#facebookVideoPopup,.sak-gull-hub'))return;
+    el.style.setProperty('display','none','important');
+    el.style.setProperty('visibility','hidden','important');
+    el.style.setProperty('opacity','0','important');
+    el.style.setProperty('pointer-events','none','important');
+    if(el.matches('.sakaker-utility-slot')&&!el.querySelector(':scope > *'))el.remove();
+  });
+}
 
 function installSiteBackgroundStyle(){
   if(document.getElementById('sakSiteBackgroundStyle'))return;
@@ -216,28 +295,48 @@ function visibleRect(el){
   return r;
 }
 
-/* Keep the main-site sound button directly below the payment control. */
+/* Place the background-sound control beside the visible language switch.
+   If no language switch can be identified, retain the safe legacy placement. */
 function placeSiteSoundAboveClock(){
   if(isLocked())return;
   const btn=document.getElementById('sakSiteSoundBtn');
   if(!btn)return;
 
-  const payment=document.getElementById('sakGlobalPayment');
-  const paymentRect=visibleRect(payment);
+  const controls=[...document.querySelectorAll('button,[role="button"],a,[tabindex]')]
+    .filter(el=>el!==btn&&!el.closest('#loginOverlay')&&!el.closest('#sakakerAllIconsDock')&&
+      !el.closest('[role="dialog"],dialog')&&visibleRect(el));
+  const languageControl=controls.find(el=>{
+    const meta=((el.id||'')+' '+(el.className&&typeof el.className==='string'?el.className:'')+' '+
+      (el.getAttribute('aria-label')||'')+' '+(el.getAttribute('title')||'')+' '+(el.textContent||''))
+      .replace(/\s+/g,' ').trim();
+    return /language|switch language|تبديل اللغة|تغيير اللغة|التبديل إلى|switch to english|\benglish\b|\barabic\b|العربية|^\s*EN\s*$/i.test(meta);
+  });
+
   const btnWidth=Math.max(btn.offsetWidth||150,120);
   const btnHeight=Math.max(btn.offsetHeight||44,38);
-
   let left=Math.max(8,Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--safe-left')||'0')||8);
   let top=window.innerHeight-btnHeight-10;
 
-  if(paymentRect){
-    left=paymentRect.left+(paymentRect.width-btnWidth)/2;
-    top=paymentRect.bottom+8;
+  const languageRect=languageControl&&visibleRect(languageControl);
+  if(languageRect){
+    const gap=8;
+    const centerY=languageRect.top+languageRect.height/2;
+    // Put the sound control immediately beside the language control, toward
+    // the center of the screen, and keep both controls inside the viewport.
+    left=languageRect.left>window.innerWidth/2
+      ? languageRect.left-btnWidth-gap
+      : languageRect.right+gap;
+    top=centerY-btnHeight/2;
+  }else{
+    const paymentRect=visibleRect(document.getElementById('sakGlobalPayment'));
+    if(paymentRect){
+      left=paymentRect.right+10;
+      top=paymentRect.top-btnHeight-17;
+    }
   }
 
   left=Math.max(8,Math.min(window.innerWidth-btnWidth-8,left));
   top=Math.max(8,Math.min(window.innerHeight-btnHeight-8,top));
-
   btn.style.setProperty('position','fixed','important');
   btn.style.setProperty('left',Math.round(left)+'px','important');
   btn.style.setProperty('right','auto','important');
@@ -354,7 +453,7 @@ function ensureSiteBackground(){
     video.playsInline=true;
     /* Metadata is enough before playback begins; play() will stream the
        actual video once the authenticated site is visible. */
-    video.preload='metadata';
+    video.preload='none';
     video.muted=false;
     video.setAttribute('playsinline','');
     video.setAttribute('webkit-playsinline','');
@@ -394,11 +493,10 @@ function ensureSiteBackground(){
     document.body.appendChild(btn);
   }
 
-  if(isLocked()){
-    video.pause();
-  }else{
-    startSiteBackgroundSound();
-  }
+  /* لا تبدأ تنزيل/تشغيل فيديو خلفية الموقع تلقائيًا بعد الدخول.
+     يبقى متاحًا من زر الخلفية عند طلب المستخدم فقط. */
+  video.muted=true;
+  video.pause();
   updateSiteBackgroundButton();
   requestAnimationFrame(placeSiteSoundAboveClock);
 }
@@ -411,6 +509,13 @@ function syncSiteBackgroundLock(){
     return;
   }
 
+  /* A login may complete after settle()'s startup retries have finished. */
+  loadVisitorCounterModule();
+
+  /* Load the clock after login, but defer heavy Facebook embeds until requested. */
+  loadPaymentClock();
+  watchFacebookEmbeds();
+
   /* The video is intentionally absent during login. Create it now, once,
      immediately after Firebase unlocks the page. */
   if(!video){
@@ -419,7 +524,15 @@ function syncSiteBackgroundLock(){
     if(!video)return;
   }
 
-  startSiteBackgroundSound();
+  /* إبقاء الخلفية متوقفة حتى يضغط المستخدم زر تشغيل الخلفية. */
+  video.muted=true;
+  video.pause();
+  updateSiteBackgroundButton();
+  ensureCastleTourLauncher();
+  ensureCastleStoriesLauncher();
+  ensureTitanicShipLauncher();
+  hideFacebookLaunchers();
+  rebuildIconAppearance();
   removeOldSeaSoundControl();
   requestAnimationFrame(placeSiteSoundAboveClock);
   updateSiteBackgroundButton();
@@ -449,6 +562,64 @@ function safeKey(value){return String(value||'icon').replace(/[^a-zA-Z0-9_-]/g,'
 
 function ostrichSVG(key){
   const k=safeKey(key);
+
+  // The ship is an original, transparent side-profile ocean-liner emblem.
+  // It deliberately has no circle, plate, badge, or background fill.
+  if(k==='ship'){
+    const svg=make('svg',{viewBox:'0 0 160 100','aria-hidden':'true',focusable:'false',class:'sak-ostrich-svg sak-titanic-ship-svg'});
+    const defs=make('defs');
+    const hull=make('linearGradient',{id:'sakShipHullGradient',x1:'0',y1:'0',x2:'0',y2:'1'});
+    hull.append(
+      make('stop',{offset:'0','stop-color':'#263c50'}),
+      make('stop',{offset:'.55','stop-color':'#0b1b2b'}),
+      make('stop',{offset:'1','stop-color':'#030b13'})
+    );
+    const ivory=make('linearGradient',{id:'sakShipIvoryGradient',x1:'0',y1:'0',x2:'0',y2:'1'});
+    ivory.append(
+      make('stop',{offset:'0','stop-color':'#fffef0'}),
+      make('stop',{offset:'.58','stop-color':'#e9e0c5'}),
+      make('stop',{offset:'1','stop-color':'#b7a77f'})
+    );
+    const gold=make('linearGradient',{id:'sakShipGoldGradient',x1:'0',y1:'0',x2:'1',y2:'1'});
+    gold.append(
+      make('stop',{offset:'0','stop-color':'#fff5b5'}),
+      make('stop',{offset:'.48','stop-color':'#e7bd55'}),
+      make('stop',{offset:'1','stop-color':'#9a6822'})
+    );
+    defs.append(hull,ivory,gold);
+    svg.appendChild(defs);
+
+    const liner=make('g',{class:'sak-titanic-ship'});
+    liner.append(
+      // Long, tapered black-and-gold hull.
+      make('path',{d:'M8 62 L151 62 L139 79 Q133 87 116 88 L43 88 Q23 85 8 62Z',fill:'url(#sakShipHullGradient)',stroke:'#e4bd62','stroke-width':'2.2','stroke-linejoin':'round'}),
+      make('path',{d:'M12 64 Q75 70 148 64',fill:'none',stroke:'#fff0ae','stroke-width':'1.4',opacity:'.9'}),
+      // Main white superstructure and promenade decks.
+      make('path',{d:'M20 58 L30 43 L123 43 L139 60Z',fill:'url(#sakShipIvoryGradient)',stroke:'#d7b45e','stroke-width':'1.5','stroke-linejoin':'round'}),
+      make('path',{d:'M31 43 L39 34 L116 34 L126 43Z',fill:'#f8f1dc',stroke:'#b88b3e','stroke-width':'1.2'}),
+      make('path',{d:'M43 34 L49 26 L107 26 L116 34Z',fill:'#fff8e5',stroke:'#c49a4d','stroke-width':'1.1'}),
+      make('path',{d:'M112 26 L122 19 L132 26 L132 43 L116 43Z',fill:'url(#sakShipIvoryGradient)',stroke:'#c49a4d','stroke-width':'1.1'}),
+      // Four classic ocean-liner funnels with dark caps and warm ochre bands.
+      ...[37,59,81,103].flatMap((x,i)=>[
+        make('rect',{x:String(x),y:String(i===3?12:14),width:'10',height:String(i===3?17:20),rx:'1.6',fill:'#c78b43',stroke:'#f5d68a','stroke-width':'1'}),
+        make('rect',{x:String(x-1),y:String(i===3?11:13),width:'12',height:'4',rx:'1',fill:'#172536',stroke:'#d8b15a','stroke-width':'.8'}),
+        make('path',{d:`M${x+1} ${i===3?19:21} L${x+9} ${i===3?19:21}`,stroke:'#f5e0a1','stroke-width':'1',opacity:'.85'})
+      ]),
+      // Fine deck rails and mast.
+      make('path',{d:'M25 41 L122 41 M35 32 L113 32 M49 25 L108 25',fill:'none',stroke:'#8c713f','stroke-width':'1'}),
+      make('path',{d:'M25 41 L25 35 M44 32 L44 27 M110 32 L110 27 M130 43 L130 35',fill:'none',stroke:'#a98a4d','stroke-width':'1'}),
+      make('path',{d:'M22 43 L22 22 M22 22 L31 27 M22 28 L16 33',fill:'none',stroke:'#d9b96b','stroke-width':'1.3','stroke-linecap':'round'}),
+      // Rows of dark portholes and lit cabin windows.
+      ...Array.from({length:13},(_,i)=>make('circle',{cx:String(29+i*8.1),cy:'75',r:'1.55',fill:i%3===0?'#ffe9a0':'#b8c7cb',stroke:'#e5c16b','stroke-width':'.35'})),
+      ...[36,48,60,72,84,96,108,120].map(x=>make('rect',{x:String(x),y:'49',width:'5',height:'4',rx:'.7',fill:'#253b4a',stroke:'#b99a59','stroke-width':'.5'})),
+      // Gold wake and two restrained sea lines under the hull.
+      make('path',{d:'M10 91 Q34 87 57 91 T105 91 T151 91',fill:'none',stroke:'#e5c16b','stroke-width':'1.8','stroke-linecap':'round',opacity:'.95'}),
+      make('path',{d:'M24 96 Q48 93 70 96 T119 96 T145 96',fill:'none',stroke:'#8ed8d2','stroke-width':'1.2','stroke-linecap':'round',opacity:'.75'})
+    );
+    svg.appendChild(liner);
+    return svg;
+  }
+
   const gid='sakOstrichGold_'+k;
   const svg=make('svg',{viewBox:'0 0 100 120','aria-hidden':'true',focusable:'false',class:'sak-ostrich-svg'});
   const defs=make('defs');
@@ -486,6 +657,22 @@ function deriveLabel(el,key){
   return en?'Icon':'أيقونة';
 }
 
+function titanicShipSVG(){
+  return '<svg class="sak-titanic-liner" viewBox="0 0 180 110" role="img" aria-label="Titanic style ocean liner" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="sakTitanicHull" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#43596b"/><stop offset=".55" stop-color="#142638"/><stop offset="1" stop-color="#050b12"/></linearGradient><linearGradient id="sakTitanicDeck" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffdf0"/><stop offset="1" stop-color="#c8b58c"/></linearGradient><linearGradient id="sakTitanicGold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0a8"/><stop offset=".5" stop-color="#c99b42"/><stop offset="1" stop-color="#fff0a8"/></linearGradient></defs><g stroke-linejoin="round"><path d="M7 65H173L154 88Q145 97 121 99H48Q20 94 7 65Z" fill="url(#sakTitanicHull)" stroke="url(#sakTitanicGold)" stroke-width="2.7"/><path d="M14 68Q87 76 166 68" fill="none" stroke="#f7e4ad" stroke-width="1.7"/><path d="M23 62L37 43H143L159 65Z" fill="url(#sakTitanicDeck)" stroke="#c69c51" stroke-width="1.6"/><path d="M39 43L49 33H133L144 43Z" fill="#fff9e9" stroke="#c69c51" stroke-width="1.4"/><path d="M53 33L62 25H119L130 33Z" fill="#fffdf3" stroke="#c69c51" stroke-width="1.2"/><path d="M67 25L73 19H111L119 25Z" fill="#f7edcf" stroke="#b58b46"/><g fill="#b86e32" stroke="url(#sakTitanicGold)" stroke-width="1.5"><path d="M51 27V9H65V27Z"/><path d="M75 25V6H89V25Z"/><path d="M99 25V6H113V25Z"/><path d="M123 27V9H137V27Z"/></g><g fill="#152536"><path d="M49 8H67V13H49Z"/><path d="M73 5H91V10H73Z"/><path d="M97 5H115V10H97Z"/><path d="M121 8H139V13H121Z"/></g><path d="M19 61H154M34 44H146" stroke="#9e7b42" stroke-width="1"/><g fill="#f5dfa4" stroke="#a67d3c" stroke-width=".5">'+Array.from({length:16},(_,i)=>'<circle cx="'+(29+i*8)+'" cy="81" r="1.7"/>').join('')+'</g><path d="M10 101Q42 95 73 101T136 101T173 101" fill="none" stroke="#e8c875" stroke-width="2" stroke-linecap="round"/><path d="M27 107Q59 102 91 107T153 107" fill="none" stroke="#8edbd3" stroke-width="1.4" stroke-linecap="round"/></g></svg>';
+}
+
+function ensureTitanicShipLauncher(){
+  /* Retire duplicate standalone ship launchers; the ship action now lives
+     beside the Facebook videos inside the existing shared gull icon. */
+  document.querySelectorAll('#sakTitanicShipLauncher,#shipIcon_new,[data-sakaker-dock-key="ship"]').forEach(el=>{
+    if(!el.closest('.sak-gull-hub'))el.remove();
+  });
+  document.querySelectorAll('#sakakerAllIconsDock [data-sakaker-util="ship"]').forEach(slot=>{
+    if(!slot.querySelector(':scope > *'))slot.remove();
+  });
+  return null;
+}
+
 function decorateAsOstrich(el,key){
   if(!el)return;
   const stableKey=safeKey(key||el.id||el.dataset.sakakerDockKey||'icon');
@@ -498,7 +685,21 @@ function decorateAsOstrich(el,key){
     art.className='sak-ostrich-art';
     el.prepend(art);
   }
-  art.replaceChildren(ostrichSVG(stableKey));
+  if(stableKey==='castleStories'){
+    // Always show the approved Castle Stories image, never the generic gull SVG.
+    const img=document.createElement('img');
+    img.src='https://raw.githubusercontent.com/sakakera-a11y/sakaker/refs/heads/main/file_000000007f288208bce7556015d427f9.png';
+    img.alt='حكايات القلعة';
+    img.loading='eager';
+    img.decoding='async';
+    img.style.cssText='display:block;width:100%;height:100%;object-fit:contain;border-radius:50%;';
+    art.replaceChildren(img);
+  }else if(stableKey==='ship'){
+    art.innerHTML=titanicShipSVG();
+  }else if(stableKey==='castleTour'){
+    // The launcher owns the yellow gull illustration; keep it intact.
+    if(!art.querySelector('svg'))art.replaceChildren(ostrichSVG(stableKey));
+  }else art.replaceChildren(ostrichSVG(stableKey));
   art.dataset.key=stableKey;
 
   let name=el.querySelector(':scope > .sak-ostrich-name');
@@ -507,7 +708,7 @@ function decorateAsOstrich(el,key){
     name.className='sak-ostrich-name';
     el.appendChild(name);
   }
-  name.textContent=deriveLabel(el,key);
+  name.textContent=stableKey==='castleTour'?'':deriveLabel(el,key);
 }
 
 function ensureUtilityDock(dock){
@@ -532,9 +733,67 @@ function ensureSlot(utility,key){
   return slot;
 }
 
+function openSakPopup(popup){
+  if(!popup)return;
+  popup.hidden=false;
+  popup.removeAttribute('aria-hidden');
+  popup.classList.add('active','open','show');
+  popup.style.setProperty('display','flex','important');
+  popup.style.setProperty('visibility','visible','important');
+  popup.style.setProperty('opacity','1','important');
+  popup.style.setProperty('pointer-events','auto','important');
+}
+function ensureSeagullHub(utility){
+  if(!utility)return;
+  let hub=utility.querySelector(':scope > .sak-gull-hub');
+  if(!hub){
+    hub=document.createElement('div');
+    hub.className='sak-gull-hub';
+    hub.setAttribute('role','group');
+    hub.setAttribute('aria-label','فيسبوك والسفينة');
+    const bird=document.createElement('span');
+    bird.className='sak-gull-hub-art';
+    bird.innerHTML=ostrichSVG('facebook').outerHTML;
+    const actions=document.createElement('div');
+    actions.className='sak-gull-hub-actions';
+    const facebook=document.createElement('button');
+    facebook.type='button';facebook.className='sak-gull-action sak-gull-facebook';
+    facebook.textContent='Facebook';facebook.setAttribute('aria-label','عرض مقاطع الفيديو');
+    facebook.addEventListener('click',e=>{
+      e.preventDefault();e.stopPropagation();
+      const popup=document.getElementById('facebookVideoPopup');
+      if(popup){openSakPopup(popup);watchFacebookEmbeds();installFacebookEmbeds();}
+    });
+    const ship=document.createElement('button');
+    ship.type='button';ship.className='sak-gull-action sak-gull-ship';
+    ship.textContent='السفينة';ship.setAttribute('aria-label','فتح نافذة السفينة');
+    ship.addEventListener('click',e=>{
+      e.preventDefault();e.stopPropagation();
+      openSakPopup(document.getElementById('shipPopup_new'));
+    });
+    actions.append(facebook,ship);
+    hub.append(bird,actions);
+    utility.appendChild(hub);
+  }
+}
 function rebuildIconAppearance(){
-  const dock=document.getElementById('sakakerAllIconsDock');
+  const docks=[...document.querySelectorAll('#sakakerAllIconsDock')];
+  const dock=docks[0]||null;
   if(!dock)return;
+
+  /* If a legacy script produced a second dock, collapse it into the primary
+     dock without duplicating entries that already exist. */
+  docks.slice(1).forEach(extra=>{
+    [...extra.children].forEach(child=>{
+      const id=child.id;
+      const key=child.dataset?.sakakerDockKey;
+      const duplicate=(id&&dock.querySelector('#'+CSS.escape(id)))||
+        (key&&dock.querySelector('[data-sakaker-dock-key="'+key+'"]'));
+      if(duplicate){child.remove();return;}
+      dock.appendChild(child);
+    });
+    extra.remove();
+  });
 
   const cards=[...document.querySelectorAll('.cards')].find(el=>!el.closest(EXCLUDED)&&el.querySelector('.icon-card'));
   if(cards){
@@ -550,6 +809,8 @@ function rebuildIconAppearance(){
     if(item.parentElement!==slot)slot.appendChild(item);
     decorateAsOstrich(item,info.key);
   });
+
+  ensureSeagullHub(utility);
 
   utility.querySelectorAll('.sakaker-utility-slot').forEach(slot=>{
     if(!slot.firstElementChild)slot.remove();
@@ -569,20 +830,59 @@ function loadVisitorCounterModule(){
   visitorCounterModuleRequested=true;
   const script=document.createElement('script');
   script.type='module';
-  script.src='/assets/visitor-counter.js?v=20261007-visitor1';
+  script.src='/assets/visitor-counter.js?v=20261014-d1-v2';
   script.onerror=()=>{visitorCounterModuleRequested=false;};
   document.head.appendChild(script);
 }
 
+
+
+function ensureCastleStoriesLauncher(){
+  if(document.getElementById('sakCastleStoriesLauncherScript'))return;
+  const script=document.createElement('script');
+  script.id='sakCastleStoriesLauncherScript';
+  script.src='/assets/castle-stories-launcher.js?v=20261030-2';
+  script.async=true;
+  document.head.appendChild(script);
+}
+
+function ensureCastleTourLauncher(){
+  // A dedicated independent launcher is required: the original horizontal
+  // dock clips/scrolls buttons out of view on many phones.
+  if(document.getElementById('sakCastleTourLauncherScript'))return;
+  const script=document.createElement('script');
+  script.id='sakCastleTourLauncherScript';
+  script.src='/assets/castle-tour-launcher.js?v=20261030-loading1';
+  script.async=true;
+  document.head.appendChild(script);
+}
+
+let sitePaymentClockRequested=false;
+function loadPaymentClock(){
+  if(sitePaymentClockRequested||document.getElementById('sakPaymentClockScript'))return;
+  sitePaymentClockRequested=true;
+  const script=document.createElement('script');
+  script.id='sakPaymentClockScript';
+  script.src='/assets/payment-clock.js?v=20261011-bottomreadable3';
+  script.async=true;
+  script.onerror=()=>{sitePaymentClockRequested=false;script.remove()};
+  document.head.appendChild(script);
+}
+
 function settle(){
-  loadVisitorCounterModule();
   installSiteBackgroundStyle();
 
-  /* Keep the login screen light: no Facebook scanning, icon rebuilding or
-     background-video creation until the authenticated page is visible. */
+  /* Keep login lightweight: do not start visitor tracking or rebuild launchers
+     until the authenticated page is visible. */
   if(isLocked())return;
 
-  installFacebookEmbeds();
+  ensureTitanicShipLauncher();
+  hideFacebookLaunchers();
+  loadVisitorCounterModule();
+  watchFacebookEmbeds();
+  loadPaymentClock();
+  ensureCastleTourLauncher();
+  ensureCastleStoriesLauncher();
   ensureSiteBackground();
   rebuildIconAppearance();
   removeOldSeaSoundControl();
@@ -594,18 +894,33 @@ window.addEventListener('load',settle,{once:true});
 [500,1500,3500,7000].forEach(ms=>setTimeout(settle,ms));
 new MutationObserver(()=>{
   if(isLocked())return;
-  installFacebookEmbeds();
+  hideFacebookLaunchers();
+  ensureTitanicShipLauncher();
+  watchFacebookEmbeds();
+  loadPaymentClock();
+  ensureCastleTourLauncher();
   ensureSiteBackground();
   rebuildIconAppearance();
   removeOldSeaSoundControl();
   requestAnimationFrame(placeSiteSoundAboveClock);
 }).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 
+/* Run the expensive icon/layout reconciliation only when the login
+   lock actually changes. Other body class updates must not rebuild every icon. */
+let lastObservedLoginLock=isLocked();
+function handleLoginLockChange(){
+  const locked=isLocked();
+  if(locked===lastObservedLoginLock)return;
+  lastObservedLoginLock=locked;
+  syncSiteBackgroundLock();
+}
+
 if(document.body){
-  new MutationObserver(syncSiteBackgroundLock).observe(document.body,{attributes:true,attributeFilter:['class']});
+  new MutationObserver(handleLoginLockChange).observe(document.body,{attributes:true,attributeFilter:['class']});
 }else{
   document.addEventListener('DOMContentLoaded',()=>{
-    new MutationObserver(syncSiteBackgroundLock).observe(document.body,{attributes:true,attributeFilter:['class']});
+    lastObservedLoginLock=isLocked();
+    new MutationObserver(handleLoginLockChange).observe(document.body,{attributes:true,attributeFilter:['class']});
   },{once:true});
 }
 

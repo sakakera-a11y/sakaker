@@ -1,0 +1,10 @@
+/assets/*
+  Cache-Control: no-cache, max-age=0, must-revalidate
+
+/ebooks/*.pdf
+  Content-Type: application/pdf
+  Content-Disposition: inline
+
+/ebooks/stories/*.pdf
+  Content-Type: application/pdf
+  Content-Disposition: inline

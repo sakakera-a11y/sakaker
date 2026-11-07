@@ -360,3 +360,61 @@ html body #sakEntertainmentStation .sak-ent-item{border:1px solid rgba(255,177,2
 html body #sakEntertainmentStation .sak-ent-item:hover,html body #sakEntertainmentStation .sak-ent-item:focus-visible{border-color:#ffd3ed!important;box-shadow:0 0 22px #ff60c45e!important;outline-color:#ffe1f4!important}
 html body #sakEntertainmentStation #sakEntertainmentClose{border-color:#ffd1eb!important;background:linear-gradient(140deg,#98386f,#582968)!important;box-shadow:0 0 14px #ff61c344!important}
 html body #sakPongSharePanel{--sak-window-rgb:205,112,255}
+
+
+/* Facebook popup: present all four reels as a balanced, responsive gallery. */
+html body #facebookVideoPopup .fbVideoBox{
+  width:min(880px,100%)!important;
+  max-width:100%!important;
+  padding:clamp(14px,2.4vw,24px)!important;
+}
+html body #facebookVideoPopup .fbVideoFrame{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  justify-items:center!important;
+  align-items:start!important;
+  gap:18px!important;
+  width:100%!important;
+  max-width:100%!important;
+  margin:0 auto!important;
+  padding:8px!important;
+  overflow:visible!important;
+}
+html body #facebookVideoPopup .fbVideoFrame iframe{
+  display:block!important;
+  width:min(100%,267px)!important;
+  max-width:267px!important;
+  min-width:0!important;
+  height:591px!important;
+  min-height:591px!important;
+  margin:0 auto!important;
+  border:0!important;
+  border-radius:16px!important;
+  background:#080b10!important;
+  box-shadow:0 10px 28px rgba(0,0,0,.38),0 0 18px rgba(210,119,255,.14)!important;
+}
+html[lang="ar"] body #facebookVideoPopup .fbVideoFrame:before,
+html[lang="en"] body #facebookVideoPopup .fbVideoFrame:before{
+  grid-column:1/-1!important;
+  justify-self:center!important;
+  color:#fff!important;
+  font:800 clamp(16px,2.5vw,21px)/1.4 Tahoma,Arial,sans-serif!important;
+  text-align:center!important;
+  letter-spacing:.02em!important;
+  text-shadow:0 0 16px rgba(210,119,255,.55)!important;
+}
+html[lang="ar"] body #facebookVideoPopup .fbVideoFrame:before{content:"مقاطع فيسبوك"}
+html[lang="en"] body #facebookVideoPopup .fbVideoFrame:before{content:"Facebook Reels"}
+@media(max-width:700px){
+  html body #facebookVideoPopup .fbVideoBox{padding:12px!important}
+  html body #facebookVideoPopup .fbVideoFrame{
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:14px!important;
+    padding:4px!important;
+  }
+  html body #facebookVideoPopup .fbVideoFrame iframe{
+    width:min(267px,100%)!important;
+    height:591px!important;
+    min-height:591px!important;
+  }
+}

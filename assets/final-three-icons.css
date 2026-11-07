@@ -16,6 +16,80 @@ html,body{
   overflow-x:hidden;
 }
 
+/* Hide obsolete standalone ship/payment badge launchers; the Titanic liner now lives in the shared dock. */
+html body #shipIcon_new,
+html body #sakYachtPaymentLauncher,
+html body #sakakerAllIconsDock .sakaker-utility-slot[data-sakaker-util="ship"] > #shipIcon_new{
+  display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
+}
+
+/* Transparent Titanic-style liner: no circle, badge, tile or background. */
+html body #sakakerAllIconsDock #sakTitanicShipLauncher{
+  display:block!important;position:relative!important;
+  border:0!important;border-radius:0!important;outline:0!important;
+  background:transparent!important;background-image:none!important;
+  box-shadow:none!important;backdrop-filter:none!important;
+  overflow:visible!important;cursor:pointer!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+html body #sakakerAllIconsDock #sakTitanicShipLauncher .sak-ostrich-art{
+  width:calc(var(--sak-ostrich-art) * 1.18)!important;
+  max-width:calc(var(--sak-ostrich-cell) + 2px)!important;
+  height:calc(var(--sak-ostrich-art) * .78)!important;
+  min-height:calc(var(--sak-ostrich-art) * .78)!important;
+  max-height:calc(var(--sak-ostrich-art) * .78)!important;
+  top:7px!important;
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.8)) drop-shadow(0 0 5px rgba(255,213,105,.65))!important;
+}
+html body #sakakerAllIconsDock #sakTitanicShipLauncher .sak-titanic-liner{
+  display:block!important;width:100%!important;height:100%!important;
+  min-width:100%!important;min-height:100%!important;max-width:100%!important;max-height:100%!important;
+  overflow:visible!important;background:transparent!important;pointer-events:none!important;
+}
+html body #sakakerAllIconsDock #sakTitanicShipLauncher .sak-ostrich-name{
+  color:#ffe58a!important;-webkit-text-fill-color:#ffe58a!important;
+  text-shadow:0 1px 3px #000,0 0 6px #000!important;
+}
+/* Facebook launcher: hide it everywhere, not only when nested in the utility dock. */
+html body #facebookVideoIcon,
+html body .sakaker-utility-slot[data-sakaker-util="facebook"]{
+  display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
+  width:0!important;min-width:0!important;max-width:0!important;height:0!important;min-height:0!important;max-height:0!important;
+  margin:0!important;padding:0!important;overflow:hidden!important;flex:0 0 0!important;
+}
+
+/* Portrait phones: keep the forum trigger compact and inside its dock cell. */
+@media(max-width:600px) and (orientation:portrait){
+  html body #sakakerAllIconsDock #sakCastleForumIcon{
+    box-sizing:border-box!important;flex:0 0 50px!important;
+    width:50px!important;min-width:50px!important;max-width:50px!important;
+    height:62px!important;min-height:62px!important;max-height:62px!important;
+    margin:0!important;padding:0!important;align-self:flex-end!important;
+  }
+  html body #sakakerAllIconsDock #sakCastleForumIcon svg{
+    width:44px!important;height:44px!important;max-width:44px!important;max-height:44px!important;
+  }
+}
+/* Facebook launcher and standalone ship duplicates are hidden everywhere. */
+html body #sakakerAllIconsDock #facebookVideoIcon,
+html body #sakakerAllIconsDock [data-sakaker-util="facebook"]{
+  display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
+  width:0!important;min-width:0!important;max-width:0!important;height:0!important;min-height:0!important;max-height:0!important;
+  margin:0!important;padding:0!important;overflow:hidden!important;flex:0 0 0!important;
+}
+
+/* The forum launcher uses the same responsive footprint as the other dock icons. */
+html body #sakakerAllIconsDock #sakCastleForumIcon{
+  box-sizing:border-box!important;flex:0 0 var(--sak-ostrich-cell)!important;
+  width:var(--sak-ostrich-cell)!important;min-width:var(--sak-ostrich-cell)!important;max-width:var(--sak-ostrich-cell)!important;
+  height:var(--sak-ostrich-height)!important;min-height:var(--sak-ostrich-height)!important;max-height:var(--sak-ostrich-height)!important;
+  margin:0!important;padding:0!important;overflow:visible!important;background:transparent!important;border:0!important;
+}
+html body #sakakerAllIconsDock #sakCastleForumIcon svg{
+  width:min(100%,var(--sak-ostrich-art))!important;height:min(100%,var(--sak-ostrich-art))!important;
+  max-width:100%!important;max-height:100%!important;object-fit:contain!important;
+}
+
 /* One placement engine only. No visible container and no wrapping. */
 html body #sakakerAllIconsDock#sakakerAllIconsDock{
   position:fixed!important;
@@ -226,14 +300,18 @@ html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-utility-slot > .sak-
   margin:0!important;
 }
 
-/* One common hide transition for any existing cycle system. Nothing is
-   forced visible when the class is absent. */
-html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon.sak-cycle-hidden,
-html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-cycle-hidden .sak-ostrich-icon{
-  opacity:0!important;
-  visibility:hidden!important;
-  pointer-events:none!important;
-  transition:opacity 240ms ease,visibility 0s linear 240ms!important;
+/* Every visible icon uses the same synchronized disappearance cycle. */
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon{
+  animation:sakUnifiedIconVisibility 7s ease-in-out infinite!important;
+}
+@keyframes sakUnifiedIconVisibility{
+  0%,39%,61%,100%{opacity:1;visibility:visible}
+  44%,56%{opacity:0;visibility:hidden}
+}
+@media(prefers-reduced-motion:reduce){
+  html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon{
+    animation:none!important;opacity:1!important;visibility:visible!important
+  }
 }
 
 html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon:hover .sak-ostrich-art,
@@ -328,6 +406,139 @@ html body.locked #sakGlobalPayment{
 }
 
 @media(prefers-reduced-motion:reduce){
+  html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-art{
+    animation:none!important;
+  }
+}
+
+
+/* Castle Stories gets a modestly larger emblem and a little extra breathing
+   room. The dock remains horizontally scrollable on narrow screens. */
+html body #sakakerAllIconsDock#sakakerAllIconsDock
+  [data-sakaker-util="castleStories"]{
+  flex:0 0 68px!important;
+  width:68px!important;
+  min-width:68px!important;
+  max-width:68px!important;
+}
+html body #sakakerAllIconsDock#sakakerAllIconsDock
+  [data-sakaker-util="castleStories"] .sak-ostrich-art{
+  width:min(calc(var(--sak-ostrich-art) * 1.1),60px)!important;
+  min-width:min(calc(var(--sak-ostrich-art) * 1.1),60px)!important;
+  max-width:min(calc(var(--sak-ostrich-art) * 1.1),60px)!important;
+}
+@media(max-width:900px){
+  :root{--sak-ostrich-gap:9px}
+}
+@media(max-width:600px){
+  :root{--sak-ostrich-gap:8px}
+  html body #sakakerAllIconsDock#sakakerAllIconsDock
+    [data-sakaker-util="castleStories"]{
+    flex-basis:64px!important;
+    width:64px!important;
+    min-width:64px!important;
+    max-width:64px!important;
+  }
+}
+@media(max-width:370px){
+  :root{--sak-ostrich-gap:7px}
+  html body #sakakerAllIconsDock#sakakerAllIconsDock
+    [data-sakaker-util="castleStories"]{
+    flex-basis:60px!important;
+    width:60px!important;
+    min-width:60px!important;
+    max-width:60px!important;
+  }
+}
+/* Last-resort global guard for launchers re-created outside the shared dock. */
+html body :is(#facebookVideoIcon,.facebookVideoIcon,[data-sakaker-util="facebook"],[data-sakaker-dock-key="facebook"],button[aria-label*="Facebook" i],a[aria-label*="Facebook" i],button[title*="Facebook" i],a[title*="Facebook" i],button[aria-label*="فيس بوك"],a[aria-label*="فيس بوك"],button[title*="فيس بوك"],a[title*="فيس بوك"]):not(#facebookVideoPopup *){
+  display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
+}
+html body #sakTitanicShipLauncher,
+html body #sakakerAllIconsDock [data-sakaker-util="ship"],
+html body #sakakerAllIconsDock [data-sakaker-dock-key="ship"],
+html body #shipIcon_new{
+  display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
+  width:0!important;min-width:0!important;max-width:0!important;height:0!important;min-height:0!important;max-height:0!important;
+  margin:0!important;padding:0!important;overflow:hidden!important;flex:0 0 0!important;
+}
+
+
+/* One existing shared gull launcher with two independent actions. */
+html body #sakakerAllIconsDock .sak-gull-hub{
+  position:relative!important;display:flex!important;flex:0 0 84px!important;
+  width:84px!important;min-width:84px!important;max-width:84px!important;
+  min-height:86px!important;align-items:center!important;justify-content:flex-start!important;
+  flex-direction:column!important;gap:2px!important;margin:0!important;padding:0!important;
+  border:0!important;background:transparent!important;overflow:visible!important;
+}
+html body #sakakerAllIconsDock .sak-gull-hub-art{display:block!important;width:44px!important;height:40px!important;filter:drop-shadow(0 0 5px #ffe27a)!important}
+html body #sakakerAllIconsDock .sak-gull-hub-art svg{display:block!important;width:100%!important;height:100%!important}
+html body #sakakerAllIconsDock .sak-gull-hub-actions{display:flex!important;gap:3px!important;width:100%!important;justify-content:center!important;align-items:center!important}
+html body #sakakerAllIconsDock .sak-gull-action{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  flex:1 1 0!important;min-width:0!important;min-height:26px!important;max-width:100%!important;
+  margin:0!important;padding:3px 4px!important;border-radius:8px!important;border:1px solid #fff9!important;
+  font:800 9px/1.1 Tajawal,Tahoma,Arial,sans-serif!important;white-space:nowrap!important;
+  cursor:pointer!important;touch-action:manipulation!important;pointer-events:auto!important;
+  text-shadow:0 1px 2px #000!important;box-shadow:0 0 8px #ffffff25!important;
+}
+html body #sakakerAllIconsDock .sak-gull-action.sak-gull-facebook{
+  color:#fff!important;background:linear-gradient(135deg,#7c3aed,#4c1d95)!important;
+  border-color:#d8b4fe!important;box-shadow:0 0 10px #8b5cf6a0!important;
+}
+html body #sakakerAllIconsDock .sak-gull-action.sak-gull-ship{
+  color:#042b32!important;background:linear-gradient(135deg,#67f5e5,#13b8bd)!important;
+  border-color:#b8fff7!important;box-shadow:0 0 10px #2dd4bf99!important;
+}
+html body #sakakerAllIconsDock .sak-gull-action:focus-visible{outline:2px solid #fff!important;outline-offset:2px!important}
+@media(max-width:600px){
+ html body #sakakerAllIconsDock .sak-gull-hub{flex-basis:80px!important;width:80px!important;min-width:80px!important;max-width:80px!important;min-height:78px!important}
+ html body #sakakerAllIconsDock .sak-gull-hub-art{width:40px!important;height:35px!important}
+ html body #sakakerAllIconsDock .sak-gull-action{font-size:8px!important;min-height:25px!important;padding:3px 2px!important}
+}
+
+
+/* Professional icon finish — no frames, circles, tiles, or position changes.
+   Keep the existing dock geometry and each launcher's click/visibility logic. */
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon,
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sakaker-utility-slot,
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-gull-hub{
+  border:0!important;
+  outline:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon{
+  animation:none!important;
+  opacity:1!important;
+  visibility:visible!important;
+}
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-art{
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.8))
+         drop-shadow(0 0 3px rgba(218,190,112,.32))!important;
+  animation:none!important;
+}
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-name{
+  color:#f4ead0!important;
+  -webkit-text-fill-color:#f4ead0!important;
+  font:700 clamp(7px,.68vw,9px)/1.2 Tajawal,Tahoma,Arial,sans-serif!important;
+  letter-spacing:.05px!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.95)!important;
+}
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-gull-hub-art{
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.8))!important;
+}
+html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-gull-action{
+  border-radius:5px!important;
+  box-shadow:none!important;
+}
+@media(prefers-reduced-motion:reduce){
+  html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-icon,
   html body #sakakerAllIconsDock#sakakerAllIconsDock .sak-ostrich-art{
     animation:none!important;
   }

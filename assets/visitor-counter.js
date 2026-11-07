@@ -1,346 +1,107 @@
-import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-import {
-  browserLocalPersistence,
-  inMemoryPersistence,
-  getAuth,
-  setPersistence,
-  signInAnonymously
-} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
-import {
-  doc,
-  getFirestore,
-  onSnapshot,
-  runTransaction,
-  serverTimestamp as firestoreServerTimestamp
-} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
-import {
-  getDatabase,
-  onDisconnect,
-  onValue,
-  ref,
-  serverTimestamp as rtdbServerTimestamp,
-  set
-} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
-
 (() => {
   "use strict";
-
-  if (window.__sakakerVisitorCounterV2Started) return;
-  window.__sakakerVisitorCounterV2Started = true;
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCZw747d_KJa85KTDSOVI8EeX_J9Grpqrk",
-    authDomain: "sakaker-9247f.firebaseapp.com",
-    projectId: "sakaker-9247f",
-    databaseURL: "https://sakaker-9247f-default-rtdb.asia-southeast1.firebasedatabase.app",
-    storageBucket: "sakaker-9247f.firebasestorage.app",
-    messagingSenderId: "689588937441",
-    appId: "1:689588937441:web:4d17a1d02e72189bbfcda0"
-  };
-
-  const HISTORICAL_UNIQUE_VISITORS = 1410;
-  const ACTIVE_WINDOW_MS = 60_000;
-  const HEARTBEAT_MS = 20_000;
-
-  const uniqueApp = getApps().find(item => item.name === "sakakerVisitorCounter")
-    || initializeApp(firebaseConfig, "sakakerVisitorCounter");
-  const sessionApp = getApps().find(item => item.name === "sakakerPresenceCounter")
-    || initializeApp(firebaseConfig, "sakakerPresenceCounter");
-  const uniqueAuth = getAuth(uniqueApp);
-  const sessionAuth = getAuth(sessionApp);
-  const db = getFirestore(uniqueApp);
-  const rtdb = getDatabase(sessionApp);
-
-  const $ = id => document.getElementById(id);
-  const onlineEl = $("svcOnline");
-  const uniqueTotalEl = $("svcTotal");
-  const uniqueTodayEl = $("svcToday");
-  if (!onlineEl || !uniqueTotalEl || !uniqueTodayEl) return;
-
-  function ensureCounterUi() {
-    const root = $("sakakerVisitorCounter");
-    if (!root) return;
-    root.setAttribute("aria-label", "إحصاءات زوار موقع سكاكر");
+  if (window.__sakakerD1VisitorCounterStarted) return;
+  window.__sakakerD1VisitorCounterStarted = true;
+  const ROOT_ID = "sakakerVisitorCounter", STYLE_ID = "sakakerVisitorCounterD1Style";
+  const ENDPOINT = "/api/visitor-counter", ACTIVE_REFRESH_MS = 30000;
+  function uuid() {
+    if (typeof crypto !== "undefined" && crypto.randomUUID) return crypto.randomUUID();
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => {
+      const r = Math.random() * 16 | 0;
+      return (c === "x" ? r : (r & 3 | 8)).toString(16);
+    });
   }
-
-  function getSessionFlag(key) {
-    try { return sessionStorage.getItem(key); } catch (_) { return null; }
+  function storedId(storage, key) {
+    try {
+      let value = storage.getItem(key);
+      if (!value || !/^[a-f0-9-]{36}$/i.test(value)) { value = uuid(); storage.setItem(key, value); }
+      return value;
+    } catch (_) { return uuid(); }
   }
-
-  function setSessionFlag(key) {
-    try { sessionStorage.setItem(key, "1"); } catch (_) {}
-  }
-
-  function riyadhDayKey(date = new Date()) {
-    const parts = new Intl.DateTimeFormat("en-GB", {
-      timeZone: "Asia/Riyadh",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit"
-    }).formatToParts(date);
-    const values = Object.fromEntries(parts.map(part => [part.type, part.value]));
-    return `${values.year}-${values.month}-${values.day}`;
-  }
-
-  function configureLabel(valueEl, ar, en) {
-    const label = valueEl?.closest(".svc-item")?.querySelector(".svc-label");
-    if (!label) return;
-    label.dataset.ar = ar;
-    label.dataset.en = en;
-  }
-
-  function addMetric(id, icon, ar, en, titleAr, titleEn) {
-    if ($(id)) return $(id);
-    const root = $("sakakerVisitorCounter");
-    const separator = document.createElement("div");
-    separator.className = "svc-sep";
-    const item = document.createElement("div");
-    item.className = "svc-item";
-    item.innerHTML = `<span class="svc-icon" aria-hidden="true">${icon}</span><span class="svc-label" data-ar="${ar}" data-en="${en}">${ar}</span><strong id="${id}">—</strong>`;
-    const value = item.querySelector("strong");
-    value.title = document.documentElement.lang === "en" ? titleEn : titleAr;
-    value.dataset.titleAr = titleAr;
-    value.dataset.titleEn = titleEn;
-    root.append(separator, item);
-    return value;
-  }
-
-  const sessionTotalEl = addMetric(
-    "svcSessionTotal", "↗️", "جلسات الزيارة منذ التحديث", "Visit sessions since update",
-    "يبدأ هذا الإجمالي من تاريخ تفعيل عداد الجلسات.",
-    "This total starts when session tracking is enabled."
-  );
-  const sessionTodayEl = addMetric(
-    "svcSessionToday", "📈", "جلسات الزيارة اليوم", "Visit sessions today",
-    "عدد جلسات فتح الموقع اليوم.",
-    "Number of site visit sessions today."
-  );
-
-  configureLabel(onlineEl, "المتواجدون الآن", "Online now");
-  configureLabel(uniqueTotalEl, "الزوار الفريدون إجمالًا", "Unique visitors total");
-  configureLabel(uniqueTodayEl, "زوار فريدون اليوم", "Unique visitors today");
-
-  const styleId = "sakakerVisitorCounterV2Style";
-  if (!$(styleId)) {
+  function english() { return (document.documentElement.lang || "").toLowerCase().startsWith("en"); }
+  function hideLegacyEyeCounter() {
+    if (document.getElementById("sakakerLegacyEyeCounterStyle")) return;
     const style = document.createElement("style");
-    style.id = styleId;
-    style.textContent = `
-      html body #sakakerVisitorCounter{left:50%!important;right:auto!important;transform:translateX(-50%)!important;
-        display:flex!important;flex-wrap:wrap!important;justify-content:center!important;gap:6px!important;
-        width:min(920px,calc(100vw - 20px))!important;max-width:calc(100vw - 20px)!important;
-        box-sizing:border-box!important;padding:6px 9px!important}
-      html body #sakakerVisitorCounter .svc-item{flex:1 1 145px!important;min-width:0!important;justify-content:center!important;gap:4px!important}
-      html body #sakakerVisitorCounter .svc-label{white-space:normal!important;text-align:center!important;line-height:1.25!important}
-      @media(max-width:650px){html body #sakakerVisitorCounter{bottom:max(6px,env(safe-area-inset-bottom))!important;gap:3px!important;padding:5px!important}
-        html body #sakakerVisitorCounter .svc-item{flex:1 1 30%!important;font-size:10px!important;gap:3px!important}
-        html body #sakakerVisitorCounter .svc-icon{font-size:11px!important}}
-      @media(max-width:380px){html body #sakakerVisitorCounter .svc-item{flex:1 1 45%!important;font-size:9px!important}}
-    `;
-    document.head.append(style);
+    style.id = "sakakerLegacyEyeCounterStyle";
+    style.textContent = "html body #sakakerRightStats{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}";
+    (document.head || document.documentElement).appendChild(style);
   }
-
-  function updateCounterLanguage() {
-    const isEn = document.documentElement.lang === "en";
-    document.querySelectorAll("#sakakerVisitorCounter .svc-label").forEach(label => {
-      label.textContent = isEn ? label.dataset.en : label.dataset.ar;
-    });
-    [onlineEl, uniqueTotalEl, uniqueTodayEl, sessionTotalEl, sessionTodayEl].forEach(el => {
-      if (!el) return;
-      if (el.dataset.titleAr || el.dataset.titleEn) {
-        el.title = isEn ? (el.dataset.titleEn || "") : (el.dataset.titleAr || "");
-      }
-      if (el === onlineEl && el.dataset.state !== "live") {
-        el.textContent = el.dataset.state === "error" ? (isEn ? "Unavailable" : "غير متاح") : "—";
-        return;
-      }
-      const value = Number(el.dataset.value);
-      el.textContent = Number.isFinite(value) ? value.toLocaleString(isEn ? "en-US" : "ar-SA") : "—";
-    });
-  }
-
-  window.updateVisitorCounterLanguage = updateCounterLanguage;
-
-  function registerCounterMarks(uid, counters) {
-    return runTransaction(db, async transaction => {
-      const snapshots = await Promise.all(counters.map(async counter => {
-        const counterRef = doc(db, "siteStats", counter.id);
-        const markRef = doc(db, "siteStats", counter.id, "visitorMarks", uid);
-        const [counterSnapshot, markSnapshot] = await Promise.all([
-          transaction.get(counterRef),
-          transaction.get(markRef)
-        ]);
-        return { counter, counterRef, markRef, counterSnapshot, markSnapshot };
-      }));
-
-      let changed = false;
-      snapshots.forEach(({ counter, counterRef, markRef, counterSnapshot, markSnapshot }) => {
-        if (markSnapshot.exists()) return;
-        const current = counterSnapshot.exists() ? Number(counterSnapshot.data().count) : 0;
-        if (!Number.isSafeInteger(current) || current < 0) {
-          throw new Error(`Invalid visitor count for ${counter.id}`);
-        }
-        const next = { count: current + 1, updatedAt: firestoreServerTimestamp() };
-        if (counter.date) next.date = counter.date;
-        transaction.set(markRef, { createdAt: firestoreServerTimestamp() });
-        transaction.set(counterRef, next, { merge: true });
-        changed = true;
-      });
-      return changed;
-    });
-  }
-
-  const unsubscribers = [];
-  function watchCounters(dayKey) {
-    while (unsubscribers.length) unsubscribers.pop()();
-    const watch = (id, handler) => {
-      unsubscribers.push(onSnapshot(doc(db, "siteStats", id), handler, error => {
-        console.warn("SAKAKER counter read:", error);
-      }));
-    };
-    watch("visits", snapshot => {
-      const newUnique = snapshot.exists() ? Number(snapshot.data().count || 0) : 0;
-      uniqueTotalEl.dataset.value = String(HISTORICAL_UNIQUE_VISITORS + newUnique);
-      uniqueTotalEl.dataset.titleEn = "Verified Cloudflare historical unique visitors plus Firebase unique visitors";
-      uniqueTotalEl.dataset.titleAr = "زوار فريدون تاريخيون موثقون من Cloudflare مضافًا إليهم زوار Firebase الفريدون";
-      updateCounterLanguage();
-    });
-    watch(`daily_${dayKey}`, snapshot => {
-      uniqueTodayEl.dataset.value = String(snapshot.exists() ? Number(snapshot.data().count || 0) : 0);
-      updateCounterLanguage();
-    });
-    watch("sessionVisits", snapshot => {
-      sessionTotalEl.dataset.value = String(snapshot.exists() ? Number(snapshot.data().count || 0) : 0);
-      updateCounterLanguage();
-    });
-    watch(`dailySessionVisits_${dayKey}`, snapshot => {
-      sessionTodayEl.dataset.value = String(snapshot.exists() ? Number(snapshot.data().count || 0) : 0);
-      updateCounterLanguage();
-    });
-  }
-
-  function startPresence(user) {
-    const presenceRef = ref(rtdb, `onlineUsers/${user.uid}`);
-    const allPresenceRef = ref(rtdb, "onlineUsers");
-    const connectedRef = ref(rtdb, ".info/connected");
-    let heartbeat = 0;
-    let writeFailed = false;
-
-    const writePresence = async () => {
-      await onDisconnect(presenceRef).remove();
-      await set(presenceRef, {
-        uid: user.uid,
-        name: "زائر",
-        status: "available",
-        lastSeen: rtdbServerTimestamp()
-      });
-      writeFailed = false;
-    };
-
-    const connectedUnsub = onValue(connectedRef, snapshot => {
-      const connected = snapshot.val() === true;
-      if (!connected) {
-        if (heartbeat) window.clearInterval(heartbeat);
-        heartbeat = 0;
-        return;
-      }
-      writePresence().catch(error => {
-        writeFailed = true;
-        onlineEl.dataset.state = "error";
-        updateCounterLanguage();
-        console.warn("SAKAKER presence write:", error);
-      });
-      if (!heartbeat) heartbeat = window.setInterval(() => {
-        writePresence().catch(error => console.warn("SAKAKER presence heartbeat:", error));
-      }, HEARTBEAT_MS);
-    }, error => {
-      onlineEl.dataset.state = "error";
-      updateCounterLanguage();
-      console.warn("SAKAKER connection state:", error);
-    });
-
-    const presenceUnsub = onValue(allPresenceRef, snapshot => {
-      const cutoff = Date.now() - ACTIVE_WINDOW_MS;
-      const sessions = new Set();
-      const records = snapshot.val() || {};
-      Object.entries(records).forEach(([key, item]) => {
-        const lastSeen = Number(item?.lastSeen);
-        if (item && item.uid === key && item.status === "available"
-          && Number.isFinite(lastSeen) && lastSeen >= cutoff) {
-          sessions.add(key);
-        }
-      });
-      onlineEl.dataset.state = writeFailed ? "error" : "live";
-      onlineEl.dataset.value = String(sessions.size);
-      onlineEl.title = document.documentElement.lang === "en"
-        ? "Active anonymous or signed-in visitor sessions"
-        : "جلسات الزوار النشطة، سواء زائر أو مستخدم مسجل";
-      updateCounterLanguage();
-    }, error => {
-      onlineEl.dataset.state = "error";
-      updateCounterLanguage();
-      console.warn("SAKAKER presence read:", error);
-    });
-
-    return () => {
-      if (heartbeat) window.clearInterval(heartbeat);
-      connectedUnsub();
-      presenceUnsub();
-    };
-  }
-
-  async function start() {
-    ensureCounterUi();
-    await Promise.all([
-      setPersistence(uniqueAuth, browserLocalPersistence),
-      setPersistence(sessionAuth, inMemoryPersistence)
-    ]);
-    const [uniqueCredential, sessionCredential] = await Promise.all([
-      uniqueAuth.currentUser ? Promise.resolve({ user: uniqueAuth.currentUser }) : signInAnonymously(uniqueAuth),
-      sessionAuth.currentUser ? Promise.resolve({ user: sessionAuth.currentUser }) : signInAnonymously(sessionAuth)
-    ]);
-
-    const uniqueUid = uniqueCredential.user.uid;
-    const sessionUid = sessionCredential.user.uid;
-    let dayKey = riyadhDayKey();
-    watchCounters(dayKey);
-    const stopPresence = startPresence(sessionCredential.user);
-    window.sakakerPresenceStop = stopPresence;
-
-    await registerCounterMarks(uniqueUid, [
-      { id: "visits" },
-      { id: `daily_${dayKey}`, date: dayKey }
-    ]).catch(error => console.warn("SAKAKER unique visitor write:", error));
-
-    const pageSessionKey = `sakakerVisitSessionRegistered:${dayKey}`;
-    if (getSessionFlag(pageSessionKey) !== "1") {
-      await registerCounterMarks(sessionUid, [
-        { id: "sessionVisits" },
-        { id: `dailySessionVisits_${dayKey}`, date: dayKey }
-      ]).then(() => setSessionFlag(pageSessionKey))
-        .catch(error => console.warn("SAKAKER session visit write:", error));
+  function ensureUi() {
+    let root = document.getElementById(ROOT_ID);
+    if (!root) {
+      root = document.createElement("div"); root.id = ROOT_ID;
+      root.setAttribute("role", "status"); root.setAttribute("aria-live", "polite");
+      root.setAttribute("aria-label", "إحصاءات زوار موقع سكاكر");
+      (document.body || document.documentElement).appendChild(root);
     }
-
-    window.setInterval(async () => {
-      try {
-        const nextDay = riyadhDayKey();
-        if (nextDay === dayKey) return;
-        dayKey = nextDay;
-        watchCounters(dayKey);
-        await registerCounterMarks(uniqueUid, [{ id: `daily_${dayKey}`, date: dayKey }]);
-        const nextSessionKey = `sakakerVisitSessionRegistered:${dayKey}`;
-        if (getSessionFlag(nextSessionKey) !== "1") {
-          await registerCounterMarks(sessionUid, [{ id: `dailySessionVisits_${dayKey}`, date: dayKey }]);
-          setSessionFlag(nextSessionKey);
-        }
-      } catch (error) {
-        console.warn("SAKAKER daily visitor rollover:", error);
-      }
-    }, 30_000);
+    const metrics = [
+      ["svcTotal", "👥", "مجموع الزوار الفريدين يومياً", "Summed daily unique visitors"],
+      ["svcToday", "📅", "زوار اليوم (UTC)", "Today's visitors (UTC)"],
+      ["svcOnline", "🟢", "متصل الآن", "Online now"]
+    ];
+    for (const [id, icon, ar, en] of metrics) {
+      if (document.getElementById(id)) continue;
+      const item = document.createElement("div"); item.className = "svc-item";
+      const glyph = document.createElement("span"); glyph.className = "svc-icon";
+      glyph.setAttribute("aria-hidden", "true"); glyph.textContent = icon;
+      const label = document.createElement("span"); label.className = "svc-label";
+      label.dataset.ar = ar; label.dataset.en = en; label.textContent = english() ? en : ar;
+      const value = document.createElement("strong"); value.id = id; value.textContent = "—";
+      if (id === "svcTotal") value.title = english()
+        ? "Sum of daily unique IP counts in Cloudflare history; the same visitor may be counted on different days."
+        : "مجموع عناوين IP الفريدة لكل يوم ضمن تاريخ Cloudflare؛ قد يُحتسب الزائر نفسه في أيام مختلفة.";
+      if (id === "svcToday") value.title = english()
+        ? "Cloudflare daily rollup uses UTC dates." : "إحصاء Cloudflare اليومي يعتمد تاريخ UTC.";
+      item.append(glyph, label, value); root.appendChild(item);
+    }
+    if (!document.getElementById(STYLE_ID)) {
+      const style = document.createElement("style"); style.id = STYLE_ID;
+      style.textContent = `
+        body #${ROOT_ID}{position:fixed!important;left:50%!important;right:auto!important;bottom:max(8px,env(safe-area-inset-bottom))!important;transform:translateX(-50%)!important;z-index:99990!important;display:flex!important;flex-wrap:wrap!important;justify-content:center!important;gap:7px!important;width:min(920px,calc(100vw - 16px))!important;box-sizing:border-box!important;padding:7px!important;border:1px solid rgba(93,245,218,.6)!important;border-radius:16px!important;background:rgba(3,24,30,.9)!important;box-shadow:0 0 16px rgba(0,235,205,.24)!important;color:#f2ffff!important;backdrop-filter:blur(12px)!important;font:600 12px/1.35 Tahoma,Arial,sans-serif!important}
+        body #${ROOT_ID} .svc-item{display:flex!important;align-items:center!important;justify-content:center!important;gap:5px!important;flex:1 1 130px!important;min-width:0!important;padding:4px!important}
+        body #${ROOT_ID} .svc-label{text-align:center!important;white-space:normal!important}
+        body #${ROOT_ID} strong{font-size:1.12em!important;color:#71ffe4!important;font-variant-numeric:tabular-nums!important}
+        body #${ROOT_ID} .svc-online-stable strong{color:#80f7a0!important}
+        @media(max-width:520px){body #${ROOT_ID}{gap:2px!important;padding:4px!important}body #${ROOT_ID} .svc-item{flex:1 1 29%!important;flex-direction:column!important;gap:2px!important;font-size:10px!important}body #${ROOT_ID} strong{font-size:12px!important}}
+      `;
+      document.head.appendChild(style);
+    }
   }
-
-  start().catch(error => {
-    onlineEl.dataset.state = "error";
-    updateCounterLanguage();
-    console.error("[SAKAKER visitor counter]", error);
-  });
+  function updateLabels() {
+    document.querySelectorAll("#" + ROOT_ID + " .svc-label").forEach(label => {
+      label.textContent = english() ? label.dataset.en : label.dataset.ar;
+    });
+  }
+  function formatMetric(value) {
+    return value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value))
+      ? Number(value).toLocaleString(english() ? "en-US" : "ar-SA") : "—";
+  }
+  function display(data) {
+    if (!data || !Number.isFinite(Number(data.online))) return;
+    const total = document.getElementById("svcTotal"), today = document.getElementById("svcToday");
+    const online = document.getElementById("svcOnline");
+    if (total) total.textContent = formatMetric(data.total);
+    if (today) today.textContent = formatMetric(data.today);
+    if (online) online.textContent = formatMetric(data.online);
+    online?.closest(".svc-item")?.classList.add("svc-online-stable");
+  }
+  const sessionId = storedId(sessionStorage, "sakaker_d1_session_id");
+  async function refresh() {
+    try {
+      const response = await fetch(ENDPOINT, {
+        method: "POST", headers: { "Content-Type": "application/json" }, cache: "no-store",
+        body: JSON.stringify({ sessionId })
+      });
+      if (!response.ok) throw new Error("Visitor API returned " + response.status);
+      display(await response.json());
+    } catch (error) { console.warn("Sakaker visitor counter unavailable", error); }
+  }
+  function start() {
+    hideLegacyEyeCounter();
+    ensureUi(); updateLabels(); refresh(); window.setInterval(refresh, ACTIVE_REFRESH_MS);
+    const observer = new MutationObserver(updateLabels);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start, { once: true });
+  else start();
 })();

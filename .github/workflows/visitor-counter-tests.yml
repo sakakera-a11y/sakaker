@@ -1,0 +1,33 @@
+name: Visitor counter tests
+
+on:
+  pull_request:
+    paths:
+      - "functions/api/visitor-counter.js"
+      - "migrations/0001_visitor_counter.sql"
+      - "tests/visitor-counter.test.mjs"
+      - ".github/workflows/visitor-counter-tests.yml"
+  push:
+    branches:
+      - cloudflare-visitor-counter
+    paths:
+      - "functions/api/visitor-counter.js"
+      - "migrations/0001_visitor_counter.sql"
+      - "tests/visitor-counter.test.mjs"
+      - ".github/workflows/visitor-counter-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  visitor-counter-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run mocked D1 endpoint tests
+        run: node --test tests/visitor-counter.test.mjs
