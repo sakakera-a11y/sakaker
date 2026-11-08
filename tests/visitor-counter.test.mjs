@@ -57,7 +57,7 @@ function addDays(day, amount) {
   return utcDay(date);
 }
 
-function mockAnalyticsFetch(calls = []) {
+function mockAnalyticsFetch(calls = [], settings = {}) {
   globalThis.fetch = async (_url, init) => {
     const payload = JSON.parse(init.body);
     calls.push(payload);
@@ -65,7 +65,7 @@ function mockAnalyticsFetch(calls = []) {
       return Response.json({ data: { viewer: { zones: [{ settings: {
         httpRequests1dGroups: {
           enabled: true, maxDuration: 86400, maxPageSize: 100,
-          notOlderThan: 90 * 86400, availableFields: ["uniq_uniques"]
+          notOlderThan: 90 * 86400, availableFields: ["uniq_uniques"], ...settings
         }
       } }] } } });
     }
@@ -79,16 +79,18 @@ function mockAnalyticsFetch(calls = []) {
   return calls;
 }
 
-test("GET returns Cloudflare Analytics totals and D1 online sessions", async () => {
+const analyticsEnv = () => ({ CF_ANALYTICS_API_TOKEN: "test-token", CF_ZONE_ID: "test-zone" });
+
+test("GET returns complete Cloudflare Analytics totals and D1 online sessions", async () => {
   const calls = mockAnalyticsFetch();
-  const db = fakeD1();
   const response = await counter.onRequestGet({
     request: makeRequest(),
-    env: { VISITOR_DB: db, CF_ANALYTICS_API_TOKEN: "test-token", CF_ZONE_ID: "test-zone" }
+    env: { VISITOR_DB: fakeD1(), ...analyticsEnv() }
   });
   assert.equal(response.status, 200);
   const body = await response.json();
   assert.equal(body.analyticsConfigured, true);
+  assert.equal(body.analyticsAvailable, true);
   assert.equal(body.total, 367);
   assert.equal(body.today, 7);
   assert.equal(body.online, 0);
@@ -102,12 +104,25 @@ test("GET returns Cloudflare Analytics totals and D1 online sessions", async () 
   assert.match(calls[1].query, /\$start: Date/);
 });
 
+test("Analytics requests use bounded multi-day chunks when Cloudflare allows them", async () => {
+  const calls = mockAnalyticsFetch([], { maxDuration: 3 * 86400, availableFields: ["uniq.uniques"] });
+  const response = await counter.onRequestGet({
+    request: makeRequest(), env: { VISITOR_DB: fakeD1(), ...analyticsEnv() }
+  });
+  const body = await response.json();
+  assert.equal(body.total, 367);
+  assert.equal(body.daysReturned, 91);
+  assert.equal(calls.length, 32); // one settings request plus 31 daily-data chunks
+  const firstRange = calls[1].variables;
+  assert.equal(addDays(firstRange.start, 2), firstRange.end);
+});
+
 test("POST refreshes a hashed active session and returns Analytics totals", async () => {
   mockAnalyticsFetch();
   const db = fakeD1();
   const response = await counter.onRequestPost({
     request: makeRequest("POST", { sessionId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa" }),
-    env: { VISITOR_DB: db, CF_ANALYTICS_API_TOKEN: "test-token", CF_ZONE_ID: "test-zone" }
+    env: { VISITOR_DB: db, ...analyticsEnv() }
   });
   assert.equal(response.status, 200);
   const body = await response.json();
@@ -119,6 +134,22 @@ test("POST refreshes a hashed active session and returns Analytics totals", asyn
   assert.equal(body.today, 7);
   assert.equal(db.sessions.size, 1);
   assert.equal([...db.sessions.keys()][0].length, 64);
+});
+
+test("Analytics failures leave D1 presence available and do not invent a total", async () => {
+  globalThis.fetch = async () => Response.json({ errors: [{ message: "secret details must not reach clients" }] });
+  const response = await counter.onRequestPost({
+    request: makeRequest("POST", { sessionId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa" }),
+    env: { VISITOR_DB: fakeD1(), ...analyticsEnv() }
+  });
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.equal(body.analyticsConfigured, true);
+  assert.equal(body.analyticsAvailable, false);
+  assert.equal(body.total, null);
+  assert.equal(body.today, null);
+  assert.equal(body.online, 1);
+  assert.equal(JSON.stringify(body).includes("secret details"), false);
 });
 
 test("GET returns a configuration error when D1 is not bound", async () => {
@@ -138,12 +169,12 @@ test("rejects cross-origin requests", async () => {
 
 test("returns unavailable rather than a fabricated Analytics total when credentials are missing", async () => {
   const response = await counter.onRequestGet({
-    request: makeRequest(),
-    env: { VISITOR_DB: fakeD1() }
+    request: makeRequest(), env: { VISITOR_DB: fakeD1() }
   });
   assert.equal(response.status, 200);
   const body = await response.json();
   assert.equal(body.analyticsConfigured, false);
+  assert.equal(body.analyticsAvailable, false);
   assert.equal(body.total, null);
   assert.equal(body.today, null);
 });
