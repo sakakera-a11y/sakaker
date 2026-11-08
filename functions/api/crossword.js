@@ -328,21 +328,65 @@ function stripSourceMetadata(value) {
 }
 
 function responseFor(core, day, today, cached) {
-  // Remove source labels recursively, including metadata left in legacy cached payloads.
-  const publicCore = stripSourceMetadata(core || {});
+  // Never send today's answers to the browser. The answers are released only
+  // when the requested puzzle date is earlier than the current Riyadh date.
+  const available = today > day;
   const payload = {
-    ...publicCore,
-    solutionAvailable: today > day,
-    solutionMessage: today > day
-      ? (core.language === "ar" ? "أصبح حل لغز هذا اليوم السابق متاحًا." : "The solution for this previous day's puzzle is now available.")
-      : (core.language === "ar" ? "سيظهر الحل في اليوم التالي." : "The solution will be available the next day."),
+    date: core.date,
+    language: core.language,
+    across: {
+      clue: core.across.clue,
+      length: Array.from(core.across.answer).length,
+      ...(available ? { answer: core.across.answer } : {})
+    },
+    down: {
+      clue: core.down.clue,
+      length: Array.from(core.down.answer).length,
+      ...(available ? { answer: core.down.answer } : {})
+    },
+    crossing: core.crossing,
+    solutionAvailableOn: core.solutionAvailableOn,
+    solutionAvailable: available,
+    solutionMessage: available
+      ? (core.language === "ar" ? "حل لغز هذا اليوم متاح الآن." : "This puzzle's solution is now available.")
+      : (core.language === "ar" ? "ستجد الحل غدًا." : "Find the solution tomorrow."),
     cache: cached ? "daily-cache" : "generated"
   };
-  return Response.json(payload, {
-    headers: {
-      "Cache-Control": "no-store"
-    }
+  return Response.json(stripSourceMetadata(payload), {
+    headers: { "Cache-Control": "no-store" }
   });
+}
+
+export async function onRequestPost({ request }) {
+  try {
+    const body = await request.json();
+    const lang = body?.lang === "en" ? "en" : "ar";
+    const day = String(body?.day || "");
+    if (!isValidDay(day)) {
+      return Response.json({ error: "invalid_day" }, { status: 400, headers: { "Cache-Control": "no-store" } });
+    }
+    if (day !== riyadhDate()) {
+      return Response.json({ error: "puzzle_closed" }, { status: 409, headers: { "Cache-Control": "no-store" } });
+    }
+    const pair = pickDailyPair(day, lang, lang === "ar" ? AR_WORDS : EN_WORDS);
+    const acrossGuess = normalizeAnswer(body?.across, lang);
+    const downGuess = normalizeAnswer(body?.down, lang);
+    if (acrossGuess.length > MAX_WORD || downGuess.length > MAX_WORD) {
+      return Response.json({ error: "invalid_answer" }, { status: 400, headers: { "Cache-Control": "no-store" } });
+    }
+    const acrossCorrect = acrossGuess === pair.across.answer;
+    const downCorrect = downGuess === pair.down.answer;
+    return Response.json({
+      acrossCorrect,
+      downCorrect,
+      complete: acrossCorrect && downCorrect,
+      message: acrossCorrect && downCorrect
+        ? (lang === "ar" ? "أحسنت! اكتملت الكلمات المتقاطعة." : "Excellent! The crossword is complete.")
+        : (lang === "ar" ? "اقتربت! راجع الكلمات وحاول مرة أخرى." : "Almost there! Review the clues and try again.")
+    }, { headers: { "Cache-Control": "no-store" } });
+  } catch (_) {
+    return Response.json({ error: "invalid_request" }, { status: 400, headers: { "Cache-Control": "no-store" } });
+  }
 }
 
 export async function onRequestGet({ request }) {
