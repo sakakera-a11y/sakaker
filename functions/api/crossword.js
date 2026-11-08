@@ -197,7 +197,7 @@ function stripSourceMetadata(value) {
   if (Array.isArray(value)) return value.map(stripSourceMetadata);
   if (!value || typeof value !== "object") {
     if (typeof value === "string" &&
-        (/^(?:المصدر|source)\\s*[:：]/i.test(value.trim()) ||
+        (/^(?:المصدر|source)\s*[:：]/i.test(value.trim()) ||
          /Salah-Sal|arabic-wordnet-v4|بنك سكاكر العربي التحريري/i.test(value))) return "";
     return value;
   }
