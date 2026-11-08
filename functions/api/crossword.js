@@ -267,6 +267,19 @@ function pickDailyPair(day, lang, words) {
   return pairs[hashText(lang + ":" + day) % pairs.length];
 }
 
+function createPuzzle(day, lang) {
+  const pair = pickDailyPair(day, lang, lang === "ar" ? AR_WORDS : EN_WORDS);
+  return {
+    date: day,
+    language: lang,
+    across: { title: pair.across.title, answer: pair.across.answer, clue: pair.across.clue },
+    down: { title: pair.down.title, answer: pair.down.answer, clue: pair.down.clue },
+    crossing: pair.crossing,
+    solutionAvailableOn: nextDay(day),
+    generatedAt: new Date().toISOString()
+  };
+}
+
 function stripSourceMetadata(value) {
   const blockedKeys = /^(source|sourceurl|sourcename|sourcelabel|attribution|credit|crediturl|provider|reference)$/i;
   if (Array.isArray(value)) return value.map(stripSourceMetadata);
