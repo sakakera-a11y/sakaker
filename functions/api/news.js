@@ -19,30 +19,42 @@ export async function onRequestGet({ request }) {
     if (cached) return cached;
   }
 
-  const attempts = SOURCES.map(async source => {
-    const response = await fetch(source.url, {
-      headers: {
-        "Accept": "application/rss+xml, application/atom+xml, application/xml, text/xml;q=0.9",
-        "User-Agent": "Mozilla/5.0 (compatible; SakakerCastleNews/1.0; +https://sakaker.co/)"
-      },
-      signal: AbortSignal.timeout(9000),
-      redirect: "follow"
-    });
-    if (!response.ok) throw new Error(source.name + " returned HTTP " + response.status);
-    const xml = await response.text();
-    if (!/<(?:rss|feed|rdf:RDF)\b/i.test(xml.slice(0, 4000)) || !/<(?:item|entry)\b/i.test(xml)) {
-      throw new Error(source.name + " returned an invalid RSS document");
+  // Fetch sources independently: one slow or blocked provider must not hide the others.
+  const results = await Promise.all(SOURCES.map(async source => {
+    try {
+      const response = await fetch(source.url, {
+        headers: {
+          "Accept": "application/rss+xml, application/atom+xml, application/xml, text/xml;q=0.9",
+          "User-Agent": "Mozilla/5.0 (compatible; SakakerCastleNews/1.1; +https://sakaker.co/)"
+        },
+        signal: AbortSignal.timeout(15000),
+        redirect: "follow"
+      });
+      if (!response.ok) {
+        return { ok: false, name: source.name, category: source.category, error: "HTTP " + response.status };
+      }
+      const xml = await response.text();
+      const hasFeedRoot = /<(?:[\\w.-]+:)?(?:rss|feed|RDF)\\b/i.test(xml.slice(0, 12000));
+      const hasEntries = /<(?:[\\w.-]+:)?(?:item|entry)\\b/i.test(xml);
+      if (!hasFeedRoot || !hasEntries) {
+        return { ok: false, name: source.name, category: source.category, error: "Invalid RSS/Atom response" };
+      }
+      return { ok: true, feed: { name: source.name, url: source.url, category: source.category, xml } };
+    } catch (error) {
+      const timedOut = error?.name === "TimeoutError" || error?.name === "AbortError";
+      return { ok: false, name: source.name, category: source.category, error: timedOut ? "Request timed out" : "Fetch failed" };
     }
-    return { name: source.name, url: source.url, category: source.category, xml };
-  });
+  }));
 
-  // Return every working source so the newspaper can combine local and world headlines.
-  const results = await Promise.allSettled(attempts);
-  const feeds = results.filter(result => result.status === "fulfilled").map(result => result.value);
+  const feeds = results.filter(result => result.ok).map(result => result.feed);
+  const sourceStatus = results.map(({ ok, name, category, error }) => ({
+    name, category, ok, ...(error ? { error } : {})
+  }));
   if (!feeds.length) {
     return Response.json({
       error: "news_sources_unavailable",
       feeds: [],
+      sourceStatus,
       checkedAt: new Date().toISOString()
     }, {
       status: 502,
@@ -50,7 +62,7 @@ export async function onRequestGet({ request }) {
     });
   }
 
-  const response = Response.json({ feeds, fetchedAt: new Date().toISOString() }, {
+  const response = Response.json({ feeds, sourceStatus, fetchedAt: new Date().toISOString() }, {
     headers: { "Cache-Control": "public, max-age=180, s-maxage=180" }
   });
   if (cache) await cache.put(cacheKey, response.clone());
