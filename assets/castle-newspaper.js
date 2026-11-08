@@ -43,7 +43,7 @@ const feeds=[
 {name:'BBC News · World',url:'https://feeds.bbci.co.uk/news/world/rss.xml',category:'world'}
 ];
 const categories={all:'الكل',saudi:'السعودية',world:'العالم',economy:'الاقتصاد',sports:'الرياضة',tech:'التقنية',culture:'الثقافة والفنون',science:'العلوم',entertainment:'الترفيه'};
-let items=[],category='all',loading=false,lastLoad=0,found=new Set(),newsError='';
+let items=[],category='all',loading=false,lastLoad=0,found=new Set(),newsError='',sourceStatus=[];
 function mount(){
  const oldTopButton=$('sakNewsLaunch');if(oldTopButton)oldTopButton.remove();
  const dock=$('sakakerUtilityDock');if(!dock||$('sakCastleNewspaperLauncher'))return;
@@ -164,12 +164,30 @@ async function fetchXml(feed){
  return '';
 }
 function parse(xmlText,feed){
- const xml=new DOMParser().parseFromString(xmlText,'text/xml');if(xml.querySelector('parsererror'))return [];
- return [...xml.querySelectorAll('item,entry')].map(n=>{
- const title=(n.querySelector('title')?.textContent||'').replace(/\s+/g,' ').trim(),ln=n.querySelector('link'),url=safeUrl(ln?.getAttribute('href')||ln?.textContent||n.querySelector('guid')?.textContent||'');
- const desc=(n.querySelector('description,summary,content')?.textContent||'').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim().slice(0,240),date=n.querySelector('pubDate,published,updated')?.textContent||'';
- return title&&url?{title,link:url,desc,date,source:feed.name,category:feed.category}:null;
- }).filter(Boolean).slice(0,25);
+ const xml=new DOMParser().parseFromString(xmlText,'text/xml');
+ if(xml.querySelector('parsererror'))return [];
+ const nodes=[...xml.getElementsByTagName('*')].filter(n=>['item','entry'].includes(String(n.localName||n.nodeName).split(':').pop().toLowerCase()));
+ const child=(node,names)=>{
+  for(const name of names){
+   const found=[...node.getElementsByTagName('*')].find(el=>String(el.localName||el.nodeName).split(':').pop().toLowerCase()===name);
+   if(found)return found;
+  }
+  return null;
+ };
+ const plainText=value=>{
+  const holder=document.createElement('div');
+  holder.innerHTML=String(value||'');
+  return (holder.textContent||'').replace(/\\s+/g,' ').trim();
+ };
+ return nodes.map(n=>{
+  const title=plainText(child(n,['title'])?.textContent||'');
+  const linkNode=child(n,['link']);
+  const linkValue=linkNode?.getAttribute('href')||linkNode?.textContent||child(n,['guid','id'])?.textContent||'';
+  const url=safeUrl(linkValue.trim());
+  const desc=plainText(child(n,['description','summary','content'])?.textContent||'').slice(0,240);
+  const date=(child(n,['pubDate','published','updated','date'])?.textContent||'').trim();
+  return title&&url?{title,link:url,desc,date,source:feed.name,category:feed.category}:null;
+ }).filter(Boolean).slice(0,50);
 }
 function cache(){try{const c=JSON.parse(localStorage.getItem('sakCastleNewspaperCacheV1')||'null');return c&&Array.isArray(c.items)?c:null;}catch(_){return null;}}
 function renderNews(){
@@ -178,6 +196,7 @@ function renderNews(){
  Object.entries(categories).forEach(([k,v])=>{const b=document.createElement('button');b.textContent=v;b.setAttribute('aria-pressed',String(category===k));b.addEventListener('click',()=>{category=k;renderNews();});tabs.appendChild(b);});
  const refresh=document.createElement('button');refresh.className='cn-refresh';refresh.textContent=loading?'جارٍ التحديث…':'تحديث الأخبار';refresh.disabled=loading;refresh.addEventListener('click',()=>loadNews(true));tabs.appendChild(refresh);p.appendChild(tabs);
  const meta=document.createElement('div');meta.className='cn-meta cn-updated';meta.textContent=lastLoad?(language==='en'?'Last updated: ':'آخر تحديث: ')+new Date(lastLoad).toLocaleString(language==='ar'?'ar-SA':'en-GB'):(language==='en'?'Live news sources':'مصادر الأخبار المباشرة');p.appendChild(meta);
+ if(sourceStatus.length){const summary=document.createElement('div');summary.className='cn-meta';const ok=sourceStatus.filter(x=>x.ok).length;summary.textContent=language==='en'?'Sources: '+ok+'/'+sourceStatus.length+' responding':'المصادر المتصلة: '+ok+' من '+sourceStatus.length;summary.title=sourceStatus.map(x=>x.name+': '+(x.ok?'OK':x.error||'Unavailable')).join(' · ');p.appendChild(summary);}
  if(newsError){const status=document.createElement('div');status.className='cn-status';status.setAttribute('role','status');status.textContent=language==='en'?(items.length?'Live update failed. Showing saved headlines.':'News sources are temporarily unavailable. Please try again.'):(items.length?'تعذر التحديث المباشر؛ نعرض الأخبار المحفوظة حالياً.':'مصادر الأخبار غير متاحة مؤقتاً. يرجى المحاولة مرة أخرى.');p.appendChild(status);}
  const list=items.filter(x=>category==='all'||x.category===category);
  if(!list.length){const e=document.createElement('div');e.className='cn-empty';e.textContent=loading?'جارٍ جلب الأخبار من المصادر…':'لا توجد أخبار متاحة حالياً؛ حاول التحديث لاحقاً.';p.appendChild(e);}
@@ -199,6 +218,7 @@ async function loadNews(force=false){
    payload=await response.json();
   }finally{clearTimeout(timer);}
   if(!Array.isArray(payload?.feeds)||!payload.feeds.length)throw new Error('No news sources responded');
+  sourceStatus=Array.isArray(payload.sourceStatus)?payload.sourceStatus:[];
   const fresh=payload.feeds.flatMap(feed=>parse(feed.xml,feed));
   if(!fresh.length)throw new Error('No readable headlines in the feeds');
   const unique=new Map();
@@ -208,6 +228,7 @@ async function loadNews(force=false){
   try{localStorage.setItem('sakCastleNewspaperCacheV1',JSON.stringify({savedAt:lastLoad,items}));}catch(_){}
  }catch(error){
   newsError='unavailable';
+  sourceStatus=[];
  }finally{
   loading=false;
   renderNews();
