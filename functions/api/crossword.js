@@ -193,8 +193,15 @@ async function createPuzzle(day, lang) {
 }
 
 function responseFor(core, day, today, cached) {
+  // Strip legacy source metadata even when an older cached payload still contains it.
+  const {
+    source: _hiddenSource,
+    sourceUrl: _hiddenSourceUrl,
+    attribution: _hiddenAttribution,
+    ...publicCore
+  } = core || {};
   const payload = {
-    ...core,
+    ...publicCore,
     solutionAvailable: today > day,
     solutionMessage: today > day
       ? (core.language === "ar" ? "أصبح حل لغز هذا اليوم السابق متاحًا." : "The solution for this previous day's puzzle is now available.")
