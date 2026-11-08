@@ -1,7 +1,75 @@
 const MIN_WORD = 3;
 const MAX_WORD = 9;
+const TIME_ZONE = "Asia/Riyadh";
+const CACHE_SECONDS = 86400;
 
-function cleanAnswer(value, lang) {
+const AR_WORDS = [
+  ["كتاب", "مؤلَّف يضم صفحات مكتوبة أو مطبوعة."],
+  ["مدرسة", "مكان يتلقى فيه الطلاب العلم والمعرفة."],
+  ["مدينة", "تجمع سكاني كبير يضم أحياء ومرافق."],
+  ["بحر", "مسطح مائي واسع ومالح."],
+  ["نهر", "مجرى مائي طبيعي يجري بين ضفتين."],
+  ["قمر", "جرم سماوي يدور حول الأرض ويضيء ليلًا."],
+  ["شمس", "النجم الذي يمد الأرض بالضوء والحرارة."],
+  ["نجمة", "جسم سماوي مضيء في الفضاء."],
+  ["طائر", "حيوان له جناحان ويضع البيض."],
+  ["زهرة", "جزء ملون من النبات يساعد على التكاثر."],
+  ["حديقة", "مساحة مزروعة بالأشجار والورود."],
+  ["سيارة", "مركبة تسير على الطرق وتنقل الأشخاص."],
+  ["نافذة", "فتحة في الجدار يدخل منها الضوء والهواء."],
+  ["مفتاح", "أداة تستخدم لفتح قفل أو تشغيل جهاز."],
+  ["ساعة", "أداة لمعرفة الوقت."],
+  ["سفينة", "مركبة كبيرة تبحر فوق الماء."],
+  ["جبل", "كتلة مرتفعة من الأرض."],
+  ["سحابة", "تجمع من قطرات الماء أو البلورات في السماء."],
+  ["مطر", "ماء ينزل من السحب إلى الأرض."],
+  ["رياح", "هواء يتحرك من مكان إلى آخر."],
+  ["طريق", "مسار مخصص لانتقال الناس والمركبات."],
+  ["مصباح", "أداة تصدر الضوء عند تشغيلها."],
+  ["حاسوب", "جهاز إلكتروني لمعالجة المعلومات."],
+  ["هاتف", "جهاز يستخدم للاتصال والتواصل."],
+  ["قلم", "أداة للكتابة أو الرسم."],
+  ["دفتر", "مجموعة أوراق مجلدة لتدوين الملاحظات."],
+  ["شجرة", "نبات كبير له جذع وأغصان."],
+  ["تفاحة", "ثمرة مستديرة تؤكل ولها أنواع متعددة."],
+  ["فراشة", "حشرة لها أجنحة ملونة."],
+  ["حصان", "حيوان قوي يستخدم للركوب والجر."]
+];
+
+const EN_WORDS = [
+  ["apple", "A round fruit that commonly has red, green, or yellow skin."],
+  ["river", "A natural stream of water flowing toward a sea or lake."],
+  ["planet", "A large celestial body that orbits a star."],
+  ["garden", "A place where flowers, trees, or vegetables are grown."],
+  ["window", "An opening in a wall fitted with glass to let in light."],
+  ["candle", "A wax stick with a wick that gives light when burning."],
+  ["bridge", "A structure built to cross a river, road, or gap."],
+  ["forest", "A large area covered mainly with trees."],
+  ["flower", "The colorful part of a plant that produces seeds."],
+  ["camera", "A device used to take photographs or record video."],
+  ["silver", "A shiny precious metal with a pale gray color."],
+  ["orange", "A citrus fruit with a tough skin and juicy segments."],
+  ["rabbit", "A small mammal with long ears and strong hind legs."],
+  ["island", "An area of land surrounded by water."],
+  ["pencil", "A writing tool with a graphite core."],
+  ["bottle", "A container, usually with a narrow neck, for liquids."],
+  ["castle", "A large fortified building from earlier times."],
+  ["market", "A place where people buy and sell goods."],
+  ["cloud", "A visible mass of tiny water droplets in the sky."],
+  ["train", "A series of connected vehicles that travel on rails."],
+  ["music", "The art of arranging sounds in time."],
+  ["school", "A place where people go to learn."],
+  ["ocean", "A very large body of salt water."],
+  ["desert", "A very dry region that receives little rainfall."],
+  ["mirror", "A surface that reflects an image."],
+  ["stone", "A small piece of rock."],
+  ["clock", "A device that measures and displays time."],
+  ["planet", "A celestial body moving in an orbit around a star."],
+  ["pillow", "A soft support for the head while sleeping."],
+  ["basket", "A container woven from strips of material."]
+];
+
+function normalizeAnswer(value, lang) {
   let word = String(value || "").normalize("NFC").toLowerCase();
   if (lang === "ar") {
     word = word
@@ -14,121 +82,189 @@ function cleanAnswer(value, lang) {
   return word.replace(/[^\p{L}]/gu, "");
 }
 
-function makeClue(extract, title, lang) {
-  let clue = String(extract || "").replace(/\s+/g, " ").trim();
-  if (title && clue.toLowerCase().startsWith(title.toLowerCase())) {
-    clue = clue.slice(title.length).replace(/^\s*[,،:؛–—.-]+\s*/, "");
-  }
-  if (clue.length < 24) {
-    return lang === "ar"
-      ? "مصطلح ومعرفة من مقالة موسوعية في ويكيبيديا."
-      : "A topic described in an article in Wikipedia.";
-  }
-  return clue.slice(0, 230);
+function riyadhDate() {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: TIME_ZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(new Date());
+  const values = Object.fromEntries(parts.map(part => [part.type, part.value]));
+  return values.year + "-" + values.month + "-" + values.day;
 }
 
-function choosePuzzle(pages, lang) {
-  const candidates = Object.values(pages || {})
-    .filter(page => page && page.title && page.extract)
-    .map(page => ({
-      title: page.title,
-      answer: cleanAnswer(page.title, lang),
-      clue: makeClue(page.extract, page.title, lang),
-      url: "https://" + (lang === "ar" ? "ar" : "en") + ".wikipedia.org/wiki/" + encodeURIComponent(page.title.replace(/ /g, "_"))
-    }))
-    .filter(item => item.answer.length >= MIN_WORD && item.answer.length <= MAX_WORD)
-    .filter(item => lang === "ar"
-      ? /^[\u0600-\u06FF]+$/.test(item.answer)
-      : /^[a-z]+$/.test(item.answer));
+function isValidDay(day) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(day)) return false;
+  const date = new Date(day + "T00:00:00.000Z");
+  return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === day;
+}
 
-  let best = null;
-  let bestScore = -1;
-  for (let i = 0; i < candidates.length; i++) {
-    for (let j = 0; j < candidates.length; j++) {
-      if (i === j || candidates[i].answer === candidates[j].answer) continue;
-      const a = candidates[i].answer;
-      const d = candidates[j].answer;
-      for (let ai = 0; ai < a.length; ai++) {
-        const di = d.indexOf(a[ai]);
-        if (di < 0) continue;
-        const score = Math.min(a.length, d.length) * 10
-          + (candidates[i].clue.length > 70 ? 3 : 0)
-          + (candidates[j].clue.length > 70 ? 3 : 0)
-          - Math.abs(ai - Math.floor(a.length / 2))
-          - Math.abs(di - Math.floor(d.length / 2));
-        if (score > bestScore) {
-          bestScore = score;
-          best = { across: candidates[i], down: candidates[j], crossing: { acrossIndex: ai, downIndex: di } };
-        }
+function nextDay(day) {
+  const date = new Date(day + "T00:00:00.000Z");
+  date.setUTCDate(date.getUTCDate() + 1);
+  return date.toISOString().slice(0, 10);
+}
+
+function hashText(value) {
+  let hash = 2166136261;
+  for (let i = 0; i < value.length; i++) {
+    hash ^= value.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
+}
+
+function makePairs(words, lang) {
+  const prepared = words.map(([title, clue]) => ({
+    title,
+    answer: normalizeAnswer(title, lang),
+    clue
+  })).filter(item =>
+    item.answer.length >= MIN_WORD &&
+    item.answer.length <= MAX_WORD &&
+    (lang === "ar" ? /^[\u0600-\u06FF]+$/.test(item.answer) : /^[a-z]+$/.test(item.answer))
+  );
+
+  const pairs = [];
+  for (let i = 0; i < prepared.length; i++) {
+    for (let j = i + 1; j < prepared.length; j++) {
+      if (prepared[i].answer === prepared[j].answer) continue;
+      let crossing = null;
+      for (let ai = 0; ai < prepared[i].answer.length && !crossing; ai++) {
+        const di = prepared[j].answer.indexOf(prepared[i].answer[ai]);
+        if (di >= 0) crossing = { acrossIndex: ai, downIndex: di };
+      }
+      if (crossing) {
+        pairs.push({ across: prepared[i], down: prepared[j], crossing });
       }
     }
   }
-  return best;
+  return pairs;
+}
+
+function pickDailyPair(day, lang, words) {
+  const pairs = makePairs(words, lang);
+  if (!pairs.length) throw new Error("No valid crossing pair in local word bank");
+  return pairs[hashText(lang + ":" + day) % pairs.length];
+}
+
+async function fetchEnglishClue(word, fallback) {
+  const url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + encodeURIComponent(word);
+  try {
+    const response = await fetch(url, {
+      headers: { Accept: "application/json" },
+      signal: AbortSignal.timeout(2500)
+    });
+    if (!response.ok) return fallback;
+    const data = await response.json();
+    const meanings = Array.isArray(data) ? data[0]?.meanings : null;
+    for (const meaning of meanings || []) {
+      const definition = meaning?.definitions?.find(item => item?.definition)?.definition;
+      if (definition) return String(definition).replace(/\s+/g, " ").trim().slice(0, 230);
+    }
+  } catch (_) {
+    // The built-in daily word bank remains available when the dictionary is offline.
+  }
+  return fallback;
+}
+
+async function createPuzzle(day, lang) {
+  const pair = pickDailyPair(day, lang, lang === "ar" ? AR_WORDS : EN_WORDS);
+  let acrossClue = pair.across.clue;
+  let downClue = pair.down.clue;
+  let source = lang === "ar"
+    ? "بنك سكاكر العربي التحريري"
+    : "بنك سكاكر الإنجليزي + Free Dictionary API";
+
+  if (lang === "en") {
+    const clues = await Promise.all([
+      fetchEnglishClue(pair.across.title, acrossClue),
+      fetchEnglishClue(pair.down.title, downClue)
+    ]);
+    acrossClue = clues[0];
+    downClue = clues[1];
+  }
+
+  return {
+    date: day,
+    language: lang,
+    source,
+    sourceUrl: lang === "ar"
+      ? "https://github.com/Salah-Sal/arabic-wordnet-v4"
+      : "https://dictionaryapi.dev/",
+    attribution: lang === "ar"
+      ? "الكلمات والتلميحات الحالية من إعداد سكاكر. مرجع لغوي مفتوح للتطوير: Arabic WordNet 4.1 (CC BY 4.0)."
+      : "Free Dictionary API; fallback clues are maintained in the Sakaker word bank.",
+    across: { title: pair.across.title, answer: pair.across.answer, clue: acrossClue },
+    down: { title: pair.down.title, answer: pair.down.answer, clue: downClue },
+    crossing: pair.crossing,
+    solutionAvailableOn: nextDay(day),
+    generatedAt: new Date().toISOString()
+  };
+}
+
+function responseFor(core, day, today, cached) {
+  const payload = {
+    ...core,
+    solutionAvailable: today > day,
+    solutionMessage: today > day
+      ? (core.language === "ar" ? "أصبح حل لغز هذا اليوم السابق متاحًا." : "The solution for this previous day's puzzle is now available.")
+      : (core.language === "ar" ? "سيظهر الحل في اليوم التالي." : "The solution will be available the next day."),
+    cache: cached ? "daily-cache" : "generated"
+  };
+  return Response.json(payload, {
+    headers: {
+      "Cache-Control": "public, max-age=0, s-maxage=" + CACHE_SECONDS,
+      "X-Crossword-Source": core.language === "ar" ? "sakaker-arabic-bank" : "sakaker-english-dictionary"
+    }
+  });
 }
 
 export async function onRequestGet({ request }) {
   const url = new URL(request.url);
   const lang = url.searchParams.get("lang") === "en" ? "en" : "ar";
-  const day = url.searchParams.get("day") || new Date().toISOString().slice(0, 10);
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(day)) {
-    return Response.json({ error: "invalid_day" }, { status: 400 });
+  const day = url.searchParams.get("day") || riyadhDate();
+  if (!isValidDay(day)) {
+    return Response.json({ error: "invalid_day", message: "Use a valid YYYY-MM-DD date." }, { status: 400 });
   }
 
+  const today = riyadhDate();
   const cache = typeof caches !== "undefined" ? caches.default : null;
   const cacheUrl = new URL("/api/crossword?lang=" + lang + "&day=" + day, url.origin);
   const cacheKey = new Request(cacheUrl.toString(), { method: "GET" });
+
   if (cache) {
-    const saved = await cache.match(cacheKey);
-    if (saved) return saved;
+    try {
+      const saved = await cache.match(cacheKey);
+      if (saved) {
+        const core = await saved.json();
+        return responseFor(core, day, today, true);
+      }
+    } catch (_) {
+      // Cache failures must not prevent a fresh deterministic puzzle.
+    }
   }
 
-  const apiUrl = new URL("https://" + lang + ".wikipedia.org/w/api.php");
-  apiUrl.search = new URLSearchParams({
-    action: "query",
-    generator: "random",
-    grnnamespace: "0",
-    grnlimit: "40",
-    prop: "extracts",
-    exintro: "1",
-    explaintext: "1",
-    exchars: "650",
-    format: "json",
-    origin: "*"
-  }).toString();
-
   try {
-    const response = await fetch(apiUrl.toString(), {
-      headers: {
-        "Accept": "application/json",
-        "User-Agent": "SakakerCastleCrossword/1.0 (https://sakaker.co/)"
-      },
-      signal: AbortSignal.timeout(10000)
-    });
-    if (!response.ok) throw new Error("Wikipedia HTTP " + response.status);
-    const data = await response.json();
-    const puzzle = choosePuzzle(data?.query?.pages, lang);
-    if (!puzzle) throw new Error("No suitable crossword words found");
-
-    const payload = {
-      date: day,
-      language: lang,
-      source: lang === "ar" ? "ويكيبيديا العربية" : "English Wikipedia",
-      sourceUrl: "https://" + lang + ".wikipedia.org/",
-      across: puzzle.across,
-      down: puzzle.down,
-      crossing: puzzle.crossing,
-      generatedAt: new Date().toISOString()
-    };
-    const result = Response.json(payload, {
-      headers: { "Cache-Control": "public, max-age=300, s-maxage=86400" }
-    });
-    if (cache) await cache.put(cacheKey, result.clone());
-    return result;
-  } catch (error) {
+    const core = await createPuzzle(day, lang);
+    if (cache) {
+      try {
+        await cache.put(cacheKey, Response.json(core, {
+          headers: { "Cache-Control": "public, max-age=0, s-maxage=" + CACHE_SECONDS }
+        }));
+      } catch (_) {
+        // The same date and language always generate the same local puzzle without cache.
+      }
+    }
+    return responseFor(core, day, today, false);
+  } catch (_) {
     return Response.json({
-      error: "wikipedia_unavailable",
+      error: "crossword_generation_failed",
       language: lang,
-      date: day
+      date: day,
+      message: lang === "ar"
+        ? "تعذر إنشاء اللغز حاليًا. حاول تحديث النافذة."
+        : "The puzzle could not be generated. Please retry."
     }, {
       status: 503,
       headers: { "Cache-Control": "no-store" }
