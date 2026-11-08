@@ -172,10 +172,6 @@ async function createPuzzle(day, lang) {
   const pair = pickDailyPair(day, lang, lang === "ar" ? AR_WORDS : EN_WORDS);
   let acrossClue = pair.across.clue;
   let downClue = pair.down.clue;
-  let source = lang === "ar"
-    ? "بنك سكاكر العربي التحريري"
-    : "بنك سكاكر الإنجليزي + Free Dictionary API";
-
   if (lang === "en") {
     const clues = await Promise.all([
       fetchEnglishClue(pair.across.title, acrossClue),
@@ -188,13 +184,6 @@ async function createPuzzle(day, lang) {
   return {
     date: day,
     language: lang,
-    source,
-    sourceUrl: lang === "ar"
-      ? "https://github.com/Salah-Sal/arabic-wordnet-v4"
-      : "https://dictionaryapi.dev/",
-    attribution: lang === "ar"
-      ? "الكلمات والتلميحات الحالية من إعداد سكاكر. مرجع لغوي مفتوح للتطوير: Arabic WordNet 4.1 (CC BY 4.0)."
-      : "Free Dictionary API; fallback clues are maintained in the Sakaker word bank.",
     across: { title: pair.across.title, answer: pair.across.answer, clue: acrossClue },
     down: { title: pair.down.title, answer: pair.down.answer, clue: downClue },
     crossing: pair.crossing,
@@ -214,8 +203,7 @@ function responseFor(core, day, today, cached) {
   };
   return Response.json(payload, {
     headers: {
-      "Cache-Control": "public, max-age=0, s-maxage=" + CACHE_SECONDS,
-      "X-Crossword-Source": core.language === "ar" ? "sakaker-arabic-bank" : "sakaker-english-dictionary"
+      "Cache-Control": "public, max-age=0, s-maxage=" + CACHE_SECONDS
     }
   });
 }
