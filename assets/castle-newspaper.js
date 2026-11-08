@@ -211,22 +211,33 @@ async function loadNews(force=false){
  if(!items.length&&c?.items?.length){items=c.items;lastLoad=Number(c.savedAt)||0;}
  renderNews();
  try{
-  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
-  let payload;
+  let fresh=[];
   try{
-   const response=await fetch('/api/news?fresh='+Date.now(),{signal:controller.signal,cache:'no-store',headers:{'Accept':'application/json'}});
-   if(!response.ok)throw new Error('HTTP '+response.status);
-   payload=await response.json();
-  }finally{clearTimeout(timer);}
-  if(!Array.isArray(payload?.feeds)||!payload.feeds.length)throw new Error('No news sources responded');
-  sourceStatus=Array.isArray(payload.sourceStatus)?payload.sourceStatus:[];
-  const fresh=payload.feeds.flatMap(feed=>parse(feed.xml,feed));
-  if(!fresh.length)throw new Error('No readable headlines in the feeds');
+   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
+   try{
+    const response=await fetch('/api/news?fresh='+Date.now(),{signal:controller.signal,cache:'no-store',headers:{'Accept':'application/json'}});
+    if(!response.ok)throw new Error('HTTP '+response.status);
+    const payload=await response.json();
+    sourceStatus=Array.isArray(payload.sourceStatus)?payload.sourceStatus:[];
+    if(Array.isArray(payload?.feeds))fresh=payload.feeds.flatMap(feed=>parse(feed.xml,feed));
+   }finally{clearTimeout(timer);}
+  }catch(_){}
+  // Browser-side RSS fallback keeps headlines available if the Worker endpoint is unavailable.
+  if(!fresh.length){
+   const fallback=await Promise.all(feeds.map(async feed=>{
+    const xml=await fetchXml(feed);
+    return xml?parse(xml,feed):[];
+   }));
+   fresh=fallback.flat();
+  }
+  if(!fresh.length)throw new Error('No readable headlines from API or fallback feeds');
   const unique=new Map();
   fresh.forEach(item=>{if(!unique.has(item.link))unique.set(item.link,item);});
   items=[...unique.values()].sort((a,b)=>(Date.parse(b.date)||0)-(Date.parse(a.date)||0)).slice(0,100);
   lastLoad=Date.now();
+  newsError='';
   try{localStorage.setItem('sakCastleNewspaperCacheV1',JSON.stringify({savedAt:lastLoad,items}));}catch(_){}
+
  }catch(error){
   newsError='unavailable';
   sourceStatus=[];
