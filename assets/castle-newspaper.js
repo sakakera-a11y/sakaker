@@ -1,7 +1,7 @@
 (()=>{'use strict';
 if(window.__sakCastleNewspaperLoaded)return;window.__sakCastleNewspaperLoaded=true;
 const $=id=>document.getElementById(id);
-let language=(()=>{const page=String(document.documentElement.lang||'').toLowerCase();if(page.startsWith('en'))return 'en';if(page.startsWith('ar'))return 'ar';try{return localStorage.getItem('sakCastleNewspaperLang')==='en'?'en':'ar';}catch(_){return 'ar';}})();
+let language=(()=>{try{const saved=localStorage.getItem('sakCastleNewspaperLang');if(saved==='en'||saved==='ar')return saved;}catch(_){}const page=String(document.documentElement.lang||'').toLowerCase();return page.startsWith('en')?'en':'ar';})();
 const enText={
 'صحيفة القلعة':'Castle Newspaper','الأخبار':'News','الكلمات المتقاطعة':'Daily Crossword','الاختلافات الخمسة':'Find Five Differences','حظك اليوم':'Daily Horoscope','إغلاق':'Close','عاجل':'Ajel','BBC News · World':'BBC News · World','تعذر الاتصال بمصادر الأخبار الآن. حاول التحديث بعد قليل.':'Could not connect to news sources. Please try again shortly.','جارٍ فتح الصحيفة…':'Opening the newspaper…','مصدر الخبر':'News source',
 'الكل':'All','السعودية':'Saudi Arabia','العالم':'World','الاقتصاد':'Business','الرياضة':'Sports','التقنية':'Technology','الثقافة والفنون':'Arts & Culture','العلوم':'Science','الترفيه':'Entertainment',
@@ -20,7 +20,22 @@ const enText={
 const originalText=new WeakMap();
 function translateTextNode(n){if(!originalText.has(n))originalText.set(n,n.nodeValue);const original=originalText.get(n);let value=original;if(language==='en'){for(const [ar,en] of Object.entries(enText)){if(value===ar){value=en;break;}if(value.startsWith(ar)&&ar.endsWith(' ')){value=en+value.slice(ar.length);break;}}}n.nodeValue=value;}
 function applyLanguage(root=document){const d=$('sakCastleNewspaperDialog');if(d){d.dir=language==='ar'?'rtl':'ltr';d.lang=language;}const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);while(walker.nextNode())translateTextNode(walker.currentNode);if(d){d.querySelectorAll('[placeholder],[aria-label],[title]').forEach(el=>{for(const attr of ['placeholder','aria-label','title'])if(el.hasAttribute(attr)){const key='__cn_'+attr;if(!el.dataset[key])el.dataset[key]=el.getAttribute(attr);const v=el.dataset[key];el.setAttribute(attr,language==='en'?(enText[v]||v):v);}});}}
-function setLanguage(next){language=next;try{localStorage.setItem('sakCastleNewspaperLang',language);}catch(_){}const d=$('sakCastleNewspaperDialog');if(d)applyLanguage(d);const b=$('cnLangToggle');if(b)b.textContent=language==='ar'?'English':'العربية';const pageLang=String(document.documentElement.lang||'').toLowerCase();if(pageLang.startsWith('en')!== (language==='en')){const siteToggle=[...document.querySelectorAll('button,[role="button"],a')].find(el=>/language|تبديل اللغة|تغيير اللغة|العربية|english|^\s*EN\s*$/i.test([el.id,el.title,el.getAttribute('aria-label'),el.textContent].join(' ')));if(siteToggle&&d&&!d.contains(siteToggle))siteToggle.click();}}
+function setLanguage(next){
+ language=next==='en'?'en':'ar';
+ try{localStorage.setItem('sakCastleNewspaperLang',language);}catch(_){}
+ const d=$('sakCastleNewspaperDialog');
+ if(d){
+  d.lang=language;
+  d.dir=language==='ar'?'rtl':'ltr';
+  applyLanguage(d);
+ }
+ const b=$('cnLangToggle');
+ if(b){b.textContent=language==='ar'?'English':'العربية';b.setAttribute('aria-label',language==='ar'?'Switch to English':'التبديل إلى العربية');}
+ if(d){
+  const active=d.querySelector('[data-tab][aria-pressed="true"]');
+  if(active)showTab(active.dataset.tab);
+ }
+}
 
 const day=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');};
 const feeds=[
@@ -28,7 +43,7 @@ const feeds=[
 {name:'BBC News · World',url:'https://feeds.bbci.co.uk/news/world/rss.xml',category:'world'}
 ];
 const categories={all:'الكل',saudi:'السعودية',world:'العالم',economy:'الاقتصاد',sports:'الرياضة',tech:'التقنية',culture:'الثقافة والفنون',science:'العلوم',entertainment:'الترفيه'};
-let items=[],category='all',loading=false,lastLoad=0,found=new Set();
+let items=[],category='all',loading=false,lastLoad=0,found=new Set(),newsError='';
 function mount(){
  const oldTopButton=$('sakNewsLaunch');if(oldTopButton)oldTopButton.remove();
  const dock=$('sakakerUtilityDock');if(!dock||$('sakCastleNewspaperLauncher'))return;
@@ -73,7 +88,40 @@ function styles(){
  '#sakCastleNewspaperDialog .cn-signs button{border:1px solid #aa8bc7;border-radius:9px;padding:7px 9px;background:#211a37;color:#fff}',
  '#sakCastleNewspaperDialog .cn-signs button[aria-pressed=true]{background:#65448a}',
  '@media(max-width:560px){#sakCastleNewspaperDialog{width:100vw;max-width:100vw;max-height:96dvh;border-radius:14px}#sakCastleNewspaperDialog .cn-body{padding:9px;max-height:calc(96dvh - 58px)}#sakCastleNewspaperDialog .cn-pictures{gap:5px}#sakCastleNewspaperDialog .cn-cell{width:32px;height:32px}}'
- ].join('');
+ '#sakCastleNewspaperDialog{border:1px solid #b9a1e8;border-radius:22px;background:radial-gradient(ellipse at 12% 0%,#254a58 0%,transparent 38%),radial-gradient(ellipse at 100% 100%,#39234f 0%,transparent 42%),linear-gradient(145deg,#071a26 0%,#11182b 54%,#092b32 100%);box-shadow:0 24px 90px #02060bd9,0 0 0 1px #ffffff12,0 0 38px #a77be544;color:#f8f5ff}',
+ '#sakCastleNewspaperDialog .cn-head{position:relative;padding:17px 19px;background:linear-gradient(110deg,#163b4aee,#38224fee 58%,#18515aee);border-bottom:1px solid #d8c1ff55}',
+ '#sakCastleNewspaperDialog .cn-head:after{content:"";position:absolute;inset:auto 18px 0;height:1px;background:linear-gradient(90deg,transparent,#d8b5ff,transparent)}',
+ '#sakCastleNewspaperDialog h2{font-size:clamp(19px,3vw,25px);font-weight:900;letter-spacing:.2px;text-shadow:0 2px 16px #d9b8ff55}',
+ '#sakCastleNewspaperDialog .cn-close{min-width:42px;min-height:38px;border:1px solid #e8d3ff66;border-radius:12px;background:linear-gradient(145deg,#3d2a58,#172e3c);color:#fff;box-shadow:inset 0 1px #ffffff18;transition:transform .2s,filter .2s}',
+ '#sakCastleNewspaperDialog .cn-close:hover,#sakCastleNewspaperDialog .cn-action:hover{filter:brightness(1.18);transform:translateY(-1px)}',
+ '#sakCastleNewspaperDialog .cn-body{padding:clamp(10px,2.2vw,20px);scrollbar-color:#8864ad #101e2b}',
+ '#sakCastleNewspaperDialog .cn-tabs{gap:8px;padding:5px 2px 14px;scrollbar-width:thin}',
+ '#sakCastleNewspaperDialog .cn-tabs button,#sakCastleNewspaperDialog .cn-refresh{border:1px solid #9f8bc866;border-radius:999px;padding:9px 15px;background:linear-gradient(145deg,#182b3b,#29203d);color:#f7efff;font-weight:800;box-shadow:inset 0 1px #ffffff12;transition:all .2s}',
+ '#sakCastleNewspaperDialog .cn-tabs button:hover,#sakCastleNewspaperDialog .cn-refresh:hover:not(:disabled){border-color:#d9c0ff;background:linear-gradient(120deg,#3b4270,#17616a);transform:translateY(-1px)}',
+ '#sakCastleNewspaperDialog .cn-tabs button[aria-pressed=true]{background:linear-gradient(115deg,#7650a8,#177b83);border-color:#e8d5ff;box-shadow:0 5px 18px #6d4d9b55,inset 0 1px #ffffff33}',
+ '#sakCastleNewspaperDialog .cn-refresh:disabled{opacity:.58;cursor:wait}',
+ '#sakCastleNewspaperDialog .cn-story{position:relative;padding:15px 16px;margin:10px 0;border:1px solid #bda4d52e;border-radius:15px;background:linear-gradient(120deg,#ffffff0d,#ffffff05);box-shadow:0 7px 22px #00000018;transition:transform .2s,border-color .2s,background .2s}',
+ '#sakCastleNewspaperDialog .cn-story:hover{transform:translateY(-2px);border-color:#bba0e988;background:linear-gradient(120deg,#ffffff16,#ffffff08)}',
+ '#sakCastleNewspaperDialog .cn-story a{display:block;color:#f4dcff;font-size:15px;font-weight:900;line-height:1.75;text-decoration:none}',
+ '#sakCastleNewspaperDialog .cn-story a:hover{color:#a8f0e9;text-decoration:underline;text-underline-offset:4px}',
+ '#sakCastleNewspaperDialog .cn-meta{font-size:11px;color:#b9d4dc;line-height:1.7}',
+ '#sakCastleNewspaperDialog .cn-desc{font-size:13px;line-height:1.9;color:#e1e8ef;margin-top:7px}',
+ '#sakCastleNewspaperDialog .cn-status{margin:10px 0;padding:10px 13px;border:1px solid #d9b56a66;border-radius:12px;background:#7b5a1c22;color:#ffe6b0;font-size:13px;line-height:1.7}',
+ '#sakCastleNewspaperDialog .cn-empty{padding:24px 16px;text-align:center;border:1px dashed #a88bc966;border-radius:14px;background:#ffffff08;color:#e2d2f5;line-height:1.8}',
+ '#sakCastleNewspaperDialog .cn-game{padding:clamp(14px,2.5vw,22px);border:1px solid #bda4d555;border-radius:18px;background:linear-gradient(145deg,#ffffff12,#ffffff05);box-shadow:0 12px 30px #00000020;margin:8px 0}',
+ '#sakCastleNewspaperDialog .cn-game h3{margin:0 0 10px;color:#f3ddff;font-size:19px;font-weight:900}',
+ '#sakCastleNewspaperDialog .cn-game p{line-height:1.9;color:#e8e3f1}',
+ '#sakCastleNewspaperDialog input{width:min(100%,320px);padding:11px 13px;border-radius:11px;border:1px solid #a98bcf;background:#091c29;color:#fff;font:inherit;outline:none;transition:border-color .2s,box-shadow .2s}',
+ '#sakCastleNewspaperDialog input:focus{border-color:#75d9d0;box-shadow:0 0 0 3px #4abdb333}',
+ '#sakCastleNewspaperDialog .cn-action{border:1px solid #dfc4ff;border-radius:12px;padding:10px 17px;color:#fff;background:linear-gradient(115deg,#7650a8,#167b80);font-weight:900;cursor:pointer;margin:7px 3px;box-shadow:0 6px 18px #00000025;transition:all .2s}',
+ '#sakCastleNewspaperDialog .cn-grid{gap:4px;margin:16px auto 20px}',
+ '#sakCastleNewspaperDialog .cn-cell{width:42px;height:42px;border:1px solid #d9c4ef;background:linear-gradient(145deg,#fff,#e9e2f4);color:#2b1d3b;border-radius:8px;font-size:18px;box-shadow:0 3px 8px #00000020}',
+ '#sakCastleNewspaperDialog .cn-cell.blank{background:#0b202b;border:1px solid #2b4853;box-shadow:none}',
+ '#sakCastleNewspaperDialog .cn-pictures{gap:12px;margin:12px 0}',
+ '#sakCastleNewspaperDialog .cn-picture{border:1px solid #c7a7e8;border-radius:14px;box-shadow:0 8px 24px #00000035}',
+ '#sakCastleNewspaperDialog .cn-signs button{border:1px solid #aa8bc7;border-radius:11px;padding:8px 12px;background:linear-gradient(145deg,#182b3b,#29203d);color:#fff;font-weight:700}',
+ '#sakCastleNewspaperDialog .cn-signs button[aria-pressed=true]{background:linear-gradient(120deg,#7650a8,#177b83);border-color:#e8caff;box-shadow:0 4px 14px #6d4d9b55}',
+ '@media(max-width:560px){#sakCastleNewspaperDialog .cn-head{padding:12px 13px}#sakCastleNewspaperDialog .cn-story{padding:12px}#sakCastleNewspaperDialog .cn-story a{font-size:14px}#sakCastleNewspaperDialog .cn-cell{width:34px;height:34px;font-size:16px}#sakCastleNewspaperDialog .cn-tabs button,#sakCastleNewspaperDialog .cn-refresh{padding:8px 12px;font-size:12px}}' ].join('');
  document.head.appendChild(s);
 }
 function dialog(){
@@ -105,7 +153,8 @@ function renderNews(){
  const tabs=document.createElement('div');tabs.className='cn-tabs';
  Object.entries(categories).forEach(([k,v])=>{const b=document.createElement('button');b.textContent=v;b.setAttribute('aria-pressed',String(category===k));b.addEventListener('click',()=>{category=k;renderNews();});tabs.appendChild(b);});
  const refresh=document.createElement('button');refresh.className='cn-refresh';refresh.textContent=loading?'جارٍ التحديث…':'تحديث الأخبار';refresh.disabled=loading;refresh.addEventListener('click',()=>loadNews(true));tabs.appendChild(refresh);p.appendChild(tabs);
- const meta=document.createElement('div');meta.className='cn-meta';meta.textContent=lastLoad?'آخر تحديث: '+new Date(lastLoad).toLocaleString(language==='ar'?'ar-SA':'en-GB'):'مصادر الصحيفة';p.appendChild(meta);
+ const meta=document.createElement('div');meta.className='cn-meta cn-updated';meta.textContent=lastLoad?(language==='en'?'Last updated: ':'آخر تحديث: ')+new Date(lastLoad).toLocaleString(language==='ar'?'ar-SA':'en-GB'):(language==='en'?'Live news sources':'مصادر الأخبار المباشرة');p.appendChild(meta);
+ if(newsError){const status=document.createElement('div');status.className='cn-status';status.setAttribute('role','status');status.textContent=newsError;p.appendChild(status);}
  const list=items.filter(x=>category==='all'||x.category===category);
  if(!list.length){const e=document.createElement('div');e.className='cn-empty';e.textContent=loading?'جارٍ جلب الأخبار من المصادر…':'لا توجد أخبار متاحة حالياً؛ حاول التحديث لاحقاً.';p.appendChild(e);}
  list.forEach(x=>{const card=document.createElement('article');card.className='cn-story';const a=document.createElement('a');a.href=x.link;a.target='_blank';a.rel='noopener noreferrer';a.textContent=x.title;card.appendChild(a);const m=document.createElement('div');m.className='cn-meta';m.textContent=x.source+(x.date?' · '+x.date:'');card.appendChild(m);if(x.desc){const d=document.createElement('div');d.className='cn-desc';d.textContent=x.desc;card.appendChild(d);}p.appendChild(card);});
@@ -113,29 +162,34 @@ function renderNews(){
 }
 async function loadNews(force=false){
  if(loading||(!force&&Date.now()-lastLoad<3*60*1000))return;
- loading=true;
+ loading=true;newsError='';
  const c=cache();
  if(!items.length&&c?.items?.length){items=c.items;lastLoad=Number(c.savedAt)||0;}
  renderNews();
  try{
-  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),6500);
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
   let payload;
   try{
-   const response=await fetch('/api/news',{signal:controller.signal,cache:'no-store',headers:{'Accept':'application/json'}});
-   if(!response.ok)throw new Error('news endpoint unavailable');
+   const response=await fetch('/api/news?fresh='+Date.now(),{signal:controller.signal,cache:'no-store',headers:{'Accept':'application/json'}});
+   if(!response.ok)throw new Error('HTTP '+response.status);
    payload=await response.json();
   }finally{clearTimeout(timer);}
-  if(!Array.isArray(payload?.feeds)||!payload.feeds.length)throw new Error('no verified news feed responded');
+  if(!Array.isArray(payload?.feeds)||!payload.feeds.length)throw new Error('No news sources responded');
   const fresh=payload.feeds.flatMap(feed=>parse(feed.xml,feed));
-  if(!fresh.length)throw new Error('news feed returned no readable headlines');
+  if(!fresh.length)throw new Error('No readable headlines in the feeds');
   const unique=new Map();
   fresh.forEach(item=>{if(!unique.has(item.link))unique.set(item.link,item);});
   items=[...unique.values()].sort((a,b)=>(Date.parse(b.date)||0)-(Date.parse(a.date)||0)).slice(0,100);
   lastLoad=Date.now();
   try{localStorage.setItem('sakCastleNewspaperCacheV1',JSON.stringify({savedAt:lastLoad,items}));}catch(_){}
- }catch(_){
-  if(!items.length){const p=$('cnPanel');if(p){const e=document.createElement('div');e.className='cn-empty';e.textContent='تعذر الاتصال بمصادر الأخبار الآن. حاول التحديث بعد قليل.';p.appendChild(e);}}
- }finally{loading=false;renderNews();}
+ }catch(error){
+  newsError=items.length
+   ?(language==='en'?'Live update failed. Showing saved headlines.':'تعذر التحديث المباشر؛ نعرض الأخبار المحفوظة حالياً.')
+   :(language==='en'?'News sources are temporarily unavailable. Please try again.':'مصادر الأخبار غير متاحة مؤقتاً. يرجى المحاولة مرة أخرى.');
+ }finally{
+  loading=false;
+  renderNews();
+ }
 }
 function tabButton(tab){dialog().querySelectorAll('[data-tab]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tab===tab)));}
 function showTab(tab){tabButton(tab);const p=$('cnPanel');p.replaceChildren();if(tab==='news'){category='all';renderNews();}else if(tab==='crossword')crossword(p);else if(tab==='differences')differences(p);else horoscope(p);applyLanguage(p);}
@@ -164,7 +218,12 @@ function crossword(panel){
  const grid=document.createElement('div');grid.className='cn-grid';for(let r=0;r<4;r++)for(let c=0;c<3;c++){const cell=document.createElement('div');const active=(r===1&&c<3)||(c===0&&r>=2);cell.className='cn-cell'+(active?'':' blank');cell.textContent=active?'؟':'';grid.appendChild(cell);}w.appendChild(grid);
  const ca=document.createElement('p');ca.textContent='أفقي: '+q.ac;w.appendChild(ca);const a=document.createElement('input');a.maxLength=3;a.placeholder='الإجابة الأفقية';w.appendChild(a);
  const cd=document.createElement('p');cd.textContent='عمودي: '+q.dc;w.appendChild(cd);const d=document.createElement('input');d.maxLength=3;d.placeholder='الإجابة العمودية';w.appendChild(d);
- const result=document.createElement('p');result.setAttribute('aria-live','polite');w.appendChild(result);const check=document.createElement('button');check.className='cn-action';check.textContent='تحقق من الحل';check.addEventListener('click',()=>{const ok=norm(a.value)===q.a&&norm(d.value)===q.d;result.textContent=ok?'أحسنت! إجابتك صحيحة.':'ليست الإجابة صحيحة بعد؛ حاول مرة أخرى.';result.style.color=ok?'#a6f2c5':'#ffd4a6';if(ok)grid.querySelectorAll('.cn-cell:not(.blank)').forEach((x,i)=>x.textContent=[...q.a][i]||[...q.d][i-2]||'');});w.appendChild(check);const date=document.createElement('div');date.className='cn-meta';date.textContent='لغز يوم '+day();w.appendChild(date);panel.appendChild(w);
+ const result=document.createElement('p');result.setAttribute('aria-live','polite');w.appendChild(result);const check=document.createElement('button');check.className='cn-action';check.textContent='تحقق من الحل';check.addEventListener('click',()=>{
+ const ok=norm(a.value)===q.a&&norm(d.value)===q.d;
+ result.textContent=language==='en'?(ok?'Excellent! Both answers are correct.':'Not quite. Check the clues and try again.'):(ok?'أحسنت! إجابتك صحيحة.':'ليست الإجابة صحيحة بعد؛ حاول مرة أخرى.');
+ result.style.color=ok?'#a6f2c5':'#ffd4a6';
+ if(ok)grid.querySelectorAll('.cn-cell:not(.blank)').forEach((x,i)=>x.textContent=[...q.a][i]||[...q.d][i-2]||'');
+});w.appendChild(check);const date=document.createElement('div');date.className='cn-meta';date.textContent='لغز يوم '+day();w.appendChild(date);panel.appendChild(w);
 }
 function scene(alt){
  const variant=Number(day().replace(/-/g,''))%3,sky=['#a9dbe5','#d8c9ed','#f4d6b8'][variant],grass=['#74aa71','#829ac0','#85ae8c'][variant],wall=['#d9c49b','#d7c5dc','#e5d1a5'][variant];
@@ -187,6 +246,28 @@ function horoscope(panel){
  signs.forEach((v,i)=>{const b=document.createElement('button');b.textContent=v;b.setAttribute('aria-pressed',String(i===0));b.addEventListener('click',()=>{selected=i;row.querySelectorAll('button').forEach((x,j)=>x.setAttribute('aria-pressed',String(i===j)));show();});row.appendChild(b);});
  w.append(row,out);const note=document.createElement('div');note.className='cn-meta';note.textContent='للتسلية فقط؛ الأبراج والتوقعات ليست علماً ولا وسيلة لمعرفة المستقبل.';w.appendChild(note);show();panel.appendChild(w);
 }
-function start(){styles();mount();const syncPageLanguage=()=>{const next=String(document.documentElement.lang||'ar').toLowerCase().startsWith('en')?'en':'ar';if(next!==language){language=next;try{localStorage.setItem('sakCastleNewspaperLang',language);}catch(_){}const d=$('sakCastleNewspaperDialog');if(d)applyLanguage(d);const toggle=$('cnLangToggle');if(toggle)toggle.textContent=language==='ar'?'English':'العربية';const launcher=$('sakCastleNewspaperLauncher');if(launcher){const label=language==='en'?'Castle Newspaper':'صحيفة القلعة';const name=launcher.querySelector('.sak-ostrich-name');if(name)name.textContent=label;launcher.title=label;launcher.setAttribute('aria-label',label);}}};new MutationObserver(m=>{mount();syncPageLanguage();const d=$('sakCastleNewspaperDialog');for(const x of m)for(const n of x.addedNodes)if(n.nodeType===Node.ELEMENT_NODE&&(d?.contains(n)||n.contains?.(d)))applyLanguage(n);}).observe(document.body,{childList:true,subtree:true});new MutationObserver(syncPageLanguage).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});syncPageLanguage();}
+function start(){
+ styles();mount();
+ const syncLauncherLanguage=()=>{
+  const pageEn=String(document.documentElement.lang||'ar').toLowerCase().startsWith('en');
+  const launcher=$('sakCastleNewspaperLauncher');
+  if(launcher){
+   const label=pageEn?'Castle Newspaper':'صحيفة القلعة';
+   const name=launcher.querySelector('.sak-ostrich-name');
+   if(name)name.textContent=label;
+   launcher.title=label;launcher.setAttribute('aria-label',label);
+  }
+ };
+ new MutationObserver(m=>{
+  mount();
+  for(const x of m)for(const n of x.addedNodes)
+   if(n.nodeType===Node.ELEMENT_NODE){
+    const d=$('sakCastleNewspaperDialog');
+    if(d&&(d.contains(n)||n.contains?.(d)))applyLanguage(n);
+   }
+ }).observe(document.body,{childList:true,subtree:true});
+ new MutationObserver(syncLauncherLanguage).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+ syncLauncherLanguage();
+}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
