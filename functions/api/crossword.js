@@ -267,50 +267,6 @@ function pickDailyPair(day, lang, words) {
   return pairs[hashText(lang + ":" + day) % pairs.length];
 }
 
-async function fetchEnglishClue(word, fallback) {
-  const url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + encodeURIComponent(word);
-  try {
-    const response = await fetch(url, {
-      headers: { Accept: "application/json" },
-      signal: AbortSignal.timeout(2500)
-    });
-    if (!response.ok) return fallback;
-    const data = await response.json();
-    const meanings = Array.isArray(data) ? data[0]?.meanings : null;
-    for (const meaning of meanings || []) {
-      const definition = meaning?.definitions?.find(item => item?.definition)?.definition;
-      if (definition) return String(definition).replace(/\s+/g, " ").trim().slice(0, 230);
-    }
-  } catch (_) {
-    // The built-in daily word bank remains available when the dictionary is offline.
-  }
-  return fallback;
-}
-
-async function createPuzzle(day, lang) {
-  const pair = pickDailyPair(day, lang, lang === "ar" ? AR_WORDS : EN_WORDS);
-  let acrossClue = pair.across.clue;
-  let downClue = pair.down.clue;
-  if (lang === "en") {
-    const clues = await Promise.all([
-      fetchEnglishClue(pair.across.title, acrossClue),
-      fetchEnglishClue(pair.down.title, downClue)
-    ]);
-    acrossClue = clues[0];
-    downClue = clues[1];
-  }
-
-  return {
-    date: day,
-    language: lang,
-    across: { title: pair.across.title, answer: pair.across.answer, clue: acrossClue },
-    down: { title: pair.down.title, answer: pair.down.answer, clue: downClue },
-    crossing: pair.crossing,
-    solutionAvailableOn: nextDay(day),
-    generatedAt: new Date().toISOString()
-  };
-}
-
 function stripSourceMetadata(value) {
   const blockedKeys = /^(source|sourceurl|sourcename|sourcelabel|attribution|credit|crediturl|provider|reference)$/i;
   if (Array.isArray(value)) return value.map(stripSourceMetadata);
@@ -399,7 +355,7 @@ export async function onRequestGet({ request }) {
 
   const today = riyadhDate();
   const cache = typeof caches !== "undefined" ? caches.default : null;
-  const cacheUrl = new URL("/api/crossword?lang=" + lang + "&day=" + day + "&cacheVersion=3", url.origin);
+  const cacheUrl = new URL("/api/crossword?lang=" + lang + "&day=" + day + "&cacheVersion=4", url.origin);
   const cacheKey = new Request(cacheUrl.toString(), { method: "GET" });
 
   if (cache) {
@@ -415,7 +371,7 @@ export async function onRequestGet({ request }) {
   }
 
   try {
-    const core = await createPuzzle(day, lang);
+    const core = createPuzzle(day, lang);
     if (cache) {
       try {
         await cache.put(cacheKey, Response.json(core, {
