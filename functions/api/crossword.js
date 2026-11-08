@@ -192,14 +192,25 @@ async function createPuzzle(day, lang) {
   };
 }
 
+function stripSourceMetadata(value) {
+  const blockedKeys = /^(source|sourceurl|sourcename|sourcelabel|attribution|credit|crediturl|provider|reference)$/i;
+  if (Array.isArray(value)) return value.map(stripSourceMetadata);
+  if (!value || typeof value !== "object") {
+    if (typeof value === "string" &&
+        (/^(?:المصدر|source)\\s*[:：]/i.test(value.trim()) ||
+         /Salah-Sal|arabic-wordnet-v4|بنك سكاكر العربي التحريري/i.test(value))) return "";
+    return value;
+  }
+  const clean = {};
+  for (const [key, item] of Object.entries(value)) {
+    if (!blockedKeys.test(key)) clean[key] = stripSourceMetadata(item);
+  }
+  return clean;
+}
+
 function responseFor(core, day, today, cached) {
-  // Strip legacy source metadata even when an older cached payload still contains it.
-  const {
-    source: _hiddenSource,
-    sourceUrl: _hiddenSourceUrl,
-    attribution: _hiddenAttribution,
-    ...publicCore
-  } = core || {};
+  // Remove source labels recursively, including metadata left in legacy cached payloads.
+  const publicCore = stripSourceMetadata(core || {});
   const payload = {
     ...publicCore,
     solutionAvailable: today > day,
@@ -210,7 +221,7 @@ function responseFor(core, day, today, cached) {
   };
   return Response.json(payload, {
     headers: {
-      "Cache-Control": "public, max-age=0, s-maxage=" + CACHE_SECONDS
+      "Cache-Control": "no-store"
     }
   });
 }
@@ -225,7 +236,7 @@ export async function onRequestGet({ request }) {
 
   const today = riyadhDate();
   const cache = typeof caches !== "undefined" ? caches.default : null;
-  const cacheUrl = new URL("/api/crossword?lang=" + lang + "&day=" + day, url.origin);
+  const cacheUrl = new URL("/api/crossword?lang=" + lang + "&day=" + day + "&cacheVersion=3", url.origin);
   const cacheKey = new Request(cacheUrl.toString(), { method: "GET" });
 
   if (cache) {
