@@ -1,6 +1,12 @@
 const SOURCES = [
   { name: "عاجل", url: "https://ajel.sa/rss.xml", category: "saudi" },
-  { name: "BBC News · World", url: "https://feeds.bbci.co.uk/news/world/rss.xml", category: "world" }
+  { name: "BBC News · World", url: "https://feeds.bbci.co.uk/news/world/rss.xml", category: "world" },
+  { name: "BBC عربي · الشرق الأوسط", url: "https://feeds.bbci.co.uk/arabic/middleeast/rss.xml", category: "saudi" },
+  { name: "أخبار السعودية · Google News", url: "https://news.google.com/rss/search?q=السعودية&hl=ar&gl=SA&ceid=SA:ar", category: "saudi" },
+  { name: "أخبار العالم · Google News", url: "https://news.google.com/rss/search?q=العالم&hl=ar&gl=SA&ceid=SA:ar", category: "world" },
+  { name: "التقنية · Google News", url: "https://news.google.com/rss/search?q=التقنية&hl=ar&gl=SA&ceid=SA:ar", category: "tech" },
+  { name: "الرياضة · Google News", url: "https://news.google.com/rss/search?q=الرياضة&hl=ar&gl=SA&ceid=SA:ar", category: "sports" },
+  { name: "الاقتصاد · Google News", url: "https://news.google.com/rss/search?q=الاقتصاد&hl=ar&gl=SA&ceid=SA:ar", category: "economy" }
 ];
 
 export async function onRequestGet({ request }) {
@@ -17,7 +23,7 @@ export async function onRequestGet({ request }) {
     const response = await fetch(source.url, {
       headers: {
         "Accept": "application/rss+xml, application/atom+xml, application/xml, text/xml;q=0.9",
-        "User-Agent": "SakakerCastleNews/1.0"
+        "User-Agent": "Mozilla/5.0 (compatible; SakakerCastleNews/1.0; +https://sakaker.co/)"
       },
       signal: AbortSignal.timeout(9000),
       redirect: "follow"
