@@ -12,7 +12,7 @@
   if(!document.getElementById('sakGardenCrosswordLoader')){
     const crossword=document.createElement('script');
     crossword.id='sakGardenCrosswordLoader';
-    crossword.src='/assets/crossword-ui.js?v=20261108-wisdom4x6-v2';
+    crossword.src='/assets/crossword-ui.js?v=20261108-inline-crystal1';
     crossword.async=true;
     document.head.appendChild(crossword);
   }
