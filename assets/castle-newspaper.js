@@ -220,32 +220,130 @@ const puzzles=[
  {a:'قمر',d:'قلم',ac:'جرم نراه ليلاً',dc:'أداة نكتب بها'},
  {a:'ورد',d:'وقت',ac:'زهرة جميلة',dc:'زمن أو موعد'},
  {a:'نجم',d:'نهر',ac:'جرم يلمع في السماء',dc:'مجرى ماء عذب'},
-{a:'شمس',d:'شعر',ac:'مصدر الضوء والدفء نهاراً',dc:'ما ينبت على الرأس'},
-{a:'باب',d:'بحر',ac:'مدخل المنزل',dc:'ماء واسع مالح'},
-{a:'عين',d:'علم',ac:'عضو الإبصار',dc:'راية الدولة'},
-{a:'جمل',d:'جبل',ac:'حيوان سفينة الصحراء',dc:'مرتفع صخري كبير'}];
-function norm(s){return String(s||'').toLowerCase().replace(/[\u064B-\u065F\u0670\u0640]/g,'').replace(/[أإآ]/g,'ا').replace(/ى/g,'ي').replace(/\s/g,'').trim();}
-const englishPuzzles=[
-{a:'sea',d:'sun',ac:'A large body of salt water',dc:'The star that lights our day'},
-{a:'cat',d:'car',ac:'A common household pet',dc:'A road vehicle'},
-{a:'map',d:'man',ac:'A drawing that shows places',dc:'An adult person'},
-{a:'pen',d:'pig',ac:'A tool used for writing',dc:'A farm animal that oinks'},
-{a:'sky',d:'sun',ac:'The space above the earth',dc:'The star at the center of our solar system'},
-{a:'box',d:'bat',ac:'A container with sides',dc:'A flying mammal'},
-{a:'cup',d:'cow',ac:'A vessel used for drinking',dc:'A farm animal that gives milk'},
-{a:'dog',d:'day',ac:'A loyal four-legged pet',dc:'The time between sunrise and sunset'}
+ {a:'شمس',d:'شعر',ac:'مصدر الضوء والدفء نهاراً',dc:'ما ينبت على الرأس'},
+ {a:'باب',d:'بحر',ac:'مدخل المنزل',dc:'ماء واسع مالح'},
+ {a:'عين',d:'علم',ac:'عضو الإبصار',dc:'راية الدولة'},
+ {a:'جمل',d:'جبل',ac:'حيوان سفينة الصحراء',dc:'مرتفع صخري كبير'}
 ];
+const englishPuzzles=[
+ {a:'sea',d:'sun',ac:'A large body of salt water',dc:'The star that lights our day'},
+ {a:'cat',d:'car',ac:'A common household pet',dc:'A road vehicle'},
+ {a:'map',d:'man',ac:'A drawing that shows places',dc:'An adult person'},
+ {a:'pen',d:'pig',ac:'A tool used for writing',dc:'A farm animal that oinks'},
+ {a:'sky',d:'sun',ac:'The space above the earth',dc:'The star at the center of our solar system'},
+ {a:'box',d:'bat',ac:'A container with sides',dc:'A flying mammal'},
+ {a:'cup',d:'cow',ac:'A vessel used for drinking',dc:'A farm animal that gives milk'},
+ {a:'dog',d:'day',ac:'A loyal four-legged pet',dc:'The time between sunrise and sunset'}
+];
+function norm(s){return String(s||'').toLowerCase().replace(/[\u064B-\u065F\u0670\u0640]/g,'').replace(/[أإآٱ]/g,'ا').replace(/ؤ/g,'و').replace(/ئ/g,'ي').replace(/ى/g,'ي').replace(/\s/g,'').trim();}
+const crosswordMemory={};
+const crosswordRequests={};
+function crosswordKey(lang,date){return 'sakCastleCrosswordV2:'+lang+':'+date;}
+function readCrossword(key){try{return JSON.parse(localStorage.getItem(key)||'null');}catch(_){return null;}}
+function fallbackCrossword(lang){
+ const bank=lang==='en'?englishPuzzles:puzzles;
+ const q=bank[Number(day().replace(/-/g,''))%bank.length];
+ return {date:day(),language:lang,across:{answer:q.a,clue:q.ac,url:'',title:''},down:{answer:q.d,clue:q.dc,url:'',title:''},crossing:{acrossIndex:0,downIndex:0},source:lang==='en'?'English offline puzzle':'لغز عربي احتياطي',fallback:true};
+}
+async function loadCrosswordData(lang){
+ const today=day(),key=crosswordKey(lang,today);
+ if(crosswordMemory[lang]&&crosswordMemory[lang].date===today)return crosswordMemory[lang];
+ const saved=readCrossword(key);
+ if(saved&&saved.across?.answer&&saved.down?.answer){crosswordMemory[lang]=saved;return saved;}
+ if(crosswordRequests[lang])return crosswordRequests[lang];
+ crosswordRequests[lang]=(async()=>{
+  try{
+   const response=await fetch('/api/crossword?lang='+encodeURIComponent(lang)+'&day='+encodeURIComponent(today),{cache:'no-store',headers:{'Accept':'application/json'}});
+   if(!response.ok)throw new Error('HTTP '+response.status);
+   const data=await response.json();
+   if(data.language!==lang||data.date!==today||!data.across?.answer||!data.down?.answer)throw new Error('Invalid daily crossword');
+   const puzzle={...data,fallback:false};
+   crosswordMemory[lang]=puzzle;
+   try{
+    localStorage.setItem(key,JSON.stringify(puzzle));
+    localStorage.setItem('sakCastleCrosswordLastGood:'+lang,JSON.stringify(puzzle));
+   }catch(_){}
+   return puzzle;
+  }catch(error){
+   const last=readCrossword('sakCastleCrosswordLastGood:'+lang);
+   const backup=last&&last.across?.answer&&last.down?.answer?{...last,fallback:true,stale:true}:fallbackCrossword(lang);
+   crosswordMemory[lang]=backup;
+   return backup;
+  }finally{delete crosswordRequests[lang];}
+ })();
+ return crosswordRequests[lang];
+}
+function preloadCrosswords(){
+ ['ar','en'].forEach(lang=>{loadCrosswordData(lang).catch(()=>{});});
+}
+function renderCrossword(panel,puzzle,loading=false){
+ if(!panel)return;
+ panel.replaceChildren();
+ const lang=puzzle.language||language;
+ const q={a:puzzle.across?.answer||'',d:puzzle.down?.answer||'',ac:puzzle.across?.clue||'',dc:puzzle.down?.clue||''};
+ const w=document.createElement('div');w.className='cn-game';
+ const h=document.createElement('h3');h.textContent=lang==='en'?'🧩 Daily Crossword':'🧩 الكلمات المتقاطعة اليومية';w.appendChild(h);
+ const intro=document.createElement('p');intro.textContent=lang==='en'?'Solve the across and down words. They cross at the highlighted square.':'حل الكلمتين الأفقية والعمودية؛ تتقاطعان عند المربع المشترك.';w.appendChild(intro);
+ const aWord=[...norm(q.a)],dWord=[...norm(q.d)];
+ const ai=Number.isInteger(puzzle.crossing?.acrossIndex)?puzzle.crossing.acrossIndex:0;
+ const di=Number.isInteger(puzzle.crossing?.downIndex)?puzzle.crossing.downIndex:0;
+ const grid=document.createElement('div');grid.className='cn-grid';
+ grid.style.gridTemplateColumns='repeat('+Math.max(1,aWord.length)+',minmax(28px,38px))';
+ grid.style.gridTemplateRows='repeat('+Math.max(1,dWord.length)+',minmax(28px,38px))';
+ const letters=new Map();
+ aWord.forEach((ch,c)=>letters.set(di+','+c,ch));
+ dWord.forEach((ch,r)=>letters.set(r+','+ai,ch));
+ for(let r=0;r<dWord.length;r++)for(let c=0;c<aWord.length;c++){
+  const key=r+','+c,cell=document.createElement('div'),letter=letters.get(key);
+  cell.className='cn-cell'+(letter===undefined?' blank':'');
+  if(letter!==undefined){cell.textContent='؟';cell.dataset.answer=letter;}
+  grid.appendChild(cell);
+ }
+ w.appendChild(grid);
+ const ca=document.createElement('p');ca.textContent=(lang==='en'?'Across: ':'أفقي: ')+q.ac;w.appendChild(ca);
+ const a=document.createElement('input');a.maxLength=aWord.length;a.autocomplete='off';a.spellcheck=false;a.placeholder=lang==='en'?'Across answer':'الإجابة الأفقية';a.setAttribute('aria-label',a.placeholder);w.appendChild(a);
+ const cd=document.createElement('p');cd.textContent=(lang==='en'?'Down: ':'عمودي: ')+q.dc;w.appendChild(cd);
+ const d=document.createElement('input');d.maxLength=dWord.length;d.autocomplete='off';d.spellcheck=false;d.placeholder=lang==='en'?'Down answer':'الإجابة العمودية';d.setAttribute('aria-label',d.placeholder);w.appendChild(d);
+ const result=document.createElement('p');result.setAttribute('aria-live','polite');w.appendChild(result);
+ const check=document.createElement('button');check.className='cn-action';check.textContent=lang==='en'?'Check answers':'تحقق من الحل';
+ check.addEventListener('click',()=>{
+  const ok=norm(a.value)===norm(q.a)&&norm(d.value)===norm(q.d);
+  result.textContent=lang==='en'?(ok?'Excellent! Both answers are correct.':'Not quite. Check the clues and try again.'):(ok?'أحسنت! إجابتك صحيحة.':'ليست الإجابة صحيحة بعد؛ حاول مرة أخرى.');
+  result.style.color=ok?'#a6f2c5':'#ffd4a6';
+  if(ok)grid.querySelectorAll('.cn-cell:not(.blank)').forEach(cell=>cell.textContent=cell.dataset.answer||'');
+ });
+ w.appendChild(check);
+ const meta=document.createElement('div');meta.className='cn-meta';
+ meta.textContent=(lang==='en'?'Puzzle for ':'لغز يوم ')+(puzzle.date||day());
+ w.appendChild(meta);
+ if(puzzle.sourceUrl){
+  const source=document.createElement('a');source.href=puzzle.sourceUrl;source.target='_blank';source.rel='noopener noreferrer';source.textContent=lang==='en'?'Source: '+(puzzle.source||'Wikipedia'):'المصدر: '+(puzzle.source||'ويكيبيديا');source.style.cssText='display:inline-block;margin-top:7px;color:#dff8ff;text-decoration:underline';w.appendChild(source);
+ }
+ if(puzzle.across?.url||puzzle.down?.url){
+  const refs=document.createElement('div');refs.className='cn-meta';refs.style.marginTop='6px';
+  [[puzzle.across,lang==='en'?'Across article':'مقالة الكلمة الأفقية'],[puzzle.down,lang==='en'?'Down article':'مقالة الكلمة العمودية']].forEach(([entry,label])=>{
+   if(!entry?.url)return;const link=document.createElement('a');link.href=entry.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent=label;link.style.cssText='color:#dff8ff;margin-inline-end:12px';refs.appendChild(link);
+  });
+  w.appendChild(refs);
+ }
+ if(loading){
+  const note=document.createElement('div');note.className='cn-meta';note.textContent=lang==='en'?'Loading today’s puzzle from Wikipedia…':'جارٍ تحميل لغز اليوم من ويكيبيديا…';w.appendChild(note);
+ }else if(puzzle.stale||puzzle.fallback){
+  const note=document.createElement('div');note.className='cn-status';
+  note.textContent=puzzle.stale?(lang==='en'?'Wikipedia is unavailable. Showing the last saved puzzle.':'تعذر الوصول إلى ويكيبيديا؛ نعرض آخر لغز محفوظ.'):
+   (lang==='en'?'Wikipedia is unavailable. Showing the built-in backup puzzle.':'تعذر الوصول إلى ويكيبيديا؛ نعرض لغزاً احتياطياً مدمجاً.');
+  w.appendChild(note);
+ }
+ panel.appendChild(w);
+}
 function crossword(panel){
- const bank=language==='en'?englishPuzzles:puzzles,q=bank[Number(day().replace(/-/g,''))%bank.length],w=document.createElement('div');w.className='cn-game';w.innerHTML='<h3>🧩 الكلمات المتقاطعة اليومية</h3><p>حل الكلمتين؛ تشتركان في الحرف الأول داخل المربع المشترك.</p>';
- const grid=document.createElement('div');grid.className='cn-grid';for(let r=0;r<4;r++)for(let c=0;c<3;c++){const cell=document.createElement('div');const active=(r===1&&c<3)||(c===0&&r>=2);cell.className='cn-cell'+(active?'':' blank');cell.textContent=active?'؟':'';grid.appendChild(cell);}w.appendChild(grid);
- const ca=document.createElement('p');ca.textContent='أفقي: '+q.ac;w.appendChild(ca);const a=document.createElement('input');a.maxLength=3;a.placeholder='الإجابة الأفقية';w.appendChild(a);
- const cd=document.createElement('p');cd.textContent='عمودي: '+q.dc;w.appendChild(cd);const d=document.createElement('input');d.maxLength=3;d.placeholder='الإجابة العمودية';w.appendChild(d);
- const result=document.createElement('p');result.setAttribute('aria-live','polite');w.appendChild(result);const check=document.createElement('button');check.className='cn-action';check.textContent='تحقق من الحل';check.addEventListener('click',()=>{
- const ok=norm(a.value)===q.a&&norm(d.value)===q.d;
- result.textContent=language==='en'?(ok?'Excellent! Both answers are correct.':'Not quite. Check the clues and try again.'):(ok?'أحسنت! إجابتك صحيحة.':'ليست الإجابة صحيحة بعد؛ حاول مرة أخرى.');
- result.style.color=ok?'#a6f2c5':'#ffd4a6';
- if(ok)grid.querySelectorAll('.cn-cell:not(.blank)').forEach((x,i)=>x.textContent=[...q.a][i]||[...q.d][i-2]||'');
-});w.appendChild(check);const date=document.createElement('div');date.className='cn-meta';date.textContent='لغز يوم '+day();w.appendChild(date);panel.appendChild(w);
+ const lang=language;
+ const saved=readCrossword(crosswordKey(lang,day()));
+ const initial=crosswordMemory[lang]||saved||fallbackCrossword(lang);
+ renderCrossword(panel,initial,!saved&&!crosswordMemory[lang]);
+ loadCrosswordData(lang).then(puzzle=>{
+  if(language===lang&&$('cnPanel')===panel)renderCrossword(panel,puzzle,false);
+ }).catch(()=>{});
 }
 function scene(alt){
  const variant=Number(day().replace(/-/g,''))%3,sky=['#a9dbe5','#d8c9ed','#f4d6b8'][variant],grass=['#74aa71','#829ac0','#85ae8c'][variant],wall=['#d9c49b','#d7c5dc','#e5d1a5'][variant];
@@ -269,7 +367,7 @@ function horoscope(panel){
  w.append(row,out);const note=document.createElement('div');note.className='cn-meta';note.textContent='للتسلية فقط؛ الأبراج والتوقعات ليست علماً ولا وسيلة لمعرفة المستقبل.';w.appendChild(note);show();panel.appendChild(w);
 }
 function start(){
- styles();mount();
+ styles();mount();preloadCrosswords();
  const syncLauncherLanguage=()=>{
   const pageEn=String(document.documentElement.lang||'ar').toLowerCase().startsWith('en');
   const launcher=$('sakCastleNewspaperLauncher');
