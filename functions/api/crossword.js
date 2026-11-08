@@ -11,28 +11,28 @@ const BANKS = {
         { top: ["قمر", "جرم سماوي يدور حول الأرض ويضيء ليلًا."], bottom: ["مهم", "صفة لما له قيمة أو ضرورة."], left: ["قلم", "أداة للكتابة أو الرسم."], right: ["رسم", "تعبير بصري بالخطوط والأشكال." ] },
         { top: ["بيت", "مسكن يعيش فيه الإنسان."], bottom: ["بدر", "اكتمال القمر في منتصف الشهر."], left: ["باب", "مدخل يفتح ويغلق."], right: ["تمر", "ثمرة النخيل المعروفة." ] }
       ],
-      phrase: "النجاح"
+      phrase: "النجاح", lesson: "الاستمرار بخطوات صغيرة يصنع فرقًا كبيرًا مع الوقت."
     },
     {
       blocks: [
         { top: ["نور", "ضياء يبدد الظلام."], bottom: ["ملح", "مادة بيضاء تضاف إلى الطعام."], left: ["نجم", "جرم سماوي مضيء."], right: ["ريح", "هواء يتحرك من مكان إلى آخر." ] },
         { top: ["ورد", "زهر جميل معروف بألوانه ورائحته."], bottom: ["دبس", "شراب كثيف حلو يستخرج من التمر أو العنب."], left: ["وعد", "التزام يقطعه المرء على نفسه."], right: ["درس", "موضوع يتعلمه الطالب." ] }
       ],
-      phrase: "الطموح"
+      phrase: "الطموح", lesson: "التعلّم المستمر يفتح أبوابًا جديدة للفهم والعمل."
     },
     {
       blocks: [
         { top: ["نار", "لهب ينتج حرارة وضوءًا."], bottom: ["رمل", "حبيبات دقيقة تنتشر في الشواطئ والصحارى."], left: ["نهر", "مجرى مائي طبيعي."], right: ["رمل", "حبيبات دقيقة من الصخور." ] },
         { top: ["بيت", "مكان للسكن والإقامة."], bottom: ["بدر", "القمر حين يكتمل."], left: ["باب", "مدخل المنزل أو الغرفة."], right: ["تمر", "فاكهة تنمو على النخيل." ] }
       ],
-      phrase: "التفوق"
+      phrase: "التفوق", lesson: "التخطيط والمثابرة يساعدان على تحويل الهدف إلى إنجاز."
     },
     {
       blocks: [
         { top: ["قمر", "جرم يرافق الأرض في دورانها."], bottom: ["مهم", "أمر يستحق العناية."], left: ["قلم", "أداة تدوين الكلمات."], right: ["رسم", "فن تصوير الأشياء بالخطوط." ] },
         { top: ["نور", "ما يكشف الأشياء ويضيء المكان."], bottom: ["ملح", "منكّه شائع للطعام."], left: ["نجم", "جسم مضيء في السماء."], right: ["ريح", "نسيم أو هواء متحرك." ] }
       ],
-      phrase: "السلام"
+      phrase: "السلام", lesson: "الكلمة الطيبة والإنصات الصادق يقويان روابط الناس."
     }
   ],
   en: [
@@ -41,28 +41,28 @@ const BANKS = {
         { top: ["cat", "A small domestic animal that often purrs."], bottom: ["run", "To move quickly on foot."], left: ["car", "A road vehicle with an engine."], right: ["ten", "The number after nine." ] },
         { top: ["sun", "The star at the center of our solar system."], bottom: ["and", "A word used to join words or phrases."], left: ["sea", "A large body of salt water."], right: ["nod", "To move your head up and down." ] }
       ],
-      phrase: "BRIGHT"
+      phrase: "BRIGHT", lesson: "Small, steady steps can lead to meaningful progress."
     },
     {
       blocks: [
         { top: ["map", "A drawing that shows places and roads."], bottom: ["nun", "A woman who belongs to a religious order."], left: ["man", "An adult male person."], right: ["pen", "A tool used for writing with ink." ] },
         { top: ["ear", "The body part used for hearing."], bottom: ["tot", "A very young child."], left: ["eat", "To take food into the mouth."], right: ["rat", "A small rodent with a long tail." ] }
       ],
-      phrase: "GROWTH"
+      phrase: "GROWTH", lesson: "Continuous learning helps us understand more and adapt."
     },
     {
       blocks: [
         { top: ["bed", "A piece of furniture used for sleeping."], bottom: ["tot", "A small child."], left: ["bat", "A flying mammal, or a sports club."], right: ["dot", "A small round mark." ] },
         { top: ["rug", "A small floor covering."], bottom: ["nun", "A woman in a religious community."], left: ["ran", "Moved quickly on foot; past tense of run."], right: ["gun", "A device designed to fire bullets." ] }
       ],
-      phrase: "CREATE"
+      phrase: "CREATE", lesson: "Planning and persistence turn ideas into achievements."
     },
     {
       blocks: [
         { top: ["cat", "A common household pet."], bottom: ["run", "To move at a fast pace."], left: ["car", "A motor vehicle."], right: ["ten", "Five plus five." ] },
         { top: ["map", "A guide to locations."], bottom: ["nun", "A member of a religious sisterhood."], left: ["man", "An adult human male."], right: ["pen", "An ink writing instrument." ] }
       ],
-      phrase: "PLANET"
+      phrase: "PLANET", lesson: "Kind words and careful listening strengthen communities."
     }
   ]
 };
@@ -144,7 +144,7 @@ function puzzleFor(day, lang) {
   const phrase = normalize(template.phrase, lang);
   if (phrase.length !== WIDTH) throw new Error(`Final phrase must contain ${WIDTH} letters`);
 
-  return { date: day, language: lang, entries, grid, phrase, solutionAvailableOn: dayAfter(day) };
+  return { date: day, language: lang, entries, grid, phrase, lesson: template.lesson, solutionAvailableOn: dayAfter(day) };
 }
 
 function publicPuzzle(puzzle, includeSolution) {
@@ -163,6 +163,7 @@ function publicPuzzle(puzzle, includeSolution) {
   if (includeSolution) {
     payload.grid = puzzle.grid;
     payload.phrase = puzzle.phrase.join("");
+    payload.lesson = puzzle.lesson;
     payload.answers = puzzle.entries.map(({ id, answer }) => ({ id, answer: answer.join("") }));
   }
   return payload;
@@ -217,7 +218,10 @@ export async function onRequestPost({ request }) {
         ? (lang === "ar" ? "أحسنت! اكتملت الكلمات، وظهرت العبارة المخفية." : "Excellent! The crossword is complete and the hidden phrase is revealed.")
         : (lang === "ar" ? "بعض الكلمات صحيحة. راجع التلميحات وحاول مرة أخرى." : "Some words are correct. Review the clues and try again.")
     };
-    if (complete) response.phrase = puzzle.phrase.join("");
+    if (complete) {
+      response.phrase = puzzle.phrase.join("");
+      response.lesson = puzzle.lesson;
+    }
     return Response.json(response, { headers: { "Cache-Control": "no-store" } });
   } catch (_) {
     return Response.json({ error: "invalid_request" }, { status: 400, headers: { "Cache-Control": "no-store" } });
