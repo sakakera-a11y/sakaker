@@ -1,5 +1,6 @@
 const ACTIVE_WINDOW_MS = 60_000;
 const ANALYTICS_CACHE_TTL_SECONDS = 300;
+const ANALYTICS_QUERY_CONCURRENCY = 4;
 const GRAPHQL_ENDPOINT = "https://api.cloudflare.com/client/v4/graphql";
 const ALLOWED_HOSTS = new Set(["sakaker.co", "www.sakaker.co"]);
 const PREVIEW_HOST_SUFFIX = ".sakaker-pages-test.pages.dev";
@@ -17,7 +18,7 @@ function normalizeAllowedOrigins(env = {}) {
 }
 function isAllowedHost(hostname) {
   return ALLOWED_HOSTS.has(hostname) || hostname === "sakaker-pages-test.pages.dev"
-    || hostname.endsWith(PREVIEW_HOST_SUFFIX) || hostname === "localhost" || hostname === "127.0.0.1"
+    || hostname.endsWith(PREVIEW_HOST_SUFFIX) || LOCAL_ALLOWED_HOSTS.has(hostname)
     || /(^|\.)vercel\.app$/i.test(hostname) || /(^|\.)pages\.dev$/i.test(hostname);
 }
 function isAllowedOrigin(origin, env = {}) {
@@ -62,9 +63,14 @@ function addUtcDays(day, count) {
   date.setUTCDate(date.getUTCDate() + count);
   return utcDate(date);
 }
+function supportsUniqueMetric(fields) {
+  return Array.isArray(fields) && fields.some(field =>
+    ["uniq_uniques", "uniq.uniques", "uniques", "uniqueVisitors"].includes(field)
+  );
+}
 async function fetchAnalyticsCounts(env) {
   if (!env.CF_ANALYTICS_API_TOKEN || !env.CF_ZONE_ID) {
-    return { total: null, today: null, analyticsConfigured: false };
+    return { total: null, today: null, analyticsConfigured: false, analyticsAvailable: false };
   }
   const settingsQuery = `query CounterDatasetSettings($zoneTag: String) {
     viewer { zones(filter: { zoneTag: $zoneTag }) {
@@ -74,15 +80,20 @@ async function fetchAnalyticsCounts(env) {
   const settingsData = await graphql(env, settingsQuery, { zoneTag: env.CF_ZONE_ID });
   const settings = settingsData?.viewer?.zones?.[0]?.settings?.httpRequests1dGroups;
   if (!settings?.enabled) throw new Error("Cloudflare daily analytics dataset is not enabled");
-  const fields = Array.isArray(settings.availableFields) ? settings.availableFields : [];
-  if (!fields.includes("uniq_uniques")) throw new Error("Cloudflare daily unique-IP metric is unavailable");
+  if (!supportsUniqueMetric(settings.availableFields)) {
+    throw new Error("Cloudflare daily unique-IP metric is unavailable");
+  }
   const maxDuration = Number(settings.maxDuration), retention = Number(settings.notOlderThan);
   const maxPageSize = Math.floor(Number(settings.maxPageSize));
   if (![maxDuration, retention, maxPageSize].every(value => Number.isFinite(value) && value > 0)) {
     throw new Error("Cloudflare returned invalid Analytics dataset limits");
   }
+  const maxDaysPerQuery = Math.floor(maxDuration / 86400);
+  if (maxDaysPerQuery < 1) throw new Error("Cloudflare Analytics range is shorter than one day");
+
   const now = new Date(), startDay = utcDate(new Date(now.getTime() - retention * 1000));
-  const endDay = utcDate(now), daysPerQuery = Math.max(1, Math.min(Math.floor(maxDuration / 86400), Math.max(1, maxPageSize - 1)));
+  const endDay = utcDate(now);
+  const daysPerQuery = Math.max(1, Math.min(maxDaysPerQuery, maxPageSize));
   const dailyQuery = `query DailyUniqueVisitors($zoneTag: String, $start: Date, $end: Date, $limit: Int) {
     viewer { zones(filter: { zoneTag: $zoneTag }) {
       httpRequests1dGroups(
@@ -92,39 +103,61 @@ async function fetchAnalyticsCounts(env) {
       ) { dimensions { date } uniq { uniques } }
     } }
   }`;
-  let total = 0, today = 0, dayCount = 0, cursor = startDay;
-  while (cursor <= endDay) {
-    const chunkEndCandidate = addUtcDays(cursor, daysPerQuery - 1);
-    const chunkEnd = chunkEndCandidate < endDay ? chunkEndCandidate : endDay;
-    const data = await graphql(env, dailyQuery, {
-      zoneTag: env.CF_ZONE_ID, start: cursor, end: chunkEnd, limit: maxPageSize
-    });
-    const rows = data?.viewer?.zones?.[0]?.httpRequests1dGroups;
-    if (!Array.isArray(rows)) throw new Error("Cloudflare returned an invalid daily Analytics result");
-    if (rows.length >= maxPageSize) throw new Error("Cloudflare Analytics page limit reached; refusing an incomplete total");
-    for (const row of rows) {
-      const count = Number(row?.uniq?.uniques);
-      if (!Number.isFinite(count) || count < 0) throw new Error("Cloudflare returned an invalid unique-IP count");
-      total += count;
-      dayCount += 1;
-      if (row?.dimensions?.date === endDay) today = count;
-    }
+
+  const chunks = [];
+  for (let cursor = startDay; cursor <= endDay;) {
+    const candidate = addUtcDays(cursor, daysPerQuery - 1);
+    const chunkEnd = candidate < endDay ? candidate : endDay;
+    chunks.push({ start: cursor, end: chunkEnd });
     cursor = addUtcDays(chunkEnd, 1);
   }
+
+  let total = 0, today = 0, dayCount = 0;
+  const seenDays = new Set();
+  for (let index = 0; index < chunks.length; index += ANALYTICS_QUERY_CONCURRENCY) {
+    const batch = chunks.slice(index, index + ANALYTICS_QUERY_CONCURRENCY);
+    const results = await Promise.all(batch.map(async ({ start, end }) => {
+      const data = await graphql(env, dailyQuery, {
+        zoneTag: env.CF_ZONE_ID, start, end, limit: maxPageSize
+      });
+      const rows = data?.viewer?.zones?.[0]?.httpRequests1dGroups;
+      if (!Array.isArray(rows)) throw new Error("Cloudflare returned an invalid daily Analytics result");
+      if (rows.length > maxPageSize) throw new Error("Cloudflare returned more rows than the Analytics page limit");
+      return { start, end, rows };
+    }));
+
+    for (const { start, end, rows } of results) {
+      for (const row of rows) {
+        const day = row?.dimensions?.date;
+        const rawCount = row?.uniq?.uniques;
+        const count = Number(rawCount);
+        if (typeof day !== "string" || day < start || day > end || seenDays.has(day)
+          || rawCount === null || rawCount === undefined || rawCount === ""
+          || !Number.isFinite(count) || count < 0) {
+          throw new Error("Cloudflare returned an invalid or duplicate daily unique-IP row");
+        }
+        seenDays.add(day);
+        total += count;
+        dayCount += 1;
+        if (day === endDay) today = count;
+      }
+    }
+  }
   return {
-    total, today, analyticsConfigured: true, totalBasis: "sum_of_daily_unique_ips",
-    timezone: "UTC", historyStart: startDay, historyEnd: endDay, daysReturned: dayCount
+    total, today, analyticsConfigured: true, analyticsAvailable: true,
+    totalBasis: "sum_of_daily_unique_ips", timezone: "UTC",
+    historyStart: startDay, historyEnd: endDay, daysReturned: dayCount
   };
 }
 async function readAnalyticsCounts(request, env) {
   const cache = typeof caches !== "undefined" ? caches.default : null;
-  const cacheKey = new Request(new URL("/__sakaker_analytics_counter_v1", new URL(request.url).origin));
+  const cacheKey = new Request(new URL("/__sakaker_analytics_counter_v2", new URL(request.url).origin));
   if (cache) {
     const cached = await cache.match(cacheKey);
     if (cached) return cached.json();
   }
   const counts = await fetchAnalyticsCounts(env);
-  if (cache && counts.analyticsConfigured) {
+  if (cache && counts.analyticsAvailable) {
     await cache.put(cacheKey, new Response(JSON.stringify(counts), {
       headers: { "Cache-Control": "public, max-age=" + ANALYTICS_CACHE_TTL_SECONDS }
     }));
@@ -132,8 +165,15 @@ async function readAnalyticsCounts(request, env) {
   return counts;
 }
 async function readCounts(db, request, env) {
+  const analyticsPromise = readAnalyticsCounts(request, env).catch(error => {
+    console.error("Visitor counter Analytics unavailable", error);
+    return {
+      total: null, today: null, analyticsConfigured: Boolean(env.CF_ANALYTICS_API_TOKEN && env.CF_ZONE_ID),
+      analyticsAvailable: false
+    };
+  });
   const [analytics, active] = await Promise.all([
-    readAnalyticsCounts(request, env),
+    analyticsPromise,
     db.prepare("SELECT COUNT(*) AS count FROM active_sessions WHERE last_seen >= ?1")
       .bind(Date.now() - ACTIVE_WINDOW_MS).first()
   ]);
