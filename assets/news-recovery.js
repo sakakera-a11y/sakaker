@@ -5,7 +5,7 @@
   if(!window.__sakCastleNewspaperLoaded&&!document.getElementById('sakCastleNewspaperLegacyLoader')){
     const script=document.createElement('script');
     script.id='sakCastleNewspaperLegacyLoader';
-    script.src='/assets/castle-newspaper.js?v=20261108-crossword-clean1';
+    script.src='/assets/castle-newspaper.js?v=20261108-inline-crystal1';
     script.async=true;
     document.head.appendChild(script);
   }
