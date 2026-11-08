@@ -154,7 +154,7 @@ function renderNews(){
  Object.entries(categories).forEach(([k,v])=>{const b=document.createElement('button');b.textContent=v;b.setAttribute('aria-pressed',String(category===k));b.addEventListener('click',()=>{category=k;renderNews();});tabs.appendChild(b);});
  const refresh=document.createElement('button');refresh.className='cn-refresh';refresh.textContent=loading?'جارٍ التحديث…':'تحديث الأخبار';refresh.disabled=loading;refresh.addEventListener('click',()=>loadNews(true));tabs.appendChild(refresh);p.appendChild(tabs);
  const meta=document.createElement('div');meta.className='cn-meta cn-updated';meta.textContent=lastLoad?(language==='en'?'Last updated: ':'آخر تحديث: ')+new Date(lastLoad).toLocaleString(language==='ar'?'ar-SA':'en-GB'):(language==='en'?'Live news sources':'مصادر الأخبار المباشرة');p.appendChild(meta);
- if(newsError){const status=document.createElement('div');status.className='cn-status';status.setAttribute('role','status');status.textContent=newsError;p.appendChild(status);}
+ if(newsError){const status=document.createElement('div');status.className='cn-status';status.setAttribute('role','status');status.textContent=language==='en'?(items.length?'Live update failed. Showing saved headlines.':'News sources are temporarily unavailable. Please try again.'):(items.length?'تعذر التحديث المباشر؛ نعرض الأخبار المحفوظة حالياً.':'مصادر الأخبار غير متاحة مؤقتاً. يرجى المحاولة مرة أخرى.');p.appendChild(status);}
  const list=items.filter(x=>category==='all'||x.category===category);
  if(!list.length){const e=document.createElement('div');e.className='cn-empty';e.textContent=loading?'جارٍ جلب الأخبار من المصادر…':'لا توجد أخبار متاحة حالياً؛ حاول التحديث لاحقاً.';p.appendChild(e);}
  list.forEach(x=>{const card=document.createElement('article');card.className='cn-story';const a=document.createElement('a');a.href=x.link;a.target='_blank';a.rel='noopener noreferrer';a.textContent=x.title;card.appendChild(a);const m=document.createElement('div');m.className='cn-meta';m.textContent=x.source+(x.date?' · '+x.date:'');card.appendChild(m);if(x.desc){const d=document.createElement('div');d.className='cn-desc';d.textContent=x.desc;card.appendChild(d);}p.appendChild(card);});
@@ -183,9 +183,7 @@ async function loadNews(force=false){
   lastLoad=Date.now();
   try{localStorage.setItem('sakCastleNewspaperCacheV1',JSON.stringify({savedAt:lastLoad,items}));}catch(_){}
  }catch(error){
-  newsError=items.length
-   ?(language==='en'?'Live update failed. Showing saved headlines.':'تعذر التحديث المباشر؛ نعرض الأخبار المحفوظة حالياً.')
-   :(language==='en'?'News sources are temporarily unavailable. Please try again.':'مصادر الأخبار غير متاحة مؤقتاً. يرجى المحاولة مرة أخرى.');
+  newsError='unavailable';
  }finally{
   loading=false;
   renderNews();
