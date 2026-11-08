@@ -34,8 +34,8 @@ export async function onRequestGet({ request }) {
         return { ok: false, name: source.name, category: source.category, error: "HTTP " + response.status };
       }
       const xml = await response.text();
-      const hasFeedRoot = /<(?:[\\w.-]+:)?(?:rss|feed|RDF)\\b/i.test(xml.slice(0, 12000));
-      const hasEntries = /<(?:[\\w.-]+:)?(?:item|entry)\\b/i.test(xml);
+      const hasFeedRoot = /<(?:[\w.-]+:)?(?:rss|feed|RDF)\b/i.test(xml.slice(0, 12000));
+      const hasEntries = /<(?:[\w.-]+:)?(?:item|entry)\b/i.test(xml);
       if (!hasFeedRoot || !hasEntries) {
         return { ok: false, name: source.name, category: source.category, error: "Invalid RSS/Atom response" };
       }
