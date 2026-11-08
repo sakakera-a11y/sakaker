@@ -530,6 +530,7 @@ function syncSiteBackgroundLock(){
   updateSiteBackgroundButton();
   ensureCastleTourLauncher();
   ensureCastleStoriesLauncher();
+  ensureCastleNewspaperLauncher();
   ensureTitanicShipLauncher();
   hideFacebookLaunchers();
   rebuildIconAppearance();
@@ -845,6 +846,17 @@ function ensureCastleStoriesLauncher(){
   script.async=true;
   document.head.appendChild(script);
 }
+
+function ensureCastleNewspaperLauncher(){
+  if(document.getElementById('sakCastleNewspaperLauncherScript'))return;
+  const script=document.createElement('script');
+  script.id='sakCastleNewspaperLauncherScript';
+  script.src='/assets/castle-newspaper.js?v=20261108-3';
+  script.async=true;
+  script.onerror=()=>script.remove();
+  document.head.appendChild(script);
+}
+
 
 function ensureCastleTourLauncher(){
   // A dedicated independent launcher is required: the original horizontal
