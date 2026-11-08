@@ -79,15 +79,11 @@ function styles(){
  '#sakCastleNewspaperDialog .cn-game p{line-height:1.7}',
  '#sakCastleNewspaperDialog input{max-width:100%;padding:10px;border-radius:9px;border:1px solid #b89bd6;background:#0b2029;color:#fff;font:inherit}',
  '#sakCastleNewspaperDialog .cn-action{border:1px solid #e6c7ff;border-radius:10px;padding:9px 14px;color:#fff;background:linear-gradient(120deg,#62428c,#17616a);cursor:pointer;margin:5px 3px}',
- '#sakCastleNewspaperDialog .cn-grid{display:grid;grid-template-columns:repeat(3,38px);gap:3px;margin:12px auto;width:max-content}',
- '#sakCastleNewspaperDialog .cn-cell{width:38px;height:38px;border:1px solid #d7c3e8;background:#f7f1ff;color:#281c39;border-radius:4px;text-align:center;font-weight:900;padding:0}',
- '#sakCastleNewspaperDialog .cn-cell.blank{background:#10232b;border-color:#31434c}',
  '#sakCastleNewspaperDialog .cn-pictures{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}',
  '#sakCastleNewspaperDialog .cn-picture{width:100%;height:auto;border:1px solid #bfa1d8;border-radius:10px;background:#d4e8e7;touch-action:manipulation}',
  '#sakCastleNewspaperDialog .cn-signs{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}',
  '#sakCastleNewspaperDialog .cn-signs button{border:1px solid #aa8bc7;border-radius:9px;padding:7px 9px;background:#211a37;color:#fff}',
  '#sakCastleNewspaperDialog .cn-signs button[aria-pressed=true]{background:#65448a}',
- '@media(max-width:560px){#sakCastleNewspaperDialog{width:100vw;max-width:100vw;max-height:96dvh;border-radius:14px}#sakCastleNewspaperDialog .cn-body{padding:9px;max-height:calc(96dvh - 58px)}#sakCastleNewspaperDialog .cn-pictures{gap:5px}#sakCastleNewspaperDialog .cn-cell{width:32px;height:32px}}',
  '#sakCastleNewspaperDialog{border:1px solid #b9a1e8;border-radius:22px;background:radial-gradient(ellipse at 12% 0%,#254a58 0%,transparent 38%),radial-gradient(ellipse at 100% 100%,#39234f 0%,transparent 42%),linear-gradient(145deg,#071a26 0%,#11182b 54%,#092b32 100%);box-shadow:0 24px 90px #02060bd9,0 0 0 1px #ffffff12,0 0 38px #a77be544;color:#f8f5ff}',
  '#sakCastleNewspaperDialog .cn-head{position:relative;padding:17px 19px;background:linear-gradient(110deg,#163b4aee,#38224fee 58%,#18515aee);border-bottom:1px solid #d8c1ff55}',
  '#sakCastleNewspaperDialog .cn-head:after{content:"";position:absolute;inset:auto 18px 0;height:1px;background:linear-gradient(90deg,transparent,#d8b5ff,transparent)}',
@@ -114,14 +110,10 @@ function styles(){
  '#sakCastleNewspaperDialog input{width:min(100%,320px);padding:11px 13px;border-radius:11px;border:1px solid #a98bcf;background:#091c29;color:#fff;font:inherit;outline:none;transition:border-color .2s,box-shadow .2s}',
  '#sakCastleNewspaperDialog input:focus{border-color:#75d9d0;box-shadow:0 0 0 3px #4abdb333}',
  '#sakCastleNewspaperDialog .cn-action{border:1px solid #dfc4ff;border-radius:12px;padding:10px 17px;color:#fff;background:linear-gradient(115deg,#7650a8,#167b80);font-weight:900;cursor:pointer;margin:7px 3px;box-shadow:0 6px 18px #00000025;transition:all .2s}',
- '#sakCastleNewspaperDialog .cn-grid{gap:4px;margin:16px auto 20px}',
- '#sakCastleNewspaperDialog .cn-cell{width:42px;height:42px;border:1px solid #d9c4ef;background:linear-gradient(145deg,#fff,#e9e2f4);color:#2b1d3b;border-radius:8px;font-size:18px;box-shadow:0 3px 8px #00000020}',
- '#sakCastleNewspaperDialog .cn-cell.blank{background:#0b202b;border:1px solid #2b4853;box-shadow:none}',
  '#sakCastleNewspaperDialog .cn-pictures{gap:12px;margin:12px 0}',
  '#sakCastleNewspaperDialog .cn-picture{border:1px solid #c7a7e8;border-radius:14px;box-shadow:0 8px 24px #00000035}',
  '#sakCastleNewspaperDialog .cn-signs button{border:1px solid #aa8bc7;border-radius:11px;padding:8px 12px;background:linear-gradient(145deg,#182b3b,#29203d);color:#fff;font-weight:700}',
  '#sakCastleNewspaperDialog .cn-signs button[aria-pressed=true]{background:linear-gradient(120deg,#7650a8,#177b83);border-color:#e8caff;box-shadow:0 4px 14px #6d4d9b55}',
- '@media(max-width:560px){#sakCastleNewspaperDialog .cn-head{padding:12px 13px}#sakCastleNewspaperDialog .cn-story{padding:12px}#sakCastleNewspaperDialog .cn-story a{font-size:14px}#sakCastleNewspaperDialog .cn-cell{width:34px;height:34px;font-size:16px}#sakCastleNewspaperDialog .cn-tabs button,#sakCastleNewspaperDialog .cn-refresh{padding:8px 12px;font-size:12px}}',
  '#sakCastleNewspaperDialog{background:radial-gradient(ellipse at 8% 4%,#ffd9ed55 0%,transparent 31%),radial-gradient(ellipse at 93% 8%,#b8eaff55 0%,transparent 32%),radial-gradient(ellipse at 85% 92%,#d9c5ff55 0%,transparent 34%),radial-gradient(ellipse at 12% 88%,#b8ffe455 0%,transparent 32%),linear-gradient(135deg,#132d45 0%,#273653 28%,#3b3155 52%,#25485a 76%,#173e4b 100%);border:1px solid #f4d9ff;box-shadow:0 24px 90px #02060bd9,0 0 0 1px #ffffff22,0 0 24px #ff9fdc66,0 0 42px #8be9ff55,0 0 58px #b8ffcf44;color:#fff}',
 '#sakCastleNewspaperDialog .cn-head{background:linear-gradient(105deg,#ffb7dc33,#ffe9ad33 25%,#b9f6df33 50%,#b8e5ff33 75%,#d8c1ff44),linear-gradient(110deg,#183e50ee,#45335fee 55%,#205765ee);border-bottom:1px solid #f7e5ff88;backdrop-filter:blur(14px)}',
 '#sakCastleNewspaperDialog .cn-head:after{height:2px;background:linear-gradient(90deg,#ffb5d9,#ffe6a6,#baf4c9,#aee8ff,#d5baff)}',
@@ -141,7 +133,6 @@ function styles(){
 '#sakCastleNewspaperDialog .cn-game p{color:#f4efff}',
 '#sakCastleNewspaperDialog .cn-action{border-color:#f3dfff;background:linear-gradient(105deg,#e99bc6,#e8c58c,#8fd4ba,#8ccbe8,#b49ae3);color:#17283a;text-shadow:none;box-shadow:0 6px 20px #0003,0 0 13px #e3b3ff55}',
 '#sakCastleNewspaperDialog .cn-close{background:linear-gradient(110deg,#eaa4cd,#e5c58d,#8fd4ba,#91cbea,#b49be5);color:#17283a;border-color:#fff}',
-'#sakCastleNewspaperDialog .cn-cell{background:linear-gradient(145deg,#fff,#f1eaff);border-color:#e5d5ff;box-shadow:0 3px 10px #0003}',
 '#sakCastleNewspaperDialog .cn-signs button{background:linear-gradient(145deg,#ffffff22,#ffffff0c);border-color:#e5d5ff99}',
 '#sakCastleNewspaperDialog .cn-signs button[aria-pressed=true]{background:linear-gradient(110deg,#ed9dc9,#e9c88e,#91d8bd,#8bcbe8,#baa0e8);color:#18263b;border-color:#fff}',
 '#sakCastleNewspaperDialog .cn-close:focus-visible,#sakCastleNewspaperDialog button:focus-visible,#sakCastleNewspaperDialog a:focus-visible{outline:2px solid #fff;outline-offset:3px}',
@@ -235,137 +226,7 @@ async function loadNews(force=false){
  }
 }
 function tabButton(tab){dialog().querySelectorAll('[data-tab]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tab===tab)));}
-function showTab(tab){tabButton(tab);const p=$('cnPanel');p.replaceChildren();if(tab==='news'){category='all';renderNews();}else if(tab==='crossword')crossword(p);else if(tab==='differences')differences(p);else horoscope(p);applyLanguage(p);}
-const puzzles=[
- {a:'بحر',d:'بيت',ac:'ماء واسع مالح',dc:'مكان يسكن فيه الإنسان'},
- {a:'قمر',d:'قلم',ac:'جرم نراه ليلاً',dc:'أداة نكتب بها'},
- {a:'ورد',d:'وقت',ac:'زهرة جميلة',dc:'زمن أو موعد'},
- {a:'نجم',d:'نهر',ac:'جرم يلمع في السماء',dc:'مجرى ماء عذب'},
- {a:'شمس',d:'شعر',ac:'مصدر الضوء والدفء نهاراً',dc:'ما ينبت على الرأس'},
- {a:'باب',d:'بحر',ac:'مدخل المنزل',dc:'ماء واسع مالح'},
- {a:'عين',d:'علم',ac:'عضو الإبصار',dc:'راية الدولة'},
- {a:'جمل',d:'جبل',ac:'حيوان سفينة الصحراء',dc:'مرتفع صخري كبير'}
-];
-const englishPuzzles=[
- {a:'sea',d:'sun',ac:'A large body of salt water',dc:'The star that lights our day'},
- {a:'cat',d:'car',ac:'A common household pet',dc:'A road vehicle'},
- {a:'map',d:'man',ac:'A drawing that shows places',dc:'An adult person'},
- {a:'pen',d:'pig',ac:'A tool used for writing',dc:'A farm animal that oinks'},
- {a:'sky',d:'sun',ac:'The space above the earth',dc:'The star at the center of our solar system'},
- {a:'box',d:'bat',ac:'A container with sides',dc:'A flying mammal'},
- {a:'cup',d:'cow',ac:'A vessel used for drinking',dc:'A farm animal that gives milk'},
- {a:'dog',d:'day',ac:'A loyal four-legged pet',dc:'The time between sunrise and sunset'}
-];
-function norm(s){return String(s||'').toLowerCase().replace(/[\u064B-\u065F\u0670\u0640]/g,'').replace(/[أإآٱ]/g,'ا').replace(/ؤ/g,'و').replace(/ئ/g,'ي').replace(/ى/g,'ي').replace(/\s/g,'').trim();}
-const crosswordMemory={};
-const crosswordRequests={};
-function crosswordKey(lang,date){return 'sakCastleCrosswordV2:'+lang+':'+date;}
-function readCrossword(key){try{return JSON.parse(localStorage.getItem(key)||'null');}catch(_){return null;}}
-function fallbackCrossword(lang){
- const bank=lang==='en'?englishPuzzles:puzzles;
- const q=bank[Number(day().replace(/-/g,''))%bank.length];
- return {date:day(),language:lang,across:{answer:q.a,clue:q.ac,url:'',title:''},down:{answer:q.d,clue:q.dc,url:'',title:''},crossing:{acrossIndex:0,downIndex:0},source:lang==='en'?'English offline puzzle':'لغز عربي احتياطي',fallback:true};
-}
-async function loadCrosswordData(lang){
- const today=day(),key=crosswordKey(lang,today);
- if(crosswordMemory[lang]&&crosswordMemory[lang].date===today)return crosswordMemory[lang];
- const saved=readCrossword(key);
- if(saved&&saved.across?.answer&&saved.down?.answer){crosswordMemory[lang]=saved;return saved;}
- if(crosswordRequests[lang])return crosswordRequests[lang];
- crosswordRequests[lang]=(async()=>{
-  try{
-   const response=await fetch('/api/crossword?lang='+encodeURIComponent(lang)+'&day='+encodeURIComponent(today),{cache:'no-store',headers:{'Accept':'application/json'}});
-   if(!response.ok)throw new Error('HTTP '+response.status);
-   const data=await response.json();
-   if(data.language!==lang||data.date!==today||!data.across?.answer||!data.down?.answer)throw new Error('Invalid daily crossword');
-   const puzzle={...data,fallback:false};
-   crosswordMemory[lang]=puzzle;
-   try{
-    localStorage.setItem(key,JSON.stringify(puzzle));
-    localStorage.setItem('sakCastleCrosswordLastGood:'+lang,JSON.stringify(puzzle));
-   }catch(_){}
-   return puzzle;
-  }catch(error){
-   const last=readCrossword('sakCastleCrosswordLastGood:'+lang);
-   const backup=last&&last.across?.answer&&last.down?.answer?{...last,fallback:true,stale:true}:fallbackCrossword(lang);
-   crosswordMemory[lang]=backup;
-   return backup;
-  }finally{delete crosswordRequests[lang];}
- })();
- return crosswordRequests[lang];
-}
-function preloadCrosswords(){
- ['ar','en'].forEach(lang=>{loadCrosswordData(lang).catch(()=>{});});
-}
-function renderCrossword(panel,puzzle,loading=false){
- if(!panel)return;
- panel.replaceChildren();
- const lang=puzzle.language||language;
- const q={a:puzzle.across?.answer||'',d:puzzle.down?.answer||'',ac:puzzle.across?.clue||'',dc:puzzle.down?.clue||''};
- const w=document.createElement('div');w.className='cn-game';
- const h=document.createElement('h3');h.textContent=lang==='en'?'🧩 Daily Crossword':'🧩 الكلمات المتقاطعة اليومية';w.appendChild(h);
- const intro=document.createElement('p');intro.textContent=lang==='en'?'Solve the across and down words. They cross at the highlighted square.':'حل الكلمتين الأفقية والعمودية؛ تتقاطعان عند المربع المشترك.';w.appendChild(intro);
- const aWord=[...norm(q.a)],dWord=[...norm(q.d)];
- const ai=Number.isInteger(puzzle.crossing?.acrossIndex)?puzzle.crossing.acrossIndex:0;
- const di=Number.isInteger(puzzle.crossing?.downIndex)?puzzle.crossing.downIndex:0;
- const grid=document.createElement('div');grid.className='cn-grid';
- grid.style.gridTemplateColumns='repeat('+Math.max(1,aWord.length)+',minmax(28px,38px))';
- grid.style.gridTemplateRows='repeat('+Math.max(1,dWord.length)+',minmax(28px,38px))';
- const letters=new Map();
- aWord.forEach((ch,c)=>letters.set(di+','+c,ch));
- dWord.forEach((ch,r)=>letters.set(r+','+ai,ch));
- for(let r=0;r<dWord.length;r++)for(let c=0;c<aWord.length;c++){
-  const key=r+','+c,cell=document.createElement('div'),letter=letters.get(key);
-  cell.className='cn-cell'+(letter===undefined?' blank':'');
-  if(letter!==undefined){cell.textContent='؟';cell.dataset.answer=letter;}
-  grid.appendChild(cell);
- }
- w.appendChild(grid);
- const ca=document.createElement('p');ca.textContent=(lang==='en'?'Across: ':'أفقي: ')+q.ac;w.appendChild(ca);
- const a=document.createElement('input');a.maxLength=aWord.length;a.autocomplete='off';a.spellcheck=false;a.placeholder=lang==='en'?'Across answer':'الإجابة الأفقية';a.setAttribute('aria-label',a.placeholder);w.appendChild(a);
- const cd=document.createElement('p');cd.textContent=(lang==='en'?'Down: ':'عمودي: ')+q.dc;w.appendChild(cd);
- const d=document.createElement('input');d.maxLength=dWord.length;d.autocomplete='off';d.spellcheck=false;d.placeholder=lang==='en'?'Down answer':'الإجابة العمودية';d.setAttribute('aria-label',d.placeholder);w.appendChild(d);
- const result=document.createElement('p');result.setAttribute('aria-live','polite');w.appendChild(result);
- const check=document.createElement('button');check.className='cn-action';check.textContent=lang==='en'?'Check answers':'تحقق من الحل';
- check.addEventListener('click',()=>{
-  const ok=norm(a.value)===norm(q.a)&&norm(d.value)===norm(q.d);
-  result.textContent=lang==='en'?(ok?'Excellent! Both answers are correct.':'Not quite. Check the clues and try again.'):(ok?'أحسنت! إجابتك صحيحة.':'ليست الإجابة صحيحة بعد؛ حاول مرة أخرى.');
-  result.style.color=ok?'#a6f2c5':'#ffd4a6';
-  if(ok)grid.querySelectorAll('.cn-cell:not(.blank)').forEach(cell=>cell.textContent=cell.dataset.answer||'');
- });
- w.appendChild(check);
- const meta=document.createElement('div');meta.className='cn-meta';
- meta.textContent=(lang==='en'?'Puzzle for ':'لغز يوم ')+(puzzle.date||day());
- w.appendChild(meta);
- if(puzzle.sourceUrl){
-  const source=document.createElement('a');source.href=puzzle.sourceUrl;source.target='_blank';source.rel='noopener noreferrer';source.textContent=lang==='en'?'Source: '+(puzzle.source||'Wikipedia'):'المصدر: '+(puzzle.source||'ويكيبيديا');source.style.cssText='display:inline-block;margin-top:7px;color:#dff8ff;text-decoration:underline';w.appendChild(source);
- }
- if(puzzle.across?.url||puzzle.down?.url){
-  const refs=document.createElement('div');refs.className='cn-meta';refs.style.marginTop='6px';
-  [[puzzle.across,lang==='en'?'Across article':'مقالة الكلمة الأفقية'],[puzzle.down,lang==='en'?'Down article':'مقالة الكلمة العمودية']].forEach(([entry,label])=>{
-   if(!entry?.url)return;const link=document.createElement('a');link.href=entry.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent=label;link.style.cssText='color:#dff8ff;margin-inline-end:12px';refs.appendChild(link);
-  });
-  w.appendChild(refs);
- }
- if(loading){
-  const note=document.createElement('div');note.className='cn-meta';note.textContent=lang==='en'?'Loading today’s puzzle from Wikipedia…':'جارٍ تحميل لغز اليوم من ويكيبيديا…';w.appendChild(note);
- }else if(puzzle.stale||puzzle.fallback){
-  const note=document.createElement('div');note.className='cn-status';
-  note.textContent=puzzle.stale?(lang==='en'?'Wikipedia is unavailable. Showing the last saved puzzle.':'تعذر الوصول إلى ويكيبيديا؛ نعرض آخر لغز محفوظ.'):
-   (lang==='en'?'Wikipedia is unavailable. Showing the built-in backup puzzle.':'تعذر الوصول إلى ويكيبيديا؛ نعرض لغزاً احتياطياً مدمجاً.');
-  w.appendChild(note);
- }
- panel.appendChild(w);
-}
-function crossword(panel){
- const lang=language;
- const saved=readCrossword(crosswordKey(lang,day()));
- const initial=crosswordMemory[lang]||saved||fallbackCrossword(lang);
- renderCrossword(panel,initial,!saved&&!crosswordMemory[lang]);
- loadCrosswordData(lang).then(puzzle=>{
-  if(language===lang&&$('cnPanel')===panel)renderCrossword(panel,puzzle,false);
- }).catch(()=>{});
-}
+function showTab(tab){tabButton(tab);const p=$('cnPanel');p.replaceChildren();if(tab==='news'){category='all';renderNews();}else if(tab==='crossword'){p.setAttribute('data-crossword-host','');}else if(tab==='differences')differences(p);else horoscope(p);applyLanguage(p);}
 function scene(alt){
  const variant=Number(day().replace(/-/g,''))%3,sky=['#a9dbe5','#d8c9ed','#f4d6b8'][variant],grass=['#74aa71','#829ac0','#85ae8c'][variant],wall=['#d9c49b','#d7c5dc','#e5d1a5'][variant];
  const sun=alt?'':'<circle cx="260" cy="35" r="16" fill="#ffe48b"/>',cloud=alt?'':'<path d="M35 47 Q28 31 45 28 Q54 10 70 27 Q88 24 91 43Z" fill="#fff"/>',flag=alt?'':'<path d="M160 20 L160 4 L180 10 L160 15Z" fill="#e24b65"/>',door=alt?'#4b8a8d':'#6d3d29';
@@ -388,7 +249,7 @@ function horoscope(panel){
  w.append(row,out);const note=document.createElement('div');note.className='cn-meta';note.textContent='للتسلية فقط؛ الأبراج والتوقعات ليست علماً ولا وسيلة لمعرفة المستقبل.';w.appendChild(note);show();panel.appendChild(w);
 }
 function start(){
- styles();mount();preloadCrosswords();
+ styles();mount();
  const syncLauncherLanguage=()=>{
   const pageEn=String(document.documentElement.lang||'ar').toLowerCase().startsWith('en');
   const launcher=$('sakCastleNewspaperLauncher');
