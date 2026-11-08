@@ -53,7 +53,7 @@ const BANKS = {
     {
       blocks: [
         { top: ["bed", "A piece of furniture used for sleeping."], middle: ["ago", "Before the present time."], bottom: ["tot", "A small child."], left: ["bat", "A flying mammal, or a sports club."], right: ["dot", "A small round mark." ] },
-        { top: ["rug", "A small floor covering."], middle: ["any", "One or some, without choosing a particular one."], bottom: ["nun", "A woman in a religious community."], left: ["ran", "Moved quickly on foot; past tense of run."], right: ["gym", "A place for exercise and training." ] }
+        { top: ["rat", "A small rodent."], middle: ["aha", "An expression used when you understand something."], bottom: ["nun", "A woman in a religious community."], left: ["ran", "Moved quickly on foot; past tense of run."], right: ["tan", "A light brown color." ] }
       ],
       bottomWord: ["SCHOOL", "A place where students learn."], phrase: "CREATE", lesson: "Planning and persistence turn ideas into achievements."
     },
