@@ -2,27 +2,27 @@ const TIME_ZONE = "Asia/Riyadh";
 const SIZE = 4;
 const WIDTH = 6;
 
-// Each 3x3 mini-crossword occupies one half of the 4x6 board.
-// The fourth row is reserved for the hidden final phrase.
+// Two 3x3 word-crossing blocks fill the upper three rows; a six-letter answer fills row four.
+// Every one of the 24 cells belongs to at least one across or down word.
 const BANKS = {
   ar: [
     {
       blocks: [
-        { top: ["قمر", "جرم سماوي يدور حول الأرض ويضيء ليلًا."], bottom: ["مهم", "صفة لما له قيمة أو ضرورة."], left: ["قلم", "أداة للكتابة أو الرسم."], right: ["رسم", "تعبير بصري بالخطوط والأشكال." ] },
-        { top: ["بيت", "مسكن يعيش فيه الإنسان."], bottom: ["بدر", "اكتمال القمر في منتصف الشهر."], left: ["باب", "مدخل يفتح ويغلق."], right: ["تمر", "ثمرة النخيل المعروفة." ] }
+        { top: ["قمر", "جرم سماوي يدور حول الأرض ويضيء ليلًا."], middle: ["ليس", "أداة نفي تدخل على الجملة الاسمية."], bottom: ["مهم", "صفة لما له قيمة أو ضرورة."], left: ["قلم", "أداة للكتابة أو الرسم."], right: ["رسم", "تعبير بصري بالخطوط والأشكال." ] },
+        { top: ["بيت", "مسكن يعيش فيه الإنسان."], middle: ["ألم", "وجع يشعر به الإنسان."], bottom: ["بدر", "اكتمال القمر في منتصف الشهر."], left: ["باب", "مدخل يفتح ويغلق."], right: ["تمر", "ثمرة النخيل المعروفة." ] }
       ],
       bottomWord: ["مكتبات", "أماكن تضم الكتب وتتيح القراءة والبحث."], phrase: "النجاح", lesson: "الاستمرار بخطوات صغيرة يصنع فرقًا كبيرًا مع الوقت."
     },
     {
       blocks: [
-        { top: ["نور", "ضياء يبدد الظلام."], bottom: ["ملح", "مادة بيضاء تضاف إلى الطعام."], left: ["نجم", "جرم سماوي مضيء."], right: ["ريح", "هواء يتحرك من مكان إلى آخر." ] },
-        { top: ["ورد", "زهر جميل معروف بألوانه ورائحته."], bottom: ["دبس", "شراب كثيف حلو يستخرج من التمر أو العنب."], left: ["وعد", "التزام يقطعه المرء على نفسه."], right: ["درس", "موضوع يتعلمه الطالب." ] }
+        { top: ["نور", "ضياء يبدد الظلام."], middle: ["جري", "حركة سريعة على القدمين."], bottom: ["ملح", "مادة بيضاء تضاف إلى الطعام."], left: ["نجم", "جرم سماوي مضيء."], right: ["ريح", "هواء يتحرك من مكان إلى آخر." ] },
+        { top: ["ورد", "زهر جميل معروف بألوانه ورائحته."], middle: ["عبر", "اجتاز من جهة إلى أخرى."], bottom: ["دبس", "شراب كثيف حلو يستخرج من التمر أو العنب."], left: ["وعد", "التزام يقطعه المرء على نفسه."], right: ["درس", "موضوع يتعلمه الطالب." ] }
       ],
       bottomWord: ["مهارات", "قدرات يكتسبها الإنسان بالتعلم والتدريب."], phrase: "الطموح", lesson: "التعلّم المستمر يفتح أبوابًا جديدة للفهم والعمل."
     },
     {
       blocks: [
-        { top: ["نار", "لهب ينتج حرارة وضوءًا."], bottom: ["رمل", "حبيبات دقيقة تنتشر في الشواطئ والصحارى."], left: ["نهر", "مجرى مائي طبيعي."], right: ["رمل", "حبيبات دقيقة من الصخور." ] },
+        { top: ["نار", "لهب ينتج حرارة وضوءًا."], middle: ["همم", "عزائم عالية تدفع إلى الإنجاز."], bottom: ["رمل", "حبيبات دقيقة تنتشر في الشواطئ والصحارى."], left: ["نهر", "مجرى مائي طبيعي."], right: ["رمل", "حبيبات دقيقة من الصخور." ] },
         { top: ["بيت", "مكان للسكن والإقامة."], bottom: ["بدر", "القمر حين يكتمل."], left: ["باب", "مدخل المنزل أو الغرفة."], right: ["تمر", "فاكهة تنمو على النخيل." ] }
       ],
       bottomWord: ["مبادرة", "خطوة يبدأ بها الإنسان عملاً نافعاً."], phrase: "التفوق", lesson: "التخطيط والمثابرة يساعدان على تحويل الهدف إلى إنجاز."
@@ -38,29 +38,29 @@ const BANKS = {
   en: [
     {
       blocks: [
-        { top: ["cat", "A small domestic animal that often purrs."], bottom: ["run", "To move quickly on foot."], left: ["car", "A road vehicle with an engine."], right: ["ten", "The number after nine." ] },
-        { top: ["sun", "The star at the center of our solar system."], bottom: ["and", "A word used to join words or phrases."], left: ["sea", "A large body of salt water."], right: ["nod", "To move your head up and down." ] }
+        { top: ["cat", "A small domestic animal that often purrs."], middle: ["are", "A present-tense form of the verb “be”."], bottom: ["run", "To move quickly on foot."], left: ["car", "A road vehicle with an engine."], right: ["ten", "The number after nine." ] },
+        { top: ["sun", "The star at the center of our solar system."], middle: ["ego", "A person’s sense of self or identity."], bottom: ["and", "A word used to join words or phrases."], left: ["sea", "A large body of salt water."], right: ["nod", "To move your head up and down." ] }
       ],
       bottomWord: ["GARDEN", "A place where flowers and plants grow."], phrase: "BRIGHT", lesson: "Small, steady steps can lead to meaningful progress."
     },
     {
       blocks: [
-        { top: ["map", "A drawing that shows places and roads."], bottom: ["nun", "A woman who belongs to a religious order."], left: ["man", "An adult male person."], right: ["pen", "A tool used for writing with ink." ] },
-        { top: ["ear", "The body part used for hearing."], bottom: ["tot", "A very young child."], left: ["eat", "To take food into the mouth."], right: ["rat", "A small rodent with a long tail." ] }
+        { top: ["map", "A drawing that shows places and roads."], middle: ["are", "A present-tense form of the verb “be”."], bottom: ["nun", "A woman who belongs to a religious order."], left: ["man", "An adult male person."], right: ["pen", "A tool used for writing with ink." ] },
+        { top: ["ear", "The body part used for hearing."], middle: ["aha", "An expression used when you understand something."], bottom: ["tot", "A very young child."], left: ["eat", "To take food into the mouth."], right: ["rat", "A small rodent with a long tail." ] }
       ],
       bottomWord: ["PLANET", "A large world that orbits a star."], phrase: "GROWTH", lesson: "Continuous learning helps us understand more and adapt."
     },
     {
       blocks: [
-        { top: ["bed", "A piece of furniture used for sleeping."], bottom: ["tot", "A small child."], left: ["bat", "A flying mammal, or a sports club."], right: ["dot", "A small round mark." ] },
-        { top: ["rug", "A small floor covering."], bottom: ["nun", "A woman in a religious community."], left: ["ran", "Moved quickly on foot; past tense of run."], right: ["gun", "A device designed to fire bullets." ] }
+        { top: ["bed", "A piece of furniture used for sleeping."], middle: ["ago", "Before the present time."], bottom: ["tot", "A small child."], left: ["bat", "A flying mammal, or a sports club."], right: ["dot", "A small round mark." ] },
+        { top: ["rug", "A small floor covering."], middle: ["any", "One or some, without choosing a particular one."], bottom: ["nun", "A woman in a religious community."], left: ["ran", "Moved quickly on foot; past tense of run."], right: ["gym", "A place for exercise and training." ] }
       ],
       bottomWord: ["SCHOOL", "A place where students learn."], phrase: "CREATE", lesson: "Planning and persistence turn ideas into achievements."
     },
     {
       blocks: [
-        { top: ["cat", "A common household pet."], bottom: ["run", "To move at a fast pace."], left: ["car", "A motor vehicle."], right: ["ten", "Five plus five." ] },
-        { top: ["map", "A guide to locations."], bottom: ["nun", "A member of a religious sisterhood."], left: ["man", "An adult human male."], right: ["pen", "An ink writing instrument." ] }
+        { top: ["cat", "A common household pet."], middle: ["are", "A present-tense form of the verb “be”."], bottom: ["run", "To move at a fast pace."], left: ["car", "A motor vehicle."], right: ["ten", "Five plus five." ] },
+        { top: ["map", "A guide to locations."], middle: ["are", "A present-tense form of the verb “be”."], bottom: ["nun", "A member of a religious sisterhood."], left: ["man", "An adult human male."], right: ["pen", "An ink writing instrument." ] }
       ],
       bottomWord: ["FRIEND", "A person you know and like."], phrase: "PLANET", lesson: "Kind words and careful listening strengthen communities."
     }
@@ -116,6 +116,7 @@ function puzzleFor(day, lang) {
     const offset = blockIndex * 3;
     const definitions = [
       { id: `a${blockIndex + 1}`, direction: "across", row: 0, col: offset, item: block.top },
+      { id: `m${blockIndex + 1}`, direction: "across", row: 1, col: offset, item: block.middle },
       { id: `a${blockIndex + 3}`, direction: "across", row: 2, col: offset, item: block.bottom },
       { id: `d${blockIndex + 1}`, direction: "down", row: 0, col: offset, item: block.left },
       { id: `d${blockIndex + 3}`, direction: "down", row: 0, col: offset + 2, item: block.right }
