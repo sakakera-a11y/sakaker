@@ -13,23 +13,30 @@ export async function onRequestGet({ request }) {
 
   const attempts = SOURCES.map(async source => {
     const response = await fetch(source.url, {
-      headers: { "Accept": "application/rss+xml, application/xml, text/xml;q=0.9" },
-      signal: AbortSignal.timeout(4500)
+      headers: {
+        "Accept": "application/rss+xml, application/atom+xml, application/xml, text/xml;q=0.9",
+        "User-Agent": "SakakerCastleNews/1.0"
+      },
+      signal: AbortSignal.timeout(9000),
+      redirect: "follow"
     });
     if (!response.ok) throw new Error(source.name + " returned HTTP " + response.status);
     const xml = await response.text();
-    if (!/<(?:rss|feed|rdf:RDF)\b/i.test(xml.slice(0, 2500)) || !/<(?:item|entry)\b/i.test(xml)) {
+    if (!/<(?:rss|feed|rdf:RDF)\\b/i.test(xml.slice(0, 4000)) || !/<(?:item|entry)\\b/i.test(xml)) {
       throw new Error(source.name + " returned an invalid RSS document");
     }
     return { name: source.name, url: source.url, category: source.category, xml };
   });
 
-  let feeds;
-  try {
-    // First valid source wins; the other is a real fallback, not a proxy chain.
-    feeds = [await Promise.any(attempts)];
-  } catch {
-    return Response.json({ error: "news_sources_unavailable", feeds: [] }, {
+  // Return every working source so the newspaper can combine local and world headlines.
+  const results = await Promise.allSettled(attempts);
+  const feeds = results.filter(result => result.status === "fulfilled").map(result => result.value);
+  if (!feeds.length) {
+    return Response.json({
+      error: "news_sources_unavailable",
+      feeds: [],
+      checkedAt: new Date().toISOString()
+    }, {
       status: 502,
       headers: { "Cache-Control": "no-store" }
     });
