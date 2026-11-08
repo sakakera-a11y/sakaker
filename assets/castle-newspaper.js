@@ -121,7 +121,30 @@ function styles(){
  '#sakCastleNewspaperDialog .cn-picture{border:1px solid #c7a7e8;border-radius:14px;box-shadow:0 8px 24px #00000035}',
  '#sakCastleNewspaperDialog .cn-signs button{border:1px solid #aa8bc7;border-radius:11px;padding:8px 12px;background:linear-gradient(145deg,#182b3b,#29203d);color:#fff;font-weight:700}',
  '#sakCastleNewspaperDialog .cn-signs button[aria-pressed=true]{background:linear-gradient(120deg,#7650a8,#177b83);border-color:#e8caff;box-shadow:0 4px 14px #6d4d9b55}',
- '@media(max-width:560px){#sakCastleNewspaperDialog .cn-head{padding:12px 13px}#sakCastleNewspaperDialog .cn-story{padding:12px}#sakCastleNewspaperDialog .cn-story a{font-size:14px}#sakCastleNewspaperDialog .cn-cell{width:34px;height:34px;font-size:16px}#sakCastleNewspaperDialog .cn-tabs button,#sakCastleNewspaperDialog .cn-refresh{padding:8px 12px;font-size:12px}}' ].join('');
+ '@media(max-width:560px){#sakCastleNewspaperDialog .cn-head{padding:12px 13px}#sakCastleNewspaperDialog .cn-story{padding:12px}#sakCastleNewspaperDialog .cn-story a{font-size:14px}#sakCastleNewspaperDialog .cn-cell{width:34px;height:34px;font-size:16px}#sakCastleNewspaperDialog .cn-tabs button,#sakCastleNewspaperDialog .cn-refresh{padding:8px 12px;font-size:12px}}' '#sakCastleNewspaperDialog{background:radial-gradient(ellipse at 8% 4%,#ffd9ed55 0%,transparent 31%),radial-gradient(ellipse at 93% 8%,#b8eaff55 0%,transparent 32%),radial-gradient(ellipse at 85% 92%,#d9c5ff55 0%,transparent 34%),radial-gradient(ellipse at 12% 88%,#b8ffe455 0%,transparent 32%),linear-gradient(135deg,#132d45 0%,#273653 28%,#3b3155 52%,#25485a 76%,#173e4b 100%);border:1px solid #f4d9ff;box-shadow:0 24px 90px #02060bd9,0 0 0 1px #ffffff22,0 0 24px #ff9fdc66,0 0 42px #8be9ff55,0 0 58px #b8ffcf44;color:#fff}',
+'#sakCastleNewspaperDialog .cn-head{background:linear-gradient(105deg,#ffb7dc33,#ffe9ad33 25%,#b9f6df33 50%,#b8e5ff33 75%,#d8c1ff44),linear-gradient(110deg,#183e50ee,#45335fee 55%,#205765ee);border-bottom:1px solid #f7e5ff88;backdrop-filter:blur(14px)}',
+'#sakCastleNewspaperDialog .cn-head:after{height:2px;background:linear-gradient(90deg,#ffb5d9,#ffe6a6,#baf4c9,#aee8ff,#d5baff)}',
+'#sakCastleNewspaperDialog h2{color:#fff4ff;text-shadow:0 0 8px #ffb6df99,0 0 18px #9deaff88,0 2px 3px #111}',
+'#sakCastleNewspaperDialog .cn-body{background:linear-gradient(145deg,#ffffff08,#ffffff02)}',
+'#sakCastleNewspaperDialog .cn-tabs button,#sakCastleNewspaperDialog .cn-refresh{border:1px solid #d8d0f088;background:linear-gradient(145deg,#ffffff20,#ffffff08);box-shadow:inset 0 1px #ffffff35,0 4px 14px #080d1c33;backdrop-filter:blur(8px)}',
+'#sakCastleNewspaperDialog .cn-tabs button[aria-pressed=true]{background:linear-gradient(110deg,#ed9dc9,#e9c88e,#91d8bd,#8bcbe8,#baa0e8);color:#18263b;border-color:#fff;box-shadow:0 0 16px #e8b6f099,0 5px 18px #0003}',
+'#sakCastleNewspaperDialog .cn-story{border:1px solid #e4d7ff55;background:linear-gradient(115deg,#ffffff1b,#f5eaff0b 45%,#b7f4ec12);box-shadow:0 8px 24px #07101d33,inset 0 1px #ffffff20;backdrop-filter:blur(9px)}',
+'#sakCastleNewspaperDialog .cn-story a{color:#fff0fa;text-shadow:0 1px 8px #f3a9d633}',
+'#sakCastleNewspaperDialog .cn-story a:hover{color:#b9fff0}',
+'#sakCastleNewspaperDialog .cn-meta{color:#d9eaff}',
+'#sakCastleNewspaperDialog .cn-desc{color:#f1edf8}',
+'#sakCastleNewspaperDialog .cn-status{border-color:#ffe3a477;background:linear-gradient(110deg,#ffdf9d22,#f6b7db1c);color:#fff0cb;box-shadow:0 5px 18px #0002}',
+'#sakCastleNewspaperDialog .cn-empty{border-color:#e5c9ff88;background:linear-gradient(120deg,#ffffff16,#c6eaff0b,#ffd8ec12);color:#fff1ff}',
+'#sakCastleNewspaperDialog .cn-game{border:1px solid #e4d4ff88;background:linear-gradient(135deg,#ffffff1b,#bce9ff10 45%,#ffd6ec12);box-shadow:0 12px 30px #0003,inset 0 1px #ffffff22;backdrop-filter:blur(10px)}',
+'#sakCastleNewspaperDialog .cn-game h3{color:#fff0ff;text-shadow:0 0 12px #e3b5ff88}',
+'#sakCastleNewspaperDialog .cn-game p{color:#f4efff}',
+'#sakCastleNewspaperDialog .cn-action{border-color:#f3dfff;background:linear-gradient(105deg,#e99bc6,#e8c58c,#8fd4ba,#8ccbe8,#b49ae3);color:#17283a;text-shadow:none;box-shadow:0 6px 20px #0003,0 0 13px #e3b3ff55}',
+'#sakCastleNewspaperDialog .cn-close{background:linear-gradient(110deg,#eaa4cd,#e5c58d,#8fd4ba,#91cbea,#b49be5);color:#17283a;border-color:#fff}',
+'#sakCastleNewspaperDialog .cn-cell{background:linear-gradient(145deg,#fff,#f1eaff);border-color:#e5d5ff;box-shadow:0 3px 10px #0003}',
+'#sakCastleNewspaperDialog .cn-signs button{background:linear-gradient(145deg,#ffffff22,#ffffff0c);border-color:#e5d5ff99}',
+'#sakCastleNewspaperDialog .cn-signs button[aria-pressed=true]{background:linear-gradient(110deg,#ed9dc9,#e9c88e,#91d8bd,#8bcbe8,#baa0e8);color:#18263b;border-color:#fff}',
+'#sakCastleNewspaperDialog .cn-close:focus-visible,#sakCastleNewspaperDialog button:focus-visible,#sakCastleNewspaperDialog a:focus-visible{outline:2px solid #fff;outline-offset:3px}',
+ ].join('');
  document.head.appendChild(s);
 }
 function dialog(){
