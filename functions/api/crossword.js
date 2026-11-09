@@ -143,7 +143,11 @@ function blockOrderForPuzzle(count, puzzleIndex) {
 function puzzleFor(day, lang) {
   const bank = BANKS[lang];
   const puzzleIndex = releaseIndex(day);
-  const blockOrder = blockOrderForPuzzle(bank.blocks.length, puzzleIndex);
+  // Keep the currently active challenge unchanged; enable unique combinations
+  // with the next scheduled release on Thursday, 2026-11-12 (Riyadh time).
+  const blockOrder = day < "2026-11-12"
+    ? Array.from({ length: 4 }, (_, index) => (puzzleIndex + index) % bank.blocks.length)
+    : blockOrderForPuzzle(bank.blocks.length, puzzleIndex);
   const entries = [];
   const grid = Array.from({ length: SIZE }, () => Array(WIDTH).fill(null));
 
