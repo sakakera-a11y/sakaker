@@ -1,70 +1,68 @@
 const TIME_ZONE = "Asia/Riyadh";
-const SIZE = 4;
+const SIZE = 6;
 const WIDTH = 6;
 
-// Two 3x3 word-crossing blocks fill the upper three rows; a six-letter answer fills row four.
-// Every one of the 24 cells belongs to at least one across or down word.
+// Each 3x3 block is a checked word square: its three rows and three columns
+// are all valid answers. Two independent blocks form a 6x6 daily puzzle.
 const BANKS = {
-  ar: [
-    {
-      blocks: [
-        { top: ["قمر", "جرم سماوي يدور حول الأرض ويضيء ليلًا."], middle: ["ليس", "أداة نفي تدخل على الجملة الاسمية."], bottom: ["مهم", "صفة لما له قيمة أو ضرورة."], left: ["قلم", "أداة للكتابة أو الرسم."], right: ["رسم", "تعبير بصري بالخطوط والأشكال." ] },
-        { top: ["بيت", "مسكن يعيش فيه الإنسان."], middle: ["ألم", "وجع يشعر به الإنسان."], bottom: ["بدر", "اكتمال القمر في منتصف الشهر."], left: ["باب", "مدخل يفتح ويغلق."], right: ["تمر", "ثمرة النخيل المعروفة." ] }
-      ],
-      bottomWord: ["مكتبات", "أماكن تضم الكتب وتتيح القراءة والبحث."], phrase: "النجاح", lesson: "الاستمرار بخطوات صغيرة يصنع فرقًا كبيرًا مع الوقت."
-    },
-    {
-      blocks: [
-        { top: ["نور", "ضياء يبدد الظلام."], middle: ["جري", "حركة سريعة على القدمين."], bottom: ["ملح", "مادة بيضاء تضاف إلى الطعام."], left: ["نجم", "جرم سماوي مضيء."], right: ["ريح", "هواء يتحرك من مكان إلى آخر." ] },
-        { top: ["ورد", "زهر جميل معروف بألوانه ورائحته."], middle: ["عبر", "اجتاز من جهة إلى أخرى."], bottom: ["دبس", "شراب كثيف حلو يستخرج من التمر أو العنب."], left: ["وعد", "التزام يقطعه المرء على نفسه."], right: ["درس", "موضوع يتعلمه الطالب." ] }
-      ],
-      bottomWord: ["مهارات", "قدرات يكتسبها الإنسان بالتعلم والتدريب."], phrase: "الطموح", lesson: "التعلّم المستمر يفتح أبوابًا جديدة للفهم والعمل."
-    },
-    {
-      blocks: [
-        { top: ["نار", "لهب ينتج حرارة وضوءًا."], middle: ["همم", "عزائم عالية تدفع إلى الإنجاز."], bottom: ["رمل", "حبيبات دقيقة تنتشر في الشواطئ والصحارى."], left: ["نهر", "مجرى مائي طبيعي."], right: ["رمل", "حبيبات دقيقة من الصخور." ] },
-        { top: ["بيت", "مكان للسكن والإقامة."], middle: ["ألم", "وجع يشعر به الإنسان."], bottom: ["بدر", "القمر حين يكتمل."], left: ["باب", "مدخل المنزل أو الغرفة."], right: ["تمر", "فاكهة تنمو على النخيل." ] }
-      ],
-      bottomWord: ["مبادرة", "خطوة يبدأ بها الإنسان عملاً نافعاً."], phrase: "التفوق", lesson: "التخطيط والمثابرة يساعدان على تحويل الهدف إلى إنجاز."
-    },
-    {
-      blocks: [
-        { top: ["قمر", "جرم يرافق الأرض في دورانها."], middle: ["ليس", "أداة نفي تدخل على الجملة الاسمية."], bottom: ["مهم", "أمر يستحق العناية."], left: ["قلم", "أداة تدوين الكلمات."], right: ["رسم", "فن تصوير الأشياء بالخطوط." ] },
-        { top: ["نور", "ما يكشف الأشياء ويضيء المكان."], middle: ["جري", "حركة سريعة على القدمين."], bottom: ["ملح", "منكّه شائع للطعام."], left: ["نجم", "جسم مضيء في السماء."], right: ["ريح", "نسيم أو هواء متحرك." ] }
-      ],
-      bottomWord: ["مفاتيح", "أدوات تفتح الأقفال، وتأتي بمعنى وسائل الحل."], phrase: "السلام", lesson: "الكلمة الطيبة والإنصات الصادق يقويان روابط الناس."
-    }
-  ],
-  en: [
-    {
-      blocks: [
-        { top: ["cat", "A small domestic animal that often purrs."], middle: ["are", "A present-tense form of the verb “be”."], bottom: ["run", "To move quickly on foot."], left: ["car", "A road vehicle with an engine."], right: ["ten", "The number after nine." ] },
-        { top: ["sun", "The star at the center of our solar system."], middle: ["ego", "A person’s sense of self or identity."], bottom: ["and", "A word used to join words or phrases."], left: ["sea", "A large body of salt water."], right: ["nod", "To move your head up and down." ] }
-      ],
-      bottomWord: ["GARDEN", "A place where flowers and plants grow."], phrase: "BRIGHT", lesson: "Small, steady steps can lead to meaningful progress."
-    },
-    {
-      blocks: [
-        { top: ["map", "A drawing that shows places and roads."], middle: ["are", "A present-tense form of the verb “be”."], bottom: ["nun", "A woman who belongs to a religious order."], left: ["man", "An adult male person."], right: ["pen", "A tool used for writing with ink." ] },
-        { top: ["ear", "The body part used for hearing."], middle: ["aha", "An expression used when you understand something."], bottom: ["tot", "A very young child."], left: ["eat", "To take food into the mouth."], right: ["rat", "A small rodent with a long tail." ] }
-      ],
-      bottomWord: ["PLANET", "A large world that orbits a star."], phrase: "GROWTH", lesson: "Continuous learning helps us understand more and adapt."
-    },
-    {
-      blocks: [
-        { top: ["bed", "A piece of furniture used for sleeping."], middle: ["ago", "Before the present time."], bottom: ["tot", "A small child."], left: ["bat", "A flying mammal, or a sports club."], right: ["dot", "A small round mark." ] },
-        { top: ["rat", "A small rodent."], middle: ["aha", "An expression used when you understand something."], bottom: ["nun", "A woman in a religious community."], left: ["ran", "Moved quickly on foot; past tense of run."], right: ["tan", "A light brown color." ] }
-      ],
-      bottomWord: ["SCHOOL", "A place where students learn."], phrase: "CREATE", lesson: "Planning and persistence turn ideas into achievements."
-    },
-    {
-      blocks: [
-        { top: ["cat", "A common household pet."], middle: ["are", "A present-tense form of the verb “be”."], bottom: ["run", "To move at a fast pace."], left: ["car", "A motor vehicle."], right: ["ten", "Five plus five." ] },
-        { top: ["map", "A guide to locations."], middle: ["are", "A present-tense form of the verb “be”."], bottom: ["nun", "A member of a religious sisterhood."], left: ["man", "An adult human male."], right: ["pen", "An ink writing instrument." ] }
-      ],
-      bottomWord: ["FRIEND", "A person you know and like."], phrase: "PLANET", lesson: "Kind words and careful listening strengthen communities."
-    }
-  ]
+  ar: [{
+    blocks: [
+      {
+        rows: [
+          ["باب", "مدخل يفتح ويغلق."],
+          ["أبي", "والدي."],
+          ["بيد", "في يد الإنسان أو ممسوك بها."]
+        ],
+        columns: [
+          ["باب", "مدخل المنزل أو الغرفة."],
+          ["أبي", "والدي."],
+          ["بيد", "تعبير يعني في يد."]
+        ]
+      },
+      {
+        rows: [
+          ["نور", "ضياء يبدد الظلام."],
+          ["ورد", "زهر جميل معروف برائحته."],
+          ["ردم", "سدّ حفرة أو غطّاها بالتراب."]
+        ],
+        columns: [
+          ["نور", "ما يضيء المكان."],
+          ["ورد", "زهر معروف بألوانه."],
+          ["ردم", "غطّى المكان بالتراب."]
+        ]
+      }
+    ],
+    phrase: "النجاح", lesson: "الاستمرار بخطوات صغيرة يصنع فرقًا كبيرًا مع الوقت."
+  }],
+  en: [{
+    blocks: [
+      {
+        rows: [
+          ["ape", "A large primate."],
+          ["pea", "A small green vegetable."],
+          ["ear", "The body part used for hearing."]
+        ],
+        columns: [
+          ["ape", "A large primate."],
+          ["pee", "An informal word meaning to urinate."],
+          ["ear", "The body part used for hearing."]
+        ]
+      },
+      {
+        rows: [
+          ["tea", "A drink made by steeping leaves."],
+          ["ear", "The body part used for hearing."],
+          ["art", "Creative work such as painting or sculpture."]
+        ],
+        columns: [
+          ["tea", "A drink made from tea leaves."],
+          ["ear", "The body part used for hearing."],
+          ["art", "Creative expression."]
+        ]
+      }
+    ],
+    phrase: "BRIGHT", lesson: "Small, steady steps can lead to meaningful progress."
+  }]
 };
 
 function normalize(value, lang) {
@@ -114,46 +112,38 @@ function puzzleFor(day, lang) {
 
   template.blocks.forEach((block, blockIndex) => {
     const offset = blockIndex * 3;
-    const definitions = [
-      { id: `a${blockIndex + 1}`, direction: "across", row: 0, col: offset, item: block.top },
-      { id: `m${blockIndex + 1}`, direction: "across", row: 1, col: offset, item: block.middle },
-      { id: `a${blockIndex + 3}`, direction: "across", row: 2, col: offset, item: block.bottom },
-      { id: `d${blockIndex + 1}`, direction: "down", row: 0, col: offset, item: block.left },
-      { id: `d${blockIndex + 3}`, direction: "down", row: 0, col: offset + 2, item: block.right }
-    ];
-    for (const definition of definitions) {
-      const answer = normalize(definition.item[0], lang);
-      if (answer.length !== 3) throw new Error(`Invalid ${lang} crossword word: ${definition.item[0]}`);
-      const cells = answer.map((letter, index) => {
-        const row = definition.row + (definition.direction === "down" ? index : 0);
-        const col = definition.col + (definition.direction === "across" ? index : 0);
-        if (grid[row][col] !== null && grid[row][col] !== letter) {
-          throw new Error(`Crossing mismatch in ${definition.id}`);
-        }
-        grid[row][col] = letter;
-        return [row, col];
+    for (let i = 0; i < 3; i++) {
+      const rowAnswer = normalize(block.rows[i][0], lang);
+      const colAnswer = normalize(block.columns[i][0], lang);
+      if (rowAnswer.length !== 3 || colAnswer.length !== 3) {
+        throw new Error("Every crossword answer must contain three letters");
+      }
+      const row = offset + i;
+      const rowCells = rowAnswer.map((letter, j) => {
+        const r = row, c = offset + j;
+        if (grid[r][c] !== null && grid[r][c] !== letter) throw new Error("Across crossing mismatch");
+        grid[r][c] = letter;
+        return [r, c];
       });
-      entries.push({ id: definition.id, direction: definition.direction, clue: definition.item[1], cells, answer });
+      entries.push({ id: `a${offset + i + 1}`, direction: "across", clue: block.rows[i][1], cells: rowCells, answer: rowAnswer });
+
+      const col = offset + i;
+      const colCells = colAnswer.map((letter, j) => {
+        const r = offset + j, c = col;
+        if (grid[r][c] !== null && grid[r][c] !== letter) throw new Error("Down crossing mismatch");
+        grid[r][c] = letter;
+        return [r, c];
+      });
+      entries.push({ id: `d${offset + i + 1}`, direction: "down", clue: block.columns[i][1], cells: colCells, answer: colAnswer });
     }
   });
 
-  // The fourth row is a complete six-letter across answer, so all 24 cells are playable.
-  const bottomAnswer = normalize(template.bottomWord?.[0], lang);
-  if (bottomAnswer.length !== WIDTH) throw new Error(`Invalid ${lang} bottom-row word: ${template.bottomWord?.[0]}`);
-  const bottomCells = bottomAnswer.map((letter, col) => {
-    grid[3][col] = letter;
-    return [3, col];
-  });
-  entries.push({ id: "a5", direction: "across", clue: template.bottomWord[1], cells: bottomCells, answer: bottomAnswer });
-
-  // Validate every crossing before returning a puzzle.
   for (const entry of entries) {
     const built = entry.cells.map(([r, c]) => grid[r][c]).join("");
     if (built !== entry.answer.join("")) throw new Error(`Invalid crossword entry ${entry.id}`);
   }
   const phrase = normalize(template.phrase, lang);
-  if (phrase.length !== WIDTH) throw new Error(`Final phrase must contain ${WIDTH} letters`);
-
+  if (phrase.length !== WIDTH) throw new Error("Final phrase must contain six letters");
   return { date: day, language: lang, entries, grid, phrase, lesson: template.lesson, solutionAvailableOn: dayAfter(day) };
 }
 
