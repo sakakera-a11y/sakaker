@@ -12,7 +12,7 @@
   if(!document.getElementById('sakGardenCrosswordLoader')){
     const crossword=document.createElement('script');
     crossword.id='sakGardenCrosswordLoader';
-    crossword.src='/assets/crossword-ui.js?v=20261108-fullscreen-mountfix2';
+    crossword.src='/assets/crossword-ui.js?v=20261109-six-by-six-crossword1';
     crossword.async=true;
     document.head.appendChild(crossword);
   }
