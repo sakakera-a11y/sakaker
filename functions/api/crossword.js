@@ -59,13 +59,13 @@ function scheduledPuzzleDay(day) {
 
 function previousPuzzleDay(day) {
   const date = new Date(`${day}T00:00:00.000Z`);
-  date.setUTCDate(date.getUTCDay() === 0 ? -3 : -4);
+  date.setUTCDate(date.getUTCDate() - (date.getUTCDay() === 0 ? 3 : 4));
   return date.toISOString().slice(0, 10);
 }
 
 function nextPuzzleDay(day) {
   const date = new Date(`${day}T00:00:00.000Z`);
-  date.setUTCDate(date.getUTCDay() === 0 ? 4 : 3);
+  date.setUTCDate(date.getUTCDate() + (date.getUTCDay() === 0 ? 4 : 3));
   return date.toISOString().slice(0, 10);
 }
 
