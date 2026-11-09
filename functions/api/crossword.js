@@ -44,7 +44,7 @@ const BANKS = {
         ],
         columns: [
           ["ape", "A large primate."],
-          ["pee", "An informal word meaning to urinate."],
+          ["pea", "A small green vegetable."],
           ["ear", "The body part used for hearing."]
         ]
       },
