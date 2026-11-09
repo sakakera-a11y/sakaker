@@ -5,24 +5,43 @@ const WIDTH = 6;
 // Each 3x3 block is a checked word square: its three rows and three columns
 // are all valid answers. Two independent blocks form a 6x6 daily puzzle.
 const BANKS = {
-  ar: [{
+  ar: {
+    // Valid 3x3 Arabic word squares. Every row is also a valid vertical answer.
     blocks: [
-      { rowOffset: 0, colOffset: 0, rows: [["باب","مدخل يفتح ويغلق."],["أبي","والدي."],["بيد","في يد الإنسان."]], columns: [["باب","مدخل المنزل."],["أبي","والدي."],["بيد","في يد."]] },
-      { rowOffset: 0, colOffset: 3, rows: [["نور","ضياء يبدد الظلام."],["ورد","زهر جميل معروف."],["ردم","سدّ حفرة بالتراب."]], columns: [["نور","ما يضيء المكان."],["ورد","زهر معروف."],["ردم","غطّى المكان بالتراب."]] },
-      { rowOffset: 3, colOffset: 0, rows: [["نور","ضياء الصباح."],["ورد","زهرة عطرة."],["ردم","ملأ الحفرة."]], columns: [["نور","ضوء."],["ورد","زهر."],["ردم","غطاء التراب."]] },
-      { rowOffset: 3, colOffset: 3, rows: [["باب","مدخل البيت."],["أبي","والدي العزيز."],["بيد","في قبضة اليد."]], columns: [["باب","مدخل."],["أبي","والد."],["بيد","في يد."]] }
+      { rows: [["باب","مدخل يفتح ويغلق."],["أبي","والدي."],["بيد","في يد الإنسان."]], columns: [["باب","مدخل المنزل."],["أبي","والدي."],["بيد","في يد."]] },
+      { rows: [["نور","ضياء يبدد الظلام."],["ورد","زهر جميل معروف."],["ردم","سدّ حفرة بالتراب."]], columns: [["نور","ما يضيء المكان."],["ورد","زهر معروف."],["ردم","غطّى المكان بالتراب."]] },
+      { rows: [["ليل","وقت الظلام بعد النهار."],["يلي","يأتي بعد غيره."],["ليل","ظلام الليل."]], columns: [["ليل","عكس النهار."],["يلي","يتبع في الترتيب."],["ليل","وقت السكون والظلام."]] }
     ],
-    phrase: "النجاح", lesson: "الاستمرار بخطوات صغيرة يصنع فرقًا كبيرًا مع الوقت."
-  }],
-  en: [{
+    phrases: ["النجاح","التحدي","التفوق","التعلم","الطموح","التميز"],
+    lessons: [
+      "الاستمرار بخطوات صغيرة يصنع فرقًا كبيرًا مع الوقت.",
+      "التحدي فرصة لاكتشاف القوة التي بداخلك.",
+      "التفوق ثمرة الاجتهاد والصبر.",
+      "التعلم يفتح أبوابًا جديدة كل يوم.",
+      "الطموح يبدأ بفكرة ويكبر بالعمل.",
+      "التميز أن تواصل المحاولة بثبات."
+    ]
+  },
+  en: {
+    // Four checked English word squares, rotated across the four grid blocks.
     blocks: [
-      { rowOffset: 0, colOffset: 0, rows: [["ape","A large primate."],["pea","A small green vegetable."],["ear","The body part used for hearing."]], columns: [["ape","A large primate."],["pea","A small green vegetable."],["ear","The body part used for hearing."]] },
-      { rowOffset: 0, colOffset: 3, rows: [["tea","A drink made by steeping leaves."],["ear","The body part used for hearing."],["art","Creative work such as painting."]], columns: [["tea","A drink made from tea leaves."],["ear","The body part used for hearing."],["art","Creative expression."]] },
-      { rowOffset: 3, colOffset: 0, rows: [["cat","A common household pet."],["are","A plural form of the verb be."],["ten","One more than nine."]], columns: [["cat","A feline pet."],["are","Plural form of “is”."],["ten","The number after nine."]] },
-      { rowOffset: 3, colOffset: 3, rows: [["dog","A loyal domestic animal."],["owl","A bird that is often active at night."],["gum","Something you chew."]], columns: [["dog","A domestic canine."],["owl","A nocturnal bird."],["gum","Chewing candy."]] }
+      { rows: [["ape","A large primate."],["pea","A small green vegetable."],["ear","The body part used for hearing."]], columns: [["ape","A large primate."],["pea","A small green vegetable."],["ear","The body part used for hearing."]] },
+      { rows: [["tea","A drink made by steeping leaves."],["ear","The body part used for hearing."],["art","Creative work such as painting."]], columns: [["tea","A drink made from tea leaves."],["ear","The body part used for hearing."],["art","Creative expression."]] },
+      { rows: [["cat","A common household pet."],["are","A plural form of the verb be."],["ten","One more than nine."]], columns: [["cat","A feline pet."],["are","Plural form of “is”."],["ten","The number after nine."]] },
+      { rows: [["dog","A loyal domestic animal."],["owl","A bird that is often active at night."],["gum","Something you chew."]], columns: [["dog","A domestic canine."],["owl","A nocturnal bird."],["gum","Chewing candy."]] }
     ],
-    phrase: "BRIGHT", lesson: "Small, steady steps can lead to meaningful progress."
-  }]
+    phrases: ["BRIGHT","PUZZLE","CREATE","GROWTH","FUTURE","FRIEND","PLANET","DREAMS"],
+    lessons: [
+      "Small, steady steps can lead to meaningful progress.",
+      "A good puzzle rewards patience and careful thought.",
+      "Creativity grows when curiosity stays alive.",
+      "Growth comes from practice and persistence.",
+      "Build the future with the choices you make today.",
+      "Friendship grows through kindness and trust.",
+      "Our planet deserves care in every small action.",
+      "Dreams become goals when you take the first step."
+    ]
+  }
 };
 
 function normalize(value, lang) {
@@ -84,13 +103,29 @@ function hash(value) {
   return result >>> 0;
 }
 
+function releaseIndex(day) {
+  // 2026-01-04 was a Sunday release; count each Sunday/Thursday challenge once.
+  const anchor = Date.parse("2026-01-04T00:00:00Z");
+  const current = Date.parse(`${day}T00:00:00Z`);
+  const elapsedDays = Math.floor((current - anchor) / 86400000);
+  const weeks = Math.floor(elapsedDays / 7);
+  const dayInWeek = elapsedDays % 7;
+  return weeks * 2 + (dayInWeek >= 4 ? 1 : 0);
+}
+
 function puzzleFor(day, lang) {
   const bank = BANKS[lang];
-  const template = bank[hash(`${lang}:${day}`) % bank.length];
+  const puzzleIndex = releaseIndex(day);
   const entries = [];
   const grid = Array.from({ length: SIZE }, () => Array(WIDTH).fill(null));
 
-  template.blocks.forEach((block, blockIndex) => {
+  for (let blockIndex = 0; blockIndex < 4; blockIndex++) {
+    const source = bank.blocks[(puzzleIndex + blockIndex) % bank.blocks.length];
+    const block = {
+      ...source,
+      rowOffset: Math.floor(blockIndex / 2) * 3,
+      colOffset: (blockIndex % 2) * 3
+    };
     const rowOffset = block.rowOffset;
     const colOffset = block.colOffset;
     for (let i = 0; i < 3; i++) {
@@ -124,9 +159,10 @@ function puzzleFor(day, lang) {
     const built = entry.cells.map(([r, c]) => grid[r][c]).join("");
     if (built !== entry.answer.join("")) throw new Error(`Invalid crossword entry ${entry.id}`);
   }
-  const phrase = normalize(template.phrase, lang);
+  const phrase = normalize(bank.phrases[puzzleIndex % bank.phrases.length], lang);
   if (phrase.length !== WIDTH) throw new Error("Final phrase must contain six letters");
-  return { date: day, language: lang, entries, grid, phrase, lesson: template.lesson, solutionAvailableOn: nextPuzzleDay(day) };
+  const lesson = bank.lessons[puzzleIndex % bank.lessons.length];
+  return { date: day, language: lang, entries, grid, phrase, lesson, solutionAvailableOn: nextPuzzleDay(day) };
 }
 
 function publicPuzzle(puzzle, includeSolution) {
