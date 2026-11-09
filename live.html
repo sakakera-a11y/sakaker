@@ -7,7 +7,7 @@
 <style>
 :root{color-scheme:dark;--rose:#e23b98;--orchid:#a749c8;--petal:#ff86b7;--line:rgba(255,179,225,.48);--glass:rgba(39,15,48,.94);--mint:#ffe8f6}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Tajawal,Cairo,Tahoma,Arial,sans-serif;color:#fff5fb;background:#16091e}
-body:before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(ellipse at 14% 16%,rgba(255,79,177,.35),transparent 34%),radial-gradient(ellipse at 88% 24%,rgba(184,89,255,.3),transparent 36%),radial-gradient(ellipse at 60% 92%,rgba(255,131,188,.26),transparent 38%),linear-gradient(145deg,#230824,#110820 55%,#340b2d)}
+#siteBg{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;opacity:.22}body:before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(ellipse at 14% 16%,rgba(255,79,177,.35),transparent 34%),radial-gradient(ellipse at 88% 24%,rgba(184,89,255,.3),transparent 36%),radial-gradient(ellipse at 60% 92%,rgba(255,131,188,.26),transparent 38%),linear-gradient(145deg,#230824,#110820 55%,#340b2d)}
 header{position:sticky;top:0;z-index:5;padding:12px max(14px,env(safe-area-inset-left));background:rgba(31,9,34,.86);border-bottom:1px solid var(--line);backdrop-filter:blur(18px)}
 .top{max-width:1240px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-weight:900;color:#ffe6f7;font-size:clamp(18px,3vw,26px);text-shadow:0 0 14px #ff66b7,0 0 28px #a65bff}
 button,a{font:inherit}.back,.tab,.action,.chip,.direct button{border:1px solid var(--line);border-radius:14px;background:linear-gradient(120deg,var(--rose),var(--orchid) 58%,var(--petal));color:white;padding:10px 15px;font-weight:800;text-decoration:none;cursor:pointer;box-shadow:0 0 16px rgba(255,72,176,.16)}
@@ -30,6 +30,7 @@ h1{font-size:clamp(25px,4.5vw,40px);margin:0 0 8px;color:#fff0fa;text-shadow:0 0
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
+<video id="siteBg" autoplay muted loop playsinline aria-hidden="true" src="/gemini_generated_video_34118154.mp4"></video>
 <header><div class="top"><div class="brand">📺 القنوات المباشرة والراديو</div><a class="back" href="index.html">↩ الرئيسية</a></div></header>
 <main><section class="hero">
 <h1>القنوات المباشرة</h1><p>اختر القناة أو المحطة واستمتع بالبث داخل نافذة موحدة. يمكنك البحث والتصفية وتحديث دليل القنوات والمحطات في أي وقت.</p>
@@ -41,14 +42,14 @@ h1{font-size:clamp(25px,4.5vw,40px);margin:0 0 8px;color:#fff0fa;text-shadow:0 0
 <div class="direct" aria-label="القنوات المباشرة المختارة"><button data-direct-channel="alarabiya">العربية الإخبارية</button><button data-direct-channel="alarabiya-business">العربية الاقتصادية</button><button data-direct-channel="alhadath">الحدث</button></div>
 <div class="toolbar"><button class="action" id="refreshTv">⟳ تحديث القنوات</button></div>
 <div class="controls"><input id="tvSearch" type="search" placeholder="ابحث عن قناة أو دولة أو لغة"><select id="country"><option value="">كل الدول</option></select><select id="language"><option value="">كل اللغات</option></select></div>
-<div class="meta" id="tvMeta" aria-live="polite">جارٍ تحميل القنوات…</div><div class="grid" id="tvGrid"></div>
+<div class="meta" id="tvMeta" aria-live="polite">جارٍ تحميل القنوات…</div><div class="grid" id="tvGrid"></div><button class="action" id="tvMore" style="display:none;width:100%;margin-top:14px">عرض المزيد من القنوات</button>
 </section>
 <section class="panel" id="radio">
 <div class="radioPlayer"><strong id="radioNow">📻 اختر محطة للاستماع</strong><audio id="radioAudio" controls preload="none"></audio></div>
 <div class="official"><a target="_blank" rel="noopener" href="https://radioplus.sba.sa/ar/live/4">إذاعة القرآن الكريم · السعودية ↗</a><a target="_blank" rel="noopener" href="https://radioplus.sba.sa/ar/live/2">إذاعة الرياض ↗</a><a target="_blank" rel="noopener" href="https://radioplus.sba.sa/ar/live/3">إذاعة جدة ↗</a><a target="_blank" rel="noopener" href="https://radioplus.sba.sa/ar/live/1">نداء الإسلام ↗</a><button class="action" id="cairo">▶ إذاعة القرآن الكريم من القاهرة</button></div>
 <div class="toolbar"><button class="action" id="refreshRadio">⟳ تحديث المحطات</button></div>
 <div class="controls"><input id="radioSearch" type="search" placeholder="ابحث عن إذاعة أو دولة أو نوع"><select id="radioCountry"><option value="">كل الدول</option></select><select id="radioLanguage"><option value="">كل اللغات</option></select></div>
-<div class="meta" id="radioMeta" aria-live="polite">جارٍ تحميل المحطات…</div><div class="grid" id="radioGrid"></div>
+<div class="meta" id="radioMeta" aria-live="polite">جارٍ تحميل المحطات…</div><div class="grid" id="radioGrid"></div><button class="action" id="radioMore" style="display:none;width:100%;margin-top:14px">عرض المزيد من المحطات</button>
 </section>
 </section></main>
 <div id="player" role="dialog" aria-modal="true" aria-label="مشغل القناة"><div class="playerbox"><button class="close" id="close" aria-label="إغلاق">×</button><h2 id="playerTitle"></h2><iframe id="tvFrame" title="بث القناة" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="display:none"></iframe><video id="tvVideo" controls playsinline autoplay style="display:none"></video><p id="playerMsg"></p></div></div>
@@ -84,7 +85,7 @@ function countryCode(v){return v||''}
 async function loadRadio(){const btn=$('refreshRadio');btn.disabled=true;btn.textContent='⟳ جارٍ تحديث المحطات…';$('radioMeta').textContent='جارٍ الاتصال بدليل المحطات…';let result=null;for(const host of RADIO_HOSTS){try{result=await fetchJson(host+'/json/stations/search?hidebroken=true&order=clickcount&reverse=true&limit=500');if(Array.isArray(result))break}catch(_){}}if(Array.isArray(result)){radioRows=result.filter(x=>x.name&&(x.url_resolved||x.url));options($('radioCountry'),radioRows.map(x=>countryNames[x.countrycode]||x.countrycode),'كل الدول');options($('radioLanguage'),radioRows.flatMap(x=>String(x.languagecodes||'').split(',').filter(Boolean)),'كل اللغات');$('radioMeta').textContent='تم تحديث دليل الراديو: '+radioRows.length+' محطة.';radioVisible=60;setGrid('radio')}else $('radioMeta').textContent='تعذر تحديث دليل الراديو الآن؛ جرّب مرة أخرى أو استخدم المحطات الرسمية أعلاه.';btn.disabled=false;btn.textContent='⟳ تحديث المحطات'}
 function playRadio(x){const a=$('radioAudio');$('radioNow').textContent=x.name;a.src=x.url_resolved||x.url;a.load();a.play().catch(()=>{$('radioNow').textContent='تعذر تشغيل المحطة؛ جرّب محطة أخرى'})}
 $('cairo').onclick=()=>playRadio({name:'إذاعة القرآن الكريم من القاهرة',url:'https://stream.radiojar.com/8s5u5tpdtwzuv',url_resolved:'https://stream.radiojar.com/8s5u5tpdtwzuv'});
-$('refreshTv').onclick=loadTv;$('refreshRadio').onclick=loadRadio;
+$('refreshTv').onclick=loadTv;$('refreshRadio').onclick=loadRadio;$('tvMore').onclick=()=>{tvVisible+=60;setGrid('tv')};$('radioMore').onclick=()=>{radioVisible+=60;setGrid('radio')};
 ['tvSearch','country','language'].forEach(id=>$(id).addEventListener('input',()=>{tvVisible=60;setGrid('tv')}));['radioSearch','radioCountry','radioLanguage'].forEach(id=>$(id).addEventListener('input',()=>{radioVisible=60;setGrid('radio')}));
 document.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{filter=b.dataset.filter;document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('active',x===b));tvVisible=60;setGrid('tv')});
 document.querySelectorAll('[data-direct-channel]').forEach(b=>b.onclick=()=>{const x=STATIC_TV.find(c=>c.id===b.dataset.directChannel);if(x)playTv(x)});
