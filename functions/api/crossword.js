@@ -152,7 +152,7 @@ function puzzleFor(day, lang) {
       });
       entries.push({ id: `d${rowOffset + 1}_${col + 1}`, direction: "down", clue: block.columns[i][1], cells: colCells, answer: colAnswer });
     }
-  });
+  }
 
   if (grid.some(row => row.some(cell => cell === null))) throw new Error("Crossword grid contains empty squares");
   for (const entry of entries) {
