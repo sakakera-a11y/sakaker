@@ -8,7 +8,7 @@ let modal,active=false,langObserver,bodyObserver,loadController=null;
 const language=()=>{const dialog=document.getElementById('sakCastleNewspaperDialog');const dir=(dialog?.dir||'').toLowerCase();if(dir==='ltr')return 'en';if(dir==='rtl')return 'ar';const lang=(dialog?.lang||document.documentElement.lang||'ar').toLowerCase();return lang.startsWith('en')?'en':'ar'};
 const tr=key=>TEXT[language()][key];
 function riyadhDay(offset=0){const parts=Object.fromEntries(new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Riyadh',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()).map(x=>[x.type,x.value]));const d=new Date(`${parts.year}-${parts.month}-${parts.day}T00:00:00Z`);d.setUTCDate(d.getUTCDate()+offset);return d.toISOString().slice(0,10)}
-function scheduledDay(day){const d=new Date(`${day}T00:00:00Z`);const w=d.getUTCDay();d.setUTCDate(d.getUTCDate()-(w>=4?w-4:w+3));return d.toISOString().slice(0,10)}
+function scheduledDay(day){const d=new Date(`${day}T00:00:00Z`);const w=d.getUTCDay();d.setUTCDate(d.getUTCDate()-(w===0?0:w<=3?w:w-4));return d.toISOString().slice(0,10)}
 function previousScheduledDay(day){const d=new Date(`${day}T00:00:00Z`);d.setUTCDate(d.getUTCDate()-(d.getUTCDay()===0?3:4));return d.toISOString().slice(0,10)}
 function bindTab(){}
 function ensure(){let s=document.getElementById(STYLE);if(!s){s=document.createElement('style');s.id=STYLE;document.head.appendChild(s)}s.textContent=`
