@@ -52,7 +52,7 @@ function validDay(day) {
 function scheduledPuzzleDay(day) {
   const date = new Date(`${day}T00:00:00.000Z`);
   const weekday = date.getUTCDay();
-  const daysSinceRelease = weekday >= 4 ? weekday - 4 : weekday + 3;
+  const daysSinceRelease = weekday === 0 ? 0 : weekday <= 3 ? weekday : weekday - 4;
   date.setUTCDate(date.getUTCDate() - daysSinceRelease);
   return date.toISOString().slice(0, 10);
 }
