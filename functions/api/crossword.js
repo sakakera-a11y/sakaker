@@ -49,6 +49,26 @@ function validDay(day) {
   return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === day;
 }
 
+function scheduledPuzzleDay(day) {
+  const date = new Date(`${day}T00:00:00.000Z`);
+  const weekday = date.getUTCDay();
+  const daysSinceRelease = weekday >= 4 ? weekday - 4 : weekday + 3;
+  date.setUTCDate(date.getUTCDate() - daysSinceRelease);
+  return date.toISOString().slice(0, 10);
+}
+
+function previousPuzzleDay(day) {
+  const date = new Date(`${day}T00:00:00.000Z`);
+  date.setUTCDate(date.getUTCDay() === 0 ? -3 : -4);
+  return date.toISOString().slice(0, 10);
+}
+
+function nextPuzzleDay(day) {
+  const date = new Date(`${day}T00:00:00.000Z`);
+  date.setUTCDate(date.getUTCDay() === 0 ? 4 : 3);
+  return date.toISOString().slice(0, 10);
+}
+
 function dayAfter(day) {
   const date = new Date(`${day}T00:00:00.000Z`);
   date.setUTCDate(date.getUTCDate() + 1);
@@ -106,7 +126,7 @@ function puzzleFor(day, lang) {
   }
   const phrase = normalize(template.phrase, lang);
   if (phrase.length !== WIDTH) throw new Error("Final phrase must contain six letters");
-  return { date: day, language: lang, entries, grid, phrase, lesson: template.lesson, solutionAvailableOn: dayAfter(day) };
+  return { date: day, language: lang, entries, grid, phrase, lesson: template.lesson, solutionAvailableOn: nextPuzzleDay(day) };
 }
 
 function publicPuzzle(puzzle, includeSolution) {
@@ -145,8 +165,10 @@ export async function onRequestGet({ request }) {
     if (day > today) {
       return Response.json({ error: "future_puzzle" }, { status: 400, headers: { "Cache-Control": "no-store" } });
     }
-    const puzzle = puzzleFor(day, lang);
-    return Response.json(publicPuzzle(puzzle, day < today), { headers: { "Cache-Control": "no-store" } });
+    const puzzleDay = scheduledPuzzleDay(day);
+    const currentPuzzleDay = scheduledPuzzleDay(today);
+    const puzzle = puzzleFor(puzzleDay, lang);
+    return Response.json(publicPuzzle(puzzle, puzzleDay < currentPuzzleDay), { headers: { "Cache-Control": "no-store" } });
   } catch (_) {
     return Response.json({ error: "crossword_generation_failed" }, { status: 503, headers: { "Cache-Control": "no-store" } });
   }
@@ -160,10 +182,11 @@ export async function onRequestPost({ request }) {
     if (!validDay(day)) {
       return Response.json({ error: "invalid_day" }, { status: 400, headers: { "Cache-Control": "no-store" } });
     }
-    if (day !== riyadhDate()) {
+    const currentPuzzleDay = scheduledPuzzleDay(riyadhDate());
+    if (day !== currentPuzzleDay) {
       return Response.json({ error: "puzzle_closed" }, { status: 409, headers: { "Cache-Control": "no-store" } });
     }
-    const puzzle = puzzleFor(day, lang);
+    const puzzle = puzzleFor(currentPuzzleDay, lang);
     const submitted = body?.grid;
     if (!Array.isArray(submitted) || submitted.length !== SIZE || submitted.some(row => !Array.isArray(row) || row.length !== WIDTH)) {
       return Response.json({ error: "invalid_grid" }, { status: 400, headers: { "Cache-Control": "no-store" } });
