@@ -124,14 +124,31 @@ function releaseIndex(day) {
   return weeks * 2 + (dayInWeek >= 4 ? 1 : 0);
 }
 
+function blockOrderForPuzzle(count, puzzleIndex) {
+  // Enumerate unique ordered selections of four different word squares.
+  const total = count * (count - 1) * (count - 2) * (count - 3);
+  let rank = puzzleIndex % total;
+  const available = Array.from({ length: count }, (_, index) => index);
+  const order = [];
+  for (let position = 0; position < 4; position++) {
+    let divisor = 1;
+    for (let step = 1; step < 4 - position; step++) divisor *= count - position - step;
+    const choice = Math.floor(rank / divisor);
+    rank %= divisor;
+    order.push(available.splice(choice, 1)[0]);
+  }
+  return order;
+}
+
 function puzzleFor(day, lang) {
   const bank = BANKS[lang];
   const puzzleIndex = releaseIndex(day);
+  const blockOrder = blockOrderForPuzzle(bank.blocks.length, puzzleIndex);
   const entries = [];
   const grid = Array.from({ length: SIZE }, () => Array(WIDTH).fill(null));
 
   for (let blockIndex = 0; blockIndex < 4; blockIndex++) {
-    const source = bank.blocks[(puzzleIndex + blockIndex) % bank.blocks.length];
+    const source = bank.blocks[blockOrder[blockIndex]];
     const block = {
       ...source,
       rowOffset: Math.floor(blockIndex / 2) * 3,
