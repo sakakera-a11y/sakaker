@@ -2,15 +2,18 @@ const TIME_ZONE = "Asia/Riyadh";
 const SIZE = 6;
 const WIDTH = 6;
 
-// Each 3x3 block is a checked word square: its three rows and three columns
-// are all valid answers. Two independent blocks form a 6x6 daily puzzle.
+// Each 3x3 block is a checked word square. Four independently selected
+// blocks form a 6x6 puzzle with 12 across and 12 down clues.
 const BANKS = {
   ar: {
     // Valid 3x3 Arabic word squares. Every row is also a valid vertical answer.
     blocks: [
       { rows: [["باب","مدخل يفتح ويغلق."],["أبي","والدي."],["بيد","في يد الإنسان."]], columns: [["باب","مدخل المنزل."],["أبي","والدي."],["بيد","في يد."]] },
       { rows: [["نور","ضياء يبدد الظلام."],["ورد","زهر جميل معروف."],["ردم","سدّ حفرة بالتراب."]], columns: [["نور","ما يضيء المكان."],["ورد","زهر معروف."],["ردم","غطّى المكان بالتراب."]] },
-      { rows: [["ليل","وقت الظلام بعد النهار."],["يلي","يأتي بعد غيره."],["ليل","ظلام الليل."]], columns: [["ليل","عكس النهار."],["يلي","يتبع في الترتيب."],["ليل","وقت السكون والظلام."]] }
+      { rows: [["ليل","وقت الظلام بعد النهار."],["يلي","يأتي بعد غيره."],["ليل","ظلام الليل."]], columns: [["ليل","عكس النهار."],["يلي","يتبع في الترتيب."],["ليل","وقت السكون والظلام."]] },
+      { rows: [["دار","منزل يسكنه الإنسان."],["أرى","أشاهد بعيني."],["ريم","اسم عربي يُطلق على الغزال."]], columns: [["دار","بيت أو منزل."],["أرى","أبصر وأشاهد."],["ريم","اسم عربي معروف."]] },
+      { rows: [["جمل","حيوان معروف بالصبر."],["ملك","حاكم البلاد."],["لكن","أداة استدراك."]], columns: [["جمل","حيوان الصحراء."],["ملك","صاحب الحكم."],["لكن","تفيد الاستدراك."]] },
+      { rows: [["حسن","جمال وبهاء."],["سنا","ضوء ولمعان."],["نار","لهب وحرارة."]], columns: [["حسن","جمال."],["سنا","بريق الضوء."],["نار","مصدر اللهب والحرارة."]] }
     ],
     phrases: ["النجاح","التحدي","التفوق","التعلم","الطموح","التميز"],
     lessons: [
@@ -28,9 +31,15 @@ const BANKS = {
       { rows: [["ape","A large primate."],["pea","A small green vegetable."],["ear","The body part used for hearing."]], columns: [["ape","A large primate."],["pea","A small green vegetable."],["ear","The body part used for hearing."]] },
       { rows: [["tea","A drink made by steeping leaves."],["ear","The body part used for hearing."],["art","Creative work such as painting."]], columns: [["tea","A drink made from tea leaves."],["ear","The body part used for hearing."],["art","Creative expression."]] },
       { rows: [["cat","A common household pet."],["are","A plural form of the verb be."],["ten","One more than nine."]], columns: [["cat","A feline pet."],["are","Plural form of “is”."],["ten","The number after nine."]] },
-      { rows: [["dog","A loyal domestic animal."],["owl","A bird that is often active at night."],["gum","Something you chew."]], columns: [["dog","A domestic canine."],["owl","A nocturnal bird."],["gum","Chewing candy."]] }
+      { rows: [["dog","A loyal domestic animal."],["owl","A bird that is often active at night."],["gum","Something you chew."]], columns: [["dog","A domestic canine."],["owl","A nocturnal bird."],["gum","Chewing candy."]] },
+      { rows: [["new","Not old; recently made."],["eye","The organ used for seeing."],["wet","Covered with water."]], columns: [["new","Recently made."],["eye","Used for sight."],["wet","Not dry."]] },
+      { rows: [["top","The highest part."],["one","The number after zero."],["pen","A tool for writing."]], columns: [["top","Highest point."],["one","A single unit."],["pen","An ink writing tool."]] },
+      { rows: [["fun","Enjoyment or amusement."],["use","To put something to work."],["net","A mesh used to catch things."]], columns: [["fun","Enjoyment."],["use","Make practical use of."],["net","Mesh for catching."]] },
+      { rows: [["row","A line of things."],["one","The number after zero."],["web","A network of connected pages."]], columns: [["row","A line or series."],["one","A single unit."],["web","The World Wide Web."]] },
+      { rows: [["car","A road vehicle."],["are","Plural form of the verb be."],["red","The color of a ripe tomato."]], columns: [["car","A motor vehicle."],["are","Plural form of “is”."],["red","A primary color."]] },
+      { rows: [["mad","Very angry."],["ape","A large primate."],["den","An animal's lair."]], columns: [["mad","Angry."],["ape","A large primate."],["den","A wild animal's home."]] }
     ],
-    phrases: ["BRIGHT","PUZZLE","CREATE","GROWTH","FUTURE","FRIEND","PLANET","DREAMS"],
+    phrases: ["BRIGHT","PUZZLE","CREATE","GROWTH","FUTURE","FRIEND","PLANET","DREAMS","KINDLY","LISTEN"],
     lessons: [
       "Small, steady steps can lead to meaningful progress.",
       "A good puzzle rewards patience and careful thought.",
@@ -39,7 +48,9 @@ const BANKS = {
       "Build the future with the choices you make today.",
       "Friendship grows through kindness and trust.",
       "Our planet deserves care in every small action.",
-      "Dreams become goals when you take the first step."
+      "Dreams become goals when you take the first step.",
+      "Kindness makes everyday life better.",
+      "Listening carefully is the beginning of understanding."
     ]
   }
 };
