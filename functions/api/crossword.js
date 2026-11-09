@@ -7,59 +7,19 @@ const WIDTH = 6;
 const BANKS = {
   ar: [{
     blocks: [
-      {
-        rows: [
-          ["باب", "مدخل يفتح ويغلق."],
-          ["أبي", "والدي."],
-          ["بيد", "في يد الإنسان أو ممسوك بها."]
-        ],
-        columns: [
-          ["باب", "مدخل المنزل أو الغرفة."],
-          ["أبي", "والدي."],
-          ["بيد", "تعبير يعني في يد."]
-        ]
-      },
-      {
-        rows: [
-          ["نور", "ضياء يبدد الظلام."],
-          ["ورد", "زهر جميل معروف برائحته."],
-          ["ردم", "سدّ حفرة أو غطّاها بالتراب."]
-        ],
-        columns: [
-          ["نور", "ما يضيء المكان."],
-          ["ورد", "زهر معروف بألوانه."],
-          ["ردم", "غطّى المكان بالتراب."]
-        ]
-      }
+      { rowOffset: 0, colOffset: 0, rows: [["باب","مدخل يفتح ويغلق."],["أبي","والدي."],["بيد","في يد الإنسان."]], columns: [["باب","مدخل المنزل."],["أبي","والدي."],["بيد","في يد."]] },
+      { rowOffset: 0, colOffset: 3, rows: [["نور","ضياء يبدد الظلام."],["ورد","زهر جميل معروف."],["ردم","سدّ حفرة بالتراب."]], columns: [["نور","ما يضيء المكان."],["ورد","زهر معروف."],["ردم","غطّى المكان بالتراب."]] },
+      { rowOffset: 3, colOffset: 0, rows: [["نور","ضياء الصباح."],["ورد","زهرة عطرة."],["ردم","ملأ الحفرة."]], columns: [["نور","ضوء."],["ورد","زهر."],["ردم","غطاء التراب."]] },
+      { rowOffset: 3, colOffset: 3, rows: [["باب","مدخل البيت."],["أبي","والدي العزيز."],["بيد","في قبضة اليد."]], columns: [["باب","مدخل."],["أبي","والد."],["بيد","في يد."]] }
     ],
     phrase: "النجاح", lesson: "الاستمرار بخطوات صغيرة يصنع فرقًا كبيرًا مع الوقت."
   }],
   en: [{
     blocks: [
-      {
-        rows: [
-          ["ape", "A large primate."],
-          ["pea", "A small green vegetable."],
-          ["ear", "The body part used for hearing."]
-        ],
-        columns: [
-          ["ape", "A large primate."],
-          ["pea", "A small green vegetable."],
-          ["ear", "The body part used for hearing."]
-        ]
-      },
-      {
-        rows: [
-          ["tea", "A drink made by steeping leaves."],
-          ["ear", "The body part used for hearing."],
-          ["art", "Creative work such as painting or sculpture."]
-        ],
-        columns: [
-          ["tea", "A drink made from tea leaves."],
-          ["ear", "The body part used for hearing."],
-          ["art", "Creative expression."]
-        ]
-      }
+      { rowOffset: 0, colOffset: 0, rows: [["ape","A large primate."],["pea","A small green vegetable."],["ear","The body part used for hearing."]], columns: [["ape","A large primate."],["pea","A small green vegetable."],["ear","The body part used for hearing."]] },
+      { rowOffset: 0, colOffset: 3, rows: [["tea","A drink made by steeping leaves."],["ear","The body part used for hearing."],["art","Creative work such as painting."]], columns: [["tea","A drink made from tea leaves."],["ear","The body part used for hearing."],["art","Creative expression."]] },
+      { rowOffset: 3, colOffset: 0, rows: [["cat","A common household pet."],["are","A plural form of the verb be."],["ten","One more than nine."]], columns: [["cat","A feline pet."],["are","Plural form of “is”."],["ten","The number after nine."]] },
+      { rowOffset: 3, colOffset: 3, rows: [["dog","A loyal domestic animal."],["owl","A bird that is often active at night."],["gum","Something you chew."]], columns: [["dog","A domestic canine."],["owl","A nocturnal bird."],["gum","Chewing candy."]] }
     ],
     phrase: "BRIGHT", lesson: "Small, steady steps can lead to meaningful progress."
   }]
@@ -111,33 +71,35 @@ function puzzleFor(day, lang) {
   const grid = Array.from({ length: SIZE }, () => Array(WIDTH).fill(null));
 
   template.blocks.forEach((block, blockIndex) => {
-    const offset = blockIndex * 3;
+    const rowOffset = block.rowOffset;
+    const colOffset = block.colOffset;
     for (let i = 0; i < 3; i++) {
       const rowAnswer = normalize(block.rows[i][0], lang);
       const colAnswer = normalize(block.columns[i][0], lang);
       if (rowAnswer.length !== 3 || colAnswer.length !== 3) {
         throw new Error("Every crossword answer must contain three letters");
       }
-      const row = offset + i;
+      const row = rowOffset + i;
       const rowCells = rowAnswer.map((letter, j) => {
-        const r = row, c = offset + j;
+        const r = row, c = colOffset + j;
         if (grid[r][c] !== null && grid[r][c] !== letter) throw new Error("Across crossing mismatch");
         grid[r][c] = letter;
         return [r, c];
       });
-      entries.push({ id: `a${offset + i + 1}`, direction: "across", clue: block.rows[i][1], cells: rowCells, answer: rowAnswer });
+      entries.push({ id: `a${row + 1}_${colOffset + 1}`, direction: "across", clue: block.rows[i][1], cells: rowCells, answer: rowAnswer });
 
-      const col = offset + i;
+      const col = colOffset + i;
       const colCells = colAnswer.map((letter, j) => {
-        const r = offset + j, c = col;
+        const r = rowOffset + j, c = col;
         if (grid[r][c] !== null && grid[r][c] !== letter) throw new Error("Down crossing mismatch");
         grid[r][c] = letter;
         return [r, c];
       });
-      entries.push({ id: `d${offset + i + 1}`, direction: "down", clue: block.columns[i][1], cells: colCells, answer: colAnswer });
+      entries.push({ id: `d${rowOffset + 1}_${col + 1}`, direction: "down", clue: block.columns[i][1], cells: colCells, answer: colAnswer });
     }
   });
 
+  if (grid.some(row => row.some(cell => cell === null))) throw new Error("Crossword grid contains empty squares");
   for (const entry of entries) {
     const built = entry.cells.map(([r, c]) => grid[r][c]).join("");
     if (built !== entry.answer.join("")) throw new Error(`Invalid crossword entry ${entry.id}`);
