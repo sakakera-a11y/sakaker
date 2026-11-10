@@ -853,7 +853,7 @@ function ensureCastleNewspaperLauncher(){
   if(document.getElementById('sakCastleNewspaperLauncherScript'))return;
   const script=document.createElement('script');
   script.id='sakCastleNewspaperLauncherScript';
-  script.src='/assets/castle-newspaper.js?v=20261110-anime60-full';
+  script.src='/assets/castle-newspaper.js?v=20261110-moonship60-newsfix1';
   script.async=true;
   script.onerror=()=>script.remove();
   document.head.appendChild(script);
