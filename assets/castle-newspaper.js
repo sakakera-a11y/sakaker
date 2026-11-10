@@ -360,19 +360,8 @@ function differences(panel){
  try{const saved=JSON.parse(localStorage.getItem(storageKey)||'[]');saved.forEach(idx=>{if(Number.isInteger(idx)&&idx>=0&&idx<5){found.add(idx);paintFound(idx);}});}catch(e){}
  refreshProgress();
  const actions=document.createElement('div');actions.className='cn-difference-actions';
- const hint=document.createElement('button');hint.type='button';hint.className='cn-action';hint.textContent=language==='ar'?'💡 تلميح':'💡 Hint';
  const reset=document.createElement('button');reset.type='button';reset.className='cn-action';reset.textContent=language==='ar'?'↻ إعادة المحاولة':'↻ Restart';
- actions.append(hint,reset);w.appendChild(actions);
- hint.addEventListener('click',()=>{
-  const idx=zones.findIndex((z,i)=>!found.has(i));
-  if(idx<0){out.textContent=language==='ar'?'أكملت تحدي اليوم بالفعل!':'Today’s challenge is complete!';return;}
-  const ring=document.createElementNS('http://www.w3.org/2000/svg','circle');
-  ring.setAttribute('cx',zones[idx][0]);ring.setAttribute('cy',zones[idx][1]);ring.setAttribute('r','38');
-  ring.setAttribute('fill','none');ring.setAttribute('stroke','#fff17a');ring.setAttribute('stroke-width','8');
-  ring.setAttribute('stroke-dasharray','8 7');ring.setAttribute('pointer-events','none');svg.appendChild(ring);
-  out.textContent=language==='ar'?'تلميح: ابحث قرب الدائرة المضيئة':'Hint: look near the glowing circle';
-  setTimeout(()=>ring.remove(),1800);
- });
+ actions.append(reset);w.appendChild(actions);
  reset.addEventListener('click',()=>{
   found.clear();svg.querySelectorAll('[data-difference],.cn-hint-ring').forEach(n=>n.remove());
   try{localStorage.removeItem(storageKey);}catch(e){}
@@ -398,8 +387,31 @@ function horoscope(panel){
  signs.forEach((v,i)=>{const b=document.createElement('button');b.textContent=v;b.setAttribute('aria-pressed',String(i===0));b.addEventListener('click',()=>{selected=i;row.querySelectorAll('button').forEach((x,j)=>x.setAttribute('aria-pressed',String(i===j)));show();});row.appendChild(b);});
  w.append(row,out);const note=document.createElement('div');note.className='cn-meta';note.textContent='للتسلية فقط؛ الأبراج والتوقعات ليست علماً ولا وسيلة لمعرفة المستقبل.';w.appendChild(note);show();panel.appendChild(w);
 }
+function installNewsTicker(){
+ const id='sakCastleNewsTicker';
+ if($(id))return;
+ const style=document.createElement('style');style.id=id+'Style';
+ style.textContent='#'+id+'{box-sizing:border-box;display:flex;align-items:center;gap:10px;width:min(1200px,calc(100% - 16px));min-height:42px;margin:8px auto;padding:7px 12px;border:1px solid rgba(231,194,105,.72);border-radius:13px;background:linear-gradient(100deg,#071b28,#123b45 55%,#241936);color:#fff4cf;box-shadow:0 4px 16px #0004;position:relative;z-index:5;overflow:hidden;font:800 13px/1.5 Tahoma,Arial,sans-serif}#'+id+' .cn-ticker-label{flex:0 0 auto;color:#ffdb78}#'+id+' a{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#fff;text-decoration:none;flex:1}#'+id+' a:hover{color:#ffe28a;text-decoration:underline}#'+id+' .cn-ticker-next{flex:0 0 auto;border:1px solid #ffffff44;border-radius:8px;background:#ffffff12;color:#fff;padding:3px 8px;cursor:pointer}';
+ document.head.appendChild(style);
+ const bar=document.createElement('div');bar.id=id;bar.setAttribute('role','region');bar.setAttribute('aria-label',language==='ar'?'شريط أخبار القلعة':'Castle news ticker');
+ const label=document.createElement('strong');label.className='cn-ticker-label';label.textContent=language==='ar'?'أخبار القلعة':'Castle News';
+ const link=document.createElement('a');link.href='#';link.textContent=language==='ar'?'جارٍ تحميل الأخبار…':'Loading news…';
+ const next=document.createElement('button');next.type='button';next.className='cn-ticker-next';next.textContent='›';next.setAttribute('aria-label',language==='ar'?'الخبر التالي':'Next headline');
+ bar.append(label,link,next);
+ const header=$('sakFestiveHeader'),dock=$('sakakerUtilityDock');
+ if(header?.parentNode)header.insertAdjacentElement('afterend',bar);else if(dock?.parentNode)dock.parentNode.insertBefore(bar,dock);else document.body.insertBefore(bar,document.body.firstChild);
+ let headlines=[],index=0;
+ const show=()=>{if(!headlines.length)return;const item=headlines[index%headlines.length];link.textContent=item.title;link.href=safeUrl(item.link)||'#';link.target='_blank';link.rel='noopener noreferrer';};
+ const load=async()=>{
+  try{const response=await fetch('/data/news.json?strip='+Date.now(),{cache:'no-store'});if(!response.ok)throw new Error('news '+response.status);const data=await response.json();headlines=(Array.isArray(data.items)?data.items:[]).filter(x=>x&&x.title&&safeUrl(x.link)).slice(0,30);if(headlines.length){index=0;show();}}
+  catch(_){if(!headlines.length)link.textContent=language==='ar'?'تعذر جلب الأخبار؛ افتح صحيفة القلعة للتحديث':'Could not load headlines; open Castle Newspaper to refresh';}
+ };
+ next.addEventListener('click',()=>{if(headlines.length){index=(index+1)%headlines.length;show();}});
+ load();window.setInterval(()=>{if(headlines.length){index=(index+1)%headlines.length;show();}else load();},9000);
+ window.setInterval(load,5*60*1000);
+}
 function start(){
- styles();mount();
+ styles();mount();installNewsTicker();
  const syncLauncherLanguage=()=>{
   const pageEn=String(document.documentElement.lang||'ar').toLowerCase().startsWith('en');
   const launcher=$('sakCastleNewspaperLauncher');
