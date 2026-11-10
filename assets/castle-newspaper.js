@@ -277,6 +277,14 @@ function differences(panel){
  const labels=language==='ar'?['الصورة الأولى','الصورة الثانية — اضغط هنا']:['Picture 1','Picture 2 — tap here'];
  left.innerHTML='<div class="cn-picture-label">'+labels[0]+'</div>';
  right.innerHTML='<div class="cn-picture-label">'+labels[1]+'</div>';
+ const landscapes=[
+  '<path d="M0 440L110 260 215 440 320 225 450 440 570 285 760 455V650H0Z" fill="#b9d7e8" opacity=".35"/><path d="M90 300l20-40 22 40m165-25 23-48 26 48m220 50 26-50 28 50" fill="none" stroke="#f4fbff" stroke-width="10" opacity=".7"/>',
+  '<path d="M0 420Q120 365 240 420T480 410T760 405V620H0Z" fill="#1688a1" opacity=".42"/><path d="M0 470q70-22 140 0t140 0t140 0t140 0t140 0" fill="none" stroke="#b5f5ff" stroke-width="8" opacity=".55"/>',
+  '<g fill="#174a39" opacity=".58"><path d="M0 455l45-180 45 180Z"/><path d="M65 455l50-220 50 220Z"/><path d="M630 455l45-190 45 190Z"/><path d="M560 455l40-150 40 150Z"/></g>',
+  '<path d="M0 455Q180 350 360 455T760 440V630H0Z" fill="#c78b4b" opacity=".32"/><g stroke="#6b7840" stroke-width="10" fill="none"><path d="M80 430V300m0 30q-65-45-70-5m70 8q55-55 72-12M690 435V295m0 40q-55-50-75-10m75 10q60-55 75-8"/></g>',
+  '<g fill="#9ed8dc" opacity=".38"><path d="M30 330q60-70 120 0l-25 24H55Z"/><path d="M590 285q55-62 110 0l-20 22h-70Z"/><path d="M280 250q42-52 84 0l-15 18h-54Z"/></g><path d="M40 360l-18-42 36 12 25-30 10 45 40 8-35 25-2 35-32-24-38 9Z" fill="#7cc5c9" opacity=".25"/>'
+ ];
+ const landscape=landscapes[extra];
  const sceneDecor=[
   '<path d="M70 215q35-45 70 0q-35 25-70 0Z" fill="#fff4c2" opacity=".8"/><path d="M90 210l30-15" stroke="#fff" stroke-width="3"/>',
   '<path d="M620 255q45-38 85 0q-42 23-85 0Z" fill="#fff1d2" opacity=".8"/><path d="M640 250l30-14" stroke="#fff" stroke-width="3"/>',
@@ -299,7 +307,7 @@ function differences(panel){
    '<rect width="760" height="1024" fill="url(#animeSky'+(isRight?'R':'L')+')"/>'+
    '<circle cx="545" cy="130" r="72" fill="#ffe9a6" opacity=".95"/><circle cx="545" cy="130" r="91" fill="#fff0b0" opacity=".12"/>'+
    '<g fill="#fff" opacity=".8"><circle cx="75" cy="90" r="3"/><circle cx="180" cy="135" r="2"/><circle cx="320" cy="82" r="3"/><circle cx="680" cy="115" r="3"/><circle cx="420" cy="190" r="2"/></g>'+
-   sceneDecor+
+   sceneDecor+landscape+
    '<path d="M0 445Q110 380 220 430T430 420T760 405V650H0Z" fill="#163d4b" opacity=".65"/>'+
    '<g fill="'+castle+'" stroke="#564b67" stroke-width="7"><path d="M470 440V255h70v-95h86v95h72v185Z"/><path d="M520 160l-7-48 34 27 34-27-7 48Z" fill="#a77d9f"/><path d="M602 255l-5-74 31 40 31-40-5 74Z" fill="#b98b9c"/><path d="M465 440V315h-42v125Z"/></g>'+
    '<g fill="#ffe6a1"><rect x="490" y="290" width="18" height="34" rx="8"/><rect x="552" y="290" width="18" height="34" rx="8"/><rect x="620" y="290" width="18" height="34" rx="8"/><rect x="684" y="290" width="18" height="34" rx="8"/></g>'+
