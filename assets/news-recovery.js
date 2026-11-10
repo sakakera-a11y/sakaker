@@ -5,7 +5,7 @@
   if(!window.__sakCastleNewspaperLoaded&&!document.getElementById('sakCastleNewspaperLegacyLoader')){
     const script=document.createElement('script');
     script.id='sakCastleNewspaperLegacyLoader';
-    script.src='/assets/castle-newspaper.js?v=20261108-news-fallback1';
+    script.src='/assets/castle-newspaper.js?v=20261110-anime60';
     script.async=true;
     document.head.appendChild(script);
   }
