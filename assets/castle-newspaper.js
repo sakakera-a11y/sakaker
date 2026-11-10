@@ -248,7 +248,23 @@ async function loadNews(force=false){
  renderNews();
  try{
   let fresh=[];
+  // Prefer the GitHub Pages-compatible, scheduled static snapshot. This avoids
+  // depending on browser CORS proxies or a Pages Function being available.
   try{
+   const snapshot=await fetch('/data/news.json?fresh='+Date.now(),{cache:'no-store',headers:{'Accept':'application/json'}});
+   if(snapshot.ok){
+    const payload=await snapshot.json();
+    if(Array.isArray(payload.items)){
+     fresh=payload.items.map(item=>({
+      title:String(item.title||'').trim(),link:safeUrl(String(item.link||'')),
+      desc:String(item.desc||'').slice(0,240),date:String(item.date||''),
+      source:String(item.source||'مصادر الأخبار'),category:String(item.category||'world')
+     })).filter(item=>item.title&&item.link);
+     sourceStatus=Array.isArray(payload.sourceStatus)?payload.sourceStatus:[];
+    }
+   }
+  }catch(_){}
+  if(!fresh.length)try{
    const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
    try{
     const response=await fetch('/api/news?fresh='+Date.now(),{signal:controller.signal,cache:'no-store',headers:{'Accept':'application/json'}});
