@@ -1,0 +1,89 @@
+name: Refresh Castle Newspaper News
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/refresh-castle-news.yml'
+  schedule:
+    - cron: '*/30 * * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: castle-news-refresh
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch RSS headlines
+        shell: python
+        run: |
+          import json, urllib.request, urllib.parse, xml.etree.ElementTree as ET
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          sources = [
+            ("عاجل", "https://ajel.sa/rss.xml", "saudi"),
+            ("BBC News · World", "https://feeds.bbci.co.uk/news/world/rss.xml", "world"),
+            ("BBC عربي · الشرق الأوسط", "https://feeds.bbci.co.uk/arabic/middleeast/rss.xml", "saudi"),
+            ("أخبار السعودية", "https://news.google.com/rss/search?q=السعودية&hl=ar&gl=SA&ceid=SA:ar", "saudi"),
+            ("أخبار العالم", "https://news.google.com/rss/search?q=العالم&hl=ar&gl=SA&ceid=SA:ar", "world"),
+            ("التقنية", "https://news.google.com/rss/search?q=التقنية&hl=ar&gl=SA&ceid=SA:ar", "tech"),
+            ("الرياضة", "https://news.google.com/rss/search?q=الرياضة&hl=ar&gl=SA&ceid=SA:ar", "sports"),
+            ("الاقتصاد", "https://news.google.com/rss/search?q=الاقتصاد&hl=ar&gl=SA&ceid=SA:ar", "economy"),
+          ]
+          items, status = [], []
+          for name, url, category in sources:
+            try:
+              req = urllib.request.Request(url, headers={"User-Agent":"Mozilla/5.0 SakakerCastleNews/1.0","Accept":"application/rss+xml, application/xml, text/xml"})
+              with urllib.request.urlopen(req, timeout=12) as response:
+                root = ET.fromstring(response.read())
+              nodes = root.findall(".//item")
+              if not nodes:
+                nodes = root.findall(".//{*}entry")
+              count = 0
+              for node in nodes:
+                def val(*names):
+                  for n in names:
+                    el = node.find(n) or node.find("{*}"+n)
+                    if el is not None and el.text:
+                      return el.text.strip()
+                  return ""
+                title, link = val("title"), val("link")
+                if not link:
+                  link_el = node.find("{*}link")
+                  if link_el is not None: link = link_el.attrib.get("href","")
+                desc = val("description","summary","content")[:500]
+                date = val("pubDate","published","updated")
+                if title and link.startswith("http"):
+                  items.append({"title":title,"link":link,"desc":desc,"date":date,"source":name,"category":category})
+                  count += 1
+              status.append({"name":name,"category":category,"ok":count>0,"count":count})
+            except Exception as e:
+              status.append({"name":name,"category":category,"ok":False,"error":type(e).__name__})
+          unique = {}
+          for item in items:
+            unique.setdefault(item["link"], item)
+          output = {"fetchedAt":datetime.now(timezone.utc).isoformat(),"items":list(unique.values())[:100],"sourceStatus":status}
+          Path("data").mkdir(exist_ok=True)
+          Path("data/news.json").write_text(json.dumps(output,ensure_ascii=False,indent=2),encoding="utf-8")
+          print("News headlines:",len(output["items"]),"sources:",sum(x["ok"] for x in status),"/",len(status))
+          if not output["items"]:
+            raise SystemExit("No RSS headlines fetched; keeping the last published news snapshot.")
+      - name: Publish updated news snapshot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/news.json
+          if git diff --cached --quiet; then
+            echo "No news changes."
+          else
+            git commit -m "Refresh Castle Newspaper headlines"
+            git push
+          fi
