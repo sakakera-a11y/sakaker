@@ -5,7 +5,7 @@
   if(!window.__sakCastleNewspaperLoaded&&!document.getElementById('sakCastleNewspaperLegacyLoader')){
     const script=document.createElement('script');
     script.id='sakCastleNewspaperLegacyLoader';
-    script.src='/assets/castle-newspaper.js?v=20261110-news-live8';
+    script.src='/assets/castle-newspaper.js?v=20261110-news-live9';
     script.async=true;
     document.head.appendChild(script);
   }
