@@ -10,7 +10,7 @@ const enText={
 '🧩 الكلمات المتقاطعة اليومية':'🧩 Daily Crossword','حل الكلمتين؛ تشتركان في الحرف الأول داخل المربع المشترك.':'Solve both words. They share the first letter in the intersecting square.',
 'الإجابة الأفقية':'Across answer','الإجابة العمودية':'Down answer','أفقي: ':'Across: ','عمودي: ':'Down: ',
 'تحقق من الحل':'Check answers','أحسنت! إجابتك صحيحة.':'Excellent! Both answers are correct.','ليست الإجابة صحيحة بعد؛ حاول مرة أخرى.':'Not quite. Try again.',
-'لغز يوم':'Puzzle for ','حل الكلمتين؛ تشتركان في الحرف الأول داخل المربع المشترك.':'Solve both words; they share their first letter in the crossing square.','أفقي: ':'Across: ','عمودي: ':'Down: ','لغز يوم':'Puzzle for ','تحدي يوم':'Challenge for ','مشهد القلعة':'Daily adventure scene','تم العثور على 0 من 5':'Found 0 of 15','🔎 اكتشف الاختلافات الخمسة':'🔎 Find 15 Differences','قارن الصورتين، ثم اضغط على موضع الاختلاف في الصورة اليمنى.':'Compare the pictures, then tap a difference in the right-hand picture.','تم العثور على 0 من 15':'Found 0 of 15','🔎 اكتشف 15 اختلافًا':'🔎 Find 15 Differences','مغامرة فضائية جديدة كل يوم! قارن الصورتين واضغط على مواضع الاختلاف في الصورة اليمنى.':'A new space adventure every day! Compare the pictures and tap the differences in the right-hand image.','الصورة الأولى':'Picture 1','الصورة الثانية — اضغط هنا':'Picture 2 — tap here','رائع! اكتشفت الاختلافات الخمسة عشر كلها.':'Excellent! You found all 15 differences.',' من 15':' of 15',
+'لغز يوم':'Puzzle for ','حل الكلمتين؛ تشتركان في الحرف الأول داخل المربع المشترك.':'Solve both words; they share their first letter in the crossing square.','أفقي: ':'Across: ','عمودي: ':'Down: ','لغز يوم':'Puzzle for ','تحدي يوم':'Challenge for ','مشهد القلعة':'Daily adventure scene','تم العثور على 0 من 5':'Found 0 of 5','🔎 اكتشف الاختلافات الخمسة':'🔎 Find the five differences','قارن الصورتين، ثم اضغط على موضع الاختلاف في الصورة اليمنى.':'Compare the pictures, then tap a difference in the right-hand picture.','تم العثور على 0 من 15':'Found 0 of 5','🔎 اكتشف 15 اختلافًا':'🔎 Find the five differences','مغامرة فضائية جديدة كل يوم! قارن الصورتين واضغط على مواضع الاختلاف في الصورة اليمنى.':'A new space adventure every day! Compare the pictures and tap the differences in the right-hand image.','الصورة الأولى':'Picture 1','الصورة الثانية — اضغط هنا':'Picture 2 — tap here','رائع! اكتشفت الاختلافات الخمسة عشر كلها.':'Excellent! You found all 15 differences.',' من 15':' of 15',
 'تم العثور على 0 من 5':'Found 0 of 5','ممتاز! اكتشفت الاختلافات الخمسة كلها.':'Great! You found all five differences.','أحسنت! ':'Well done! ',' من 5':' of 5','تحدي يوم':'Challenge for ',
 '✨ حظك اليوم':'✨ Daily Horoscope','اختر برجك لقراءة عبارة يومية خفيفة للتسلية.':'Choose your zodiac sign for a light daily entertainment message.',
 'للتسلية فقط؛ الأبراج والتوقعات ليست علماً ولا وسيلة لمعرفة المستقبل.':'For entertainment only. Astrology is not science and cannot predict the future.',
@@ -259,33 +259,103 @@ function scene(alt){
  return '<svg class="cn-picture" viewBox="0 0 320 190" role="img" aria-label="مشهد القلعة"><rect width="320" height="190" fill="'+sky+'"/><rect y="130" width="320" height="60" fill="'+grass+'"/>'+sun+cloud+'<path d="M100 130 L100 72 L130 72 L130 48 L190 48 L190 72 L220 72 L220 130Z" fill="'+wall+'" stroke="#765e47" stroke-width="3"/><path d="M125 48 L160 25 L195 48Z" fill="#a95b50"/>'+flag+'<rect x="118" y="88" width="18" height="18" fill="#557c91"/><rect x="184" y="88" width="18" height="18" fill="#557c91"/><path d="M146 130 V104 Q160 88 174 104 V130Z" fill="'+door+'"/><path d="M277 133 L284 73" stroke="#704b2e" stroke-width="8"/><path d="M284 78 Q250 50 264 68 Q280 48 286 70 Q303 46 303 70 Q321 63 300 84Z" fill="#28784f"/>'+palm+'<path d="M0 160 Q65 145 115 163 T230 159 T320 161" fill="none" stroke="#e6d9a2" stroke-width="3"/></svg>';
 }
 function differences(panel){
- found=new Set();const dateKey=day(),seed=Number(dateKey.replace(/-/g,'')),themes=[['#081b36','#31527e','#e7a65c','#dce8f6','#ed5570'],['#21133d','#594174','#6ac3d1','#e9e0ff','#f3c45d'],['#102d32','#27645c','#df91a1','#e8f1df','#e5ba4c'],['#2a1b27','#70424c','#d9b66d','#eee7dd','#63cbdc']][seed%4],[sky,nebula,planet,robot,trim]=themes;
- const decor=['<path d="M38 75l24-9 24 9-24 9Z" fill="#8be9ff" opacity=".55"/><path d="M62 66v18" stroke="#fff" stroke-width="2"/>','<ellipse cx="75" cy="115" rx="42" ry="13" fill="none" stroke="#e7c8ff" stroke-width="5" opacity=".7"/><circle cx="75" cy="115" r="8" fill="#fff"/>','<path d="M20 150l28-25 28 25-28 25Z" fill="#c5e8f2" opacity=".45"/><circle cx="48" cy="150" r="7" fill="#fff"/>','<path d="M28 92q24-38 48 0q-24 38-48 0Z" fill="#ffdc9b" opacity=".45"/><path d="M28 92h48" stroke="#fff" stroke-width="3"/>'][seed%4];
- const w=document.createElement('div');w.className='cn-game cn-difference-game';w.innerHTML='<h3>🔎 اكتشف 15 اختلافًا</h3><p>مغامرة فضائية جديدة كل يوم! قارن الصورتين واضغط على مواضع الاختلاف في الصورة اليمنى.</p>';
- const pics=document.createElement('div');pics.className='cn-pictures';const left=document.createElement('div'),right=document.createElement('div');left.className=right.className='cn-picture-wrap';const labels=language==='ar'?['الصورة الأولى','الصورة الثانية — اضغط هنا']:['Picture 1','Picture 2 — tap here'];left.innerHTML='<div class="cn-picture-label">'+labels[0]+'</div>';right.innerHTML='<div class="cn-picture-label">'+labels[1]+'</div>';
- const diffs=[
- [210,20,'<path d="M210 48V24" stroke="#d9e6ff" stroke-width="5"/>','<path d="M210 48V24" stroke="#d9e6ff" stroke-width="5"/><circle cx="210" cy="20" r="8" fill="'+trim+'" stroke="white" stroke-width="2"/>'],
- [190,91,'<circle cx="190" cy="91" r="5" fill="#ff536c"/>','<path d="M184 91h12" stroke="#7ffaff" stroke-width="5"/>'],
- [146,79,'<path d="M137 68l20 7-5 18-20-7Z" fill="'+trim+'"/>','<path d="M137 68l20 7-5 18-20-7Z" fill="'+trim+'"/><circle cx="146" cy="79" r="5" fill="white"/>'],
- [272,80,'<path d="M263 68l19 8-7 18-18-8Z" fill="'+trim+'"/>','<path d="M263 68l19 8-7 18-18-8Z" fill="'+trim+'"/><path d="M265 80l7-7 7 7-7 7Z" fill="white"/>'],
- [210,126,'<circle cx="210" cy="126" r="12" fill="#ffdf69"/>','<path d="M210 111l5 10 11 5-11 5-5 10-5-10-11-5 11-5Z" fill="#69f4ff" stroke="white" stroke-width="2"/>'],
- [210,162,'<rect x="201" y="155" width="18" height="14" rx="3" fill="#4d657e"/>','<rect x="201" y="155" width="18" height="14" rx="3" fill="#4d657e"/><circle cx="210" cy="162" r="4" fill="#ffd85e"/>'],
- [130,122,'<path d="M121 116h16l4 13h-16Z" fill="#b9d5e9"/>','<path d="M121 116h16l4 13h-16Z" fill="#b9d5e9"/><circle cx="130" cy="122" r="4" fill="'+trim+'"/>'],
- [290,122,'<path d="M284 116h14l5 13h-14Z" fill="#b9d5e9"/>','<path d="M284 116h14l5 13h-14Z" fill="#b9d5e9"/><path d="M287 119l8 8m0-8-8 8" stroke="'+trim+'" stroke-width="3"/>'],
- [174,197,'<path d="M163 197h20" stroke="white" stroke-width="4"/>','<path d="M163 197h20" stroke="'+trim+'" stroke-width="4"/>'],
- [246,203,'<circle cx="246" cy="203" r="4" fill="#637f9c"/>','<circle cx="246" cy="203" r="7" fill="#ffe16c" stroke="white" stroke-width="2"/>'],
- [333,65,'<circle cx="333" cy="65" r="28" fill="'+planet+'"/>','<circle cx="333" cy="65" r="28" fill="'+planet+'"/><ellipse cx="333" cy="65" rx="43" ry="10" fill="none" stroke="#f5e5bd" stroke-width="5"/>'],
- [77,44,'','<circle cx="77" cy="44" r="9" fill="#d8edff" stroke="white" stroke-width="2"/>'],
- [79,171,'<circle cx="79" cy="171" r="8" fill="#f5d16d"/>','<circle cx="79" cy="171" r="8" fill="#f5d16d"/><circle cx="79" cy="171" r="3" fill="white"/>'],
- [355,175,'<path d="M348 168q12-9 21 2" stroke="#ffcf78" stroke-width="4" fill="none"/>','<path d="M348 168q12-9 21 2" stroke="#ffcf78" stroke-width="4" fill="none"/><path d="M340 183l-17 8" stroke="#ffcf78" stroke-width="3"/>'],
- [210,232,'<path d="M190 229h40v6h-40Z" fill="#526b8a"/>','<path d="M190 229h40v6h-40Z" fill="#526b8a"/><path d="M198 229v6m8-6v6m8-6v6m8-6v6" stroke="#9ff7ff" stroke-width="2"/>']
- ];
- function scene(isRight){const stars=Array.from({length:28},(_,i)=>{const x=(seed*13+i*67+31)%410,y=(seed*7+i*43+17)%245;return '<circle cx="'+x+'" cy="'+y+'" r="'+(1+i%3)+'" fill="'+(i%4===0?'#8df5ff':'white')+'" opacity=".75"/>';}).join(''),marks=diffs.map(d=>isRight?d[3]:d[2]).join('');return '<svg class="cn-picture" viewBox="0 0 420 260" role="img" aria-label="مشهد روبوت فضائي أصلي"><defs><linearGradient id="sky'+(isRight?'R':'L')+'" x2="1" y2="1"><stop stop-color="'+sky+'"/><stop offset="1" stop-color="'+nebula+'"/></linearGradient></defs><rect width="420" height="260" rx="14" fill="url(#sky'+(isRight?'R':'L')+')"/><ellipse cx="90" cy="85" rx="100" ry="70" fill="#8df5ff" opacity=".08"/'+stars+decor+'<circle cx="333" cy="65" r="28" fill="'+planet+'"/><path d="M115 229Q210 209 305 229" fill="none" stroke="#8ac6e8" stroke-width="5" opacity=".5"/><g stroke="#f2f7ff" stroke-width="3" stroke-linejoin="round"><path d="M177 73Q210 48 243 73L258 117 246 174 230 194 190 194 174 174 162 117Z" fill="'+robot+'"/><path d="M178 80L155 101 144 139 160 145 181 116Z" fill="'+robot+'"/><path d="M242 80L265 101 276 139 260 145 239 116Z" fill="'+robot+'"/><path d="M190 190L178 222 198 230 210 203 222 230 242 222 230 190Z" fill="'+robot+'"/><path d="M177 72Q210 39 243 72L235 103H185Z" fill="'+trim+'"/><path d="M183 91h54" stroke="#718aa8" stroke-width="4"/><path d="M180 111h60v51h-60Z" fill="#536f91"/><path d="M178 172h64" stroke="'+trim+'" stroke-width="7"/></g><path d="M196 91h-10m38 0h-10" stroke="#ff536c" stroke-width="5" stroke-linecap="round"/><path d="M48 188l25-14 25 14-25 14Z" fill="#7297b6" stroke="#d7f2ff" stroke-width="3"/><path d="M48 188v22l25 14v-36m25 0v22l-25 14" fill="#355779" stroke="#d7f2ff" stroke-width="2"/><path d="M320 181l22-11 22 11-22 11Z" fill="#7599b4" stroke="#d7f2ff" stroke-width="2"/>'+marks+'</svg>';}
+ found=new Set();
+ const dateKey=day(),parts=dateKey.split('-').map(Number);
+ const todayUtc=Date.UTC(parts[0],parts[1]-1,parts[2]);
+ const campaignStart=Date.UTC(2026,10,10);
+ const campaignDay=Math.max(1,Math.min(60,Math.floor((todayUtc-campaignStart)/86400000)+1));
+ const hue=((campaignDay-1)*23)%360;
+ const sky='hsl('+hue+',62%,20%)',sky2='hsl('+((hue+38)%360)+',78%,64%)';
+ const water='hsl('+((hue+190)%360)+',72%,42%)',castle='hsl('+((hue+35)%360)+',28%,76%)';
+ const dress='hsl('+((hue+320)%360)+',72%,52%)',cloak='hsl('+((hue+205)%360)+',55%,34%)';
+ const extra=campaignDay%5;
+ const w=document.createElement('div');w.className='cn-game cn-difference-game';
+ const title=document.createElement('h3');title.textContent=language==='ar'?'🔎 اكتشف الفروقات الخمس':'🔎 Find the five differences';w.appendChild(title);
+ const intro=document.createElement('p');intro.textContent=language==='ar'?'قارن المشهدين واكتشف خمس فروقات فقط؛ يتجدد عالم الأنمي يومياً لمدة 60 يوماً.':'Compare both scenes and find exactly five differences; the anime world refreshes daily for 60 days.';w.appendChild(intro);
+ const pics=document.createElement('div');pics.className='cn-pictures';
+ const left=document.createElement('div'),right=document.createElement('div');left.className=right.className='cn-picture-wrap';
+ const labels=language==='ar'?['الصورة الأولى','الصورة الثانية — اضغط هنا']:['Picture 1','Picture 2 — tap here'];
+ left.innerHTML='<div class="cn-picture-label">'+labels[0]+'</div>';
+ right.innerHTML='<div class="cn-picture-label">'+labels[1]+'</div>';
+ const sceneDecor=[
+  '<path d="M70 215q35-45 70 0q-35 25-70 0Z" fill="#fff4c2" opacity=".8"/><path d="M90 210l30-15" stroke="#fff" stroke-width="3"/>',
+  '<path d="M620 255q45-38 85 0q-42 23-85 0Z" fill="#fff1d2" opacity=".8"/><path d="M640 250l30-14" stroke="#fff" stroke-width="3"/>',
+  '<g fill="#ffe8a3"><circle cx="90" cy="260" r="4"/><circle cx="135" cy="300" r="3"/><circle cx="650" cy="310" r="4"/><circle cx="590" cy="225" r="3"/></g>',
+  '<path d="M55 190q35-55 70 0q-35 30-70 0Z" fill="#b8f4ff" opacity=".7"/><path d="M73 185l28-20" stroke="#fff" stroke-width="3"/>',
+  '<g stroke="#fff1b8" stroke-width="3" stroke-linecap="round"><path d="M85 230l12-18m-12 18 18-4"/><path d="M650 220l12-18m-12 18 18-4"/></g>'
+ ][extra];
+ function scene(isRight){
+  const flower=isRight?'<g><circle cx="285" cy="330" r="13" fill="#f04f67"/><circle cx="271" cy="330" r="8" fill="#ff8094"/><circle cx="299" cy="330" r="8" fill="#ff8094"/><circle cx="285" cy="316" r="8" fill="#ff8094"/><circle cx="285" cy="344" r="8" fill="#ff8094"/></g>':'<g><circle cx="285" cy="330" r="13" fill="#f6a5d4"/><circle cx="271" cy="330" r="8" fill="#ffd0e8"/><circle cx="299" cy="330" r="8" fill="#ffd0e8"/><circle cx="285" cy="316" r="8" fill="#ffd0e8"/><circle cx="285" cy="344" r="8" fill="#ffd0e8"/></g>';
+  const flag=isRight?'<path d="M606 180l46 10-46 20Z" fill="#ed5265"/>':'<path d="M606 180l46 10-46 20Z" fill="#57c9e8"/>';
+  const bow=isRight?'<g><path d="M386 676l-28-17 2 31Z" fill="#ffcf54" stroke="#8e552d" stroke-width="3"/><path d="M390 676l28-17-2 31Z" fill="#ffcf54" stroke="#8e552d" stroke-width="3"/><circle cx="388" cy="676" r="8" fill="#fff0a1"/></g>':'';
+  const gem=isRight?'<path d="M116 354l12 11-12 15-12-15Z" fill="#4de6d1" stroke="#eaffff" stroke-width="3"/>':'';
+  const tail=isRight?'<path d="M220 881q42-24 42 8q-2 17-22 12" fill="none" stroke="#f0d2b3" stroke-width="17" stroke-linecap="round"/><path d="M242 891l8 3" stroke="#9c765d" stroke-width="6"/>':'<path d="M220 881q42-24 42 8" fill="none" stroke="#f0d2b3" stroke-width="17" stroke-linecap="round"/>';
+  return '<svg class="cn-picture" viewBox="0 0 760 1024" role="img" aria-label="'+(language==='ar'?'مشهد أنمي خيالي':'Fantasy anime scene')+'"><defs>'+
+   '<linearGradient id="animeSky'+(isRight?'R':'L')+'" x2="0" y2="1"><stop stop-color="'+sky+'"/><stop offset="1" stop-color="'+sky2+'"/></linearGradient>'+
+   '<linearGradient id="animeWater'+(isRight?'R':'L')+'" x2="0" y2="1"><stop stop-color="'+water+'"/><stop offset="1" stop-color="#071d3a"/></linearGradient>'+
+   '<linearGradient id="animeDress'+(isRight?'R':'L')+'" x2="1" y2="1"><stop stop-color="'+dress+'"/><stop offset="1" stop-color="#26104f"/></linearGradient>'+
+   '<linearGradient id="animeCloak'+(isRight?'R':'L')+'" x2="1" y2="1"><stop stop-color="'+cloak+'"/><stop offset="1" stop-color="#091a36"/></linearGradient>'+
+   '</defs>'+
+   '<rect width="760" height="1024" fill="url(#animeSky'+(isRight?'R':'L')+')"/>'+
+   '<circle cx="545" cy="130" r="72" fill="#ffe9a6" opacity=".95"/><circle cx="545" cy="130" r="91" fill="#fff0b0" opacity=".12"/>'+
+   '<g fill="#fff" opacity=".8"><circle cx="75" cy="90" r="3"/><circle cx="180" cy="135" r="2"/><circle cx="320" cy="82" r="3"/><circle cx="680" cy="115" r="3"/><circle cx="420" cy="190" r="2"/></g>'+
+   sceneDecor+
+   '<path d="M0 445Q110 380 220 430T430 420T760 405V650H0Z" fill="#163d4b" opacity=".65"/>'+
+   '<g fill="'+castle+'" stroke="#564b67" stroke-width="7"><path d="M470 440V255h70v-95h86v95h72v185Z"/><path d="M520 160l-7-48 34 27 34-27-7 48Z" fill="#a77d9f"/><path d="M602 255l-5-74 31 40 31-40-5 74Z" fill="#b98b9c"/><path d="M465 440V315h-42v125Z"/></g>'+
+   '<g fill="#ffe6a1"><rect x="490" y="290" width="18" height="34" rx="8"/><rect x="552" y="290" width="18" height="34" rx="8"/><rect x="620" y="290" width="18" height="34" rx="8"/><rect x="684" y="290" width="18" height="34" rx="8"/></g>'+
+   '<path d="M606 180V120" stroke="#f4e5c8" stroke-width="7"/>'+flag+
+   '<path d="M0 495Q120 455 245 490T500 485T760 470V760H0Z" fill="url(#animeWater'+(isRight?'R':'L')+')"/>'+
+   '<path d="M490 440q-20 85-55 120t-35 100" fill="none" stroke="#d8f7ff" stroke-width="22" opacity=".9"/><path d="M510 440q-18 85-45 120t-30 100" fill="none" stroke="#fff" stroke-width="6" opacity=".85"/>'+
+   '<path d="M0 675Q190 640 370 675T760 650V1024H0Z" fill="#183b38"/>'+
+   '<path d="M0 710Q150 675 300 708T600 700T760 690" fill="none" stroke="#e9d4a6" stroke-width="18"/>'+
+   '<g stroke="#72533d" stroke-width="8"><path d="M0 705v110M120 700v112M240 702v110M360 700v110M480 700v110M600 695v110M740 690v115"/></g>'+
+   '<g><path d="M75 320V445" stroke="#5d3c2b" stroke-width="13"/><path d="M42 340q33-62 66 0v73H42Z" fill="#f8c56a" stroke="#6b472f" stroke-width="8"/><path d="M55 350h40v48H55Z" fill="#ffe6a2" opacity=".8"/>'+gem+'</g>'+
+   '<g><path d="M0 875q55-85 110 0q-55 70-110 0M620 900q60-100 120 0q-60 75-120 0" fill="#24754d"/><g fill="#f2a5ce"><circle cx="35" cy="860" r="15"/><circle cx="62" cy="842" r="13"/><circle cx="90" cy="870" r="14"/><circle cx="680" cy="865" r="14"/><circle cx="710" cy="845" r="13"/></g></g>'+
+   /* anime heroine */
+   '<g><path d="M205 430Q185 325 270 286Q370 250 410 355Q445 465 398 560L350 650 220 610Q180 520 205 430Z" fill="#24152d"/>'+
+   '<ellipse cx="300" cy="395" rx="82" ry="104" fill="#ffd5b7" stroke="#6b3940" stroke-width="5"/>'+
+   '<path d="M218 390Q205 285 300 278Q408 285 385 400Q360 345 330 330Q290 370 218 390Z" fill="#24152d"/>'+
+   '<path d="M220 400Q190 500 165 590Q220 545 240 480M380 405Q435 500 450 595Q392 545 370 475" fill="none" stroke="#2b172e" stroke-width="30" stroke-linecap="round"/>'+
+   '<ellipse cx="272" cy="405" rx="13" ry="22" fill="#fff"/><ellipse cx="330" cy="405" rx="13" ry="22" fill="#fff"/><ellipse cx="274" cy="410" rx="7" ry="14" fill="#2c6e91"/><ellipse cx="332" cy="410" rx="7" ry="14" fill="#2c6e91"/><circle cx="276" cy="405" r="4" fill="#fff"/><circle cx="334" cy="405" r="4" fill="#fff"/>'+
+   '<path d="M290 452q12 10 25 0" fill="none" stroke="#b64d64" stroke-width="5" stroke-linecap="round"/>'+
+   '<path d="M225 510Q300 475 378 510L430 860Q300 920 165 860Z" fill="url(#animeDress'+(isRight?'R':'L')+')" stroke="#f4c7ed" stroke-width="6"/>'+
+   '<path d="M220 520Q170 555 155 660L205 685 265 560M375 520Q430 555 445 660L395 685 335 560" fill="'+dress+'" stroke="#f4c7ed" stroke-width="6"/>'+
+   '<path d="M170 860Q300 820 430 860L470 920Q300 975 130 920Z" fill="#4a1a60" stroke="#f5c8e9" stroke-width="5"/>'+
+   '<path d="M230 530l70 40 70-40" fill="none" stroke="#ffe8a8" stroke-width="8"/>'+
+   '<path d="M235 600l65 30 65-30" fill="none" stroke="#f7d68b" stroke-width="5"/>'+
+   flower+
+   '</g>'+
+   /* anime companion */
+   '<g><path d="M420 395Q425 290 510 285Q590 290 600 390L585 500 440 500Z" fill="#4a2c26"/>'+
+   '<ellipse cx="505" cy="395" rx="73" ry="92" fill="#e8b68e" stroke="#5a342c" stroke-width="5"/>'+
+   '<path d="M432 380Q425 285 510 280Q590 290 578 385Q535 340 500 345Q468 370 432 380Z" fill="#34242a"/>'+
+   '<path d="M472 395h20m40 0h20" stroke="#35252c" stroke-width="7" stroke-linecap="round"/><path d="M480 440q27 30 55 0" fill="none" stroke="#694039" stroke-width="8"/>'+
+   '<path d="M425 490Q505 455 590 490L650 830Q510 890 385 830Z" fill="url(#animeCloak'+(isRight?'R':'L')+')" stroke="#e8c77a" stroke-width="8"/>'+
+   '<path d="M470 500l35 95 40-95" fill="#f4eee2" stroke="#c7a66b" stroke-width="5"/><path d="M505 600l-18 50 18 22 18-22Z" fill="#3bc6d0" stroke="#f7e2a2" stroke-width="4"/>'+
+   '<path d="M430 820l-30 95h65l20-95M565 820l20 95h65l-35-95" fill="#211b2c" stroke="#d4b37a" stroke-width="7"/>'+
+   '</g>'+
+   bow+
+   /* cat and paving */
+   '<g><ellipse cx="210" cy="900" rx="75" ry="43" fill="#f1e4d4" stroke="#604c50" stroke-width="5"/><circle cx="250" cy="860" r="43" fill="#f4e5d8" stroke="#604c50" stroke-width="5"/><path d="M220 830l-5-38 30 18M270 824l25-30-2 43" fill="#f4e5d8" stroke="#604c50" stroke-width="5"/><ellipse cx="237" cy="860" rx="6" ry="10" fill="#3b9a87"/><ellipse cx="263" cy="860" rx="6" ry="10" fill="#3b9a87"/><path d="M246 880l8 5 8-5" fill="none" stroke="#b36b79" stroke-width="4"/>'+tail+'</g>'+
+   '<path d="M0 970Q180 940 360 970T760 960" fill="none" stroke="#e5d4b2" stroke-width="12"/>'+
+   '</svg>';
+ }
  left.insertAdjacentHTML('beforeend',scene(false));right.insertAdjacentHTML('beforeend',scene(true));pics.append(left,right);w.appendChild(pics);
- const svg=right.querySelector('svg'),out=document.createElement('p');out.className='cn-picture-hint';out.setAttribute('aria-live','polite');out.textContent='تم العثور على 0 من 15';w.appendChild(out);
+ const svg=right.querySelector('svg'),out=document.createElement('p');out.className='cn-picture-hint';out.setAttribute('aria-live','polite');out.textContent=language==='ar'?'تم العثور على 0 من 5':'Found 0 of 5';w.appendChild(out);
  const progress=document.createElement('div');progress.className='cn-difference-progress';progress.innerHTML='<span></span>';w.appendChild(progress);
- svg.addEventListener('click',e=>{const rect=svg.getBoundingClientRect(),x=(e.clientX-rect.left)/rect.width*420,y=(e.clientY-rect.top)/rect.height*260;let idx=-1,dist=Infinity;diffs.forEach((p,i)=>{const d=Math.hypot(x-p[0],y-p[1]);if(d<dist){dist=d;idx=i;}});if(idx>=0&&dist<25&&!found.has(idx)){found.add(idx);const mark=document.createElementNS('http://www.w3.org/2000/svg','circle');mark.setAttribute('cx',diffs[idx][0]);mark.setAttribute('cy',diffs[idx][1]);mark.setAttribute('r','15');mark.setAttribute('fill','#ffdf5e33');mark.setAttribute('stroke','#ffdf5e');mark.setAttribute('stroke-width','4');mark.setAttribute('pointer-events','none');svg.appendChild(mark);out.textContent=found.size===15?'رائع! اكتشفت الاختلافات الخمسة عشر كلها.':'أحسنت! '+found.size+' من 15';progress.firstElementChild.style.width=(found.size/15*100)+'%';}});
- const meta=document.createElement('div');meta.className='cn-meta';meta.textContent='تحدي يوم '+dateKey;w.appendChild(meta);panel.appendChild(w);
+ const zones=[[285,330],[390,676],[620,195],[116,365],[240,890]];
+ svg.addEventListener('click',e=>{
+  const rect=svg.getBoundingClientRect(),x=(e.clientX-rect.left)/rect.width*760,y=(e.clientY-rect.top)/rect.height*1024;
+  let idx=-1,dist=Infinity;zones.forEach((p,i)=>{const d=Math.hypot(x-p[0],y-p[1]);if(d<dist){dist=d;idx=i;}});
+  if(idx>=0&&dist<42&&!found.has(idx)){
+   found.add(idx);
+   const mark=document.createElementNS('http://www.w3.org/2000/svg','circle');mark.setAttribute('cx',zones[idx][0]);mark.setAttribute('cy',zones[idx][1]);mark.setAttribute('r','28');mark.setAttribute('fill','#ffdf5e44');mark.setAttribute('stroke','#ffdf5e');mark.setAttribute('stroke-width','6');mark.setAttribute('pointer-events','none');svg.appendChild(mark);
+   out.textContent=found.size===5?(language==='ar'?'رائع! اكتشفت الفروقات الخمس كلها.':'Excellent! You found all five differences.'):(language==='ar'?'أحسنت! '+found.size+' من 5':'Well done! '+found.size+' of 5');
+   progress.firstElementChild.style.width=(found.size/5*100)+'%';
+  }
+ });
+ const meta=document.createElement('div');meta.className='cn-meta';meta.textContent=language==='ar'?'اليوم '+campaignDay+' من 60 • '+dateKey:'Day '+campaignDay+' of 60 • '+dateKey;w.appendChild(meta);
+ panel.appendChild(w);
 }
 const signs=['الحمل','الثور','الجوزاء','السرطان','الأسد','العذراء','الميزان','العقرب','القوس','الجدي','الدلو','الحوت'],readings=['يوم مناسب لترتيب الأولويات وإنجاز خطوة مؤجلة.','امنح نفسك وقتاً للتفكير قبل اتخاذ قرار جديد.','قد يحمل اليوم فرصة لحوار لطيف أو فكرة مفيدة.','حافظ على هدوئك ووزع وقتك بين العمل والراحة.','ركز على هدف واحد وستشعر بتقدم أوضح.','التفاصيل الصغيرة تستحق الانتباه اليوم.','وازن بين رغباتك والتزاماتك ولا تتعجل.','اجعل الصراحة واللطف أساس تعاملاتك.','جرب طريقة جديدة في التعلم أو العمل.','التخطيط الهادئ أفضل من الاستعجال.','استمع لوجهة نظر مختلفة فقد تلهمك.','خصص وقتاً للراحة وتجديد النشاط.'];
 function horoscope(panel){
