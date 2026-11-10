@@ -5,7 +5,7 @@
   if(!window.__sakCastleNewspaperLoaded&&!document.getElementById('sakCastleNewspaperLegacyLoader')){
     const script=document.createElement('script');
     script.id='sakCastleNewspaperLegacyLoader';
-    script.src='/assets/castle-newspaper.js?v=20261110-anime60-full';
+    script.src='/assets/castle-newspaper.js?v=20261110-moonship60-newsfix1';
     script.async=true;
     document.head.appendChild(script);
   }
