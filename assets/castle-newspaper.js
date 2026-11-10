@@ -295,96 +295,32 @@ function differences(panel){
  const campaignStart=Date.UTC(2026,10,10);
  const campaignDay=Math.max(1,Math.min(60,Math.floor((todayUtc-campaignStart)/86400000)+1));
  const hue=((campaignDay-1)*23)%360;
- const sky='hsl('+hue+',62%,20%)',sky2='hsl('+((hue+38)%360)+',78%,64%)';
- const water='hsl('+((hue+190)%360)+',72%,42%)',castle='hsl('+((hue+35)%360)+',28%,76%)';
- const dress='hsl('+((hue+320)%360)+',72%,52%)',cloak='hsl('+((hue+205)%360)+',55%,34%)';
- const extra=(campaignDay-1)%5;
- const pose=campaignDay%6;
- const heroinePose=['rotate(0 300 560)','rotate(-2 300 560)','rotate(2 300 560)','translate(-5 0) rotate(-1 300 560)','translate(5 0) rotate(1 300 560)','rotate(-3 300 560)'][pose];
- const companionPose=['rotate(0 505 560)','rotate(1.5 505 560)','rotate(-1.5 505 560)','translate(0 4) rotate(1 505 560)','translate(0 -3) rotate(-1 505 560)','rotate(2 505 560)'][pose];
- const w=document.createElement('div');w.className='cn-game cn-difference-game';
- const title=document.createElement('h3');title.textContent=language==='ar'?'🔎 اكتشف الفروقات الخمس':'🔎 Find the five differences';w.appendChild(title);
- const intro=document.createElement('p');intro.textContent=language==='ar'?'قارن المشهدين واكتشف خمس فروقات فقط؛ يتجدد عالم الأنمي يومياً لمدة 60 يوماً.':'Compare both scenes and find exactly five differences; the anime world refreshes daily for 60 days.';w.appendChild(intro);
- const pics=document.createElement('div');pics.className='cn-pictures';
- const left=document.createElement('div'),right=document.createElement('div');left.className=right.className='cn-picture-wrap';
- const labels=language==='ar'?['الصورة الأولى','الصورة الثانية — اضغط هنا']:['Picture 1','Picture 2 — tap here'];
- left.innerHTML='<div class="cn-picture-label">'+labels[0]+'</div>';
- right.innerHTML='<div class="cn-picture-label">'+labels[1]+'</div>';
- const landscapes=[
-  '<path d="M0 440L110 260 215 440 320 225 450 440 570 285 760 455V650H0Z" fill="#b9d7e8" opacity=".35"/><path d="M90 300l20-40 22 40m165-25 23-48 26 48m220 50 26-50 28 50" fill="none" stroke="#f4fbff" stroke-width="10" opacity=".7"/>',
-  '<path d="M0 420Q120 365 240 420T480 410T760 405V620H0Z" fill="#1688a1" opacity=".42"/><path d="M0 470q70-22 140 0t140 0t140 0t140 0t140 0" fill="none" stroke="#b5f5ff" stroke-width="8" opacity=".55"/>',
-  '<g fill="#174a39" opacity=".58"><path d="M0 455l45-180 45 180Z"/><path d="M65 455l50-220 50 220Z"/><path d="M630 455l45-190 45 190Z"/><path d="M560 455l40-150 40 150Z"/></g>',
-  '<path d="M0 455Q180 350 360 455T760 440V630H0Z" fill="#c78b4b" opacity=".32"/><g stroke="#6b7840" stroke-width="10" fill="none"><path d="M80 430V300m0 30q-65-45-70-5m70 8q55-55 72-12M690 435V295m0 40q-55-50-75-10m75 10q60-55 75-8"/></g>',
-  '<g fill="#9ed8dc" opacity=".38"><path d="M30 330q60-70 120 0l-25 24H55Z"/><path d="M590 285q55-62 110 0l-20 22h-70Z"/><path d="M280 250q42-52 84 0l-15 18h-54Z"/></g><path d="M40 360l-18-42 36 12 25-30 10 45 40 8-35 25-2 35-32-24-38 9Z" fill="#7cc5c9" opacity=".25"/>'
- ];
- const landscape='<g transform="translate('+(((campaignDay*17)%31)-15)+' 0)" opacity=".92">'+landscapes[extra]+'</g>';
- const sceneDecor=[
-  '<path d="M70 215q35-45 70 0q-35 25-70 0Z" fill="#fff4c2" opacity=".8"/><path d="M90 210l30-15" stroke="#fff" stroke-width="3"/>',
-  '<path d="M620 255q45-38 85 0q-42 23-85 0Z" fill="#fff1d2" opacity=".8"/><path d="M640 250l30-14" stroke="#fff" stroke-width="3"/>',
-  '<g fill="#ffe8a3"><circle cx="90" cy="260" r="4"/><circle cx="135" cy="300" r="3"/><circle cx="650" cy="310" r="4"/><circle cx="590" cy="225" r="3"/></g>',
-  '<path d="M55 190q35-55 70 0q-35 30-70 0Z" fill="#b8f4ff" opacity=".7"/><path d="M73 185l28-20" stroke="#fff" stroke-width="3"/>',
-  '<g stroke="#fff1b8" stroke-width="3" stroke-linecap="round"><path d="M85 230l12-18m-12 18 18-4"/><path d="M650 220l12-18m-12 18 18-4"/></g>'
- ][extra];
- function scene(isRight){
-  const flower=isRight?'<g><circle cx="285" cy="330" r="13" fill="#f04f67"/><circle cx="271" cy="330" r="8" fill="#ff8094"/><circle cx="299" cy="330" r="8" fill="#ff8094"/><circle cx="285" cy="316" r="8" fill="#ff8094"/><circle cx="285" cy="344" r="8" fill="#ff8094"/></g>':'<g><circle cx="285" cy="330" r="13" fill="#f6a5d4"/><circle cx="271" cy="330" r="8" fill="#ffd0e8"/><circle cx="299" cy="330" r="8" fill="#ffd0e8"/><circle cx="285" cy="316" r="8" fill="#ffd0e8"/><circle cx="285" cy="344" r="8" fill="#ffd0e8"/></g>';
-  const flag=isRight?'<path d="M606 180l46 10-46 20Z" fill="#ed5265"/>':'<path d="M606 180l46 10-46 20Z" fill="#57c9e8"/>';
-  const bow=isRight?'<g><path d="M386 676l-28-17 2 31Z" fill="#ffcf54" stroke="#8e552d" stroke-width="3"/><path d="M390 676l28-17-2 31Z" fill="#ffcf54" stroke="#8e552d" stroke-width="3"/><circle cx="388" cy="676" r="8" fill="#fff0a1"/></g>':'';
-  const gem=isRight?'<path d="M116 354l12 11-12 15-12-15Z" fill="#4de6d1" stroke="#eaffff" stroke-width="3"/>':'';
-  const tail=isRight?'<path d="M220 881q42-24 42 8q-2 17-22 12" fill="none" stroke="#f0d2b3" stroke-width="17" stroke-linecap="round"/><path d="M242 891l8 3" stroke="#9c765d" stroke-width="6"/>':'<path d="M220 881q42-24 42 8" fill="none" stroke="#f0d2b3" stroke-width="17" stroke-linecap="round"/>';
-  return '<svg class="cn-picture" viewBox="0 0 760 1024" role="img" aria-label="'+(language==='ar'?'مشهد أنمي خيالي':'Fantasy anime scene')+'"><defs>'+
-   '<linearGradient id="animeSky'+(isRight?'R':'L')+'" x2="0" y2="1"><stop stop-color="'+sky+'"/><stop offset="1" stop-color="'+sky2+'"/></linearGradient>'+
-   '<linearGradient id="animeWater'+(isRight?'R':'L')+'" x2="0" y2="1"><stop stop-color="'+water+'"/><stop offset="1" stop-color="#071d3a"/></linearGradient>'+
-   '<linearGradient id="animeDress'+(isRight?'R':'L')+'" x2="1" y2="1"><stop stop-color="'+dress+'"/><stop offset="1" stop-color="#26104f"/></linearGradient>'+
-   '<linearGradient id="animeCloak'+(isRight?'R':'L')+'" x2="1" y2="1"><stop stop-color="'+cloak+'"/><stop offset="1" stop-color="#091a36"/></linearGradient>'+
-   '</defs>'+
-   '<rect width="760" height="1024" fill="url(#animeSky'+(isRight?'R':'L')+')"/>'+
-   '<circle cx="545" cy="130" r="72" fill="#ffe9a6" opacity=".95"/><circle cx="545" cy="130" r="91" fill="#fff0b0" opacity=".12"/>'+
-   '<g fill="#fff" opacity=".8"><circle cx="75" cy="90" r="3"/><circle cx="180" cy="135" r="2"/><circle cx="320" cy="82" r="3"/><circle cx="680" cy="115" r="3"/><circle cx="420" cy="190" r="2"/></g>'+
-   sceneDecor+landscape+
-   '<path d="M0 445Q110 380 220 430T430 420T760 405V650H0Z" fill="#163d4b" opacity=".65"/>'+
-   '<g fill="'+castle+'" stroke="#564b67" stroke-width="7"><path d="M470 440V255h70v-95h86v95h72v185Z"/><path d="M520 160l-7-48 34 27 34-27-7 48Z" fill="#a77d9f"/><path d="M602 255l-5-74 31 40 31-40-5 74Z" fill="#b98b9c"/><path d="M465 440V315h-42v125Z"/></g>'+
-   '<g fill="#ffe6a1"><rect x="490" y="290" width="18" height="34" rx="8"/><rect x="552" y="290" width="18" height="34" rx="8"/><rect x="620" y="290" width="18" height="34" rx="8"/><rect x="684" y="290" width="18" height="34" rx="8"/></g>'+
-   '<path d="M606 180V120" stroke="#f4e5c8" stroke-width="7"/>'+flag+
-   '<path d="M0 495Q120 455 245 490T500 485T760 470V760H0Z" fill="url(#animeWater'+(isRight?'R':'L')+')"/>'+
-   '<path d="M490 440q-20 85-55 120t-35 100" fill="none" stroke="#d8f7ff" stroke-width="22" opacity=".9"/><path d="M510 440q-18 85-45 120t-30 100" fill="none" stroke="#fff" stroke-width="6" opacity=".85"/>'+
-   '<path d="M0 675Q190 640 370 675T760 650V1024H0Z" fill="#183b38"/>'+
-   '<path d="M0 710Q150 675 300 708T600 700T760 690" fill="none" stroke="#e9d4a6" stroke-width="18"/>'+
-   '<g stroke="#72533d" stroke-width="8"><path d="M0 705v110M120 700v112M240 702v110M360 700v110M480 700v110M600 695v110M740 690v115"/></g>'+
-   '<g><path d="M75 320V445" stroke="#5d3c2b" stroke-width="13"/><path d="M42 340q33-62 66 0v73H42Z" fill="#f8c56a" stroke="#6b472f" stroke-width="8"/><path d="M55 350h40v48H55Z" fill="#ffe6a2" opacity=".8"/>'+gem+'</g>'+
-   '<g><path d="M0 875q55-85 110 0q-55 70-110 0M620 900q60-100 120 0q-60 75-120 0" fill="#24754d"/><g fill="#f2a5ce"><circle cx="35" cy="860" r="15"/><circle cx="62" cy="842" r="13"/><circle cx="90" cy="870" r="14"/><circle cx="680" cy="865" r="14"/><circle cx="710" cy="845" r="13"/></g></g>'+
-   /* anime heroine */
-   '<g transform="'+heroinePose+'"><path d="M205 430Q185 325 270 286Q370 250 410 355Q445 465 398 560L350 650 220 610Q180 520 205 430Z" fill="#24152d"/>'+
-   '<ellipse cx="300" cy="395" rx="82" ry="104" fill="#ffd5b7" stroke="#6b3940" stroke-width="5"/>'+
-   '<path d="M218 390Q205 285 300 278Q408 285 385 400Q360 345 330 330Q290 370 218 390Z" fill="#24152d"/>'+
-   '<path d="M220 400Q190 500 165 590Q220 545 240 480M380 405Q435 500 450 595Q392 545 370 475" fill="none" stroke="#2b172e" stroke-width="30" stroke-linecap="round"/>'+
-   '<ellipse cx="272" cy="405" rx="13" ry="22" fill="#fff"/><ellipse cx="330" cy="405" rx="13" ry="22" fill="#fff"/><ellipse cx="274" cy="410" rx="7" ry="14" fill="#2c6e91"/><ellipse cx="332" cy="410" rx="7" ry="14" fill="#2c6e91"/><circle cx="276" cy="405" r="4" fill="#fff"/><circle cx="334" cy="405" r="4" fill="#fff"/>'+
-   '<path d="M290 452q12 10 25 0" fill="none" stroke="#b64d64" stroke-width="5" stroke-linecap="round"/>'+
-   '<path d="M225 510Q300 475 378 510L430 860Q300 920 165 860Z" fill="url(#animeDress'+(isRight?'R':'L')+')" stroke="#f4c7ed" stroke-width="6"/>'+
-   '<path d="M220 520Q170 555 155 660L205 685 265 560M375 520Q430 555 445 660L395 685 335 560" fill="'+dress+'" stroke="#f4c7ed" stroke-width="6"/>'+
-   '<path d="M170 860Q300 820 430 860L470 920Q300 975 130 920Z" fill="#4a1a60" stroke="#f5c8e9" stroke-width="5"/>'+
-   '<path d="M230 530l70 40 70-40" fill="none" stroke="#ffe8a8" stroke-width="8"/>'+
-   '<path d="M235 600l65 30 65-30" fill="none" stroke="#f7d68b" stroke-width="5"/>'+
-   flower+
-   '</g>'+
-   /* anime companion */
-   '<g transform="'+companionPose+'"><path d="M420 395Q425 290 510 285Q590 290 600 390L585 500 440 500Z" fill="#4a2c26"/>'+
-   '<ellipse cx="505" cy="395" rx="73" ry="92" fill="#e8b68e" stroke="#5a342c" stroke-width="5"/>'+
-   '<path d="M432 380Q425 285 510 280Q590 290 578 385Q535 340 500 345Q468 370 432 380Z" fill="#34242a"/>'+
-   '<path d="M472 395h20m40 0h20" stroke="#35252c" stroke-width="7" stroke-linecap="round"/><path d="M480 440q27 30 55 0" fill="none" stroke="#694039" stroke-width="8"/>'+
-   '<path d="M425 490Q505 455 590 490L650 830Q510 890 385 830Z" fill="url(#animeCloak'+(isRight?'R':'L')+')" stroke="#e8c77a" stroke-width="8"/>'+
-   '<path d="M470 500l35 95 40-95" fill="#f4eee2" stroke="#c7a66b" stroke-width="5"/><path d="M505 600l-18 50 18 22 18-22Z" fill="#3bc6d0" stroke="#f7e2a2" stroke-width="4"/>'+
-   '<path d="M430 820l-30 95h65l20-95M565 820l20 95h65l-35-95" fill="#211b2c" stroke="#d4b37a" stroke-width="7"/>'+
-   '</g>'+
-   bow+
-   /* cat and paving */
-   '<g><ellipse cx="210" cy="900" rx="75" ry="43" fill="#f1e4d4" stroke="#604c50" stroke-width="5"/><circle cx="250" cy="860" r="43" fill="#f4e5d8" stroke="#604c50" stroke-width="5"/><path d="M220 830l-5-38 30 18M270 824l25-30-2 43" fill="#f4e5d8" stroke="#604c50" stroke-width="5"/><ellipse cx="237" cy="860" rx="6" ry="10" fill="#3b9a87"/><ellipse cx="263" cy="860" rx="6" ry="10" fill="#3b9a87"/><path d="M246 880l8 5 8-5" fill="none" stroke="#b36b79" stroke-width="4"/>'+tail+'</g>'+
-   '<path d="M0 970Q180 940 360 970T760 960" fill="none" stroke="#e5d4b2" stroke-width="12"/>'+
-   '</svg>';
- }
- left.insertAdjacentHTML('beforeend',scene(false));right.insertAdjacentHTML('beforeend',scene(true));pics.append(left,right);w.appendChild(pics);
- const svg=right.querySelector('svg'),out=document.createElement('p');out.className='cn-picture-hint';out.setAttribute('aria-live','polite');out.textContent=language==='ar'?'تم العثور على 0 من 5':'Found 0 of 5';w.appendChild(out);
+  const baseImage='/'+encodeURI('سفينة القمر فوق المحيطอันว่างเปล่า.png');
+  const w=document.createElement('div');w.className='cn-game cn-difference-game';
+  const title=document.createElement('h3');title.textContent=language==='ar'?'🔎 اكتشف الفروقات الخمس':'🔎 Find the five differences';w.appendChild(title);
+  const intro=document.createElement('p');intro.textContent=language==='ar'?'قارن المشهدين واكتشف خمس فروقات فقط؛ يتجدد عالم الأنمي يومياً لمدة 60 يوماً.':'Compare both scenes and find exactly five differences; the anime world refreshes daily for 60 days.';w.appendChild(intro);
+  const pics=document.createElement('div');pics.className='cn-pictures';
+  const left=document.createElement('div'),right=document.createElement('div');left.className=right.className='cn-picture-wrap';
+  const labels=language==='ar'?['الصورة الأولى','الصورة الثانية — اضغط هنا']:['Picture 1','Picture 2 — tap here'];
+  left.innerHTML='<div class="cn-picture-label">'+labels[0]+'</div>';
+  right.innerHTML='<div class="cn-picture-label">'+labels[1]+'</div>';
+  function scene(isRight){
+   const dayAccent='hsl('+hue+',82%,62%)';
+   const overlays=isRight?(
+    '<circle cx="150" cy="170" r="12" fill="'+dayAccent+'" stroke="#fff" stroke-width="5"/>'+
+    '<path d="M815 205l48 13-48 23Z" fill="#55d8ef" stroke="#fff1bd" stroke-width="5"/>'+
+    '<path d="M410 610l18-28 18 28-18 28Z" fill="'+dayAccent+'" stroke="#fff4bd" stroke-width="6"/>'+
+    '<circle cx="925" cy="425" r="15" fill="#fff0a0" stroke="#fff" stroke-width="5"/>'+
+    '<path d="M835 770q32-42 66 0" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round"/>'
+   ):'';
+   return '<svg class="cn-picture" viewBox="0 0 1024 1024" role="img" aria-label="'+(language==='ar'?'مشهد سفينة القمر':'Moon ship scene')+'">'+
+    '<image href="'+baseImage+'" x="0" y="0" width="1024" height="1024" preserveAspectRatio="xMidYMid meet"/>'+
+    overlays+'</svg>';
+  }
+  left.insertAdjacentHTML('beforeend',scene(false));right.insertAdjacentHTML('beforeend',scene(true));pics.append(left,right);w.appendChild(pics);
+  const svg=right.querySelector('svg'),out=document.createElement('p');out.className='cn-picture-hint';out.setAttribute('aria-live','polite');out.textContent=language==='ar'?'تم العثور على 0 من 5':'Found 0 of 5';w.appendChild(out);
  const progress=document.createElement('div');progress.className='cn-difference-progress';progress.innerHTML='<span></span>';w.appendChild(progress);
- const zones=[[285,330],[390,676],[620,195],[116,365],[240,890]];
+ const zones=[[150,170],[815,220],[428,610],[925,425],[850,770]];
  const storageKey='sakaker-anime-differences-'+dateKey;
  function paintFound(idx){
   if(svg.querySelector('[data-difference="'+idx+'"]'))return;
@@ -420,9 +356,9 @@ function differences(panel){
   refreshProgress();
  });
  svg.addEventListener('click',e=>{
-  const rect=svg.getBoundingClientRect(),x=(e.clientX-rect.left)/rect.width*760,y=(e.clientY-rect.top)/rect.height*1024;
+  const rect=svg.getBoundingClientRect(),x=(e.clientX-rect.left)/rect.width*1024,y=(e.clientY-rect.top)/rect.height*1024;
   let idx=-1,dist=Infinity;zones.forEach((p,i)=>{const d=Math.hypot(x-p[0],y-p[1]);if(d<dist){dist=d;idx=i;}});
-  if(idx>=0&&dist<48&&!found.has(idx)){
+  if(idx>=0&&dist<58&&!found.has(idx)){
    found.add(idx);paintFound(idx);
    try{localStorage.setItem(storageKey,JSON.stringify(Array.from(found)));}catch(e){}
    refreshProgress();
