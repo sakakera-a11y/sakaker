@@ -5488,13 +5488,13 @@ birdBtn.addEventListener('click',async e=>{
   <div class="svc-item">
     <span class="svc-icon">👁️</span>
     <span class="svc-label" data-ar="إجمالي الزوار الفريدين" data-en="Unique Visitors">إجمالي الزوار الفريدين</span>
-    <strong id="svcTotal">0</strong>
+    <strong id="svcTotal">—</strong>
   </div>
   <div class="svc-sep"></div>
   <div class="svc-item">
     <span class="svc-icon">📅</span>
     <span class="svc-label" data-ar="زيارات اليوم" data-en="Today's Visits">زيارات اليوم</span>
-    <strong id="svcToday">0</strong>
+    <strong id="svcToday">—</strong>
   </div>
 </div>
 
@@ -6386,78 +6386,6 @@ if(facebookButton){
 }
 
 /* =========================================================
-   📊 عداد الزوار الفريدين عبر Cloud Firestore
-   المسار: siteStats/visits
-   علامة منع التكرار: siteStats/visits/visitorMarks/{uid}
-========================================================= */
-async function recordNewVisit(uid){
-    if(!uid) return;
-
-    const visitsDocRef = doc(db, "siteStats", "visits");
-    const markDocRef = doc(db, "siteStats", "visits", "visitorMarks", uid);
-
-    try{
-        await runTransaction(db, async (transaction) => {
-            // قراءة علامة المستخدم أولاً لمنع احتسابه أكثر من مرة.
-            const markSnap = await transaction.get(markDocRef);
-            if(markSnap.exists()){
-                console.log("الزائر مسجل مسبقاً؛ لن تتم زيادة العداد.");
-                return;
-            }
-
-            // قراءة العداد الحالي قبل تنفيذ أي كتابة في المعاملة.
-            const visitsSnap = await transaction.get(visitsDocRef);
-            const currentCount = visitsSnap.exists()
-                ? Number(visitsSnap.data().count || 0)
-                : 0;
-
-            // إنشاء علامة المستخدم وزيادة الإجمالي في المعاملة نفسها.
-            transaction.set(markDocRef, {
-                createdAt: serverTimestamp()
-            });
-
-            if(!visitsSnap.exists()){
-                transaction.set(visitsDocRef, {
-                    count: 1,
-                    updatedAt: serverTimestamp()
-                });
-            }else{
-                transaction.update(visitsDocRef, {
-                    count: currentCount + 1,
-                    updatedAt: serverTimestamp()
-                });
-            }
-        });
-        console.log("تم التحقق من زيارة المستخدم وتحديث العداد عند الحاجة.");
-    }catch(error){
-        console.error("تعذر تسجيل الزائر في Firestore:", error);
-    }
-}
-
-function listenToCounter(){
-    const visitsDocRef = doc(db, "siteStats", "visits");
-    const counterEl = document.getElementById("svcTotal") ||
-                      document.getElementById("visitor-counter");
-
-    return onSnapshot(visitsDocRef, (docSnap) => {
-        const currentCount = docSnap.exists()
-            ? Number(docSnap.data().count || 0)
-            : 0;
-        const target = document.getElementById("svcTotal") ||
-                       document.getElementById("visitor-counter");
-        if(target) target.textContent = currentCount.toLocaleString(
-            document.documentElement.lang === "en" ? "en-US" : "ar-SA"
-        );
-    }, (error) => {
-        console.error("تعذر الاستماع إلى عداد Firestore:", error);
-        if(counterEl) counterEl.setAttribute("data-state", "error");
-    });
-}
-
-// يبدأ الاستماع بعد تأكيد تسجيل الدخول، لتفادي رفض القراءة إذا كانت القواعد تشترط المصادقة.
-let stopListeningToCounter = null;
-
-/* =========================================================
    👤 مراقبة حالة الدخول
 ========================================================= */
 
@@ -6466,12 +6394,6 @@ onAuthStateChanged(auth, (user) => {
     const profile = document.getElementById("userProfile");
 
     if(user){
-        // يسجل كل حساب موثق مرة واحدة فقط، وتمنع visitorMarks تكرار الزيادة.
-        void recordNewVisit(user.uid);
-        if(!stopListeningToCounter){
-            stopListeningToCounter = listenToCounter();
-        }
-
         /* أولًا نفتح الموقع ثم نخفي صفحة الدخول */
         document.body.classList.remove("locked");
 
@@ -6498,11 +6420,6 @@ onAuthStateChanged(auth, (user) => {
         const errorEl = document.getElementById("loginError");
         if(errorEl) errorEl.textContent = "";
     }else{
-        if(stopListeningToCounter){
-            stopListeningToCounter();
-            stopListeningToCounter = null;
-        }
-
         /* أولًا نقفل الموقع ثم نظهر صفحة الدخول */
         document.body.classList.add("locked");
 
@@ -41335,7 +41252,9 @@ html body .cards #castleStoriesIndexCard:focus-visible{
 })();
 </script>
 
-<script src="/assets/news-recovery.js?v=20261104-news-recovery-1" defer></script>
+<script src="/assets/news-recovery.js?v=20261110-anime60" defer></script>
+
+<script defer src="/assets/visitor-counter.js?v=20261107-cloudflare-analytics"></script>
 
 </body>
 </html>
