@@ -853,7 +853,7 @@ function ensureCastleNewspaperLauncher(){
   if(document.getElementById('sakCastleNewspaperLauncherScript'))return;
   const script=document.createElement('script');
   script.id='sakCastleNewspaperLauncherScript';
-  script.src='/assets/castle-newspaper.js?v=20261110-news-live8';
+  script.src='/assets/castle-newspaper.js?v=20261110-news-live9';
   script.async=true;
   script.onerror=()=>script.remove();
   document.head.appendChild(script);
