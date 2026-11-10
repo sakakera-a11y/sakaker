@@ -189,7 +189,7 @@ async function fetchFeedItems(feed){
      return {
       title:String(item.title||'').trim(),
       link:safeUrl(String(item.link||'')),
-      desc:(holder.textContent||'').replace(/\\s+/g,' ').trim().slice(0,240),
+      desc:(holder.textContent||'').replace(/\s+/g,' ').trim().slice(0,240),
       date:String(item.pubDate||'').trim(),
       source:feed.name,category:feed.category
      };
