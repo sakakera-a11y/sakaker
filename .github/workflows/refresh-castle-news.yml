@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - '.github/workflows/refresh-castle-news.yml'
+      - 'assets/castle-newspaper.js'
   schedule:
     - cron: '*/30 * * * *'
 
