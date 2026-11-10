@@ -1,5 +1,855 @@
 {
-  "fetchedAt": null,
-  "items": [],
-  "sourceStatus": []
+  "fetchedAt": "2026-11-10T20:01:31.131243+00:00",
+  "items": [
+    {
+      "title": "سعود عبدالحميد يعود لتدريبات الأخضر.. وغياب فراس البريكان بسبب نزلة برد",
+      "link": "https://ajel.sa/sports/xs8o1xbc7",
+      "desc": "شهدت تدريبات الأخضر السعودي في معسكره بالعاصمة القطرية الدوحة عودة سعود عبدالحميد إلى المشاركة الجماعية، بعدما انتظم في المعسكر أمس الاثنين، في المقابل، واصل فراس البريكان الغياب عن التدريبات الجماعية إثر تعرضه لنزلة برد.",
+      "date": "Tue, 10 Nov 2026 19:48:44 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "فالفيردي يكشف موقفه من الإصابة قبل معسكر أوروجواي: تلبية نداء المنتخب واجب",
+      "link": "https://ajel.sa/sports/tvxfmtj74",
+      "desc": "عاد فيديريكو فالفيردي، قائد ريال مدريد ومنتخب أوروجواي، إلى صفوف منتخب بلاده رغم استمرار شعوره بالانزعاج البدني منذ إصابته في سبتمبر الماضي، معترفا بأنه لم يستعد كامل جاهزيته، رغم عودته إلى المشاركة…",
+      "date": "Tue, 10 Nov 2026 19:44:00 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "وكيل لاعب فالنسيا يكشف لـ«عاجل» حقيقة الانتقال إلى دوري روشن",
+      "link": "https://ajel.sa/sports/k5cf1ujcu",
+      "desc": "كشف إبراهيم باكايوكو، وكيل أعمال الدولي المالي أليو ديانج، لاعب وسط نادي فالنسيا الإسباني، حقيقة الأنباء التي ترددت مؤخراً حول تلقي موكله عرضاً رسمياً للانتقال إلى الدوري السعودي خلال فترة الانتقالات الشتوية المقبلة في يناير.",
+      "date": "Tue, 10 Nov 2026 19:29:28 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "غرامات تصل إلى 8 ملايين ريال والسجن عامين للمخالفين.. تفاصيل أول نظام شامل لحماية المستهلك بالمملكة",
+      "link": "https://ajel.sa/economy/egk92d74f",
+      "desc": "أعلنت وزارة التجارة عن صدور أول نظام موحد لحماية المستهلك، ينظم حقوقه في المنتجات والخدمات ويشمل إجراءات استثنائية خلال الأزمات.",
+      "date": "Tue, 10 Nov 2026 19:24:56 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "المرور يطلق مزاد اللوحات المميزة عبر أبشر غدا الأربعاء.. وهذه خطوات المشاركة",
+      "link": "https://ajel.sa/local/7d5inqbat",
+      "desc": "تبدأ الإدارة العامة للمرور، غدا الأربعاء، إتاحة المزايدة على اللوحات المميزة للمركبات إلكترونيا عبر منصة «أبشر»، بما يتيح للراغبين في اقتنائها المشاركة في المزاد واستكمال إجراءات المزايدة دون الحاجة إلى الحضور الشخصي.",
+      "date": "Tue, 10 Nov 2026 19:20:00 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "أول نظام شامل لحماية المستهلك بالمملكة.. وزير التجارة: يكفل الحقوق ويعزز الممارسات التجارية العادلة",
+      "link": "https://ajel.sa/economy/n9z8so6fv",
+      "desc": "أعلن وزير التجارة أن نظام حماية المستهلك الجديد يعزز حقوق المستهلكين وينظم العلاقة مع المنشآت التجارية، ويطبق خلال 180 يومًا.",
+      "date": "Tue, 10 Nov 2026 19:16:11 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "مركز الملك سلمان للإغاثة يوزع 25,000 وجبة غذائية ساخنة في وسط وجنوب غزة",
+      "link": "https://ajel.sa/international/x3zvcovt0",
+      "desc": "وزع مركز الملك سلمان للإغاثة 25,000 وجبة غذائية ساخنة على الفئات الأكثر احتياجًا في وسط وجنوب قطاع غزة، ضمن الحملة السعودية لإغاثة الشعب الفلسطيني.",
+      "date": "Tue, 10 Nov 2026 19:14:00 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "ضمان للخدمات والمنتجات المستعملة «لأول مرة».. أبرز ملامح نظام حماية المستهلك الجديد",
+      "link": "https://ajel.sa/economy/wtnhbudnd",
+      "desc": "أعلنت وزارة التجارة صدور أول نظام شامل لحماية المستهلك في السعودية، ويبدأ تطبيقه بعد 180 يومًا من نشره في الجريدة الرسمية.",
+      "date": "Tue, 10 Nov 2026 19:09:59 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "الدولار يرتفع أمام العملات الرئيسة بعد بيانات التضخم الأمريكية المرتفعة",
+      "link": "https://ajel.sa/economy/7uz7fymls",
+      "desc": "سجّل الدولار مكاسب أمام معظم العملات الرئيسة اليوم بعد بيانات التضخم الأمريكية التي تجاوزت التوقعات، وسط ترقب رفع الفائدة الشهر المقبل.",
+      "date": "Tue, 10 Nov 2026 18:59:00 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "مجلس الوزراء: دعم جهود تحقيق الأمن والاستقرار والتأكيد على أمن الملاحة البحرية",
+      "link": "https://ajel.sa/local/dwl6zqe0l",
+      "desc": "جدد مجلس الوزراء إثر متابعته مستجدات الأحداث في المنطقة والعالم؛ دعم المملكة الجهود الرامية إلى تحقيق الأمن والاستقرار على المستويين الإقليمي والدولي، ومكافحة الإرهاب وميليشياته الإجرامية.",
+      "date": "Tue, 10 Nov 2026 18:52:14 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "النقابة العامة للسيارات ترسي مبدئيًا مشروع النقل الترددي لموسم حج 1448هـ على دله",
+      "link": "https://ajel.sa/local/h6937mzyy",
+      "desc": "أعلنت النقابة العامة للسيارات ترسية مشروع تجهيز وتشغيل مرافق النقل الترددي وترددية القطار لموسم حج 1448هـ بشكل مبدئي على شركة دله لنقل الحجاج، بهدف تعزيز الشراكة مع القطاع الخاص وتطوير خدمات نقل الحجاج.",
+      "date": "Tue, 10 Nov 2026 18:51:06 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "تراجع أسعار الذهب بأكثر من 2% مع ارتفاع التضخم الأمريكي وتوقعات الفائدة",
+      "link": "https://ajel.sa/economy/pbnx4ndjz",
+      "desc": "انخفضت أسعار الذهب اليوم بأكثر من 2% بعد بيانات التضخم الأمريكية الأعلى من المتوقع، ما رفع الدولار وعوائد السندات.",
+      "date": "Tue, 10 Nov 2026 18:51:00 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "الأحوال المدنية تعرض حقيبة متنقلة لتقديم خدمات السجل المدني ميدانيًا",
+      "link": "https://ajel.sa/local/bl2hjh8p6",
+      "desc": "وكالة وزارة الداخلية للأحوال المدنية تستعرض حقيبة متنقلة تقدم خدمات السجل المدني للمستفيدين في أماكنهم خلال مؤتمر ومعرض الحج.",
+      "date": "Tue, 10 Nov 2026 18:50:00 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "السودان.. انشقاق قائد الجبهة الثالثة «تمازج» حمدان بشير عن الدعم السريع",
+      "link": "https://ajel.sa/international/9ff6rzw6g",
+      "desc": "أعلن قائد الجبهة الثالثة \"تمازج\" اللواء حمدان بشير انشقاقه عن قوات الدعم السريع. جاء ذلك بعد انشقاق قياديين في الدعم السريع يعلنان انشقاقهما عن الميليشيات وانضمامهما للجيش السوداني، وفق \"العربية\".",
+      "date": "Tue, 10 Nov 2026 18:44:50 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "مركز الملك سلمان للإغاثة يواصل ضخ مياه الشرب للنازحين والمتأثرين في تعز",
+      "link": "https://ajel.sa/international/ejo0trsa2",
+      "desc": "مركز الملك سلمان للإغاثة يضخ المياه عبر 13 نقطة توزيع في مديرية المظفر بتعز، مستفيدًا منها 500 أسرة من النازحين والمتأثرين.",
+      "date": "Tue, 10 Nov 2026 18:40:00 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "مجلس الوزراء يوافق على نظام حماية المستهلك.. والدولة تتحمل رسوم استيراد مركبات المبتعثين",
+      "link": "https://ajel.sa/local/k2b44vfru",
+      "desc": "ترأس ولي العهد الأمير محمد بن سلمان جلسة مجلس الوزراء بالرياض، حيث أقر المجلس اتفاقيات دولية ونظام حماية المستهلك وعدة تعيينات وترقيات.",
+      "date": "Tue, 10 Nov 2026 18:37:12 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "ملك البحرين يغادر الرياض وأمير المنطقة في مقدمة مودعيه بمطار الملك خالد",
+      "link": "https://ajel.sa/local/for5fnjoa",
+      "desc": "غادر الملك حمد بن عيسى آل خليفة الرياض اليوم، وكان في وداعه أمير منطقة الرياض وعدد من المسؤولين في مطار الملك خالد الدولي.",
+      "date": "Tue, 10 Nov 2026 18:25:00 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "«الأرصاد» ينبه من أمطار غزيرة ورياح شديدة على منطقة الرياض",
+      "link": "https://ajel.sa/local/x2yb59o4n",
+      "desc": "المركز الوطني للأرصاد ينبه من أمطار متوسطة إلى غزيرة ورياح شديدة على منطقة الرياض اليوم، مع استمرار الحالة حتى التاسعة مساء غدٍ.",
+      "date": "Tue, 10 Nov 2026 18:20:00 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "السعودية وتركيا توقعان مذكرة تفاهم للتعاون في مشروعات الكهرباء بأنطاليا",
+      "link": "https://ajel.sa/local/z5qw6q79q",
+      "desc": "وقعت السعودية وتركيا مذكرة تفاهم للتعاون في مشروعات الكهرباء على هامش مؤتمر المناخ بأنطاليا، استكمالًا لاتفاقية الطاقة المتجددة المبرمة بين البلدين.",
+      "date": "Tue, 10 Nov 2026 18:10:00 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "الحرس الثوري: انفجار ناقلة نفط ثالثة اليوم بعد اصطدامها بلغم بحري بهرمز",
+      "link": "https://ajel.sa/international/7g5fiq2f2",
+      "desc": "أعلن الحرس الثوري الإيراني، أن ناقلة نفط ثالثة انفجرت اليوم بعد اصطدامها بلغم بحري في مضيق هرمز، وفق \"الشرق\". يأتي ذلك استمرار لتكرار استهداف ناقلات النفط في مضيق هرمز الذي تحاول إيران تحويله إلى…",
+      "date": "Tue, 10 Nov 2026 18:09:40 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "دراسة: النوم الجيد ضروري لصحة الدماغ ومقاومة الأمراض",
+      "link": "https://ajel.sa/misc/ijo6s4ium",
+      "desc": "أكدت دراسة حديثة، أن النوم الجيد ضروري لصحة الدماغ ومقاومة الأمراض حيث تتجاوز أهميته مجرد تأثيره على مستويات الطاقة اليومية.",
+      "date": "Tue, 10 Nov 2026 18:09:00 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "«روبيو»: إسرائيل غنية بما يكفي لشراء أسلحتها.. وترامب يريد إنهاء المساعدات العسكرية «في أقرب وقت»",
+      "link": "https://ajel.sa/international/rrk8onqio",
+      "desc": "قال وزير الخارجية الأمريكي ماركو روبيو إن الرئيس دونالد ترامب يرى أن إسرائيل أصبحت «مزدهرة وغنية بما يكفي» لشراء الأسلحة الأمريكية دون الاعتماد على المساعدات العسكرية، مؤكدًا أن ترامب يريد أن يدخل هذا الترتيب حيز التنفيذ «في أقرب وقت ممكن».",
+      "date": "Tue, 10 Nov 2026 18:07:36 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "القصيم تكتسي بجمال الأمطار وبرودة الأجواء.. وطقسها الشتوي يجذب محبي التنزه والرحلات",
+      "link": "https://ajel.sa/entertainment/jgaidd5vh",
+      "desc": "عاشت منطقة القصيم خلال يومي الاثنين والثلاثاء أجواءً شتوية مميزة، بعد هطول أمطار متفاوتة الغزارة وانخفاض مفاجئ في درجات الحرارة، شمل عددًا من مدن ومحافظات المنطقة، في مشهد أعاد للأجواء الممطرة حضورها، وأضفى على المنطقة طابعًا شتويًا جميلًا.",
+      "date": "Tue, 10 Nov 2026 17:59:13 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "رئيس كتلة القائمة المشتركة: إبعاد نتنياهو وتشكيل حكومة بديلة هدفنا الأول",
+      "link": "https://ajel.sa/international/59ykos1lu",
+      "desc": "أكد أحمد الطيبي، رئيس كتلة القائمة المشتركة، أن الهدف الأول للقائمة هو إبعاد بنيامين نتنياهو عن رئاسة الحكومة الإسرائيلية والعمل على تشكيل حكومة بديلة، مشددا على أن نتنياهو لا يزال يسعى إلى تخريب نتائج الانتخابات.",
+      "date": "Tue, 10 Nov 2026 17:58:01 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "متحدث أمريكي: الحوثيون يحاصرون تعز ويمنعون الغذاء والوقود عن المستشفيات",
+      "link": "https://ajel.sa/international/wojlxe48f",
+      "desc": "اتهم خالد وولفسبرغ، المتحدث باسم السفارة الأمريكية في اليمن، مليشيات الحوثي باستخدام مزاعم الحصار لتبرير هجماتها على اليمنيين والسعودية، مشيرا إلى أن الجماعة تفرض حصارا على مدينة تعز وتمنع وصول…",
+      "date": "Tue, 10 Nov 2026 17:26:32 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "تحويل الدراسة «عن بُعد» بجامعة ومدارس القصيم غدًا الأربعاء",
+      "link": "https://ajel.sa/local/du5mnod7s",
+      "desc": "قررت جامعة القصيم تحويل الدراسة الحضورية يوم غد الأربعاء إلى نظام الدراسة عن بعد لجميع الطلاب وطالبات جامعة القصيم في جميع مقرات الجامعة. جاء ذلك استنادا لتقرير المركز الوطني للأرصاد ونظرا للتقلبات الجوية بمنطقة القصيم.",
+      "date": "Tue, 10 Nov 2026 17:13:00 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "ولي العهد وملك البحرين يبحثان مجالات التعاون الثنائي وآخر المستجدات الإقليمية",
+      "link": "https://ajel.sa/local/715unpvp5",
+      "desc": "استقبل صاحب السمو الملكي الأمير محمد بن سلمان بن عبدالعزيز آل سعود ولي العهد رئيس مجلس الوزراء، في الرياض اليوم، الملك حمد بن عيسى آل خليفة ملك مملكة البحرين.",
+      "date": "Tue, 10 Nov 2026 17:04:23 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "المملكة وأوكرانيا توقعان مذكرة تفاهم للإعفاء المتبادل من تأشيرة الإقامة القصيرة",
+      "link": "https://ajel.sa/local/hac5bkfal",
+      "desc": "وقّعت المملكة وأوكرانيا مذكرة تفاهم للإعفاء المتبادل من تأشيرة الإقامة القصيرة لحاملي جوازات السفر الدبلوماسية والخاصة وجوازات الخدمة، وذلك عقب لقاء وزير الخارجية الأمير فيصل بن فرحان بن عبدالله،…",
+      "date": "Tue, 10 Nov 2026 16:46:49 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "اليمن.. الحكومة تجهز ترتيبات لتوفير بديل مؤقت للتعليم بالمناطق المتضررة",
+      "link": "https://ajel.sa/international/2vgkhvmw2",
+      "desc": "تعتزم الحكومة اليمنية عبر وزارة التعليم، دعم مبادرة السلطة المحلية بمحافظة تعز لتوفير التعليم عن بُعد للطلاب الذين تعذر انتظامهم بالدراسة بسبب الأوضاع الأمنية، باعتباره بديلاً مؤقتاً يحمي حق استمرار التعليم، ويحفظ مستقبلهم الدراسي.",
+      "date": "Tue, 10 Nov 2026 16:45:04 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "ملك البحرين يصل إلى الرياض وولي العهد في مقدمة مستقبليه",
+      "link": "https://ajel.sa/local/2gs9fb2gh",
+      "desc": "وصل ملك البحرين حمد بن عيسى آل خليفة إلى الرياض اليوم، وكان ولي العهد السعودي الأمير محمد بن سلمان في مقدمة مستقبليه بمطار الملك خالد الدولي.",
+      "date": "Tue, 10 Nov 2026 16:34:10 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "استهداف ناقلة نفط بمقذوف مجهول قرب سواحل عُمان دون إصابات أو أضرار بيئية",
+      "link": "https://ajel.sa/international/lrlze8ekf",
+      "desc": "تعرضت ناقلة نفط لاستهداف بمقذوف مجهول على بعد نحو 35 كيلومترا من سواحل سلطنة عُمان، وفق بلاغ تلقته هيئة عمليات التجارة البحرية البريطانية، الثلاثاء، فيما أكدت سلامة جميع أفراد الطاقم وعدم تسجيل أي آثار بيئية جراء الحادث.",
+      "date": "Tue, 10 Nov 2026 16:28:00 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "وصول 6 شاحنات إغاثية لمحافظة أبين تحمل 2160 سلة غذائية مقدمة من مركز الملك سلمان",
+      "link": "https://ajel.sa/international/858pgxgt0",
+      "desc": "وصلت 6 شاحنات إغاثية إلى محافظة أبين تحمل 2160 سلة غذائية مقدمة من مركز الملك سلمان للإغاثة. ومن المقرر توزيعها على الأسر الأكثر احتياجاً والتخفيف من معاناتها ضمن مشروع الاستجابة الطارئة في اليمن، وفق \"الحدث\".",
+      "date": "Tue, 10 Nov 2026 16:23:00 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "«نتنياهو» يبحث التناوب على رئاسة الحكومة مع «آيزنكوت»",
+      "link": "https://ajel.sa/international/qh96o3s0g",
+      "desc": "يدرس رئيس الوزراء الإسرائيلي بنيامين نتنياهو إمكانية التناوب على رئاسة الحكومة مع غادي آيزنكوت، في تطور سياسي كشفته القناة 14 الإسرائيلية، بالتزامن مع بدء الكنيست السادس والعشرين أعماله وأداء أعضائه…",
+      "date": "Tue, 10 Nov 2026 16:16:21 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "فرنسا تكشف هوية 3 إيرانيين تتهمهم باختراق أنظمة التبريد في 700 موقع تجاري",
+      "link": "https://ajel.sa/international/cvzay9wt8",
+      "desc": "تسببت هجمات إلكترونية استهدفت أنظمة التبريد في نحو 700 موقع تجاري بفرنسا في إتلاف كميات كبيرة من الأغذية واندلاع حرائق في 15 موقعا على الأقل، بعدما أدت إلى رفع درجات حرارة الثلاجات وتعطيل أنظمة…",
+      "date": "Tue, 10 Nov 2026 16:12:00 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "هطول أمطار خفيفة إلى متوسطة على منطقة القصيم وعدة محافظات",
+      "link": "https://ajel.sa/local/2agnjd62w",
+      "desc": "شهدت منطقة القصيم اليوم أمطارًا خفيفة إلى متوسطة شملت عدة محافظات، مع توقع استمرار الهطول خلال الساعات المقبلة بحسب واس.",
+      "date": "Tue, 10 Nov 2026 16:00:16 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "روبيو: الجيش الأمريكي مستعد للقيام بعمليات ضد إيران في أي وقت",
+      "link": "https://ajel.sa/international/0yr2c77aw",
+      "desc": "قال وزير الخارجية الأمريكي ماركو روبيو، إن جيش بلاده مستعد للقيام بعمليات ضد إيران في أي وقت. وأضاف الوزير، أن إيران انتهكت مذكرة التفاهم، وليست هناك حاجة حاليا لعمليات عسكرية كبيرة ضدها، وفق \"العربية\".",
+      "date": "Tue, 10 Nov 2026 15:45:00 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "العراق يمنع طائرة المنتخب الإيراني من الهبوط في البصرة بسبب العقوبات الأمريكية",
+      "link": "https://ajel.sa/international/9ua85symb",
+      "desc": "اضطر المنتخب الإيراني لكرة القدم إلى تغيير مسار رحلته إلى العراق، بعدما منعت السلطات العراقية طائرته من الهبوط في مطار البصرة، تطبيقا للعقوبات الأمريكية المفروضة على شركات الطيران الإيرانية، ما دفع…",
+      "date": "Tue, 10 Nov 2026 15:31:52 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "الروائية مها اليمني: تفتح ملفات الألم النفسي والقتل الرحيم بـ \"ثقافة وفنون الدمام\"",
+      "link": "https://ajel.sa/society/v10r35okt",
+      "desc": "في أمسية ثقافية استثنائية غاصت في المناطق الشائكة للضمير الإنساني، استضافت جمعية الثقافة والفنون بالدمام مساء أمس، الروائية الدكتورة مها اليمني للاحتفاء بفوزها بجائزة \"كتارا\" للرواية العربية 2026 عن عملها \"يداي لا ترتجفان\".",
+      "date": "Tue, 10 Nov 2026 15:30:46 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "القوات المسلحة اليمنية: نفذنا 744 عملية استهداف بالمدفعية ضد ميليشيا الحوثي",
+      "link": "https://ajel.sa/international/cpvnr8ivh",
+      "desc": "أكدت القوات المسلحة اليمنية، أنها نفذت 744 عملية استهداف بالمدفعية ضد ميليشيا الحوثي. وأضافت، أنه تم تدمير 130 من آليات ميليشيا الحوثي في ضرباتنا الأخيرة، وتحييد 190 من قيادات وعناصر ميليشيا الحوثي في ضرباتنا الأخيرة، وفق \"العربية\".",
+      "date": "Tue, 10 Nov 2026 15:30:03 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "وزير الخارجية يشارك في اجتماع سعودي قطري أوروبي بباريس حول قضايا المنطقة",
+      "link": "https://ajel.sa/local/upu95l0pu",
+      "desc": "شارك الأمير فيصل بن فرحان في اجتماع وزاري سعودي قطري أوروبي بباريس تناول مستجدات الشرق الأوسط والاعتداءات الحوثية وجهود الوساطة وخفض التصعيد.",
+      "date": "Tue, 10 Nov 2026 15:11:15 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "وزارة الصحة: 3 نصائح للوقاية من هشاشة العظام",
+      "link": "https://ajel.sa/misc/wgedoj099",
+      "desc": "أوصت وزارة الصحة، باتباع 3 نصائح للوقاية من هشاشة العظام بالتغذية السليمة. وأضافت الوزارة، عبر منصة (إكس)، أن ذلك يشمل الحرص على تناول كميات كافية من الكالسيوم وفيتامين (د) لتقوية البنية العظمية.",
+      "date": "Tue, 10 Nov 2026 15:09:41 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "أبرزها التأكد من سلامة الإطارات والمكابح.. المرور يقدم 6 نصائح للقيادة الآمنة أثناء هطول الأمطار",
+      "link": "https://ajel.sa/local/6pot5d5xe",
+      "desc": "دعت الإدارة العامة للمرور قائدي المركبات إلى توخي الحذر أثناء القيادة خلال هطول الأمطار، والالتزام بالتعليمات والإرشادات المرورية؛ حفاظًا على سلامتهم وسلامة مستخدمي الطريق.",
+      "date": "Tue, 10 Nov 2026 14:58:35 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "برشلونة يفاضل بين 6 مدافعين في الميركاتو الشتوي وسط قيود مالية وصعوبات التعاقد",
+      "link": "https://ajel.sa/sports/k8x1c5eqw",
+      "desc": "برشلونة يبحث عن تدعيم دفاعه في الانتقالات الشتوية بأقل تكلفة بسبب قيود مالية، مع دراسة 6 مدافعين بينهم 4 للإعارة واثنان بخبرة أكبر.",
+      "date": "Tue, 10 Nov 2026 14:48:00 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "روبيو: إيران ترغب في التوصل إلى اتفاق لكنها تطرح شروطاً \"عبثية\" ولا تبدي جدية حالياً",
+      "link": "https://ajel.sa/international/wr79nz3ds",
+      "desc": "قال وزير الخارجية الأمريكية ماركو روبيو، إن إيران ترغب في التوصل إلى اتفاق لكنها لا تزال تطرح شروطاً عبثية ولا تبدي جدية حالياً.",
+      "date": "Tue, 10 Nov 2026 14:47:00 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "مؤشر الأسهم السعودية يرتفع 61 نقطة.. والتداولات تبلغ 4.9 مليارات ريال",
+      "link": "https://ajel.sa/economy/vhdttonds",
+      "desc": "أنهى مؤشر الأسهم السعودية الرئيس تداولات اليوم على ارتفاع، بعدما صعد 61.38 نقطة ليغلق عند مستوى 10168.10 نقطة، وسط تداولات بلغت قيمتها 4.9 مليارات ريال، شهدت ارتفاع أسهم 232 شركة مقابل تراجع 31 شركة.",
+      "date": "Tue, 10 Nov 2026 14:26:00 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "وزير الحرب الأمريكي: لن نعتذر عما فعلناه بإيران والحصار ضدها يحقق أهدافه",
+      "link": "https://ajel.sa/international/qj6nr95n0",
+      "desc": "قال وزير الحرب الأمريكي بيت هيغسيث، إننا لن نعتذر عما قمنا به في إيران والحصار ضدها يحقق أهدافه. وأضاف الوزير، إننا نرصد كل عمليات إيران وجاهزون للتعامل معها، ولو عاد الزمن، سيكون خيارنا هو ضرب إيران أيضاً، وفق \"العربية\".",
+      "date": "Tue, 10 Nov 2026 14:16:41 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "أسعار النفط تواصل التراجع مع تحسن الإمدادات العالمية وارتفاع إنتاج أوبك",
+      "link": "https://ajel.sa/local/j4uhgvoko",
+      "desc": "تراجعت أسعار النفط اليوم مع تحسن الإمدادات العالمية وزيادة إنتاج أوبك وارتفاع واردات الصين من الخام، بحسب بيانات رسمية.",
+      "date": "Tue, 10 Nov 2026 14:05:00 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "الليلة.. محطة الفضاء الدولية تعبر سماء جدة لأكثر من 6 دقائق ويمكن رؤيتها بالعين المجردة",
+      "link": "https://ajel.sa/local/dy2u7iokw",
+      "desc": "تشهد سماء جدة مساء اليوم الثلاثاء عبورًا طويلًا لمحطة الفضاء الدولية، يستمر 6 دقائق و31 ثانية، ويمكن رصده بالعين المجردة حتى من داخل المدينة، في حال كانت السماء صافية.",
+      "date": "Tue, 10 Nov 2026 14:03:06 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "استطلاع: 71% من الأمريكيين يريدون إنهاء الحرب على إيران",
+      "link": "https://ajel.sa/international/6f5ib12m1",
+      "desc": "كشف استطلاع أجرته رويترز/إبسوس أن 71 بالمئة من الأمريكيين يؤيدون إقرار الكونغرس الجديد تشريعا لإنهاء الحرب على إيران، فيما يدعم 62 بالمئة جهود إلغاء الرسوم الجمركية التي فرضها الرئيس دونالد ترامب على…",
+      "date": "Tue, 10 Nov 2026 13:53:00 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "ولي العهد ورئيس وزراء اليونان يبحثان  العلاقات الثنائية وتطوير التعاون المشترك",
+      "link": "https://ajel.sa/local/atcsu74g6",
+      "desc": "أجرى صاحب السمو الملكي الأمير محمد بن سلمان بن عبدالعزيز آل سعود ولي العهد رئيس مجلس الوزراء، اتصالًا هاتفيًا اليوم، بدولة السيد كيرياكوس ميتسوتاكيس رئيس وزراء الجمهورية الهيلينية.",
+      "date": "Tue, 10 Nov 2026 13:48:10 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "First day of Ukraine peace talks constructive, Zelensky says",
+      "link": "https://www.bbc.co.uk/news/articles/cqpvgvrpjvv8o?at_medium=RSS&at_campaign=rss",
+      "desc": "Delegations from Kyiv, Washington and Moscow are in the United Arab Emirates for the first trilateral talks since February.",
+      "date": "Tue, 10 Nov 2026 17:29:36 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "Malaysia's disgraced former PM leaves jail for house arrest after embezzling millions",
+      "link": "https://www.bbc.co.uk/news/articles/cxnv0v4yln7do?at_medium=RSS&at_campaign=rss",
+      "desc": "Najib Razak was convicted for his role in the billion-dollar scandal involving the 1MDB sovereign wealth fund.",
+      "date": "Tue, 10 Nov 2026 18:33:51 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "Israel's new parliament sworn in as leaders compete to form government",
+      "link": "https://www.bbc.co.uk/news/articles/crd939lpzjp9o?at_medium=RSS&at_campaign=rss",
+      "desc": "Benjamin Netanyahu's main political rival, Gadi Eisenkot, has first chance to build a new government and oust the prime minister.",
+      "date": "Tue, 10 Nov 2026 17:03:16 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "Board of Peace says Israel's aid response after Gaza floods 'insufficent'",
+      "link": "https://www.bbc.co.uk/news/articles/cw4g1g4ll5m1o?at_medium=RSS&at_campaign=rss",
+      "desc": "The group, formed by Trump, issues rare criticism of Israel, while also blaming Hamas for the suffering of civilians in Gaza.",
+      "date": "Tue, 10 Nov 2026 15:21:18 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "Anti-homosexuality laws in Trinidad and Tobago overturned",
+      "link": "https://www.bbc.co.uk/news/articles/cm0e0evlpp87o?at_medium=RSS&at_campaign=rss",
+      "desc": "The ruling brings to an end an 11-year legal battle by dual-citizen Jason Jones.",
+      "date": "Tue, 10 Nov 2026 18:04:18 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "French wartime resistance heroine Solange Alexandre dies aged 104",
+      "link": "https://www.bbc.co.uk/news/articles/cjdx3x7wg941o?at_medium=RSS&at_campaign=rss",
+      "desc": "With 30 men under her orders, she organised sabotage operations, sheltered Allied airmen and joined the fight against the occupying German forces.",
+      "date": "Tue, 10 Nov 2026 13:23:54 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "Twelve dead after motorway pile-ups in Bulgaria fog",
+      "link": "https://www.bbc.co.uk/news/articles/ckx2q2velpjjo?at_medium=RSS&at_campaign=rss",
+      "desc": "About 50 other people were injured in the pile-ups along a section of the Trakia motorway, officials have said.",
+      "date": "Tue, 10 Nov 2026 16:07:51 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "US federal authorities could have prevented Epstein crimes, report finds",
+      "link": "https://www.bbc.co.uk/news/articles/cq5ynyn8zyr8o?at_medium=RSS&at_campaign=rss",
+      "desc": "The report by a Republican-led congressional committee follows a 15-month investigation into the handling of the late disgraced financier's case.",
+      "date": "Tue, 10 Nov 2026 17:59:02 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "Arrests made in Mohamed Al Fayed probe in France, police say",
+      "link": "https://www.bbc.co.uk/news/articles/ck1wvwyrd4ywo?at_medium=RSS&at_campaign=rss",
+      "desc": "The Ritz hotel in Paris, which is still owned by the Al Fayed family, is one of the properties searched by police.",
+      "date": "Tue, 10 Nov 2026 16:19:48 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "Police officer dies and another injured after backpack explosion in northern Spain",
+      "link": "https://www.bbc.co.uk/news/articles/cwm262pzezy0o?at_medium=RSS&at_campaign=rss",
+      "desc": "Officers attended the scene in connection with a separate incident at a residential building in the Spanish city.",
+      "date": "Tue, 10 Nov 2026 11:25:46 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "DR Congo sentences 66 soldiers to death for being 'cowards'",
+      "link": "https://www.bbc.co.uk/news/articles/cmreye1q3dnjo?at_medium=RSS&at_campaign=rss",
+      "desc": "The Congolese army's fight against rebel groups has long been hampered by disarray within its ranks.",
+      "date": "Tue, 10 Nov 2026 08:39:05 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "'Cruise for life' ship seized in Singapore",
+      "link": "https://www.bbc.co.uk/news/articles/cqr7y7myer53o?at_medium=RSS&at_campaign=rss",
+      "desc": "The Odyssey was meant to take guests around the world for years, but the trip was cut short after its operator ran out of money.",
+      "date": "Tue, 10 Nov 2026 01:49:06 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "Trump says FBI investigating Nvidia boss's affair with alleged Chinese spy",
+      "link": "https://www.bbc.co.uk/news/articles/cqg7x7dpvym8o?at_medium=RSS&at_campaign=rss",
+      "desc": "The US president said he spoke with Jensen Huang on Monday and asked him about the affair with the alleged spy.",
+      "date": "Tue, 10 Nov 2026 08:23:21 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "Iran rejects French claims it was behind supermarket fridge hacking",
+      "link": "https://www.bbc.co.uk/news/articles/cmg474vk6dyqo?at_medium=RSS&at_campaign=rss",
+      "desc": "Tons of chilled and frozen food was spoiled last month as fridges and freezers in hundreds of supermarkets heated up.",
+      "date": "Tue, 10 Nov 2026 13:45:13 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "California police investigate after 27 fall ill at half-marathon running event",
+      "link": "https://www.bbc.co.uk/news/articles/cq0ldlyd556go?at_medium=RSS&at_campaign=rss",
+      "desc": "A local hospital says runners had \"unusual\" symptoms after racing on an atypically hot day.",
+      "date": "Tue, 10 Nov 2026 13:22:12 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "Israeli forces kill Palestinian boy in West Bank, health ministry says",
+      "link": "https://www.bbc.co.uk/news/articles/cqpvgv318yyeo?at_medium=RSS&at_campaign=rss",
+      "desc": "The Israeli military says its soldiers opened fire at individuals “who intended to hurl stones” at a road used by Israelis.",
+      "date": "Tue, 10 Nov 2026 11:23:18 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "Trump says more US attacks on Iran 'highly unlikely'",
+      "link": "https://www.bbc.co.uk/news/articles/cq5yny4nl2d3o?at_medium=RSS&at_campaign=rss",
+      "desc": "The president says the US is keeping \"status quo\" with Iran but remains “locked and loaded” should the situation change.",
+      "date": "Tue, 10 Nov 2026 09:40:31 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "Oxford museum returns ancestral  Naga skulls to India",
+      "link": "https://www.bbc.co.uk/news/articles/ck1l3lzg3y79o?at_medium=RSS&at_campaign=rss",
+      "desc": "The remains will be taken to Nagaland, where tribal leaders plan a joint memorial and burial.",
+      "date": "Tue, 10 Nov 2026 06:23:42 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "Australia considers criminal penalties for rogue AI in wake of OpenAI hack",
+      "link": "https://www.bbc.co.uk/news/articles/cmp3g37l566po?at_medium=RSS&at_campaign=rss",
+      "desc": "AI safety regulator will also be created after a rogue OpenAI agent hacked government websites.",
+      "date": "Tue, 10 Nov 2026 05:22:39 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "Qantas to outsource 850 local jobs with most roles moving to India",
+      "link": "https://www.bbc.co.uk/news/articles/cry838v4qzvyo?at_medium=RSS&at_campaign=rss",
+      "desc": "The Australian airline said the move was aimed at modernising its IT systems and noted the impact of AI.",
+      "date": "Tue, 10 Nov 2026 01:55:22 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "Turkey steel factory blast kills at least 17 people",
+      "link": "https://www.bbc.co.uk/news/articles/cq2d6d5z9y5jo?at_medium=RSS&at_campaign=rss",
+      "desc": "Eyewitnesses say the explosion shook the ground, with one believing an earthquake had hit near the Habas Demir Celik plant in Aliaga.",
+      "date": "Mon, 09 Nov 2026 20:42:04 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "Judge denies motion to dismiss Lindsay Clancy's murder case",
+      "link": "https://www.bbc.co.uk/news/articles/ck1l3le7q29vo?at_medium=RSS&at_campaign=rss",
+      "desc": "The ruling means the case can move forward, possibly with reduced charges in a new trial.",
+      "date": "Mon, 09 Nov 2026 23:28:53 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "Trial date of alleged Charlie Kirk killer set for June 2028",
+      "link": "https://www.bbc.co.uk/news/articles/cq0mem8d2p3xo?at_medium=RSS&at_campaign=rss",
+      "desc": "Tyler Robinson has pleaded not guilty to aggravated murder and six other charges in connection with the 2025 killing of the conservative activist.",
+      "date": "Mon, 09 Nov 2026 21:48:38 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "Meet the Peaky Blinders, Ukraine's drone unit protecting a devastated front-line city",
+      "link": "https://www.bbc.co.uk/news/videos/cm2l4l59gjp7o?at_medium=RSS&at_campaign=rss",
+      "desc": "Slovyansk continues to be bombarded by Russian forces, making it almost uninhabitable with less than 10% of it's pre-war population remaining.",
+      "date": "Tue, 10 Nov 2026 18:35:35 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "Why are these purple flowers shutting down streets in Sydney?",
+      "link": "https://www.bbc.co.uk/news/videos/c862y2dxdq45o?at_medium=RSS&at_campaign=rss",
+      "desc": "Jacaranda trees typically flower for six weeks every spring, drawing visitors to Australia from across the globe.",
+      "date": "Tue, 10 Nov 2026 18:03:52 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "'It's a farce': Hegseth's defiant response to impeachment effort",
+      "link": "https://www.bbc.co.uk/news/videos/cwm24249dezmo?at_medium=RSS&at_campaign=rss",
+      "desc": "The BBC’s Gary O’Donoghue breaks down how the US defence secretary defended his record after a Republican congressman launched an attempt to impeach him.",
+      "date": "Tue, 10 Nov 2026 15:40:43 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "Watch: Man smashes Chinese government building with excavator",
+      "link": "https://www.bbc.co.uk/news/videos/ckp8g8p4myv8o?at_medium=RSS&at_campaign=rss",
+      "desc": "Police say they have detained a 47-year-old suspect and no one was injured in the incident.",
+      "date": "Tue, 10 Nov 2026 09:37:15 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "Inside devastated front-line city that Russia wants Ukraine to give up",
+      "link": "https://www.bbc.co.uk/news/articles/cq0memrywvzro?at_medium=RSS&at_campaign=rss",
+      "desc": "The BBC gains rare access to a specialist drone unit defending the eastern city of Slovyansk from heavy Russian fire.",
+      "date": "Tue, 10 Nov 2026 17:00:11 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "Polish unity on show as thousands join silent march for Krakow shooting victims",
+      "link": "https://www.bbc.co.uk/news/articles/cqkg5gm4nr4no?at_medium=RSS&at_campaign=rss",
+      "desc": "Fiercely proud of its reputation for safety, Poland has been profoundly shaken by Saturday's attack, writes Sarah Rainsford.",
+      "date": "Tue, 10 Nov 2026 05:38:53 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "'There is no justice' - Epstein survivor on how model agency sent her to abuser's home",
+      "link": "https://www.bbc.co.uk/news/articles/cm86z6w59gggo?at_medium=RSS&at_campaign=rss",
+      "desc": "A woman says an agency boss sent her to photoshoots at the sex offender's Florida beach home.",
+      "date": "Tue, 10 Nov 2026 00:14:03 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "The superpower battle over energy – and what it means for your bills",
+      "link": "https://www.bbc.co.uk/news/articles/cw62y2z53pg1o?at_medium=RSS&at_campaign=rss",
+      "desc": "A tug-of-war between China and the US could have a big impact on energy costs, but who will win?",
+      "date": "Tue, 10 Nov 2026 00:08:28 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "Faisal Islam: What the boss of US tech giant Nvidia told me about China and national security",
+      "link": "https://www.bbc.co.uk/news/articles/c64g1gzy2vdzo?at_medium=RSS&at_campaign=rss",
+      "desc": "Huang, who is now being investigated over an affair with an alleged Chinese spy, is far more important to the future of the world order than other tech bosses.",
+      "date": "Tue, 10 Nov 2026 09:23:55 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "روبيو: \"لا حاجة لعملية عسكرية واسعة النطاق\" ضد إيران، وترامب يقول إن المفاوضات تشهد زخماً إيجابياً",
+      "link": "https://www.bbc.com/arabic/articles/c6kglgwm8nnwo?at_medium=RSS&at_campaign=rss",
+      "desc": "قال روبيو \"الألم ​الاقتصادي الذي يُلحق بإيران الآن استثنائي، وهو يتراكم. إنه يتزايد كل يوم\". وأضاف أن ترامب تلقى أيضا آراء من حلفاء في ​الشرق الأوسط تؤكد هذا التقييم",
+      "date": "Tue, 10 Nov 2026 19:36:27 GMT",
+      "source": "BBC عربي · الشرق الأوسط",
+      "category": "saudi"
+    },
+    {
+      "title": "الحوثيون يعلنون هجمات على الرياض، وغارات على صنعاء تخلّف قتيلاً وثلاثة جرحى",
+      "link": "https://www.bbc.com/arabic/articles/crwydyx4ww2wo?at_medium=RSS&at_campaign=rss",
+      "desc": "يأتي هذا وسط احتدام القتال بين الحوثيين والتحالف بعد تقدم الحوثيين في سبتمبر/أيلول نحو مضيق باب المندب، وهو ممر ملاحي إستراتيجي عند المدخل الجنوبي للبحر الأحمر.",
+      "date": "Tue, 10 Nov 2026 16:13:06 GMT",
+      "source": "BBC عربي · الشرق الأوسط",
+      "category": "saudi"
+    },
+    {
+      "title": "هل تؤدي السجائر الإلكترونية إلى زيادة عدد المدخنين؟",
+      "link": "https://www.bbc.com/arabic/articles/cmewejgd7r1jo?at_medium=RSS&at_campaign=rss",
+      "desc": "تثبت دراسات علم الأوبئة عالية الجودة باستمرار أن استخدام السجائر الإلكترونية يزيد من معدلات تدخين السجائر التقليدية بواقع 3 أمثال تقريباً، وخصوصاً بين الشباب غير المدخنين، وفق منظمة الصحة العالمية.",
+      "date": "Tue, 10 Nov 2026 17:33:58 GMT",
+      "source": "BBC عربي · الشرق الأوسط",
+      "category": "saudi"
+    },
+    {
+      "title": "الولايات المتحدة: اليوم الأول من محادثات السلام بشأن أوكرانيا كان \"مثمراً للغاية\"",
+      "link": "https://www.bbc.com/arabic/articles/cxnv0vgz14jno?at_medium=RSS&at_campaign=rss",
+      "desc": "محادثات خلف أبواب مغلقة بعد انقطاع ثمانية أشهر، وممثلو الولايات المتحدة والأطراف الأوروبية يؤكدون التزامهم ببنية أمنية أوروبية قوية بعد الحرب، مشددين على أن أي اتفاق ينبغي أن يضمن وحدة أراضي أوكرانيا.",
+      "date": "Tue, 10 Nov 2026 17:57:06 GMT",
+      "source": "BBC عربي · الشرق الأوسط",
+      "category": "saudi"
+    },
+    {
+      "title": "هيغسيث يصف محاولة عزله بـ\"التخريب\" و\"المهزلة\" بعد تحرك نائب جمهوري في الكونغرس",
+      "link": "https://www.bbc.com/arabic/articles/ck8dzdrvgn8vo?at_medium=RSS&at_campaign=rss",
+      "desc": "رغم أن مساعي عزل هيغسيث قد لا تنجح، فإن النائب الجمهوري توماس ماسي يأمل في دفع ترامب إلى إقالته قبل أن يباشر الديمقراطيون إجراءات لعزله العام المقبل.",
+      "date": "Tue, 10 Nov 2026 14:51:40 GMT",
+      "source": "BBC عربي · الشرق الأوسط",
+      "category": "saudi"
+    },
+    {
+      "title": "ترامب يدافع عن رئيس إنفيديا بعد كشف علاقته بـ\"جاسوسة صينية\" مع تحركات فيدرالية لحماية الأمن القومي الأمريكي",
+      "link": "https://www.bbc.com/arabic/articles/cmd6d6e8x0ngo?at_medium=RSS&at_campaign=rss",
+      "desc": "ترامب تحدث إلى هوانغ، يوم الاثنين، بعد تقارير تشير إلى اعتقاد الولايات المتحدة بأنه كان هدفاً لعملية تجسس صينية.",
+      "date": "Tue, 10 Nov 2026 14:29:18 GMT",
+      "source": "BBC عربي · الشرق الأوسط",
+      "category": "saudi"
+    },
+    {
+      "title": "من اختارهن؟ تحقيق يكشف دور شخصيات من عالم الأزياء في استغلال فتيات لصالح جيفري إبستين",
+      "link": "https://www.bbc.com/arabic/articles/c69wzw1n1g50o?at_medium=RSS&at_campaign=rss",
+      "desc": "كيف تمكّن إبستين من الوصول إلى فتيات عبر عالم الأزياء بعد إدانته؟ تحقيق يكشف شبكة علاقات امتدت إلى المغرب",
+      "date": "Tue, 10 Nov 2026 11:52:03 GMT",
+      "source": "BBC عربي · الشرق الأوسط",
+      "category": "saudi"
+    },
+    {
+      "title": "رغم فوز الديمقراطيين: \"مكسب طويل الأجل للحزب الجمهوري\" - مقال في واشنطن بوست",
+      "link": "https://www.bbc.com/arabic/articles/cq1kdk2e7y2eo?at_medium=RSS&at_campaign=rss",
+      "desc": "تتحدث الصحف العالمية عن \"مزايا\" خسارة الحزب الجمهوري في انتخابات التجديد النصفي في الولايات المتحدة، وعن عزوف الشباب البريطاني عن الخدمة في الجيش، وتفكك الإجماع العالمي حول العمل المناخي.",
+      "date": "Tue, 10 Nov 2026 12:44:07 GMT",
+      "source": "BBC عربي · الشرق الأوسط",
+      "category": "saudi"
+    },
+    {
+      "title": "بعد 21 عاماً على تفجيرات عمّان، لماذا لا يزال الأردن هدفاً للإرهاب؟",
+      "link": "https://www.bbc.com/arabic/articles/cm0rlr991kqpo?at_medium=RSS&at_campaign=rss",
+      "desc": "أعاد هجومان في الكرك وعمّان، نفذهما أشخاص سبق أن أُدينوا بقضايا إرهابية، ملف مكافحة الإرهاب إلى الواجهة في الأردن، وسط تحرك حكومي لتشديد العقوبات ومنع تكرار الهجمات.",
+      "date": "Tue, 10 Nov 2026 07:49:02 GMT",
+      "source": "BBC عربي · الشرق الأوسط",
+      "category": "saudi"
+    },
+    {
+      "title": "كيف تعمل شبكة قراصنة كوريا الشمالية؟",
+      "link": "https://www.bbc.com/arabic/watch/cw8dzd4nd21yo?at_medium=RSS&at_campaign=rss",
+      "desc": "ارتبط اسم كوريا الشمالية  بسلسلة من الهجمات الإلكترونية البارزة خلال العقد الأخير، استهدفت بنوكاً ومؤسسات حكومية وشركات كبرى، من بينها شركة \"سوني بيكتشرز\". فماذا نعرف عن شبكة القراصنة المرتبطة بها؟",
+      "date": "Tue, 10 Nov 2026 11:05:35 GMT",
+      "source": "BBC عربي · الشرق الأوسط",
+      "category": "saudi"
+    },
+    {
+      "title": "رئيس إنفيديا جنسن هوانغ يعترف بعلاقة غرامية مع جاسوسة صينية مشتبه بها",
+      "link": "https://www.bbc.com/arabic/watch/cqd090n1nvg3o?at_medium=RSS&at_campaign=rss",
+      "desc": "تتجاوز القضية حدود الفضيحة الشخصية، لتفتح باباً واسعاً من التساؤلات بشأن احتمال استغلال العلاقات الشخصية للوصول إلى معلومات حساسة داخل واحدة من أهم الشركات الإستراتيجية في الولايات المتحدة",
+      "date": "Mon, 09 Nov 2026 14:09:40 GMT",
+      "source": "BBC عربي · الشرق الأوسط",
+      "category": "saudi"
+    },
+    {
+      "title": "ماذا نعرف عن هجمات سيبرانية تضرب ثلاجات متاجر أوروبية شهيرة؟",
+      "link": "https://www.bbc.com/arabic/watch/cmlykq5k89djo?at_medium=RSS&at_campaign=rss",
+      "desc": "مفوض الاتحاد الأوروبي لشؤون الغذاء والزراعة حذر من أن الأمن الغذائي \"يتطلب اهتماماً أكبر على كل المستويات\"، وأن استهدافه أصبح \"أمراً واقعاً\".",
+      "date": "Fri, 06 Nov 2026 07:04:21 GMT",
+      "source": "BBC عربي · الشرق الأوسط",
+      "category": "saudi"
+    },
+    {
+      "title": "بعد سيطرة الديمقراطيين على الكونغرس.. ماذا ينتظر الرئيس الأمريكي؟",
+      "link": "https://www.bbc.com/arabic/watch/cmz65z3yn74no?at_medium=RSS&at_campaign=rss",
+      "desc": "سيطر الديمقراطيون على مجلسي الشيوخ والنواب في الانتخابات، في هزيمة أقرّ الرئيس الأمريكي دونالد ترامب بأنها تأثرت بالحرب مع إيران وارتفاع أسعار الوقود وتكاليف المعيشة.",
+      "date": "Wed, 04 Nov 2026 14:04:41 GMT",
+      "source": "BBC عربي · الشرق الأوسط",
+      "category": "saudi"
+    },
+    {
+      "title": "من هي لانا نسيبة، المرشحة الإماراتية لمنصب الأمين العام للأمم المتحدة؟",
+      "link": "https://www.bbc.com/arabic/watch/c6y4xe081x7no?at_medium=RSS&at_campaign=rss",
+      "desc": "لانا نسيبة، قد تصبح أول امرأة تتولى منصب الأمين العام للأمم المتحدة، وثاني شخصية عربية تصل إلى هذا المنصب.",
+      "date": "Sun, 01 Nov 2026 10:11:37 GMT",
+      "source": "BBC عربي · الشرق الأوسط",
+      "category": "saudi"
+    },
+    {
+      "title": "سماعات بتقنية التوصيل العظمي.. كيف تنقل الصوت؟",
+      "link": "https://www.bbc.com/arabic/watch/cwg7x7k3meljo?at_medium=RSS&at_campaign=rss",
+      "desc": "سماعات بتقنية التوصيل العظمي.. كيف تنقل الصوت؟",
+      "date": "Tue, 10 Nov 2026 14:41:30 GMT",
+      "source": "BBC عربي · الشرق الأوسط",
+      "category": "saudi"
+    },
+    {
+      "title": "واصل يوسف في بلا قيود: الحزب وترامب يتحملان المسؤولية.",
+      "link": "https://www.bbc.com/arabic/watch/c6d7qqzjvny0o?at_medium=RSS&at_campaign=rss",
+      "desc": "قال واصل يوسف، عضو الحزب الجمهوري إنّ حق استخدام الفيتو وحق إتخاذ القرارت السيادية الحاسمة ستظل بيد الرئيس دونالد ترامب، ما قد يضع الحزب الديمقراطي في مأزق سواء في حالة القبول بقرارته أو رفضها.",
+      "date": "Fri, 06 Nov 2026 17:40:48 GMT",
+      "source": "BBC عربي · الشرق الأوسط",
+      "category": "saudi"
+    },
+    {
+      "title": "هل يمكن أن ننجح في مهنتين مختلفتين في الوقت عينه؟",
+      "link": "https://www.bbc.com/arabic/watch/cqvgrr5x35rmo?at_medium=RSS&at_campaign=rss",
+      "desc": "هل تكفي مهنة واحدة لتحقيق طموحنا؟ في هذه الحلقة من بي بي سي إكسترا نكتشف تجارب شباب اختاروا الجمع بين مسارات مختلفة في حياتهم والتحديات التي يواجهونها للتوفيق بين العمل والشغف.",
+      "date": "Thu, 05 Nov 2026 17:34:27 GMT",
+      "source": "BBC عربي · الشرق الأوسط",
+      "category": "saudi"
+    },
+    {
+      "title": "شاهد البث المباشر لتلفزيون بي بي سي",
+      "link": "https://www.bbc.com/arabic/media-49522519?at_medium=RSS&at_campaign=rss",
+      "desc": "شاهد البث المباشر لتلفزيون بي بي سي",
+      "date": "Fri, 30 Aug 2019 08:36:18 GMT",
+      "source": "BBC عربي · الشرق الأوسط",
+      "category": "saudi"
+    }
+  ],
+  "sourceStatus": [
+    {
+      "name": "عاجل",
+      "category": "saudi",
+      "ok": true,
+      "count": 50
+    },
+    {
+      "name": "BBC News · World",
+      "category": "world",
+      "ok": true,
+      "count": 32
+    },
+    {
+      "name": "BBC عربي · الشرق الأوسط",
+      "category": "saudi",
+      "ok": true,
+      "count": 23
+    },
+    {
+      "name": "أخبار السعودية",
+      "category": "saudi",
+      "ok": false,
+      "error": "UnicodeEncodeError"
+    },
+    {
+      "name": "أخبار العالم",
+      "category": "world",
+      "ok": false,
+      "error": "UnicodeEncodeError"
+    },
+    {
+      "name": "التقنية",
+      "category": "tech",
+      "ok": false,
+      "error": "UnicodeEncodeError"
+    },
+    {
+      "name": "الرياضة",
+      "category": "sports",
+      "ok": false,
+      "error": "UnicodeEncodeError"
+    },
+    {
+      "name": "الاقتصاد",
+      "category": "economy",
+      "ok": false,
+      "error": "UnicodeEncodeError"
+    }
+  ]
 }
