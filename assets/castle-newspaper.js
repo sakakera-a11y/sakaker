@@ -40,7 +40,13 @@ function setLanguage(next){
 const day=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');};
 const feeds=[
 {name:'عاجل',url:'https://ajel.sa/rss.xml',category:'saudi'},
-{name:'BBC News · World',url:'https://feeds.bbci.co.uk/news/world/rss.xml',category:'world'}
+{name:'BBC News · World',url:'https://feeds.bbci.co.uk/news/world/rss.xml',category:'world'},
+{name:'BBC عربي · الشرق الأوسط',url:'https://feeds.bbci.co.uk/arabic/middleeast/rss.xml',category:'saudi'},
+{name:'أخبار السعودية',url:'https://news.google.com/rss/search?q=السعودية&hl=ar&gl=SA&ceid=SA:ar',category:'saudi'},
+{name:'أخبار العالم',url:'https://news.google.com/rss/search?q=العالم&hl=ar&gl=SA&ceid=SA:ar',category:'world'},
+{name:'التقنية',url:'https://news.google.com/rss/search?q=التقنية&hl=ar&gl=SA&ceid=SA:ar',category:'tech'},
+{name:'الرياضة',url:'https://news.google.com/rss/search?q=الرياضة&hl=ar&gl=SA&ceid=SA:ar',category:'sports'},
+{name:'الاقتصاد',url:'https://news.google.com/rss/search?q=الاقتصاد&hl=ar&gl=SA&ceid=SA:ar',category:'economy'}
 ];
 const categories={all:'الكل',saudi:'السعودية',world:'العالم',economy:'الاقتصاد',sports:'الرياضة',tech:'التقنية',culture:'الثقافة والفنون',science:'العلوم',entertainment:'الترفيه'};
 let items=[],category='all',loading=false,lastLoad=0,found=new Set(),newsError='',sourceStatus=[];
@@ -168,6 +174,32 @@ async function fetchXml(feed){
  for(const p of proxies){try{const txt=await fetchText(p+encodeURIComponent(feed.url));if(/<(rss|feed|rdf:RDF|\?xml)/i.test(txt.slice(0,1800)))return txt;}catch(_){}}
  return '';
 }
+async function fetchFeedItems(feed){
+ // GitHub Pages is static hosting: /api/news (Pages Functions) is not executable here.
+ // Use a CORS-enabled RSS-to-JSON bridge first, then retain the existing public proxy fallbacks.
+ try{
+  const endpoint='https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(feed.url);
+  const response=await fetch(endpoint,{cache:'no-store',headers:{'Accept':'application/json'}});
+  if(response.ok){
+   const data=await response.json();
+   if(data.status==='ok'&&Array.isArray(data.items)){
+    return data.items.map(item=>{
+     const holder=document.createElement('div');
+     holder.innerHTML=String(item.description||item.content||'');
+     return {
+      title:String(item.title||'').trim(),
+      link:safeUrl(String(item.link||'')),
+      desc:(holder.textContent||'').replace(/\\s+/g,' ').trim().slice(0,240),
+      date:String(item.pubDate||'').trim(),
+      source:feed.name,category:feed.category
+     };
+    }).filter(item=>item.title&&item.link);
+   }
+  }
+ }catch(_){}
+ const xml=await fetchXml(feed);
+ return xml?parse(xml,feed):[];
+}
 function parse(xmlText,feed){
  const xml=new DOMParser().parseFromString(xmlText,'text/xml');
  if(xml.querySelector('parsererror'))return [];
@@ -226,12 +258,10 @@ async function loadNews(force=false){
     if(Array.isArray(payload?.feeds))fresh=payload.feeds.flatMap(feed=>parse(feed.xml,feed));
    }finally{clearTimeout(timer);}
   }catch(_){}
-  // Browser-side RSS fallback keeps headlines available if the Worker endpoint is unavailable.
+  // Static GitHub Pages cannot execute Cloudflare Pages Functions. Fetch RSS feeds
+  // through a CORS-enabled JSON bridge, with the legacy XML proxies as backup.
   if(!fresh.length){
-   const fallback=await Promise.all(feeds.map(async feed=>{
-    const xml=await fetchXml(feed);
-    return xml?parse(xml,feed):[];
-   }));
+   const fallback=await Promise.all(feeds.map(feed=>fetchFeedItems(feed)));
    fresh=fallback.flat();
   }
   if(!fresh.length)throw new Error('No readable headlines from API or fallback feeds');
