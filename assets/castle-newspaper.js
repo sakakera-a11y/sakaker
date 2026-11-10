@@ -313,7 +313,7 @@ function differences(panel){
  const campaignDay=Math.max(1,Math.min(60,elapsedDays+1));
  const difficultyDay=elapsedDays+1;
  const hue=((campaignDay-1)*23)%360;
-  const baseImage='/'+encodeURI('سفينة القمر فوق المحيطอันว่างเปล่า.png');
+  const imagePair=['/file_000000007f288208bce7556015d427f9.png','/file_0000000080848210a4da056ef9b4c3a4.png'];
   const w=document.createElement('div');w.className='cn-game cn-difference-game';
   const title=document.createElement('h3');title.textContent=language==='ar'?'🔎 اكتشف الفروقات الخمس':'🔎 Find the five differences';w.appendChild(title);
   const intro=document.createElement('p');intro.textContent=language==='ar'?'قارن المشهدين واكتشف خمس فروقات فقط؛ يتجدد عالم الأنمي يومياً لمدة 60 يوماً.':'Compare both scenes and find exactly five differences; the anime world refreshes daily for 60 days.';w.appendChild(intro);
@@ -329,15 +329,9 @@ function differences(panel){
   right.innerHTML='<div class="cn-picture-label">'+labels[1]+'</div>';
   function scene(isRight){
    const dayAccent='hsl('+hue+',82%,62%)';
-   const overlays=isRight?(
-    '<circle cx="150" cy="170" r="12" fill="'+dayAccent+'" stroke="#fff" stroke-width="5"/>'+
-    '<path d="M815 205l48 13-48 23Z" fill="#55d8ef" stroke="#fff1bd" stroke-width="5"/>'+
-    '<path d="M410 610l18-28 18 28-18 28Z" fill="'+dayAccent+'" stroke="#fff4bd" stroke-width="6"/>'+
-    '<circle cx="925" cy="425" r="15" fill="#fff0a0" stroke="#fff" stroke-width="5"/>'+
-    '<path d="M835 770q32-42 66 0" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round"/>'
-   ):'';
+   const overlays='';
    return '<svg class="cn-picture" viewBox="0 0 1024 1024" role="img" aria-label="'+(language==='ar'?'مشهد سفينة القمر':'Moon ship scene')+'">'+
-    '<image href="'+baseImage+'" x="0" y="0" width="1024" height="1024" preserveAspectRatio="xMidYMid meet"/>'+
+    '<image href="'+imagePair[isRight?1:0]+'" x="0" y="0" width="1024" height="1024" preserveAspectRatio="xMidYMid meet"/>'+
     overlays+'</svg>';
   }
   left.insertAdjacentHTML('beforeend',scene(false));right.insertAdjacentHTML('beforeend',scene(true));pics.append(left,right);w.appendChild(pics);
