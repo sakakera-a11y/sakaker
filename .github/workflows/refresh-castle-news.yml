@@ -51,7 +51,9 @@ jobs:
               for node in nodes:
                 def val(*names):
                   for n in names:
-                    el = node.find(n) or node.find("{*}"+n)
+                    el = node.find(n)
+                    if el is None:
+                      el = node.find("{*}"+n)
                     if el is not None and el.text:
                       return el.text.strip()
                   return ""
