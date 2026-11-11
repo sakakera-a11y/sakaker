@@ -17,7 +17,7 @@ jobs:
       - name: Extract six completed days
         run: |
           mkdir -p assets/five-differences
-          unzip -oq five_differences_30_days_progress_6_of_30.zip 'five_differences_30_days_progress/day_*/*' -d /tmp/five-differences
+          unzip -oq five_differences_30_days_progress_6_of_30.zip -d /tmp/five-differences
           cp -R /tmp/five-differences/five_differences_30_days_progress/day_* assets/five-differences/
           cp /tmp/five-differences/five_differences_30_days_progress/README_AR.txt assets/five-differences/README_AR.txt
           find assets/five-differences -type f -print
