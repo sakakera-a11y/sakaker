@@ -165,16 +165,11 @@ export async function onRequestPost({ request, env }) {
     }
     await ensureSchema(env.VISITOR_DB);
     const uidHash = await hashUid(uid);
-    await env.VISITOR_DB.prepare(
+    const inserted = await env.VISITOR_DB.prepare(
       "INSERT INTO castle_ratings (uid_hash, choice, created_at) VALUES (?1, ?2, ?3) ON CONFLICT(uid_hash) DO NOTHING"
     ).bind(uidHash, body.choice, Date.now()).run();
     const result = await readRating(env.VISITOR_DB, uidHash);
-    return response(request, {
-      ...result,
-      alreadyVoted: result.mine !== body.choice || result.counts.total === 0
-        ? false
-        : false
-    });
+    return response(request, { ...result, alreadyVoted: Number(inserted?.meta?.changes || 0) === 0 });
   } catch (error) {
     console.error("Castle rating vote failed", error);
     return response(request, { error: "rating_unavailable" }, 503);
