@@ -42,7 +42,6 @@ jobs:
           items, status = [], []
           for name, url, category in sources:
             try:
-              req = urllib.request.Request(url, headers={"User-Agent":"Mozilla/5.0 SakakerCastleNews/1.0","Accept":"application/rss+xml, application/xml, text/xml"})
               encoded_url = urllib.parse.quote(url, safe=":/?&=%")
               req = urllib.request.Request(encoded_url, headers={"User-Agent":"Mozilla/5.0 SakakerCastleNews/1.0","Accept":"application/rss+xml, application/xml, text/xml"})
               with urllib.request.urlopen(req, timeout=12) as response:
