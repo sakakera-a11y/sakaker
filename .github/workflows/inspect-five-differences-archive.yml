@@ -1,4 +1,4 @@
-name: Inspect Five Differences Archive
+name: Extract Five Differences Progress Archive
 on:
   push:
     branches: [main]
@@ -7,20 +7,26 @@ on:
       - 'five_differences_30_days_progress_6_of_30.zip'
   workflow_dispatch:
 permissions:
-  contents: read
-  actions: write
+  contents: write
 jobs:
-  inspect:
+  extract:
+    if: ${{ !contains(github.event.head_commit.message, 'Extract five differences archive assets') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: List archive contents
+      - name: Extract six completed days
         run: |
-          unzip -Z1 five_differences_30_days_progress_6_of_30.zip > archive-files.txt
-          unzip -t five_differences_30_days_progress_6_of_30.zip > archive-test.txt
-      - uses: actions/upload-artifact@v4
-        with:
-          name: five-differences-archive-inspection
-          path: |
-            archive-files.txt
-            archive-test.txt
+          mkdir -p assets/five-differences
+          unzip -oq five_differences_30_days_progress_6_of_30.zip 'five_differences_30_days_progress/day_*/*' -d /tmp/five-differences
+          cp -R /tmp/five-differences/five_differences_30_days_progress/day_* assets/five-differences/
+          cp /tmp/five-differences/five_differences_30_days_progress/README_AR.txt assets/five-differences/README_AR.txt
+          find assets/five-differences -type f -print
+      - name: Commit extracted puzzle images
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/five-differences
+          if ! git diff --cached --quiet; then
+            git commit -m "Extract five differences archive assets"
+            git push
+          fi
