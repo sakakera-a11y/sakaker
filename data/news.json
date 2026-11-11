@@ -1,6 +1,30 @@
 {
-  "fetchedAt": "2026-11-11T16:37:21.375763+00:00",
+  "fetchedAt": "2026-11-11T16:43:17.237283+00:00",
   "items": [
+    {
+      "title": "تحويل الدراسة عن بعد بجامعة القصيم غدا الخميس",
+      "link": "https://ajel.sa/local/0kjq0qyqi",
+      "desc": "أعلنت جامعة القصيم تحويل الدراسة عن بعد يوم غد الخميس. وأشارت الجامعة إلى أنه استنادا لتقرير المركز الوطني للأرصاد ونظرا للتقلبات الجوية بمنطقة القصيم، تقرر تحويل الدراسة الحضورية يوم غد الخميس…",
+      "date": "Wed, 11 Nov 2026 16:26:27 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "شركة سليمان الراجحي العقارية تختتم مشاركتها في مؤتمر ومعرض الحج 2026 بجدة",
+      "link": "https://ajel.sa/local/6deg2tgdy",
+      "desc": "اختتمت شركة سليمان الراجحي العقارية مشاركتها كراعٍ استراتيجي في مؤتمر ومعرض الحج 2026 بجدة، مستعرضة مشروعاتها العقارية وخططها الاستثمارية، ومؤكدة أهمية التعاون في خدمة ضيوف الرحمن.",
+      "date": "Wed, 11 Nov 2026 16:23:30 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
+    {
+      "title": "بعد إصابة مبابي.. مايولو ينضم إلى منتخب فرنسا",
+      "link": "https://ajel.sa/sports/t52c7qox7",
+      "desc": "استدعى الجهاز الفني لمنتخب فرنسا، بقيادة زين الدين زيدان، اللاعب الشاب سيني مايولو، لاعب وسط باريس سان جيرمان، لتعزيز صفوف الفريق قبل مواجهتي إيطاليا وتركيا في آخر جولتين بمجموعات دوري الأمم الأوروبية.",
+      "date": "Wed, 11 Nov 2026 16:20:00 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
     {
       "title": "وزير الخارجية المصري يبحث هاتفيًا مع نظيره الكويتي التطورات الإقليمية",
       "link": "https://ajel.sa/international/r4rbcrbha",
@@ -374,30 +398,6 @@
       "link": "https://ajel.sa/thehour/fp0jyvpvc",
       "desc": "يترقب الطلاب والطالبات في مدارس المملكة العربية السعودية الإجازة القادمة ضمن التقويم الدراسي للعام 1448هـ، والتي تشمل إجازة الخريف والإجازة الإضافية، بإجمالي 10 أيام متصلة.",
       "date": "Wed, 11 Nov 2026 10:14:42 GMT",
-      "source": "عاجل",
-      "category": "saudi"
-    },
-    {
-      "title": "روسيا: لا نستبعد عودة المواجهة العسكرية بين إيران وأمريكا حال فشل المفاوضات",
-      "link": "https://ajel.sa/international/6awgxar7z",
-      "desc": "نوهت وزارة الخارجية الروسية، أن احتمال استئناف المواجهة العسكرية بين إيران والولايات المتحدة لا يزال قائمًا، في حال فشل المفاوضات الجارية بين الجانبين.",
-      "date": "Wed, 11 Nov 2026 09:59:00 GMT",
-      "source": "عاجل",
-      "category": "saudi"
-    },
-    {
-      "title": "استقالة رئيس هيئة الرقابة المصرفية التركية وسط تداعيات أزمة صناديق الاستثمار",
-      "link": "https://ajel.sa/international/77edvaxji",
-      "desc": "أعلن رئيس هيئة التنظيم والرقابة المصرفية التركية، شهاب قاوجي أوغلو، اليوم الأربعاء، تقديم استقالته إلى الرئيس رجب طيب أردوغان، على خلفية الاتهامات المرتبطة بالهيئة وبشخصه، في ظل تداعيات أزمة انهيار…",
-      "date": "Wed, 11 Nov 2026 09:58:32 GMT",
-      "source": "عاجل",
-      "category": "saudi"
-    },
-    {
-      "title": "رئيس الوزراء اللبناني: بيروت لا يمكن أن تبقى ساحة للجريمة والتفلت الأمني",
-      "link": "https://ajel.sa/international/4qefyxy37",
-      "desc": "استنكر رئيس الحكومة اللبنانية نواف سلام، بشدة جريمة مقتل النائب العراقي السابق أحمد العلواني، في بيروت، مثنياً على الجهود التي تبذلها الأجهزة القضائية والأمنية لكشف ملابسات الجريمة وتحديد المسؤوليات.",
-      "date": "Wed, 11 Nov 2026 09:49:00 GMT",
       "source": "عاجل",
       "category": "saudi"
     },
@@ -794,10 +794,10 @@
       "category": "saudi"
     },
     {
-      "title": "وزير الخارجية المصري: قواتنا موجودة في السعودية منذ أشهر - الجزيرة نت",
-      "link": "https://news.google.com/rss/articles/CBMi2wJBVV95cUxNN25DLTAtR2JaRV9fTzgyOGFQaTA1VTJ2V0wyRmF1ZEh5RTUtU0dPRVRyYWlUcS02ZEs0cUppVzRhY1dxTlp0aDcyMC1uOGZzekVveGRxY3ZJT01IMi1YSmlXWHFHYnlLZ2NhWXFORVBoMm9QSVpyai1pQV9oSFJqVF8zQ0FfTS16TmoxcjhPYTVQd09OY0JwWGJXWHBDakpCZWYzM0RpQnhQSU5zNWFuREpJVUNaWFFYWks4SUU5LVVhVzZzd29aUTF1ZTFWV3FBYUpkS2pQbmkzXzl3SGZKRng2OEhWbUtSSXpibHh3dDdhdWt2S1RkcGgzX3pja3ZqaTBEWVNLdGpGX2Q1czJvU3A4SHVUakFEOHJ3ajlGUWEwNDNlaUJHR2g5ZEdnTzFsRzQ5X3pKS0Y4MmZodU16bm5XeE94S0ZuSTRsTkpuOXltQU9ZYUVrbHJwVQ?oc=5",
-      "desc": "<a href=\"https://news.google.com/rss/articles/CBMi2wJBVV95cUxNN25DLTAtR2JaRV9fTzgyOGFQaTA1VTJ2V0wyRmF1ZEh5RTUtU0dPRVRyYWlUcS02ZEs0cUppVzRhY1dxTlp0aDcyMC1uOGZzekVveGRxY3ZJT01IMi1YSmlXWHFHYnlLZ2NhWXFORVBoMm9QSVpyai1pQV9oSFJqVF8zQ0FfTS16TmoxcjhPYTVQd09OY0JwWGJXWHBDakpCZWYzM0RpQnhQSU5zNWFuREpJVUNaWFFYWks4SUU5LVVhVzZzd29aUTF1ZTFWV3FBYUpkS2pQbmkzXzl3SGZKRng2OEhWbUtSSXpibHh3dDdhdWt2S1RkcGgzX3pja3ZqaTBEWVNLdGpGX2Q1czJvU3A4SHVUakFEOHJ3ajlGUWEwNDNlaUJHR2g5ZEdnTzFsRzQ5X3pKS0Y4MmZodU16bm5XeE94S0ZuSTRsTkpuOX",
-      "date": "Tue, 10 Nov 2026 19:25:31 GMT",
+      "title": "سبق موافقة البرلمان..عبدالعاطي يكشف وجود قوات مصرية بالسعودية منذ أشهر | CNN Arabic | CNN - CNN Arabic",
+      "link": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPcGZwekpwSzkxdElCSUVmWmt4amJWQll0UWYzQjF6VTFuZjdzdzV0SWlUazRPMXlna25lVjFYS1JWcENYeF9rdGdneWN3cHEwb00wRW9KTGtDbU4xcC01YlZ0djduWkdWUll3VUhtTE5NaHB1T1BOaVF6UWNBNkwwSmJ1cjZFXzJPSUR3T0dmR2ZOVXlZQmxTS1lQclJDbEU5a1ZDMGhoeG1BOHRSQ3otMWQ5Nmt1S0pO?oc=5",
+      "desc": "<a href=\"https://news.google.com/rss/articles/CBMiuAFBVV95cUxPcGZwekpwSzkxdElCSUVmWmt4amJWQll0UWYzQjF6VTFuZjdzdzV0SWlUazRPMXlna25lVjFYS1JWcENYeF9rdGdneWN3cHEwb00wRW9KTGtDbU4xcC01YlZ0djduWkdWUll3VUhtTE5NaHB1T1BOaVF6UWNBNkwwSmJ1cjZFXzJPSUR3T0dmR2ZOVXlZQmxTS1lQclJDbEU5a1ZDMGhoeG1BOHRSQ3otMWQ5Nmt1S0pO?oc=5\" target=\"_blank\">سبق موافقة البرلمان..عبدالعاطي يكشف وجود قوات مصرية بالسعودية منذ أشهر | CNN Arabic | CNN</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">CNN Arabic</font>",
+      "date": "Wed, 11 Nov 2026 16:06:13 GMT",
       "source": "أخبار السعودية",
       "category": "saudi"
     }
@@ -825,7 +825,7 @@
       "name": "أخبار السعودية",
       "category": "saudi",
       "ok": true,
-      "count": 105
+      "count": 104
     },
     {
       "name": "أخبار العالم",
