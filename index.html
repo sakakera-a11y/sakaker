@@ -4390,6 +4390,20 @@ html body .sak-text-library-card .icon-svg{stroke:#132337!important}
   }
 </style>
 
+
+<style id="sakaker-independent-newspaper-news">
+/* إزالة شريط الأخبار القديم من واجهة الصفحة الرئيسية */
+html body #sakakerWorldNews,
+html body .news-ticker{display:none!important;visibility:hidden!important;pointer-events:none!important}
+/* شريط الأخبار الوحيد يبقى داخل صحيفة القلعة، مستقلاً وشفافاً */
+html body .cn-news-ticker{
+  display:flex!important;align-items:center;gap:10px;min-width:0;
+  margin:8px 0 12px;padding:7px 10px;
+  border:0!important;border-radius:0!important;
+  background:transparent!important;box-shadow:none!important;
+  backdrop-filter:none!important
+}
+</style>
 </head>
 <body>
 
