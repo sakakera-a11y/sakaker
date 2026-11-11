@@ -36,7 +36,7 @@ import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.16.0/f
       #${ROOT_ID} .scr-sub{margin:0;text-align:center;color:#d5ece5;font-size:10px;font-weight:600}
       #${ROOT_ID} .scr-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}
       #${ROOT_ID} button{min-width:0;min-height:42px;padding:7px 5px;border:1px solid rgba(125,235,210,.5);
-        border-radius:11px;background:rgba(8,72,66,.78);color:#fff;font:800 11px/1.3 inherit;
+        border-radius:11px;background:rgba(8,72,66,.78);color:#fff;font:800 11px/1.3 Tajawal,Tahoma,Arial,sans-serif;
         cursor:pointer;touch-action:manipulation;display:flex;align-items:center;justify-content:center;gap:5px}
       #${ROOT_ID} button[data-choice="dislike"]{background:rgba(74,42,38,.78);border-color:rgba(255,174,133,.48)}
       #${ROOT_ID} button:disabled{opacity:.68;cursor:default}
@@ -99,8 +99,9 @@ import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.16.0/f
     }
     const root = document.getElementById(ROOT_ID);
     if (root) root.setAttribute("aria-label", text("تقييم القلعة", "Castle Rating"));
-    if (myChoice) showVotedStatus(false);
+    if (myChoice) showVotedStatus(true);
     else if (!currentUser) setStatus("سجّل الدخول لتتمكن من التقييم.", "Sign in to rate the castle.");
+    else setStatus("يمكنك التصويت مرة واحدة بحسابك.", "You can vote once with your account.");
   }
   function updateCounts(counts) {
     if (el("likes")) el("likes").textContent = Number(counts?.likes || 0).toLocaleString(english() ? "en-US" : "ar-SA");
@@ -180,7 +181,8 @@ import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.16.0/f
       setButtonsEnabled(true);
     } finally {
       busy = false;
-      if (myChoice) showVotedStatus(true);
+      if (myChoice) setButtonsEnabled(false);
+      else setButtonsEnabled(!!currentUser);
     }
   }
   function bindAuth(attempt = 0) {
@@ -197,7 +199,8 @@ import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.16.0/f
       setButtonsEnabled(false);
       if (currentUser) loadRating();
       else {
-        updateCounts({ likes: 0, dislikes: 0 });
+        if (el("likes")) el("likes").textContent = "—";
+        if (el("dislikes")) el("dislikes").textContent = "—";
         setStatus("سجّل الدخول لتتمكن من التقييم.", "Sign in to rate the castle.");
       }
     });
