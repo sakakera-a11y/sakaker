@@ -5,7 +5,7 @@
   if(!window.__sakCastleNewspaperLoaded&&!document.getElementById('sakCastleNewspaperLegacyLoader')){
     const script=document.createElement('script');
     script.id='sakCastleNewspaperLegacyLoader';
-    script.src='/assets/castle-newspaper.js?v=20261111-newspaper-inline-archive6';
+    script.src='/assets/castle-newspaper.js?v=20261111-diff-zones-touch1';
     script.async=true;
     document.head.appendChild(script);
   }
