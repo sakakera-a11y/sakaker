@@ -342,7 +342,7 @@ function differences(panel){
   const imagePair=['/assets/five-differences/day_'+dayFolder+'/original.jpg','/assets/five-differences/day_'+dayFolder+'/differences.jpg'];
   const w=document.createElement('div');w.className='cn-game cn-difference-game';
   const title=document.createElement('h3');title.textContent=language==='ar'?'🔎 اكتشف الفروقات الخمس':'🔎 Find the five differences';w.appendChild(title);
-  const intro=document.createElement('p');intro.textContent=language==='ar'?'قارن المشهدين واكتشف خمس فروقات فقط؛ يتجدد عالم الأنمي يومياً لمدة 60 يوماً.':'Compare both scenes and find exactly five differences; the anime world refreshes daily for 60 days.';w.appendChild(intro);
+  const intro=document.createElement('p');intro.textContent=language==='ar'?'قارن المشهدين واكتشف خمس فروقات فقط؛ الحزمة الحالية تضم 6 أيام من أصل 30.':'Compare both scenes and find exactly five differences; this archive currently includes 6 of 30 days.';w.appendChild(intro);
   const levelIndex=(difficultyDay-1)%3;
   const levels=language==='ar'?[{name:'صعب',desc:'تحدٍ يحتاج إلى تركيز وملاحظة تفاصيل دقيقة.',color:'#ff8b8b'},{name:'متوسط',desc:'فروقات متفاوتة الوضوح وتحتاج إلى مقارنة جيدة.',color:'#ffd36e'},{name:'سهل',desc:'فروقات واضحة ومناسبة للعب الهادئ.',color:'#8ce5b1'}]:[{name:'Hard',desc:'A challenge requiring focus and attention to fine details.',color:'#ff8b8b'},{name:'Medium',desc:'Differences vary in visibility and need careful comparison.',color:'#ffd36e'},{name:'Easy',desc:'Clearer differences for a relaxed round.',color:'#8ce5b1'}];
   const level=levels[levelIndex],levelBox=document.createElement('div');levelBox.className='cn-difficulty-level';levelBox.style.cssText='margin:10px 0 14px;padding:11px 14px;border:1px solid '+level.color+'88;border-radius:12px;background:'+level.color+'18;line-height:1.8;';
@@ -354,11 +354,9 @@ function differences(panel){
   left.innerHTML='<div class="cn-picture-label">'+labels[0]+'</div>';
   right.innerHTML='<div class="cn-picture-label">'+labels[1]+'</div>';
   function scene(isRight){
-   const dayAccent='hsl('+hue+',82%,62%)';
-   const overlays='';
-   return '<svg class="cn-picture" viewBox="0 0 1024 1024" role="img" aria-label="'+(language==='ar'?'مشهد سفينة القمر':'Moon ship scene')+'">'+
-    '<image href="'+imagePair[isRight?1:0]+'" x="0" y="0" width="1024" height="1024" preserveAspectRatio="xMidYMid meet"/>'+
-    overlays+'</svg>';
+   return '<svg class="cn-picture" viewBox="0 0 '+puzzle.width+' '+puzzle.height+'" role="img" aria-label="'+(language==='ar'?'مشهد الفروقات الخمس':'Five differences scene')+'">'+
+    '<image href="'+imagePair[isRight?1:0]+'" x="0" y="0" width="'+puzzle.width+'" height="'+puzzle.height+'" preserveAspectRatio="none"/>'+
+    '</svg>';
   }
   left.insertAdjacentHTML('beforeend',scene(false));right.insertAdjacentHTML('beforeend',scene(true));pics.append(left,right);w.appendChild(pics);
   const svg=right.querySelector('svg'),out=document.createElement('p');out.className='cn-picture-hint';out.setAttribute('aria-live','polite');out.textContent=language==='ar'?'تم العثور على 0 من 5':'Found 0 of 5';w.appendChild(out);
