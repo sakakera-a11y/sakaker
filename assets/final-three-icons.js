@@ -829,10 +829,35 @@ let visitorCounterModuleRequested=false;
 function loadVisitorCounterModule(){
   if(visitorCounterModuleRequested)return;
   visitorCounterModuleRequested=true;
+  window.__sakakerVisitorCountersTemporarilySuspended=true;
+  if(!document.getElementById('sakakerVisitorCountersSuspendedStyle')){
+    const style=document.createElement('style');
+    style.id='sakakerVisitorCountersSuspendedStyle';
+    style.textContent=`
+      html body :is(#sakakerVisitorCounter,#sakakerRightStats,#visitor-counter,#visitorCounter,.visitor-counter,[data-visitor-counter]){
+        display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;
+      }
+    `;
+    (document.head||document.documentElement).appendChild(style);
+  }
+}
+function ensureCastleRatingLauncher(){
+  if(document.getElementById('sakCastleRatingScript'))return;
   const script=document.createElement('script');
+  script.id='sakCastleRatingScript';
   script.type='module';
-  script.src='/assets/visitor-counter.js?v=20261014-d1-v2';
-  script.onerror=()=>{visitorCounterModuleRequested=false;};
+  script.src='/assets/castle-rating.js?v=20261111-uid-v1';
+  script.async=true;
+  script.onerror=()=>script.remove();
+  document.head.appendChild(script);
+}
+function ensureNewsTickerLauncher(){
+  if(document.getElementById('sakakerNewsTickerLoader'))return;
+  const script=document.createElement('script');
+  script.id='sakakerNewsTickerLoader';
+  script.src='/assets/news-ticker.js?v=20261111-live-ticker2';
+  script.async=true;
+  script.onerror=()=>script.remove();
   document.head.appendChild(script);
 }
 
@@ -891,6 +916,8 @@ function settle(){
   ensureTitanicShipLauncher();
   hideFacebookLaunchers();
   loadVisitorCounterModule();
+  ensureCastleRatingLauncher();
+  ensureNewsTickerLauncher();
   watchFacebookEmbeds();
   loadPaymentClock();
   ensureCastleTourLauncher();
@@ -911,6 +938,8 @@ new MutationObserver(()=>{
   watchFacebookEmbeds();
   loadPaymentClock();
   ensureCastleTourLauncher();
+  ensureCastleRatingLauncher();
+  ensureNewsTickerLauncher();
   ensureSiteBackground();
   rebuildIconAppearance();
   removeOldSeaSoundControl();
