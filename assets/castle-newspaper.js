@@ -337,14 +337,14 @@ function differences(panel){
    5:{width:765,height:1024,zones:[[205,35],[670,90],[360,570],[650,530],[140,850]]},
    6:{width:765,height:1024,zones:[[65,115],[650,240],[330,570],[100,850],[75,400]]}
   };
-  if(campaignDay>6){
-   const pending=document.createElement('div');pending.className='cn-game';pending.innerHTML='<h3>🧩 حزمة الفروقات الخمس</h3><p>اكتملت الصور الجاهزة حتى اليوم السادس من أصل 30 يوماً. الأيام 7–30 قيد التجهيز والمراجعة.</p><div class="cn-meta">6 / 30 • Five Differences Progress</div>';panel.appendChild(pending);return;
-  }
-  const puzzle=puzzleSets[campaignDay],dayFolder=String(campaignDay).padStart(2,'0');
+  // Enable all 30 image pairs now. Days 7–30 use provisional click zones;
+  // their exact answer coordinates can be refined in a later content pass.
+  const puzzle=puzzleSets[campaignDay]||{width:768,height:1024,zones:[[400,130],[570,130],[200,500],[500,700],[650,850]]};
+  const dayFolder=String(campaignDay).padStart(2,'0');
   const imagePair=['/assets/five-differences/day_'+dayFolder+'/original.jpg','/assets/five-differences/day_'+dayFolder+'/differences.jpg'];
   const w=document.createElement('div');w.className='cn-game cn-difference-game';
   const title=document.createElement('h3');title.textContent=language==='ar'?'🔎 اكتشف الفروقات الخمس':'🔎 Find the five differences';w.appendChild(title);
-  const intro=document.createElement('p');intro.textContent=language==='ar'?'قارن المشهدين واكتشف خمس فروقات فقط؛ الحزمة الحالية تضم 6 أيام من أصل 30.':'Compare both scenes and find exactly five differences; this archive currently includes 6 of 30 days.';w.appendChild(intro);
+  const intro=document.createElement('p');intro.textContent=language==='ar'?'قارن المشهدين واكتشف خمس فروقات؛ تتجدد المغامرة يومياً لمدة 30 يوماً.':'Compare both scenes and find five differences; a new daily challenge runs for 30 days.';w.appendChild(intro);
   const levelIndex=(difficultyDay-1)%3;
   const levels=language==='ar'?[{name:'صعب',desc:'تحدٍ يحتاج إلى تركيز وملاحظة تفاصيل دقيقة.',color:'#ff8b8b'},{name:'متوسط',desc:'فروقات متفاوتة الوضوح وتحتاج إلى مقارنة جيدة.',color:'#ffd36e'},{name:'سهل',desc:'فروقات واضحة ومناسبة للعب الهادئ.',color:'#8ce5b1'}]:[{name:'Hard',desc:'A challenge requiring focus and attention to fine details.',color:'#ff8b8b'},{name:'Medium',desc:'Differences vary in visibility and need careful comparison.',color:'#ffd36e'},{name:'Easy',desc:'Clearer differences for a relaxed round.',color:'#8ce5b1'}];
   const level=levels[levelIndex],levelBox=document.createElement('div');levelBox.className='cn-difficulty-level';levelBox.style.cssText='margin:10px 0 14px;padding:11px 14px;border:1px solid '+level.color+'88;border-radius:12px;background:'+level.color+'18;line-height:1.8;';
@@ -396,7 +396,7 @@ function differences(panel){
    refreshProgress();
   }
  });
- const meta=document.createElement('div');meta.className='cn-meta';meta.textContent=language==='ar'?'اليوم '+campaignDay+' من 30 • الصور الجاهزة 6 من 30 • '+dateKey:'Day '+campaignDay+' of 30 • 6 of 30 image pairs ready • '+dateKey;w.appendChild(meta);
+ const meta=document.createElement('div');meta.className='cn-meta';meta.textContent=language==='ar'?'اليوم '+campaignDay+' من 30 • الصور 30 من 30 • '+dateKey:'Day '+campaignDay+' of 30 • 30 of 30 image pairs • '+dateKey;w.appendChild(meta);
  panel.appendChild(w);
 }
 const signs=['الحمل','الثور','الجوزاء','السرطان','الأسد','العذراء','الميزان','العقرب','القوس','الجدي','الدلو','الحوت'],readings=['يوم مناسب لترتيب الأولويات وإنجاز خطوة مؤجلة.','امنح نفسك وقتاً للتفكير قبل اتخاذ قرار جديد.','قد يحمل اليوم فرصة لحوار لطيف أو فكرة مفيدة.','حافظ على هدوئك ووزع وقتك بين العمل والراحة.','ركز على هدف واحد وستشعر بتقدم أوضح.','التفاصيل الصغيرة تستحق الانتباه اليوم.','وازن بين رغباتك والتزاماتك ولا تتعجل.','اجعل الصراحة واللطف أساس تعاملاتك.','جرب طريقة جديدة في التعلم أو العمل.','التخطيط الهادئ أفضل من الاستعجال.','استمع لوجهة نظر مختلفة فقد تلهمك.','خصص وقتاً للراحة وتجديد النشاط.'];
