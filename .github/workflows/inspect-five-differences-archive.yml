@@ -25,6 +25,8 @@ jobs:
         with:
           name: five-differences-extracted-images
           path: assets/five-differences/**
+      - name: Refresh main page runtime references
+        run: python .github/scripts/ensure_entertainment_station.py index.html
       - name: Commit extracted puzzle images
         run: |
           git config user.name "github-actions[bot]"
