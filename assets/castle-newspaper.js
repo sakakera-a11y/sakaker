@@ -3,7 +3,7 @@ if(window.__sakCastleNewspaperLoaded)return;window.__sakCastleNewspaperLoaded=tr
 const $=id=>document.getElementById(id);
 let language=(()=>{try{const saved=localStorage.getItem('sakCastleNewspaperLang');if(saved==='en'||saved==='ar')return saved;}catch(_){}const page=String(document.documentElement.lang||'').toLowerCase();return page.startsWith('en')?'en':'ar';})();
 const enText={
-'صحيفة القلعة':'Castle Newspaper','الأخبار':'News','الكلمات المتقاطعة':'Daily Crossword','الاختلافات اليومية':'Daily Differences','حظك اليوم':'Daily Horoscope','إغلاق':'Close','عاجل':'Ajel','BBC News · World':'BBC News · World','تعذر الاتصال بمصادر الأخبار الآن. حاول التحديث بعد قليل.':'Could not connect to news sources. Please try again shortly.','جارٍ فتح الصحيفة…':'Opening the newspaper…','مصدر الخبر':'News source',
+'صحيفة القلعة':'Castle Newspaper','أخبار القلعة':'Castle News','الأخبار':'News','الكلمات المتقاطعة':'Daily Crossword','الاختلافات اليومية':'Daily Differences','حظك اليوم':'Daily Horoscope','إغلاق':'Close','عاجل':'Ajel','BBC News · World':'BBC News · World','تعذر الاتصال بمصادر الأخبار الآن. حاول التحديث بعد قليل.':'Could not connect to news sources. Please try again shortly.','جارٍ فتح الصحيفة…':'Opening the newspaper…','مصدر الخبر':'News source',
 'الكل':'All','السعودية':'Saudi Arabia','العالم':'World','الاقتصاد':'Business','الرياضة':'Sports','التقنية':'Technology','الثقافة والفنون':'Arts & Culture','العلوم':'Science','الترفيه':'Entertainment',
 'جارٍ التحديث…':'Updating…','تحديث الأخبار':'Refresh News','آخر تحديث: ':'Last updated: ','مصادر الصحيفة':'Newspaper sources',
 'جارٍ جلب الأخبار من المصادر…':'Loading headlines from sources…','لا توجد أخبار متاحة حالياً؛ حاول التحديث لاحقاً.':'No headlines are available right now. Please try again later.',
@@ -49,7 +49,7 @@ const feeds=[
 {name:'الاقتصاد',url:'https://news.google.com/rss/search?q=الاقتصاد&hl=ar&gl=SA&ceid=SA:ar',category:'economy'}
 ];
 const categories={all:'الكل',saudi:'السعودية',world:'العالم',economy:'الاقتصاد',sports:'الرياضة',tech:'التقنية',culture:'الثقافة والفنون',science:'العلوم',entertainment:'الترفيه'};
-let items=[],category='all',loading=false,lastLoad=0,found=new Set(),newsError='',sourceStatus=[];
+let items=[],category='all',loading=false,lastLoad=0,found=new Set(),newsError='',sourceStatus=[],tickerTimer=null,tickerIndex=0;
 function mount(){
  const oldTopButton=$('sakNewsLaunch');if(oldTopButton)oldTopButton.remove();
  const dock=$('sakakerUtilityDock');if(!dock||$('sakCastleNewspaperLauncher'))return;
@@ -227,8 +227,22 @@ function parse(xmlText,feed){
  }).filter(Boolean).slice(0,50);
 }
 function cache(){try{const c=JSON.parse(localStorage.getItem('sakCastleNewspaperCacheV1')||'null');return c&&Array.isArray(c.items)?c:null;}catch(_){return null;}}
+function renderNewsTicker(parent){
+ const ticker=document.createElement('div');ticker.className='cn-news-ticker';ticker.setAttribute('role','region');ticker.setAttribute('aria-label',language==='ar'?'شريط أخبار القلعة':'Castle news ticker');
+ ticker.style.cssText='display:flex;align-items:center;gap:10px;min-width:0;margin:8px 0 12px;padding:7px 10px;border:1px solid rgba(255,255,255,.16);border-radius:12px;background:transparent!important;box-shadow:none!important;color:inherit;font:800 13px/1.5 Tahoma,Arial,sans-serif';
+ const label=document.createElement('strong');label.textContent=language==='ar'?'أخبار القلعة':'Castle News';label.style.cssText='flex:0 0 auto;color:#ffdc83';
+ const link=document.createElement('a');link.style.cssText='flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:inherit;text-decoration:none';
+ const next=document.createElement('button');next.type='button';next.className='cn-action';next.textContent='›';next.setAttribute('aria-label',language==='ar'?'الخبر التالي':'Next headline');next.style.cssText='flex:0 0 auto;min-width:32px;padding:3px 8px;background:transparent!important;box-shadow:none!important';
+ const headlines=items.filter(x=>x&&x.title&&safeUrl(x.link)).slice(0,30);
+ const show=()=>{if(!headlines.length){link.removeAttribute('href');link.textContent=language==='ar'?'جارٍ جلب الأخبار من المصادر…':'Loading headlines…';return;}const item=headlines[tickerIndex%headlines.length];link.href=item.link;link.target='_blank';link.rel='noopener noreferrer';link.textContent=item.title;};
+ next.addEventListener('click',()=>{if(headlines.length){tickerIndex=(tickerIndex+1)%headlines.length;show();}});
+ ticker.append(label,link,next);parent.appendChild(ticker);show();
+ if(tickerTimer)clearInterval(tickerTimer);
+ tickerTimer=window.setInterval(()=>{if(!headlines.length)return;tickerIndex=(tickerIndex+1)%headlines.length;show();},8500);
+}
 function renderNews(){
  const p=$('cnPanel');if(!p)return;p.replaceChildren();
+ renderNewsTicker(p);
  const tabs=document.createElement('div');tabs.className='cn-tabs';
  Object.entries(categories).forEach(([k,v])=>{const b=document.createElement('button');b.textContent=v;b.setAttribute('aria-pressed',String(category===k));b.addEventListener('click',()=>{category=k;renderNews();});tabs.appendChild(b);});
  const refresh=document.createElement('button');refresh.className='cn-refresh';refresh.textContent=loading?'جارٍ التحديث…':'تحديث الأخبار';refresh.disabled=loading;refresh.addEventListener('click',()=>loadNews(true));tabs.appendChild(refresh);p.appendChild(tabs);
@@ -310,10 +324,22 @@ function differences(panel){
  const todayUtc=Date.UTC(parts[0],parts[1]-1,parts[2]);
  const campaignStart=Date.UTC(2026,10,10);
  const elapsedDays=Math.max(0,Math.floor((todayUtc-campaignStart)/86400000));
- const campaignDay=Math.max(1,Math.min(60,elapsedDays+1));
+ const campaignDay=Math.max(1,Math.min(30,elapsedDays+1));
  const difficultyDay=elapsedDays+1;
  const hue=((campaignDay-1)*23)%360;
-  const imagePair=['/file_000000007f288208bce7556015d427f9.png','/file_0000000080848210a4da056ef9b4c3a4.png'];
+  const puzzleSets={
+   1:{width:640,height:480,zones:[[33,418],[607,330],[499,37],[568,89],[419,54]]},
+   2:{width:768,height:1024,zones:[[215,150],[700,55],[380,580],[75,820],[690,920]]},
+   3:{width:768,height:1024,zones:[[90,60],[680,100],[360,560],[620,450],[100,870]]},
+   4:{width:765,height:1024,zones:[[240,40],[680,70],[680,180],[425,490],[100,850]]},
+   5:{width:765,height:1024,zones:[[205,35],[670,90],[360,570],[650,530],[140,850]]},
+   6:{width:765,height:1024,zones:[[65,115],[650,240],[330,570],[100,850],[75,400]]}
+  };
+  if(campaignDay>6){
+   const pending=document.createElement('div');pending.className='cn-game';pending.innerHTML='<h3>🧩 حزمة الفروقات الخمس</h3><p>اكتملت الصور الجاهزة حتى اليوم السادس من أصل 30 يوماً. الأيام 7–30 قيد التجهيز والمراجعة.</p><div class="cn-meta">6 / 30 • Five Differences Progress</div>';panel.appendChild(pending);return;
+  }
+  const puzzle=puzzleSets[campaignDay],dayFolder=String(campaignDay).padStart(2,'0');
+  const imagePair=['/assets/five-differences/day_'+dayFolder+'/original.jpg','/assets/five-differences/day_'+dayFolder+'/differences.jpg'];
   const w=document.createElement('div');w.className='cn-game cn-difference-game';
   const title=document.createElement('h3');title.textContent=language==='ar'?'🔎 اكتشف الفروقات الخمس':'🔎 Find the five differences';w.appendChild(title);
   const intro=document.createElement('p');intro.textContent=language==='ar'?'قارن المشهدين واكتشف خمس فروقات فقط؛ يتجدد عالم الأنمي يومياً لمدة 60 يوماً.':'Compare both scenes and find exactly five differences; the anime world refreshes daily for 60 days.';w.appendChild(intro);
@@ -337,7 +363,7 @@ function differences(panel){
   left.insertAdjacentHTML('beforeend',scene(false));right.insertAdjacentHTML('beforeend',scene(true));pics.append(left,right);w.appendChild(pics);
   const svg=right.querySelector('svg'),out=document.createElement('p');out.className='cn-picture-hint';out.setAttribute('aria-live','polite');out.textContent=language==='ar'?'تم العثور على 0 من 5':'Found 0 of 5';w.appendChild(out);
  const progress=document.createElement('div');progress.className='cn-difference-progress';progress.innerHTML='<span></span>';w.appendChild(progress);
- const zones=[[150,170],[815,220],[428,610],[925,425],[850,770]];
+ const zones=puzzle.zones;
  const storageKey='sakaker-anime-differences-'+dateKey;
  function paintFound(idx){
   if(svg.querySelector('[data-difference="'+idx+'"]'))return;
@@ -362,7 +388,7 @@ function differences(panel){
   refreshProgress();
  });
  svg.addEventListener('click',e=>{
-  const rect=svg.getBoundingClientRect(),x=(e.clientX-rect.left)/rect.width*1024,y=(e.clientY-rect.top)/rect.height*1024;
+  const rect=svg.getBoundingClientRect(),x=(e.clientX-rect.left)/rect.width*puzzle.width,y=(e.clientY-rect.top)/rect.height*puzzle.height;
   let idx=-1,dist=Infinity;zones.forEach((p,i)=>{const d=Math.hypot(x-p[0],y-p[1]);if(d<dist){dist=d;idx=i;}});
   if(idx>=0&&dist<58&&!found.has(idx)){
    found.add(idx);paintFound(idx);
@@ -370,7 +396,7 @@ function differences(panel){
    refreshProgress();
   }
  });
- const meta=document.createElement('div');meta.className='cn-meta';meta.textContent=language==='ar'?'اليوم '+campaignDay+' من 60 • '+dateKey:'Day '+campaignDay+' of 60 • '+dateKey;w.appendChild(meta);
+ const meta=document.createElement('div');meta.className='cn-meta';meta.textContent=language==='ar'?'اليوم '+campaignDay+' من 30 • الصور الجاهزة 6 من 30 • '+dateKey:'Day '+campaignDay+' of 30 • 6 of 30 image pairs ready • '+dateKey;w.appendChild(meta);
  panel.appendChild(w);
 }
 const signs=['الحمل','الثور','الجوزاء','السرطان','الأسد','العذراء','الميزان','العقرب','القوس','الجدي','الدلو','الحوت'],readings=['يوم مناسب لترتيب الأولويات وإنجاز خطوة مؤجلة.','امنح نفسك وقتاً للتفكير قبل اتخاذ قرار جديد.','قد يحمل اليوم فرصة لحوار لطيف أو فكرة مفيدة.','حافظ على هدوئك ووزع وقتك بين العمل والراحة.','ركز على هدف واحد وستشعر بتقدم أوضح.','التفاصيل الصغيرة تستحق الانتباه اليوم.','وازن بين رغباتك والتزاماتك ولا تتعجل.','اجعل الصراحة واللطف أساس تعاملاتك.','جرب طريقة جديدة في التعلم أو العمل.','التخطيط الهادئ أفضل من الاستعجال.','استمع لوجهة نظر مختلفة فقد تلهمك.','خصص وقتاً للراحة وتجديد النشاط.'];
@@ -381,31 +407,8 @@ function horoscope(panel){
  signs.forEach((v,i)=>{const b=document.createElement('button');b.textContent=v;b.setAttribute('aria-pressed',String(i===0));b.addEventListener('click',()=>{selected=i;row.querySelectorAll('button').forEach((x,j)=>x.setAttribute('aria-pressed',String(i===j)));show();});row.appendChild(b);});
  w.append(row,out);const note=document.createElement('div');note.className='cn-meta';note.textContent='للتسلية فقط؛ الأبراج والتوقعات ليست علماً ولا وسيلة لمعرفة المستقبل.';w.appendChild(note);show();panel.appendChild(w);
 }
-function installNewsTicker(){
- const id='sakCastleNewsTicker';
- if($(id))return;
- const style=document.createElement('style');style.id=id+'Style';
- style.textContent='#'+id+'{box-sizing:border-box;display:flex;align-items:center;gap:10px;width:min(1200px,calc(100% - 16px));min-height:42px;margin:8px auto;padding:7px 12px;border:1px solid rgba(231,194,105,.72);border-radius:13px;background:linear-gradient(100deg,#071b28,#123b45 55%,#241936);color:#fff4cf;box-shadow:0 4px 16px #0004;position:relative;z-index:5;overflow:hidden;font:800 13px/1.5 Tahoma,Arial,sans-serif}#'+id+' .cn-ticker-label{flex:0 0 auto;color:#ffdb78}#'+id+' a{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#fff;text-decoration:none;flex:1}#'+id+' a:hover{color:#ffe28a;text-decoration:underline}#'+id+' .cn-ticker-next{flex:0 0 auto;border:1px solid #ffffff44;border-radius:8px;background:#ffffff12;color:#fff;padding:3px 8px;cursor:pointer}';
- document.head.appendChild(style);
- const bar=document.createElement('div');bar.id=id;bar.setAttribute('role','region');bar.setAttribute('aria-label',language==='ar'?'شريط أخبار القلعة':'Castle news ticker');
- const label=document.createElement('strong');label.className='cn-ticker-label';label.textContent=language==='ar'?'أخبار القلعة':'Castle News';
- const link=document.createElement('a');link.href='#';link.textContent=language==='ar'?'جارٍ تحميل الأخبار…':'Loading news…';
- const next=document.createElement('button');next.type='button';next.className='cn-ticker-next';next.textContent='›';next.setAttribute('aria-label',language==='ar'?'الخبر التالي':'Next headline');
- bar.append(label,link,next);
- const header=$('sakFestiveHeader'),dock=$('sakakerUtilityDock');
- if(header?.parentNode)header.insertAdjacentElement('afterend',bar);else if(dock?.parentNode)dock.parentNode.insertBefore(bar,dock);else document.body.insertBefore(bar,document.body.firstChild);
- let headlines=[],index=0;
- const show=()=>{if(!headlines.length)return;const item=headlines[index%headlines.length];link.textContent=item.title;link.href=safeUrl(item.link)||'#';link.target='_blank';link.rel='noopener noreferrer';};
- const load=async()=>{
-  try{const response=await fetch('/data/news.json?strip='+Date.now(),{cache:'no-store'});if(!response.ok)throw new Error('news '+response.status);const data=await response.json();headlines=(Array.isArray(data.items)?data.items:[]).filter(x=>x&&x.title&&safeUrl(x.link)).slice(0,30);if(headlines.length){index=0;show();}}
-  catch(_){if(!headlines.length)link.textContent=language==='ar'?'تعذر جلب الأخبار؛ افتح صحيفة القلعة للتحديث':'Could not load headlines; open Castle Newspaper to refresh';}
- };
- next.addEventListener('click',()=>{if(headlines.length){index=(index+1)%headlines.length;show();}});
- load();window.setInterval(()=>{if(headlines.length){index=(index+1)%headlines.length;show();}else load();},9000);
- window.setInterval(load,5*60*1000);
-}
 function start(){
- styles();mount();installNewsTicker();
+ styles();mount();
  const syncLauncherLanguage=()=>{
   const pageEn=String(document.documentElement.lang||'ar').toLowerCase().startsWith('en');
   const launcher=$('sakCastleNewspaperLauncher');
