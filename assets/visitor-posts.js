@@ -64,6 +64,17 @@ function installVisitorPosts() {
     html body #visitorClockDock{border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
     @media(max-width:800px){html body #sakFestiveHeader #sakHolidayCountdowns{grid-column:1/-1!important;grid-row:2!important;width:100%!important;max-width:none!important;justify-self:stretch!important}}
     @media(max-width:380px){html body #sakFestiveHeader #sakHolidayCountdowns{gap:4px!important}html body #sakFestiveHeader #sakHolidayCountdowns>:is(.sak-festival,#visitorPostsSection){height:64px!important;min-height:64px!important;max-height:64px!important;padding:4px!important}html body #sakFestiveHeader #sakHolidayCountdowns>#visitorPostsSection #visitorPostsCard{gap:2px!important}html body #sakFestiveHeader #sakHolidayCountdowns>#visitorPostsSection .visitor-gull{width:22px!important;height:20px!important}}
+    #sakakerNewsSlot.news-ticker{box-sizing:border-box!important;display:flex!important;align-items:center!important;width:100%!important;max-width:100%!important;height:42px!important;min-height:42px!important;max-height:42px!important;margin:7px 0!important;padding:0 10px!important;overflow:hidden!important;border:1px solid rgba(75,226,199,.55)!important;border-radius:13px!important;background:rgba(5,30,38,.28)!important;box-shadow:0 0 10px rgba(0,255,204,.10)!important;backdrop-filter:blur(3px)!important;-webkit-backdrop-filter:blur(3px)!important;position:relative!important;z-index:4!important;direction:rtl!important}
+    #sakakerNewsSlot .sak-news-caption{flex:0 0 auto!important;color:#ffe08a!important;font:800 12px/1.4 Tahoma,Arial,sans-serif!important;margin-inline-end:10px!important}
+    #sakakerNewsSlot .sak-news-window{flex:1 1 auto!important;min-width:0!important;overflow:hidden!important;white-space:nowrap!important}
+    #sakakerNewsSlot .sak-news-track{display:inline-flex!important;align-items:center!important;gap:34px!important;width:max-content!important;white-space:nowrap!important;animation:sakNewsTickerMove 78s linear infinite!important}
+    #sakakerNewsSlot .sak-news-item{display:inline-flex!important;align-items:center!important;gap:7px!important;color:#fff!important;text-decoration:none!important;font:700 12px/1.5 Tahoma,Arial,sans-serif!important;text-shadow:0 0 5px rgba(0,0,0,.7)!important}
+    #sakakerNewsSlot .sak-news-item:before{content:"◆";color:#69e5c5!important;font-size:8px!important}
+    #sakakerNewsSlot .sak-news-item:hover{text-decoration:underline!important}
+    @keyframes sakNewsTickerMove{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    #sakakerNewsSlot:hover .sak-news-track{animation-play-state:paused!important}
+    @media(prefers-reduced-motion:reduce){#sakakerNewsSlot .sak-news-track{animation:none!important}}
+    @media(max-width:600px){#sakakerNewsSlot.news-ticker{height:40px!important;min-height:40px!important;max-height:40px!important;margin:5px 0!important;padding:0 7px!important}#sakakerNewsSlot .sak-news-caption{font-size:10px!important;margin-inline-end:6px!important}#sakakerNewsSlot .sak-news-item{font-size:11px!important}}
     #sakakerNewsSlot:empty,#sakakerNewsSlot.visitor-slot-empty,#sakakerClockSlot:empty{display:none!important;width:0!important;height:0!important;min-height:0!important;max-height:0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
     #visitorClockDock{position:fixed!important;left:50%!important;right:auto!important;top:auto!important;bottom:max(3px,env(safe-area-inset-bottom))!important;transform:translateX(-50%)!important;z-index:2147482999!important;min-width:0!important;min-height:50px!important;max-height:64px!important;padding:4px 8px!important;color:#fff!important;text-align:center!important;pointer-events:none!important;overflow:visible!important}
     #visitorClockDock::before{content:"◷";display:inline-block;margin-inline-end:6px;color:#ffe27a;font:700 18px/1 Arial,sans-serif;text-shadow:0 0 8px rgba(255,215,0,.5);vertical-align:middle}
@@ -160,6 +171,67 @@ function installVisitorPosts() {
     section.setAttribute("aria-label", english ? "Riddles" : "الألغاز");
   };
   applyCardLanguage();
+  const ensureNewsTicker = () => {
+    let slot = document.getElementById("sakakerNewsSlot");
+    if (!slot) {
+      slot = document.createElement("div");
+      slot.id = "sakakerNewsSlot";
+      const header = document.getElementById("sakFestiveHeader");
+      const countdowns = document.getElementById("sakHolidayCountdowns");
+      if (header) {
+        if (countdowns && countdowns.parentElement === header) countdowns.insertAdjacentElement("afterend", slot);
+        else header.appendChild(slot);
+      } else if (countdowns && countdowns.parentElement) {
+        countdowns.insertAdjacentElement("afterend", slot);
+      } else {
+        const anchor = document.getElementById("sakCastleTourBtn") || document.querySelector(".cards");
+        if (anchor && anchor.parentElement) anchor.insertAdjacentElement("afterend", slot);
+        else document.body.insertBefore(slot, document.body.firstChild);
+      }
+    }
+    slot.classList.add("news-ticker");
+    slot.setAttribute("role", "region");
+    slot.setAttribute("aria-live", "off");
+    slot.setAttribute("aria-label", document.documentElement.lang.toLowerCase().startsWith("en") ? "Latest news" : "آخر الأخبار");
+    if (slot.dataset.newsTickerLoaded === "1") return;
+    slot.dataset.newsTickerLoaded = "1";
+    const render = items => {
+      const valid = (Array.isArray(items) ? items : []).filter(x => x && typeof x.title === "string" && x.title.trim()).slice(0, 16);
+      if (!valid.length) { slot.dataset.newsTickerLoaded = "0"; return; }
+      slot.replaceChildren();
+      const caption = document.createElement("strong");
+      caption.className = "sak-news-caption";
+      caption.textContent = document.documentElement.lang.toLowerCase().startsWith("en") ? "NEWS" : "الأخبار";
+      const windowEl = document.createElement("div");
+      windowEl.className = "sak-news-window";
+      const track = document.createElement("div");
+      track.className = "sak-news-track";
+      const appendItems = () => valid.forEach(item => {
+        const link = document.createElement("a");
+        link.className = "sak-news-item";
+        link.href = typeof item.link === "string" && /^https?:\/\//i.test(item.link) ? item.link : "#";
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = item.title.trim();
+        if (item.source) link.title = String(item.source);
+        track.appendChild(link);
+      });
+      appendItems();
+      appendItems();
+      windowEl.appendChild(track);
+      slot.append(caption, windowEl);
+      slot.classList.remove("visitor-slot-empty");
+    };
+    fetch("/data/news.json?ts=" + Date.now(), { cache: "no-store" })
+      .then(response => { if (!response.ok) throw new Error("News snapshot unavailable"); return response.json(); })
+      .then(data => render(data.items))
+      .catch(error => {
+        console.warn("[Sakaker] Could not load the published news snapshot.", error);
+        slot.dataset.newsTickerLoaded = "0";
+        slot.classList.add("visitor-slot-empty");
+      });
+  };
+  ensureNewsTicker();
   const hideEmptyNewsSlot = () => {
     const slot = document.getElementById("sakakerNewsSlot");
     if (!slot) return;
