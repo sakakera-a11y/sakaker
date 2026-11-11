@@ -234,8 +234,20 @@ function parse(xmlText,feed){
  }).filter(Boolean).slice(0,50);
 }
 function cache(){try{const c=JSON.parse(localStorage.getItem('sakCastleNewspaperCacheV1')||'null');return c&&Array.isArray(c.items)?c:null;}catch(_){return null;}}
+function renderNewsTicker(host){
+ const bar=document.createElement('div');bar.className='cn-news-ticker';bar.setAttribute('role','region');bar.setAttribute('aria-label',language==='en'?'Latest headlines':'آخر الأخبار');
+ bar.style.cssText='display:flex!important;align-items:center!important;gap:10px!important;min-width:0!important;width:100%!important;box-sizing:border-box!important;margin:4px 0 13px!important;padding:8px 10px!important;border:1px solid rgba(135,224,235,.38)!important;border-radius:12px!important;background:rgba(5,24,38,.22)!important;overflow:hidden!important;position:relative!important;isolation:isolate!important;';
+ const label=document.createElement('strong');label.textContent=language==='en'?'NEWS':'الأخبار';label.style.cssText='flex:0 0 auto!important;color:#ffe19a!important;font:900 12px Tahoma,Arial,sans-serif!important;';
+ const viewport=document.createElement('div');viewport.style.cssText='flex:1 1 auto!important;min-width:0!important;overflow:hidden!important;white-space:nowrap!important;';
+ const track=document.createElement('div');track.style.cssText='display:inline-flex!important;align-items:center!important;gap:28px!important;width:max-content!important;white-space:nowrap!important;animation:cnPaperTickerMove 65s linear infinite!important;';
+ if(!document.getElementById('cnPaperTickerStyle')){const style=document.createElement('style');style.id='cnPaperTickerStyle';style.textContent='@keyframes cnPaperTickerMove{from{transform:translateX(0)}to{transform:translateX(-50%)}}@media(prefers-reduced-motion:reduce){#sakCastleNewspaperDialog .cn-news-ticker-track{animation:none!important}}';document.head.appendChild(style);}
+ const headlines=items.filter(x=>x&&x.title).slice(0,18);
+ if(!headlines.length){const wait=document.createElement('span');wait.textContent=language==='en'?'Loading latest headlines…':'جارٍ جلب آخر الأخبار…';wait.style.cssText='color:#fff!important;font:700 12px Tahoma,Arial,sans-serif!important';track.appendChild(wait);}
+ else for(let copy=0;copy<2;copy++)for(const item of headlines){const a=document.createElement('a');a.href=item.link;a.target='_blank';a.rel='noopener noreferrer';a.textContent=item.title;a.style.cssText='display:inline-flex!important;align-items:center!important;gap:7px!important;color:#f8fbff!important;text-decoration:none!important;font:700 12px/1.7 Tahoma,Arial,sans-serif!important;text-shadow:0 1px 4px #000!important';const dot=document.createElement('span');dot.textContent='◆';dot.style.color='#79e5cf';a.prepend(dot);track.appendChild(a);}
+ track.className='cn-news-ticker-track';viewport.appendChild(track);bar.append(label,viewport);host.appendChild(bar);
+}
 function renderNews(){
- const p=$('cnPanel');if(!p)return;p.replaceChildren();
+ const p=$('cnPanel');if(!p)return;p.replaceChildren();renderNewsTicker(p);
   const tabs=document.createElement('div');tabs.className='cn-tabs';
  Object.entries(categories).forEach(([k,v])=>{const b=document.createElement('button');b.textContent=v;b.setAttribute('aria-pressed',String(category===k));b.addEventListener('click',()=>{category=k;renderNews();});tabs.appendChild(b);});
  const refresh=document.createElement('button');refresh.className='cn-refresh';refresh.textContent=loading?'جارٍ التحديث…':'تحديث الأخبار';refresh.disabled=loading;refresh.addEventListener('click',()=>loadNews(true));tabs.appendChild(refresh);p.appendChild(tabs);
@@ -436,18 +448,27 @@ function differences(panel){
   try{localStorage.removeItem(storageKey);}catch(e){}
   refreshProgress();
  });
- svg.style.touchAction='none';
- svg.addEventListener('pointerdown',e=>{
-  if(e.cancelable)e.preventDefault();
-  const rect=svg.getBoundingClientRect(),x=(e.clientX-rect.left)/rect.width*puzzle.width,y=(e.clientY-rect.top)/rect.height*puzzle.height;
-  let idx=-1,dist=Infinity;zones.forEach((p,i)=>{const d=Math.hypot(x-p[0],y-p[1]);if(d<dist){dist=d;idx=i;}});
-  const hitRadius=Math.max(72,Math.min(104,Math.round(puzzle.width*.13)));
-  if(idx>=0&&dist<hitRadius&&!found.has(idx)){
+ // Route taps through the containing image frame. This avoids SVG/image hit-testing
+ // differences between mobile browsers and desktop browsers.
+ svg.style.touchAction='manipulation';
+ svg.style.pointerEvents='none';
+ right.style.cursor='crosshair';
+ right.style.touchAction='manipulation';
+ right.addEventListener('click',e=>{
+  if(e.target.closest('button,a'))return;
+  const rect=svg.getBoundingClientRect();
+  if(!rect.width||!rect.height)return;
+  const x=Math.max(0,Math.min(puzzle.width,(e.clientX-rect.left)/rect.width*puzzle.width));
+  const y=Math.max(0,Math.min(puzzle.height,(e.clientY-rect.top)/rect.height*puzzle.height));
+  let idx=-1,dist=Infinity;
+  zones.forEach((point,i)=>{const d=Math.hypot(x-point[0],y-point[1]);if(d<dist){dist=d;idx=i;}});
+  const hitRadius=Math.max(88,Math.min(124,Math.round(puzzle.width*.16)));
+  if(idx>=0&&dist<=hitRadius&&!found.has(idx)){
    found.add(idx);paintFound(idx);
-   try{localStorage.setItem(storageKey,JSON.stringify(Array.from(found)));}catch(e){}
+   try{localStorage.setItem(storageKey,JSON.stringify(Array.from(found)));}catch(_){}
    refreshProgress();
   }
- },{passive:false});
+ });
  const meta=document.createElement('div');meta.className='cn-meta';meta.textContent=language==='ar'?'اليوم '+campaignDay+' من 30 • الصور 30 من 30 • '+dateKey:'Day '+campaignDay+' of 30 • 30 of 30 image pairs • '+dateKey;w.appendChild(meta);
  panel.appendChild(w);
 }
