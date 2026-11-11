@@ -382,7 +382,11 @@ function differences(panel){
    components.sort((x,y)=>y.count-x.count);
    const chosen=[];
    for(const c of components){if(chosen.every(v=>Math.hypot(v.x-c.x,v.y-c.y)>15)){chosen.push(c);if(chosen.length===5)break;}}
-   if(chosen.length===5)zones=chosen.map(c=>[Math.round(c.x/cw*puzzle.width),Math.round(c.y/ch*puzzle.height)]);
+   if(chosen.length===5){
+    zones=chosen.map(c=>[Math.round(c.x/cw*puzzle.width),Math.round(c.y/ch*puzzle.height)]);
+    svg.querySelectorAll('[data-difference]').forEach(node=>node.remove());
+    found.forEach(idx=>paintFound(idx));
+   }
   }catch(error){console.warn('[Castle Newspaper] Difference detection failed; using saved coordinates.',error);}
  }
  detectDifferenceZones();
