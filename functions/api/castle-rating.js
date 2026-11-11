@@ -7,7 +7,8 @@ let signingKeysExpiresAt = 0;
 
 function allowedHost(host) {
   return ALLOWED_HOSTS.has(host) || host === "sakaker-pages-test.pages.dev" ||
-    host.endsWith(".sakaker-pages-test.pages.dev") || host.endsWith(".pages.dev");
+    host === "sakaker1.pages.dev" || host.endsWith(".sakaker1.pages.dev") ||
+    host.endsWith(".sakaker-pages-test.pages.dev");
 }
 function validRequest(request) {
   const url = new URL(request.url);
