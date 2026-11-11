@@ -32,5 +32,7 @@ jobs:
             echo "No new image files to commit."
           else
             git commit -m "Add all 30 five-differences image pairs"
-            git push
+            git fetch origin main
+            git rebase origin/main
+            git push origin HEAD:main
           fi
