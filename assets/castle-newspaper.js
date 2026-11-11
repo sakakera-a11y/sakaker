@@ -353,7 +353,39 @@ function differences(panel){
   left.insertAdjacentHTML('beforeend',scene(false));right.insertAdjacentHTML('beforeend',scene(true));pics.append(left,right);w.appendChild(pics);
   const svg=right.querySelector('svg'),out=document.createElement('p');out.className='cn-picture-hint';out.setAttribute('aria-live','polite');out.textContent=language==='ar'?'تم العثور على 0 من 5':'Found 0 of 5';w.appendChild(out);
  const progress=document.createElement('div');progress.className='cn-difference-progress';progress.innerHTML='<span></span>';w.appendChild(progress);
- const zones=puzzle.zones;
+ let zones=puzzle.zones.slice();
+ // Derive clickable regions from the actual image pair, not stale placeholder coordinates.
+ async function detectDifferenceZones(){
+  const loadImage=src=>new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>resolve(im);im.onerror=reject;im.src=src;});
+  try{
+   const [a,b]=await Promise.all([loadImage(imagePair[0]),loadImage(imagePair[1])]);
+   const cw=192,ch=Math.max(1,Math.round(cw*puzzle.height/puzzle.width));
+   const canvas=document.createElement('canvas');canvas.width=cw;canvas.height=ch;
+   const ctx=canvas.getContext('2d',{willReadFrequently:true});
+   ctx.drawImage(a,0,0,cw,ch);const first=ctx.getImageData(0,0,cw,ch).data;
+   ctx.clearRect(0,0,cw,ch);ctx.drawImage(b,0,0,cw,ch);const second=ctx.getImageData(0,0,cw,ch).data;
+   const mask=new Uint8Array(cw*ch);
+   for(let p=0;p<mask.length;p++){const k=p*4,d=Math.abs(first[k]-second[k])+Math.abs(first[k+1]-second[k+1])+Math.abs(first[k+2]-second[k+2]);if(d>78)mask[p]=1;}
+   const seen=new Uint8Array(mask.length),components=[];
+   for(let p=0;p<mask.length;p++){
+    if(!mask[p]||seen[p])continue;
+    const stack=[p];seen[p]=1;let sx=0,sy=0,count=0;
+    while(stack.length){
+     const q=stack.pop(),x=q%cw,y=(q/cw)|0;sx+=x;sy+=y;count++;
+     for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
+      if(!dx&&!dy)continue;const nx=x+dx,ny=y+dy;if(nx<0||ny<0||nx>=cw||ny>=ch)continue;
+      const nq=ny*cw+nx;if(mask[nq]&&!seen[nq]){seen[nq]=1;stack.push(nq);}
+     }
+    }
+    if(count>=5)components.push({x:sx/count,y:sy/count,count});
+   }
+   components.sort((x,y)=>y.count-x.count);
+   const chosen=[];
+   for(const c of components){if(chosen.every(v=>Math.hypot(v.x-c.x,v.y-c.y)>15)){chosen.push(c);if(chosen.length===5)break;}}
+   if(chosen.length===5)zones=chosen.map(c=>[Math.round(c.x/cw*puzzle.width),Math.round(c.y/ch*puzzle.height)]);
+  }catch(error){console.warn('[Castle Newspaper] Difference detection failed; using saved coordinates.',error);}
+ }
+ detectDifferenceZones();
  const storageKey='sakaker-anime-differences-'+dateKey;
  function paintFound(idx){
   if(svg.querySelector('[data-difference="'+idx+'"]'))return;
@@ -377,15 +409,18 @@ function differences(panel){
   try{localStorage.removeItem(storageKey);}catch(e){}
   refreshProgress();
  });
- svg.addEventListener('click',e=>{
+ svg.style.touchAction='none';
+ svg.addEventListener('pointerdown',e=>{
+  if(e.cancelable)e.preventDefault();
   const rect=svg.getBoundingClientRect(),x=(e.clientX-rect.left)/rect.width*puzzle.width,y=(e.clientY-rect.top)/rect.height*puzzle.height;
   let idx=-1,dist=Infinity;zones.forEach((p,i)=>{const d=Math.hypot(x-p[0],y-p[1]);if(d<dist){dist=d;idx=i;}});
-  if(idx>=0&&dist<58&&!found.has(idx)){
+  const hitRadius=Math.max(72,Math.min(104,Math.round(puzzle.width*.13)));
+  if(idx>=0&&dist<hitRadius&&!found.has(idx)){
    found.add(idx);paintFound(idx);
    try{localStorage.setItem(storageKey,JSON.stringify(Array.from(found)));}catch(e){}
    refreshProgress();
   }
- });
+ },{passive:false});
  const meta=document.createElement('div');meta.className='cn-meta';meta.textContent=language==='ar'?'اليوم '+campaignDay+' من 30 • الصور 30 من 30 • '+dateKey:'Day '+campaignDay+' of 30 • 30 of 30 image pairs • '+dateKey;w.appendChild(meta);
  panel.appendChild(w);
 }
