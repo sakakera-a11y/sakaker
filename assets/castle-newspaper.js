@@ -365,7 +365,7 @@ function differences(panel){
    ctx.drawImage(a,0,0,cw,ch);const first=ctx.getImageData(0,0,cw,ch).data;
    ctx.clearRect(0,0,cw,ch);ctx.drawImage(b,0,0,cw,ch);const second=ctx.getImageData(0,0,cw,ch).data;
    const mask=new Uint8Array(cw*ch);
-   for(let p=0;p<mask.length;p++){const k=p*4,d=Math.abs(first[k]-second[k])+Math.abs(first[k+1]-second[k+1])+Math.abs(first[k+2]-second[k+2]);if(d>78)mask[p]=1;}
+   for(let p=0;p<mask.length;p++){const k=p*4,d=Math.abs(first[k]-second[k])+Math.abs(first[k+1]-second[k+1])+Math.abs(first[k+2]-second[k+2]);if(d>70)mask[p]=1;}
    const seen=new Uint8Array(mask.length),components=[];
    for(let p=0;p<mask.length;p++){
     if(!mask[p]||seen[p])continue;
@@ -377,11 +377,11 @@ function differences(panel){
       const nq=ny*cw+nx;if(mask[nq]&&!seen[nq]){seen[nq]=1;stack.push(nq);}
      }
     }
-    if(count>=5)components.push({x:sx/count,y:sy/count,count});
+    if(count>=3)components.push({x:sx/count,y:sy/count,count});
    }
    components.sort((x,y)=>y.count-x.count);
    const chosen=[];
-   for(const c of components){if(chosen.every(v=>Math.hypot(v.x-c.x,v.y-c.y)>15)){chosen.push(c);if(chosen.length===5)break;}}
+   for(const c of components){if(chosen.every(v=>Math.hypot(v.x-c.x,v.y-c.y)>10)){chosen.push(c);if(chosen.length===5)break;}}
    if(chosen.length===5){
     zones=chosen.map(c=>[Math.round(c.x/cw*puzzle.width),Math.round(c.y/ch*puzzle.height)]);
     svg.querySelectorAll('[data-difference]').forEach(node=>node.remove());
