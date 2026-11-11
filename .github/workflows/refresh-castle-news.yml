@@ -89,5 +89,6 @@ jobs:
             echo "No news changes."
           else
             git commit -m "Refresh Castle Newspaper headlines"
+            git pull --rebase origin main
             git push
           fi
