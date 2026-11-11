@@ -222,8 +222,10 @@ function installVisitorPosts() {
       slot.append(caption, windowEl);
       slot.classList.remove("visitor-slot-empty");
     };
-    fetch("/data/news.json?ts=" + Date.now(), { cache: "no-store" })
-      .then(response => { if (!response.ok) throw new Error("News snapshot unavailable"); return response.json(); })
+    const readNewsSnapshot = url => fetch(url, { cache: "no-store", headers: { "Accept": "application/json" } })
+      .then(response => { if (!response.ok) throw new Error("News snapshot unavailable"); return response.json(); });
+    readNewsSnapshot("/data/news.json?ts=" + Date.now())
+      .catch(() => readNewsSnapshot("https://raw.githubusercontent.com/sakakera-a11y/sakaker/main/data/news.json?ts=" + Date.now()))
       .then(data => render(data.items))
       .catch(error => {
         console.warn("[Sakaker] Could not load the published news snapshot.", error);
