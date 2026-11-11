@@ -47,7 +47,7 @@
     const track=document.createElement('div');track.className='sak-news-track';
     for(let copy=0;copy<2;copy++)for(const item of items){
      const link=document.createElement('a');link.className='sak-news-item';
-     link.href=typeof item.link==='string'&&/^https?:\\/\\//i.test(item.link)?item.link:'#';
+     link.href=typeof item.link==='string'&&/^https?:\/\//i.test(item.link)?item.link:'#';
      link.target='_blank';link.rel='noopener noreferrer';link.textContent=item.title.trim();
      if(item.source)link.title=String(item.source);
      track.appendChild(link);
