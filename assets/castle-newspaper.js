@@ -49,7 +49,7 @@ const feeds=[
 {name:'الاقتصاد',url:'https://news.google.com/rss/search?q=الاقتصاد&hl=ar&gl=SA&ceid=SA:ar',category:'economy'}
 ];
 const categories={all:'الكل',saudi:'السعودية',world:'العالم',economy:'الاقتصاد',sports:'الرياضة',tech:'التقنية',culture:'الثقافة والفنون',science:'العلوم',entertainment:'الترفيه'};
-let items=[],category='all',loading=false,lastLoad=0,found=new Set(),newsError='',sourceStatus=[],tickerTimer=null,tickerIndex=0;
+let items=[],category='all',loading=false,lastLoad=0,found=new Set(),newsError='',sourceStatus=[];
 function mount(){
  const oldTopButton=$('sakNewsLaunch');if(oldTopButton)oldTopButton.remove();
  const dock=$('sakakerUtilityDock');if(!dock||$('sakCastleNewspaperLauncher'))return;
@@ -227,23 +227,9 @@ function parse(xmlText,feed){
  }).filter(Boolean).slice(0,50);
 }
 function cache(){try{const c=JSON.parse(localStorage.getItem('sakCastleNewspaperCacheV1')||'null');return c&&Array.isArray(c.items)?c:null;}catch(_){return null;}}
-function renderNewsTicker(parent){
- const ticker=document.createElement('div');ticker.className='cn-news-ticker';ticker.setAttribute('role','region');ticker.setAttribute('aria-label',language==='ar'?'شريط أخبار القلعة':'Castle news ticker');
- ticker.style.cssText='display:flex;align-items:center;gap:10px;min-width:0;margin:8px 0 12px;padding:7px 10px;border:1px solid rgba(255,255,255,.16);border-radius:12px;background:transparent!important;box-shadow:none!important;color:inherit;font:800 13px/1.5 Tahoma,Arial,sans-serif';
- const label=document.createElement('strong');label.textContent=language==='ar'?'أخبار القلعة':'Castle News';label.style.cssText='flex:0 0 auto;color:#ffdc83';
- const link=document.createElement('a');link.style.cssText='flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:inherit;text-decoration:none';
- const next=document.createElement('button');next.type='button';next.className='cn-action';next.textContent='›';next.setAttribute('aria-label',language==='ar'?'الخبر التالي':'Next headline');next.style.cssText='flex:0 0 auto;min-width:32px;padding:3px 8px;background:transparent!important;box-shadow:none!important';
- const headlines=items.filter(x=>x&&x.title&&safeUrl(x.link)).slice(0,30);
- const show=()=>{if(!headlines.length){link.removeAttribute('href');link.textContent=language==='ar'?'جارٍ جلب الأخبار من المصادر…':'Loading headlines…';return;}const item=headlines[tickerIndex%headlines.length];link.href=item.link;link.target='_blank';link.rel='noopener noreferrer';link.textContent=item.title;};
- next.addEventListener('click',()=>{if(headlines.length){tickerIndex=(tickerIndex+1)%headlines.length;show();}});
- ticker.append(label,link,next);parent.appendChild(ticker);show();
- if(tickerTimer)clearInterval(tickerTimer);
- tickerTimer=window.setInterval(()=>{if(!headlines.length)return;tickerIndex=(tickerIndex+1)%headlines.length;show();},8500);
-}
 function renderNews(){
  const p=$('cnPanel');if(!p)return;p.replaceChildren();
- renderNewsTicker(p);
- const tabs=document.createElement('div');tabs.className='cn-tabs';
+  const tabs=document.createElement('div');tabs.className='cn-tabs';
  Object.entries(categories).forEach(([k,v])=>{const b=document.createElement('button');b.textContent=v;b.setAttribute('aria-pressed',String(category===k));b.addEventListener('click',()=>{category=k;renderNews();});tabs.appendChild(b);});
  const refresh=document.createElement('button');refresh.className='cn-refresh';refresh.textContent=loading?'جارٍ التحديث…':'تحديث الأخبار';refresh.disabled=loading;refresh.addEventListener('click',()=>loadNews(true));tabs.appendChild(refresh);p.appendChild(tabs);
  const meta=document.createElement('div');meta.className='cn-meta cn-updated';meta.textContent=lastLoad?(language==='en'?'Last updated: ':'آخر تحديث: ')+new Date(lastLoad).toLocaleString(language==='ar'?'ar-SA':'en-GB'):(language==='en'?'Live news sources':'مصادر الأخبار المباشرة');p.appendChild(meta);
