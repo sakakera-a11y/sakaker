@@ -54,17 +54,16 @@ function installVisitorPosts() {
     #visitorPostsSection .visitor-posts-copy{display:none!important}
     /* Four top widgets share two aligned rows; the visitor button sits beside the New Year counter. */
     html body #sakFestiveHeader #sakHolidayCountdowns{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-areas:"newyear visitor" "christmas christmas"!important;align-items:stretch!important;gap:6px!important;width:100%!important;max-width:100%!important;min-width:0!important}
-    html body #sakFestiveHeader #sakHolidayCountdowns>:is(.sak-festival,#sakNewsLaunch,#visitorPostsSection){box-sizing:border-box!important;width:100%!important;height:clamp(64px,10vw,74px)!important;min-height:clamp(64px,10vw,74px)!important;max-height:clamp(64px,10vw,74px)!important;min-width:0!important;max-width:100%!important;margin:0!important;padding:5px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;overflow:hidden!important}
+    html body #sakFestiveHeader #sakHolidayCountdowns>:is(.sak-festival,#visitorPostsSection){box-sizing:border-box!important;width:100%!important;height:clamp(64px,10vw,74px)!important;min-height:clamp(64px,10vw,74px)!important;max-height:clamp(64px,10vw,74px)!important;min-width:0!important;max-width:100%!important;margin:0!important;padding:5px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;overflow:hidden!important}
     html body #sakFestiveHeader #sakHolidayCountdowns>.sak-festival:first-of-type{grid-area:newyear;display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:center!important;text-align:center!important}
     html body #sakFestiveHeader #sakHolidayCountdowns>.sak-festival:nth-of-type(2){grid-area:christmas;display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:center!important;text-align:center!important}
     html body #sakFestiveHeader #sakHolidayCountdowns>.sak-festival .sak-festival-title{font-size:clamp(8px,1.5vw,11px)!important;line-height:1.25!important;overflow:hidden!important;text-overflow:ellipsis!important}
     html body #sakFestiveHeader #sakHolidayCountdowns>.sak-festival .sak-festival-unit b{font-size:clamp(11px,2vw,15px)!important}
-    html body #sakFestiveHeader #sakHolidayCountdowns>#sakNewsLaunch{grid-area:news;display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important;white-space:normal!important;line-height:1.35!important;font-size:clamp(9px,1.7vw,12px)!important}
     html body #sakFestiveHeader #sakHolidayCountdowns>#visitorPostsSection{grid-area:visitor;display:flex!important;align-items:stretch!important;justify-content:stretch!important}
     html body #sakFestiveHeader #sakHolidayCountdowns>#visitorPostsSection #visitorPostsCard{box-sizing:border-box!important;width:100%!important;height:100%!important;min-width:0!important;min-height:0!important;padding:2px!important;gap:4px!important}
     html body #visitorClockDock{border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
     @media(max-width:800px){html body #sakFestiveHeader #sakHolidayCountdowns{grid-column:1/-1!important;grid-row:2!important;width:100%!important;max-width:none!important;justify-self:stretch!important}}
-    @media(max-width:380px){html body #sakFestiveHeader #sakHolidayCountdowns{gap:4px!important}html body #sakFestiveHeader #sakHolidayCountdowns>:is(.sak-festival,#sakNewsLaunch,#visitorPostsSection){height:64px!important;min-height:64px!important;max-height:64px!important;padding:4px!important}html body #sakFestiveHeader #sakHolidayCountdowns>#visitorPostsSection #visitorPostsCard{gap:2px!important}html body #sakFestiveHeader #sakHolidayCountdowns>#visitorPostsSection .visitor-gull{width:22px!important;height:20px!important}}
+    @media(max-width:380px){html body #sakFestiveHeader #sakHolidayCountdowns{gap:4px!important}html body #sakFestiveHeader #sakHolidayCountdowns>:is(.sak-festival,#visitorPostsSection){height:64px!important;min-height:64px!important;max-height:64px!important;padding:4px!important}html body #sakFestiveHeader #sakHolidayCountdowns>#visitorPostsSection #visitorPostsCard{gap:2px!important}html body #sakFestiveHeader #sakHolidayCountdowns>#visitorPostsSection .visitor-gull{width:22px!important;height:20px!important}}
     #sakakerNewsSlot:empty,#sakakerNewsSlot.visitor-slot-empty,#sakakerClockSlot:empty{display:none!important;width:0!important;height:0!important;min-height:0!important;max-height:0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
     #visitorClockDock{position:fixed!important;left:50%!important;right:auto!important;top:auto!important;bottom:max(3px,env(safe-area-inset-bottom))!important;transform:translateX(-50%)!important;z-index:2147482999!important;min-width:0!important;min-height:50px!important;max-height:64px!important;padding:4px 8px!important;color:#fff!important;text-align:center!important;pointer-events:none!important;overflow:visible!important}
     #visitorClockDock::before{content:"◷";display:inline-block;margin-inline-end:6px;color:#ffe27a;font:700 18px/1 Arial,sans-serif;text-shadow:0 0 8px rgba(255,215,0,.5);vertical-align:middle}
@@ -87,7 +86,7 @@ function installVisitorPosts() {
         grid-template-areas:"newyear visitor" "christmas christmas"!important;
         gap:6px!important;width:100%!important;max-width:100%!important;min-width:0!important;
       }
-      html body #sakFestiveHeader #sakHolidayCountdowns>:is(.sak-festival,#sakNewsLaunch,#visitorPostsSection){
+      html body #sakFestiveHeader #sakHolidayCountdowns>:is(.sak-festival,#visitorPostsSection){
         box-sizing:border-box!important;width:100%!important;min-width:0!important;max-width:100%!important;
         height:68px!important;min-height:68px!important;max-height:68px!important;padding:4px!important;
       }
@@ -175,10 +174,9 @@ function installVisitorPosts() {
   const placeVisitorSection = () => {
     const holidayGrid = document.getElementById("sakHolidayCountdowns");
     const newsButton = document.getElementById("sakNewsLaunch");
+    if (newsButton) newsButton.remove();
     if (holidayGrid) {
-      if (newsButton?.parentElement === holidayGrid) {
-        if (section.parentElement !== holidayGrid || section.previousElementSibling !== newsButton) newsButton.insertAdjacentElement("afterend", section);
-      } else if (section.parentElement !== holidayGrid) {
+      if (section.parentElement !== holidayGrid) {
         holidayGrid.appendChild(section);
       }
       return true;
