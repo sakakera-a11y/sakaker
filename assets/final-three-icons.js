@@ -828,14 +828,25 @@ function rebuildIconAppearance(){
 }
 
 let visitorCounterModuleRequested=false;
+function suspendVisitorCounters(){
+  window.__sakakerVisitorCountersTemporarilySuspended=true;
+  if(document.getElementById('sakakerVisitorCountersSuspendedStyle'))return;
+  const style=document.createElement('style');
+  style.id='sakakerVisitorCountersSuspendedStyle';
+  style.textContent=`
+    html body :is(#sakakerVisitorCounter,#sakakerRightStats,#visitor-counter,#visitorCounter,.visitor-counter,[data-visitor-counter]){
+      display:none!important;
+      visibility:hidden!important;
+      opacity:0!important;
+      pointer-events:none!important;
+    }
+  `;
+  (document.head||document.documentElement).appendChild(style);
+}
 function loadVisitorCounterModule(){
-  if(visitorCounterModuleRequested)return;
   visitorCounterModuleRequested=true;
-  const script=document.createElement('script');
-  script.type='module';
-  script.src='/assets/visitor-counter.js?v=20261014-d1-v2';
-  script.onerror=()=>{visitorCounterModuleRequested=false;};
-  document.head.appendChild(script);
+  suspendVisitorCounters();
+  // Temporarily paused: do not send tracking requests or render unverified totals.
 }
 
 
@@ -884,6 +895,7 @@ function loadPaymentClock(){
 
 function settle(){
   installSiteBackgroundStyle();
+  suspendVisitorCounters();
 
   /* Keep login lightweight: do not start visitor tracking or rebuild launchers
      until the authenticated page is visible. */
