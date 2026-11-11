@@ -7,7 +7,7 @@ let signingKeysExpiresAt = 0;
 
 function allowedHost(host) {
   return ALLOWED_HOSTS.has(host) || host === "sakaker-pages-test.pages.dev" ||
-    host.endsWith(".sakaker-pages-test.pages.dev") || /(^|\\.)pages\\.dev$/i.test(host);
+    host.endsWith(".sakaker-pages-test.pages.dev") || host.endsWith(".pages.dev");
 }
 function validRequest(request) {
   const url = new URL(request.url);
@@ -51,7 +51,7 @@ async function getSigningKeys(force = false) {
 }
 async function verifyFirebaseToken(request) {
   const authorization = request.headers.get("Authorization") || "";
-  const match = authorization.match(/^Bearer\\s+([A-Za-z0-9._-]+)$/);
+  const match = authorization.match(/^Bearer\s+([A-Za-z0-9._-]+)$/);
   if (!match) return null;
   const token = match[1];
   const parts = token.split(".");
