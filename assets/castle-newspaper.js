@@ -328,6 +328,10 @@ function differences(panel){
  const elapsedDays=Math.max(0,Math.floor((todayUtc-campaignStart)/86400000));
  const campaignDay=Math.max(1,Math.min(30,elapsedDays+1));
  const difficultyDay=elapsedDays+1;
+ // Review-needed pairs are deliberately scheduled at the end of the 30-day sequence.
+ // Asset folder names stay intact; this changes only their display order.
+ const displayOrder=[1,2,3,4,5,6,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,7,8,9,10];
+ const assetDay=displayOrder[campaignDay-1]||campaignDay;
  const hue=((campaignDay-1)*23)%360;
   const puzzleSets={
    1:{width:640,height:480,zones:[[33,418],[607,330],[499,37],[568,89],[419,54]]},
@@ -339,8 +343,8 @@ function differences(panel){
   };
   // Enable all 30 image pairs now. Days 7–30 use provisional click zones;
   // their exact answer coordinates can be refined in a later content pass.
-  const puzzle=puzzleSets[campaignDay]||{width:768,height:1024,zones:[[400,130],[570,130],[200,500],[500,700],[650,850]]};
-  const dayFolder=String(campaignDay).padStart(2,'0');
+  const puzzle=puzzleSets[assetDay]||{width:768,height:1024,zones:[[400,130],[570,130],[200,500],[500,700],[650,850]]};
+  const dayFolder=String(assetDay).padStart(2,'0');
   const imagePair=['/assets/five-differences/day_'+dayFolder+'/original.jpg','/assets/five-differences/day_'+dayFolder+'/differences.jpg'];
   const w=document.createElement('div');w.className='cn-game cn-difference-game';
   const title=document.createElement('h3');title.textContent=language==='ar'?'🔎 اكتشف الفروقات الخمس':'🔎 Find the five differences';w.appendChild(title);
