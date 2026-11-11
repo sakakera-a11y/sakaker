@@ -9,6 +9,13 @@
     script.async=true;
     document.head.appendChild(script);
   }
+  if(!document.getElementById('sakakerNewsTickerLoader')){
+    const ticker=document.createElement('script');
+    ticker.id='sakakerNewsTickerLoader';
+    ticker.src='/assets/news-ticker.js?v=20261111-live-ticker1';
+    ticker.async=true;
+    document.head.appendChild(ticker);
+  }
   if(!document.getElementById('sakGardenCrosswordLoader')){
     const crossword=document.createElement('script');
     crossword.id='sakGardenCrosswordLoader';
