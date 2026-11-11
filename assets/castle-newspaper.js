@@ -157,7 +157,14 @@ function styles(){
  '#sakCastleNewspaperDialog .cn-signs button[aria-pressed=true]{background:linear-gradient(135deg,#fff1bd,#e8c76b);color:#704b00;border-color:#fff1ad}',
  '#sakCastleNewspaperDialog .cn-picture{border-color:#c8faff;box-shadow:0 0 14px #79eaff55}',
  '#sakCastleNewspaperDialog .cn-meta{color:#c9f3ff}',
- ].join('');
+ '#sakCastleNewspaperDialog #cnPanel{display:block!important;position:relative!important;isolation:isolate!important;visibility:visible!important;opacity:1!important;min-height:90px!important;max-height:none!important;overflow:visible!important;color:#fff!important;font-family:Tajawal,Cairo,Tahoma,Arial,sans-serif!important}',
+'#sakCastleNewspaperDialog #cnPanel .cn-tabs{display:flex!important;position:relative!important;z-index:1!important;visibility:visible!important;opacity:1!important;overflow-x:auto!important;overflow-y:hidden!important;max-width:100%!important}',
+'#sakCastleNewspaperDialog #cnPanel .cn-meta,#sakCastleNewspaperDialog #cnPanel .cn-status,#sakCastleNewspaperDialog #cnPanel .cn-empty{display:block!important;position:relative!important;visibility:visible!important;opacity:1!important;color:#fff!important;line-height:1.9!important;white-space:normal!important;overflow-wrap:anywhere!important}',
+'#sakCastleNewspaperDialog #cnPanel .cn-story{display:block!important;position:relative!important;visibility:visible!important;opacity:1!important;min-height:64px!important;height:auto!important;max-height:none!important;overflow:visible!important;color:#fff!important;transform:none!important}',
+'#sakCastleNewspaperDialog #cnPanel .cn-story a{display:block!important;visibility:visible!important;opacity:1!important;color:#fff!important;font-size:16px!important;line-height:1.9!important;white-space:normal!important;overflow-wrap:anywhere!important;text-shadow:0 1px 4px #061421!important}',
+'#sakCastleNewspaperDialog #cnPanel .cn-story .cn-meta,#sakCastleNewspaperDialog #cnPanel .cn-story .cn-desc{display:block!important;visibility:visible!important;opacity:1!important;color:#f2f7ff!important;white-space:normal!important;overflow-wrap:anywhere!important}',
+'#sakCastleNewspaperDialog #cnPanel .cn-empty{padding:20px!important;border:1px dashed #c8faffaa!important;border-radius:14px!important;background:#102c4388!important;color:#fff!important;font-size:16px!important;text-align:center!important}',
+].join('');
 }
 function dialog(){
  let d=$('sakCastleNewspaperDialog');if(d)return d;
