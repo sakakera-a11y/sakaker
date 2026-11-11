@@ -1,0 +1,26 @@
+name: Inspect Five Differences Archive
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/inspect-five-differences-archive.yml'
+      - 'five_differences_30_days_progress_6_of_30.zip'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: write
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: List archive contents
+        run: |
+          unzip -Z1 five_differences_30_days_progress_6_of_30.zip > archive-files.txt
+          unzip -t five_differences_30_days_progress_6_of_30.zip > archive-test.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: five-differences-archive-inspection
+          path: |
+            archive-files.txt
+            archive-test.txt
