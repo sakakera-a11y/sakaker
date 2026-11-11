@@ -954,6 +954,11 @@ function handleLoginLockChange(){
   if(locked===lastObservedLoginLock)return;
   lastObservedLoginLock=locked;
   syncSiteBackgroundLock();
+  if(!locked){
+    loadVisitorCounterModule();
+    ensureCastleRatingLauncher();
+    ensureNewsTickerLauncher();
+  }
 }
 
 if(document.body){
