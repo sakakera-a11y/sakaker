@@ -4,8 +4,11 @@ on:
   pull_request:
     paths:
       - "functions/api/visitor-counter.js"
+      - "functions/api/castle-rating.js"
       - "migrations/0001_visitor_counter.sql"
+      - "migrations/0002_castle_rating.sql"
       - "tests/visitor-counter.test.mjs"
+      - "tests/castle-rating.test.mjs"
       - ".github/workflows/visitor-counter-tests.yml"
   push:
     branches:
@@ -31,3 +34,5 @@ jobs:
           node-version: "22"
       - name: Run mocked D1 endpoint tests
         run: node --test tests/visitor-counter.test.mjs
+      - name: Run authenticated Castle Rating tests
+        run: node --test tests/castle-rating.test.mjs
