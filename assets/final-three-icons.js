@@ -511,6 +511,7 @@ function syncSiteBackgroundLock(){
 
   /* A login may complete after settle()'s startup retries have finished. */
   loadVisitorCounterModule();
+  ensureCastleRatingLauncher();
 
   /* Load the clock after login, but defer heavy Facebook embeds until requested. */
   loadPaymentClock();
@@ -870,6 +871,17 @@ function ensureCastleNewspaperLauncher(){
   document.head.appendChild(script);
 }
 
+function ensureCastleRatingLauncher(){
+  if(document.getElementById('sakCastleRatingScript'))return;
+  const script=document.createElement('script');
+  script.id='sakCastleRatingScript';
+  script.type='module';
+  script.src='/assets/castle-rating.js?v=20261111-uid-v1';
+  script.async=true;
+  script.onerror=()=>script.remove();
+  document.head.appendChild(script);
+}
+
 function ensureCastleTourLauncher(){
   // A dedicated independent launcher is required: the original horizontal
   // dock clips/scrolls buttons out of view on many phones.
@@ -904,6 +916,7 @@ function settle(){
   ensureTitanicShipLauncher();
   hideFacebookLaunchers();
   loadVisitorCounterModule();
+  ensureCastleRatingLauncher();
   watchFacebookEmbeds();
   loadPaymentClock();
   ensureCastleTourLauncher();
