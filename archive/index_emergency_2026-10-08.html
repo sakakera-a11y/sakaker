@@ -38449,6 +38449,9 @@ html body #sakSecondStreamCircleSecure .sak-radio-preview{
   background:radial-gradient(circle at 35% 25%,rgba(40,105,117,.55),rgba(3,20,29,.88) 70%)!important;
   pointer-events:none!important;z-index:5!important;padding:5px!important
 }
+html body #sakSecondStreamCircleSecure .sak-umm-kulthum-photo{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 28%!important;display:block!important;z-index:3!important;pointer-events:none!important}
+html body #sakSecondStreamCircleSecure .sak-radio-preview{background:linear-gradient(180deg,transparent 35%,rgba(0,0,0,.78))!important;justify-content:flex-end!important;padding:5px 4px 7px!important;z-index:5!important}
+html body #sakSecondStreamCircleSecure .sak-radio-preview b{font:900 10px/1.25 Tahoma,Arial,sans-serif!important;white-space:normal!important;color:#fff!important;text-shadow:0 1px 4px #000,0 0 8px #000!important}
 html body #sakSecondStreamCircleSecure .sak-radio-preview span{font-size:29px!important;line-height:1!important}
 html body #sakSecondStreamCircleSecure .sak-radio-preview b{font:900 10px/1.25 Tahoma,Arial,sans-serif!important;white-space:normal!important}
 </style>
@@ -38465,7 +38468,7 @@ html body #sakSecondStreamCircleSecure .sak-radio-preview b{font:900 10px/1.25 T
      eye.setAttribute('role','button');
      eye.tabIndex=0;
      eye.setAttribute('aria-label','إذاعة أم كلثوم');
-     eye.innerHTML='<div class="sak-radio-preview" aria-hidden="true"><span>📻</span><b>إذاعة أم كلثوم</b></div>';
+     eye.innerHTML='<img class="sak-umm-kulthum-photo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/%D8%A7%D9%85_%D9%83%D9%84%D8%AB%D9%88%D9%85.jpg/250px-%D8%A7%D9%85_%D9%83%D9%84%D8%AB%D9%88%D9%85.jpg" alt="أم كلثوم" loading="eager"><div class="sak-radio-preview" aria-hidden="true"><b>إذاعة أم كلثوم</b></div>';
      old.replaceWith(eye);
      eye.addEventListener('click',open);
      eye.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open(e);}});
@@ -41316,3 +41319,11 @@ html body .cards #castleStoriesIndexCard:focus-visible{
 <script src="/assets/main-news-bar.js?v=20261111-main-news-single" defer></script>
 </body>
 </html>
+
+<style id="sak-umm-kulthum-modal-controls-visible">
+/* Keep radio title and close control above the embedded audio player */
+html body #videoBoxFixed{position:fixed!important;isolation:isolate!important;overflow:visible!important}
+html body #videoBoxFixed #fixedVideo{position:relative!important;z-index:1!important;width:100%!important}
+html body #videoBoxFixed .video-box-title{position:absolute!important;top:8px!important;left:54px!important;right:54px!important;z-index:2147483647!important;display:block!important;visibility:visible!important;opacity:1!important;pointer-events:none!important;text-align:center!important;color:#fff!important;text-shadow:0 1px 5px #000!important}
+html body #videoBoxFixed #videoCloseBtn{position:absolute!important;top:8px!important;right:8px!important;z-index:2147483647!important;display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;width:42px!important;height:42px!important;align-items:center!important;justify-content:center!important;background:#a7193e!important;color:#fff!important;border:2px solid #fff!important;border-radius:50%!important;box-shadow:0 0 14px rgba(255,255,255,.8)!important}
+</style>
