@@ -90,6 +90,17 @@ $('refreshTv').onclick=loadTv;$('refreshRadio').onclick=loadRadio;$('tvMore').on
 document.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{filter=b.dataset.filter;document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('active',x===b));tvVisible=60;setGrid('tv')});
 document.querySelectorAll('[data-direct-channel]').forEach(b=>b.onclick=()=>{const x=STATIC_TV.find(c=>c.id===b.dataset.directChannel);if(x)playTv(x)});
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===b.dataset.panel));if(b.dataset.panel==='radio'&&!radioRows.length)loadRadio()});
+const radioMode=new URLSearchParams(location.search).get('section')==='radio';
+if(radioMode){
+ document.title='الإذاعة | سكاكر';
+ const tvTab=document.querySelector('.tab[data-panel="tv"]');
+ const radioTab=document.querySelector('.tab[data-panel="radio"]');
+ if(tvTab&&radioTab){tvTab.classList.remove('active');radioTab.classList.add('active')}
+ const tvPanel=$('tv'),radioPanel=$('radio');
+ if(tvPanel&&radioPanel){tvPanel.classList.remove('active');radioPanel.classList.add('active')}
+ const heading=document.querySelector('main h1');if(heading)heading.textContent='الإذاعة';
+ const intro=document.querySelector('main .hero > p');if(intro)intro.textContent='استمع إلى المحطات الإذاعية المباشرة واختر محطتك المفضلة.';
+}
 loadTv();loadRadio();
 })();
 </script>
