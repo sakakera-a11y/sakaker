@@ -783,12 +783,28 @@ function installRadioPopupLauncher(){
     modal.addEventListener('click',e=>{if(e.target===modal)close()});
     document.body.appendChild(modal);document.body.style.overflow='hidden';
   };
-  document.addEventListener('click',e=>{
+  const closeLegacyLivePopup=()=>{
+    const legacy=document.getElementById('livePopup');
+    if(!legacy)return;
+    legacy.querySelectorAll('iframe').forEach(frame=>{
+      try{frame.src='about:blank'}catch(_){}
+    });
+    legacy.hidden=true;
+    legacy.setAttribute('aria-hidden','true');
+    legacy.classList.remove('active','open','show');
+    legacy.style.setProperty('display','none','important');
+    legacy.style.setProperty('visibility','hidden','important');
+    legacy.style.setProperty('pointer-events','none','important');
+  };
+  const handleRadioLaunch=e=>{
     const icon=e.target?.closest?.('#liveFlasher');
     if(!icon)return;
     e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+    closeLegacyLivePopup();
     open();
-  },true);
+  };
+  /* Window capture runs before document/target handlers that used to open FIFA+ LIVE. */
+  window.addEventListener('click',handleRadioLaunch,true);
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('sakRadioPopup'))close()},true);
 }
 
