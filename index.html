@@ -41325,6 +41325,38 @@ html body #videoBoxFixed #fixedVideo{position:relative!important;z-index:1!impor
 html body #videoBoxFixed .video-box-title{position:absolute!important;top:8px!important;left:54px!important;right:54px!important;z-index:2147483647!important;display:block!important;visibility:visible!important;opacity:1!important;pointer-events:none!important;text-align:center!important;color:#fff!important;text-shadow:0 1px 5px #000!important}
 html body #videoBoxFixed #videoCloseBtn{position:absolute!important;top:8px!important;right:8px!important;z-index:2147483647!important;display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;width:42px!important;height:42px!important;align-items:center!important;justify-content:center!important;background:#a7193e!important;color:#fff!important;border:2px solid #fff!important;border-radius:50%!important;box-shadow:0 0 14px rgba(255,255,255,.8)!important}
 </style>
+
+<style id="sak-radio-window-visible-controls">
+/* Keep the radio window and its controls fully visible on phones and desktop. */
+html body #sakCrystalDialog[open]{
+  display:flex!important;flex-direction:column!important;
+  width:min(1000px,94vw)!important;height:min(92dvh,820px)!important;
+  max-width:94vw!important;max-height:92dvh!important;
+  overflow:hidden!important;box-sizing:border-box!important;
+}
+html body #sakCrystalDialog[open] .crystal-head{
+  position:relative!important;z-index:5!important;flex:0 0 auto!important;
+  min-height:54px!important;visibility:visible!important;opacity:1!important;
+}
+html body #sakCrystalDialog[open] .crystal-close{
+  display:inline-flex!important;visibility:visible!important;opacity:1!important;
+  align-items:center!important;justify-content:center!important;position:relative!important;
+  z-index:10!important;pointer-events:auto!important;flex:0 0 44px!important;
+}
+html body #sakCrystalDialog[open] #sakCrystalStage{
+  display:block!important;position:relative!important;flex:1 1 auto!important;
+  width:100%!important;height:auto!important;min-height:0!important;max-height:none!important;
+  aspect-ratio:auto!important;overflow:auto!important;overscroll-behavior:contain!important;
+}
+html body #sakCrystalDialog[open] #sakCrystalStage iframe{
+  display:block!important;width:100%!important;height:100%!important;min-height:100%!important;
+  border:0!important;background:#16091e!important;
+}
+@media(max-width:600px){
+ html body #sakCrystalDialog[open]{width:96vw!important;height:92dvh!important;max-width:96vw!important;padding:7px!important}
+ html body #sakCrystalDialog[open] .crystal-head{min-height:48px!important;padding:3px 5px 8px!important}
+}
+</style>
 </body>
 </html>
 
