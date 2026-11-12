@@ -32301,8 +32301,8 @@ body.sakaker-music-open #sakSecondStreamCorner{
       <div id="sakSecondStreamCircle"
            role="button"
            tabindex="0"
-           aria-label="إذاعة البرنامج العام">
-        <span class="sak-dazn-preview">📻<br><small>إذاعة البرنامج العام</small></span>
+           aria-label="إذاعة أم كلثوم">
+        <span class="sak-dazn-preview">📻<br><small>إذاعة أم كلثوم</small></span>
         <div id="sakSecondStreamPlay">▶</div>
         <div id="sakSecondStreamBadge">RADIO</div>
       </div>
@@ -38454,7 +38454,7 @@ html body #sakSecondStreamCircleSecure .sak-radio-preview b{font:900 10px/1.25 T
 </style>
 <script id="sak-secure-hls-second-eye-js">
 (()=>{'use strict';
- const OFFICIAL_RADIO_PAGE='https://www.maspero.eg/stream/10';
+ const OFFICIAL_RADIO_PAGE='https://stream.zeno.fm/zsgrfxg71s8uv';
  function mount(){
    const old=document.getElementById('sakSecondStreamCircle');
    if(!old)return;
@@ -38464,8 +38464,8 @@ html body #sakSecondStreamCircleSecure .sak-radio-preview b{font:900 10px/1.25 T
      eye.id='sakSecondStreamCircleSecure';
      eye.setAttribute('role','button');
      eye.tabIndex=0;
-     eye.setAttribute('aria-label','إذاعة البرنامج العام');
-     eye.innerHTML='<div class="sak-radio-preview" aria-hidden="true"><span>📻</span><b>إذاعة البرنامج العام</b></div>';
+     eye.setAttribute('aria-label','إذاعة أم كلثوم');
+     eye.innerHTML='<div class="sak-radio-preview" aria-hidden="true"><span>📻</span><b>إذاعة أم كلثوم</b></div>';
      old.replaceWith(eye);
      eye.addEventListener('click',open);
      eye.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open(e);}});
@@ -38480,10 +38480,10 @@ html body #sakSecondStreamCircleSecure .sak-radio-preview b{font:900 10px/1.25 T
    if(!box||!frame)return;
    document.querySelector('.video-top-container-fixed')?.classList.add('sak-eye-peer-hidden');
    frame.style.display='block';
-   frame.title='إذاعة البرنامج العام – ماسبيرو';
+   frame.title='إذاعة أم كلثوم – بث مباشر';
    frame.src=OFFICIAL_RADIO_PAGE;
    box.style.display='block';
-   if(title)title.textContent='📻 إذاعة البرنامج العام';
+   if(title)title.textContent='📻 إذاعة أم كلثوم';
  }
  const previousClose=window.closeFixedVideo;
  window.closeFixedVideo=function(){
