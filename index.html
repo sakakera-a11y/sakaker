@@ -41358,8 +41358,7 @@ html body #sakCrystalDialog[open] #sakCrystalStage iframe{
  html body #sakCrystalDialog[open] .crystal-head{min-height:48px!important;padding:3px 5px 8px!important}
 }
 </style>
-</body>
-</html>
+
 
 
 <style id="sak-umm-kulthum-audio-controls">
@@ -41432,3 +41431,50 @@ html body #videoBoxFixed #videoCloseBtn{z-index:2147483647!important;display:fle
  }
 })();
 </script>
+
+<style id="sak-umm-kulthum-final-visible-controls">
+/* نافذة إذاعة أم كلثوم: طبقات منفصلة وواضحة لعناصر التحكم */
+html body #videoBoxFixed{
+  position:fixed!important;z-index:2147483646!important;isolation:isolate!important;
+  overflow:hidden!important;box-sizing:border-box!important;
+}
+html body #videoBoxFixed #fixedVideo{
+  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+  z-index:1!important;border:0!important;pointer-events:none!important;
+}
+html body #videoBoxFixed .video-box-title{
+  position:absolute!important;top:8px!important;left:58px!important;right:58px!important;
+  z-index:2147483647!important;display:block!important;visibility:visible!important;opacity:1!important;
+  pointer-events:none!important;text-align:center!important;color:#fff!important;
+  background:rgba(0,0,0,.82)!important;border:1px solid #7fffe0!important;border-radius:18px!important;
+  padding:6px 8px!important;font:900 13px/1.35 Tahoma,Arial,sans-serif!important;
+  text-shadow:0 1px 5px #000,0 0 8px #00ffd0!important;letter-spacing:0!important;
+}
+html body #videoBoxFixed #videoCloseBtn{
+  position:absolute!important;top:7px!important;right:7px!important;z-index:2147483647!important;
+  display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;
+  width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;
+  align-items:center!important;justify-content:center!important;border:2px solid #fff!important;
+  border-radius:50%!important;background:#a7193e!important;color:#fff!important;
+  font-size:22px!important;font-weight:900!important;cursor:pointer!important;
+  box-shadow:0 0 12px #fff,0 0 18px #ff315f!important;
+}
+html body #videoBoxFixed #sakUmmKulthumAudio{
+  position:absolute!important;left:12px!important;right:12px!important;bottom:10px!important;
+  z-index:2147483646!important;display:block!important;visibility:visible!important;opacity:1!important;
+  pointer-events:auto!important;width:calc(100% - 24px)!important;max-width:calc(100% - 24px)!important;
+  height:44px!important;min-height:44px!important;background:#f5f5f5!important;
+  border:1px solid #d8ffff!important;border-radius:24px!important;color-scheme:light!important;
+}
+@media(max-width:600px){
+ html body #videoBoxFixed{
+   top:12px!important;left:50%!important;transform:translateX(-50%)!important;
+   width:calc(100vw - 20px)!important;max-width:420px!important;height:220px!important;
+ }
+ html body #videoBoxFixed .video-box-title{top:8px!important;left:56px!important;right:56px!important;font-size:12px!important}
+ html body #videoBoxFixed #videoCloseBtn{top:6px!important;right:6px!important;width:40px!important;height:40px!important}
+ html body #videoBoxFixed #sakUmmKulthumAudio{left:8px!important;right:8px!important;bottom:9px!important;width:calc(100% - 16px)!important;max-width:calc(100% - 16px)!important}
+}
+</style>
+</body>
+</html>
