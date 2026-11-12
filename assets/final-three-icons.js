@@ -23,7 +23,7 @@ const labels={
   facebook:{ar:'فيس بوك',en:'Facebook'},
   textLibrary:{ar:'المكتبة النصية',en:'Text Library'},
   videoLibrary:{ar:'مكتبة الفيديو',en:'Video Library'},
-  live:{ar:'قنوات مباشرة',en:'Live Channels'},
+  live:{ar:'الإذاعة',en:'Radio'},
   castleTour:{ar:'تجول بالقلعة',en:'Castle Tour'},
   pong:{ar:'لعبة البونج',en:'Pong'},
   siteBackground:{ar:'خلفية الصفحة',en:'Page Background'},
@@ -534,6 +534,7 @@ function syncSiteBackgroundLock(){
   ensureTitanicShipLauncher();
   hideFacebookLaunchers();
   rebuildIconAppearance();
+  installRadioPopupLauncher();
   removeOldSeaSoundControl();
   requestAnimationFrame(placeSiteSoundAboveClock);
   updateSiteBackgroundButton();
@@ -747,6 +748,50 @@ function openSakPopup(popup){
   popup.style.setProperty('opacity','1','important');
   popup.style.setProperty('pointer-events','auto','important');
 }
+
+function installRadioPopupLauncher(){
+  if(document.documentElement.dataset.sakRadioPopupLauncher==='1')return;
+  document.documentElement.dataset.sakRadioPopupLauncher='1';
+  const close=()=>{
+    const modal=document.getElementById('sakRadioPopup');
+    if(modal)modal.remove();
+    document.body.style.overflow='';
+  };
+  const open=()=>{
+    close();
+    const modal=document.createElement('div');
+    modal.id='sakRadioPopup';
+    modal.setAttribute('role','dialog');
+    modal.setAttribute('aria-modal','true');
+    modal.setAttribute('aria-label',document.documentElement.lang==='en'?'Radio':'الإذاعة');
+    modal.style.cssText='position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;padding:max(8px,env(safe-area-inset-top)) 8px max(8px,env(safe-area-inset-bottom));background:rgba(9,4,18,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)';
+    const box=document.createElement('section');
+    box.style.cssText='position:relative;width:min(1180px,98vw);height:min(94dvh,980px);display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(255,174,225,.8);border-radius:20px;background:linear-gradient(145deg,#571847,#29133d);box-shadow:0 0 36px rgba(255,71,179,.34),0 20px 90px #000b';
+    const head=document.createElement('header');
+    head.style.cssText='display:flex;align-items:center;justify-content:center;min-height:54px;padding:8px 58px;border-bottom:1px solid rgba(255,174,225,.4);color:#fff0fa;font:900 21px Tajawal,Tahoma,Arial,sans-serif';
+    head.textContent=document.documentElement.lang==='en'?'Radio':'الإذاعة';
+    const btn=document.createElement('button');
+    btn.type='button';btn.textContent='×';btn.setAttribute('aria-label',document.documentElement.lang==='en'?'Close':'إغلاق');
+    btn.style.cssText='position:absolute;top:8px;inset-inline-end:10px;width:40px;height:40px;border:1px solid #ffb4df;border-radius:50%;background:#812d55;color:white;font-size:25px;cursor:pointer;z-index:2';
+    btn.addEventListener('click',close);
+    const frame=document.createElement('iframe');
+    frame.title=document.documentElement.lang==='en'?'Radio stations':'محطات الإذاعة';
+    frame.src='/live.html?section=radio';
+    frame.allow='autoplay; encrypted-media';
+    frame.style.cssText='width:100%;height:100%;flex:1;border:0;background:#16091e';
+    box.append(head,btn,frame);modal.appendChild(box);
+    modal.addEventListener('click',e=>{if(e.target===modal)close()});
+    document.body.appendChild(modal);document.body.style.overflow='hidden';
+  };
+  document.addEventListener('click',e=>{
+    const icon=e.target?.closest?.('#liveFlasher');
+    if(!icon)return;
+    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+    open();
+  },true);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('sakRadioPopup'))close()},true);
+}
+
 function ensureSeagullHub(utility){
   if(!utility)return;
   let hub=utility.querySelector(':scope > .sak-gull-hub');
@@ -915,6 +960,7 @@ function settle(){
 
   ensureTitanicShipLauncher();
   hideFacebookLaunchers();
+  installRadioPopupLauncher();
   loadVisitorCounterModule();
   ensureCastleRatingLauncher();
   watchFacebookEmbeds();
