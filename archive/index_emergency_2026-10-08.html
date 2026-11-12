@@ -41327,3 +41327,75 @@ html body #videoBoxFixed #videoCloseBtn{position:absolute!important;top:8px!impo
 </style>
 </body>
 </html>
+
+
+<style id="sak-umm-kulthum-audio-controls">
+html body #videoBoxFixed{overflow:hidden!important;isolation:isolate!important}
+html body #videoBoxFixed #fixedVideo{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;z-index:1!important;border:0!important}
+html body #videoBoxFixed #sakUmmKulthumAudio{
+ position:absolute!important;left:12px!important;right:12px!important;bottom:12px!important;
+ z-index:2147483647!important;display:block!important;width:calc(100% - 24px)!important;
+ height:42px!important;max-width:calc(100% - 24px)!important;opacity:1!important;
+ visibility:visible!important;pointer-events:auto!important;background:#f4f4f4!important;
+ border-radius:24px!important
+}
+html body #videoBoxFixed .video-box-title{z-index:2147483647!important;display:block!important;visibility:visible!important;opacity:1!important;pointer-events:none!important;top:8px!important;left:54px!important;right:54px!important;text-align:center!important}
+html body #videoBoxFixed #videoCloseBtn{z-index:2147483647!important;display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;width:42px!important;height:42px!important;align-items:center!important;justify-content:center!important}
+@media(max-width:600px){
+ html body #videoBoxFixed{top:12px!important;left:50%!important;transform:translateX(-50%)!important;width:calc(100vw - 24px)!important;height:220px!important;max-width:420px!important}
+ html body #videoBoxFixed #sakUmmKulthumAudio{left:8px!important;right:8px!important;bottom:10px!important;width:calc(100% - 16px)!important;max-width:calc(100% - 16px)!important}
+}
+</style>
+<script id="sak-umm-kulthum-audio-controls-js">
+(()=>{'use strict';
+ const STREAM='https://stream.zeno.fm/zsgrfxg71s8uv';
+ const box=document.getElementById('videoBoxFixed');
+ const frame=document.getElementById('fixedVideo');
+ if(!box||!frame)return;
+ let audio=document.getElementById('sakUmmKulthumAudio');
+ if(!audio){
+   audio=document.createElement('audio');
+   audio.id='sakUmmKulthumAudio';
+   audio.controls=true;
+   audio.preload='none';
+   audio.setAttribute('playsinline','');
+   audio.setAttribute('aria-label','مشغل إذاعة أم كلثوم — تشغيل وإيقاف والتحكم بالصوت');
+   audio.title='تشغيل إذاعة أم كلثوم';
+   box.appendChild(audio);
+ }
+ frame.style.display='none';
+ const priorOpen=window.openUmmKulthumRadio;
+ window.openUmmKulthumRadio=function(){
+   box.style.display='block';
+   frame.style.display='none';
+   audio.src=STREAM;
+   const p=audio.play();
+   if(p&&typeof p.catch==='function')p.catch(()=>{});
+ };
+ const close=window.closeFixedVideo;
+ window.closeFixedVideo=function(){
+   audio.pause();
+   audio.removeAttribute('src');
+   audio.load();
+   close?.();
+   box.style.display='none';
+   document.querySelector('.video-top-container-fixed')?.classList.remove('sak-eye-peer-hidden');
+ };
+ const eye=document.getElementById('sakSecondStreamCircleSecure');
+ if(eye){
+   const open=()=>{
+     document.querySelector('.video-top-container-fixed')?.classList.add('sak-eye-peer-hidden');
+     box.style.display='block';
+     frame.src='';
+     frame.style.display='none';
+     audio.src=STREAM;
+     const p=audio.play();
+     if(p&&typeof p.catch==='function')p.catch(()=>{});
+     const title=box.querySelector('.video-box-title');
+     if(title)title.textContent='📻 إذاعة أم كلثوم';
+   };
+   eye.addEventListener('click',open);
+   eye.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}});
+ }
+})();
+</script>
