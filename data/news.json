@@ -1,6 +1,14 @@
 {
-  "fetchedAt": "2026-11-12T22:48:22.450265+00:00",
+  "fetchedAt": "2026-11-13T03:01:49.991059+00:00",
   "items": [
+    {
+      "title": "المملكة تعرب عن تضامنها مع الإمارات إثر حادث مروري في الفجيرة",
+      "link": "https://ajel.sa/local/jzph8zn5m",
+      "desc": "وزارة الخارجية السعودية تعلن تضامن المملكة مع الإمارات بعد حادث مروري في الفجيرة أدى إلى وفاة وإصابة عدد من الأشخاص.",
+      "date": "Fri, 13 Nov 2026 00:12:16 GMT",
+      "source": "عاجل",
+      "category": "saudi"
+    },
     {
       "title": "عطل يضرب خدمات مايكروسوفت ويؤثر على آلاف المستخدمين",
       "link": "https://ajel.sa/misc/abu3x0tjo",
@@ -394,18 +402,26 @@
       "category": "saudi"
     },
     {
-      "title": "بوتين: نشر قوات أوروبية في أوكرانيا بعد اتفاق السلام سيؤدي إلى استئناف الحرب",
-      "link": "https://ajel.sa/international/eecor3lbq",
-      "desc": "حذر الرئيس الروسي فلاديمير بوتين من استئناف الحرب في أوكرانيا فور إبرام أي اتفاق سلام، حال نشر قوات أوروبية أو أجنبية على الأراضي الأوكرانية، مؤكدا أن موسكو ستعتبر هذه القوات أهدافا مشروعة للقوات…",
-      "date": "Thu, 12 Nov 2026 14:52:52 GMT",
-      "source": "عاجل",
-      "category": "saudi"
+      "title": "Scandal-hit Nvidia CEO Jensen Huang quits, plunging AI chipmaking giant into turmoil",
+      "link": "https://www.bbc.co.uk/news/articles/cmq5vd1wdgz6o?at_medium=RSS&at_campaign=rss",
+      "desc": "US lawmakers now want to question him over whether one of his alleged relationships was with a Chinese spy.",
+      "date": "Fri, 13 Nov 2026 02:39:00 GMT",
+      "source": "BBC News · World",
+      "category": "world"
     },
     {
-      "title": "US envoys meet Zelensky in Dublin after talks with Putin in Moscow",
-      "link": "https://www.bbc.co.uk/news/articles/cwrkgmymk55zo?at_medium=RSS&at_campaign=rss",
-      "desc": "US envoy Steve Witkoff says President Putin has agreed to European negotiators joining the next round of Ukraine talks.",
-      "date": "Thu, 12 Nov 2026 21:00:42 GMT",
+      "title": "Zelensky welcomes US bringing Europe into Russia-Ukraine peace talks",
+      "link": "https://www.bbc.co.uk/news/articles/ckn80j9jv3jxo?at_medium=RSS&at_campaign=rss",
+      "desc": "The Ukrainian president says it makes sense for European leaders to be involved as Ukraine hopes to eventually join the EU.",
+      "date": "Fri, 13 Nov 2026 02:01:35 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "Neither war nor peace in Tigray - is Ethiopia's latest conflict really over?",
+      "link": "https://www.bbc.co.uk/news/articles/cm3egjgvp794o?at_medium=RSS&at_campaign=rss",
+      "desc": "The army has taken control of most of Tigray's main towns - it is unclear if the TPLF is capable of fighting back.",
+      "date": "Fri, 13 Nov 2026 00:20:24 GMT",
       "source": "BBC News · World",
       "category": "world"
     },
@@ -426,10 +442,10 @@
       "category": "world"
     },
     {
-      "title": "Democrat Scott Colom makes history as Mississippi's first black senator since 19th Century",
-      "link": "https://www.bbc.co.uk/news/articles/cw7vppyr80eeo?at_medium=RSS&at_campaign=rss",
-      "desc": "In a state Trump won two years ago by 22 points, Colom's victory extends a string of Democratic wins in the Senate.",
-      "date": "Thu, 12 Nov 2026 12:56:55 GMT",
+      "title": "Australian footballers will not be charged after hotel incident, police say",
+      "link": "https://www.bbc.co.uk/news/articles/ckregjwr7njqo?at_medium=RSS&at_campaign=rss",
+      "desc": "Four Sydney Swans players had been under investigation after an alleged sexual assault after a game in Melbourne.",
+      "date": "Fri, 13 Nov 2026 02:33:07 GMT",
       "source": "BBC News · World",
       "category": "world"
     },
@@ -438,6 +454,14 @@
       "link": "https://www.bbc.co.uk/news/articles/cmvg2r3dq7xno?at_medium=RSS&at_campaign=rss",
       "desc": "Specialist Thomas Iglesias had shouted at Hegseth's group to be quiet after they could be heard talking and laughing at the Tomb of the Unknown Soldier.",
       "date": "Thu, 12 Nov 2026 18:47:35 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
+      "title": "Democrat Scott Colom makes history as Mississippi's first black senator since 19th Century",
+      "link": "https://www.bbc.co.uk/news/articles/cw7vppyr80eeo?at_medium=RSS&at_campaign=rss",
+      "desc": "In a state Trump won two years ago by 22 points, Colom's victory extends a string of Democratic wins in the Senate.",
+      "date": "Thu, 12 Nov 2026 12:56:55 GMT",
       "source": "BBC News · World",
       "category": "world"
     },
@@ -570,6 +594,14 @@
       "category": "world"
     },
     {
+      "title": "Military cemetery decorum: The tradition behind Hegseth's Veterans Day reprimand",
+      "link": "https://www.bbc.co.uk/news/videos/cv5y1309dg3go?at_medium=RSS&at_campaign=rss",
+      "desc": "BBC's Bernd Debusmann breaks down why Defence Secretary Hegseth's group was reprimanded at Arlington National Cemetery and the history behind its strict rules of conduct.",
+      "date": "Thu, 12 Nov 2026 23:42:52 GMT",
+      "source": "BBC News · World",
+      "category": "world"
+    },
+    {
       "title": "'We've got to run': Inside ruined Ukraine power plant under constant drone threat",
       "link": "https://www.bbc.co.uk/news/videos/cm93rp3gxn6qo?at_medium=RSS&at_campaign=rss",
       "desc": "Dan Johnson visits one of the country's largest power stations, barely left standing after a ballistic missile strike by Russia.",
@@ -634,10 +666,18 @@
       "category": "world"
     },
     {
-      "title": "\"أنصار الله\" تعلن استهداف خط أنابيب \"شرق-غرب\" وميناء ينبع النفطي وشركة أرامكو في الرياض",
+      "title": "جماعة أنصار الله تعلن استهداف أرامكو وخط أنابيب نفطي سعودي ومجلس الأمن يمدد العقوبات لعام إضافي",
       "link": "https://www.bbc.com/arabic/articles/cqy4jd7jzkv8o?at_medium=RSS&at_campaign=rss",
       "desc": "أعلنت جماعة أنصار الله استهداف منشآت نفطية سعودية، بينها محطة ضخ في خط أنابيب شرق-غرب وميناء ينبع النفطي وشركة أرامكو في الرياض، في تصعيد جديد للهجمات على السعودية. ويأتي ذلك وسط استمرار المواجهة بين الجماعة والتحالف بقيادة الرياض، وتزايد أهمية خط الأنابيب الذي يتيح للمملكة تصدير النفط بعيداً عن مضيق هرمز.",
-      "date": "Thu, 12 Nov 2026 21:51:15 GMT",
+      "date": "Fri, 13 Nov 2026 00:23:19 GMT",
+      "source": "BBC عربي · الشرق الأوسط",
+      "category": "saudi"
+    },
+    {
+      "title": "مايكروسوفت تسعى لاستعادة خدماتها بعد عطل عالمي يؤثر على أوتلوك وتيمز",
+      "link": "https://www.bbc.com/arabic/articles/cq62pmg4x2rzo?at_medium=RSS&at_campaign=rss",
+      "desc": "أبلغ مستخدمون حول العالم عن مشكلات في خدمات مايكروسوفت، بعدما أعلنت الشركة أن بنيتها التحتية تعرضت \"لضغط متزايد\".",
+      "date": "Fri, 13 Nov 2026 02:22:37 GMT",
       "source": "BBC عربي · الشرق الأوسط",
       "category": "saudi"
     },
@@ -686,14 +726,6 @@
       "link": "https://www.bbc.com/arabic/articles/c6wy9j09zp0wo?at_medium=RSS&at_campaign=rss",
       "desc": "قُتل ستة أشخاص على الأقل وأصيب 20 آخرون في غارة إسرائيلية استهدفت قسم الجراحة بمستشفى ناصر في خان يونس جنوبي غزة، وفق الدفاع المدني في القطاع. وتأتي الغارة رغم سريان اتفاق وقف إطلاق النار منذ تشرين الأول/أكتوبر الماضي، وسط استمرار سقوط قتلى وتفاقم الأزمة الإنسانية.",
       "date": "Thu, 12 Nov 2026 12:30:58 GMT",
-      "source": "BBC عربي · الشرق الأوسط",
-      "category": "saudi"
-    },
-    {
-      "title": "\"لا كهرباء ولا ماء ولا تدفئة\": الأوكرانيون يعانون نتيجة استهداف روسيا لشبكة الطاقة",
-      "link": "https://www.bbc.com/arabic/articles/c6742j4jknjgo?at_medium=RSS&at_campaign=rss",
-      "desc": "بالنسبة للآباء في بعض أنحاء أوكرانيا، أصبحت محاولة عيش حياة أسرية طبيعية في ظل توفر الكهرباء لبضع ساعات فقط يومياً، تشكل عبئاً ثقيلاً.",
-      "date": "Thu, 12 Nov 2026 13:09:48 GMT",
       "source": "BBC عربي · الشرق الأوسط",
       "category": "saudi"
     },
@@ -768,38 +800,6 @@
       "date": "Thu, 05 Nov 2026 17:34:27 GMT",
       "source": "BBC عربي · الشرق الأوسط",
       "category": "saudi"
-    },
-    {
-      "title": "شاهد البث المباشر لتلفزيون بي بي سي",
-      "link": "https://www.bbc.com/arabic/media-49522519?at_medium=RSS&at_campaign=rss",
-      "desc": "شاهد البث المباشر لتلفزيون بي بي سي",
-      "date": "Fri, 30 Aug 2019 08:36:18 GMT",
-      "source": "BBC عربي · الشرق الأوسط",
-      "category": "saudi"
-    },
-    {
-      "title": "بعد 21 عاماً على تفجيرات عمّان، لماذا لا يزال الأردن هدفاً للإرهاب؟",
-      "link": "https://www.bbc.com/arabic/articles/cm0rlr991kqpo?at_medium=RSS&at_campaign=rss",
-      "desc": "أعاد هجومان في الكرك وعمّان، نفذهما أشخاص سبق أن أُدينوا بقضايا إرهابية، ملف مكافحة الإرهاب إلى الواجهة في الأردن، وسط تحرك حكومي لتشديد العقوبات ومنع تكرار الهجمات.",
-      "date": "Tue, 10 Nov 2026 07:49:02 GMT",
-      "source": "BBC عربي · الشرق الأوسط",
-      "category": "saudi"
-    },
-    {
-      "title": "من اختارهن؟ تحقيق يكشف دور شخصيات من عالم الأزياء في استغلال فتيات لصالح جيفري إبستين",
-      "link": "https://www.bbc.com/arabic/articles/c69wzw1n1g50o?at_medium=RSS&at_campaign=rss",
-      "desc": "كيف تمكّن إبستين من الوصول إلى فتيات عبر عالم الأزياء بعد إدانته؟ تحقيق يكشف شبكة علاقات امتدت إلى المغرب",
-      "date": "Tue, 10 Nov 2026 11:52:03 GMT",
-      "source": "BBC عربي · الشرق الأوسط",
-      "category": "saudi"
-    },
-    {
-      "title": "ما سر الهندسة المعمارية التي \"لا مثيل لها\" في مدن اليمن القديمة؟",
-      "link": "https://www.bbc.com/arabic/articles/c9gkvl2np5e2o?at_medium=RSS&at_campaign=rss",
-      "desc": "بُنيت من الطين قبل حوالي 300 و500 عام. ويمكن أن يصل ارتفاع بعض هذه المباني في اليمن إلى حوالي 30 متراً، في حين أن أول ناطحات سحاب حديثة في شيكاغو كانت أعلى من ذلك بقليل!",
-      "date": "Mon, 09 Nov 2026 04:21:38 GMT",
-      "source": "BBC عربي · الشرق الأوسط",
-      "category": "saudi"
     }
   ],
   "sourceStatus": [
@@ -813,7 +813,7 @@
       "name": "BBC News · World",
       "category": "world",
       "ok": true,
-      "count": 29
+      "count": 33
     },
     {
       "name": "BBC عربي · الشرق الأوسط",
@@ -825,13 +825,13 @@
       "name": "أخبار السعودية",
       "category": "saudi",
       "ok": true,
-      "count": 101
+      "count": 102
     },
     {
       "name": "أخبار العالم",
       "category": "world",
       "ok": true,
-      "count": 102
+      "count": 100
     },
     {
       "name": "التقنية",
@@ -849,7 +849,7 @@
       "name": "الاقتصاد",
       "category": "economy",
       "ok": true,
-      "count": 98
+      "count": 100
     }
   ]
 }
