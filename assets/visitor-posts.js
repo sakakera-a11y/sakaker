@@ -125,8 +125,13 @@ function installVisitorPosts() {
     #visitorPostsOverlay.loading #visitorPostsLoading,#visitorPostsOverlay.needs-signin #visitorPostsLoading{display:grid}
     #visitorPostsDialog{width:min(1100px,100%);height:min(94dvh,900px);position:relative;border:1px solid #dfc15d;border-radius:18px;overflow:hidden;background:#0b1d24;box-shadow:0 24px 80px #000a}
     #visitorPostsClose{position:absolute;z-index:2;top:8px;inset-inline-end:8px;width:42px;height:42px;border:1px solid #fff7;border-radius:50%;background:#10232beF;color:#fff;font-size:25px;line-height:1;cursor:pointer}
-    #visitorPostsFrame{width:100%;height:100%;border:0;background:#102127}
-    @media(max-width:600px){#visitorPostsOverlay{padding:0}#visitorPostsDialog{width:100%;height:100dvh;border:0;border-radius:0}#visitorPostsClose{top:5px}}
+    #visitorPostsFrame{display:block;width:100%;height:100%;min-height:0;border:0;background:#102127}
+    @media(max-width:600px){
+      #visitorPostsOverlay{padding:0;place-items:stretch;overflow:hidden;touch-action:pan-y}
+      #visitorPostsDialog{box-sizing:border-box;display:flex;flex-direction:column;width:100%;height:100dvh;height:100svh;min-height:0;max-height:100%;border:0;border-radius:0;overflow:hidden;overscroll-behavior:contain}
+      #visitorPostsFrame{display:block;flex:1 1 auto;width:100%;height:0;min-height:0;max-height:none;overflow:auto;touch-action:pan-y}
+      #visitorPostsClose{top:5px}
+    }
   `;
   if (!document.getElementById("visitorPostsStyle")) document.head.appendChild(css);
 
@@ -327,6 +332,8 @@ function installVisitorPosts() {
     document.body.appendChild(overlay);
   }
   const frame = overlay.querySelector("iframe");
+  frame.setAttribute("scrolling", "yes");
+  frame.setAttribute("loading", "eager");
   const syncOverlayLanguage = () => {
     const english = document.documentElement.lang.toLowerCase().startsWith("en");
     const dialog = overlay.querySelector("#visitorPostsDialog");
