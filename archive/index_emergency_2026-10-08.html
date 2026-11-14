@@ -4404,6 +4404,62 @@ html body .cn-news-ticker{
   backdrop-filter:none!important
 }
 </style>
+
+<style id="sak-desktop-profile-overlap-fix">
+/* Desktop only: reserve a real profile column and keep logout separate from the avatar/video circles. */
+@media (min-width:801px){
+  html body #sakFestiveHeader{
+    grid-template-columns:118px minmax(210px,1fr) minmax(140px,210px) minmax(190px,240px)!important;
+    column-gap:10px!important;
+    align-items:start!important;
+  }
+  html body #sakFestiveHeader #userProfile{
+    position:relative!important;
+    z-index:2147483001!important;
+    isolation:isolate!important;
+    display:flex!important;
+    flex-flow:row nowrap!important;
+    align-items:center!important;
+    justify-content:flex-end!important;
+    width:100%!important;
+    min-width:190px!important;
+    max-width:100%!important;
+    gap:7px!important;
+    overflow:visible!important;
+  }
+  html body #sakFestiveHeader #userPhoto{
+    position:relative!important;
+    z-index:1!important;
+    flex:0 0 28px!important;
+    width:28px!important;
+    height:28px!important;
+  }
+  html body #sakFestiveHeader #userName{
+    flex:0 1 auto!important;
+    min-width:0!important;
+    max-width:88px!important;
+  }
+  html body #sakFestiveHeader #logoutButton{
+    position:relative!important;
+    z-index:2!important;
+    display:inline-flex!important;
+    flex:0 0 auto!important;
+    align-items:center!important;
+    justify-content:center!important;
+    min-width:42px!important;
+    width:auto!important;
+    height:36px!important;
+    padding:0 8px!important;
+    margin:0!important;
+    white-space:nowrap!important;
+    visibility:visible!important;
+    opacity:1!important;
+    pointer-events:auto!important;
+  }
+  html body #sakFestiveHeader #logoutIcon{flex:0 0 auto!important}
+}
+</style>
+
 </head>
 <body>
 
