@@ -78,12 +78,22 @@ async function fetchTodayCount(env) {
   return todayCount;
 }
 async function readCounts(db, request, env) {
-  const [today, active] = await Promise.all([
+  const [todayResult, activeResult] = await Promise.allSettled([
     fetchTodayCount(env),
     db.prepare("SELECT COUNT(*) AS count FROM active_sessions WHERE last_seen >= ?1")
       .bind(Date.now() - ACTIVE_WINDOW_MS).first()
   ]);
-  return { today, online: Number(active?.count || 0), timezone: "UTC" };
+  if (activeResult.status === "rejected") throw activeResult.reason;
+  const today = todayResult.status === "fulfilled" ? todayResult.value : null;
+  if (todayResult.status === "rejected") {
+    console.error("Visitor daily analytics unavailable", todayResult.reason);
+  }
+  return {
+    today,
+    online: Number(activeResult.value?.count || 0),
+    timezone: "UTC",
+    todayAvailable: today !== null
+  };
 }
 export async function onRequestOptions({ request, env }) {
   if (!validRequest(request, env)) return json(request, { error: "origin_not_allowed" }, 403, env);
