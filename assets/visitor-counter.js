@@ -35,7 +35,6 @@
       (document.body || document.documentElement).appendChild(root);
     }
     const metrics = [
-      ["svcTotal", "👥", "مجموع الزوار الفريدين يومياً", "Summed daily unique visitors"],
       ["svcToday", "📅", "زوار اليوم (UTC)", "Today's visitors (UTC)"],
       ["svcOnline", "🟢", "متصل الآن", "Online now"]
     ];
@@ -47,9 +46,6 @@
       const label = document.createElement("span"); label.className = "svc-label";
       label.dataset.ar = ar; label.dataset.en = en; label.textContent = english() ? en : ar;
       const value = document.createElement("strong"); value.id = id; value.textContent = "—";
-      if (id === "svcTotal") value.title = english()
-        ? "Sum of daily unique IP counts in Cloudflare history; the same visitor may be counted on different days."
-        : "مجموع عناوين IP الفريدة لكل يوم ضمن تاريخ Cloudflare؛ قد يُحتسب الزائر نفسه في أيام مختلفة.";
       if (id === "svcToday") value.title = english()
         ? "Cloudflare daily rollup uses UTC dates." : "إحصاء Cloudflare اليومي يعتمد تاريخ UTC.";
       item.append(glyph, label, value); root.appendChild(item);
@@ -78,9 +74,8 @@
   }
   function display(data) {
     if (!data || !Number.isFinite(Number(data.online))) return;
-    const total = document.getElementById("svcTotal"), today = document.getElementById("svcToday");
+    const today = document.getElementById("svcToday");
     const online = document.getElementById("svcOnline");
-    if (total) total.textContent = formatMetric(data.total);
     if (today) today.textContent = formatMetric(data.today);
     if (online) online.textContent = formatMetric(data.online);
     online?.closest(".svc-item")?.classList.add("svc-online-stable");
