@@ -56,88 +56,34 @@ async function graphql(env, query, variables = {}) {
   if (payload.errors?.length) throw new Error("Cloudflare Analytics GraphQL query failed");
   return payload.data;
 }
-function utcDate(date) { return date.toISOString().slice(0, 10); }
-function addUtcDays(day, count) {
-  const date = new Date(day + "T00:00:00.000Z");
-  date.setUTCDate(date.getUTCDate() + count);
-  return utcDate(date);
-}
-async function fetchAnalyticsCounts(env) {
+async function fetchTodayCount(env) {
   if (!env.CF_ANALYTICS_API_TOKEN || !env.CF_ZONE_ID) {
-    return { total: null, today: null, analyticsConfigured: false };
+    throw new Error("Cloudflare Analytics is not configured");
   }
-  const settingsQuery = `query CounterDatasetSettings($zoneTag: String) {
-    viewer { zones(filter: { zoneTag: $zoneTag }) {
-      settings { httpRequests1dGroups { enabled maxDuration maxPageSize notOlderThan availableFields } }
-    } }
-  }`;
-  const settingsData = await graphql(env, settingsQuery, { zoneTag: env.CF_ZONE_ID });
-  const settings = settingsData?.viewer?.zones?.[0]?.settings?.httpRequests1dGroups;
-  if (!settings?.enabled) throw new Error("Cloudflare daily analytics dataset is not enabled");
-  const fields = Array.isArray(settings.availableFields) ? settings.availableFields : [];
-  if (!fields.includes("uniq_uniques")) throw new Error("Cloudflare daily unique-IP metric is unavailable");
-  const maxDuration = Number(settings.maxDuration), retention = Number(settings.notOlderThan);
-  const maxPageSize = Math.floor(Number(settings.maxPageSize));
-  if (![maxDuration, retention, maxPageSize].every(value => Number.isFinite(value) && value > 0)) {
-    throw new Error("Cloudflare returned invalid Analytics dataset limits");
-  }
-  const now = new Date(), startDay = utcDate(new Date(now.getTime() - retention * 1000));
-  const endDay = utcDate(now), daysPerQuery = Math.max(1, Math.min(Math.floor(maxDuration / 86400), Math.max(1, maxPageSize - 1)));
-  const dailyQuery = `query DailyUniqueVisitors($zoneTag: String, $start: Date, $end: Date, $limit: Int) {
+  const today = new Date().toISOString().slice(0, 10);
+  const query = `query TodayUniqueVisitors($zoneTag: String, $day: Date) {
     viewer { zones(filter: { zoneTag: $zoneTag }) {
       httpRequests1dGroups(
-        limit: $limit
-        filter: { date_geq: $start, date_leq: $end }
-        orderBy: [date_ASC]
+        limit: 1
+        filter: { date_geq: $day, date_leq: $day }
       ) { dimensions { date } uniq { uniques } }
     } }
   }`;
-  let total = 0, today = 0, dayCount = 0, cursor = startDay;
-  while (cursor <= endDay) {
-    const chunkEndCandidate = addUtcDays(cursor, daysPerQuery - 1);
-    const chunkEnd = chunkEndCandidate < endDay ? chunkEndCandidate : endDay;
-    const data = await graphql(env, dailyQuery, {
-      zoneTag: env.CF_ZONE_ID, start: cursor, end: chunkEnd, limit: maxPageSize
-    });
-    const rows = data?.viewer?.zones?.[0]?.httpRequests1dGroups;
-    if (!Array.isArray(rows)) throw new Error("Cloudflare returned an invalid daily Analytics result");
-    if (rows.length >= maxPageSize) throw new Error("Cloudflare Analytics page limit reached; refusing an incomplete total");
-    for (const row of rows) {
-      const count = Number(row?.uniq?.uniques);
-      if (!Number.isFinite(count) || count < 0) throw new Error("Cloudflare returned an invalid unique-IP count");
-      total += count;
-      dayCount += 1;
-      if (row?.dimensions?.date === endDay) today = count;
-    }
-    cursor = addUtcDays(chunkEnd, 1);
-  }
-  return {
-    total, today, analyticsConfigured: true, totalBasis: "sum_of_daily_unique_ips",
-    timezone: "UTC", historyStart: startDay, historyEnd: endDay, daysReturned: dayCount
-  };
-}
-async function readAnalyticsCounts(request, env) {
-  const cache = typeof caches !== "undefined" ? caches.default : null;
-  const cacheKey = new Request(new URL("/__sakaker_analytics_counter_v1", new URL(request.url).origin));
-  if (cache) {
-    const cached = await cache.match(cacheKey);
-    if (cached) return cached.json();
-  }
-  const counts = await fetchAnalyticsCounts(env);
-  if (cache && counts.analyticsConfigured) {
-    await cache.put(cacheKey, new Response(JSON.stringify(counts), {
-      headers: { "Cache-Control": "public, max-age=" + ANALYTICS_CACHE_TTL_SECONDS }
-    }));
-  }
-  return counts;
+  const data = await graphql(env, query, { zoneTag: env.CF_ZONE_ID, day: today });
+  const rows = data?.viewer?.zones?.[0]?.httpRequests1dGroups;
+  if (!Array.isArray(rows)) throw new Error("Invalid Cloudflare daily Analytics response");
+  const row = rows.find(item => item?.dimensions?.date === today);
+  const todayCount = row ? Number(row.uniq?.uniques) : 0;
+  if (!Number.isFinite(todayCount) || todayCount < 0) throw new Error("Invalid daily visitor count");
+  return todayCount;
 }
 async function readCounts(db, request, env) {
-  const [analytics, active] = await Promise.all([
-    readAnalyticsCounts(request, env),
+  const [today, active] = await Promise.all([
+    fetchTodayCount(env),
     db.prepare("SELECT COUNT(*) AS count FROM active_sessions WHERE last_seen >= ?1")
       .bind(Date.now() - ACTIVE_WINDOW_MS).first()
   ]);
-  return { ...analytics, online: Number(active?.count || 0) };
+  return { today, online: Number(active?.count || 0), timezone: "UTC" };
 }
 export async function onRequestOptions({ request, env }) {
   if (!validRequest(request, env)) return json(request, { error: "origin_not_allowed" }, 403, env);
