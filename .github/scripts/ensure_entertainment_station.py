@@ -11,7 +11,7 @@ if '<html' not in text.lower() or '</html>' not in text.lower():
 TITLE = 'abwalqmrzmrd castle'
 STYLE = '<link id="sak-compact-main-icons" rel="stylesheet" href="/assets/compact-main-icons.css?v=20261104-hide-facebook-ship1">'
 EXTRA_HIDE_STYLE = '<link id="sak-hide-facebook-ship-launchers" rel="stylesheet" href="/assets/hide-facebook-ship-launchers.css?v=20261104-global1">'
-LOADER = '<script id="sak-entertainment-runtime-loader" src="/assets/entertainment-station.js?v=20261002-2" defer></script>'
+LOADER = '<script id="sak-entertainment-runtime-loader" src="/assets/entertainment-station.js?v=20261125-3" defer></script>'
 ICONS_SCRIPT = '<script id="sak-final-three-icons-loader" src="/assets/final-three-icons.js?v=20261111-newsletter-archive6" defer></script>'
 
 # Replace the old site name anywhere it remains in visible/page metadata text.
