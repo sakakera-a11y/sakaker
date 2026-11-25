@@ -188,11 +188,24 @@ async function openChess(){
   catch(_){alert(en()?'Chess could not load. Please check your connection and retry.':'تعذر تحميل الشطرنج. تحقق من الاتصال ثم أعد المحاولة.')}
   finally{chessLoading=false}
 }
-let castleGamesLoading=false;
+let castleGamesLoading=false,castleGamesPromise=null;
+function loadCastleGames(){
+  if(window.SakakerCastleGames)return Promise.resolve();
+  if(castleGamesPromise)return castleGamesPromise;
+  castleGamesPromise=new Promise((resolve,reject)=>{
+    const script=document.createElement('script');
+    script.src='/assets/castle-games.js?v=20261125-3';
+    script.async=true;
+    script.onload=()=>window.SakakerCastleGames?resolve():reject(new Error('Game API was not registered'));
+    script.onerror=()=>reject(new Error('Game script request failed'));
+    document.head.appendChild(script);
+  }).catch(error=>{castleGamesPromise=null;throw error});
+  return castleGamesPromise;
+}
 async function openCastleGame(which){
   if(castleGamesLoading)return;castleGamesLoading=true;
-  try{const mod=await import('/assets/castle-games.js?v=20261125-1');const api=window.SakakerCastleGames;if(!api||typeof api[which]!=='function')throw Error('Game module unavailable');api[which]();}
-  catch(_){alert(en()?'The game could not load. Check your connection and try again.':'تعذر تحميل اللعبة. تحقق من الاتصال ثم أعد المحاولة.')}
+  try{await loadCastleGames();const api=window.SakakerCastleGames;if(!api||typeof api[which]!=='function')throw Error('Game module unavailable');api[which]();}
+  catch(error){console.error('[Sakaker Castle Games]',error);alert(en()?'The game could not load. Please refresh and try again.':'تعذر تحميل اللعبة. حدّث الصفحة ثم أعد المحاولة.')}
   finally{castleGamesLoading=false}
 }
 function launch(action){
