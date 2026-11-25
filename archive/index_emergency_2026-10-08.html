@@ -40026,7 +40026,7 @@ html body:not(.locked) #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsD
    if(modal)return modal;
    modal=document.createElement('dialog');
    modal.id='sakEntertainmentStation';modal.hidden=true;modal.setAttribute('role','dialog');modal.setAttribute('aria-modal','true');modal.setAttribute('aria-labelledby','sakEntertainmentTitle');
-   modal.innerHTML='<div class="sak-ent-panel"><div class="sak-ent-head"><h2 id="sakEntertainmentTitle"></h2><button id="sakEntertainmentClose" type="button" aria-label="Close">×</button></div><div id="sakEntertainmentGrid"><button class="sak-ent-item" type="button" data-action="music"><span class="sak-ent-symbol">🎹</span><span></span></button><button class="sak-ent-item" type="button" data-action="creative"><span class="sak-ent-symbol">🎨</span><span></span></button><button class="sak-ent-item" type="button" data-action="pong"><span class="sak-ent-symbol">🏓</span><span></span></button><button class="sak-ent-item" type="button" data-action="chat"><span class="sak-ent-symbol">💬</span><span></span></button><button class="sak-ent-item" type="button" data-action="chess"><span class="sak-ent-symbol">♞</span><span></span></button></div></div>';
+   modal.innerHTML='<div class="sak-ent-panel"><div class="sak-ent-head"><h2 id="sakEntertainmentTitle"></h2><button id="sakEntertainmentClose" type="button" aria-label="Close">×</button></div><div id="sakEntertainmentGrid"><button class="sak-ent-item" type="button" data-action="music"><span class="sak-ent-symbol">🎹</span><span></span></button><button class="sak-ent-item" type="button" data-action="creative"><span class="sak-ent-symbol">🎨</span><span></span></button><button class="sak-ent-item" type="button" data-action="pong"><span class="sak-ent-symbol">🏓</span><span></span></button><button class="sak-ent-item" type="button" data-action="chat"><span class="sak-ent-symbol">💬</span><span></span></button><button class="sak-ent-item" type="button" data-action="chess"><span class="sak-ent-symbol">♞</span><span></span></button><button class="sak-ent-item" type="button" data-action="checkers"><span class="sak-ent-symbol">⚫</span><span></span></button><button class="sak-ent-item" type="button" data-action="snake"><span class="sak-ent-symbol">🐍</span><span></span></button></div></div>';
    document.body.appendChild(modal);
    $('sakEntertainmentClose').addEventListener('click',closePanel);
    modal.addEventListener('click',e=>{if(e.target===modal)closePanel()});modal.addEventListener('cancel',e=>{e.preventDefault();closePanel()});
@@ -40039,7 +40039,7 @@ html body:not(.locked) #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsD
    modal.dir=en()?'ltr':'rtl';
    const title=$('sakEntertainmentTitle');if(title)title.textContent=en()?'Entertainment Station':'المحطة الترفيهية';
    const close=$('sakEntertainmentClose');if(close){close.title=en()?'Close':'إغلاق';close.setAttribute('aria-label',close.title)}
-   const names={music:en()?'Music Studio':'استديو الموسيقى',creative:en()?'Creative Studio':'الاستديو الإبداعي',pong:en()?'Pong Game':'لعبة البونج',chat:en()?'Chat':'الشات',chess:en()?'Chess Game':'لعبة الشطرنج'};
+   const names={music:en()?'Music Studio':'استديو الموسيقى',creative:en()?'Creative Studio':'الاستديو الإبداعي',pong:en()?'Pong Game':'لعبة البونج',chat:en()?'Chat':'الشات',chess:en()?'Chess Game':'لعبة الشطرنج',checkers:en()?'Checkers':'لعبة الداما',snake:en()?'Snake':'لعبة الثعبان'};
    modal.querySelectorAll('.sak-ent-item').forEach(item=>{const span=item.querySelector('span:last-child');if(span)span.textContent=names[item.dataset.action]||item.dataset.action;item.title=names[item.dataset.action]||'';item.setAttribute('aria-label',item.title)});
  }
  let previousOverflow='';
@@ -40051,6 +40051,13 @@ html body:not(.locked) #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsD
    catch(error){alert(en()?'Chess could not load. Please check your connection and retry.':'تعذر تحميل الشطرنج. تحقق من الاتصال ثم أعد المحاولة.')}
    finally{loadingChess=false}
  }
+ let loadingCastleGame=false;
+ async function openCastleGame(which){
+   if(loadingCastleGame)return;loadingCastleGame=true;
+   try{await import('/assets/castle-games.js?v=20261125-2');const api=window.SakakerCastleGames;if(!api||typeof api[which]!=='function')throw new Error('Game API unavailable');api[which]()}
+   catch(error){alert(en()?'The game could not load. Please refresh and try again.':'تعذر تحميل اللعبة. حدّث الصفحة ثم أعد المحاولة.')}
+   finally{loadingCastleGame=false}
+ }
  function clickTarget(id,missingAr,missingEn){
    const target=$(id);if(target){target.click();return true}
    alert(en()?missingEn:missingAr);return false;
@@ -40058,6 +40065,8 @@ html body:not(.locked) #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsD
  function launch(action){
    closePanel();
    if(action==='chess'){openChess();return}
+   if(action==='checkers'){openCastleGame('openCheckers');return}
+   if(action==='snake'){openCastleGame('openSnake');return}
    if(action==='music'){clickTarget(targets.music,'استديو الموسيقى لم يكتمل تحميله بعد. أعد المحاولة بعد لحظة.','Music Studio is still loading. Try again in a moment.');return}
    if(action==='creative'){clickTarget(targets.creative,'الاستديو الإبداعي لم يكتمل تحميله بعد. أعد المحاولة بعد لحظة.','Creative Studio is still loading. Try again in a moment.');return}
    if(action==='pong'){clickTarget(targets.pong,'لعبة البونج لم تكتمل بعد. أعد المحاولة بعد لحظة.','Pong is still loading. Try again in a moment.');return}
@@ -41371,7 +41380,7 @@ html body .cards #castleStoriesIndexCard:focus-visible{
 
 <script src="/assets/news-recovery.js?v=20261110-anime60" defer></script>
 
-<script defer src="/assets/visitor-counter.js?v=20261107-cloudflare-analytics"></script>
+<script defer src="/assets/visitor-counter.js?v=20261120-daily-online-activation"></script>
 
 <script src="/assets/main-news-bar.js?v=20261111-main-news-single" defer></script>
 
