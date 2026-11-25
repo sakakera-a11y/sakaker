@@ -4,7 +4,7 @@ const $=id=>document.getElementById(id);
 let language=(()=>{try{const saved=localStorage.getItem('sakCastleNewspaperLang');if(saved==='en'||saved==='ar')return saved;}catch(_){}const page=String(document.documentElement.lang||'').toLowerCase();return page.startsWith('en')?'en':'ar';})();
 const enText={
 'صحيفة القلعة':'Castle Newspaper','أخبار القلعة':'Castle News','الأخبار':'News','الكلمات المتقاطعة':'Daily Crossword','الاختلافات اليومية':'Daily Differences','حظك اليوم':'Daily Horoscope','إغلاق':'Close','عاجل':'Ajel','BBC News · World':'BBC News · World','تعذر الاتصال بمصادر الأخبار الآن. حاول التحديث بعد قليل.':'Could not connect to news sources. Please try again shortly.','جارٍ فتح الصحيفة…':'Opening the newspaper…','مصدر الخبر':'News source',
-'الكل':'All','السعودية':'Saudi Arabia','العالم':'World','الاقتصاد':'Business','الرياضة':'Sports','التقنية':'Technology','الثقافة والفنون':'Arts & Culture','العلوم':'Science','الترفيه':'Entertainment',
+'أخبار الموقع':'Site News','الكل':'All','السعودية':'Saudi Arabia','العالم':'World','الاقتصاد':'Business','الرياضة':'Sports','التقنية':'Technology','الثقافة والفنون':'Arts & Culture','العلوم':'Science','الترفيه':'Entertainment',
 'جارٍ التحديث…':'Updating…','تحديث الأخبار':'Refresh News','آخر تحديث: ':'Last updated: ','مصادر الصحيفة':'Newspaper sources',
 'جارٍ جلب الأخبار من المصادر…':'Loading headlines from sources…','لا توجد أخبار متاحة حالياً؛ حاول التحديث لاحقاً.':'No headlines are available right now. Please try again later.',
 '🧩 الكلمات المتقاطعة اليومية':'🧩 Daily Crossword','حل الكلمتين؛ تشتركان في الحرف الأول داخل المربع المشترك.':'Solve both words. They share the first letter in the intersecting square.',
@@ -48,7 +48,13 @@ const feeds=[
 {name:'الرياضة',url:'https://news.google.com/rss/search?q=الرياضة&hl=ar&gl=SA&ceid=SA:ar',category:'sports'},
 {name:'الاقتصاد',url:'https://news.google.com/rss/search?q=الاقتصاد&hl=ar&gl=SA&ceid=SA:ar',category:'economy'}
 ];
-const categories={all:'الكل',saudi:'السعودية',world:'العالم',economy:'الاقتصاد',sports:'الرياضة',tech:'التقنية',culture:'الثقافة والفنون',science:'العلوم',entertainment:'الترفيه'};
+const categories={all:'الكل',saudi:'السعودية',world:'العالم',economy:'الاقتصاد',sports:'الرياضة',tech:'التقنية',culture:'الثقافة والفنون',science:'العلوم',entertainment:'الترفيه',site:'أخبار الموقع'};
+const siteUpdates=[
+ {title:'إضافة لعبتين جديدتين إلى المحطة الترفيهية',enTitle:'Two new games added to the Entertainment Station',desc:'تجري إضافة لعبتي الداما والثعبان إلى المحطة الترفيهية، إلى جانب البونج والشطرنج، مع مستويات لعب متدرجة.',enDesc:'Checkers and Snake are being added alongside Pong and Chess, with progressive difficulty levels.',date:'2026-11-25',source:'إدارة موقع سكاكر',category:'site',link:''},
+ {title:'تطوير لعبة الثعبان ومعالجة مشكلة التحميل',enTitle:'Snake game loading improvements',desc:'نعمل على معالجة مشكلة تحميل لعبة الثعبان والتحقق من تشغيلها بصورة صحيحة على الهاتف والحاسوب.',enDesc:'We are addressing the Snake game loading issue and checking compatibility on phones and computers.',date:'2026-11-25',source:'تحديثات تقنية',category:'site',link:''},
+ {title:'تحديث صحيفة القلعة والأخبار اليومية',enTitle:'Castle Newspaper and daily news updated',desc:'تم تحديث صحيفة القلعة بتاريخ اليوم، وتجديد موجز الأخبار وإضافة الأخبار اليومية من مصادر متعددة.',enDesc:'The Castle Newspaper has been dated for today, with refreshed headlines from multiple news sources.',date:'2026-11-25',source:'صحيفة القلعة',category:'site',link:''},
+ {title:'استمرار تطوير الموقع مع الحفاظ على الأقسام الحالية',enTitle:'Ongoing site improvements while preserving existing sections',desc:'تتواصل أعمال التطوير مع المحافظة على البونج والشطرنج وبقية نوافذ وأقسام الموقع دون تغيير تصميمها الأساسي.',enDesc:'Development continues while preserving Pong, Chess, and the other existing site sections and their core design.',date:'2026-11-25',source:'إدارة موقع سكاكر',category:'site',link:''}
+];
 let items=[],category='all',loading=false,lastLoad=0,found=new Set(),newsError='',sourceStatus=[];
 function mount(){
  const oldTopButton=$('sakNewsLaunch');if(oldTopButton)oldTopButton.remove();
@@ -259,7 +265,7 @@ function renderNews(){
  const meta=document.createElement('div');meta.className='cn-meta cn-updated';meta.textContent=lastLoad?(language==='en'?'Last updated: ':'آخر تحديث: ')+new Date(lastLoad).toLocaleString(language==='ar'?'ar-SA':'en-GB'):(language==='en'?'Live news sources':'مصادر الأخبار المباشرة');p.appendChild(meta);
  if(sourceStatus.length){const summary=document.createElement('div');summary.className='cn-meta';const ok=sourceStatus.filter(x=>x.ok).length;summary.textContent=language==='en'?'Sources: '+ok+'/'+sourceStatus.length+' responding':'المصادر المتصلة: '+ok+' من '+sourceStatus.length;summary.title=sourceStatus.map(x=>x.name+': '+(x.ok?'OK':x.error||'Unavailable')).join(' · ');p.appendChild(summary);}
  if(newsError){const status=document.createElement('div');status.className='cn-status';status.setAttribute('role','status');status.textContent=language==='en'?(items.length?'Live update failed. Showing saved headlines.':'News sources are temporarily unavailable. Please try again.'):(items.length?'تعذر التحديث المباشر؛ نعرض الأخبار المحفوظة حالياً.':'مصادر الأخبار غير متاحة مؤقتاً. يرجى المحاولة مرة أخرى.');p.appendChild(status);}
- const list=items.filter(x=>category==='all'||x.category===category);
+ const list=category==='site'?siteUpdates.map(x=>({...x,title:language==='en'?x.enTitle:x.title,desc:language==='en'?x.enDesc:x.desc,source:language==='en'?'Sakaker Site Team':x.source})):items.filter(x=>category==='all'||x.category===category);
  if(!list.length){const e=document.createElement('div');e.className='cn-empty';e.textContent=loading?'جارٍ جلب الأخبار من المصادر…':'لا توجد أخبار متاحة حالياً؛ حاول التحديث لاحقاً.';p.appendChild(e);}
  list.forEach(x=>{const card=document.createElement('article');card.className='cn-story';const a=document.createElement('a');a.href=x.link;a.target='_blank';a.rel='noopener noreferrer';a.textContent=x.title;card.appendChild(a);const m=document.createElement('div');m.className='cn-meta';m.textContent=x.source+(x.date?' · '+x.date:'');card.appendChild(m);if(x.desc){const d=document.createElement('div');d.className='cn-desc';d.textContent=x.desc;card.appendChild(d);}p.appendChild(card);});
  applyLanguage(p);
