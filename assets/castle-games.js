@@ -67,3 +67,4 @@ function openSnake(){
 }
 window.SakakerCastleGames={openCheckers,openSnake};
 })();
+// Deployment retry marker: keep the castle games module independently cacheable.
