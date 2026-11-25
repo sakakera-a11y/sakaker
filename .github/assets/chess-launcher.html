@@ -51,7 +51,7 @@ html body #sakakerAllIconsDock .sakaker-utility-slot[data-sak-entertainment-hidd
    if(modal)return modal;
    modal=document.createElement('div');
    modal.id='sakEntertainmentStation';modal.hidden=true;modal.setAttribute('role','dialog');modal.setAttribute('aria-modal','true');
-   modal.innerHTML='<div class="sak-ent-panel"><div class="sak-ent-head"><h2 id="sakEntertainmentTitle"></h2><button id="sakEntertainmentClose" type="button" aria-label="Close">×</button></div><div id="sakEntertainmentGrid"><button class="sak-ent-item" type="button" data-action="music"><span class="sak-ent-symbol">🎹</span><span></span></button><button class="sak-ent-item" type="button" data-action="creative"><span class="sak-ent-symbol">🎨</span><span></span></button><button class="sak-ent-item" type="button" data-action="pong"><span class="sak-ent-symbol">🏓</span><span></span></button><button class="sak-ent-item" type="button" data-action="chat"><span class="sak-ent-symbol">💬</span><span></span></button><button class="sak-ent-item" type="button" data-action="chess"><span class="sak-ent-symbol">♞</span><span></span></button></div></div>';
+   modal.innerHTML='<div class="sak-ent-panel"><div class="sak-ent-head"><h2 id="sakEntertainmentTitle"></h2><button id="sakEntertainmentClose" type="button" aria-label="Close">×</button></div><div id="sakEntertainmentGrid"><button class="sak-ent-item" type="button" data-action="music"><span class="sak-ent-symbol">🎹</span><span></span></button><button class="sak-ent-item" type="button" data-action="creative"><span class="sak-ent-symbol">🎨</span><span></span></button><button class="sak-ent-item" type="button" data-action="pong"><span class="sak-ent-symbol">🏓</span><span></span></button><button class="sak-ent-item" type="button" data-action="chat"><span class="sak-ent-symbol">💬</span><span></span></button><button class="sak-ent-item" type="button" data-action="chess"><span class="sak-ent-symbol">♞</span><span></span></button><button class="sak-ent-item" type="button" data-action="checkers"><span class="sak-ent-symbol">⚫</span><span></span></button><button class="sak-ent-item" type="button" data-action="snake"><span class="sak-ent-symbol">🐍</span><span></span></button></div></div>';
    document.body.appendChild(modal);
    $('sakEntertainmentClose').addEventListener('click',closePanel);
    modal.addEventListener('click',e=>{if(e.target===modal)closePanel()});
@@ -64,7 +64,7 @@ html body #sakakerAllIconsDock .sakaker-utility-slot[data-sak-entertainment-hidd
    modal.dir=en()?'ltr':'rtl';
    const title=$('sakEntertainmentTitle');if(title)title.textContent=en()?'Entertainment Station':'المحطة الترفيهية';
    const close=$('sakEntertainmentClose');if(close){close.title=en()?'Close':'إغلاق';close.setAttribute('aria-label',close.title)}
-   const names={music:en()?'Music Studio':'استديو الموسيقى',creative:en()?'Creative Studio':'الاستديو الإبداعي',pong:en()?'Pong Game':'لعبة البونج',chat:en()?'Chat':'الشات',chess:en()?'Chess Game':'لعبة الشطرنج'};
+   const names={music:en()?'Music Studio':'استديو الموسيقى',creative:en()?'Creative Studio':'الاستديو الإبداعي',pong:en()?'Pong Game':'لعبة البونج',chat:en()?'Chat':'الشات',chess:en()?'Chess Game':'لعبة الشطرنج',checkers:en()?'Checkers':'لعبة الداما',snake:en()?'Snake':'لعبة الثعبان'};
    modal.querySelectorAll('.sak-ent-item').forEach(item=>{const span=item.querySelector('span:last-child');if(span)span.textContent=names[item.dataset.action]||item.dataset.action;item.title=names[item.dataset.action]||'';item.setAttribute('aria-label',item.title)});
  }
  function openPanel(){const modal=panel();modal.hidden=false;document.body.style.overflow='hidden';setTimeout(()=>$('sakEntertainmentClose')?.focus(),0)}
@@ -75,6 +75,23 @@ html body #sakakerAllIconsDock .sakaker-utility-slot[data-sak-entertainment-hidd
    catch(error){alert(en()?'Chess could not load. Please check your connection and retry.':'تعذر تحميل الشطرنج. تحقق من الاتصال ثم أعد المحاولة.')}
    finally{loadingChess=false}
  }
+ let castleGamesLoading=false,castleGamesPromise=null;
+ function loadCastleGames(){
+   if(window.SakakerCastleGames)return Promise.resolve();
+   if(castleGamesPromise)return castleGamesPromise;
+   castleGamesPromise=new Promise((resolve,reject)=>{
+     const script=document.createElement('script');script.src='/assets/castle-games.js?v=20261125-3';script.async=true;
+     script.onload=()=>window.SakakerCastleGames?resolve():reject(new Error('Game API was not registered'));
+     script.onerror=()=>reject(new Error('Game script request failed'));document.head.appendChild(script);
+   }).catch(error=>{castleGamesPromise=null;throw error});
+   return castleGamesPromise;
+ }
+ async function openCastleGame(which){
+   if(castleGamesLoading)return;castleGamesLoading=true;
+   try{await loadCastleGames();const api=window.SakakerCastleGames;if(!api||typeof api[which]!=='function')throw Error('Game module unavailable');api[which]();}
+   catch(error){console.error('[Sakaker Castle Games]',error);alert(en()?'The game could not load. Please refresh and try again.':'تعذر تحميل اللعبة. حدّث الصفحة ثم أعد المحاولة.')}
+   finally{castleGamesLoading=false}
+ }
  function clickTarget(id,missingAr,missingEn){
    const target=$(id);if(target){target.click();return true}
    alert(en()?missingEn:missingAr);return false;
@@ -82,6 +99,8 @@ html body #sakakerAllIconsDock .sakaker-utility-slot[data-sak-entertainment-hidd
  function launch(action){
    closePanel();
    if(action==='chess'){openChess();return}
+   if(action==='checkers'){openCastleGame('openCheckers');return}
+   if(action==='snake'){openCastleGame('openSnake');return}
    if(action==='music'){clickTarget(targets.music,'استديو الموسيقى لم يكتمل تحميله بعد. أعد المحاولة بعد لحظة.','Music Studio is still loading. Try again in a moment.');return}
    if(action==='creative'){clickTarget(targets.creative,'الاستديو الإبداعي لم يكتمل تحميله بعد. أعد المحاولة بعد لحظة.','Creative Studio is still loading. Try again in a moment.');return}
    if(action==='pong'){clickTarget(targets.pong,'لعبة البونج لم تكتمل بعد. أعد المحاولة بعد لحظة.','Pong is still loading. Try again in a moment.');return}
