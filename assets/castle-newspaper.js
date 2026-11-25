@@ -248,6 +248,11 @@ function renderNewsTicker(host){
 }
 function renderNews(){
  const p=$('cnPanel');if(!p)return;p.replaceChildren();renderNewsTicker(p);
+ const dateline=document.createElement('div');dateline.className='cn-meta cn-dateline';
+ const todayLabel=new Intl.DateTimeFormat(language==='ar'?'ar-SA':'en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric',calendar:'gregory'}).format(new Date());
+ dateline.textContent=(language==='en'?'Today’s edition: ':'عدد اليوم: ')+todayLabel;
+ dateline.style.cssText='margin:0 2px 9px!important;padding:7px 10px!important;border-inline-start:3px solid #8fe6dc!important;border-radius:7px!important;background:linear-gradient(90deg,rgba(143,230,220,.12),rgba(255,255,255,.025))!important;color:#e9faff!important;font:800 12px/1.7 Tahoma,Arial,sans-serif!important;';
+ p.appendChild(dateline);
   const tabs=document.createElement('div');tabs.className='cn-tabs';
  Object.entries(categories).forEach(([k,v])=>{const b=document.createElement('button');b.textContent=v;b.setAttribute('aria-pressed',String(category===k));b.addEventListener('click',()=>{category=k;renderNews();});tabs.appendChild(b);});
  const refresh=document.createElement('button');refresh.className='cn-refresh';refresh.textContent=loading?'جارٍ التحديث…':'تحديث الأخبار';refresh.disabled=loading;refresh.addEventListener('click',()=>loadNews(true));tabs.appendChild(refresh);p.appendChild(tabs);
