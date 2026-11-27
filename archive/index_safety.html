@@ -41542,5 +41542,106 @@ html body #videoBoxFixed #sakUmmKulthumAudio{
 }
 </style>
 <script src="/assets/castle-manuscripts-launcher.js?v=20261113-1" defer></script>
+
+<!-- SAKAKER Official YouTube Station: isolated feature, appended without altering existing modules -->
+<style id="sakakerOfficialYoutubeStationStyles">
+#sakakerOfficialYoutubeCard{cursor:pointer}
+#sakakerOfficialYoutubeCard .sak-youtube-mark{width:44px;height:44px;display:grid;place-items:center;color:#ff3434;font-size:34px;filter:drop-shadow(0 0 10px rgba(255,40,40,.35))}
+#sakakerOfficialYoutubeModal{display:none;position:fixed;inset:0;z-index:10050;padding:18px;background:rgba(0,0,0,.78);backdrop-filter:blur(10px);overflow:auto}
+#sakakerOfficialYoutubeModal.is-open{display:flex;align-items:center;justify-content:center}
+#sakakerOfficialYoutubeModal .sak-yt-panel{position:relative;width:min(940px,100%);max-height:94vh;overflow:auto;border:1px solid rgba(214,174,77,.65);border-radius:22px;background:linear-gradient(145deg,rgba(5,24,22,.98),rgba(8,10,17,.98));box-shadow:0 20px 70px rgba(0,0,0,.6),0 0 30px rgba(0,210,160,.12);color:#fff;padding:clamp(16px,3vw,28px)}
+#sakakerOfficialYoutubeModal .sak-yt-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+#sakakerOfficialYoutubeModal .sak-yt-title{margin:0;color:#f3d27a;font-size:clamp(20px,3vw,28px);font-weight:900}
+#sakakerOfficialYoutubeModal .sak-yt-close{border:1px solid rgba(240,205,120,.45);border-radius:50%;width:42px;height:42px;background:rgba(0,0,0,.35);color:#ffe7a4;font-size:25px;cursor:pointer}
+#sakakerOfficialYoutubeModal .sak-yt-intro{color:#e8dfc5;line-height:1.8;margin:0 0 14px}
+#sakakerOfficialYoutubeModal .sak-yt-frame{position:relative;width:100%;aspect-ratio:16/9;background:#000;border:1px solid rgba(211,174,82,.4);border-radius:14px;overflow:hidden}
+#sakakerOfficialYoutubeModal .sak-yt-frame iframe{width:100%;height:100%;border:0;display:block}
+#sakakerOfficialYoutubeModal .sak-yt-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+#sakakerOfficialYoutubeModal .sak-yt-actions a,#sakakerOfficialYoutubeModal .sak-yt-actions button{flex:1 1 180px;min-height:46px;display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;padding:10px 16px;text-decoration:none;font-weight:800;cursor:pointer;border:1px solid rgba(234,196,104,.55);background:linear-gradient(135deg,#174d3d,#102b28);color:#ffe7a4}
+#sakakerOfficialYoutubeModal .sak-yt-actions .sak-yt-subscribe{background:linear-gradient(135deg,#d71920,#9e1017);border-color:#ff7777;color:#fff}
+#sakakerOfficialYoutubeModal .sak-yt-note{font-size:12px;color:#b8c7c1;margin-top:12px;line-height:1.7}
+@media(max-width:600px){#sakakerOfficialYoutubeModal{padding:8px}#sakakerOfficialYoutubeModal .sak-yt-panel{border-radius:16px;padding:14px}#sakakerOfficialYoutubeModal .sak-yt-actions a,#sakakerOfficialYoutubeModal .sak-yt-actions button{flex-basis:100%}}
+</style>
+<script id="sakakerOfficialYoutubeStation">
+(function(){
+ 'use strict';
+ const CHANNEL_ID='UCGLpYsPzWAHyGxouXZj9rcQ';
+ const CHANNEL_URL='https://www.youtube.com/channel/'+CHANNEL_ID;
+ const UPLOADS_PLAYLIST='UU'+CHANNEL_ID.slice(2);
+ const $=id=>document.getElementById(id);
+ const isEnglish=()=>document.documentElement.lang==='en';
+ const words=()=>isEnglish()?{
+  title:'SAKAKER Official on YouTube',
+  subtitle:'A world of knowledge, culture, heritage, arts, music and entertainment.',
+  card:'SAKAKER Official',
+  cardSub:'Watch our YouTube channel',
+  subscribe:'Subscribe to the channel',
+  visit:'Visit channel on YouTube',
+  share:'Share channel',
+  note:'The latest public videos will appear here after they are published on the channel.'
+ }:{
+  title:'محطة SAKAKER Official على YouTube',
+  subtitle:'عالم من المعرفة والثقافة والتراث والفنون والموسيقى والترفيه.',
+  card:'قناة SAKAKER Official',
+  cardSub:'شاهد فيديوهات قناتنا',
+  subscribe:'اشترك في القناة',
+  visit:'زيارة القناة على YouTube',
+  share:'مشاركة القناة',
+  note:'ستظهر أحدث الفيديوهات العامة هنا بعد نشرها على القناة.'
+ };
+ function ensureModal(){
+  let modal=$('sakakerOfficialYoutubeModal');
+  if(modal)return modal;
+  modal=document.createElement('div');modal.id='sakakerOfficialYoutubeModal';
+  modal.setAttribute('role','dialog');modal.setAttribute('aria-modal','true');modal.setAttribute('aria-labelledby','sakakerOfficialYoutubeTitle');
+  modal.innerHTML='<div class="sak-yt-panel"><div class="sak-yt-head"><h2 class="sak-yt-title" id="sakakerOfficialYoutubeTitle"></h2><button class="sak-yt-close" type="button" aria-label="Close">×</button></div><p class="sak-yt-intro"></p><div class="sak-yt-frame"><iframe title="SAKAKER Official latest YouTube videos" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><div class="sak-yt-actions"><a class="sak-yt-subscribe" target="_blank" rel="noopener noreferrer"></a><a class="sak-yt-visit" target="_blank" rel="noopener noreferrer"></a><button class="sak-yt-share" type="button"></button></div><div class="sak-yt-note"></div></div>';
+  modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
+  modal.querySelector('.sak-yt-close').addEventListener('click',closeModal);
+  modal.querySelector('.sak-yt-share').addEventListener('click',async()=>{
+   const w=words();
+   try{
+    if(navigator.share) await navigator.share({title:'SAKAKER Official',text:w.subtitle,url:CHANNEL_URL});
+    else if(navigator.clipboard&&navigator.clipboard.writeText){await navigator.clipboard.writeText(CHANNEL_URL);modal.querySelector('.sak-yt-note').textContent=isEnglish()?'Channel link copied.':'تم نسخ رابط القناة.';}
+    else window.open(CHANNEL_URL,'_blank','noopener');
+   }catch(e){}
+  });
+  document.body.appendChild(modal);
+  return modal;
+ }
+ function closeModal(){
+  const modal=$('sakakerOfficialYoutubeModal');if(!modal)return;
+  modal.classList.remove('is-open');
+  const frame=modal.querySelector('iframe');if(frame)frame.src='about:blank';
+ }
+ function openModal(){
+  const modal=ensureModal(),w=words();
+  modal.querySelector('.sak-yt-title').textContent=w.title;
+  modal.querySelector('.sak-yt-intro').textContent=w.subtitle;
+  modal.querySelector('.sak-yt-note').textContent=w.note;
+  const frame=modal.querySelector('iframe');
+  frame.src='https://www.youtube-nocookie.com/embed/videoseries?list='+UPLOADS_PLAYLIST+'&rel=0';
+  const sub=modal.querySelector('.sak-yt-subscribe');sub.textContent='▶ '+w.subscribe;sub.href='https://www.youtube.com/subscribe?channel_id='+CHANNEL_ID;
+  const visit=modal.querySelector('.sak-yt-visit');visit.textContent='↗ '+w.visit;visit.href=CHANNEL_URL;
+  modal.querySelector('.sak-yt-share').textContent='↗ '+w.share;
+  modal.classList.add('is-open');
+  document.addEventListener('keydown',onEscape,{once:true});
+ }
+ function onEscape(e){if(e.key==='Escape')closeModal();else document.addEventListener('keydown',onEscape,{once:true})}
+ function addCard(){
+  const host=document.querySelector('main .cards');
+  if(!host||$('sakakerOfficialYoutubeCard'))return;
+  const card=document.createElement('div');card.id='sakakerOfficialYoutubeCard';card.className='icon-card';
+  card.setAttribute('role','button');card.setAttribute('tabindex','0');
+  card.innerHTML='<div class="sak-youtube-mark" aria-hidden="true">▶</div><div class="icon-label"></div><div class="sub"></div>';
+  const update=()=>{const w=words();card.querySelector('.icon-label').textContent=w.card;card.querySelector('.sub').textContent=w.cardSub;card.setAttribute('aria-label',w.card+' — '+w.cardSub);card.title=w.card;};
+  update();card.addEventListener('click',openModal);card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openModal();}});
+  host.appendChild(card);
+ }
+ function init(){addCard();if(!$('sakakerOfficialYoutubeModal'))ensureModal();}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+ const observer=new MutationObserver(()=>{const card=$('sakakerOfficialYoutubeCard');if(card){const w=words();card.querySelector('.icon-label').textContent=w.card;card.querySelector('.sub').textContent=w.cardSub;card.setAttribute('aria-label',w.card+' — '+w.cardSub);}const modal=$('sakakerOfficialYoutubeModal');if(modal&&modal.classList.contains('is-open')){const w=words();modal.querySelector('.sak-yt-title').textContent=w.title;modal.querySelector('.sak-yt-intro').textContent=w.subtitle;modal.querySelector('.sak-yt-subscribe').textContent='▶ '+w.subscribe;modal.querySelector('.sak-yt-visit').textContent='↗ '+w.visit;modal.querySelector('.sak-yt-share').textContent='↗ '+w.share;modal.querySelector('.sak-yt-note').textContent=w.note;}});
+ observer.observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+})();
+</script>
 </body>
 </html>
