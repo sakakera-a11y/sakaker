@@ -431,3 +431,14 @@ html body #livePopup #liveVideosContainer{
   overflow-y:auto!important;overscroll-behavior:contain!important
 }
 html body #livePopup[style*="display: none"]{z-index:2147483647!important}
+
+
+/* Keep the live-channel popup above the entertainment launcher, which previously
+   used the same maximum z-index and could cover it when inserted later. */
+html body #sakEntertainmentStationRuntime,
+html body #sakEntertainmentStation{
+  z-index:2147483646!important;
+}
+html body #livePopup{
+  z-index:2147483647!important;
+}
