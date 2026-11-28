@@ -10,7 +10,7 @@ on:
       - "feature/sakaker-official-android-app"
 
 jobs:
-  debug-apk:
+  android-build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,11 +21,15 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "8.9"
-      - name: Build debug APK
-        run: gradle -p sakaker-official-app :app:assembleDebug
-      - name: Upload debug APK
+      - name: Build debug APK and release packages
+        run: |
+          gradle -p sakaker-official-app :app:assembleDebug :app:assembleRelease :app:bundleRelease
+      - name: Upload Android test and unsigned release packages
         uses: actions/upload-artifact@v4
         with:
-          name: sakaker-official-debug-apk
-          path: sakaker-official-app/app/build/outputs/apk/debug/app-debug.apk
+          name: sakaker-official-android-builds
+          path: |
+            sakaker-official-app/app/build/outputs/apk/debug/app-debug.apk
+            sakaker-official-app/app/build/outputs/apk/release/*.apk
+            sakaker-official-app/app/build/outputs/bundle/release/*.aab
           if-no-files-found: error
