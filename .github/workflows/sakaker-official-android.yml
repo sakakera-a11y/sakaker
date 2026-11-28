@@ -28,7 +28,7 @@ jobs:
       - name: Prepare Android release signing key
         if: ${{ env.ANDROID_KEYSTORE_BASE64 != '' }}
         run: |
-          echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/sakaker-release.jks"
+          printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/sakaker-release.jks"
       - name: Build debug APK and release packages
         env:
           ANDROID_KEYSTORE_PATH: ${{ runner.temp }}/sakaker-release.jks
