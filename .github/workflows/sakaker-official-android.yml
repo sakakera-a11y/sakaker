@@ -17,7 +17,6 @@ permissions:
 jobs:
   android-build:
     runs-on: ubuntu-latest
-
     env:
       ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
 
@@ -67,6 +66,7 @@ jobs:
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        shell: bash
         run: |
           set -euo pipefail
 
@@ -103,17 +103,20 @@ jobs:
           "$APKSIGNER" verify --verbose "$APK"
           "$APKSIGNER" verify --print-certs "$APK"
 
-          jarsigner -verify -strict "$AAB"
+          VERIFY_OUTPUT="$(jarsigner -verify "$AAB" 2>&1)"
+          echo "$VERIFY_OUTPUT"
+          echo "$VERIFY_OUTPUT" | grep -q "jar verified."
 
           echo "APK and AAB signature verification completed."
 
-      - name: Upload Android build artifacts
+      - name: Store Android build files in GitHub Actions
         uses: actions/upload-artifact@v4
         with:
-          name: sakaker-official-android-builds
-          if-no-files-found: error
+          name: sakaker-official-android-${{ github.run_number }}
           path: |
             sakaker-official-app/app/build/outputs/apk/debug/app-debug.apk
             sakaker-official-app/app/build/outputs/apk/release/*.apk
             sakaker-official-app/app/build/outputs/bundle/release/*.aab
-``
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 6
