@@ -57,7 +57,7 @@ jobs:
           # Remove accidental whitespace/line breaks, accept URL-safe Base64,
           # and restore omitted padding without printing the secret.
           CLEAN_BASE64="$(printf '%s' "$ANDROID_KEYSTORE_BASE64" | tr -d '[:space:]' | tr '_-' '/+')"
-          case $(($#{CLEAN_BASE64} % 4)) in
+          case $((${#CLEAN_BASE64} % 4)) in
             0) ;;
             2) CLEAN_BASE64="${CLEAN_BASE64}==" ;;
             3) CLEAN_BASE64="${CLEAN_BASE64}=" ;;
