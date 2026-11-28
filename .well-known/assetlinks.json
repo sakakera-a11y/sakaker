@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "co.sakaker.official",
+      "sha256_cert_fingerprints": [
+        "90:9A:A3:C2:72:E4:83:89:6F:D1:AD:5A:88:89:91:52:B7:FF:58:74:4B:B4:59:4D:65:D0:84:4D:F8:E0"
+      ]
+    }
+  }
+]
