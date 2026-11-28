@@ -5235,7 +5235,21 @@ birdBtn.addEventListener('click',async e=>{
 
     </div>
 
-  </section>
+  
+    <div
+      class="icon-card"
+      id="sakakerOfficialYoutubeCard"
+      onclick="if(window.openSakakerOfficialYoutubeStation)window.openSakakerOfficialYoutubeStation();"
+      role="button"
+      tabindex="0"
+      aria-label="قناة SAKAKER Official على YouTube"
+    >
+      <div class="sak-youtube-mark" aria-hidden="true">▶</div>
+      <div class="icon-label">SAKAKER Official</div>
+      <div class="sub">قناة YouTube الرسمية</div>
+    </div>
+
+</section>
 
 </main>
 
@@ -41637,7 +41651,7 @@ html body #videoBoxFixed #sakUmmKulthumAudio{
   update();card.addEventListener('click',openModal);card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openModal();}});
   host.appendChild(card);
  }
- function init(){addCard();if(!$('sakakerOfficialYoutubeModal'))ensureModal();}
+ window.openSakakerOfficialYoutubeStation=openModal;\n function init(){addCard();if(!$('sakakerOfficialYoutubeModal'))ensureModal();}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
  const observer=new MutationObserver(()=>{const card=$('sakakerOfficialYoutubeCard');if(card){const w=words();card.querySelector('.icon-label').textContent=w.card;card.querySelector('.sub').textContent=w.cardSub;card.setAttribute('aria-label',w.card+' — '+w.cardSub);}const modal=$('sakakerOfficialYoutubeModal');if(modal&&modal.classList.contains('is-open')){const w=words();modal.querySelector('.sak-yt-title').textContent=w.title;modal.querySelector('.sak-yt-intro').textContent=w.subtitle;modal.querySelector('.sak-yt-subscribe').textContent='▶ '+w.subscribe;modal.querySelector('.sak-yt-visit').textContent='↗ '+w.visit;modal.querySelector('.sak-yt-share').textContent='↗ '+w.share;modal.querySelector('.sak-yt-note').textContent=w.note;}});
  observer.observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
