@@ -1,0 +1,21 @@
+name: SakakerOfficial
+options:
+  bundleIdPrefix: co.sakaker
+  deploymentTarget:
+    iOS: "16.0"
+targets:
+  SakakerOfficial:
+    type: application
+    platform: iOS
+    sources:
+      - path: SakakerOfficial
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: co.sakaker.official
+        PRODUCT_NAME: Sakaker Official
+        INFOPLIST_KEY_CFBundleDisplayName: سكاكر
+        INFOPLIST_KEY_NSAppTransportSecurity_NSAllowsArbitraryLoads: NO
+        SWIFT_VERSION: 5.0
+        TARGETED_DEVICE_FAMILY: "1,2"
+        GENERATE_INFOPLIST_FILE: YES
+        CODE_SIGN_STYLE: Automatic
