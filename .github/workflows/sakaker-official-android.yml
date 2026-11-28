@@ -36,6 +36,9 @@ jobs:
           gradle-version: "8.9"
 
       - name: Validate and prepare Android signing key
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
         shell: bash
         run: |
           set -euo pipefail
@@ -44,11 +47,28 @@ jobs:
             echo "ERROR: ANDROID_KEYSTORE_BASE64 is missing."
             exit 1
           fi
+          if [[ -z "${ANDROID_KEYSTORE_PASSWORD:-}" || -z "${ANDROID_KEY_ALIAS:-}" ]]; then
+            echo "ERROR: Android signing password or alias secret is missing."
+            exit 1
+          fi
 
           KEYSTORE="$RUNNER_TEMP/sakaker-release.jks"
 
-          if ! printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > "$KEYSTORE"; then
-            echo "ERROR: ANDROID_KEYSTORE_BASE64 is not valid Base64."
+          # Remove accidental whitespace/line breaks, accept URL-safe Base64,
+          # and restore omitted padding without printing the secret.
+          CLEAN_BASE64="$(printf '%s' "$ANDROID_KEYSTORE_BASE64" | tr -d '[:space:]' | tr '_-' '/+')"
+          case $(($#{CLEAN_BASE64} % 4)) in
+            0) ;;
+            2) CLEAN_BASE64="${CLEAN_BASE64}==" ;;
+            3) CLEAN_BASE64="${CLEAN_BASE64}=" ;;
+            1)
+              echo "ERROR: ANDROID_KEYSTORE_BASE64 is truncated or contains invalid characters."
+              exit 1
+              ;;
+          esac
+
+          if ! printf '%s' "$CLEAN_BASE64" | base64 --decode > "$KEYSTORE"; then
+            echo "ERROR: ANDROID_KEYSTORE_BASE64 could not be decoded. Replace it with the complete Base64 output of the keystore file."
             rm -f "$KEYSTORE"
             exit 1
           fi
@@ -58,9 +78,15 @@ jobs:
             exit 1
           fi
 
-          echo "ANDROID_KEYSTORE_PATH=$KEYSTORE" >> "$GITHUB_ENV"
-          echo "Keystore decoded successfully."
+          # Confirm the decoded file is a usable keystore with the supplied password and alias.
+          if ! keytool -list -keystore "$KEYSTORE" -storepass "$ANDROID_KEYSTORE_PASSWORD" -alias "$ANDROID_KEY_ALIAS" >/dev/null 2>&1; then
+            echo "ERROR: The decoded file is not a valid keystore for the supplied password and alias."
+            rm -f "$KEYSTORE"
+            exit 1
+          fi
 
+          echo "ANDROID_KEYSTORE_PATH=$KEYSTORE" >> "$GITHUB_ENV"
+          echo "Keystore decoded and validated successfully."
       - name: Build Android debug APK and signed release packages
         env:
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
