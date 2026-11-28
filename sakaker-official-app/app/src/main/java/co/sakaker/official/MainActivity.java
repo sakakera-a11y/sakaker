@@ -108,7 +108,8 @@ public class MainActivity extends Activity {
             try {
                 DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
                 request.setMimeType(mimeType);
-                request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url));
+                String cookie = CookieManager.getInstance().getCookie(url);
+                if (cookie != null && !cookie.isEmpty()) request.addRequestHeader("Cookie", cookie);
                 request.addRequestHeader("User-Agent", userAgent);
                 request.setTitle("تنزيل من سكاكر");
                 request.setDescription("جارٍ تنزيل الملف");
