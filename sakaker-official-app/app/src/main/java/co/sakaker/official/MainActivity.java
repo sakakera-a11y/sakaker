@@ -170,9 +170,8 @@ public class MainActivity extends Activity {
         root.addView(footer);
         setContentView(root);
 
-        // Launch the verified full-site TWA as the app's primary experience.
-        // The existing WebView screen remains available as the in-app fallback.
-        openFullSite();
+        // Keep the full site inside the app. TWA remains available from the explicit button
+        // after the domain's Digital Asset Links association has been verified.
     }
 
     private void openFullSite() {
