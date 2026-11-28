@@ -26,7 +26,7 @@ import android.widget.Toast;
 public class FloatingChannelService extends Service {
     public static final String CHANNEL_URL = "https://www.youtube.com/@sakakera";
     public static final String SITE_URL = "https://www.sakaker.co/";
-    private static final String RELEASES_URL = "https://github.com/sakakera-a11y/sakaker/releases/latest";
+    private static final String RELEASES_URL = "https://github.com/sakakera-a11y/sakaker/releases/latest/download/sakaker-official.apk";
     private static final String NOTIFICATION_CHANNEL = "sakaker_floating_channel";
     private WindowManager windowManager;
     private View overlay;
