@@ -73,10 +73,26 @@ public class MainActivity extends Activity {
         settings.setJavaScriptCanOpenWindowsAutomatically(false);
         settings.setAllowFileAccess(false);
         settings.setAllowContentAccess(true);
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
+        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        // Some sites restrict embedded WebViews; identify as the regular Android browser.
+        String browserAgent = settings.getUserAgentString().replace("; wv", "");
+        settings.setUserAgentString(browserAgent);
         CookieManager.getInstance().setAcceptCookie(true);
         CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true);
 
         webView.setWebViewClient(new WebViewClient() {
+            @Override public void onReceivedError(WebView view, WebResourceRequest request,
+                    android.webkit.WebResourceError error) {
+                super.onReceivedError(view, request, error);
+                if (request.isForMainFrame()) {
+                    Toast.makeText(MainActivity.this,
+                            "تعذر تحميل موقع سكاكر. تحقق من الإنترنت واضغط الرئيسية لإعادة المحاولة.",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
             @Override public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 return handleExternalScheme(request.getUrl());
             }
