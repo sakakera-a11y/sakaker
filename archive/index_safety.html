@@ -41658,5 +41658,32 @@ html body #videoBoxFixed #sakUmmKulthumAudio{
  observer.observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
 })();
 </script>
+
+<!-- sakaker-floating-app-download: fixed Android APK download button -->
+<style id="sakaker-app-download-style">
+#sakakerAppDownload{
+  position:fixed;left:max(16px,env(safe-area-inset-left));bottom:calc(18px + env(safe-area-inset-bottom));
+  z-index:1000000;display:flex;align-items:center;gap:9px;
+  padding:11px 16px;border:1px solid rgba(128,255,210,.62);border-radius:999px;
+  color:#f4fff9;text-decoration:none;font:700 14px/1.35 system-ui,sans-serif;
+  background:linear-gradient(135deg,rgba(5,91,65,.97),rgba(4,45,52,.97));
+  box-shadow:0 5px 22px rgba(0,0,0,.34),0 0 18px rgba(25,220,160,.22);
+  -webkit-tap-highlight-color:transparent;backdrop-filter:blur(10px);
+}
+#sakakerAppDownload .sak-app-icon{width:28px;height:28px;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.13);font-size:17px}
+#sakakerAppDownload .sak-app-copy{display:flex;flex-direction:column;align-items:flex-start}
+#sakakerAppDownload .sak-app-note{font-size:10px;font-weight:500;opacity:.82}
+#sakakerAppDownload:focus-visible{outline:3px solid #f5d76e;outline-offset:3px}
+@media(max-width:480px){#sakakerAppDownload{left:max(10px,env(safe-area-inset-left));bottom:calc(12px + env(safe-area-inset-bottom));padding:9px 12px;font-size:13px}}
+</style>
+<a id="sakakerAppDownload"
+   href="https://raw.githubusercontent.com/sakakera-a11y/sakaker/37d308eb13f28cf4f34f50fd0590e2536081bdf1/Sakaker-Official-debug-latest.apk"
+   download="Sakaker-Official-debug-latest.apk"
+   aria-label="تحميل تطبيق سكاكر الرسمي، نسخة تجريبية"
+   title="تحميل تطبيق سكاكر الرسمي — نسخة تجريبية">
+  <span class="sak-app-icon" aria-hidden="true">⬇</span>
+  <span class="sak-app-copy"><span>تحميل التطبيق</span><span class="sak-app-note">نسخة تجريبية للأندرويد</span></span>
+</a>
+
 </body>
 </html>
