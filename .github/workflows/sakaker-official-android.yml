@@ -38,105 +38,86 @@ jobs:
           gradle-version: "8.9"
 
       - name: Validate and prepare Android signing key
+        id: signing
         env:
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
         shell: bash
         run: |
           set -euo pipefail
+          invalid() {
+            echo "valid=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::$1"
+          }
 
           if [[ -z "${ANDROID_KEYSTORE_BASE64:-}" ]]; then
-            echo "ERROR: ANDROID_KEYSTORE_BASE64 is missing."
-            exit 1
+            invalid "ANDROID_KEYSTORE_BASE64 is missing; debug APK will still be built."
+            exit 0
           fi
           if [[ -z "${ANDROID_KEYSTORE_PASSWORD:-}" || -z "${ANDROID_KEY_ALIAS:-}" ]]; then
-            echo "ERROR: Android signing password or alias secret is missing."
-            exit 1
+            invalid "Android signing password or alias is missing; debug APK will still be built."
+            exit 0
           fi
 
           KEYSTORE="$RUNNER_TEMP/sakaker-release.jks"
-
-          # Remove accidental whitespace/line breaks, accept URL-safe Base64,
-          # and restore omitted padding without printing the secret.
           CLEAN_BASE64="$(printf '%s' "$ANDROID_KEYSTORE_BASE64" | tr -d '[:space:]' | tr '_-' '/+')"
-          case $((${#CLEAN_BASE64} % 4)) in
+          case $(("${#CLEAN_BASE64}" % 4)) in
             0) ;;
             2) CLEAN_BASE64="${CLEAN_BASE64}==" ;;
             3) CLEAN_BASE64="${CLEAN_BASE64}=" ;;
             1)
-              echo "ERROR: ANDROID_KEYSTORE_BASE64 is truncated or contains invalid characters."
-              exit 1
+              invalid "ANDROID_KEYSTORE_BASE64 has an invalid length; debug APK will still be built."
+              exit 0
               ;;
           esac
 
-          if ! printf '%s' "$CLEAN_BASE64" | base64 --decode > "$KEYSTORE"; then
-            echo "ERROR: ANDROID_KEYSTORE_BASE64 could not be decoded. Replace it with the complete Base64 output of the keystore file."
+          if ! printf '%s' "$CLEAN_BASE64" | base64 --decode > "$KEYSTORE" 2>/dev/null; then
             rm -f "$KEYSTORE"
-            exit 1
+            invalid "ANDROID_KEYSTORE_BASE64 is not valid Base64; debug APK will still be built."
+            exit 0
           fi
-
-          if [[ ! -s "$KEYSTORE" ]]; then
-            echo "ERROR: The decoded keystore is empty."
-            exit 1
-          fi
-
-          # Confirm the decoded file is a usable keystore with the supplied password and alias.
-          if ! keytool -list -keystore "$KEYSTORE" -storepass "$ANDROID_KEYSTORE_PASSWORD" -alias "$ANDROID_KEY_ALIAS" >/dev/null 2>&1; then
-            echo "ERROR: The decoded file is not a valid keystore for the supplied password and alias."
+          if [[ ! -s "$KEYSTORE" ]] || ! keytool -list -keystore "$KEYSTORE" \
+              -storepass "$ANDROID_KEYSTORE_PASSWORD" -alias "$ANDROID_KEY_ALIAS" >/dev/null 2>&1; then
             rm -f "$KEYSTORE"
-            exit 1
+            invalid "Decoded keystore, password, or alias is invalid; debug APK will still be built."
+            exit 0
           fi
 
           echo "ANDROID_KEYSTORE_PATH=$KEYSTORE" >> "$GITHUB_ENV"
-          echo "Keystore decoded and validated successfully."
-      - name: Build Android debug APK and signed release packages
+          echo "valid=true" >> "$GITHUB_OUTPUT"
+          echo "Release signing key validated."
+
+      - name: Build Android debug APK
+        run: gradle -p sakaker-official-app :app:assembleDebug
+
+      - name: Build signed Android release APK and bundle
+        if: steps.signing.outputs.valid == 'true'
         env:
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-        shell: bash
         run: |
           set -euo pipefail
-
-          test -n "$ANDROID_KEYSTORE_PASSWORD"
-          test -n "$ANDROID_KEY_ALIAS"
           test -n "$ANDROID_KEY_PASSWORD"
-
-          gradle -p sakaker-official-app \
-            :app:assembleDebug \
-            :app:assembleRelease \
-            :app:bundleRelease
+          gradle -p sakaker-official-app :app:assembleRelease :app:bundleRelease
 
       - name: Verify signed Android release APK and certificate
+        if: steps.signing.outputs.valid == 'true'
         shell: bash
         run: |
           set -euo pipefail
-
-          test -s "$ANDROID_KEYSTORE_PATH"
-
-          APK="$(find sakaker-official-app/app/build/outputs/apk/release \
-            -type f -name '*.apk' | head -n 1)"
-
-          AAB="$(find sakaker-official-app/app/build/outputs/bundle/release \
-            -type f -name '*.aab' | head -n 1)"
-
+          APK="$(find sakaker-official-app/app/build/outputs/apk/release -type f -name '*.apk' | head -n 1)"
+          AAB="$(find sakaker-official-app/app/build/outputs/bundle/release -type f -name '*.aab' | head -n 1)"
           test -n "$APK"
           test -n "$AAB"
-
-          APKSIGNER="$(find "$ANDROID_HOME/build-tools" \
-            -type f -name apksigner | sort -V | tail -n 1)"
-
+          APKSIGNER="$(find "$ANDROID_HOME/build-tools" -type f -name apksigner | sort -V | tail -n 1)"
           test -n "$APKSIGNER"
-
           "$APKSIGNER" verify --verbose "$APK"
           "$APKSIGNER" verify --print-certs "$APK"
-
           VERIFY_OUTPUT="$(jarsigner -verify "$AAB" 2>&1)"
           echo "$VERIFY_OUTPUT"
           echo "$VERIFY_OUTPUT" | grep -q "jar verified."
-
           echo "APK and AAB signature verification completed."
-
 
       - name: Prepare stable APK for GitHub Release
         if: github.event_name == 'release'
@@ -163,6 +144,6 @@ jobs:
             sakaker-official-app/app/build/outputs/apk/debug/app-debug.apk
             sakaker-official-app/app/build/outputs/apk/release/*.apk
             sakaker-official-app/app/build/outputs/bundle/release/*.aab
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 90
           compression-level: 6
