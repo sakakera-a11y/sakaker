@@ -111,7 +111,7 @@ public class FloatingChannelService extends Service {
         shell.addView(actions, new LinearLayout.LayoutParams(-1, -2));
 
         // A dedicated, high-contrast download action keeps it clear on narrow screens.
-        Button download = actionButton("⬇  تحميل التطبيق الرسمي\\nقلعة أبو القمر زمرد");
+        Button download = actionButton("⬇  تحميل التطبيق الرسمي\nقلعة أبو القمر زمرد");
         download.setTextSize(15);
         download.setTypeface(null, 1);
         download.setTextColor(0xFF062B25);
