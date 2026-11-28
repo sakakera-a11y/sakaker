@@ -40068,7 +40068,7 @@ html body:not(.locked) #sakakerAllIconsDock#sakakerAllIconsDock#sakakerAllIconsD
  let loadingCastleGame=false;
  async function openCastleGame(which){
    if(loadingCastleGame)return;loadingCastleGame=true;
-   try{await import('/assets/castle-games.js?v=20261125-2');const api=window.SakakerCastleGames;if(!api||typeof api[which]!=='function')throw new Error('Game API unavailable');api[which]()}
+   try{await import('/assets/castle-games.js?v=20261128-1');const api=window.SakakerCastleGames;if(!api||typeof api[which]!=='function')throw new Error('Game API unavailable');api[which]()}
    catch(error){alert(en()?'The game could not load. Please refresh and try again.':'تعذر تحميل اللعبة. حدّث الصفحة ثم أعد المحاولة.')}
    finally{loadingCastleGame=false}
  }
