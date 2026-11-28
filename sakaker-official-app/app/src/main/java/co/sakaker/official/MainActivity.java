@@ -169,6 +169,10 @@ public class MainActivity extends Activity {
         footer.addView(floating, new LinearLayout.LayoutParams(0, -2, 1));
         root.addView(footer);
         setContentView(root);
+
+        // Launch the verified full-site TWA as the app's primary experience.
+        // The existing WebView screen remains available as the in-app fallback.
+        openFullSite();
     }
 
     private void openFullSite() {
