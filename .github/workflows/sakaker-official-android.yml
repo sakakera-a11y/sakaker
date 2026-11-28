@@ -8,6 +8,7 @@ on:
       - ".github/workflows/sakaker-official-android.yml"
     branches:
       - "feature/sakaker-official-android-app"
+      - "main"
 
 jobs:
   android-build:
