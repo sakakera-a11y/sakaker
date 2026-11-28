@@ -1,0 +1,39 @@
+name: Build Sakaker Official iOS app
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "sakaker-official-ios/**"
+      - ".github/workflows/sakaker-official-ios.yml"
+    branches:
+      - "feature/sakaker-official-android-app"
+
+jobs:
+  ios-build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate Xcode project
+        run: |
+          cd sakaker-official-ios
+          xcodegen generate
+      - name: Build unsigned iOS app
+        run: |
+          xcodebuild -project sakaker-official-ios/SakakerOfficial.xcodeproj \
+            -scheme SakakerOfficial \
+            -sdk iphoneos \
+            -configuration Release \
+            -derivedDataPath build/ios \
+            CODE_SIGNING_ALLOWED=NO build
+      - name: Package app
+        run: |
+          cd build/ios/Build/Products/Release-iphoneos
+          /usr/bin/zip -r "$GITHUB_WORKSPACE/SakakerOfficial-iOS-unsigned.zip" Sakaker\ Official.app
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sakaker-official-ios-unsigned
+          path: SakakerOfficial-iOS-unsigned.zip
+          if-no-files-found: error
