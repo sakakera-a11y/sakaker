@@ -3,6 +3,7 @@ package co.sakaker.official;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DownloadManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -24,7 +25,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.browser.customtabs.CustomTabsCallback;
+import androidx.browser.customtabs.CustomTabsClient;
+import androidx.browser.customtabs.CustomTabsServiceConnection;
+import androidx.browser.customtabs.CustomTabsSession;
+import androidx.browser.trusted.TrustedWebActivityIntentBuilder;
 
 public class MainActivity extends Activity {
     private static final int OVERLAY_REQUEST = 7104;
@@ -167,8 +172,46 @@ public class MainActivity extends Activity {
     }
 
     private void openFullSite() {
+        String browserPackage = CustomTabsClient.getPackageName(this, null);
+        if (browserPackage == null) {
+            openBrowserFallback();
+            return;
+        }
+
+        CustomTabsServiceConnection connection = new CustomTabsServiceConnection() {
+            @Override public void onCustomTabsServiceConnected(ComponentName name, CustomTabsClient client) {
+                try {
+                    client.warmup(0L);
+                    CustomTabsSession session = client.newSession(new CustomTabsCallback());
+                    if (session == null) {
+                        openBrowserFallback();
+                    } else {
+                        new TrustedWebActivityIntentBuilder(Uri.parse(SITE_URL))
+                                .build(session)
+                                .launchTrustedWebActivity(MainActivity.this);
+                    }
+                } catch (Exception error) {
+                    openBrowserFallback();
+                } finally {
+                    try { unbindService(this); } catch (Exception ignored) {}
+                }
+            }
+
+            @Override public void onServiceDisconnected(ComponentName name) {}
+        };
+
         try {
-            CustomTabsIntent tabs = new CustomTabsIntent.Builder().build();
+            boolean bound = CustomTabsClient.bindCustomTabsService(this, browserPackage, connection);
+            if (!bound) openBrowserFallback();
+        } catch (Exception error) {
+            openBrowserFallback();
+        }
+    }
+
+    private void openBrowserFallback() {
+        try {
+            androidx.browser.customtabs.CustomTabsIntent tabs =
+                    new androidx.browser.customtabs.CustomTabsIntent.Builder().build();
             tabs.launchUrl(this, Uri.parse(SITE_URL));
         } catch (Exception error) {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(SITE_URL)));
