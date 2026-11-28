@@ -4147,6 +4147,10 @@ html[lang="ar"] body{direction:rtl;}
   function applyLanguage(lang){
     lang=(lang==='en'?'en':'ar');
     localStorage.setItem('sakakerLanguage',lang);
+    localStorage.setItem('sakakerLang',lang);
+    document.documentElement.lang=lang;
+    document.documentElement.dir=(lang==='ar'?'rtl':'ltr');
+    document.documentElement.style.setProperty('--site-direction',lang==='ar'?'rtl':'ltr');
     translateMarkedText(lang);
     translateCommonAttributes(lang);
 
@@ -4178,7 +4182,6 @@ html[lang="ar"] body{direction:rtl;}
     if(btn){
       btn.addEventListener('click',function(e){
         e.preventDefault();
-        e.stopPropagation();
         var current=localStorage.getItem('sakakerLanguage') ||
           (document.documentElement.lang==='en'?'en':'ar');
         applyLanguage(current==='ar'?'en':'ar');
@@ -4189,8 +4192,8 @@ html[lang="ar"] body{direction:rtl;}
     applyLanguage(saved);
 
     /* Re-apply after dynamically created widgets finish rendering. */
-    setTimeout(function(){setupPongOppositeSide();applyLanguage(saved);},500);
-    setTimeout(function(){setupPongOppositeSide();},1500);
+    setTimeout(function(){setupPongOppositeSide();applyLanguage(localStorage.getItem('sakakerLanguage') || localStorage.getItem('sakakerLang') || saved);},500);
+    setTimeout(function(){setupPongOppositeSide();applyLanguage(localStorage.getItem('sakakerLanguage') || localStorage.getItem('sakakerLang') || saved);},1500);
   }
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init);
@@ -41662,26 +41665,28 @@ html body #videoBoxFixed #sakUmmKulthumAudio{
 <!-- sakaker-floating-app-download: fixed Android APK download button -->
 <style id="sakaker-app-download-style">
 #sakakerAppDownload{
-  position:fixed;left:max(16px,env(safe-area-inset-left));bottom:calc(18px + env(safe-area-inset-bottom));
-  z-index:1000000;display:flex;align-items:center;gap:9px;
-  padding:11px 16px;border:1px solid rgba(128,255,210,.62);border-radius:999px;
-  color:#f4fff9;text-decoration:none;font:700 14px/1.35 system-ui,sans-serif;
-  background:linear-gradient(135deg,rgba(5,91,65,.97),rgba(4,45,52,.97));
-  box-shadow:0 5px 22px rgba(0,0,0,.34),0 0 18px rgba(25,220,160,.22);
-  -webkit-tap-highlight-color:transparent;backdrop-filter:blur(10px);
+  position:fixed;left:max(14px,env(safe-area-inset-left));bottom:calc(16px + env(safe-area-inset-bottom));
+  z-index:1000000;width:68px;height:68px;display:flex;align-items:center;justify-content:center;
+  padding:0;border:1px solid rgba(125,235,255,.92);border-radius:50%;
+  color:#f4ffff;text-decoration:none;font:700 12px/1.2 system-ui,sans-serif;
+  background:radial-gradient(circle at 32% 25%,rgba(147,245,255,.98),rgba(12,130,163,.98) 42%,rgba(3,45,79,.99) 100%);
+  box-shadow:0 5px 22px rgba(0,0,0,.34),0 0 18px rgba(25,205,235,.42),inset 0 0 12px rgba(255,255,255,.24);
+  -webkit-tap-highlight-color:transparent;backdrop-filter:blur(10px);overflow:visible;
 }
-#sakakerAppDownload .sak-app-icon{width:28px;height:28px;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.13);font-size:17px}
-#sakakerAppDownload .sak-app-copy{display:flex;flex-direction:column;align-items:flex-start}
-#sakakerAppDownload .sak-app-note{font-size:10px;font-weight:500;opacity:.82}
-#sakakerAppDownload:focus-visible{outline:3px solid #f5d76e;outline-offset:3px}
-@media(max-width:480px){#sakakerAppDownload{left:max(10px,env(safe-area-inset-left));bottom:calc(12px + env(safe-area-inset-bottom));padding:9px 12px;font-size:13px}}
+#sakakerAppDownload::before{content:"";position:absolute;inset:-5px;border:1px solid rgba(105,225,255,.45);border-radius:50%;box-shadow:0 0 14px rgba(42,207,255,.25);pointer-events:none}
+#sakakerAppDownload .sak-app-icon{width:100%;height:100%;display:grid;place-items:center;font-size:37px;line-height:1;filter:drop-shadow(0 2px 4px rgba(0,20,45,.55));}
+#sakakerAppDownload .sak-app-copy{position:absolute;left:50%;bottom:calc(100% + 9px);transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;white-space:nowrap;padding:6px 10px;border:1px solid rgba(125,235,255,.55);border-radius:14px;background:rgba(3,39,61,.94);color:#f4ffff;box-shadow:0 3px 12px rgba(0,0,0,.25);}
+#sakakerAppDownload .sak-app-note{font-size:9px;font-weight:500;opacity:.82}
+#sakakerAppDownload:focus-visible{outline:3px solid #f5d76e;outline-offset:5px}
+#sakakerAppDownload:hover{transform:translateY(-2px);filter:brightness(1.08)}
+@media(max-width:480px){#sakakerAppDownload{left:max(10px,env(safe-area-inset-left));bottom:calc(12px + env(safe-area-inset-bottom));width:62px;height:62px}#sakakerAppDownload .sak-app-icon{font-size:34px}}
 </style>
 <a id="sakakerAppDownload"
    href="https://raw.githubusercontent.com/sakakera-a11y/sakaker/37d308eb13f28cf4f34f50fd0590e2536081bdf1/Sakaker-Official-debug-latest.apk"
    download="Sakaker-Official-debug-latest.apk"
    aria-label="تحميل تطبيق سكاكر الرسمي، نسخة تجريبية"
-   title="تحميل تطبيق سكاكر الرسمي — نسخة تجريبية">
-  <span class="sak-app-icon" aria-hidden="true">⬇</span>
+   title="🐋 تحميل تطبيق سكاكر الرسمي — نسخة تجريبية">
+  <span class="sak-app-icon" aria-hidden="true">🐋</span>
   <span class="sak-app-copy"><span>تحميل التطبيق</span><span class="sak-app-note">نسخة تجريبية للأندرويد</span></span>
 </a>
 
