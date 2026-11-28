@@ -25,7 +25,7 @@ import android.widget.Toast;
 public class FloatingChannelService extends Service {
     public static final String CHANNEL_URL = "https://www.youtube.com/@sakakera";
     public static final String SITE_URL = "https://www.sakaker.co/";
-    private static final String APP_DOWNLOAD_URL = "https://github.com/sakakera-a11y/sakaker/releases/latest/download/sakaker-official.apk";
+    private static final String APP_DOWNLOAD_URL = "https://github.com/sakakera-a11y/sakaker/releases";
     private static final String NOTIFICATION_CHANNEL = "sakaker_fullscreen_overlay";
     private WindowManager windowManager;
     private View overlay;
@@ -108,10 +108,22 @@ public class FloatingChannelService extends Service {
         Button channel = actionButton("القناة");
         channel.setOnClickListener(v -> content.loadUrl(CHANNEL_URL));
         actions.addView(channel, new LinearLayout.LayoutParams(0, -2, 1));
-        Button download = actionButton("تحميل تطبيق قلعة أبو القمر زمرد");
-        download.setOnClickListener(v -> openLink(APP_DOWNLOAD_URL));
-        actions.addView(download, new LinearLayout.LayoutParams(0, -2, 1));
         shell.addView(actions, new LinearLayout.LayoutParams(-1, -2));
+
+        // A dedicated, high-contrast download action keeps it clear on narrow screens.
+        Button download = actionButton("⬇  تحميل التطبيق الرسمي\\nقلعة أبو القمر زمرد");
+        download.setTextSize(15);
+        download.setTypeface(null, 1);
+        download.setTextColor(0xFF062B25);
+        download.setBackgroundTintList(android.content.res.ColorStateList.valueOf(0xFFFFD66B));
+        download.setPadding(18, 12, 18, 12);
+        download.setMinHeight(58);
+        download.setElevation(8f);
+        download.setContentDescription("تحميل تطبيق قلعة أبو القمر زمرد من صفحة الإصدارات الرسمية");
+        download.setOnClickListener(v -> openLink(APP_DOWNLOAD_URL));
+        LinearLayout.LayoutParams downloadParams = new LinearLayout.LayoutParams(-1, -2);
+        downloadParams.setMargins(10, 8, 10, 8);
+        shell.addView(download, downloadParams);
 
         content = new WebView(this);
         WebSettings settings = content.getSettings();
