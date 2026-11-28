@@ -164,7 +164,7 @@ public class MainActivity extends Activity {
         back.setOnClickListener(v -> { if (webView.canGoBack()) webView.goBack(); });
         footer.addView(back, new LinearLayout.LayoutParams(0, -2, 1));
         Button floating = new Button(this);
-        floating.setText("نافذة القناة");
+        floating.setText("نافذة فوق التطبيقات");
         floating.setOnClickListener(v -> startFloating());
         footer.addView(floating, new LinearLayout.LayoutParams(0, -2, 1));
         root.addView(footer);
