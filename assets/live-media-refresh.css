@@ -418,3 +418,16 @@ html[lang="en"] body #facebookVideoPopup .fbVideoFrame:before{content:"Facebook 
     min-height:591px!important;
   }
 }
+
+
+/* Keep the live-channel window above every site layer, popup, dock and game. */
+html body #livePopup{
+  position:fixed!important;inset:0!important;z-index:2147483647!important;
+  isolation:isolate!important;transform:none!important;overflow-y:auto!important;
+  overscroll-behavior:contain!important
+}
+html body #livePopup #liveVideosContainer{
+  position:relative!important;z-index:1!important;max-height:calc(100dvh - 20px)!important;
+  overflow-y:auto!important;overscroll-behavior:contain!important
+}
+html body #livePopup[style*="display: none"]{z-index:2147483647!important}
