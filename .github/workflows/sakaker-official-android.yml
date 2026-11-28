@@ -2,6 +2,8 @@ name: Build Sakaker Official Android app
 
 on:
   workflow_dispatch:
+  release:
+    types: [published]
   push:
     paths:
       - "sakaker-official-app/**"
@@ -12,7 +14,7 @@ on:
       - "main"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   android-build:
@@ -134,6 +136,24 @@ jobs:
           echo "$VERIFY_OUTPUT" | grep -q "jar verified."
 
           echo "APK and AAB signature verification completed."
+
+
+      - name: Prepare stable APK for GitHub Release
+        if: github.event_name == 'release'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          APK="$(find sakaker-official-app/app/build/outputs/apk/release -type f -name '*.apk' | head -n 1)"
+          test -n "$APK"
+          cp "$APK" dist/sakaker-official.apk
+
+      - name: Publish signed APK to GitHub Release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/sakaker-official.apk
+          fail_on_unmatched_files: true
 
       - name: Store Android build files in GitHub Actions
         uses: actions/upload-artifact@v4
