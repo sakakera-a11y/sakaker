@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.browser.customtabs.CustomTabsIntent;
 
 public class MainActivity extends Activity {
     private static final int OVERLAY_REQUEST = 7104;
@@ -54,6 +55,11 @@ public class MainActivity extends Activity {
         title.setTextSize(18);
         title.setTypeface(null, 1);
         header.addView(title, new LinearLayout.LayoutParams(0, -2, 1));
+
+        Button fullSite = new Button(this);
+        fullSite.setText("الموقع الكامل");
+        fullSite.setOnClickListener(v -> openFullSite());
+        header.addView(fullSite);
 
         Button channel = new Button(this);
         channel.setText("القناة");
@@ -158,6 +164,15 @@ public class MainActivity extends Activity {
         footer.addView(floating, new LinearLayout.LayoutParams(0, -2, 1));
         root.addView(footer);
         setContentView(root);
+    }
+
+    private void openFullSite() {
+        try {
+            CustomTabsIntent tabs = new CustomTabsIntent.Builder().build();
+            tabs.launchUrl(this, Uri.parse(SITE_URL));
+        } catch (Exception error) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(SITE_URL)));
+        }
     }
 
     private boolean handleExternalScheme(Uri uri) {
