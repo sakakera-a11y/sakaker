@@ -42,6 +42,7 @@ jobs:
         env:
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         shell: bash
         run: |
           set -euo pipefail
@@ -54,7 +55,7 @@ jobs:
             invalid "ANDROID_KEYSTORE_BASE64 is missing; debug APK will still be built."
             exit 0
           fi
-          if [[ -z "${ANDROID_KEYSTORE_PASSWORD:-}" || -z "${ANDROID_KEY_ALIAS:-}" ]]; then
+          if [[ -z "${ANDROID_KEYSTORE_PASSWORD:-}" || -z "${ANDROID_KEY_ALIAS:-}" || -z "${ANDROID_KEY_PASSWORD:-}" ]]; then
             invalid "Android signing password or alias is missing; debug APK will still be built."
             exit 0
           fi
