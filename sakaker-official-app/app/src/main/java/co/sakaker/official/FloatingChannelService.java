@@ -31,6 +31,7 @@ public class FloatingChannelService extends Service {
     private WindowManager windowManager;
     private View overlay;
     private WebView content;
+    private View actionsPanel;
     private WindowManager.LayoutParams overlayParams;
     private boolean minimized = false;
 
@@ -100,6 +101,7 @@ public class FloatingChannelService extends Service {
         shell.addView(bar, new LinearLayout.LayoutParams(-1, -2));
 
         LinearLayout actions = new LinearLayout(this);
+        actionsPanel = actions;
         actions.setGravity(Gravity.CENTER);
         actions.setPadding(3, 2, 3, 2);
         actions.setBackgroundColor(0xFF102F32);
@@ -197,6 +199,7 @@ public class FloatingChannelService extends Service {
         if (minimized && overlay != null) {
             minimized = false;
             content.setVisibility(View.VISIBLE);
+            if (actionsPanel != null) actionsPanel.setVisibility(View.VISIBLE);
             overlayParams.height = (int) (getResources().getDisplayMetrics().heightPixels * 0.55f);
             windowManager.updateViewLayout(overlay, overlayParams);
         }
